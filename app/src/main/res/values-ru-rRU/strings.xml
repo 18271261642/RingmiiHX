@@ -1,0 +1,1322 @@
+<resources>
+
+    <string name="bemo_switch_alert">When this feature is turned on, the power consumption will increase and the power consumption of the mobile phone will increase. Please restart the APP after the switch is turned on or off.</string>
+    <string name="bemo_switch">Bemo Switch</string>
+    <string name="blood_test">Blood pressure test</string>
+    <string name="more_opera">More operations</string>
+    <string name="string_msg_basic_requ">实现消息提醒的基本要求</string>
+    <string name="string_basic_cont1">1.确认 RaceFit 处于运行状态并与设备连接</string>
+    <string name="string_basic_cont2">2.确认 RaceFit 已设置耗电保护</string>
+    <string name="string_basic_cont3">3.确认 RaceFit 已设置自动启动权限</string>
+    <string name="string_basic_cont4">4.确认 RaceFit 已设置系统或手机管家白名单保护</string>
+    <string name="string_apps_alert_title">Q:Facebook、QQ、Wechat等应用没有消息提醒?</string>
+    <string name="string_apps_cont1">1.确认FaceBook、QQ、Wechat等应用允许在通知栏上显示消息</string>
+    <string name="string_apps_cont2">2.关闭 RaceFit 通知使用权限后重新打开</string>
+    <string name="string_to_restart">去重启</string>
+    <string name="string_call_phone_alert">Q:来电没有提醒?</string>
+    <string name="string_call_phone_cont1">1.确认开启了联系人/通讯录权限</string>
+    <string name="string_call_phone_cont2">2.确认开启了电话权限</string>
+    <string name="string_call_phone_cont3">3.确认开启了通话记录权限</string>
+    <string name="string_smg_alert_title">Q:短信没有提醒?</string>
+    <string name="string_smg_alert_content1">2.确认开启了短信权限</string>
+    <string name="string_enable">已获取</string>
+    <string name="string_disable">未获取</string>
+
+
+    <string name="string_sos_prmiss">SOS相關許可權未打開</string>
+    <string name="string_fatigue_test">疲劳测试</string>
+    <string name="string_breathing_test">呼吸测试</string>
+    <string name="string_breath_zishi">请保持正确佩戴姿势</string>
+    <string name="string_count_time">次/分</string>
+    <string name="string_test_come">测量完毕</string>
+    <string name="string_spo2_long">血氧浓度</string>
+    <string name="string_spo2_nomal">血氧浓度正常</string>
+    <string name="string_spo2_low">血氧浓度偏低</string>
+    <string name="string_spo2_must_low">血氧浓度低，请重视!</string>
+    <string name="string_spo2_varymust_low">警告！血氧远低于正常值！</string>
+    <string name="string_today_boday_test">今日 体检报告</string>
+    <string name="string_today_sleep_test">今日 睡眠质量</string>
+    <string name="string_today_sleep_Spo_bloop">今日睡眠血氧体检</string>
+    <string name="string_today_Spo_breath">血氧/呼吸暂停体检</string>
+
+
+
+    <string name="fatigue_test">疲勞度測試</string>
+    <string name="fatigue_no_test_desc">適當的關註一下自己的身體狀態哦</string>
+    <string name="fatigue_noral_suggest">您的精力充沛,無疲乏感覺,注意力集中,工作效率會非常高</string>
+    <string name="fatigue_mild_suggest">您略有疲乏不適感,平時可以多聽一些自己喜歡的音樂來進行緩解</string>
+    <string name="fatigue_moderate_suggest">您可能有困倦疲乏、頭暈腦脹、身體僵硬等感覺，您可以看看遠處風景或小憩片刻，緩解疲勞同時為高效工作做準備</string>
+    <string name="fatigue_sebere_suggest">您可能無法集中註意力，特別困乏，平時要多注意休息，多喝水，保持心情舒暢，身心輕鬆，工作效率才會高</string>
+    <string name="test_invalid">測試無效</string>
+    <string name="fatigue_normal">狀態良好</string>
+    <string name="fatigue_mild">輕度疲勞</string>
+    <string name="fatigue_moderate">中度疲勞</string>
+    <string name="fatigue_severe">重度疲勞</string>
+    <string name="vpspo2h_toptitle_breath">呼吸率</string>
+    <string name="spo2_test">血氧測試</string>
+    <string name="spo2_calibration_pro">校准進度</string>
+    <string name="vpspo2h_spo2h">血氧</string>
+    <string name="count_down">倒計時</string>
+    <string name="string_devices_ui">界面風格設置</string>
+    <string name="string_default_style">默認風格</string>
+    <string name="style_1">風格1</string>
+    <string name="style_2">風格2</string>
+    <string name="style_3">風格3</string>
+    <string name="style_4">風格4</string>
+    <string name="vpspo2h_state_normal">正常</string>
+    <string name="vpspo2h_state_calm">安靜</string>
+    <string name="vpspo2h_state_error">異常</string>
+    <string name="vpspo2h_state_little">輕度</string>
+    <string name="vpspo2h_state_mulmulsport">躁動</string>
+    <string name="vpspo2h_state_mulsport">多動</string>
+    <string name="more">更多</string>
+    <string name="pack_up">收起</string>
+    <string name="vpspo2h_toptitle_heart">心臟負荷</string>
+    <string name="vpspo2h_toptitle_lowspo2h">低氧時間</string>
+    <string name="vpspo2h_toptitle_sleep">睡眠活動</string>
+    <string name="severe">重度</string>
+    <string name="moderate">中度</string>
+    <string name="analysis_result">分析結果（僅供參考）</string>
+    <string name="spo2_main_sorce">主要指標</string>
+    <string name="vpspo2h_sleep_sportvalue">睡眠活動幅度</string>
+    <string name="vpspo2h_breath_break">呼吸暫停綜合徵</string>
+    <string name="vpspo2h_ratevaraive">脈率變異性</string>
+    <string name="vpspo2h_low_remain">低氧喚醒</string>
+    <string name="ave_value">平均值</string>
+    <string name="heart_health_sorce">心臟健康指數</string>
+    <string name="spo2_breath_break">血氧/呼吸暫停</string>
+    <string name="name">名稱</string>
+    <string name="frequent_time">頻現時間</string>
+    <string name="times">次數</string>
+    <string name="reference">參考值</string>
+    <string name="max_min">最高(最低)</string>
+    <string name="intervention_measures">干預手段</string>
+    <string name="vpspo2h_state_realtime">實時血氧</string>
+    <string name="vpspo2h_state_breathbreak">呼吸暫停</string>
+    <string name="lero_referenc">洛倫茲散點圖參考</string>
+    <string name="hrv_data">HRV數據</string>
+    <string name="mild_fait">輕度疲勞</string>
+    <string name="general_fait">一般疲勞</string>
+    <string name="weight_fait">重度疲勞</string>
+    <string name="common_sense_of_apnea">呼吸暫停常識</string>
+    <string name="max_value">最大值</string>
+    <string name="min_value">最小值</string>
+    <string name="signle_minute">分</string>
+    <string name="second">秒</string>
+    <string name="time_area">時間區間</string>
+    <string name="accumulate">累加值</string>
+    <!--
+<string name="data">整数型:%1$d，浮点型：%2$.2f，字符串:%3$s</string>
+    其中%后面是占位符的位置，从1开始，
+       $ 后面是填充数据的类型
+     %d：表示整数型；
+     %f ：表示浮点型，其中f前面的.2表示小数的位数
+     %s：表示字符串
+
+ -->
+
+    <!--<string name="app_name">BEMO</string>-->
+    <string name="des">開啟蓋德輔助球</string>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="boot_title">系統 正在啟動</string>
+    <string name="boot_content">正在啟動應用程式</string>
+
+    <!-- Mark 新增語系切換 繁體 -->
+    <!-- 量測 -->
+    <string name="mmeasure">測量中</string>
+    <string name="mmeasure_overtime">已超過量測時間\n請重新量測</string>
+    <string name="mmeasure_retry">逾時重測</string>
+
+    <!-- 知道了 -->
+    <string name="mknown">知道了</string>
+    <string name="mdismiss">關閉</string>
+
+
+    <!-- 手錶資訊 -->
+    <string name="mconnect_no">未連接</string>
+    <string name="mconnect_yes">已連接</string>
+
+    <!-- 跌倒 -->
+    <string name="msensitivity_high">高靈敏度</string>
+    <string name="msensitivity_medium">中靈敏度</string>
+    <string name="msensitivity_low">低靈敏度</string>
+    <string name="mfall_charge">開啟此功能\n會加速耗電</string>
+    <string name="mfall_alarm">跌倒警告</string>
+
+    <!-- 藍牙連線 -->
+    <string name="mdevice_pair">裝置配對</string>
+    <string name="mdevice_list">裝置列表</string>
+    <string name="mpairing">配對中...</string>
+    <string name="mpair">配對</string>
+    <string name="mnodata">沒有資料</string>
+    <string name="mdevice_delete">移除</string>
+
+    <!-- 電池 -->
+    <string name="mlow_battery">低電量</string>
+
+    <!-- 同步模式 -->
+    <string name="mnormal">一般\n模式</string>
+    <string name="mcarer">照護\n模式</string>
+    <string name="mtracking">特殊\n追蹤</string>
+    <string name="msync_charge">開啟此功能\n會加速耗電</string>
+
+    <!-- 同步 -->
+    <string name="msync">同步中</string>
+
+    <!-- 吃藥提醒 -->
+    <string name="mmonday">一</string>
+    <string name="mtuesday">二</string>
+    <string name="mwednesday">三</string>
+    <string name="mthursday">四</string>
+    <string name="mfriday">五</string>
+    <string name="msaturday">六</string>
+    <string name="msunday">日</string>
+
+    <!-- 吃藥.回診提醒彈出視窗 -->
+    <string name="mmedicine">吃藥提醒</string>
+    <string name="mappointment">回診提醒</string>
+
+    <!-- 計步 -->
+    <string name="mstep">步數</string>
+    <string name="mkm">公里</string>
+
+    <!-- 開或關 -->
+    <string name="mopen">開</string>
+    <string name="mclose">關</string>
+
+    <!-- week -->
+    <string name="Monday">星期一</string>
+    <string name="Tuesday">星期二</string>
+    <string name="Wednesday">星期三</string>
+    <string name="Thursday">星期四</string>
+    <string name="Friday">星期五</string>
+    <string name="Saturday">星期六</string>
+    <string name="Sunday">星期日</string>
+
+    <!-- action bar title -->
+    <string name="title_contact_settings">通話設定</string>
+    <string name="title_dial">快撥電話</string>
+    <string name="title_emergency">緊急電話</string>
+    <string name="title_faimly">親情電話</string>
+    <string name="title_location">位置服務</string>
+    <string name="action_start">開始</string>
+    <string name="title_contactlist">電話本</string>
+    <string name="title_favoritelist">白名單</string>
+    <string name="settings_round_dial_phone">電話輪撥</string>
+    <string name="title_remind">事件提醒</string>
+    <string name="title_remind_medicine">吃藥提醒</string>
+    <string name="title_remind_back_clinic">回診提醒</string>
+    <string name="title_remind_on_off">開關機</string>
+    <string name="title_connection">通訊設定</string>
+    <string name="title_settings">設定</string>
+    <string name="title_display">顯示</string>
+    <string name="title_device_connection">設備連接</string>
+    <string name="title_menu">選單</string>
+    <string name="title_del">刪除</string>
+    <!-- settings -->
+    <string name="settings_wifi">Wi-Fi</string>
+    <string name="settings_bluetooth">Bluetooth</string>
+    <string name="GPS">GPS</string>
+    <string name="settings_wifi_setup">Wi-Fi Setup</string>
+    <string name="settings_anti_disturb">防打擾</string>
+    <string name="settings_fall_detection">跌倒偵測</string>
+    <string name="settings_display">顯示</string>
+    <string name="language">語言</string>
+    <string name="Traditional">中文(繁體)</string>
+    <string name="Simplified">中文(简体)</string>
+    <string name="English">英文</string>
+    <string name="settings_timezone">時間</string>
+    <string name="settings_key">按鍵</string>
+    <string name="settings_call_limit">通話限時</string>
+    <string name="settings_volumn">音效</string>
+    <string name="settings_system">系統說明</string>
+    <string name="settings_data_syn">資料同步</string>
+    <string name="settings_update">自動更新</string>
+    <string name="settings_clock">時鐘設定</string>
+    <string name="settings_Date_Time">日期與時間</string>
+    <string name="settings_no_movement_detection">無動作偵測</string>
+    <string name="settings_Voice_dialing">語音撥號</string>
+    <string name="settings_Voice_tell_time">語音報時</string>
+    <string name="settings_Select_the_date_format">選取日期格式</string>
+    <string name="settings_Language">語言設定</string>
+
+    <string name="settings_Use_24hour_format">使用24小時格式</string>
+    <string name="settings_wireless_and_networks">無線與網路</string>
+    <string name="settings_health">健康配對</string>
+    <string name="settings_screen_lock">螢幕鎖定</string>
+    <string name="settings_display_dormancy">休眠</string>
+    <string name="settings_timezone_date">設定日期</string>
+    <string name="settings_timezone_time">設定時間</string>
+    <string name="settings_timezone_zone">時區</string>
+    <string name="settings_key_emergency">求助鍵</string>
+    <string name="settings_key_family">親情鍵</string>
+    <string name="settings_sound_vol">音量</string>
+    <string name="medication_reminders">吃藥提醒!!</string>
+    <string name="clinical_appointment">回診提醒!!</string>
+    <string name="settings_lock_pattern">設定圖形</string>
+    <string name="settings_cancel_lock_pattern">取消鎖定</string>
+    <string name="settings_Location_Privacy">定位隱私</string>
+    <!-- settings > display-->
+    <string name="settings_display_brightness">亮度</string>
+    <string name="settings_display_sleep">休眠</string>
+    <string name="settings_display_bg">桌布</string>
+    <string name="settings_display_clock">時鐘設定</string>
+    <string name="settings_custom_shortcuts">自訂快捷</string>
+    <string name="settings_custom_shortcuts2">自訂快捷二</string>
+    <string name="settings_display_button">按鍵設定</string>
+    <string name="settings_display_software_update">軟件升級</string>
+    <!-- settings > display > 自訂快捷-->
+    <string name="settings_custom_shortcuts_one">快捷一</string>
+    <string name="settings_custom_shortcuts_two">快捷二</string>
+    <string name="settings_custom_shortcuts_three">快捷三</string>
+    <string name="settings_custom_shortcuts_weather">天氣</string>
+    <string name="settings_custom_shortcuts_sms">簡訊</string>
+    <string name="settings_custom_shortcuts_heartrate">心率</string>
+    <string name="settings_custom_shortcuts_fall">跌倒</string>
+    <!-- settings > display > 休眠-->
+    <string name="settings_display_select_time_screen_off">選取休眠時間</string>
+    <string name="settings_dialog_complete">完成</string>
+    <string-array name="screen_off_time_array">
+        <item>"1m"</item>
+        <item>"2m"</item>
+        <item>"3m"</item>
+        <item>"5m"</item>
+        <item>"10m"</item>
+        <item>"30m"</item>
+    </string-array>
+    <!--  Battery -->
+    <string name="battery_status_charging">充電中</string>
+    <string name="battery_status_full">充電完成</string>
+    <string name="battery_status_low">低電量請充電</string>
+    <string name="battery_status_min">斷電</string>
+    <string name="battery_status">電量狀態：</string>
+
+    <string name="userinfo_username">使用者</string>
+    <string name="userinfo_imei">IMEI</string>
+    <string name="userinfo_sync">同步時間</string>
+    <string name="userinfo_ver">版本</string>
+    <string name="title_newest_info">最新量測記錄</string>
+    <string name="Start_recording">開始錄音</string>
+
+    <!-- weather -->
+    <string name="suggested_dress">建議穿衣</string>
+
+    <string-array name="settings_language">
+        <item>繁體中文</item>
+        <item>簡體中文</item>
+        <item>英文</item>
+        <item>日文</item>
+        <item>西班牙文</item>
+    </string-array>
+
+    <string-array name="settings_call_limit">
+        <item>3分鐘</item>
+        <item>5分鐘</item>
+        <item>10分鐘</item>
+        <item>15分鐘</item>
+        <item>30分鐘</item>
+    </string-array>
+
+
+    <!-- Measure Info -->
+    <string name="measure_height">身高</string>
+    <string name="measure_weight">體重</string>
+    <string name="measure_fat">體脂肪</string>
+    <string name="measure_bmi">BMI</string>
+    <string name="measure_bmr">基礎代謝</string>
+    <string name="measure_vat">內臟脂肪等級</string>
+    <string name="measure_oxygen">血氧</string>
+    <string name="measure_pulse">脈搏柱</string>
+    <string name="measure_glucose">血糖</string>
+    <string name="measure_glucose_type">量測狀態</string>
+    <string name="measure_systolic">收縮壓:</string>
+    <string name="measure_diastolic">舒張壓:</string>
+    <string name="measure_pulse_rate">脈搏:</string>
+
+    <string name="glucose_type_gen">一般</string>
+    <string name="glucose_type_ac">飯前</string>
+    <string name="glucose_type_pc">飯後</string>
+    <string name="glucose_type_qc">品管</string>
+
+    <!-- 天氣狀態 -->
+    <string name="dress_01">短衫;短褲</string>
+    <string name="dress_02">短袖;薄長衫</string>
+    <string name="dress_03">薄長袖;長褲</string>
+    <string name="dress_04">薄衣;外套</string>
+    <string name="dress_05">薄衣;毛衣</string>
+    <string name="dress_06">毛衣;薄尼龍外套</string>
+    <string name="dress_07">毛衣;厚西裝外套</string>
+    <string name="dress_08">厚毛衣;羽絨服</string>
+
+
+    <!-- 運動APP -->
+    <string name="END">結束</string>
+    <string name="MON_STATUS">運動狀態</string>
+    <string name="RUN">繼續</string>
+    <string name="STOP">暫停</string>
+    <string name="RE">重置</string>
+
+    <string name="CAL">大卡</string>
+    <string name="MIN">分鐘</string>
+    <string name="KM">公里</string>
+
+    <string name="RUN_STATUS">是否暫停跑步運動</string>
+    <string name="WALK_STATUS">是否暫停走路運動</string>
+    <string name="BICY_STATUS">是否暫停腳踏車運動</string>
+    <string name="CLIMB_STATUS">是否暫停爬山運動</string>
+    <string name="NoSearch_GPS">無法定位座標</string>
+    <string name="MON_CLOSE">暫停</string>
+    <string name="CANCLE">取消</string>
+
+    <string name="Sports">運動</string>
+    <string name="Version">版本 0.3.1</string>
+    <string name="Running">跑步</string>
+    <string name="Walk">走路</string>
+    <string name="Bicycle">腳踏車</string>
+    <string name="Climbing">爬山</string>
+
+    <string name="Start">開始</string>
+    <string name="Dailygoals">每日目標</string>
+    <string name="walklog">運動紀錄</string>
+    <string name="Synchronizationsettings">同步設定</string>
+
+    <string name="Distance">距離</string>
+    <string name="Time">時間</string>
+    <string name="Calories">卡路里</string>
+
+    <string name="Cloudsync">雲端同步</string>
+
+    <string name="Bluetoothsync">藍芽同步</string>
+
+    <string name="January">一月</string>
+    <string name="February">二月</string>
+    <string name="March">三月</string>
+    <string name="April">四月</string>
+    <string name="May">五月</string>
+    <string name="June">六月</string>
+    <string name="July">七月</string>
+    <string name="August">八月</string>
+    <string name="September">九月</string>
+    <string name="October">十月</string>
+    <string name="November">十一月</string>
+    <string name="December">十二月</string>
+
+    <string name="Total">總計:</string>
+
+    <!-- BP -->
+    <string name="command_test_menu">Blood Pressure</string>
+    <string name="baudrate">BaudRate</string>
+    <string name="pair_result">Pair Device Result</string>
+    <string name="get_project_code">Get Project Code</string>
+    <string name="get_serial_number">Get Serial Number</string>
+    <string name="get_storage_count">Get Storage Count</string>
+    <string name="get_measurement_record">Measurement Record</string>
+    <string name="get_meter_system_clock">Get Meter System Clock</string>
+    <string name="set_meter_system_clock">Set Meter System Clock</string>
+    <string name="device_name">Device Name:</string>
+    <string name="device_list">Device List:</string>
+    <string name="meter_bt_transfer_type">Meter Bluetooth Transfer Type</string>
+    <!-- <string name="bt_type_one">Type I</string>
+    <string name="bt_type_two">Type II</string> -->
+    <string name="bt_type_one">Connect</string>
+    <string name="bt_type_two">Listen</string>
+    <string name="hint">Please choose one pair meter in list</string>
+    <string name="connect_meter">Connect Meter</string>
+    <string name="project_code">Project Code:</string>
+    <string name="meter_system_clock">Meter Time:</string>
+    <string name="before_meter_system_clock">Before Sync Meter Time:</string>
+    <string name="after_meter_system_clock">After Sync Meter Time:</string>
+    <string name="measurement_type">Measurement Type:</string>
+    <string name="bg_value">BG(mg/dL):</string>
+    <string name="thermometer_value">Body Temperature(°C):</string>
+    <string name="spO2_value">spO2:</string>
+    <string name="gender_value">Gender:</string>
+    <string name="age_value">Age:</string>
+    <string name="height_value">Height:</string>
+    <string name="weight_value">Weight:</string>
+    <string name="bmi_value">BMI:</string>
+    <string name="bmr_value">BMR:</string>
+    <string name="bf_value">BF:</string>
+    <string name="sys_value">Systolic(mmHg):</string>
+    <string name="dia_value">Diastolic(mmHg):</string>
+    <string name="pul_value">Pulse(beast/min):</string>
+    <string name="ihb_value">IHB:</string>
+    <string name="measurement_date">Measurement Date:</string>
+    <string name="serial_number">Serial Number:</string>
+    <string name="storage_count">Total Records:</string>
+    <string name="device_mac_address">Device Mac Address:</string>
+    <string name="start_search_meter">Start searching meters,please wait a while</string>
+    <string name="connection_meter_and_get_result">Start connecting meter and get result, please wait a while</string>
+    <string name="bluetooth_occur_error">Bluetooth occur error,please enable bluetooth and pair remot devices</string>
+    <string name="bluetooth_need_to_pair">Please go to "Settings-->Wireless &amp; networks" pair Bluetooth devices</string>
+    <string name="check_bt_fail">device singal to low!!!!</string>
+    <string name="not_support_meter">Not support meter!!!!</string>
+    <string name="not_connect_serial_port">Not connect serial port!!!!</string>
+    <string name="connect_meter_fail">Connect meter fail, Please Check the Bluetooth module, and retry!!</string>
+    <string name="connect_meter_success">Connect meter success, you can choose one of the command to test meter communication!!</string>
+    <string name="meter_was_power_off">Meter was power off, click OK and go to the meter menu.</string>
+    <string name="clear_records">Meter records were cleaned.</string>
+    <string name="meter_trans_type_fail">Please choose meter transfer type!!!!</string>
+    <string name="pair_meter_first">Please Pair Device First!!</string>
+    <string name="ok">OK</string>
+    <string name="bluetooth_cont">請確認設備是否開啟</string>
+    <string name="bluetooth_searching">配對中</string>
+    <string name="bluetooth_connecting">接收中</string>
+    <string name="bluetooth_connect_fail">連結失敗</string>
+    <string name="bluetooth_result">量測結果</string>
+    <string name="bluetooth_last_result">最新量測紀錄</string>
+    <string name="bluetooth_search_not_found">搜尋不到裝置</string>
+
+    <string name="Watch_News">手錶資訊</string>
+    <string name="Localization">定位中...</string>
+    <string name="Upload_failed">上傳失敗,系統服務異常或無網路服務。</string>
+    <string name="Connection_timed_out">連線逾時,或無網路服務。</string>
+    <string name="location_services">請開啟定位服務</string>
+    <string name="Unable_coordinates">無法定位座標</string>
+    <string name="No_network_service">無網路服務</string>
+    <string name="No_such_number">無此號碼</string>
+
+    <!-- AmberAlarm -->
+    <string name="START">START</string>
+    <string name="RECORD">START</string>
+    <string name="RESET">RESET</string>
+    <string name="Stop">STOP</string>
+
+    <!-- 健步器 -->
+    <string name="janbu">健步器</string>
+    <string name="level">版本0.7.1</string>
+    <string name="Instructionsforuse">使用說明</string>
+    <string name="todaystep">今日步數</string>
+    <string name="cal">大卡</string>
+    <string name="KKM">公里</string>
+
+    <string name="Log">無紀錄</string>
+    <string name="wwalklog">運動紀錄</string>
+
+    <string name="goal">目標</string>
+    <string name="Stepslength">步長</string>
+    <string name="synchronizationsettings">同步設定</string>
+    <string name="cloudsync">雲端同步</string>
+    <string name="bluetoothsync">藍芽同步</string>
+    <string name="Weight">體重</string>
+    <string name="PersonalInformation">個人資訊</string>
+    <string name="Reset">重置步數</string>
+    <string name="dailygoals">每日目標</string>
+    <string name="SystemSettings">系統設定</string>
+
+    <string name="Reset2">重置步數</string>
+    <string name="YES">是</string>
+    <string name="NO">否</string>
+    <string name="Determine">確定</string>
+    <string name="join">參加</string>
+    <string name="quit">退出</string>
+    <string name="Whether">是否暫停?</string>
+    <string name="start">執行</string>
+    <!--<string name="stop">暫停</string>-->
+    <!-- 螢幕鎖定 -->
+    <string name="lock_screen_confirm_saved_pattern_title">繪製儲存的圖形</string>
+    <string name="lock_screen_incorrect_pattern">圖形不正確</string>
+    <string name="lock_screen_draw_an_unlock_pattern">繪製解鎖圖形</string>
+    <string name="lock_screen_confrim_pattern_againg">再次確認解鎖圖形</string>
+    <string name="lock_screen_re_drawing">重繪</string>
+    <string name="lock_screen_continue">繼續</string>
+    <string name="lock_screen_save">儲存</string>
+    <string name="lock_screen_cancel">取消</string>
+    <string name="lock_screen_release_finger">完成後鬆開手指</string>
+    <string name="lock_screen_at_least_point">至少連接四個點</string>
+    <string name="lock_screen_drawing_error">繪製錯誤</string>
+
+    <string name="HZ">頻率</string>
+    <!--<string name="hour">小時</string>-->
+    <string name="Immediatelytransfer">立即同步</string>
+
+    <!-- error -->
+    <string name="PREWARNING">PREWARNING</string>
+    <string name="Timer">Timer</string>
+    <string name="min">15min</string>
+    <string name="RECORDING">RECORDING</string>
+    <string name="Ten">10</string>
+    <string name="Blood">Blood pressure measurement</string>
+    <string name="EquipmentList">Equipment List</string>
+    <string name="microlife">microlife</string>
+    <string name="timedate">Set the date and time</string>
+    <string name="alicn">alicn</string>
+    <string name="Yicheng">Yicheng</string>
+    <string name="fora">fora_3128</string>
+    <string name="Set">Setting</string>
+    <string name="Bluetoothswitch">Bluetooth switch</string>
+    <string name="Pairinglist">Pairing list</string>
+    <string name="CloudRecords">Cloud Records</string>
+    <string name="MeasurementRecord">Measurement Record</string>
+    <string name="timezone">Select the time zone</string>
+    <string name="Bloodpressurerecord">Blood pressure record</string>
+    <string name="SBP">SBP:</string>
+    <string name="DBP">DBP:</string>
+    <string name="HR">HR:</string>
+    <string name="SWmissing">SWmissing</string>
+    <string name="OK">OK</string>
+
+    <!-- fall -->
+    <string name="set_Cancel">Cancel</string>
+    <string name="set_stop">Stop</string>
+
+    <!--  Measure -->
+    <string name="send">發送</string>
+    <string name="clear">清空</string>
+    <string name="not_connected">未連接設備</string>
+    <string name="bt_not_enabled_leaving">藍牙未啓用</string>
+    <string name="title_connecting">連接中...</string>
+    <string name="title_connected_to">已經連接: </string>
+    <string name="title_not_connected">未連接</string>
+    <!--  DeviceListActivity -->
+    <string name="scanning">掃描設備...</string>
+    <string name="select_device">選擇一個設備連接</string>
+    <string name="none_paired">沒有配對的設備</string>
+    <string name="none_found">沒有發現設備</string>
+    <string name="title_paired_devices">配對的設備</string>
+    <string name="title_other_devices">其他可用的設備</string>
+    <string name="button_scan">掃描設備</string>
+    <string name="button_scan_discoverable">允許被發現設備</string>
+    <!-- Menu -->
+    <string name="connect">連接設備</string>
+    <string name="discoverable">允許發現</string>
+    <!-- Bluetooth Settings -->
+    <string name="bluetooth_title_connection">藍芽</string>
+    <string name="bluetooth_device">設備</string>
+    <string name="bluetooth_device_bp">血壓計</string>
+    <string name="bluetooth_device_bg">血氧計</string>
+    <string name="bluetooth_device_wt">體指計</string>
+    <string name="bluetooth_device_bo">血糖計</string>
+    <!-- Dialog -->
+    <string name="dialog_undevice">裝置配對解除</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_unpair">配對解除</string>
+    <!-- Prevent errors -->
+    <string name="device_not_pair">裝置無配對</string>
+    <string name="prevent_errors1">設備已存在</string>
+    <string name="prevent_errors2">設備已加入</string>
+    <!-- 無創血糖設定  -->
+    <string name="mea_Measurement_period">1.量測時段</string>
+    <string name="mea_get_up">起床</string>
+    <string name="mea_fasting">餐前</string>
+    <string name="mea_Postprandial">餐後</string>
+    <string name="mea_sleeping">就寢</string>
+    <string name="mea_eat_status">2.飲食狀態</string>
+    <string name="mea_Little">少量</string>
+    <string name="mea_normal">正常</string>
+    <string name="mea_excess">過量</string>
+    <string name="mea_Drinking">3.是否飲酒</string>
+    <string name="mea_fever">4.是否發燒</string>
+    <string name="Drinking">飲酒</string>
+    <string name="fever">發燒</string>
+    <string name="mea_yes">是</string>
+    <string name="mea_no">否</string>
+    <string name="mea_no_data">無</string>
+    <string name="mea_hour">小时</string>
+    <string name="mea_time">時段:</string>
+    <string name="mea_diet">飲食:</string>
+    <string name="mea_other">其他:</string>
+    <!-- 無創血糖環境檢測狀態  -->
+    <string name="mea_Environmental_Testing">環境檢測</string>
+    <string name="mea_fingers_into">已放入手指,請勿任意移動</string>
+    <string name="mea_Meets_the_requirements">環境符合要求</string>
+    <string name="mea_Supercooling">環境溫度過冷</string>
+    <string name="mea_overheat">環境溫度過熱</string>
+    <string name="mea_dry">環境濕度過乾燥</string>
+    <string name="mea_Moist">環境濕度過濕潤</string>
+    <string name="mea_finger_normal">手指溫度正常</string>
+    <string name="mean_finger_overheating">手指溫度過熱</string>
+    <string name="mea_finger_temperature">手指溫度過冷</string>
+    <string name="mea_dps_error">手指未放入</string>
+    <!-- 無創血糖單位  -->
+    <!--<string name="unit">單位設定</string>-->
+    <!--头尾内部m部分翻译为英文,后期根据提供文档更改-->
+    <!--头-->
+    <string name="string_user_pass_error">Error in account or password</string>
+    <string name="string_out_devices_sport">Put out the motion mode of the equipment first.</string>
+    <string name="string_sos_tip">SOS has not been opened or no emergency contact has been added.</string>
+    <string name="string_long_onclick_phone">Long press editor</string>
+    <string name="string_emergency_gelp">Danger, Help me</string>
+    <string name="string_emergency_gps">Position</string>
+    <string name="string_long_onclick">Long press edit urgent content</string>
+    <string name="string_emergency_contact_one">Emergency contact one</string>
+    <string name="string_emergency_contact_two">Emergency contact two</string>
+    <string name="string_emergency_contact_three">Emergency contact three</string>
+    <string name="string_one_key_help">One key call for help</string>
+    <string name="string_edit_emergency_messge">Please edit urgent information</string>
+    <string name="string_edit_emergency_person">Please edit emergency contacts</string>
+    <string name="string_pass_4">The password is 4 bits!</string>
+    <string name="string_login_toast">Account and password can not be empty!</string>
+    <string name="string_phone_er">Please enter the correct cell phone number.</string>
+    <string name="string_conn_fail">Connection failed, try again</string>
+    <string name="string_code_null">Validation can not be empty.</string>
+    <string name="string_phone_pass_null">The phone or password can not be empty</string>
+    <string name="string_time_speed">Speed per hour</string>
+    <string name="string_sport_run">Start of the movement</string>
+    <string name="string_stop_run_dowln">During exercise, right skid stops motion.</string>
+    <string name="string_no_sport">You haven\'t exercised, or the displacement is too small</string>
+    <string name="string_fuse">Skin color selection</string>
+    <string name="string_fuse_color">Skin color</string>
+    <string name="common_mode">Common mode</string>
+    <string name="private_mode_setting">Set private mode data >></string>
+    <string name="blood_manual_test">Blood_manual_test</string>
+    <string name="personal_save">Save</string>
+    <string name="mileage_setkm">km</string>
+    <string name="mileage_setmi">mile</string>
+    <string name="user_emil_regsiter">EmilRegistration</string>
+    <string name="forget_user_phone">Mobile User</string>
+    <string name="forget_user_email">Email User</string>
+    <string name="private_blood_val">Current private blood pressure:</string>
+    <string name="bloodpressure_msg1">Please select personal blood pressure mode data. Personal blood pressure mode is only effective for individuals. Others please select general mode</string>
+    <string name="string_not_net">Network connection failed. Please check your network!</string>
+    <string name="string_out_gps">Do you want to quit GPS?</string>
+    <string name="string_tijiao">Submission</string>
+    <string name="string_gps_run">GPS movement</string>
+    <string name="string_devices_run">Bracelet movement</string>input_new_password
+    <string name="string_all_rkcal">Total calories consumed of the bracelet movement this day</string>
+    <string name="no_select_pic">Please select the image you want to delete</string>
+    <string name="string_no_permission">The user comes back from the settings page.</string>
+    <string name="string_get_permission">Please give us permission in the settings</string>
+    <string name="distance_ying">Distance: mile</string>
+    <string name="string_is_24_hour">24-hour system</string>
+    <string name="string_auto_blood_pressure">Automatic heart rate detection</string>
+    <string name="string_auto_heart">Automatic blood pressure detection</string>
+    <string name="string_find_phone">Find a phone</string>
+    <string name="string_stopwatch_function">Stopwatch function</string>
+    <string name="string_disconnection_reminder">Disconnection reminder</string>
+    <string name="string_wrist_sensitivity">Wrist sensitivity</string>
+    <string name="string_recommend">recommend</string>
+    <string name="string_reset_password_successfully">Reset password successfully</string>
+    <string name="string_old_password_incorrect">Old password is incorrect</string>
+    <string name="string_two_passwords_are_different">Two passwords are different</string>
+    <string name="string_necessary_authority">Necessary authority</string>
+    <string name="string_alarm_repeated">Alarm setting failed, please check if it is repeated</string>
+    <string name="string_verify_device_password">Verify device password</string>
+    <string name="string_delete_alarm">Delete alarm</string>
+    <string name="string_repeat_settings">Repeat settings</string>
+    <string name="string_user_name">username</string>
+    <string name="string_not_coon">not connected</string>
+    <string name="string_mores">More</string>
+    <string name="string_yesterday">before yesterday</string>
+    <string name="string_max_steps">max steps:</string>
+    <string name="string_recent">recent</string>
+    <string name="string_sleep_time">sleep time</string>
+    <string name="string_heart_rate_time">heart rate time</string>
+    <string name="string_steps_still">still</string>
+    <string name="string_steps_small">small</string>
+    <string name="string_steps_medium">medium</string>
+    <string name="string_steps_mass">mass</string>
+    <string name="string_steps_severe">severe</string>
+    <string name="string_min_blood_pressure">min blood pressure</string>
+    <string name="string_max_blood_pressure">max blood pressure</string>
+    <string name="string_get_time">Measured time</string>
+    <string name="string_manual_blood_pressure">measure heart rate</string>
+    <string name="string_maanual_heart">measure blood pressure</string>
+    <string name="string_steps_target">Moving target</string>
+    <string name="string_sleep_target">Sleep target</string>
+    <string name="string_information_reminder">Information reminder</string>
+    <string name="string_turning_wrist_screen">Turn wrist screen</string>
+    <string name="string_blood_pressure_mode">private mode</string>
+    <string name="string_switch_setting">Switch setting</string>
+    <string name="string_take_photo">Take photo</string>
+    <string name="string_reset_device_password">Reset device password</string>
+    <string name="string_firmware_update"> Firmware update</string>
+    <string name="string_clear_data">clear data</string>
+    <string name="string_devices_disconnected">Disconnect</string>
+    <string name="string_devices_is_disconnected">Is it disconnected?</string>
+    <string name="string_init_device_password">Initial password 0000</string>
+    <string name="string_writ_old_password">Please enter the old password</string>
+    <string name="string_writ_new_device_password">Please enter a new password</string>
+    <string name="string_is_clear_data">Are you sure to clear the data?</string>
+    <string name="string_wearing_test">Wearing test</string>
+    <string name="string_your_personal_blood_pressure">Your personal blood pressure</string>
+    <string name="string_blood_shuoming_one">You set the private blood pressure mode to get more accurate data, here you need to set the effective blood pressure value of the antihypertensive drug.</string>
+    <string name="string_blood_shuoming_two">Please select private blood pressure mode data, private blood pressure mode is only valid for individuals, others please choose common mode</string>
+    <string name="string_turn_wrist_switch">Turn wrist switch</string>
+    <string name="string_sedentary_setting">Sedentary setting</string>
+    <string name="string_add_new_reminder">Add a new reminder</string>
+    <string name="string_alarm_type">Alarm type</string>
+    <string name="string_alarm_reminder">Alarm reminder</string>
+    <string name="string_ocial_message">Social message</string>
+    <string name="string_upgrade">upgrade</string>
+    <string name="string_private_mode">Private mode</string>
+    <!--尾-->
+
+
+    <string name="string_updata"> 1.  отображения  оптимизации  сна  .  \n2.  звонки  и  смс - напоминания  оптимизации.  \n3.  трясти  фотографировать,  даже  пожать  исправление ошибок  ... \nболее функции  ожидания  вам наслаждаться  опыт! </string>
+
+
+
+    //饿语
+    <string name="privacy">Политика конфиденциальности</string>
+    <string name="string_data_tell">Дважды щелкните область значка, чтобы увидеть больше</string>
+    <string name="string_net_work">Советы по настройке сети</string>
+    <string name="string_no_net_work">Сетевое подключение недоступно. Установлен ли он?</string>
+    <string name="string_open_gps">Включите GPS-соединение</string>
+    <string name="string_hello_gps">Для точного измерения сначала включите GPS</string>
+    <string name="string_gps_stute">Откройте сразу после нажатия клавиши возврата, если вы не откроете, он снова вернется</string>
+    <string name="string_qingxing">трезвый</string>
+    <string name="string_shensuhi_time">Время сна</string>
+    <string name="string_qianshui_time">Время сна</string>
+    <string name="string_qingxing_time">Время пробуждения</string>
+    <string name="string_running">Беговая</string>
+    <string name="string_cycling">цикл</string>
+    <string name="string_harete_data">Данные о сердечном ритме</string>
+    <string name="string_one_day_record">Однодневная запись</string>
+    <string name="string_selecte_sleep_stuta">Длительное нажатие, чтобы увидеть детали сна</string>
+    <string name="string_w30s_ota_file">Файл OTA является неполным</string>
+    <string name="string_w30s_re_upgrade">Повторное обновление</string>
+    <string name="string_w30s_upgrade_failed">Ошибка обновления</string>
+    <string name="string_w30s_prepare_updates">Подготовьтесь к обновлениям</string>
+    <string name="string_w30s_device_connection">Подключение устройства...</string>
+    <string name="string_w30s_upgradeable">Масштабируемость</string>
+    <string name="string_w30s_reacquire_version">Перезагрузите версию</string>
+    <string name="string_w30s_up_isok">4.После успешного обновления необходимо перезапустить приложение</string>
+    <string name="string_w30s_up_error">5.Обновление не позволяет отключить режим обновления часов Bluetooth 200s</string>
+    <string name="string_w30s_up_statu">Обновить запрещенную операцию</string>
+    <string name="string_w30s_up_zip">Получить обновления ресурсов</string>
+    <string name="string_w30s_alldis">Общий пробег</string>
+    <string name="string_w30s_upgrade">Начать обновление</string>
+    <string name="string_w30s_up_one">1.Держите достаточную мощность перед обновлением</string>
+    <string name="string_w30s_up_two">2.Не отсоединяться во время операции обновления</string>
+    <string name="string_w30s_up_three">3.Может потребоваться несколько минут для обновления</string>
+    <string name="string_no_dialog">После включения браслет перестает получать уведомления в течение периода с 22:00 до 08:00, а экран для снятия запястья и функции экрана поворота запястья останавливаются.</string>
+    <string name="string_standar">податливость</string>
+    <string name="string_today_sleep_all_time">Общая продолжительность сна в этот день</string>
+    <string name="sleep_data_history">История сна</string>
+    <string name="string_sports_total">Общий спортивный день на открытом воздухе</string>
+    <string name="string_sport_all_data">Общий пробег</string>
+    <string name="string_run_all_data">Общий пробег</string>
+    <string name="string_find_watch">Найти часы</string>
+    <string name="string_january">1</string>
+    <string name="string_february">2</string>
+    <string name="string_march">3</string>
+    <string name="string_april">4</string>
+    <string name="string_may">5</string>
+    <string name="string_june">6</string>
+    <string name="string_july">7</string>
+    <string name="string_august">8</string>
+    <string name="string_deptember">9</string>
+    <string name="string_october">10</string>
+    <string name="string_november">11</string>
+    <string name="string_december">12</string>
+
+    <string name="string_healthy_noti">Напоминание о здоровье</string>
+    <string name="string_step_day">D / шаги день</string>
+    <string name="string_step_year">Число шагов / год</string>
+    <string name="string_heart_day">Частота сердечных сокращений / день</string>
+    <string name="string_heart_year">Частота сердечных сокращений / год</string>
+    <string name="string_sleep_day">Режим сна / день</string>
+    <string name="string_sleep_year">Сон / год</string>
+
+    <string name="string_data_chart_pingjun">средний：</string>
+    <string name="string_third_login_changepass">Сторонний логин не может изменить пароль!</string>
+    <string name="string_disconnected_ok">Отключено ли текущее соединение?</string>
+    <string name="string_no_data">Нет данных!</string>
+    <string name="string_open_camera_permissions">Не удалось открыть камеру с ошибкой авторизации?</string>
+    <string name="string_Immediate_experience">Немедленно опыт</string>
+    <string name="string_not_disturb">Просьба не беспокоить</string>
+    <string name="string_application_reminding">Напоминание приложения</string>
+    <string name="string_clock_setting">Настройка будильника</string>
+    <string name="string_equipment_reminding">Напоминание устройства</string>
+    <string name="string_unit_setting">Настройки устройства</string>
+    <string name="string_factory_setting">Заводская настройка</string>
+    <string name="string_water_clock">Питьевое напоминание</string>
+    <string name="string_drug_reminding">Напоминание лекарств</string>
+    <string name="string_conference_reminding">Напоминание конференции</string>
+    <string name="string_contacts">контакт</string>
+    <string name="string_search_friends">Поиск друзей</string>
+    <string name="string_friends_information">Псевдоним / номер мобильного телефона / адрес электронной почты</string>
+    <string name="string_new_friends">Новые друзья</string>
+    <string name="string_new_phone">телефон</string>
+    <string name="string_new_messege">SMS</string>
+    <string name="string_reminding_times">Интервал напоминания</string>
+    <string name="string_reminding_start_end_times">Начало - конец</string>
+    <string name="string_reminding_metting_datas">Дата вступления в силу:</string>
+    <string name="string_reminding_metting_times">Эффективное время:</string>
+    <string name="string_reminding_text">Попробуйте настроить будильник и напоминайте себе, что нужно сделать запланированную вещь</string>
+
+
+    <string name="notif_explain">описание</string>
+    <string name="notif_messge">Сообщение напоминания,  нужно открыть уведомления или вспомогательные функции</string>
+    <string name="open_notif">открыть  уведомления</string>
+    <string name="open_function">открыть  вспомогательные функции</string>
+
+    <string name="device_times">оборудованиевремени</string>
+    <string name="now_times">текущее время</string>
+    <string name="get_device_times">время получения оборудования</string>
+    <string name="correct_pointer_times">указатель, чтобы исправить?</string>
+    <string name="sporttimes">Количество упражнений</string>
+    <string name="grandtotalstep">Накопленные шаги</string>
+    <string name="grandtotal">Суммарная длительность</string>
+    <string name="sportdata">Спортивные данные</string>
+    <string name="avg_speed">Avg speed</string>
+    <string name="long_onclick">Длительное нажатие ?+? и ?-? можно настроить для регулировки большего угла</string>
+    <string name="add_sharpe">Синтез и совместное использование</string>
+    <string name="syncy_data">Синхронизация данных</string>
+    <string name="connted">соединенный</string>
+    <string name="disconnted">Отключенные</string>
+
+    <string name="nodata">Нет данных</string>
+    <string name="age">Возраст</string>
+    <string name="alarm_eat">ужин</string>
+    <string name="alarm_medicine">принимать лекарство</string>
+    <string name="alarm_dring">пить воду</string>
+    <string name="alarm_sp">спать</string>
+    <string name="alarm_awakes">вставать</string>
+    <string name="alarm_spr">движение</string>
+    <string name="alarm_metting">сессии</string>
+    <string name="alarm_custom">обычай</string>
+    <string name="history_times">исторического времени</string>
+    <string name="search_alert">Поиск устройства, пожалуйста, включите на телефоне Bluetooth и GPS</string>
+    <string name="sleep_deep">глубокий сон</string>
+    <string name="sleep_light">мелкий спит</string>
+    <string name="long_when">продолжительность</string>
+    <string name="sleep_asleep">Время спать</string>
+    <string name="recovery_count">время восстановления</string>
+    <string name="recovery_time">время восстановления</string>
+    <string name="mine_equipment">Мое устройство</string>
+    <string name="low_voltage">низковольтных  ограничения</string>
+    <string name="high_voltage">ограничения высокого давления</string>
+    <string name="year">года</string>
+    <string name="news">сообщение</string>
+    <string name="messages">Получено новое сообщение</string>
+    <string name="system_settings">Настройки системы </string>
+    <string name="guide">когда руководства школы</string>
+    <string name="step_one">1.\t в часы и App нормальной связи государства , во - первых,  нажмите  кнопку  под  ноль</string>
+    <string name="step_two">2.\t Соответственно, выбор часовая и минутная,нажмите  +  и  -  корректировки  игла  -  12:00  весь</string>
+    <string name="step_three">3.\t Нажмите кнопку автоматического завершения реализации  после  школы  , когда  игла</string>
+    <string name="manualsleep">ручной сна</string>
+    <string name="automaticsleep">автоматический сна</string>
+    <string name="dlog">загрузка...</string>
+    <string name="minezhen">Минутная рука</string>
+    <string name="hourzhen">Часовая стрелка</string>
+    <string name="zero"> Нуль</string>
+    <string name="setmi">Имперская система</string>
+    <string name="setkm">метрическая система</string>
+    <string name="jiaozhen">Школьный контакт</string>
+    <string name="unit">блок</string>
+    <string name="heartcheck">Тест сердечного ритма</string>
+    <string name="auxiliary_function">если ты открыл уведомления или не получили сообщение напоминания,вы можете попробовать открыть вспомогательные функции.
+    \n если вы можете получать уведомление,то вы можете игнорировать его существование,уведомления или вспомогательные функции ограничения могут также открыть.
+    \n (эта функция состоит в том, чтобы решить часть моделей не получили сообщений и настройки,может получать новости открыть эту функцию  может вызвать напомнить неоднократные сообщения)</string>
+    <string name="siren_str">в рейтинге</string>
+    <string name="personal_str">личные данные</string>
+    <string name="function_str">функции настройки</string>
+    <string name="find_str">Поиск друзей</string>
+    <string name="waking_state"> сознании </string>
+    <string name="shallow_sleep">мелкий  сна</string>
+    <string name="deep_sleep">глубокий сон</string>
+    <string name="mileage_km">пробег/km</string>
+    <string name="ranking">место</string>
+    <string name="daily_distancia">ежедневное движение расстояние</string>
+    <string name="notice_str">уведомления</string>
+    <string name="shock_str">вибрации</string>
+    <string name="time_forma">формат времени</string>
+    <string name="advanced_setting">Дополнительные настройки</string>
+    <string name="add_frendes">Добавить в друзья</string>
+    <string name="scan_frend">поиск</string>
+    <string name="reset_device">сбросить оборудование</string>
+    <string name="heart_rate_test">пульс испытание</string>
+    <string name="heart_rate_warning_range">пульс диапазон раннего предупреждения</string>
+    <string name="close_str">закрыть</string>
+    <string name="weak_str">слабый</string>
+    <string name="standard_str">стандарт</string>
+    <string name="strong_str">сильный</string>
+    <string name="preset_sleep">заданный сна</string>
+    <string name="missed_calls">Пропущенный звонок</string>
+    <string name="sms_reminder">СМС - напоминания</string>
+    <string name="mailbox_reminder">почтовый ящик напомнил</string>
+    <string name="social_reminder">Социальные напомнить</string>
+    <string name="calendar_alarm">календарь напомнить</string>
+    <string name="today_step">Сегодняшний темп</string>
+    <string name="goal_step">цель</string>
+    <string name="str_one">Вы можете установить различные виды каждый день напоминать</string>
+    <string name="str_two">Выберите ип напоминания</string>
+    <string name="str_three">секретаря по может удалить будильник</string>
+    <string name="str_four">выбор напомнить дату и время</string>
+    <string name="str_five">после того, как до этого оборудования напоминает точка будет слегка  аритмии  и показывать соответствующие значок напомнить вам</string>
+    <!--//************************-->
+
+
+    <string name="noright">Вы в настоящее время посетитель и не можете изменять информацию</string>
+    <string name="newversion">Существует новая версия, обновляется ли она</string>
+    <string name="visitor_enter">Войти как гость</string>
+    <string name="login_alert">Войти как гость?</string>
+    <string name="settarget_steps">Целевое количество шагов</string>
+    <string name="operation">инструкции</string>
+    <string name="msg_jiange">Сообщение напоминания интервал</string>
+    <string name="psm">Энергосберегающий режим</string>
+    <string name="setting_pair">Вы подтверждаете привязку?</string>
+    <string name="clocktimes">Вам  необходимо выбрать  будильник  повторений  ! </string>
+    <string name="notsportdata">В настоящее время нет  истории  траектории  ,  не  нажмите  закончить</string>
+    <string name="fuwuqi">Linked Server  провал</string>
+    <string name="zuigaoxinlv">максимальный пульс</string>
+    <string name="zuidixinlv">минимальный  пульс</string>
+    <string name="pinjunxin">средний  пульс</string>
+    <string name="shangzhou">Tuần trước</string>
+    <string name="benzhou">Trong tuần này</string>
+    <string name="shangyue">Tháng trước rồi</string>
+    <string name="benyue">Trong tuần này</string>
+    <string name="XIAOHAO">Tiêu thụ</string>
+    <string name="paces">темп</string>
+    <string name="xuanzeshijian">Пожалуйста,выберите время</string>
+    <string name="minute">M</string>
+    <string name="bluetooth_disconnected">Bluetooth  отключен</string>
+    <string name="bangdinged">уже  обязательный</string>
+    <string name="sports_history">движение  истории</string>
+    <string name="good">Хорошо</string>
+    <string name="mild_pollution">незначительное загрязнение</string>
+    <string name="moderate_pollution">умеренным загрязнением</string>
+    <string name="heavy_pollution">суровые  загрязнения </string>
+    <string name="serious_pollution">серьезное загрязнение </string>
+    <string name="save_record">Вы хотите сохранить  движение  записи </string>
+    <string name="upgrade">в модернизации >></string>
+    <string name="latest_version">уже  является последней версии </string>
+    <string name="upgrade_completed">обновление завершено</string>
+    <string name="auto_upgrade">автоматическое обновление  в ....</string>
+    <string name="deleda">уверены, что хотите  удалить?</string>
+    <string name="zerostep">0  шаг</string>
+    <string name="zeroday">0 ден</string>
+    <string name="zerokm">0 км</string>
+    <string name="wechat_home_page">4.  возвращает  страницу  ,  вошел в рейтинг  ,  на данный момент  уже  синхронизации  данных  смогут увидеть  оборудования  на  микро -  Письмо  Движения,  если  не  синхронизации,  пожалуйста,  обновить несколько раз больше  чартов  страницы </string>
+    <string name="openwhchat"> 3.открыть  микро -  письмо  в  микро -  ,  микро -  письмо  письмо  движения  , нажмите кнопку  в правом верхнем углу  страницы  правой  кнопки  "  настройки  ,  найти  записи  данных о движении  " в колонке  ,  выберите "добавить  источник данных  "  ,  вы сможете  купить  поиска  производителями оборудования для  общественности  на ваш  номер  ,  пожалуйста,  добавить этот  номер  в качестве  источников данных  общественности </string>
+    <string name="please_disconnect">2.привязки  ,  пожалуйста,  отключите  текущее соединение </string>
+    <string name="first_use">1.первоначального использования  , пожалуйста, сначала  обязательного  оборудования</string>
+    <string name="operation_method">метод операции</string>
+    <string name="bangding">Привязать</string>
+    <string name="wechat_sports">Письмо Движения доступа к микро,поделиться с друзьями движение весело!</string>
+    <string name="stop">конец</string>
+    <string name="continues">продолжать</string>
+    <string name="xiaohao">потребление  0kcal</string>
+    <string name="Pace">темп 00"00</string>
+    <string name="distance">расстояние:км </string>
+    <string name="total_time">Общее время</string>
+    <string name="history_record">исторические  записи </string>
+    <string name="third_party_login">Войти при помощи</string>
+    <string name="evening">вечером11:59</string>
+    <string name="before_dawn">рано утром12:00</string>
+    <string name="measurement_results">на этот раз  результаты измерений</string>
+    <string name="call_reminder">напоминание</string>
+    <string name="mywechat">микро -  письмо </string>
+    <string name="leiji">совокупное  предложение</string>
+    <string name="cishu">раз</string>
+    <string name="bluetooth_not_supported">не поддерживает  bluetooth</string>
+    <string name="user_name_format">Имя пользователя  в неверном формате</string>
+    <string name="try_again">Хорошо  , пожалуйста,  носить  браслеты  ,  и попробуйте снова.</string>
+    <string name="resend">переслать</string>
+    <string name="mailbox_format_error">Неверный формат  почтового ящика</string>
+    <string name="not_b_less">Пароль  не  менее  6  бит</string>
+    <string name="format_is_wrong">номер телефона  в неверном формате</string>
+    <string name="change_password">Изменить пароль  успешно</string>
+    <string name="measurement_record">Вы хотите сохранить  этот  результат измерения</string>
+    <string name="prompt">подсказки</string>
+    <string name="data_upload">Загрузка данных  успеха</string>
+    <string name="data_upload_fail">Ошибка загрузки  данных</string>
+    <string name="input_email">1.Введите адрес электронной почты</string>
+    <string name="shouquancg">Успешное разрешение</string>
+    <string name="shouquanshib">разрешение не </string>
+    <string name="shouquanqu">разрешение  отменить</string>
+    <string name="detectionresult">Результаты испытания </string>
+    <string name="Allgemeiner">универсальный  режим</string>
+    <string name="Privater">частные  режим </string>
+    <string name="wangluo">сигнал сети  разница </string>
+    <string name="BPM">BPM</string>
+    <string name="suspend">прекратить </string>
+    <string name="measure">измерения </string>
+
+    <string name="zhengzaiceshi">В настоящее время  испытания  не  может  переключиться в режим</string>
+    <string name="jiancewangchen">обнаружения  завершения</string>
+    <string name="lixiangxieya">идеал  кровяное давление </string>
+    <string name="xieyagaoxian"> кровяное давление,  высокий предел нормальной </string>
+    <string name="zhongdugaoya">умеренной гипертонией</string>
+    <string name="zhongdugaoxuieya">тяжелой гипертонии</string>
+    <string name="niedriger">гипотония</string>
+    <string name="xieyang">кислородом</string>
+    <string name="heartrooate">пульс</string>
+    <string name="bloodpressure">кровяное давление</string>
+    <string name="minsystoli">Систолическое давление</string>
+    <string name="maxdiastol">верхнее давление</string>
+    <string name="jiance">начало  проверки</string>
+    <string name="allgemeiner">универсальный  режим</string>
+    <string name="privater">частные  режим</string>
+    <string name="healthtesting">здоровья испытание</string>
+    <string name="blood">кровяное давление</string>
+
+
+
+    <string name="the_app_name">GuiderHX</string>
+    <string name="input_password">Введите пароль</string>
+    <string name="input_code">Пожалуйста, введите  код проверки</string>
+    <string name="input_nickname">Пожалуйста, введите  прозвище</string>
+    <string name="input_name">Пожалуйста, введите  номер телефона</string>
+    <string name="user_login">Войти</string>
+    <string name="confirm_unbind_strap">отмена  обязательного  определения  нынешней связи  браслет  оборудования?</string>
+    <string name="exit_login">выход</string>
+    <string name="user_regsiter">Зарегистрироваться</string>
+    <string name="confirm_compelte">завершить</string>
+    <string name="mine_data">мои данные</string>
+    <string name="next">пропустить</string>
+    <string name="save">Сохранить</string>
+    <string name="complete">завершить</string>
+    <string name="modify_success">изменить успех</string>
+
+    <string name="nick_name">прозвище:</string>
+    <string name="select_photo">Пожалуйста, выберите  фотографии</string>
+    <string name="take_camera">фотоаппарат</string>
+    <string name="take_Album">альбом</string>
+    <string name="cancle">отменить</string>
+    <string name="confirm">Определения</string>
+
+
+    <string name="goalfinish">число дней  до уровня</string>
+    <string name="totaldistance">Общее  количество километров</string>
+    <string name="Totalnumberofsteps">число  среднесуточных  шаг</string>
+    <string name="submit_success">представлен успех</string>
+    <string name="submit_fail">данные,представленные  провал</string>
+    <string name="write_nickname">Пожалуйста, заполните  пользователей  прозвище</string>
+    <string name="new_dif_confirm">новый пароль  и  подтвердить пароль не  единогласно</string>
+    <string name="forget_password">Забыли пароль?</string>
+    <string name="send_code">4.Отправить код подтверждения</string>
+
+    <string name="yonghuzdffhej">неправильный код подтверждения</string>
+    <string name="yonghuzhej">Заменить  номер уже  зарегистрированы,  пожалуйста!</string>
+    <string name="tianxie">Имя пользователя,заполните  ошибка</string>
+    <string name="miamacuo">Неверный пароль</string>
+    <string name="regsiter_fail">Ошибка регистрации</string>
+
+    <string name="yanzhengma">код проверки  уже  отправки</string>
+    <string name="guojia">Список стран,  успешно  получает</string>
+
+    <string-array name="banner_txt_one">
+        <item>новые  определения  движения</item>
+        <item>здоровья  облачного хранения  данных</item>
+        <item>спорт на открытом воздухе  в режиме реального времени плавания</item>
+    </string-array>
+
+    <string-array name="banner_txt_two">
+        <item>наукоемкое  прогресса  , решать проблемы</item>
+        <item>предоставлять  только  обработки данных</item>
+        <item>записи  каждой  усилия  траектории</item>
+    </string-array>
+
+    <string-array name="select_sex">
+        <item>мужчина</item>
+        <item>женщина</item>
+    </string-array>
+
+    <string name="select_running_mode">Пожалуйста, выберите режим</string>
+    <string-array name="select_running_mode">
+        <item>Бег на свежем воздухе</item>
+        <item>9.Езда на велосипеде</item>
+    </string-array>
+
+    <string name="week">недель</string>
+    <string name="select_repeat_week">Пожалуйста, выберите  повторить  недели</string>
+
+    <string name="select_brithday">Пожалуйста, выберите  день рождения</string>
+    <string name="select_height">Пожалуйста, выберите  высота</string>
+    <string name="select_weight">Пожалуйста, выберите  вес</string>
+
+    <string name="Sedentaryreminder">сидячий  напомнить</string>
+    <string name="alarmclock">будильник</string>
+    <string name="Messagealert">Сообщение напоминания</string>
+    <string name="Raisethebrightscreen">поднять руку  яркий  экран</string>
+    <string name="Intelligentalost">интеллектуальные  анти - потерял</string>
+    <string name="Automaticheartrate">автоматическое  обнаружения пульс</string>
+    <string name="yaoyiyaoPhotograph">трясти  фотографировать</string>
+    <string name="weixinpaizhao">Письмо  Движения  микро</string>
+    <string name="add_alarm">Добавить  будильник</string>
+
+    <string name="weather">AQI</string>
+    <string name="mine">мой</string>
+    <string name="device">оборудование</string>
+    <string name="running">бежать</string>
+    <string name="star">Начало</string>
+    <string name="long_stop">секретаря  по  пауза</string>
+    <string name="data">данные</string>
+    <string name="Targetsetting">Определение целей</string>
+    <string name="siren">частные  режим</string>
+    <string name="search_device">Поиск оборудования</string>
+    <string name="menu_settings">Настройки </string>
+    <string name="settings_success">Параметры успеха</string>
+    <string name="settings_fail">Ошибка настройки</string>
+    <string name="get_fail">получить  отказ</string>
+    <string name="activity_time">деятельности  секретаря</string>
+    <string name="hour">час</string>
+    <string name="km">км</string>
+    <string name="km_cal">ккал</string>
+    <string name="steps">шаг</string>
+    <string name="calories">Калории</string>
+    <string name="mileage">Расстояние</string>
+    <string name="time">Время</string>
+    <string name="step">Шаг номер</string>
+    <string name="recording">записи</string>
+    <string name="target_step">Цель шагов 10000</string>
+
+    <string name="indoor_sports">крытый спортивный</string>
+    <string name="outdoor_running">открытый  бег</string>
+    <string name="outdoor_cycling">открытый  на велосипеде</string>
+    <string name="sleep">спать</string>
+    <string name="move_ment">движение</string>
+
+    <string name="data_report_day">день</string>
+    <string name="data_report_week">Неделя</string>
+    <string name="data_report_month">Месяц</string>
+
+    <string name="allday_sleep">весь день  сна</string>
+    <string name="allday_deepsleep">весь день  глубокий сон</string>
+    <string name="allday_shallowsleep">мелкий  спит  весь день</string>
+
+    <string name="heartbeats_per_minute">пульс</string>
+
+    <string name="activity_repor">Доклад о деятельности</string>
+    <string name="sleep_repor">Доклад  сна</string>
+    <string name="heart_repor">пульс  доклад</string>
+    <string name="bloodpressure_repor">кровяное давление  доклад</string>
+    <string name="bloodoxygen_repor">Доклад  кислородом</string>
+
+    <string name="personal_info">личной информации</string>
+    <string name="modify_nickname">Изменить  псевдоним</string>
+    <string name="personal_avatar">портрет</string>
+    <string name="sex">Пол</string>
+    <string name="weight">Вес</string>
+    <string name="height">Рост</string>
+    <string name="birthday">день рождения</string>
+
+    <string name="select_sex">Пожалуйста, выберите  пола</string>
+    <string name="select">выбор</string>
+    <string name="sex_nan">мужчина</string>
+    <string name="sex_nv">женщина</string>
+
+    <string name="app_version">App  версии</string>
+    <string name="modify_password">Изменить пароль</string>
+    <string name="help">помочь</string>
+    <string name="abour">О</string>
+    <string name="yesterday">вчера</string>
+    <string name="today">сегодня</string>
+    <string name="cumulative_number_of_movements">общее  движение  в 0 раза </string>
+    <string name="agree_agreement">Нажмите  кнопку  "зарегистрировать",  означает, что  вы согласны </string>
+    <string name="register_agreement">соответствующие соглашения</string>
+    <string name="feedback">обратной связи</string>
+    <string name="confrim_exit">определения выход  в настоящее время  счета?</string>
+
+    <string name="input_old_password">Пожалуйста, введите  старый  пароль</string>
+    <string name="input_new_password">Пожалуйста, введите  новый пароль 4 бит</string>
+    <string name="input_confirm_password">Пожалуйста, введите  пароль</string>
+    <string name="question_detail">Проблема детали</string>
+    <string name="contact_info">контакты</string>
+    <string name="describe_problem">Пожалуйста, опишите ваши  проблемы</string>
+    <string name="leave_phone">Пожалуйста, оставьте  телефон  или  почтовый ящик  ,  мы  вам  удобно  связаться</string>
+
+    <string name="notempty_feedback">отзывы, мнения  не может быть пустым</string>
+    <string name="leave_contact">контакты  или  почта  не может быть пустым</string>
+
+    <string name="daily_numberofsteps">ежедневное движение  шаг номер</string>
+    <string name="daily_sleepduration">в день  , когда  секретаря  сна</string>
+    <string name="daily_consunergy">ежедневно потребляют  энергии</string>
+
+    <string name="daily_numberofsteps_default">Step</string>
+    <string name="daily_sleepduration_default">8H</string>
+    <string name="daily_consunergy_defaultcalorie">173Kcal</string>
+
+    <string name="my_strap">мой  браслет</string>
+    <string name="sedentary_reminder">сидячий  напомнить</string>
+    <string name="firmware_upgrade">обновление прошивки</string>
+    <string name="unbind">развязать</string>
+
+    <string name="effective_time">время вступления в силу</string>
+    <string name="end_time">время окончания</string>
+    <string name="start_time">время начала</string>
+
+    <string name="heart_rate">пульс</string>
+
+
+    <string name="time_set">время создания</string>
+    <string name="repeat">повторять</string>
+    <string name="alarm_name">Пожалуйста, заполните  будильник  имя</string>
+
+    <string name="private_mode">частные  режим</string>
+    <string name="minimumsystolic_bloodpressure">минимальный  систолического давления</string>
+    <string name="maximumdiastolic_bloodpressure">Верховный  диастолического давления</string>
+    <string name="private_mode_bloodpressure">частные  кровяное давление</string>
+    <string name="bloodpressure_msg">настроить ваш  режим  частных  кровяное давление  ,  для получения более  точных данных  ,  вам нужно  установить  здесь  не  антигипертензивных препаратов  является  эффективным  кровяное давление.</string>
+
+    <string name="stop_clock">в процессе  вибрации  ,  нажмите  браслеты  может  прекратить  будильник</string>
+    <string name="getup">вставать</string>
+    <string name="other">другие</string>
+    <string name="alarm_clock">будильник</string>
+    <string name="every_time">каждый день</string>
+    <string name="monday_to_friday">с понедельника по пятницу</string>
+
+    <string name="select_star_time">Пожалуйста, выберите  время начала</string>
+    <string name="select_end_time">Пожалуйста, выберите  время окончания</string>
+
+    <string name="weibo_upload_content">обмениваться фотографиями</string>
+
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="shortmessage">информации</string>
+    <string name="linkedin">Воротник британских</string>
+    <string name="qq">QQ</string>
+
+
+    <!-- Tab界面 -->
+    <!-- 闹铃界面 -->
+    <string name="press_right_top">Нажмите  на  правой   </string>
+    <string name="add_alarm_clock">  Добавить  будильник   </string>
+    <string name="retrieve_alarm_clock_success"> Исключить  будильник  успешно  вернуть</string>
+    <!-- 新建编辑闹钟界面 -->
+    <string name="new_alarm_clock">новый  будильник</string>
+    <string name="edit_alarm_clock">редактор  будильник </string>
+    <string name="tag">этикетка </string>
+    <string name="countdown_day_hour_minute">будильник звонит  и  расстояние%1$dдень%2$dчас%3$dминут </string>
+    <string name="countdown_hour_minute">будильник звонит  и  расстояние%1$dчас%2$dминут </string>
+    <string name="countdown_minute">будильник звонит  и  расстояние%1$dминут </string>
+    <string name="monday">В понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">В среду</string>
+    <string name="thursday">четверг</string>
+    <string name="friday">В пятницу</string>
+    <string name="saturday">в субботу</string>
+    <string name="sunday">воскресенье</string>
+    <string name="repeat_once">звонит  только  один раз </string>
+    <string name="one_h">один</string>
+    <string name="two_h">второй</string>
+    <string name="three_h">три</string>
+    <string name="four_h">четыре</string>
+    <string name="five_h">пять</string>
+    <string name="six_h">шесть</string>
+    <string name="day">день</string>
+    <string name="every_day">каждый день</string>
+    <string name="week_day">обычно</string>
+    <string name="week_end">выходные</string>
+    <string name="weeks">недель</string>
+    <string name="caesura">、</string>
+
+    <!-- 铃声选择界面 -->
+
+    <!-- 闹钟响起界面 -->
+
+    <!-- 小睡编辑界面 -->
+
+    <!-- 录音 -->
+    <string name="record_fail">Ошибка записи </string>
+    <string name="record_fail_confirm">Ошибка записи  ,  пожалуйста, проверьте  записи  разрешение  открыть или  записи  , были  ли  другие приложения  занимают</string>
+    <!-- 录音操作 -->
+    <!-- 录音详情画面 -->
+
+    <!-- 录音重命名画面 -->
+    <!-- 录音删除画面 -->
+    <!-- 录音批量删除画面 -->
+    <!-- 音频播放 -->
+    <string name="play_fail">не играть</string>
+
+    <!-- 天气 -->
+
+
+    <!-- 城市管理，添加城市 -->
+</resources>
