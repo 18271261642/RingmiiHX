@@ -22,7 +22,7 @@
 
 
         <TextView
-            android:text="今日睡眠血氧体检"
+            android:text="@string/string_today_sleep_Spo_bloop"
             android:textSize="17sp"
             android:gravity="center"
             android:layout_centerVertical="true"

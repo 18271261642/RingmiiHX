@@ -25,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="bottom"
-            app:bb_activeTabColor="@color/new_colorAccent"
-            app:bb_tabXmlResource="@xml/w30s_my_bottombar_tabs_three" />
+            app:bb_tabXmlResource="@xml/b30_bottom_tabs" />
     </android.support.design.widget.CoordinatorLayout>
 
 

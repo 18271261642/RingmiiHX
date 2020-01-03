@@ -51,7 +51,7 @@
             android:layout_width="@dimen/size_40"
             android:layout_height="@dimen/size_40"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_meaure_bload_bottom"/>
+            android:background="@drawable/ic_meaure_bload_bottom"/>
 
         <TextView
             android:textSize="@dimen/sp_15"

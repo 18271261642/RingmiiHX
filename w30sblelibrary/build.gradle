@@ -15,17 +15,17 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file('beraceSport.jks')//签名文件路径
-            storePassword "w123456"
-            keyAlias "w123456"
-            keyPassword "w123456"  //签名密码
+            storeFile file('guider.jks')//签名文件路径
+            storePassword "GuiderHealth.com"
+            keyAlias "guider"
+            keyPassword "GuiderHealth.com"
             println("====== signingConfigs.debug ======")
         }
         release {
-            storeFile file('beraceSport.jks')//签名文件路径
-            storePassword "w123456"
-            keyAlias "w123456"
-            keyPassword "w123456"  //签名密码
+            storeFile file('guider.jks')//签名文件路径
+            storePassword "GuiderHealth.com"
+            keyAlias "guider"
+            keyPassword "GuiderHealth.com"
             println("====== signingConfigs.release ======")
         }
     }

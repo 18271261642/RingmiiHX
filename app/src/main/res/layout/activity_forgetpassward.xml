@@ -154,8 +154,7 @@
                         android:drawablePadding="@dimen/size_10"
                         android:hint="@string/input_code"
                         android:maxLines="1"
-                        android:singleLine="true"
-                        android:textSize="@dimen/size_12" />
+                        android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -169,7 +168,7 @@
                     android:background="@drawable/blue_border_btn_selector"
                     android:padding="@dimen/size_5"
                     android:text="@string/send_code"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/new_colorAccent" />
 
             </RelativeLayout>
 

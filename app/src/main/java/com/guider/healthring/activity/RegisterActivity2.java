@@ -147,7 +147,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView 
         };
         spanStatement.setSpan(clickStatement, 0, INSURANCE_STATEMENT.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spanStatement.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)), 0,
+        spanStatement.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.new_colorAccent)), 0,
                 INSURANCE_STATEMENT.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         registerAgreement.setText(R.string.agree_agreement);
         registerAgreement.append(spanStatement);

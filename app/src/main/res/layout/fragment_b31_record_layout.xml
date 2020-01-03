@@ -70,9 +70,9 @@
                             android:layout_height="230dp"
                             android:layout_gravity="center"
                             app:darkWaveAnimTime="3000"
-                            app:darkWaveColor="#1ebae3"
+                            app:darkWaveColor="@color/new_colorAccent2"
                             app:lightWaveAnimTime="4000"
-                            app:lightWaveColor="#34c7e7"
+                            app:lightWaveColor="@color/new_colorAccent3"
                             app:lightWaveDirect="R2L"
                             app:lockWave="false"
                             app:valueColor="@color/white"
@@ -229,7 +229,7 @@
                         <TextView
                             android:id="@+id/analysis_chartview_title_spo2h"
                             style="@style/style_block_toptitle_tv"
-                            android:text="血氧/呼吸暂停体检" />
+                            android:text="@string/string_today_Spo_breath" />
 
                         <ImageView style="@style/style_block_toptitle_img" />
 

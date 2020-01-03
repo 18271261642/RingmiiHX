@@ -258,8 +258,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/privacy"
-        android:textColor="@color/blue"
-        android:textSize="20sp"
+        android:textColor="@color/new_colorAccent"
+        android:textSize="12sp"
         android:layout_gravity="center"
         android:padding="5dp"
         android:gravity="center"/>

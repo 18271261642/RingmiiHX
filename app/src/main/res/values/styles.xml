@@ -92,8 +92,8 @@
         <item name="windowNoTitle">true</item>
         <!-- Base application theme. -->
         <item name="colorPrimaryDark">@android:color/white</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/new_colorAccent2</item>
+        <item name="colorAccent">@color/new_colorAccent</item>
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.NoActionBar">
@@ -110,7 +110,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/new_colorAccent</item>
         <item name="android:textSize">15sp</item>
     </style>
 
@@ -156,7 +156,7 @@
 
     <style name="Theme.picker" parent="android:Theme.Holo.NoActionBar">
         <item name="android:editTextStyle">@style/Widget.EditText.White</item>
-        <item name="android:numbersSelectorColor" tools:targetApi="lollipop">#4DDDFF</item>
+        <item name="android:numbersSelectorColor" tools:targetApi="lollipop">@color/new_colorAccent2</item>
     </style>
 
     <style name="Widget.EditText.White" parent="@android:style/Widget.EditText">

@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="今日 睡眠质量"
+            android:text="@string/string_today_sleep_test"
             android:textColor="#6074BF"
             android:textSize="17sp" />
 

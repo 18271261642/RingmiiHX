@@ -101,7 +101,7 @@ public class CustomBlueAdapter extends RecyclerView.Adapter<CustomBlueAdapter.Cu
                 holder.img.setImageResource(R.mipmap.ic_seach_500s);
                 return;
             }
-            holder.img.setImageResource(R.mipmap.icon_de_head);
+            holder.img.setImageResource(R.mipmap.ic_seach_null);
 
 
         }

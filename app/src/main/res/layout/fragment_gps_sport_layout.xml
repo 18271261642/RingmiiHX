@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_180"
-        android:background="@color/colorAccent">
+        android:background="@color/new_colorAccent">
         <!--android:background="@mipmap/ic_run_gps_tpo"-->
 
         <View
@@ -92,8 +92,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="2dp"
         android:background="@color/white"
         android:padding="5dp">
 

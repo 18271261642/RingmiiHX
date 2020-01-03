@@ -46,6 +46,7 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.view.CusInputDialogView;
+import com.guider.healthring.widget.BottomSelectView;
 import com.guider.healthring.widget.NoScrollViewPager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -75,7 +76,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
     @BindView(R.id.b31View_pager)
     NoScrollViewPager b31ViewPager;
     @BindView(R.id.b31BottomBar)
-    BottomBar b31BottomBar;
+    BottomSelectView b31BottomBar;
 
 
     private List<Fragment> fragmentList = new ArrayList<>();
@@ -164,20 +165,20 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
             b31ViewPager.setAdapter(fragmentPagerAdapter);
             b31ViewPager.setOffscreenPageLimit(0);
         }
-        b31BottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+        b31BottomBar.setOnTabSelectListener(new BottomSelectView.OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
                 switch (tabId) {
-                    case R.id.b30_tab_home: //首页
+                    case R.id.t1: //首页
                         b31ViewPager.setCurrentItem(0, false);
                         break;
-                    case R.id.b30_tab_data: //数据
+                    case R.id.t2: //数据
                         b31ViewPager.setCurrentItem(1, false);
                         break;
-                    case R.id.b30_tab_set:  //开跑
+                    case R.id.t3:  //开跑
                         b31ViewPager.setCurrentItem(2, false);
                         break;
-                    case R.id.b30_tab_my:   //我的
+                    case R.id.t4:   //我的
                         b31ViewPager.setCurrentItem(3, false);
                         break;
                 }

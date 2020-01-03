@@ -460,16 +460,16 @@ public class H9HomeActivity extends WatchBaseActivity {
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
-                    case R.id.tab_home: //记录
+                    case R.id.b30_tab_home: //记录
                         h18iViewPager.setCurrentItem(0);
                         break;
-                    case R.id.tab_set:  //开跑
+                    case R.id.b30_tab_set:  //开跑
                         h18iViewPager.setCurrentItem(2);
                         break;
-                    case R.id.tab_data:     //数据
+                    case R.id.b30_tab_data:     //数据
                         h18iViewPager.setCurrentItem(1);
                         break;
-                    case R.id.tab_my:   //我的
+                    case R.id.b30_tab_my:   //我的
                         h18iViewPager.setCurrentItem(3);
                         break;
                 }

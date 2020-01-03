@@ -97,11 +97,11 @@ public class LoginWaveView extends View {
     private void init() {
         mLeftPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLeftPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mLeftPaint.setColor(Color.parseColor("#A2EDFF"));
+        mLeftPaint.setColor(Color.parseColor("#f18937"));
 
         mRightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRightPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mRightPaint.setColor(Color.parseColor("#B3F1FE"));
+        mRightPaint.setColor(Color.parseColor("#E67A25"));
 
         leftPath = new Path();
         rightPath = new Path();
