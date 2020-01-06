@@ -9,8 +9,11 @@ public class Commont {
 //    public static final String WX_APP_ID = "wx0144beedb6c2eed7";
 //    public static final String WX_APP_SECRET = "edd86a83749ba0bf9f8f96e9e26af708";
     //GooglePlay用这个
-    public static final String WX_APP_ID = "wx7e5e9e90ae4d8f51";
-    public static final String WX_APP_SECRET = "8864cc82ce546270207e5ba1f3ef0054";
+//    public static final String WX_APP_ID = "wx7e5e9e90ae4d8f51";
+//    public static final String WX_APP_SECRET = "8864cc82ce546270207e5ba1f3ef0054";
+    //临时的
+    public static final String WX_APP_ID = "wxc093e3bf0907af3a";
+    public static final String WX_APP_SECRET = "58ff9e16ab9b8c8775f9d8439c371f7c";
 
 
 

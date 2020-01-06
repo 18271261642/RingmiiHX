@@ -1,5 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
+apply from: "config.gradle"
+apply from: "dependencies.gradle"
 buildscript {
     repositories {
         google()
@@ -8,13 +9,8 @@ buildscript {
         maven {
             url "https://jitpack.io"
         }
-//        maven {
-//            url "http://mvn.mob.com/android"
-//        }
-//        maven {
-//            url 'https://maven.google.com/'
-//            name 'Google'
-//        }
+        maven { url 'https://projectlombok.org' }
+        maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
@@ -32,16 +28,35 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
-        maven {
-            url "https://jitpack.io"
-        }
-//        maven {
-//            url 'https://maven.google.com/'
-//            name 'Google'
-//        }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://projectlombok.org' }
+        maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    compileSdkVersion = 27
+    //buildToolsVersion = "27.0.2"
+    minSdkVersion = 14
+    targetSdkVersion = compileSdkVersion
+
+    codeVersion = 39
+    appVersion = "2.0.39"
+    isMyOutputFile = true
+}
+
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion "27.1.1"
+            }
+        }
+    }
 }

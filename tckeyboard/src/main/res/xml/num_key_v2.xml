@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="0.0px"
+    android:keyWidth="18.8%p"
+    android:keyHeight="8%p"
+    android:verticalGap="0.0px">
+
+    <Row android:verticalGap="1%p">
+        <Key
+            android:codes="-1000"
+            android:keyWidth="80%p"
+            android:keyEdgeFlags="left"
+            android:keyOutputText="" />
+
+        <Key
+            android:codes="-1000"
+            android:keyWidth="1%p"
+            android:keyOutputText="" />
+
+        <Key
+            android:codes="-1001"
+            android:keyWidth="19%p"
+            android:keyIcon="@mipmap/key_exit"
+            android:keyEdgeFlags="right"/>
+    </Row>
+
+    <Row android:verticalGap="1%p">
+        <Key
+            android:codes="49"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyEdgeFlags="left"
+            android:keyLabel="1"
+            android:keyIcon="@drawable/key_normal" />
+
+        <Key
+            android:codes="50"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="2" />
+
+        <Key
+            android:codes="51"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="3" />
+
+        <Key
+            android:codes="48"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="0" />
+
+        <!-- 上一步 -->
+        <Key
+            android:codes="-1"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyIcon="@mipmap/key_last"/>
+
+        <Key
+            android:codes="-1000"
+            android:horizontalGap="1%p"
+            android:keyWidth="0%p"
+            android:keyEdgeFlags="right" />
+    </Row>
+
+    <!-- 4 5 6 .-->
+    <Row android:verticalGap="1%p">
+
+        <Key
+            android:codes="52"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="4" />
+
+        <Key
+            android:codes="53"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="5" />
+
+        <Key
+            android:codes="54"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="6" />
+
+        <Key
+            android:codes="46"
+            android:horizontalGap="1%p"
+            android:isRepeatable="false"
+            android:keyWidth="18.8%p"
+            android:keyLabel="." />
+
+        <!-- 下一步 -->
+
+        <Key
+            android:codes="-4"
+            android:horizontalGap="1%p"
+            android:isRepeatable="true"
+            android:keyWidth="18.8%p"
+            android:keyHeight="17%p"
+            android:keyIcon="@mipmap/key_next" />
+
+        <Key
+            android:codes="-1000"
+            android:horizontalGap="1%p"
+            android:keyWidth="0%p"
+            android:keyEdgeFlags="right" />
+    </Row>
+
+    <!-- 7 8 9 < -->
+    <Row android:verticalGap="1%p">
+
+        <Key
+            android:codes="55"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="7" />
+
+        <Key
+            android:codes="56"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="8" />
+
+        <Key
+            android:codes="57"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyLabel="9" />
+
+        <!-- 删除 -->
+        <Key
+            android:codes="-5"
+            android:horizontalGap="1%p"
+            android:keyWidth="18.8%p"
+            android:keyIcon="@mipmap/key_dele"/>
+
+        <Key
+            android:codes="-1000"
+            android:horizontalGap="1%p"
+            android:keyWidth="0%p"
+            android:keyEdgeFlags="right" />
+    </Row>
+</Keyboard>

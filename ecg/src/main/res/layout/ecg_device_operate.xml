@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_all"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/head" />
+
+    <LinearLayout
+        style="@style/myBodyLayout"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_49"
+            android:layout_marginTop="@dimen/dp_23"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_13"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/m500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="六导心电"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="操作指南"
+                android:textColor="#F18937"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="测量操作"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="设备测量"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="测量结果"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_29"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_width="@dimen/dp_214"
+                android:layout_height="@dimen/dp_266">
+
+                <ImageView
+                    android:layout_marginTop="@dimen/dp_37"
+                    android:layout_width="@dimen/dp_177"
+                    android:layout_height="@dimen/dp_162"
+                    android:background="@mipmap/ecg" />
+
+                <TextView
+                    android:text="六导智慧心电检测"
+                    android:textColor="#7D7D7D"
+                    android:textSize="@dimen/sp_18"
+                    android:layout_marginTop="@dimen/dp_35"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_marginLeft="@dimen/dp_36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="操作指南："
+                    android:textColor="#7D7D7D"
+                    android:textSize="@dimen/sp_19" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_17"
+                    android:text="1. 长按电源开关约2秒\n2. 电源指灯亮起\n3. 完成开机准备"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_21" />
+
+                <Button
+                    android:id="@+id/next"
+                    android:text="确认已开机 下一步"
+                    android:textSize="@dimen/dp_19"
+                    android:textColor="#ffffff"
+                    android:layout_marginLeft="@dimen/dp_234"
+                    android:layout_marginTop="@dimen/dp_33"
+                    android:paddingLeft="@dimen/dp_30"
+                    android:paddingRight="@dimen/dp_30"
+                    android:background="@drawable/button_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_44" />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

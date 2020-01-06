@@ -1,0 +1,25 @@
+ext {
+    // false: 组件模式
+    // true ：集成模式
+    isLibrary = true
+    android = [
+            compileSdkVersion: 27,
+            minSdkVersion    : 19,
+            targetSdkVersion : 22,
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    appId = [
+             "app": "com.guider.health",
+             "infocard" : "com.guider.health.infocard" ]
+
+    supportLibrary = "27.1.1"
+//    supportLibrary = "23+"
+    dependencies = [
+            "appcompat-v7"     : "com.android.support:appcompat-v7:${supportLibrary}",
+
+    ]
+}
+
+

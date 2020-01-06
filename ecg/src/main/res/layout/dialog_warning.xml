@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_300"
+        android:layout_gravity="center"
+        android:layout_height="@dimen/dp_250"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:background="@drawable/hd_dialog_wairing_title"
+        android:gravity="center"
+        android:text="监测到双手离开电极片"
+        android:textColor="#fff"
+        android:textSize="@dimen/dp_20" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/hd_dialog_wairing_content"
+        android:gravity="center"
+        android:text="手指和电极片可能接触不良\n\n请保持双手请握金属片"
+        android:textColor="#333333"
+        android:textSize="@dimen/dp_20" />
+
+    </LinearLayout>
+</FrameLayout>
