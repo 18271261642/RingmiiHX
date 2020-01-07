@@ -72,6 +72,27 @@
         android:layout_height="1dp"
         android:layout_weight="1" />
 
+
+    <LinearLayout
+        android:id="@+id/t5"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:gravity="center_horizontal"
+        android:tag="1"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_start" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:id="@+id/t3"
         android:layout_width="60dp"

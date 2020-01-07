@@ -81,7 +81,8 @@ dependencies {
 //        implementation project(':arouter_b')
     }
 
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+//    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation project(':MPChartLib')
     compile project(':fragmentation_core')
     implementation project(path: ':apilib')
 

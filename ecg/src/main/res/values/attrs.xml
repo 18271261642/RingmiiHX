@@ -6,7 +6,7 @@
         <attr name="circleColor" format="color" />
         <attr name="ringColor" format="color" />
         <attr name="ringBgColor" format="color" />
-        <attr name="progress" format="integer" />
+        <attr name="ecgProgress" format="integer" />
     </declare-styleable>
 
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@mipmap/welcome_next"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/next"
+        android:text="下一步"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/sp_19"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/button_cancel"
+        android:layout_marginBottom="@dimen/sp_18"
+        android:layout_marginRight="@dimen/sp_38"
+        android:layout_width="@dimen/dp_126"
+        android:layout_height="@dimen/dp_44" />
+
+
+</RelativeLayout>

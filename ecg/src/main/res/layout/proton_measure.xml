@@ -203,7 +203,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
                             tc:circleColor="@color/orange"
-                            tc:progress="60"
+                            tc:ecgProgress="60"
                             tc:radius="@dimen/dp_40"
                             tc:ringBgColor="@color/blue"
                             tc:ringColor="@color/orange"

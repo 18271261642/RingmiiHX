@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_all"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <RelativeLayout style="@style/myHeadLayout">
+
+        <ImageView
+            android:layout_width="@dimen/dp_130"
+            android:layout_height="@dimen/dp_29"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_27"
+            android:background="@mipmap/logo" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="盖德健康 智慧健康管理系统"
+            android:textColor="#171717"
+            android:textSize="@dimen/sp_23" />
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/myBodyLayout"
+        android:gravity="center">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="@dimen/dp_342"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="账号"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/dp_19" />
+
+                <EditText
+                    android:id="@+id/phone"
+                    android:inputType="number"
+                    android:digits="1234567890"
+                    android:layout_width="@dimen/dp_290"
+                    android:layout_height="@dimen/dp_39"
+                    android:textSize="@dimen/dp_19"
+                    android:layout_marginLeft="@dimen/dp_13"
+                    android:background="@drawable/text_box"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:textColorHint="#CDCDCD" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_22"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="密码"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/dp_19" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:textSize="@dimen/dp_19"
+                    android:password="true"
+                    android:layout_width="@dimen/dp_290"
+                    android:layout_height="@dimen/dp_39"
+                    android:layout_marginLeft="@dimen/dp_13"
+                    android:background="@drawable/text_box"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp_8" />
+            </LinearLayout>
+
+            <TextView
+
+                android:layout_marginTop="@dimen/dp_13"
+                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#7D7D7D"
+                android:visibility="gone"
+                android:textSize="@dimen/sp_14"
+                android:text="手机号不存在" />
+
+
+            <Button
+                android:id="@+id/login_next"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_19"
+                android:layout_marginTop="@dimen/dp_18"
+                android:background="@drawable/button_cancel"
+                android:text="登录"
+                android:layout_width="@dimen/dp_340"
+                android:layout_height="@dimen/dp_44" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

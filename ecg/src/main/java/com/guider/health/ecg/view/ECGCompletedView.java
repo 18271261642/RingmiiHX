@@ -65,7 +65,7 @@ public class ECGCompletedView extends View {
         mCircleColor = typeArray.getColor(R.styleable.TasksCompletedView_circleColor, 0xFFFFFFFF);
         mRingColor = typeArray.getColor(R.styleable.TasksCompletedView_ringColor, 0xFFFFFFFF);
         mRingBgColor = typeArray.getColor(R.styleable.TasksCompletedView_ringBgColor, 0xFFFFFFFF);
-        mTotalProgress = typeArray.getInt(R.styleable.TasksCompletedView_progress, 30);
+        mTotalProgress = typeArray.getInt(R.styleable.TasksCompletedView_ecgProgress, 30);
 
         mRingRadius = mRadius + mStrokeWidth / 2;
     } //初始化画笔

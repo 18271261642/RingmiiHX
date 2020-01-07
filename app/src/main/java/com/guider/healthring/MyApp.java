@@ -4,13 +4,13 @@ package com.guider.healthring;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
 import com.afa.tourism.greendao.gen.DaoMaster;
 import com.afa.tourism.greendao.gen.DaoSession;
 import com.android.volley.RequestQueue;
@@ -18,17 +18,18 @@ import com.android.volley.toolbox.Volley;
 import com.guider.healthring.B18I.b18idb.DBManager;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.AlertService;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.NewSmsBroadCastReceiver;
-import com.guider.healthring.b30.service.NewB30ConnStateService;
 import com.guider.healthring.b30.service.B30DataServer;
+import com.guider.healthring.b30.service.NewB30ConnStateService;
 import com.guider.healthring.bzlmaps.PhoneSosOrDisPhone;
 import com.guider.healthring.bzlmaps.baidulocal.LocationService;
 import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.mob.MobSDK;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.veepoo.protocol.VPOperateManager;
+
 import org.litepal.LitePalApplication;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,7 +170,7 @@ public class MyApp extends LitePalApplication {
     private static ServiceConnection b30ServerConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            if (service != null) {
+            if (service instanceof NewB30ConnStateService.B30LoadBuilder) {
                 b30ConnStateService = ((NewB30ConnStateService.B30LoadBuilder) service).getB30Service();
             }
         }

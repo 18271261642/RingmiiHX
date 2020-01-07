@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@mipmap/background_all"
+    android:orientation="vertical">
+
+
+    <include layout="@layout/head" />
+
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:layout_width="@dimen/dp_812"-->
+        <!--android:layout_height="@dimen/dp_80"-->
+        <!--android:padding="@dimen/dp_5"-->
+        <!--android:layout_marginTop="@dimen/dp_25"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent">-->
+
+        <LinearLayout
+            style="@style/myBodyLayout"
+            android:gravity="center">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/t1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="手机号"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_18"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.3"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.3" />
+
+
+                <TextView
+                    android:id="@+id/t2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_43"
+                    android:text="验证码"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_18"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="@id/t1"
+                    app:layout_constraintTop_toBottomOf="@id/t1" />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="@dimen/dp_290"
+                    android:layout_height="@dimen/dp_39"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:background="@drawable/text_box"
+                    android:hint="请输入手机号"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintBottom_toBottomOf="@id/t1"
+                    app:layout_constraintLeft_toRightOf="@id/t1"
+                    app:layout_constraintTop_toTopOf="@id/t1"/>
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_39"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/text_box"
+                    android:hint="请输入验证码"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintBottom_toBottomOf="@id/t2"
+                    app:layout_constraintLeft_toRightOf="@id/t2"
+                    app:layout_constraintRight_toLeftOf="@id/bt_send_code"
+                    app:layout_constraintTop_toTopOf="@id/t2"/>
+
+                <Button
+                    android:id="@+id/bt_send_code"
+                    android:layout_width="@dimen/dp_95"
+                    android:layout_height="@dimen/dp_39"
+                    android:background="@drawable/button_code"
+                    android:text="获取验证码"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@id/t2"
+                    app:layout_constraintRight_toRightOf="@id/et_phone"
+                    app:layout_constraintTop_toTopOf="@id/t2" />
+
+
+                <Button
+                    android:id="@+id/bt_login"
+                    android:layout_width="@dimen/dp_340"
+                    android:layout_height="@dimen/dp_39"
+                    android:layout_marginTop="@dimen/dp_45"
+                    android:background="@drawable/button_cancel"
+                    android:text="登录"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintLeft_toLeftOf="@id/t2"
+                    app:layout_constraintRight_toRightOf="@id/bt_send_code"
+                    app:layout_constraintTop_toBottomOf="@id/et_code" />
+
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+
+</LinearLayout>

@@ -61,7 +61,7 @@ public class DeviceInit {
 
     private ArrayList<String> list = new ArrayList();
 
-    private String type;
+    private String type = "";
 
     public void setType(String type) {
         if (Constant.isDebug) {

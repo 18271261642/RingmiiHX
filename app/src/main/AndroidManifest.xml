@@ -91,7 +91,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:vmSafeMode="true"
         tools:ignore="HardcodedDebugMode"
-        tools:replace="android:label">
+        tools:replace="android:label,android:name,android:icon">
 
 
         <uses-library
@@ -1170,6 +1170,13 @@
         <activity android:name="hat.bemo.ToBT" />
 
         <activity android:name="hat.bemo.SOSCall" />
+
+
+
+
+        <activity android:name=".activity.DeviceActivity"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>

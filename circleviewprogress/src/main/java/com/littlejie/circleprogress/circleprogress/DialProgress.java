@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.littlejie.circleprogress.BuildConfig;
 import com.littlejie.circleprogress.R;
 import com.littlejie.circleprogress.circleprogress.utils.Constant;
 import com.littlejie.circleprogress.circleprogress.utils.MiscUtil;
@@ -323,11 +322,6 @@ public class DialProgress extends View {
             public void onAnimationUpdate(ValueAnimator animation) {
                 mPercent = (float) animation.getAnimatedValue();
                 mValue = mPercent * mMaxValue;
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "onAnimationUpdate: percent = " + mPercent
-                            + ";currentAngle = " + (mSweepAngle * mPercent)
-                            + ";value = " + mValue);
-                }
                 invalidate();
             }
         });

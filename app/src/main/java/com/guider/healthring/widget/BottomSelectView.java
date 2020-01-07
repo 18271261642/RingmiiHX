@@ -40,6 +40,8 @@ public class BottomSelectView extends LinearLayout {
     TextView t4Text;
     @BindView(R.id.t4)
     LinearLayout t4;
+    @BindView(R.id.t5)
+    LinearLayout t5;
 
     LinearLayout currentSelectView;
 
@@ -79,7 +81,7 @@ public class BottomSelectView extends LinearLayout {
         text.setTextColor(Color.parseColor(textColor[isSelector ? 1 : 0]));
     }
 
-    @OnClick({R.id.t1, R.id.t2, R.id.t3, R.id.t4})
+    @OnClick({R.id.t1, R.id.t2, R.id.t3, R.id.t4 , R.id.t5})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.t1:
@@ -93,6 +95,11 @@ public class BottomSelectView extends LinearLayout {
                 break;
             case R.id.t4:
                 selector(t4);
+                break;
+            case R.id.t5:
+                if (lis != null) {
+                    lis.onTabSelected(view.getId());
+                }
                 break;
         }
     }

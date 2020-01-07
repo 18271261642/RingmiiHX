@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_all"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/head" />
+
+
+    <LinearLayout
+        style="@style/myBodyLayout"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="@dimen/dp_720"
+            android:layout_height="@dimen/dp_280">
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_14"
+                android:scrollbars="none">
+
+                <com.guider.health.adapter.ResultListView
+                    android:id="@+id/result_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_14"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/end_measure"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/dp_44"
+                android:background="@drawable/button_cancel"
+                android:text="结束测量"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/sp_19" />
+
+            <Button
+                android:id="@+id/end_restart"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/dp_44"
+                android:background="@drawable/button_back"
+                android:text="重新测量"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:textColor="#F18937"
+                android:textSize="@dimen/sp_19" />
+
+            <Button
+                android:id="@+id/app_doctor"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/dp_44"
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:background="@drawable/button_cancel"
+                android:text="和医生通话"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_19" />
+
+            <Button
+                android:id="@+id/app_printing"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/dp_44"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:background="@drawable/button_cancel"
+                android:text="打印报告"
+                android:visibility="gone"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_19" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

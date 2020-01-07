@@ -11,6 +11,7 @@ buildscript {
         }
         maven { url 'https://projectlombok.org' }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
