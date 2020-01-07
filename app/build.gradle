@@ -2,22 +2,22 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-//    signingConfigs {
-//        debug {
-//            storeFile file('D:\\ProjectForAndroid\\AppBaleJar\\beraceSport.jks')//签名文件路径
-//            storePassword "w123456"
-//            keyAlias "w123456"
-//            keyPassword "w123456"  //签名密码
-//            println("====== signingConfigs.debug ======")
-//        }
-//        release {
-//            storeFile file('D:\\ProjectForAndroid\\AppBaleJar\\beraceSport.jks')//签名文件路径
-//            storePassword "w123456"
-//            keyAlias "w123456"
-//            keyPassword "w123456"  //签名密码
-//            println("====== signingConfigs.release ======")
-//        }
-//    }
+    signingConfigs {
+        debug {
+            storeFile file('./guider.jks')//签名文件路径
+            storePassword "GuiderHealth.com"
+            keyAlias "guider"
+            keyPassword "GuiderHealth.com"  //签名密码
+            println("====== signingConfigs.debug ======")
+        }
+        release {
+            storeFile file('./guider.jks')//签名文件路径
+            storePassword "GuiderHealth.com"
+            keyAlias "guider"
+            keyPassword "GuiderHealth.com"  //签名密码
+            println("====== signingConfigs.release ======")
+        }
+    }
     dexOptions {
         javaMaxHeapSize "4g"
     }
@@ -72,7 +72,7 @@ android {
     }
     repositories {
         flatDir {
-            dirs 'libs'
+            dirs 'libs',"../bpm1000/libs"
         }
     }
 
@@ -133,6 +133,7 @@ dependencies {
     implementation project(':apilib')
     implementation project(':common_m500_1000')
     implementation project(':bpm1000')
+    implementation project(':simpleble')
 
     implementation project(path: ':wheelpicker')
 
@@ -200,7 +201,7 @@ dependencies {
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.5'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.5'
     implementation project(':w30sblelibrary')
-    implementation files('libs/vpbluetooth_1.0.3.jar')
+//    implementation files('libs/vpbluetooth_1.0.3.jar')
     //implementation files('libs/vpprotocol_1.2.6.0.jar')
     implementation files('libs/vpprotocols_2.1.2.15.jar')
     implementation project(':MPChartLib')

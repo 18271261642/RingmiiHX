@@ -13,7 +13,7 @@ public class Commont {
 //    public static final String WX_APP_SECRET = "8864cc82ce546270207e5ba1f3ef0054";
     //临时的
     public static final String WX_APP_ID = "wxc093e3bf0907af3a";
-    public static final String WX_APP_SECRET = "58ff9e16ab9b8c8775f9d8439c371f7c";
+    public static final String WX_APP_SECRET = "984774e72efba8f2f21c8cbc91cbbff8";
 
 
 

@@ -195,6 +195,14 @@
 
         <!--微信登录的回调-->
         <activity
+            android:name="com.guider.healthringx.wxapi.WXEntryActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name="com.guider.healthring.wxapi.WXEntryActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"
