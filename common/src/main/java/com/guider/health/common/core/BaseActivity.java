@@ -1,6 +1,5 @@
 package com.guider.health.common.core;
 
-import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -12,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 /**
  * Created by haix on 2019/6/22.
@@ -47,8 +45,6 @@ public class BaseActivity extends MySupportActivity{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startTimer();
-
         SoftKeyBoardListener.setListener(this, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
 
             @Override
@@ -80,44 +76,6 @@ public class BaseActivity extends MySupportActivity{
 
     }
 
-    long firstTime = 0;// 上一次按回退键的时间
-
-    /**
-     * home 返回
-     */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-
-            //被fragment截获事件
-            BaseFragment fragment = (BaseFragment) getCurrentFragment();
-            if (fragment != null && fragment.backPressed()) {
-
-                return true;
-            }
-
-            if (getFragmentManager().getBackStackEntryCount() > 1) {
-
-                // 退出应用
-                //getApplication().ForceExitProcess();
-                pop();
-
-            } else {
-                if (System.currentTimeMillis() - firstTime >= 2000) {
-                    Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                    firstTime = System.currentTimeMillis();
-                } else {
-                    finish();// 销毁当前activity
-                    System.exit(0);// 完全退出应用
-                }
-            }
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-
-    }
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         // TODO Auto-generated method stub
@@ -129,18 +87,8 @@ public class BaseActivity extends MySupportActivity{
             }
             return true;
         }
-        // if (event.getAction() == event.ACTION_DOWN) {
-        // InputMethodManager manager = (InputMethodManager)
-        // getSystemService(Context.INPUT_METHOD_SERVICE);
-        // if (getCurrentFocus() != null
-        // && getCurrentFocus().getWindowToken() != null) {
-        // manager.hideSoftInputFromWindow(getCurrentFocus()
-        // .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        // }
-        // }
         return super.dispatchKeyEvent(event);
     }
-
 
     /**
      * APP字体大小，不随系统的字体大小变化而变化
@@ -155,28 +103,6 @@ public class BaseActivity extends MySupportActivity{
         res.updateConfiguration(config, res.getDisplayMetrics());
         return res;
     }
-
-
-    // 开始计时
-    private void startTimer() {
-        MyTimerTask.getInstance().setRetentionTimeCallBack(new MyTimerTask.RetentionTimeCallBack() {
-            @Override
-            public void stopTimer() {
-                try {
-                    popTo(Class.forName(Config.HOME_LOGIN), false);
-                    DevicePolicyManager mDevicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-                    mDevicePolicyManager.lockNow();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        long mLastActionTime = System.currentTimeMillis();
-        MyTimerTask.getInstance().initTimerTask(mLastActionTime);
-
-    }
-
 
     // 每当用户接触了屏幕，都会执行此方法
     @Override

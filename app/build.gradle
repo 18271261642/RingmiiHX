@@ -132,6 +132,7 @@ dependencies {
     implementation project(':ecg')
     implementation project(':apilib')
     implementation project(':common_m500_1000')
+    implementation project(':bpm1000')
 
     implementation project(path: ':wheelpicker')
 

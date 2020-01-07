@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_all"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/head" />
+
+
+    <LinearLayout
+        style="@style/myBodyLayout"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_49"
+            android:layout_marginTop="@dimen/dp_23"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_13"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/m500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="臂筒式血压计"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="操作指南"
+                android:textColor="#F18937"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="测量操作"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="测量结果"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_19"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_224"
+                    android:layout_height="@dimen/dp_168"
+                    android:background="@mipmap/icon_01" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_100"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:lineSpacingExtra="@dimen/dp_5"
+                    android:text="1.将手臂伸入臂筒内，\n手臂肘部放在凹陷处。"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_21" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_180"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_224"
+                    android:layout_height="@dimen/dp_168"
+                    android:background="@mipmap/icon_cx" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_100"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:lineSpacingExtra="@dimen/dp_5"
+                    android:text="2.保持正确坐姿，\n按[开始/停止]按钮，\n开始测量血压。"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_21" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bp_result_next"
+            android:layout_width="@dimen/dp_134"
+            android:layout_height="@dimen/dp_44"
+            android:visibility="visible"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-20dp"
+            android:background="@drawable/button_cancel"
+            android:text="下一步"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/dp_19" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

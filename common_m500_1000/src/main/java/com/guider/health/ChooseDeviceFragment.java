@@ -178,7 +178,7 @@ public class ChooseDeviceFragment extends BaseFragment {
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pop();
+                _mActivity.finish();
             }
         });
 

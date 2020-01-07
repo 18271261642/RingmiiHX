@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_all"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/head"/>
+
+
+    <LinearLayout
+        style="@style/myBodyLayout"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_49"
+            android:layout_marginTop="@dimen/dp_23"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_13"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/m500" />
+
+            <com.guider.health.bp.view.TipTitleView
+                android:id="@+id/tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_57"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/glu_connect_icon"
+                android:layout_marginLeft="@dimen/dp_79"
+                android:layout_width="@dimen/dp_194"
+                android:layout_height="@dimen/dp_194"
+                android:background="@mipmap/icon_ble" />
+
+
+            <LinearLayout
+                android:layout_marginLeft="@dimen/dp_53"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="操作指南："
+                    android:textColor="#7D7D7D"
+                    android:textSize="@dimen/sp_19" />
+
+                <TextView
+                    android:id="@+id/glu_operat_reminders"
+                    android:layout_width="@dimen/dp_280"
+                    android:layout_height="@dimen/dp_121"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text="蓝牙连接中..."
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_21" />
+
+                <Button
+                    android:id="@+id/glu_button_failed"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/dp_169"
+                    android:layout_marginTop="@dimen/dp_22"
+                    android:text="已经解决 重新连接"
+                    android:textSize="@dimen/dp_19"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/button_cancel"
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="@dimen/dp_30"
+                    android:paddingRight="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_44" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

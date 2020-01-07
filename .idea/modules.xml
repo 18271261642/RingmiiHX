@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/arouter-compiler/arouter-compiler.iml" filepath="$PROJECT_DIR$/arouter-compiler/arouter-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/arouter-core/arouter-core.iml" filepath="$PROJECT_DIR$/arouter-core/arouter-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/bluetooth/bluetooth.iml" filepath="$PROJECT_DIR$/bluetooth/bluetooth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bpm1000/bpm1000.iml" filepath="$PROJECT_DIR$/bpm1000/bpm1000.iml" />
       <module fileurl="file://$PROJECT_DIR$/circleviewprogress/circleviewprogress.iml" filepath="$PROJECT_DIR$/circleviewprogress/circleviewprogress.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/common_m500_1000/common_m500_1000.iml" filepath="$PROJECT_DIR$/common_m500_1000/common_m500_1000.iml" />

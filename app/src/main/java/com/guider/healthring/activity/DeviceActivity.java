@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.guider.health.ChooseDeviceFragment;
 import com.guider.health.apilib.ApiUtil;
+import com.guider.health.bluetooth.core.BleBluetooth;
 import com.guider.health.common.core.BaseActivity;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.UserManager;
@@ -19,6 +20,7 @@ public class DeviceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device);
 
+        BleBluetooth.getInstance().init(this);
         loadRootFragment(R.id.main_content, new ChooseDeviceFragment());
 
     }
@@ -29,11 +31,9 @@ public class DeviceActivity extends BaseActivity {
         MyUtils.application = activity.getApplication();
         ApiUtil.init(activity.getApplication() , MyUtils.getMacAddress());
         DeviceInit.getInstance().init();
-
         // 初始化用户信息
         UserManager.getInstance().setAccountId(userId);
         UserManager.getInstance().getUserInfoOnServer(activity);
-
         // 开启M系列入口Activity
         activity.startActivity(new Intent(activity , DeviceActivity.class));
     }

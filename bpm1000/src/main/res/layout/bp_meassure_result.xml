@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_all"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/head" />
+
+
+    <LinearLayout
+        style="@style/myBodyLayout"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_49"
+            android:layout_marginTop="@dimen/dp_23"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_13"
+                android:layout_gravity="center_vertical"
+                android:background="@mipmap/m500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="血压"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="测量操作"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="操作提醒"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="设备测量"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text=">"
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_14" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="测量结果"
+                android:textColor="#F18937"
+                android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_28"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="@dimen/dp_214"
+                    android:layout_height="@dimen/dp_166"
+                    android:background="@drawable/text_box"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/bp_result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="120/120"
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_38" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_20"
+                        android:text="mmHg"
+                        android:layout_gravity="bottom|end"
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_15" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/sp_38"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="测量结果："
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_15" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_13">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sbp"
+                            android:textColor="#171717"
+                            android:textSize="@dimen/sp_15" />
+
+                        <TextView
+                            android:id="@+id/bp_press1"
+                            android:layout_width="@dimen/dp_109"
+                            android:layout_height="@dimen/dp_29"
+                            android:layout_marginLeft="@dimen/dp_6"
+                            android:background="@drawable/text_box"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#171717"
+                            android:textSize="@dimen/sp_15" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/bp_heart1"
+                                android:layout_width="@dimen/dp_11"
+                                android:layout_height="@dimen/dp_10"
+                                android:visibility="invisible"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/dp_3"
+                                android:background="@mipmap/heart" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_70"
+                                android:layout_height="@dimen/dp_20"
+                                android:background="#F6CC7B"
+                                android:gravity="center"
+                                android:text="低压"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/sp_12" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/bp_heart2"
+                                android:visibility="invisible"
+                                android:layout_width="@dimen/dp_11"
+                                android:layout_height="@dimen/dp_10"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/dp_3"
+                                android:background="@mipmap/heart" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_70"
+                                android:layout_height="@dimen/dp_20"
+                                android:background="#7ABC5B"
+                                android:gravity="center"
+                                android:text="正常"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/bp_heart3"
+                                android:visibility="invisible"
+                                android:layout_width="@dimen/dp_11"
+                                android:layout_height="@dimen/dp_10"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/dp_3"
+                                android:background="@mipmap/heart" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_70"
+                                android:layout_height="@dimen/dp_20"
+                                android:background="#F35D57"
+                                android:gravity="center"
+                                android:text="高压"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_14"
+                        android:layout_marginTop="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dbp"
+                            android:textColor="#171717"
+                            android:textSize="@dimen/sp_15" />
+
+                        <TextView
+                            android:id="@+id/bp_press2"
+                            android:layout_width="@dimen/dp_109"
+                            android:layout_height="@dimen/dp_29"
+                            android:layout_marginLeft="@dimen/dp_6"
+                            android:background="@drawable/text_box"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#171717"
+                            android:textSize="@dimen/sp_15" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/bp_heart4"
+                                android:visibility="invisible"
+                                android:layout_width="@dimen/dp_11"
+                                android:layout_height="@dimen/dp_10"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/dp_3"
+                                android:background="@mipmap/heart" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_70"
+                                android:layout_height="@dimen/dp_20"
+                                android:background="#F6CC7B"
+                                android:gravity="center"
+                                android:text="低压"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/sp_12" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/bp_heart5"
+                                android:visibility="invisible"
+                                android:layout_width="@dimen/dp_11"
+                                android:layout_height="@dimen/dp_10"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/dp_3"
+                                android:background="@mipmap/heart" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_100"
+                                android:layout_height="@dimen/dp_20"
+                                android:background="#7ABC5B"
+                                android:gravity="center"
+                                android:text="正常"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/bp_heart6"
+                                android:visibility="invisible"
+                                android:layout_width="@dimen/dp_11"
+                                android:layout_height="@dimen/dp_10"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/dp_3"
+                                android:background="@mipmap/heart" />
+
+                            <TextView
+                                android:layout_width="@dimen/dp_100"
+                                android:layout_height="@dimen/dp_20"
+                                android:background="#F35D57"
+                                android:gravity="center"
+                                android:text="异常"
+                                android:textColor="#FFFFFF"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/operat_reminders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_30"
+                android:text="参考范围:  普通人群: 收缩压 &lt; 120（mmHg），舒张压 &lt; 80（mmHg)\n                    慢病、老年人群: 收缩压 &lt; 140（mmHg），舒张压 &lt; 90（mmHg) "
+                android:textColor="#ACACAC"
+                android:textSize="@dimen/sp_15" />
+
+
+            <Button
+                android:id="@+id/bp_result_next"
+                android:layout_width="@dimen/dp_134"
+                android:layout_height="@dimen/dp_44"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/dp_410"
+                android:layout_marginTop="@dimen/dp_13"
+                android:background="@drawable/button_cancel"
+                android:text="下一步"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/dp_19" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
