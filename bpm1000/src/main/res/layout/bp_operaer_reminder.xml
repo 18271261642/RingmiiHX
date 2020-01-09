@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="血压"
+                android:text="@string/xueya"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/celiangcaozuo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作提醒"
+                android:text="@string/caozuotixing"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_16" />
 
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
+                android:text="@string/shebeiceliang"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/celiangjieguo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_7"
                 android:lineSpacingExtra="@dimen/dp_20"
-                android:text="1. 测量前静坐5分钟，袖带中心与心脏保持同一高度。\n2. 按下【开关】按钮开始测量。\n3. 测量中请不要说话和移动身体。"
+                android:text="@string/_1_5_n2_n3"
                 android:textColor="#171717"
                 android:textSize="@dimen/sp_21" />
 
@@ -134,7 +134,7 @@
                 android:id="@+id/bp_button_n"
                 android:layout_below="@id/pic"
                 android:layout_alignParentRight="true"
-                android:text="确认已开机 下一步"
+                android:text="@string/querenkaiji"
                 android:textSize="@dimen/dp_19"
                 android:textColor="#FAFCFF"
                 android:stateListAnimator="@null"

@@ -41,7 +41,7 @@ public class BPFirstOperaterReminder extends BPFragment {
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_BP));
-        ((TextView) view.findViewById(R.id.title)).setText("测量操作");
+        ((TextView) view.findViewById(R.id.title)).setText(R.string.celiangcaozuo);
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -14,6 +14,7 @@ import com.guider.health.common.core.HeartPressCx;
 import com.guider.health.common.core.HeartPressMbb_88;
 import com.guider.health.common.core.HeartPressMbb_9804;
 import com.guider.health.common.core.HeartPressYf;
+import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.standard.Constant;
 
 import java.util.ArrayList;
@@ -159,10 +160,10 @@ public class DeviceInit {
         fragments.put(DEV_BP_MBB_88  , Config.BP_MBB88_FRAGMENT);
         fragments.put(DEV_BP_MBB_9804, Config.BP_MBB9804_FRAGMENT);
 
+        names.put(DEV_ECG_6, MyUtils.application.getString(R.string.liudao));
+        names.put(DEV_BP, MyUtils.application.getString(R.string.fore));
         names.put(DEV_GLU, "无创血糖测量");
-        names.put(DEV_ECG_6, "六导心电测量");
         names.put(DEV_ECG_HD, "红豆心电");
-        names.put(DEV_BP, "臂式血压测量");
         names.put(DEV_BP_CX, "臂筒式血压测量");
         names.put(DEV_BP_YF, "动脉硬化测量");
         names.put(DEV_BP_AVE, "动脉硬化测量");

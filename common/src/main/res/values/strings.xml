@@ -14,4 +14,9 @@
     <string name="heart" translatable="false">心率(bpm) :</string>
     <string name="ui_cancel">取消</string>
     <string name="ui_sure">确认</string>
+    <string name="fanhui">返回</string>
+    <string name="shouye">首页</string>
+    <string name="tiaoguo">跳过测量</string>
+    <string name="liudao">六导心电测量</string>
+    <string name="fore">臂式血压测量</string>
 </resources>

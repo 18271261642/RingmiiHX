@@ -50,7 +50,7 @@ public class BPDeviceConnectAndMessure extends BPFragment {
         BleBluetooth.getInstance().openBluetooth();
 
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
-        ((TextView) view.findViewById(R.id.title)).setText("设备测量");
+        ((TextView) view.findViewById(R.id.title)).setText(R.string.shebeiceliang);
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +118,7 @@ public class BPDeviceConnectAndMessure extends BPFragment {
 
     private void changeUi2Fail() {
         handler.removeMessages(0);
-        ((TextView) view.findViewById(R.id.bp_reminder)).setText("连接失败");
+        ((TextView) view.findViewById(R.id.bp_reminder)).setText(R.string.lianjieshibai);
 
         //view.findViewById(R.id.bp_cancel).setVisibility(View.GONE);
         final Button bt = view.findViewById(R.id.bp_re);
@@ -126,7 +126,7 @@ public class BPDeviceConnectAndMessure extends BPFragment {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TextView) view.findViewById(R.id.bp_reminder)).setText("正在测量中\n  请稍后...");
+                ((TextView) view.findViewById(R.id.bp_reminder)).setText(R.string.celiangzhong);
                 //view.findViewById(R.id.bp_cancel).setVisibility(View.VISIBLE);
                 bt.setVisibility(View.INVISIBLE);
                 BPServiceManager.getInstance().startMeasure();

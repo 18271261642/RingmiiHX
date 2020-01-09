@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="血压"
+                android:text="@string/xueya"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/celiangcaozuo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作提醒"
+                android:text="@string/caozuotixing"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
+                android:text="@string/shebeiceliang"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_16" />
 
@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/celiangjieguo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
@@ -124,7 +124,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_45"
-                    android:text="正在测量中\n  请稍后..."
+                    android:gravity="center"
+                    android:text="@string/celiangzhong"
                     android:textColor="#7D7D7D"
                     android:textSize="@dimen/sp_28" />
 
@@ -135,7 +136,7 @@
                     android:layout_height="@dimen/dp_44"
                     android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/button_cancel"
-                    android:text="取消"
+                    android:text="@string/quxiao"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/dp_19"
                     android:visibility="gone" />
@@ -146,7 +147,7 @@
                     android:layout_height="@dimen/dp_44"
                     android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/button_cancel"
-                    android:text="连接失败 重新连接"
+                    android:text="@string/lianjieshibai_chongxin"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/dp_19"
                     android:visibility="invisible" />
@@ -159,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_30"
-                android:text="参考范围:  普通人群: 收缩压 &lt; 120（mmHg），舒张压 &lt; 80（mmHg)\n                    慢病、老年人群: 收缩压 &lt; 140（mmHg），舒张压 &lt; 90（mmHg) "
+                android:text="@string/xueyashuoming"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 

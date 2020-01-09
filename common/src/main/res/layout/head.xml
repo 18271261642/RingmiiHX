@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_5"
-            android:text="返回"
+            android:text="@string/fanhui"
             android:textColor="#F18937"
             android:textSize="@dimen/sp_16" />
     </LinearLayout>
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_6"
-            android:text="首页"
+            android:text="@string/shouye"
             android:textColor="#F18937"
             android:textSize="@dimen/sp_16" />
     </LinearLayout>
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_5"
-            android:text="跳过测量"
+            android:text="@string/tiaoguo"
             android:textColor="#F18937"
             android:textSize="@dimen/sp_16" />
     </LinearLayout>

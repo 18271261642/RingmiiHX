@@ -71,7 +71,7 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 System.exit(0);
             }
         });
-        ((TextView) view.findViewById(R.id.title)).setText("设备测量");
+        ((TextView) view.findViewById(R.id.title)).setText(R.string.shebeiceliang);
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

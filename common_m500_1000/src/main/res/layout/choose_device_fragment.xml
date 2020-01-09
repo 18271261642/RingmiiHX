@@ -190,7 +190,7 @@
             android:layout_marginTop="@dimen/dp_20"
             android:background="@drawable/button_cancel"
             android:stateListAnimator="@null"
-            android:text="开始测量"
+            android:text="@string/kaishiceliang"
             android:textColor="#FAFCFF"
             android:textSize="@dimen/sp_19" />
     </LinearLayout>

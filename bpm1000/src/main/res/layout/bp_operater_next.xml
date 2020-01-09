@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="血压"
+                android:text="@string/xueya"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/celiangcaozuo"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_15" />
 
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作提醒"
+                android:text="@string/caozuotixing"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_16" />
 
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
+                android:text="@string/shebeiceliang"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/celiangjieguo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
@@ -124,7 +124,7 @@
                 android:layout_height="@dimen/dp_100"
                 android:layout_marginLeft="@dimen/dp_20"
                 android:lineSpacingExtra="@dimen/dp_5"
-                android:text="1、连接设备，露臂、手掌向上、肘部伸直，套袖带\n2、袖带气管指向下手臂，袖带下缘距肘窝2-3cm\n3、袖带胶管放在肱动脉搏动点"
+                android:text="@string/_1_n2_2_3cm_n3"
                 android:textColor="#171717"
                 android:textSize="@dimen/sp_18" />
 
@@ -139,7 +139,7 @@
             android:layout_marginTop="@dimen/dp_4"
             android:background="@drawable/button_cancel"
             android:stateListAnimator="@null"
-            android:text="下一步"
+            android:text="@string/xiayibu"
             android:textColor="#FAFCFF"
             android:textSize="@dimen/dp_19" />
 
