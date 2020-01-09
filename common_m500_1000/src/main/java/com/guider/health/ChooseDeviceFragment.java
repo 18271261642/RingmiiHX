@@ -20,10 +20,6 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.guider.health.all.R;
-import com.guider.health.apilib.ApiCallBack;
-import com.guider.health.apilib.ApiUtil;
-import com.guider.health.apilib.IGuiderApi;
-import com.guider.health.apilib.model.Devices;
 import com.guider.health.arouter_annotation.Route;
 import com.guider.health.common.cache.MeasureDataUploader;
 import com.guider.health.common.core.BaseFragment;
@@ -40,7 +36,6 @@ import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.net.NetStateController;
 import com.guider.health.common.net.net.RestService;
 import com.guider.health.common.net.net.RetrofitLogInterceptor;
-import com.guider.health.common.net.util.file.CardiartAppUtil;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -116,31 +111,31 @@ public class ChooseDeviceFragment extends BaseFragment {
             list.clear();
         }
 
-        // 如果测量项中有脏音 , 就检查是否已经安装了apk , 否则下载安装
-        if (Config.DEVICE_KEYS.contains(DeviceInit.DEV_ECG_tzq)) {
-            new CardiartAppUtil().checkAndLoadApk(_mActivity);
-        }
+        // TODO 如果测量项中有脏音 , 就检查是否已经安装了apk , 否则下载安装
+//        if (Config.DEVICE_KEYS.contains(DeviceInit.DEV_ECG_tzq)) {
+//            new CardiartAppUtil().checkAndLoadApk(_mActivity);
+//        }
 
         getDeviceList();
     }
 
     private void getDeviceList() {
-        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
-                new ApiCallBack<List<Devices>>(){
-                    @Override
-                    public void onApiResponse(Call<List<Devices>> call, Response<List<Devices>> response) {
-                        super.onApiResponse(call, response);
-                        if (response != null && response.body() != null && !response.body().isEmpty()) {
-                            Config.DEVICE_KEYS.clear();
-                            for (Devices device : response.body()) {
-                                Config.DEVICE_KEYS.add(device.getBtName() + device.getVersion());
-                                Config.DEVICE_OBJ.put(device.getBtName() + device.getVersion(), device);
-                            }
-                            init();
-                        }
-                    }
-                }
-        );
+//        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
+//                new ApiCallBack<List<Devices>>(){
+//                    @Override
+//                    public void onApiResponse(Call<List<Devices>> call, Response<List<Devices>> response) {
+//                        super.onApiResponse(call, response);
+//                        if (response != null && response.body() != null && !response.body().isEmpty()) {
+//                            Config.DEVICE_KEYS.clear();
+//                            for (Devices device : response.body()) {
+//                                Config.DEVICE_KEYS.add(device.getBtName() + device.getVersion());
+//                                Config.DEVICE_OBJ.put(device.getBtName() + device.getVersion(), device);
+//                            }
+//                            init();
+//                        }
+//                    }
+//                }
+//        );
     }
 
 
@@ -175,20 +170,13 @@ public class ChooseDeviceFragment extends BaseFragment {
 
         list.clear();
 
-        view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _mActivity.finish();
-            }
-        });
-
         view.findViewById(R.id.middle_line).setVisibility(View.GONE);
         view.findViewById(R.id.home).setVisibility(View.GONE);
         ((TextView) view.findViewById(R.id.title)).setText("选择测量设备");
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pop();
+                _mActivity.finish();
             }
         });
 

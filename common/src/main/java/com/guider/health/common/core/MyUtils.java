@@ -37,32 +37,9 @@ public class MyUtils {
 
     public static Context application;
 
-    static String df = "02:00:00:00:00:00";
+    static String df = "11:11:11:11:11:12";
     public static String getMacAddress() {
-        String spMac = (String) SPUtils.get(application, "Mac", df);
-        if (!TextUtils.isEmpty(spMac) && !df.equals(spMac)) {
-            return spMac;
-        }
-        String mac = "";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            // 8.0的机型去拿WIFI Mac
-            mac = getWifiAddress();
-        } else {
-            // 8.0以下的机型去拿蓝牙Mac地址
-            mac = getBluetoothAddress();
-        }
-        if (!TextUtils.isEmpty(mac) && !df.equals(mac)) {
-            // mac地址不为空 , 并且不是默认值 , 返回mac地址
-            SPUtils.put(application , "Mac", mac);
-            return mac;
-        } else {
-            // 实时获取失败后 , 检查缓存mac地址
-            if (!TextUtils.isEmpty(spMac) && !df.equals(spMac)) {
-                return spMac;
-            } else {
-                return df;
-            }
-        }
+        return "11:11:11:11:11:12";
     }
 
     public static String getWifiAddress() {

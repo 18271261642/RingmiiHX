@@ -127,26 +127,13 @@ public class DeviceInit {
     }
 
     public void init() {
-        if (type.equals("M500")) {
-            initM500();
-        } else if (type.equals("M1000")) {
-            initM1000();
-        } else if (type.equals("M100")) {
-            initM100();
-        } else {
-            list.add(DEV_GLU); // 无创血糖
-            list.add(DEV_ECG_6);// 六导心电
-            list.add(DEV_BP);  // 移动版
-            list.add(DEV_BP_CX);           // 插线版
-            list.add(DEV_BP_YF);           // 云峰
-            list.add(DEV_BP_AVE);       // ave
-            list.add(DEV_ECG_12);         // 12导心电
-            list.add(DEV_ECG_tzq);         // 听诊器
-            list.add(DEV_BP_MBB_88);         // 小脉搏波
-            list.add(DEV_BP_MBB_9804);         // 大脉搏波
-            list.add(DEV_ECG_HD);
-            Config.DEVICE_KEYS.addAll(list);
+        if (list.size() > 0) {
+            return;
         }
+        list.add(DEV_BP);      // 无创血糖
+        list.add(DEV_ECG_6);    // 六导心电
+        Config.DEVICE_KEYS.add(list.get(0));
+        Config.DEVICE_KEYS.add(list.get(1));
 
         pics.put(DEV_GLU, R.mipmap.device_wcxt);
         pics.put(DEV_ECG_6, R.mipmap.device_ldxd);
@@ -185,54 +172,4 @@ public class DeviceInit {
         names.put(DEV_BP_MBB_9804, "脉搏波9804");
     }
 
-    // 100  无创   新美特   fore  家用听证器  十二导
-    private void initM100() {
-        list.add(DEV_GLU);      // 无创血糖
-        list.add(DEV_ECG_6);    // 六导心电
-        list.add(DEV_BP);   // bp
-//        list.add(DEV_ECG_12);   // 12导心电
-        //keys会被接口传递过来的值覆盖
-        Config.DEVICE_KEYS.add(list.get(0));
-        Config.DEVICE_KEYS.add(list.get(1));
-        Config.DEVICE_KEYS.add(list.get(2));
-//        Config.DEVICE_KEYS.add(list.get(3));
-    }
-
-    //1000  无创  新美      欧姆龙   专业听证器  十二导心电
-    private void initM1000() {
-        list.add(DEV_GLU); // 无创血糖
-        list.add(DEV_ECG_6);         // 六导心电
-        list.add(DEV_BP_CX);           // 插线版
-        list.add(DEV_ECG_12);         // 12导心电
-        list.add(DEV_ECG_tzq);         // 听诊器
-        //keys会被接口传递过来的值覆盖
-        Config.DEVICE_KEYS.add(list.get(0));
-        Config.DEVICE_KEYS.add(list.get(1));
-        Config.DEVICE_KEYS.add(list.get(2));
-        Config.DEVICE_KEYS.add(list.get(3));
-        Config.DEVICE_KEYS.add(list.get(4));
-    }
-
-    /**
-     * 500 无创    新美特    血压计   专业听证器  十二导心电  昭和
-     */
-    private void initM500() {
-        list.add(DEV_GLU); // 无创血糖
-        list.add(DEV_ECG_6);         // 六导心电
-//        list.add(DEV_BP_AVE);       // ave
-//        list.add(DEV_ECG_12);         // 12导心电
-        list.add(DEV_BP);   // 移动版
-        list.add(DEV_ECG_tzq);         // 听诊器
-        //keys会被接口传递过来的值覆盖
-        Config.DEVICE_KEYS.add(list.get(0));
-        Config.DEVICE_KEYS.add(list.get(1));
-        Config.DEVICE_KEYS.add(list.get(2));
-        Config.DEVICE_KEYS.add(list.get(3));
-    }
-
-    class DeviceConfig {
-        String fragmentPackage;
-        int homeRes;
-        String name;
-    }
 }
