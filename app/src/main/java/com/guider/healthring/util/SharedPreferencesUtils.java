@@ -124,6 +124,7 @@ public class SharedPreferencesUtils {
 
     public static void saveObject(Context context, String key, Object obj) {
         try {
+            Log.i("shardePresss", "write--"+key + "---" + obj);
             // 保存对象
             SharedPreferences.Editor sharedata = context.getSharedPreferences(FILE_NAME, 0).edit();
             //先将序列化结果写到byte缓存中，其实就分配一个内存空间
@@ -152,6 +153,7 @@ public class SharedPreferencesUtils {
     public static Object readObject(Context context, String key) {
         try {
             if (FILE_NAME == null) return null;
+            Log.i("shardePresss", "read--"+key);
             SharedPreferences sharedata = context.getSharedPreferences(FILE_NAME, 0);
             if (sharedata.contains(key)) {
                 String string = sharedata.getString(key, "");

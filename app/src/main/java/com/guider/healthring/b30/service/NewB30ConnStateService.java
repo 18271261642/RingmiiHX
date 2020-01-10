@@ -141,7 +141,7 @@ public class NewB30ConnStateService extends Service {
     }
 
 
-    //连接
+    // TODO 连接
     public void connB30ConnBle(final String mac, final String nameStr) {
         MyApp.getInstance().getVpOperateManager().registerConnectStatusListener(mac, iaBleConnectStatusListener);
         MyApp.getInstance().getVpOperateManager().connectDevice(mac, new IConnectResponse() {

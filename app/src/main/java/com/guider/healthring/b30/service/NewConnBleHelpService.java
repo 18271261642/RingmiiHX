@@ -500,23 +500,24 @@ public class NewConnBleHelpService {
         //目标步数
         int sportGoal = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "b30Goal", 0);
         PersonInfoData personInfoData = WatchUtils.getUserPerson(sportGoal);
-        if (personInfoData == null)
-            return;
-        MyApp.getInstance().getVpOperateManager().syncPersonInfo(new IBleWriteResponse() {
-            @Override
-            public void onResponse(int i) {
-            }
-        }, new IPersonInfoDataListener() {
-            @Override
-            public void OnPersoninfoDataChange(EOprateStauts eOprateStauts) {
-                //同步用户信息成功
+
+        if (personInfoData != null){
+            MyApp.getInstance().getVpOperateManager().syncPersonInfo(new IBleWriteResponse() {
+                @Override
+                public void onResponse(int i) {
+                }
+            }, new IPersonInfoDataListener() {
+                @Override
+                public void OnPersoninfoDataChange(EOprateStauts eOprateStauts) {
+                    //同步用户信息成功
 //                if (eOprateStauts == EOprateStauts.OPRATE_SUCCESS) {
 //                    if (connBleHelpListener != null) {
 //                        connBleHelpListener.connSuccState();
 //                    }
 //                }
-            }
-        }, personInfoData);
+                }
+            }, personInfoData);
+        }
 
 
 
