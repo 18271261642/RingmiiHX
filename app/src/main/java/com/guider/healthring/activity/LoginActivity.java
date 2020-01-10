@@ -34,6 +34,7 @@ import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.ConnectManages;
 import com.guider.healthring.bean.BlueUser;
+import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.net.OkHttpObservable;
 import com.guider.healthring.rxandroid.DialogSubscriber;
 import com.guider.healthring.rxandroid.SubscriberOnNextListener;
@@ -50,6 +51,8 @@ import com.guider.healthring.util.URLs;
 import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.view.PrivacyActivity;
 import com.guider.healthring.view.PromptDialog;
+import com.guider.healthring.w30s.utils.httputils.RequestPressent;
+import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.guider.healthring.xinlangweibo.SinaUserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -73,7 +76,7 @@ import butterknife.OnClick;
  * Created by thinkpad on 2017/3/3.
  */
 
-public class LoginActivity extends WatchBaseActivity implements Callback {//}, PlatformActionListener {
+public class LoginActivity extends WatchBaseActivity implements Callback , RequestView {//}, PlatformActionListener {
 
 
     @BindView(R.id.login_visitorTv)
@@ -126,6 +129,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback {//}, P
 
     private IWXAPI iwxapi;
 
+    private RequestPressent requestPressent;
+
 
 
     @Override
@@ -153,6 +158,9 @@ public class LoginActivity extends WatchBaseActivity implements Callback {//}, P
     private void initViews() {
         loginWaveView.startMove();  //波浪线贝塞尔曲线
 
+        requestPressent = new RequestPressent();
+        requestPressent.attach(this);
+
         subscriberOnNextListener = new SubscriberOnNextListener<String>() {
             @Override
             public void onNext(String result) {
@@ -176,6 +184,9 @@ public class LoginActivity extends WatchBaseActivity implements Callback {//}, P
                         WatchUtils.setIsWxLogin("LOGION_PHONE",jsonObject.getString("userInfo"));
 
                         SharedPreferencesUtils.setParam(LoginActivity.this, SharedPreferencesUtils.CUSTOMER_ID, Common.customer_id);
+
+                        //SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
+
                         startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
                         finish();
                     } else if (loginResult.equals("003")) {
@@ -265,15 +276,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback {//}, P
 //                ssoHandler.authorize(new AuthListener());
                 break;
             case R.id.qq_iv://QQ登录
-                //ToastUtil.showToast(LoginActivity.this,"QQ登录");
-//                if (mTencent == null) {
-//                    mTencent = Tencent.createInstance(QQAPP_ID, this);
-//                }
-//                if (mTencent == null) ToastUtil.showToast(LoginActivity.this, "Tencent为null");
-//                if (!mTencent.isSessionValid()) {
-//                    mTencent.login(LoginActivity.this, "all", loginListener);
-//                }
-
                 loginListener = new IUiListener() {
                     @Override
                     public void onComplete(Object o) {
@@ -495,14 +497,11 @@ public class LoginActivity extends WatchBaseActivity implements Callback {//}, P
         map.put("phone", uName);
         map.put("pwd", Md5Util.Md532(uPwd));
         String mapjson = gson.toJson(map);
-//        Log.e("msg", "-mapjson-" + mapjson);
-        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, LoginActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.logon, mapjson);
+        Log.e("msg", "-mapjson-" + mapjson);
+        if (requestPressent != null) {
+            requestPressent.getRequestJSONObject(0x01, Commont.FRIEND_BASE_URL + URLs.logon, LoginActivity.this, mapjson, 1);
+        }
 
-        SharedPreferences userSettings = getSharedPreferences("Login_id", 0);
-        SharedPreferences.Editor editor = userSettings.edit();
-        editor.putInt("id", 0);
-        editor.commit();
 
 
         //登录到盖德后台
@@ -662,4 +661,62 @@ public class LoginActivity extends WatchBaseActivity implements Callback {//}, P
         return super.dispatchKeyEvent(event);
     }
 
+
+
+
+    @Override
+    public void showLoadDialog(int what) {
+
+    }
+
+    @Override
+    public void successData(int what, Object object, int daystag) {
+        if (object == null)
+            return;
+        if (object.toString().contains("<html>"))
+            return;
+        if (what == 0x01) {  //手机号登录
+            loginForUserPhone(object.toString(), daystag);
+        }
+    }
+
+    @Override
+    public void failedData(int what, Throwable e) {
+
+    }
+
+    @Override
+    public void closeLoadDialog(int what) {
+
+    }
+
+
+    //用户输入账号登录
+    private void loginForUserPhone(String result, int tag) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (!jsonObject.has("code"))
+                return;
+            if (jsonObject.getInt("code") == 200) {
+                String userStr = jsonObject.getString("data");
+                if (userStr != null) {
+                    UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
+                    Common.customer_id = userInfoBean.getUserid();
+
+                    //保存userid
+                    SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
+                    SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
+                    SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
+
+                    startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
+                    finish();
+                }
+
+            }else{
+                ToastUtil.showToast(LoginActivity.this,jsonObject.getString("msg"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

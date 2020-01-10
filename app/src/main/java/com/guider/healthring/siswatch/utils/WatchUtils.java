@@ -1492,5 +1492,22 @@ public class WatchUtils {
         ToastUtil.showToast(context, txt);
     }
 
+    /**
+     * 注册时去除手机号中的-
+     * @param str
+     * @return
+     */
+    public static String removeStr(String str){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(isEmpty(str))
+            return null;
+        for(int i = 0;i<str.length();i++){
+            char tmpStr = str.charAt(i);
+            if(!(tmpStr+"").equals("-"))
+                stringBuilder.append(tmpStr);
+        }
+        return stringBuilder.toString();
+    }
+
 
 }

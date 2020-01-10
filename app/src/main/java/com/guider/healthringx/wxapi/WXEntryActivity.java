@@ -11,6 +11,7 @@ import com.guider.healthring.MyApp;
 import com.guider.healthring.activity.GuiderWxBindPhoneActivity;
 import com.guider.healthring.bean.BlueUser;
 import com.guider.healthring.bean.GuiderWXUserInfoBean;
+import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.bean.WXUserBean;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
@@ -118,31 +119,34 @@ public class WXEntryActivity extends WatchBaseActivity implements IWXAPIEventHan
         params.put("sex", (wxUserBean.getSex().equals("1")?"M":"F"));
         params.put("nickName", wxUserBean.getNickname());
         if (Commont.isDebug)Log.e(TAG, "3333游客注册或者登陆参数：" + params.toString());
-        String url = URLs.HTTPs + URLs.disanfang;
+        String url = Commont.FRIEND_BASE_URL + URLs.disanfang;
         if (Commont.isDebug)Log.e(TAG, "====  json  " +  new Gson().toJson(params));
         OkHttpTool.getInstance().doRequest(url, new Gson().toJson(params), this, new OkHttpTool.HttpResult() {
                     @Override
                     public void onResult(String result) {
                         Log.e(TAG, "-------微信登录到bl=" + result);
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                if(jsonObject.has("resultCode")){
-                                    if(jsonObject.getString("resultCode").equals("001")){
-                                        String shuzhu = jsonObject.getString("userInfo");
-                                        JSONObject jsonObjectStr = new JSONObject(shuzhu);
-                                        String userId = jsonObjectStr.getString("userId");
-                                        Gson gson = new Gson();
-                                        BlueUser userInfo = gson.fromJson(shuzhu, BlueUser.class);
-                                        Common.userInfo = userInfo;
-                                        Common.customer_id = userId;
-                                        //保存userid
-                                        SharedPreferencesUtils.saveObject(WXEntryActivity.this, "userId", userInfo.getUserId());
-                                    }
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            if (!jsonObject.has("code"))
+                                return;
+                            if (jsonObject.getInt("code") == 200) {
+                                String userStr = jsonObject.getString("data");
+                                if (userStr != null) {
+                                    UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
+                                    Common.customer_id = userInfoBean.getUserid();
+                                    //保存userid
+                                    SharedPreferencesUtils.saveObject(WXEntryActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
+                                    SharedPreferencesUtils.saveObject(WXEntryActivity.this, "userInfo", userStr);
+                                    SharedPreferencesUtils.saveObject(WXEntryActivity.this, Commont.USER_INFO_DATA, userStr);
 
+                                    startActivity(new Intent(WXEntryActivity.this, NewSearchActivity.class));
+                                    finish();
                                 }
-                            } catch (Exception E) {
-                                E.printStackTrace();
+
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         }
                     });
 

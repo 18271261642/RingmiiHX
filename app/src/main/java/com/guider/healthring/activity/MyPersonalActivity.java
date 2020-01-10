@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +40,7 @@ import com.guider.healthring.R;
 import com.guider.healthring.b30.view.B30SkinColorView;
 import com.guider.healthring.bean.GuiderUserInfo;
 import com.guider.healthring.bean.User;
+import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.imagepicker.PickerBuilder;
 import com.guider.healthring.net.OkHttpObservable;
 import com.guider.healthring.rxandroid.CommonSubscriber;
@@ -190,6 +192,9 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
     //盖德user
     private GuiderUserInfo guiderUserInfo = null;
+
+
+    private UserInfoBean userInfoBean = null;
 
 
     @Override
@@ -369,12 +374,12 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
     // 获取用户数据
     private void getUserInfoData() {
-        String url = URLs.HTTPs + URLs.getUserInfo;
+        String url = Commont.FRIEND_BASE_URL + URLs.getUserInfo;
         if (requestPressent != null) {
             HashMap<String, String> map = new HashMap<>();
             map.put("userId", (String) SharedPreferencesUtils.readObject(MyPersonalActivity.this, "userId"));
             String mapJson = gson.toJson(map);
-            requestPressent.getRequestJSONObject(1, url, this, mapJson, 11);
+            requestPressent.getRequestJSONObject(0x01, url, this, mapJson, 11);
         }
     }
 
@@ -752,46 +757,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     public void OnSettingDataChange(CustomSettingData customSettingData) {
 //                        Log.e(TAG, " ===  开关改变 " + customSettingData.toString());
                         closeLoadingDialog();
-//                        if (is24Hour) {
-//                            customSettingData.setIs24Hour(true);
-//                        } else {
-//                            customSettingData.setIs24Hour(false);
-//                        }
-//                        if (isSystem) {
-//                            customSettingData.setMetricSystem(EFunctionStatus.SUPPORT_OPEN);
-//                        } else {
-//                            customSettingData.setMetricSystem(EFunctionStatus.SUPPORT_CLOSE);
-//                        }
-//                        if (isAutomaticHeart) {
-//                            customSettingData.setAutoHeartDetect(EFunctionStatus.SUPPORT_OPEN);
-//                        } else {
-//                            customSettingData.setAutoHeartDetect(EFunctionStatus.SUPPORT_CLOSE);
-//                        }
-//                        if (isAutomaticBoold) {
-//                            customSettingData.setAutoBpDetect(EFunctionStatus.SUPPORT_OPEN);
-//                        } else {
-//                            customSettingData.setAutoBpDetect(EFunctionStatus.SUPPORT_CLOSE);
-//                        }
-//                        if (isFindPhone) {
-//                            customSettingData.setFindPhoneUi(EFunctionStatus.SUPPORT_OPEN);
-//                        } else {
-//                            customSettingData.setFindPhoneUi(EFunctionStatus.SUPPORT_CLOSE);
-//                        }
-//                        if (isSystem) {
-//                            customSettingData.setMetricSystem(EFunctionStatus.SUPPORT_OPEN);
-//                        } else {
-//                            customSettingData.setMetricSystem(EFunctionStatus.SUPPORT_CLOSE);
-//                        }
-//                        if (isSos) {
-//                            customSettingData.setSOS(EFunctionStatus.SUPPORT_OPEN);
-//                        } else {
-//                            customSettingData.setSOS(EFunctionStatus.SUPPORT_CLOSE);
-//                        }
-//                        if (isDisconn) {
-//                            customSettingData.setDisconnectRemind(EFunctionStatus.SUPPORT_OPEN);
-//                        } else {
-//                            customSettingData.setDisconnectRemind(EFunctionStatus.SUPPORT_CLOSE);
-//                        }
+
 
                     }
                 }, new CustomSetting(true,//isHaveMetricSystem
@@ -953,6 +919,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         }
         urlImagePath = guser.getHeadUrl();
 
+
         saveUser(nicknameTv.getText().toString().trim(),
                 guser.getGender(),
                 guser.getHeight(),
@@ -971,17 +938,33 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
     private void uploadPic(String filePath, int flag) {
 //        Log.e(TAG, "----上传图片=" + filePath);
         isSubmit = false;
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("userId", SharedPreferencesUtils.readObject(this,Commont.USER_ID_DATA));
+//        if (flag == 0) {
+//            map.put("image", filePath);
+//        } else {
+//            map.put("image", ImageTool.GetImageStr(filePath));
+//        }
+//        String mapjson = gson.toJson(map);
+//        Log.e(TAG, "----上传图片mapjson=" + mapjson);
+//        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, MyPersonalActivity.this);
+//        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.ziliaotouxiang, mapjson);
+
+
         HashMap<String, Object> map = new HashMap<>();
-        map.put("userId", SharedPreferencesUtils.readObject(this,Commont.USER_ID_DATA));
+        if (userInfoBean != null && !TextUtils.isEmpty(userInfoBean.getUserid()))
+            map.put("userId", userInfoBean.getUserid());
         if (flag == 0) {
             map.put("image", filePath);
         } else {
             map.put("image", ImageTool.GetImageStr(filePath));
         }
         String mapjson = gson.toJson(map);
-        Log.e(TAG, "----上传图片mapjson=" + mapjson);
-        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, MyPersonalActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.ziliaotouxiang, mapjson);
+        //Log.e(TAG, "----上传图片mapjson=" + mapjson);
+        if(requestPressent != null)
+            requestPressent.getRequestJSONObject(0x03,Commont.FRIEND_BASE_URL+URLs.ziliaotouxiang,
+                    MyPersonalActivity.this,mapjson,3);
+
     }
 
     //完善用户资料
@@ -1054,14 +1037,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
 
 
-
-
-
-
-
-
-
-
     @Override
     public void showLoadDialog(int what) {
 
@@ -1073,7 +1048,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         if(object == null)
             return;
         Log.e(TAG,"-----obj="+what+"---obj="+object.toString());
-        if (what == 1) {
+        if (what == 0x01) {
             initUserInfo(object.toString());
         }else if(what == 11){   //获取盖德用户信息并显示
             showGaideUserInfo(object.toString());
@@ -1147,57 +1122,18 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
 
 
-
+    //博之轮账号
     private void initUserInfo(String result) {
-        UserInfoResult resultVo = gson.fromJson(result, UserInfoResult.class);
-        if (resultVo == null || !resultVo.resultCode.equals("001")) return;
-        mUserInfo = resultVo.userInfo;
-        if (mUserInfo == null) return;
-        urlImagePath = mUserInfo.image;
-//
-//        String userId = mUserInfo.userId;
-//        if (WatchUtils.isEmpty(userId) || userId.equals("9278cc399ab147d0ad3ef164ca156bf0")) {
-//            nicknameTv.setText("蓋德");
-//            //头像
-//            RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .skipMemoryCache(true);
-//            Glide.with(this).load(getResources().getDrawable(R.mipmap.ic_gaide)).apply(mRequestOptions).into(mineLogoIv);//头像
-//            //头像
-//        } else {
-//            nicknameTv.setText(mUserInfo.nickName);// 昵称
-//            if (!WatchUtils.isEmpty(mUserInfo.image)) {
-//                RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.NONE)
-//                        .skipMemoryCache(true);
-//                Glide.with(this).load(mUserInfo.image).apply(mRequestOptions).into(mineLogoIv);//头像
-//            }
-//        }
-//        //Glide.with(this).load(mUserInfo.image).into(mineLogoIv);//头像
-//        //nicknameTv.setText(mUserInfo.nickName);// 昵称
-//        int sexRes = "M".equals(mUserInfo.sex) ? R.string.sex_nan : R.string.sex_nv;
-//        sexTv.setText(sexRes);// 性别
-//
-//        String heightStr = mUserInfo.height;// 身高
-//        if (heightStr.contains("cm")) {
-//            heightStr = heightStr.trim().substring(0, heightStr.length() - 2);
-//        }
-//        heightStr = heightStr.trim();
-//        mUserInfo.height = heightStr;// 去掉cm后存起来
-//
-//        String weightStr = mUserInfo.weight;// 体重
-//        if (weightStr.contains("kg")) {
-//            weightStr = weightStr.trim().substring(0, weightStr.length() - 2);
-//        }
-//        weightStr = weightStr.trim();
-//        mUserInfo.weight = weightStr;// 去掉kg后存起来
-//
-//        if (!w30sunit) {// 英制要处理一下
-//            heightTv.setText(WatchUtils.obtainHeight(heightStr));
-//            weightTv.setText(WatchUtils.obtainWeight(weightStr));
-//        } else {
-//            heightTv.setText(heightStr + "cm");
-//            weightTv.setText(weightStr + "kg");
-//        }
-//        birthdayTv.setText(mUserInfo.birthday);
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if(!jsonObject.has("code"))
+                return;
+            if(jsonObject.getInt("code") == 200){
+                userInfoBean = new Gson().fromJson(jsonObject.getString("data"),UserInfoBean.class);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -1263,12 +1199,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                                 this.getContentResolver().openInputStream(mCutUri));
                         //showImg.setImageBitmap(bitmap);
                         mineLogoIv.setImageBitmap(bitmap);
-
-//                        RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
-//                                .skipMemoryCache(true);
-//                        Glide.with(MyPersonalActivity.this).
-//                                load(mCutUri).apply(mRequestOptions).into(mineLogoIv);
-                        //uploadPic(ImageTool.getRealFilePath(MyPersonalActivity.this, mCutUri));
                         uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
 
                         String finalPhotoName =

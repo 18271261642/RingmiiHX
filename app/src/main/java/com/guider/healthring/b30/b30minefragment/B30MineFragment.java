@@ -31,6 +31,7 @@ import com.guider.healthring.b30.B30SysSettingActivity;
 import com.guider.healthring.b30.bean.BaseResultVoNew;
 import com.guider.healthring.b31.BemoSwitchActivity;
 import com.guider.healthring.b31.bpoxy.ReadHRVSoDataForDevices;
+import com.guider.healthring.bean.GuiderUserInfo;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.LazyFragment;
 import com.guider.healthring.siswatch.NewSearchActivity;
@@ -103,6 +104,7 @@ public class B30MineFragment extends LazyFragment implements RequestView {
      */
     private boolean updatePersonalInfo;
 
+    private Gson gson = new Gson();
 
     @Nullable
     @Override
@@ -124,7 +126,7 @@ public class B30MineFragment extends LazyFragment implements RequestView {
 
             requestPressent = new RequestPressent();
             requestPressent.attach(this);
-            getUserData();
+
 
             sportGoalList = new ArrayList<>();
             sleepGoalList = new ArrayList<>();
@@ -147,17 +149,21 @@ public class B30MineFragment extends LazyFragment implements RequestView {
         }
     }
 
-    private void getUserData() {
-        String url = URLs.HTTPs + URLs.getUserInfo; //查询用户信息
-        JSONObject jsonObj = new JSONObject();
+    //获取盖德的用户信息
+    private void getGadiDeUserInfoData() {
         try {
-            jsonObj.put("userId", SharedPreferencesUtils.readObject(getActivity(), "userId"));
-        } catch (JSONException e) {
+            long accountId = (long) SharedPreferencesUtils.getParam(getContext(),"accountIdGD",0L);
+            if(accountId == 0)
+                return;
+            String guiderUrl ="http://api.guiderhealth.com/api/v1/userinfo?accountId="+accountId;
+            if(requestPressent != null){
+                requestPressent.getRequestJSONObjectGet(11,guiderUrl,getContext(),11);
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
-        requestPressent.getRequestJSONObject(1, url, MyApp.getContext(), jsonObj.toString(), 1);
-    }
 
+    }
     private void initViews() {
         commentB30TitleTv.setText(getResources().getString(R.string.menu_settings));
 
@@ -180,7 +186,6 @@ public class B30MineFragment extends LazyFragment implements RequestView {
             }
             if (updatePersonalInfo) {
                 updatePersonalInfo = false;
-                getUserData();
             }
 
         }
@@ -189,7 +194,7 @@ public class B30MineFragment extends LazyFragment implements RequestView {
     @Override
     public void onResume() {
         super.onResume();
-
+        getGadiDeUserInfoData();
     }
 
     @Override
@@ -657,44 +662,10 @@ public class B30MineFragment extends LazyFragment implements RequestView {
 
     @Override
     public void successData(int what, Object object, int daystag) {
-        if (!WatchUtils.isEmpty(object.toString()) && getActivity() != null) {
-            JSONObject jsonObject = null;
-            //Log.e(TAG,"=======   "+object.toString());
-            try {
-                jsonObject = new JSONObject(object.toString());
-                if (jsonObject.getString("resultCode").equals("001")) {
-                    JSONObject myInfoJsonObject = jsonObject.getJSONObject("userInfo");
-                    if (myInfoJsonObject != null) {
-
-                        String phone = myInfoJsonObject.getString("phone");
-//                        if (!WatchUtils.isEmpty(phone))
-//                            SharedPreferencesUtils.saveObject(MyApp.getContext(), "phoneNumber", phone);
-
-                        String userId = myInfoJsonObject.getString("userId");
-                        if (WatchUtils.isEmpty(userId) || userId.equals("9278cc399ab147d0ad3ef164ca156bf0")) {
-                            b30UserNameTv.setText("蓋德");
-                            //头像
-                            RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true);
-                            //头像
-                            Glide.with(getActivity()).load(getResources().getDrawable(R.mipmap.ic_gaide)).apply(mRequestOptions).into(b30UserImageHead);
-                        } else {
-                            b30UserNameTv.setText(myInfoJsonObject.getString("nickName") + "");
-                            String imgHead = myInfoJsonObject.getString("image");
-                            if (!WatchUtils.isEmpty(imgHead)) {
-                                RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.NONE)
-                                        .skipMemoryCache(true);
-                                //头像
-                                Glide.with(getActivity()).load(imgHead).apply(mRequestOptions).into(b30UserImageHead);    //头像
-                            }
-                        }
-
-
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if(object == null)
+            return;
+        if(what == 11){
+            showGaideUserInfo(object.toString());
         }
     }
 
@@ -707,5 +678,33 @@ public class B30MineFragment extends LazyFragment implements RequestView {
     public void closeLoadDialog(int what) {
 
     }
+
+    private void showGaideUserInfo(String userStr){
+        if(WatchUtils.isNetRequestSuccess(userStr,0)){
+            try {
+                JSONObject jsonObject = new JSONObject(userStr);
+                String dataStr = jsonObject.getString("data");
+                GuiderUserInfo guiderUserInfo = gson.fromJson(dataStr, GuiderUserInfo.class);
+                if(guiderUserInfo == null)
+                    return;
+
+                //头像
+                //mineLogoIv
+                String hearUrl = guiderUserInfo.getHeadUrl();
+                if(hearUrl != null){
+                    RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true);
+                    Glide.with(this).load(hearUrl).apply(mRequestOptions).into(b30UserImageHead);//头像
+                }
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
 
 }
