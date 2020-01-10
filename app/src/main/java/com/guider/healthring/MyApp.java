@@ -121,7 +121,10 @@ public class MyApp extends LitePalApplication {
         locationService = new LocationService(application);
 
         //mob 初始化
-         MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
+         //MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
+
+        MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
+
        // CrashReport.initCrashReport(application, "6345284c79", true);
 
         //启动B30的服务

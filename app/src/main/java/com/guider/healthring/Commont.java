@@ -5,6 +5,9 @@ package com.guider.healthring;
  */
 public class Commont {
 
+
+
+
     //国内的用这个微信登录
 //    public static final String WX_APP_ID = "wx0144beedb6c2eed7";
 //    public static final String WX_APP_SECRET = "edd86a83749ba0bf9f8f96e9e26af708";

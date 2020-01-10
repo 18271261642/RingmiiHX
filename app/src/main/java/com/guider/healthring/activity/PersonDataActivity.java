@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.aigestudio.wheelpicker.widgets.DatePick;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.bumptech.glide.request.RequestOptions;
+import com.guider.healthring.Commont;
 import com.guider.healthring.bean.GuiderUserInfo;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.bumptech.glide.Glide;
@@ -327,22 +328,48 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
                 weightPopWin.showPopWin(PersonDataActivity.this);
                 break;
             case R.id.confirmcompelte_btn:  //完成
-                //完成
-                nickName = codeEt.getText().toString();
-                if (TextUtils.isEmpty(nickName)) {
+
+                String uName = codeEt.getText().toString();
+                String birthTxt = brithdayvalTv.getText().toString();
+                String heightTxt = heightvalTv.getText().toString();
+                String weightTxt = weightvalTv.getText().toString();
+                if (TextUtils.isEmpty(uName)) {
                     ToastUtil.showShort(PersonDataActivity.this, getString(R.string.write_nickname));
-                } else if (TextUtils.isEmpty(brithdayVal)) {
-                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_brithday));
-                } else if (TextUtils.isEmpty(height)) {
-                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_height));
-                } else if (TextUtils.isEmpty(weight)) {
-                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_weight));
-                } else {
-
-                    submitGuiderUserInfoData();
-
-                    submitPersonData();
+                    return;
                 }
+                if (TextUtils.isEmpty(birthTxt)) {
+                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_brithday));
+                    return;
+                }
+                if (TextUtils.isEmpty(heightTxt)) {
+                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_height));
+                    return;
+                }
+                if (TextUtils.isEmpty(weightTxt)) {
+                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_weight));
+                    return;
+                }
+                submitGuiderUserInfoData();
+                //完成
+
+                submitPersonData(uName, birthTxt, heightTxt, weightTxt);
+
+
+
+//                //完成
+//                nickName = codeEt.getText().toString();
+//                if (TextUtils.isEmpty(nickName)) {
+//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.write_nickname));
+//                } else if (TextUtils.isEmpty(brithdayVal)) {
+//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_brithday));
+//                } else if (TextUtils.isEmpty(height)) {
+//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_height));
+//                } else if (TextUtils.isEmpty(weight)) {
+//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_weight));
+//                } else {
+//
+//
+//                }
                 break;
             case R.id.man_iconview:
                 sexVal = "M";
@@ -472,6 +499,24 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
 
     //上传我平台用户头像
     private void uploadPic(String filePath, int flag) {
+//        Gson gson = new Gson();
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("userId", Common.customer_id);
+//        if (flag == 0) {  //相机拍摄
+//            map.put("image", filePath);
+//        } else {//图片选择
+//            map.put("image", ImageTool.GetImageStr(filePath));
+//        }
+//
+//        String mapjson = gson.toJson(map);
+////        Log.e("PersonDataActivity", "----111------" + mapjson);
+//        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, PersonDataActivity.this);
+//        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.ziliaotouxiang, mapjson);
+
+
+
+
+
         Gson gson = new Gson();
         HashMap<String, Object> map = new HashMap<>();
         map.put("userId", Common.customer_id);
@@ -482,9 +527,11 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
         }
 
         String mapjson = gson.toJson(map);
-//        Log.e("PersonDataActivity", "----111------" + mapjson);
-        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, PersonDataActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.ziliaotouxiang, mapjson);
+        if (requestPressent != null)
+            requestPressent.getRequestJSONObject(0x01, Commont.FRIEND_BASE_URL + URLs.ziliaotouxiang, PersonDataActivity.this, mapjson, 1);
+
+
+
     }
 
     @Override
@@ -544,21 +591,38 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
 
     }
 
-    private void submitPersonData() {
-        isSubmit = true;
+    private void submitPersonData(String uName, String birthTxt, String heightTxt, String weightTxt) {
+//        isSubmit = true;
+//        Gson gson = new Gson();
+//        HashMap<String, Object> map = new HashMap<>();
+////        map.put("userId", B18iCommon.customer_id);
+//        map.put("userId", Common.customer_id);
+//        map.put("sex", sexVal);
+//        map.put("nickName", nickName);
+//        map.put("height", height);
+//        map.put("weight", weight);
+//        map.put("birthday", brithdayVal);
+//        String mapjson = gson.toJson(map);
+////        Log.e("PersonDataActivity", "----222------" + mapjson);
+//        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, PersonDataActivity.this);
+//        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.yonghuziliao, mapjson);
+
+
+
         Gson gson = new Gson();
         HashMap<String, Object> map = new HashMap<>();
-//        map.put("userId", B18iCommon.customer_id);
         map.put("userId", Common.customer_id);
         map.put("sex", sexVal);
-        map.put("nickName", nickName);
-        map.put("height", height);
-        map.put("weight", weight);
-        map.put("birthday", brithdayVal);
+        map.put("nickName", uName);
+        map.put("height", heightTxt);
+        map.put("weight", weightTxt);
+        map.put("birthday", birthTxt);
         String mapjson = gson.toJson(map);
-//        Log.e("PersonDataActivity", "----222------" + mapjson);
-        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, PersonDataActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.yonghuziliao, mapjson);
+        if (requestPressent != null) {
+            requestPressent.getRequestJSONObject(0x02, Commont.FRIEND_BASE_URL + URLs.yonghuziliao, PersonDataActivity.this, mapjson, 2);
+        }
+
+
     }
 
 
@@ -769,7 +833,29 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
 
     @Override
     public void successData(int what, Object object, int daystag) {
-
+        if (object == null)
+            return;
+        if (object.toString().contains("<html>"))
+            return;
+        try {
+            JSONObject jsonObject = new JSONObject(object.toString());
+            switch (what) {
+                case 0x01:  //头像
+                    if(!jsonObject.has("code"))
+                        return;
+                    if(jsonObject.getInt("code") == 200){
+                        ToastUtil.showToast(PersonDataActivity.this,getResources().getString(R.string.submit_success));
+                    }else{
+                        ToastUtil.showToast(PersonDataActivity.this,jsonObject.getString("msg"));
+                    }
+                    break;
+                case 0x02:  //完善用户信息
+                    analysisUserStr(jsonObject);
+                    break;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -780,5 +866,25 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
     @Override
     public void closeLoadDialog(int what) {
 
+    }
+
+
+
+
+    //完善用户信息
+    private void analysisUserStr(JSONObject jsonObject) {
+        try {
+            if (!jsonObject.has("code"))
+                return;
+            if (jsonObject.getInt("code") == 200) {
+                ToastUtil.showToast(PersonDataActivity.this,getResources().getString(R.string.modify_success));
+                startActivity(NewSearchActivity.class);
+                finish();
+            } else {
+                ToastUtil.showToast(PersonDataActivity.this, jsonObject.getString("data"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
