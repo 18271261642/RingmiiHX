@@ -142,9 +142,6 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         Log.e(TAG, "-------onCreate----");
         setContentView(R.layout.activity_search_device);
         ButterKnife.bind(this);
-
-        //启动w30服务
-        // MyApp.getInstance().startW30SSerever();
         //启动B30的服务
         MyApp.startB30Server();
 
