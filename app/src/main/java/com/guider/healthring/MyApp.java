@@ -26,6 +26,7 @@ import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.mob.MobSDK;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
+import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
 
 import org.litepal.LitePalApplication;
@@ -119,6 +120,8 @@ public class MyApp extends LitePalApplication {
         activities = new ArrayList<>();
 
         locationService = new LocationService(application);
+
+        Bugly.init(this, "ff6d0ec595", true);
 
         //mob 初始化
          MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
