@@ -1011,7 +1011,7 @@ public class NewConnBleHelpService {
             isOpenSOS = EFunctionStatus.SUPPORT_CLOSE;
         }
 
-
+        Log.i("bbbbbbbbo" , "NewConnBleHelpService = " + isAutomaticBoold);
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 isAutomaticBoold, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);

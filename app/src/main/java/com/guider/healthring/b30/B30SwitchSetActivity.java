@@ -634,7 +634,7 @@ public class B30SwitchSetActivity extends WatchBaseActivity {
             isOpenSOS = EFunctionStatus.SUPPORT_CLOSE;
         }
 
-
+        Log.i("bbbbbbbbo" , "B30SwitchSetActivity");
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 isAutomaticBoold, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);

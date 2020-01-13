@@ -407,7 +407,7 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
             isOpenSOS = EFunctionStatus.SUPPORT_CLOSE;
         }
 
-
+        Log.i("bbbbbbbbo" , "B31SwitchActivity");
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 isAutomaticBoold, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);

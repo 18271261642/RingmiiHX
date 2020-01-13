@@ -743,6 +743,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
             isHelper = EFunctionStatus.SUPPORT_CLOSE;
         }
 
+        Log.i("bbbbbbbbo" , "MyPersonalActivity");
         showLoadingDialog(getResources().getString(R.string.dlog));
         new Handler().postDelayed(new Runnable() {
             @Override

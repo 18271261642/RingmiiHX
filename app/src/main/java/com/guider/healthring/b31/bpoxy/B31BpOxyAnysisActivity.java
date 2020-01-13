@@ -737,6 +737,7 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
         }
 
 
+        Log.i("bbbbbbbbo" , "B31BpOxyAnysisActivity");
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 false, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);
