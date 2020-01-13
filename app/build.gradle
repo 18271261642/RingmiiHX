@@ -28,8 +28,8 @@ android {
         applicationId "com.guider.healthringx"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 22
-        versionName "1.1.22"
+        versionCode 23
+        versionName "1.1.23"
         flavorDimensions "versionName"
         manifestPlaceholders = [
                 qq_id: "101357650"
@@ -133,6 +133,7 @@ dependencies {
     implementation project(':apilib')
     implementation project(':common_m500_1000')
     implementation project(':bpm1000')
+    implementation project(':simpleble')
 
     implementation project(path: ':wheelpicker')
 
@@ -200,7 +201,7 @@ dependencies {
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.5'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.5'
     implementation project(':w30sblelibrary')
-    implementation files('libs/vpbluetooth_1.0.3.jar')
+//    implementation files('libs/vpbluetooth_1.0.3.jar')
     //implementation files('libs/vpprotocol_1.2.6.0.jar')
     implementation files('libs/vpprotocols_2.1.2.15.jar')
     implementation project(':MPChartLib')
