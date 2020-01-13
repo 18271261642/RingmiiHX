@@ -364,129 +364,9 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     }
 
 
-    /**
-     * 登录到facekoob
-     */
-    public void shagchuanfuwuqi(JSONObject ASD) {
-        //判断网络是否连接
-        Boolean is = ConnectManages.isNetworkAvailable(LoginActivity.this);
-        if (is) {
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(Request.Method.POST, URLs.HTTPs + URLs.disanfang, ASD,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            String shuzhu = response.optString("userInfo");
-                            if (response.optString("resultCode").equals("001")) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(shuzhu);
-                                    String userId = jsonObject.getString("userId");
-                                    Gson gson = new Gson();
-                                    BlueUser userInfo = gson.fromJson(shuzhu, BlueUser.class);
-                                    Common.userInfo = userInfo;
-                                    Common.customer_id = userId;
-                                    //保存userid
-                                    SharedPreferencesUtils.saveObject(LoginActivity.this, "userId", userInfo.getUserId());
-                                    SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", shuzhu);
-
-//                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                                    finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (response.optString("resultCode").equals("003")) {
-                                Toast.makeText(LoginActivity.this, R.string.yonghuzhej, Toast.LENGTH_SHORT).show();
-                                return;
-                            } else if (response.optString("resultCode").equals("006")) {
-                                Toast.makeText(LoginActivity.this, R.string.miamacuo, Toast.LENGTH_SHORT).show();
-
-                            }/*else{Toast.makeText(LoginActivity.this,R.string.miamacuo,Toast.LENGTH_SHORT).show();}*/
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(LoginActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("Accept", "application/json");
-                    headers.put("Content-Type", "application/json; charset=UTF-8");
-                    return headers;
-                }
-            };
-            requestQueue.add(jsonRequest);
-        } else {
-            Toast.makeText(LoginActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    /**
-     * 到google
-     */
-    public void shangchuangogle(JSONObject ASD, final String aaa) {
-        //判断网络是否连接
-        Boolean is = ConnectManages.isNetworkAvailable(LoginActivity.this);
-        if (is) {
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(Request.Method.POST, URLs.HTTPs + URLs.disanfang, ASD,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            String shuzhu = response.optString("userInfo");
-                            if (response.optString("resultCode").equals("001")) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(shuzhu);
-                                    String userId = jsonObject.getString("userId");
-                                    Gson gson = new Gson();
-                                    BlueUser userInfo = gson.fromJson(shuzhu, BlueUser.class);
-                                    Common.userInfo = userInfo;
-                                    Common.customer_id = userId;
-                                    //保存userid
-                                    SharedPreferencesUtils.saveObject(LoginActivity.this, "userId", userInfo.getUserId());
-                                    SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", shuzhu);
-
-//                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                                    finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (response.optString("resultCode").equals("003")) {
-                                Toast.makeText(LoginActivity.this, R.string.yonghuzhej, Toast.LENGTH_SHORT).show();
-                                return;
-                            } else if (response.optString("resultCode").equals("006")) {
-                                Toast.makeText(LoginActivity.this, R.string.tianxie, Toast.LENGTH_SHORT).show();
-                                return;
-                            } else {
-                                Toast.makeText(LoginActivity.this, R.string.miamacuo, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(LoginActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("Accept", "application/json");
-                    headers.put("Content-Type", "application/json; charset=UTF-8");
-                    return headers;
-                }
-            };
-            requestQueue.add(jsonRequest);
-        } else {
-            Toast.makeText(LoginActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
-        }
     }
 
 
@@ -547,7 +427,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
 
     @SuppressLint("HandlerLeak")
-    public Handler handler = new Handler() {
+    private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
             if (msg.what == 1) {

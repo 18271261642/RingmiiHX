@@ -99,7 +99,7 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
 
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -416,18 +416,6 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
         MyApp.getInstance().getVpOperateManager().changeCustomSetting(iBleWriteResponse, new ICustomSettingDataListener() {
             @Override
             public void OnSettingDataChange(CustomSettingData customSettingData) {
-                closeLoadingDialog();
-                //Log.e(TAG, "--新设置的值结果--customSettingData=" + customSettingData.toString());
-
-                if (isOnclickSOS) {
-                    isOnclickSOS = false;
-                    EFunctionStatus sos = customSettingData.getSOS();
-                    if (sos == EFunctionStatus.SUPPORT_OPEN) {
-//                        startActivity(HellpEditActivity.class);
-                        startActivity(new Intent(B31SwitchActivity.this,HellpEditActivity.class)
-                                .putExtra("type","b31"));
-                    }
-                }
 
             }
         }, customSetting);
