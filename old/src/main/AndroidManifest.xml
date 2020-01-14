@@ -204,7 +204,7 @@
 
         <!--微信登录的回调-->
         <activity
-            android:name="com.guider.healthringx.wxapi.WXEntryActivity"
+            android:name="com.guider.ringmiihx.wxapi.WXEntryActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:launchMode="singleTask"

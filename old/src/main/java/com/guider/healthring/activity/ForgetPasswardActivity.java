@@ -365,7 +365,7 @@ public class ForgetPasswardActivity extends BaseActivity implements RequestView 
                     } else if (status == 468) {//验证码错
                         ToastUtil.showLong(ForgetPasswardActivity.this, getResources().getString(R.string.yonghuzdffhej));
                     } else {
-                        ToastUtil.showLong(ForgetPasswardActivity.this, data.toString());
+                        ToastUtil.showLong(ForgetPasswardActivity.this, getResources().getString(R.string.yonghuzdffhej));
                     }
                 }
 

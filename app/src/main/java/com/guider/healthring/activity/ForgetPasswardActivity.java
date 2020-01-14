@@ -1,7 +1,6 @@
 package com.guider.healthring.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
@@ -17,29 +16,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
+import com.google.gson.Gson;
 import com.guider.healthring.Commont;
-import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
-import com.guider.healthring.activity.wylactivity.wyl_util.service.ConnectManages;
-import com.guider.healthring.adpter.PhoneAdapter;
 import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.base.BaseActivity;
 import com.guider.healthring.bean.AreCodeBean;
-import com.guider.healthring.net.OkHttpObservable;
 import com.guider.healthring.rxandroid.DialogSubscriber;
 import com.guider.healthring.rxandroid.SubscriberOnNextListener;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Md5Util;
-import com.guider.healthring.util.TimerCount;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
-import com.guider.healthring.util.VerifyUtil;
-import com.google.gson.Gson;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
@@ -49,7 +37,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -57,7 +44,6 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import rx.Observable;
 import rx.Subscriber;
@@ -379,7 +365,7 @@ public class ForgetPasswardActivity extends BaseActivity implements RequestView 
                     } else if (status == 468) {//验证码错
                         ToastUtil.showLong(ForgetPasswardActivity.this, getResources().getString(R.string.yonghuzdffhej));
                     } else {
-                        ToastUtil.showLong(ForgetPasswardActivity.this, data.toString());
+                        ToastUtil.showLong(ForgetPasswardActivity.this, getResources().getString(R.string.yonghuzdffhej));
                     }
                 }
 

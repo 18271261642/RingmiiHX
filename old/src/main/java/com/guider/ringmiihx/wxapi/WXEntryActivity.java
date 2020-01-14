@@ -1,4 +1,4 @@
-package com.guider.healthringx.wxapi;
+package com.guider.ringmiihx.wxapi;
 
 
 import android.content.Intent;
@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.activity.GuiderWxBindPhoneActivity;
-import com.guider.healthring.bean.BlueUser;
 import com.guider.healthring.bean.GuiderWXUserInfoBean;
 import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.bean.WXUserBean;
