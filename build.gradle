@@ -46,8 +46,8 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = compileSdkVersion
 
-    codeVersion = 39
-    appVersion = "2.0.39"
+    codeVersion = 200
+    appVersion = "2.0.0"
     isMyOutputFile = true
 }
 

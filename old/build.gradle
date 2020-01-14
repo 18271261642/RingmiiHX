@@ -28,8 +28,8 @@ android {
         applicationId "com.guider.ringmiihx"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 23
-        versionName "1.1.23"
+        versionCode rootProject.ext.codeVersion
+        versionName rootProject.ext.appVersion
         flavorDimensions "versionName"
         manifestPlaceholders = [
                 qq_id: "101357650"

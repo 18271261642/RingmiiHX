@@ -28,8 +28,8 @@ android {
         applicationId "com.guider.healthringx"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 200
-        versionName "2.0.0"
+        versionCode rootProject.ext.codeVersion
+        versionName rootProject.ext.appVersion
         flavorDimensions "versionName"
         manifestPlaceholders = [
                 qq_id: "101357650"
