@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false" >
+
+        <ImageView
+            android:id="@+id/priringDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/device_list_dialog" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
+            
+			<View
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_weight="0.32" >
+			</View>
+
+			<TextView
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:text="@string/mpair"
+			    android:textColor="#000000"
+			    android:textSize="25sp" />
+			
+            <TextView
+                android:id="@+id/pairingtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="#000000"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.42" >
+                
+                <View
+                    android:id="@+id/pairingYes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5" >
+
+                </View>
+                
+                 <View
+                     android:id="@+id/pairingNo"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="0.5" >
+
+                </View>               
+            </LinearLayout>
+
+			<View
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_weight="0.3" >
+			</View>
+
+        </LinearLayout>
+        
+    </RelativeLayout>
+
+</RelativeLayout>

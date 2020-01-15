@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:text="1000"
+    android:id="@+id/markViewShowTv"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:textSize="8sp"
+    android:layout_marginBottom="@dimen/size_5"
+    android:textColor="@color/white"
+    android:layout_height="wrap_content">
+
+</TextView>
