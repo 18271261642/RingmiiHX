@@ -225,7 +225,7 @@ public class WatchDataNewsFragment extends Fragment {
 
 
                         } else {
-                            ToastUtil.showToast(getActivity(), jso.getString("msg"));
+                            ToastUtil.showToast(getActivity(), jso.getString("msg") + jso.getString("data"));
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

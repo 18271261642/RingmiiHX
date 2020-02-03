@@ -420,14 +420,14 @@ public class ForgetPasswardActivity extends BaseActivity implements RequestView 
             JSONObject jsonObject = new JSONObject(object.toString());
             int code = jsonObject.getInt("code");
             if(what == 0x01){   //获取手机号验证码
-                ToastUtil.showToast(ForgetPasswardActivity.this,jsonObject.getString("data"));
+                ToastUtil.showToast(ForgetPasswardActivity.this,jsonObject.getString("msg") + jsonObject.getString("data"));
             }
             if(what == 0x02){
                 if(code == 200){   //提交成功
                     ToastUtil.showToast(ForgetPasswardActivity.this, getResources().getString(R.string.change_password));
                     finish();
                 }else{
-                    ToastUtil.showToast(ForgetPasswardActivity.this,jsonObject.getString("msg"));
+                    ToastUtil.showToast(ForgetPasswardActivity.this,jsonObject.getString("msg") + jsonObject.getString("data"));
                 }
             }
 

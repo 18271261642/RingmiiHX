@@ -27,17 +27,19 @@ import android.widget.TextView;
 
 import com.aigestudio.wheelpicker.widgets.DatePick;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
-import com.bumptech.glide.request.RequestOptions;
-import com.guider.healthring.Commont;
-import com.guider.healthring.bean.GuiderUserInfo;
-import com.guider.healthring.siswatch.NewSearchActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.flipboard.bottomsheet.commons.MenuSheetView;
+import com.google.gson.Gson;
+import com.guider.healthring.Commont;
 import com.guider.healthring.R;
+import com.guider.healthring.bean.GuiderUserInfo;
 import com.guider.healthring.imagepicker.PickerBuilder;
-import com.guider.healthring.net.OkHttpObservable;
 import com.guider.healthring.rxandroid.DialogSubscriber;
 import com.guider.healthring.rxandroid.SubscriberOnNextListener;
+import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.Base64BitmapUtil;
 import com.guider.healthring.siswatch.utils.FileOperUtils;
@@ -51,9 +53,6 @@ import com.guider.healthring.util.URLs;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.guider.healthring.widget.SwitchIconView;
-import com.flipboard.bottomsheet.BottomSheetLayout;
-import com.flipboard.bottomsheet.commons.MenuSheetView;
-import com.google.gson.Gson;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
@@ -846,7 +845,7 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
                     if(jsonObject.getInt("code") == 200){
                         ToastUtil.showToast(PersonDataActivity.this,getResources().getString(R.string.submit_success));
                     }else{
-                        ToastUtil.showToast(PersonDataActivity.this,jsonObject.getString("msg"));
+                        ToastUtil.showToast(PersonDataActivity.this,jsonObject.getString("msg") + jsonObject.getString("data"));
                     }
                     break;
                 case 0x02:  //完善用户信息

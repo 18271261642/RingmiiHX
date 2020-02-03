@@ -311,7 +311,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
         try {
            JSONObject jsonObject = new JSONObject(data);
            if(jsonObject.getInt("code") != 0){
-               ToastUtil.showToast(this,jsonObject.getString("msg"));
+               ToastUtil.showToast(this,jsonObject.getString("msg") + jsonObject.getString("data"));
            }
 
         }catch (Exception e){
@@ -323,7 +323,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
             try {
                 JSONObject jsonObject = new JSONObject(str);
                 if(jsonObject.getInt("code") != 0){
-                    ToastUtil.showToast(GuiderWxBindPhoneActivity.this,jsonObject.getString("msg"));
+                    ToastUtil.showToast(GuiderWxBindPhoneActivity.this,jsonObject.getString("msg") + jsonObject.getString("data"));
                     return;
                 }
                 JSONObject dataJson = jsonObject.getJSONObject("data");

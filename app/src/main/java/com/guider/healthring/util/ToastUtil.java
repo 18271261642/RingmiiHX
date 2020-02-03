@@ -17,6 +17,9 @@ public class ToastUtil {
      * @param msg
      */
     public static void showToast(Context mContext,String msg){
+        if (msg != null) {
+            msg = msg.replace("null", "");
+        }
         if(mToast == null){
             mToast = Toast.makeText(mContext,msg,Toast.LENGTH_SHORT);
         }else{

@@ -2,9 +2,6 @@ package com.guider.healthring.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
@@ -19,18 +16,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.ConnectManages;
 import com.guider.healthring.adpter.PhoneAdapter;
-import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.bean.AreCodeBean;
 import com.guider.healthring.bean.BlueUser;
 import com.guider.healthring.bean.UserInfoBean;
-import com.guider.healthring.rxandroid.DialogSubscriber;
-import com.guider.healthring.rxandroid.SubscriberOnNextListener;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Common;
@@ -38,21 +33,21 @@ import com.guider.healthring.util.Md5Util;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
-import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.view.PrivacyActivity;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
+
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -606,7 +601,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView 
                     finish();
                 }
             } else {
-                ToastUtil.showToast(RegisterActivity2.this, jsonObject.getString("msg"));
+                ToastUtil.showToast(RegisterActivity2.this, jsonObject.getString("msg") + jsonObject.getString("data"));
             }
         } catch (Exception e) {
             e.printStackTrace();

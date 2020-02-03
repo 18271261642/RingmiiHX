@@ -32,7 +32,6 @@ import com.google.gson.Gson;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
-import com.guider.healthring.activity.wylactivity.wyl_util.service.ConnectManages;
 import com.guider.healthring.bean.BlueUser;
 import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.net.OkHttpObservable;
@@ -593,7 +592,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 }
 
             }else{
-                ToastUtil.showToast(LoginActivity.this,jsonObject.getString("msg"));
+                ToastUtil.showToast(LoginActivity.this,jsonObject.getString("msg") + jsonObject.getString("data"));
             }
         } catch (Exception e) {
             e.printStackTrace();
