@@ -94,7 +94,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
     }
 
     private void initViews() {
-        commentB30TitleTv.setText("綁定手機號");
+        commentB30TitleTv.setText(getResources().getString(R.string.bind_phone));
         countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
 
     }

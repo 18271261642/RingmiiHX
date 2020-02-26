@@ -1011,7 +1011,7 @@
     <string name="data_upload_fail">數據上傳失敗</string>
 
     <string name="user_emil_regsiter">郵箱註冊</string>
-    <string name="input_email">請輸入手機或電子郵箱</string>
+    <string name="input_email">請輸入手機號碼</string>
     <string name="shouquancg">授權成功</string>
     <string name="shouquanshib">授權失敗</string>
     <string name="shouquanqu">授權取消</string>
@@ -1320,4 +1320,7 @@
 
     <string name="shake_photos">搖搖拍照</string>
     <string name="gui_style">界面風格</string>
+
+    <string name="bind_phone">綁定手機號</string>
+    <string name="bind_phone_success">綁定成功</string>
 </resources>

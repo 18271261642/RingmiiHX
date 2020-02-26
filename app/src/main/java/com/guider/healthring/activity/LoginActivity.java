@@ -7,11 +7,15 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -65,6 +69,9 @@ import com.yanzhenjie.permission.AndPermission;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,6 +115,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     RelativeLayout qqIv;
     @BindView(R.id.weixin_iv)
     RelativeLayout weixinIv;
+    @BindView(R.id.line_iv)
+    RelativeLayout lineIv;
     private static final String TAG = "LoginActivity";
     private DialogSubscriber dialogSubscriber;
     private SubscriberOnNextListener<String> subscriberOnNextListener;
@@ -150,7 +159,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
 
         initViews();
-
     }
 
 
@@ -245,7 +253,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     @OnClick({R.id.register_btn, R.id.forget_tv,
             R.id.login_btn, R.id.xinlang_iv,
             R.id.qq_iv, R.id.weixin_iv,
-            R.id.login_visitorTv,R.id.privacyTv})
+            R.id.login_visitorTv,R.id.privacyTv, R.id.line_iv})
     public void onClick(View view) {
         Context context = view.getContext();
         switch (view.getId()) {
@@ -359,6 +367,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 break;
             case R.id.privacyTv:    //隐私政策
                 startActivity(PrivacyActivity.class);
+                break;
+            case R.id.line_iv: // LINE 登陆
                 break;
         }
     }

@@ -12,6 +12,7 @@ buildscript {
         maven { url 'https://projectlombok.org' }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url "http://mvn.mob.com/android" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
@@ -19,6 +20,7 @@ buildscript {
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
+        classpath "com.mob.sdk:MobSDK:+"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -33,6 +35,7 @@ allprojects {
         maven { url 'https://projectlombok.org' }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url "http://mvn.mob.com/android" }
     }
 }
 

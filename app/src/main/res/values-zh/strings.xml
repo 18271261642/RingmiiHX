@@ -1051,7 +1051,7 @@
     <string name="prompt">提示</string>
     <string name="data_upload">数据上传成功</string>
     <string name="data_upload_fail">数据上传失败</string>
-    <string name="input_email">请输入手机或电子邮箱</string>
+    <string name="input_email">请输入手机号码</string>
     <string name="shouquancg">授权成功</string>
     <string name="shouquanshib">授权失败</string>
     <string name="shouquanqu">授权取消</string>
@@ -1359,4 +1359,7 @@
 
     <string name="shake_photos">摇摇拍照</string>
     <string name="gui_style">界面风格</string>
+
+    <string name="bind_phone">绑定手机号</string>
+    <string name="bind_phone_success">绑定成功</string>
 </resources>

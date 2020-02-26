@@ -5,10 +5,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 
 import com.afa.tourism.greendao.gen.DaoMaster;
@@ -31,6 +35,9 @@ import com.veepoo.protocol.VPOperateManager;
 
 import org.litepal.LitePalApplication;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,8 +133,8 @@ public class MyApp extends LitePalApplication {
         //mob 初始化
          //MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
 
-        MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
-
+        // MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
+        // MobSDK.init(this, "2dc65dc4724aa", "5c4cd9ab545da0ccebd0d4b6d46c73fd");
        // CrashReport.initCrashReport(application, "6345284c79", true);
 
         //启动B30的服务
@@ -149,7 +156,19 @@ public class MyApp extends LitePalApplication {
 //        newSmsBroadCastReceiver = new NewSmsBroadCastReceiver();
 //        IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 //        registerReceiver(newSmsBroadCastReceiver,intentFilter);
-
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.guider.healthringx",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.i("SHA", new BigInteger(1, md.digest()).toString(16));
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }
     }
 
 
