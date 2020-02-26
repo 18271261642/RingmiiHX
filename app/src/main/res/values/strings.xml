@@ -69,7 +69,7 @@
     <string name="vpspo2h_spo2h">血氧</string>
     <string name="count_down">倒計時</string>
     <string name="string_devices_ui">界面風格設置</string>
-    <string name="string_default_style">默認風格</string>
+    <string name="string_default_style">Default style</string>
     <string name="style_1">風格1</string>
     <string name="style_2">風格2</string>
     <string name="style_3">風格3</string>
@@ -1052,7 +1052,7 @@
     <string name="blood">血压</string>
 
 
-    <string name="the_app_name">GuierHX</string>
+    <string name="the_app_name">GuiderBand</string>
     <string name="input_password">请输入密码</string>
     <string name="input_code">请输入验证码</string>
     <string name="input_nickname">请输入昵称</string>
@@ -1321,4 +1321,12 @@
 
 
     <!-- 城市管理，添加城市 -->
+
+    <string name="guider_band">GuiderBand</string>
+    <string name="guider_band_desc">Guider Bracelet Evoking a New Life</string>
+
+    <string name="data_detail">Detailed Data</string>
+
+    <string name="shake_photos">Shake photos</string>
+    <string name="gui_style">GUI style</string>
 </resources>

@@ -1312,4 +1312,12 @@
 
 
     <!-- 城市管理，添加城市 -->
+
+    <string name="guider_band">蓋德手環</string>
+    <string name="guider_band_desc">蓋德手環 喚動新生活</string>
+
+    <string name="data_detail">詳細數據</string>
+
+    <string name="shake_photos">搖搖拍照</string>
+    <string name="gui_style">界面風格</string>
 </resources>

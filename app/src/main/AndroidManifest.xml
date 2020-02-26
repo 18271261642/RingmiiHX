@@ -162,7 +162,7 @@
 
         <!-- 新的引导页和欢迎页-启动页 -->
         <activity
-            android:name=".activity.LaunchActivity"
+            android:name="com.guider.healthring.activity.LaunchActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
             android:theme="@style/AppTheme.NoActionBar">
 

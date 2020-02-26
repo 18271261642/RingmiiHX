@@ -719,12 +719,12 @@
     <string name="string_sleep_target">Sleep target</string>
     <string name="string_information_reminder">Information reminder</string>
     <string name="string_turning_wrist_screen">Turn wrist screen</string>
-    <string name="string_blood_pressure_mode">private mode</string>
+    <string name="string_blood_pressure_mode">Private mode</string>
     <string name="string_switch_setting">Switch setting</string>
     <string name="string_take_photo">Take photo</string>
     <string name="string_reset_device_password">Reset device password</string>
     <string name="string_firmware_update"> Firmware update</string>
-    <string name="string_clear_data">clear data</string>
+    <string name="string_clear_data">Clear data</string>
     <string name="string_devices_disconnected">Disconnect</string>
     <string name="string_devices_is_disconnected">Is it disconnected?</string>
     <string name="string_init_device_password">Initial password 0000</string>
@@ -1115,7 +1115,7 @@
     <string name="blood">Blutdruck</string>
 
 
-    <string name="the_app_name">GuiderHX</string>
+    <string name="the_app_name">GuiderBand</string>
     <string name="input_password">Bitte geben sie DAS passwort</string>
     <string name="input_code">Bitte geben sie den code</string>
     <string name="input_nickname">Bitte geben sie den spitznamen</string>

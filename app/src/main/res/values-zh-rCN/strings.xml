@@ -1353,4 +1353,7 @@
 
 
     <!-- 城市管理，添加城市 -->
+
+    <string name="guider_band">盖德手环</string>
+    <string name="guider_band_desc">盖德手环 唤动新生活</string>
 </resources>

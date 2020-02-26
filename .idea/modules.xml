@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/GuiderBand.iml" filepath="$PROJECT_DIR$/GuiderBand.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RingmiiHX.iml" filepath="$PROJECT_DIR$/RingmiiHX.iml" />
       <module fileurl="file://$PROJECT_DIR$/apilib/apilib.iml" filepath="$PROJECT_DIR$/apilib/apilib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/arouter-annotation/arouter-annotation.iml" filepath="$PROJECT_DIR$/arouter-annotation/arouter-annotation.iml" />

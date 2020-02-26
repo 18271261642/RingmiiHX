@@ -1049,10 +1049,10 @@
     <string name="allgemeiner">通用模式</string>
     <string name="privater">私人模式</string>
     <string name="healthtesting">健康测试</string>
-    <string name="blood">血压</string>
+    <string name="blood">Blood pressure</string>
 
 
-    <string name="the_app_name">GuierHX</string>
+    <string name="the_app_name">GuiderHX</string>
     <string name="input_password">请输入密码</string>
     <string name="input_code">请输入验证码</string>
     <string name="input_nickname">请输入昵称</string>
