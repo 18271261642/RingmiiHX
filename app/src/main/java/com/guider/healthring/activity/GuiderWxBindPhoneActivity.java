@@ -329,7 +329,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
                 JSONObject dataJson = jsonObject.getJSONObject("data");
                 long accountId = dataJson.getLong("accountId");
                 SharedPreferencesUtils.setParam(this, "accountIdGD", accountId);
-                ToastUtil.showToast(this, "绑定成功");
+                ToastUtil.showToast(this, getResources().getString(R.string.bind_phone_success));
                 startActivity(NewSearchActivity.class);
                 finish();
             } catch (Exception e) {
