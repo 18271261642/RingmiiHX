@@ -39,6 +39,7 @@ public class ThirdLogin {
         }
     };
 
+    public static ThirdLoginCallback mIThirdLoginCallback;
     public ThirdLogin(Context context) {
         mContext = context;
         MobSDK.submitPolicyGrantResult(true, new OperationCallback<Void>() {
@@ -136,18 +137,20 @@ public class ThirdLogin {
             public void onResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
                 BeanOfWecaht info = response.body();
 
-                if (thirdLoginCallback != null)
-                    thirdLoginCallback.onUserInfo(map);
                 if (info.getTokenInfo() == null) { // 需要跳转到手机号绑定页面
                     Intent intent = new Intent(mContext, BindPhoneV2Activity.class);
-                    String nickName = hashMap.get("nickName").toString();
-                    String headUrl = hashMap.get("headUrl").toString();
+                    String nickName = map.get("nickName").toString();
+                    String headUrl = map.get("headUrl").toString();
                     intent.putExtra("appId", appId);
                     intent.putExtra("openId", openId);
                     intent.putExtra("nickName", nickName);
                     intent.putExtra("headUrl", headUrl);
+
+                    mIThirdLoginCallback = thirdLoginCallback;
                     mContext.startActivity(intent);
                 } else { // 直接跳转，注意这里需要第三方操作，特别是对于类似手环
+                    if (thirdLoginCallback != null)
+                        thirdLoginCallback.onUserInfo(map);
                     SharedPreferencesUtils.setParam(mContext, "accountIdGD", info.getTokenInfo().getAccountId());
                     mCompelet.run();
                 }
@@ -161,7 +164,7 @@ public class ThirdLogin {
         map.put("appId", appId);
         final String openId = hashMap.get(openIdNameField).toString();
         String nickName = hashMap.get(nickNameField).toString();
-        String headUrl = hashMap.get(headUrlField).toString();
+        String headUrl = hashMap.containsKey(headUrlField) ? hashMap.get(headUrlField).toString() : "";
         map.put("openId", openId);
         map.put("nickName", nickName);
         map.put("headUrl", headUrl);

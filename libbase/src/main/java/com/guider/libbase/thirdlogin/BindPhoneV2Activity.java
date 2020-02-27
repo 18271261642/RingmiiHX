@@ -25,6 +25,8 @@ import com.guider.libbase.R;
 import com.guider.libbase.sms.SmsMob;
 import com.guider.libbase.view.PhoneAreaCodeView;
 
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -94,6 +96,9 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
                 showToast(this, R.string.input_name);
                 return;
             }
+            if (countTimeUtils == null)
+                countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
+            countTimeUtils.start();
             SmsMob.sendCode(areaCode, phoeCode);
         } else if (view.getId() == R.id.wxBindSubBtn) {     // 提交
             //手机号
@@ -127,10 +132,10 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
                     // 注册
                     IGuiderApi iGuiderApi = ApiUtil.createApi(IGuiderApi.class);
                     ParamThirdUserAccount param = new ParamThirdUserAccount();
-                    String appId = getIntent().getStringExtra("appId");
-                    String openId = getIntent().getStringExtra("openId");
-                    String nickName = getIntent().getStringExtra("nickName");
-                    String headUrl = getIntent().getStringExtra("headUrl");
+                    final String appId = getIntent().getStringExtra("appId");
+                    final String openId = getIntent().getStringExtra("openId");
+                    final String nickName = getIntent().getStringExtra("nickName");
+                    final String headUrl = getIntent().getStringExtra("headUrl");
                     param.setAppId(appId);
                     param.setOpenid(openId);
                     param.setNickname(nickName);
@@ -148,6 +153,12 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
                             SharedPreferencesUtils.setParam(BindPhoneV2Activity.this, "accountIdGD", accountId);
                             ToastUtil.showToast(BindPhoneV2Activity.this, getResources().getString(R.string.bind_phone_success));
 
+                            final HashMap<String, Object> map = new HashMap<>();
+                            map.put("appId", appId);
+                            map.put("openId", openId);
+                            map.put("nickName", nickName);
+                            map.put("headUrl", headUrl);
+                            ThirdLogin.mIThirdLoginCallback.onUserInfo(map);
                             ThirdLogin.mCompelet.run();
                             finish();
                         }
