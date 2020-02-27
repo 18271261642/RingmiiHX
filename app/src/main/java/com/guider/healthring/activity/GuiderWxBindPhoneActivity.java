@@ -43,9 +43,6 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
 
     private static final String TAG = "GuiderWxBindPhoneActivi";
 
-    private String GET_PHONE_CODE = "http://api.guiderhealth.com/api/v1/bind/sendcode?phone=";
-
-
     @BindView(R.id.wxBindPhoneVerCodeEdit)
     EditText wxBindPhoneVerCodeEdit;
     @BindView(R.id.wxBindGetVerCodeBtn)

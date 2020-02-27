@@ -61,8 +61,8 @@ public class NewGuidActivity extends WatchBaseActivity {
 //            ,R.drawable.ic_guid_3};
     private final int[] imageIds = {R.mipmap.image_guide_one, R.mipmap.image_guide_two
             ,R.mipmap.image_guide_three};
-    private final int[] imageEnIds = {R.mipmap.image_guide_one_en, R.mipmap.image_guide_three_en
-            ,R.mipmap.image_guide_two_en};
+    private final int[] imageEnIds = {R.mipmap.image_guide_one_en, R.mipmap.image_guide_two_en
+            ,R.mipmap.image_guide_three_en};
 
     @NonNull
     private List<View> createPageList() {

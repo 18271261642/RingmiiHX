@@ -19,6 +19,8 @@ import com.afa.tourism.greendao.gen.DaoMaster;
 import com.afa.tourism.greendao.gen.DaoSession;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.guider.health.apilib.ApiUtil;
+import com.guider.health.common.core.MyUtils;
 import com.guider.healthring.B18I.b18idb.DBManager;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.AlertService;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.NewSmsBroadCastReceiver;
@@ -28,7 +30,7 @@ import com.guider.healthring.bzlmaps.PhoneSosOrDisPhone;
 import com.guider.healthring.bzlmaps.baidulocal.LocationService;
 import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
-import com.mob.MobSDK;
+// import com.mob.MobSDK;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
@@ -118,6 +120,7 @@ public class MyApp extends LitePalApplication {
 
     @Override
     public void onCreate() {
+        ApiUtil.init(getApplication() , MyUtils.getMacAddress());
         super.onCreate();
         AppisOne = true;
         AppisOneStar = true;

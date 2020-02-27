@@ -3,24 +3,32 @@ apply from: "config.gradle"
 apply from: "dependencies.gradle"
 buildscript {
     repositories {
-        google()
+        // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        // maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        // maven { url 'https://maven.aliyun.com/repository/central' }
+        // maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // maven { url 'https://maven.aliyun.com/repository/snapshots' }
         mavenCentral()
         jcenter()
-        maven {
-            url "https://jitpack.io"
-        }
+        google()
+        maven { url "https://jitpack.io" }
         maven { url 'https://projectlombok.org' }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
         maven { url "http://mvn.mob.com/android" }
+        //
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.1'
+        // classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
         classpath "com.mob.sdk:MobSDK:+"
+        // classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -28,38 +36,46 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        mavenCentral()
+        // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        // maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        // maven { url 'https://maven.aliyun.com/repository/central' }
+        // maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // maven { url 'https://maven.aliyun.com/repository/snapshots' }
         jcenter()
+        mavenCentral()
+        google()
         maven { url "https://jitpack.io" }
         maven { url 'https://projectlombok.org' }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
         maven { url "http://mvn.mob.com/android" }
+        //
     }
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+    //task clean(type: Delete) {
+      //  delete rootProject.buildDir
+    //}
 
-ext {
-    compileSdkVersion = 27
-    //buildToolsVersion = "27.0.2"
-    minSdkVersion = 14
-    targetSdkVersion = compileSdkVersion
+    ext {
+        compileSdkVersion = 27
+        //buildToolsVersion = "27.0.2"
+        minSdkVersion = 14
+        targetSdkVersion = compileSdkVersion
 
-    codeVersion = 200
-    appVersion = "2.0.0"
-    isMyOutputFile = true
-}
+        codeVersion = 201
+        appVersion = "2.1.0"
+        isMyOutputFile = true
+    }
 
-subprojects {
-    project.configurations.all {
-        resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == 'com.android.support'
-                    && !details.requested.name.contains('multidex') ) {
-                details.useVersion "27.1.1"
+    subprojects {
+        project.configurations.all {
+            resolutionStrategy.eachDependency { details ->
+                if (details.requested.group == 'com.android.support'
+                        && !details.requested.name.contains('multidex')) {
+                    details.useVersion "27.1.1"
+                }
             }
         }
     }

@@ -17,6 +17,7 @@ MobSDK {
                 appSecret "984774e72efba8f2f21c8cbc91cbbff8"
                 enable true
             }
+             
 
             Facebook {
                 id 8

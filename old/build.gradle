@@ -220,7 +220,7 @@ dependencies {
     implementation 'com.amap.api:3dmap:7.2.0'
     implementation 'com.amap.api:location:4.8.0'
 
-    implementation files('libs/SDKWrapper-2018.0801.1824.jar')
+    // implementation files('libs/SDKWrapper-2018.0801.1824.jar')
     implementation files('libs/jcc-bate-0.7.3.jar')
 
     implementation files('libs/BaiduLBS_Android.jar')

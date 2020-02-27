@@ -67,11 +67,11 @@ dependencies {
 //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //retrofit2
-    compile 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
 //    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
     //okhttp3
-    compile 'com.squareup.okhttp3:okhttp:3.10.0'
-    compile 'com.alibaba:fastjson:1.2.49'
+    api 'com.squareup.okhttp3:okhttp:3.10.0'
+    api 'com.alibaba:fastjson:1.2.49'
 
     librarys.each { k, v -> api v }
 
