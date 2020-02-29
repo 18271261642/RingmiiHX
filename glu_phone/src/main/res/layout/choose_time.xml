@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/head" />
+
+
+    <RelativeLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/time_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_22"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_100"
+                    android:background="@mipmap/empty" />
+
+                <TextView
+                    android:layout_width="@dimen/dp_150"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_11"
+                    android:text="@string/measure_3_qingchen"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:id="@+id/select_time_empty"
+                    android:layout_width="@dimen/dp_23"
+                    android:layout_height="@dimen/dp_23"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/select_time"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/time_1"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_30"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_100"
+                    android:background="@mipmap/food3" />
+
+                <TextView
+                    android:layout_width="@dimen/dp_150"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_11"
+                    android:text="@string/measure_3_canhou"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:id="@+id/select_time_1"
+                    android:layout_width="@dimen/dp_23"
+                    android:layout_height="@dimen/dp_23"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/select_time"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+            <include layout="@layout/eat_medicine_layout"
+                android:visibility="gone"
+                android:id="@+id/drop_time1"/>
+
+            <LinearLayout
+                android:id="@+id/time_2"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_80"
+                android:layout_marginTop="@dimen/dp_30"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_100"
+                    android:background="@mipmap/empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_11"
+                    android:text="清晨空腹"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:id="@+id/select_time_2"
+                    android:layout_width="@dimen/dp_23"
+                    android:layout_height="@dimen/dp_23"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_43"
+                    android:background="@mipmap/select_time"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/time_3"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_80"
+                android:layout_marginTop="@dimen/dp_30"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_100"
+                    android:background="@mipmap/empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_11"
+                    android:text="清晨空腹"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:id="@+id/select_time_3"
+                    android:layout_width="@dimen/dp_23"
+                    android:layout_height="@dimen/dp_23"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_43"
+                    android:background="@mipmap/select_time"
+                    android:visibility="invisible" />
+
+            </LinearLayout>
+
+
+
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_70"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_18"
+        android:id="@+id/next"
+        android:layout_width="@dimen/dp_347"
+        android:layout_height="@dimen/dp_44"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_color"
+        android:stateListAnimator="@null"
+        android:text="@string/next"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/sp_18" />
+
+    </RelativeLayout>
+</LinearLayout>

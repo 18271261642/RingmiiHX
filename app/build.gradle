@@ -134,6 +134,7 @@ dependencies {
     implementation project(':common_m500_1000')
     implementation project(':bpm1000')
     implementation project(':simpleble')
+    implementation project(':glu_phone')
 
     implementation project(path: ':wheelpicker')
 

@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">盖德无创</string>
+    <string name="measure_1_qingzhuyi">请注意您的设备是否已校正</string>
+    <string name="measure_1_tip1">请确认仪器校正完成</string>
+    <string name="measure_1_tip2">请确认输入正确的个人资料</string>
+    <string name="measure_1_tip3">请确认输入正确的数据设定</string>
+    <string name="measure_1_tip4">请按照仪器校正页说明校正</string>
+    <string name="measure_1_tip5">请勿于充电时使用</string>
+    <string name="measure_1_tip6">请每周校正仪器及个人资料 (至少一次)</string>
+    <string name="next">下一步</string>
+    <string name="measure_2_tip1">蓝牙连接中......</string>
+    <string name="measure_2_tip2">请等待提示再伸入手指</string>
+    <string name="measure_2_tip3">建议环境温度：30℃-27℃</string>
+    <string name="measure_2_tip4">建议手指温度：29℃-35℃</string>
+    <string name="measure_2_btn_reconnect">蓝牙连接失败 重新连接</string>
+    <string name="measure_3_qingchen">清晨空腹</string>
+    <string name="measure_3_canhou">餐后2小时</string>
+    <string name="measure_4_qingshenru">请伸入手指到设备中</string>
+    <string name="measure_4_kaishi">开始测量</string>
+    <string name="measure_5_shengyushijian">剩余时间</string>
+    <string name="measure_5_miao">秒</string>
+    <string name="measure_5_qingbaochi">请保持冷静并保持当前姿势</string>
+    <string name="measure_6_qingkaiji">请先长按设备的开机键2秒钟，右侧蓝灯 点亮\n既为正常开机。</string>
+    <string name="measure_6_btn_querenkaiji">确认已开机 下一步</string>
+    <string name="result_1_maibo">脉搏</string>
+    <string name="result_1_xuehongdanbai">血红蛋白</string>
+    <string name="result_1_xueyangbaohe">血氧饱和度(%)</string>
+    <string name="result_1_xueliusudu">血流速度</string>
+    <string name="result_1_zhijian">指尖</string>
+    <string name="result_1_huanjing">环境</string>
+    <string name="result_1_dianchidianliang">电池电量</string>
+    <string name="result_1_wendu">温度</string>
+    <string name="result_1_shidu">湿度</string>
+    <string name="measure_1_zhuyishixiang">注意事项</string>
+    <string name="measure_2_kaijicaozuo">开机操作</string>
+
+    <string name="measure_result">测量结果</string>
+    <string name="ble_connect">蓝牙连接</string>
+    <string name="measure">测量</string>
+    <string name="measure_blu">测量血糖</string>
+</resources>

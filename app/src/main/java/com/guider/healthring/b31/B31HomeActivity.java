@@ -25,12 +25,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.DeviceActivity;
-import com.guider.healthring.activity.LoginActivity;
 import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.b30.b30minefragment.B30MineFragment;
 import com.guider.healthring.b30.b30run.B36RunFragment;
@@ -38,7 +36,6 @@ import com.guider.healthring.b30.service.UpNewDataToGDServices;
 import com.guider.healthring.b30.service.VerB30PwdListener;
 import com.guider.healthring.b31.record.B31RecordFragment;
 import com.guider.healthring.bleutil.MyCommandManager;
-import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
 import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
 import com.guider.healthring.bzlmaps.sos.SendSMSBroadCast;
 import com.guider.healthring.commdbserver.CommDataFragment;
@@ -46,12 +43,9 @@ import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
-import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.view.CusInputDialogView;
 import com.guider.healthring.widget.BottomSelectView;
 import com.guider.healthring.widget.NoScrollViewPager;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -170,6 +164,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
         b31BottomBar.setOnTabSelectListener(new BottomSelectView.OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
+                long accountId = 0;
                 switch (tabId) {
                     case R.id.t1: //首页
                         b31ViewPager.setCurrentItem(0, false);
@@ -178,14 +173,16 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                         b31ViewPager.setCurrentItem(1, false);
                         break;
                     case R.id.t3:  //开跑
-                        b31ViewPager.setCurrentItem(2, false);
+//                        b31ViewPager.setCurrentItem(2, false);
+                        accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
+                        DeviceActivity.start(B31HomeActivity.this , (int) accountId);
                         break;
                     case R.id.t4:   //我的
                         b31ViewPager.setCurrentItem(3, false);
                         break;
                     case R.id.t5:   //开始测试
                         // TODO 跳转到设备选择列表
-                        long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
+                        accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
                         DeviceActivity.start(B31HomeActivity.this , (int) accountId);
                         break;
                 }

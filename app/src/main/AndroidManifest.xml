@@ -204,6 +204,7 @@
 
         <!--微信登录的回调-->
         <activity
+            tools:replace="android:theme,android:configChanges"
             android:name="com.guider.healthringx.wxapi.WXEntryActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"

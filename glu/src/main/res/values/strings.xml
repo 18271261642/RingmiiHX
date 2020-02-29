@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name" translatable="false">glu</string>
+    <string name="measure_3_qingyongshouzhi">请用手指插入到手指夹型传感器</string>
+    <string name="measure_3_lianjieshibai">设备连接失败, 请确保电源已经打开</string>
+    <string name="measure_3_fuhehuanjing">符合环境条件</string>
+    <string name="glu_shebeidianliangdi">, 设备电量低, 请在测试前充电</string>
+    <string name="glu_huanjingwendudi">, 环境温度太低, 可能会影响测试结果!</string>
+    <string name="glu_huanjingwendugao">, 环境温度太高, 可能会影响测试结果!</string>
+    <string name="glu_huanjingtaigan">, 环境太干燥,可能会影响测试结果!</string>
+    <string name="glu_shouzhiwendutaidi">手指温度太低, 可能会影响测试结果</string>
+    <string name="shouzhiwendugao">手指温度太高, 可能会影响测试结果</string>
+    <string name="glu_shouzhiweizhengque">手指未正确伸入!</string>
+    <string name="glu_shujushoujicuowu">数据收集错误,请重新插入手指!</string>
+    <string name="glu_shouzhiganceyouhu">手指感测有误，可能导致错误的数据收集。</string>
+    <string name="glu_shouzhiyiyikai">手指已移开!</string>
+    <string name="glu_shouzhiweishenru">手指未伸入!</string>
+    <string name="glu_chucuodeceshi">出错的测试, 请再次测试</string>
+    <string name="glu_dingqijiankangjiancha">定期健康检查</string>
+    <string name="meitianyundong30fenzhong">每天运动30分钟</string>
+    <string name="congshishuyahuodong">从事舒压活动，让自己多放松</string>
+    <string name="glu_zhengqueyinshi">正确饮食, 依照下列饮食顺序和份量, 2份高纤蔬菜, 2份蛋白质, 1份碳水化合物</string>
+    <string name="glu_weichichongzudeshuimian">维持充足的睡眠</string>
+    <string name="glu_buchongshuifen">补充水份</string>
+</resources>

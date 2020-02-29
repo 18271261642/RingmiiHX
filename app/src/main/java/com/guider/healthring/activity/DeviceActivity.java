@@ -3,6 +3,7 @@ package com.guider.healthring.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.guider.health.ChooseDeviceFragment;
 import com.guider.health.apilib.ApiUtil;
@@ -21,7 +22,16 @@ public class DeviceActivity extends BaseActivity {
         setContentView(R.layout.activity_device);
 
         BleBluetooth.getInstance().init(this);
+        // TODO temp
         loadRootFragment(R.id.main_content, new ChooseDeviceFragment());
+//        loadRootFragment(R.id.main_content, new AttentionInfo());
+
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 

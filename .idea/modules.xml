@@ -16,6 +16,8 @@
       <module fileurl="file://$PROJECT_DIR$/common_m500_1000/common_m500_1000.iml" filepath="$PROJECT_DIR$/common_m500_1000/common_m500_1000.iml" />
       <module fileurl="file://$PROJECT_DIR$/ecg/ecg.iml" filepath="$PROJECT_DIR$/ecg/ecg.iml" />
       <module fileurl="file://$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" filepath="$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/glu/glu.iml" filepath="$PROJECT_DIR$/glu/glu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/glu_phone/glu_phone.iml" filepath="$PROJECT_DIR$/glu_phone/glu_phone.iml" />
       <module fileurl="file://$PROJECT_DIR$/old/old.iml" filepath="$PROJECT_DIR$/old/old.iml" />
       <module fileurl="file://$PROJECT_DIR$/rtc/rtc.iml" filepath="$PROJECT_DIR$/rtc/rtc.iml" />
       <module fileurl="file://$PROJECT_DIR$/simpleble/simpleble.iml" filepath="$PROJECT_DIR$/simpleble/simpleble.iml" />
