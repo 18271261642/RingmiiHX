@@ -2,16 +2,21 @@ package com.guider.healthring.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.job.JobInfo;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,6 +34,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.guider.health.apilib.enums.Gender;
+import com.guider.health.common.utils.JsonUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -53,6 +60,9 @@ import com.guider.healthring.view.PromptDialog;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.guider.healthring.xinlangweibo.SinaUserInfo;
+import com.guider.healthringx.wxapi.WXEntryActivity;
+import com.guider.healthringx.wxapi.WXEntryActivityAdapter;
+import com.guider.libbase.thirdlogin.ThirdLogin;
 import com.tencent.connect.common.Constants;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendAuth;
@@ -64,6 +74,9 @@ import com.yanzhenjie.permission.AndPermission;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,6 +120,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     RelativeLayout qqIv;
     @BindView(R.id.weixin_iv)
     RelativeLayout weixinIv;
+    @BindView(R.id.line_iv)
+    RelativeLayout lineIv;
     private static final String TAG = "LoginActivity";
     private DialogSubscriber dialogSubscriber;
     private SubscriberOnNextListener<String> subscriberOnNextListener;
@@ -131,7 +146,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     private RequestPressent requestPressent;
 
 
-
+    private ThirdLogin mThirdLogin;
+    private WXEntryActivityAdapter mWXEntryActivityAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +156,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
         iwxapi = WXAPIFactory.createWXAPI(this, Commont.WX_APP_SECRET, true);
         iwxapi.registerApp(Commont.WX_APP_ID);
-
+        mThirdLogin = new ThirdLogin(this);
         //Google Play用这个
 //        iwxapi = WXAPIFactory.createWXAPI(this, "wx7e5e9e90ae4d8f51", true);
 //        iwxapi.registerApp("wx7e5e9e90ae4d8f51");
@@ -149,7 +165,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
 
         initViews();
-
     }
 
 
@@ -159,6 +174,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
+        mWXEntryActivityAdapter = new WXEntryActivityAdapter(this, requestPressent);
 
         subscriberOnNextListener = new SubscriberOnNextListener<String>() {
             @Override
@@ -244,7 +260,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     @OnClick({R.id.register_btn, R.id.forget_tv,
             R.id.login_btn, R.id.xinlang_iv,
             R.id.qq_iv, R.id.weixin_iv,
-            R.id.login_visitorTv,R.id.privacyTv})
+            R.id.login_visitorTv,R.id.privacyTv, R.id.line_iv})
     public void onClick(View view) {
         Context context = view.getContext();
         switch (view.getId()) {
@@ -303,25 +319,10 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 };
                 break;
             case R.id.weixin_iv://微信登录
-                SendAuth.Req req = new SendAuth.Req();
-                //授权读取用户信息
-                req.scope = "snsapi_userinfo";
-                //自定义信息
-                req.state = "auth_state";
-                if (iwxapi == null) {
-                    iwxapi = WXAPIFactory.createWXAPI(this, Commont.WX_APP_SECRET, true);
-                    iwxapi.registerApp(Commont.WX_APP_ID);
-                }
-
-                //Google Play用这个
-//                if (iwxapi == null) {
-//                    iwxapi = WXAPIFactory.createWXAPI(this, "wx7e5e9e90ae4d8f51", true);
-//                    iwxapi.registerApp("wx7e5e9e90ae4d8f51");
-//                }
-
-
-                //向微信发送请求
-                iwxapi.sendReq(req);
+                mThirdLogin.wechatLogin(hashMap -> {
+                    String strUserInfo = JsonUtil.toStr(hashMap);
+                    mWXEntryActivityAdapter.analysisWXUserInfo(strUserInfo);
+                });
                 break;
             case R.id.login_visitorTv:  //游客登录
                 final PromptDialog pd = new PromptDialog(LoginActivity.this);
@@ -359,9 +360,62 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
             case R.id.privacyTv:    //隐私政策
                 startActivity(PrivacyActivity.class);
                 break;
+            case R.id.line_iv: // LINE 登陆
+                mThirdLogin.lineLogin("1653887386", hashMap -> {
+                    // 用户信息可以做自己的操作
+                    registerRingUser(hashMap);
+                }, () -> {
+                    startActivity(NewSearchActivity.class);
+                    finish();
+                });
+                break;
         }
     }
 
+    // 注册到手环方平台
+    private void registerRingUser(HashMap<String, Object> map) {
+        Map<String,Object> params = new HashMap<>();
+        if (map.containsKey("openId"))
+            params.put("thirdId", map.get("openId").toString());
+        params.put("thirdType",  "3");
+        if (map.containsKey("headUrl"))
+            params.put("image", map.get("headUrl").toString());
+        if (map.containsKey("gender"))
+            params.put("sex", ((Gender)map.get("Gender")) == Gender.MAN ? "M" : "F");
+        if (map.containsKey("nickName"))
+            params.put("nickName", map.get("nickName").toString());
+        if (Commont.isDebug)Log.e(TAG, "3333游客注册或者登陆参数：" + params.toString());
+        String url = Commont.FRIEND_BASE_URL + URLs.disanfang;
+        if (Commont.isDebug)Log.e(TAG, "====  json  " +  new Gson().toJson(params));
+        OkHttpTool.getInstance().doRequest(url, new Gson().toJson(params), this, new OkHttpTool.HttpResult() {
+            @Override
+            public void onResult(String result) {
+                Log.e(TAG, "-------微信登录到bl=" + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (!jsonObject.has("code"))
+                        return;
+                    if (jsonObject.getInt("code") == 200) {
+                        String userStr = jsonObject.getString("data");
+                        if (userStr != null) {
+                            UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
+                            Common.customer_id = userInfoBean.getUserid();
+                            //保存userid
+                            SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
+                            SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
+                            SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
+
+                            // startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
+                            // finish();
+                        }
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -556,6 +610,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
             return;
         if (what == 0x01) {  //手机号登录
             loginForUserPhone(object.toString(), daystag);
+        } else if (mWXEntryActivityAdapter != null) { // 兼容老的微信登陆绑定手机号代码，暂时
+            mWXEntryActivityAdapter.successData(what, object, daystag);
         }
     }
 

@@ -83,7 +83,7 @@ dependencies {
 
 //    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation project(':MPChartLib')
-    compile project(':fragmentation_core')
+    api project(':fragmentation_core')
     implementation project(path: ':apilib')
 
     // 红豆心电

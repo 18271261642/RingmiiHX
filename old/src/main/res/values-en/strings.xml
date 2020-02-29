@@ -1020,7 +1020,7 @@
     <string name="prompt">Prompt</string>
     <string name="data_upload">Data upload success</string>
     <string name="data_upload_fail">Data upload failed</string>
-    <string name="input_email">Please input your email</string>
+    <string name="input_email">Please input your mobile phone</string>
     <string name="shouquancg">Authorized success</string>
     <string name="shouquanshib">Privilege grant failed</string>
     <string name="shouquanqu">Authorization cancel</string>

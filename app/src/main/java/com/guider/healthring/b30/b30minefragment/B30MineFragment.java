@@ -699,7 +699,9 @@ public class B30MineFragment extends LazyFragment implements RequestView {
                             .skipMemoryCache(true);
                     Glide.with(this).load(hearUrl).apply(mRequestOptions).into(b30UserImageHead);//头像
                 }
-
+                // 用户名
+                String name = guiderUserInfo.getName();
+                b30UserNameTv.setText(name);
 
             }catch (Exception e){
                 e.printStackTrace();

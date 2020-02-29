@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/comment_b30_title_layout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/ling11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/commB31TitleLayout">
+
+
+        <ImageView
+            android:id="@+id/roateImgView"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/ic_phone_code_more" />
+
+        <TextView
+            android:id="@+id/wxBindPhoneCodeTv"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="+86"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+
+        <EditText
+            android:id="@+id/wxBindPhoneCodeEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_name"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:padding="8dp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/lin22"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/ling11">
+
+
+        <EditText
+            android:id="@+id/wxBindPhoneVerCodeEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/input_code"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp" />
+
+        <Button
+            android:id="@+id/wxBindGetVerCodeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_selector"
+            android:text="@string/send_code"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/wxBindSubBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/login_selector"
+        android:text="@string/bangding"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/lin22" />
+
+
+</android.support.constraint.ConstraintLayout>

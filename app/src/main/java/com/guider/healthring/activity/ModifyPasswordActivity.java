@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.guider.healthring.Commont;
 import com.guider.healthring.R;
 import com.guider.healthring.base.BaseActivity;
 import com.guider.healthring.net.OkHttpObservable;
@@ -13,6 +14,7 @@ import com.guider.healthring.rxandroid.DialogSubscriber;
 import com.guider.healthring.rxandroid.SubscriberOnNextListener;
 import com.guider.healthring.util.Common;
 import com.guider.healthring.util.Md5Util;
+import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
 import com.google.gson.Gson;
@@ -50,13 +52,15 @@ public class ModifyPasswordActivity extends BaseActivity {
             public void onNext(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    String resultCode = jsonObject.getString("resultCode");
-                    if ("001".equals(resultCode)) {
+                    if(!jsonObject.has("code"))
+                        return;
+                    if(jsonObject.getInt("code") == 200){
                         ToastUtil.showShort(ModifyPasswordActivity.this, getString(R.string.modify_success));
                         finish();
-                    } else {
-                        ToastUtil.showShort(ModifyPasswordActivity.this, getString(R.string.submit_fail));
+                    }else{
+                        ToastUtil.showToast(ModifyPasswordActivity.this,jsonObject.getString("msg"));
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -99,12 +103,13 @@ public class ModifyPasswordActivity extends BaseActivity {
     private void modifyPersonData(String oldePwd, String newPwd) {
         Gson gson = new Gson();
         HashMap<String, Object> map = new HashMap<>();
-        map.put("userId", Common.customer_id);
+        String userId = (String) SharedPreferencesUtils.readObject(ModifyPasswordActivity.this, Commont.USER_ID_DATA);
+        map.put("userId", userId);
         map.put("oldePwd", Md5Util.Md532(oldePwd));
         map.put("newPwd", Md5Util.Md532(newPwd));
         String mapjson = gson.toJson(map);
         dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, ModifyPasswordActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.xiugaipassword, mapjson);
+        OkHttpObservable.getInstance().getData(dialogSubscriber, Commont.FRIEND_BASE_URL + URLs.xiugaipassword, mapjson);
     }
 
 }

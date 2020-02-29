@@ -71,8 +71,8 @@ dependencies {
     //api的方式有传递性
     implementation project(':arouter-core')
     implementation project(':common')
-    compile project(':bluetooth')
-    compile project(':fragmentation_core')
+    api project(':bluetooth')
+    api project(':fragmentation_core')
     implementation files('libs/d2xx.jar')
     implementation project(path: ':simpleble')
 }

@@ -323,7 +323,7 @@
                 <TextView
                     style="@style/B30DeviceStyle"
                     android:layout_toRightOf="@+id/img9"
-                    android:text="倒计时" />
+                    android:text="@string/count_down" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -392,7 +392,7 @@
                 <TextView
                     style="@style/B30DeviceStyle"
                     android:layout_toRightOf="@+id/img8"
-                    android:text="摇摇拍照" />
+                    android:text="@string/shake_photos" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -463,7 +463,7 @@
                 <TextView
                     style="@style/B30DeviceStyle"
                     android:layout_toRightOf="@+id/img11"
-                    android:text="界面风格" />
+                    android:text="@string/gui_style" />
 
                 <ImageView
                     android:layout_width="wrap_content"

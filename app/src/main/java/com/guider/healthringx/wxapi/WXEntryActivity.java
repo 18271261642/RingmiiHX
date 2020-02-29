@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.guider.health.common.utils.JsonUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.activity.GuiderWxBindPhoneActivity;
@@ -35,13 +36,16 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.sharesdk.wechat.utils.WXMediaMessage;
+import cn.sharesdk.wechat.utils.WechatHandlerActivity;
+
 
 /**
  * MicroMsg
  * Created by wyl on 2017/2/6.
  */
 
-public class WXEntryActivity extends WatchBaseActivity implements IWXAPIEventHandler,RequestView {
+public class WXEntryActivity extends WechatHandlerActivity implements IWXAPIEventHandler,RequestView {
 
     private static final String TAG = "WXEntryActivity";
 
@@ -66,7 +70,11 @@ public class WXEntryActivity extends WatchBaseActivity implements IWXAPIEventHan
 
     private WXUserBean wxUserBean = null;
 
-
+    @Override
+    public void onGetMessageFromWXReq(WXMediaMessage msg) {
+        super.onGetMessageFromWXReq(msg);
+        JsonUtil.toStr(msg);
+    }
 
     @Override
     public void onReq(BaseReq baseReq) {
@@ -301,6 +309,19 @@ public class WXEntryActivity extends WatchBaseActivity implements IWXAPIEventHan
         }
     }
 
+    public void startActivity(Class<?> cls, String[] keys, String[] values) {
+        Intent intent = new Intent(this, cls);
+        int size = keys.length;
+        for (int i = 0; i < size; i++) {
+            intent.putExtra(keys[i], values[i]);
+        }
+        startActivity(intent);
+    }
+
+    public void startActivity(Class<?> cls) {
+        Intent intent = new Intent(this, cls);
+        startActivity(intent);
+    }
 }
 
 

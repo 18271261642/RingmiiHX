@@ -35,6 +35,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <!--短信权限-->
 <!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
 <!--    <uses-permission android:name="android.permission.SEND_SMS" />-->
@@ -162,7 +163,7 @@
 
         <!-- 新的引导页和欢迎页-启动页 -->
         <activity
-            android:name=".activity.LaunchActivity"
+            android:name="com.guider.healthring.activity.LaunchActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
             android:theme="@style/AppTheme.NoActionBar">
 

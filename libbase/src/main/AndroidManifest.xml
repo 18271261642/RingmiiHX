@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.guider.libbase">
+
+    <application>
+        <activity
+            android:name=".thirdlogin.BindPhoneV2Activity"
+            android:label="@string/title_activity_bind_phone_v2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

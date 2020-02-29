@@ -7,6 +7,7 @@ import com.guider.health.apilib.model.DoctorInfo;
 import com.guider.health.apilib.model.HasWechatId;
 import com.guider.health.apilib.model.HealthAdvice;
 import com.guider.health.apilib.model.IsFocusWechat;
+import com.guider.health.apilib.model.ParamThirdUserAccount;
 import com.guider.health.apilib.model.TokenInfo;
 import com.guider.health.apilib.model.UserInfo;
 import com.guider.health.apilib.model.WechatInfo;
@@ -236,4 +237,14 @@ public interface IGuiderApi {
     @DELETE("api/v1/doctor/{accountId}/user")
     Call<String> deleteUser(@Path("accountId") int accountId , @Query("userAccountId") int userAccountId);
 
+    /**
+     *
+     * @param appId
+     * @param openId
+     * @return
+     */
+    @GET("api/v1/accountthird/verify/login")
+    Call<BeanOfWecaht> verifyThirdAccount(@Query("appId") String appId , @Query("openId") String openId);
+    @POST("api/v1/accountthird/phone/login")
+    Call<BeanOfWecaht> bindPhoneAndLogin(@Body ParamThirdUserAccount param);
 }

@@ -61,7 +61,7 @@
     <string name="vpspo2h_spo2h"> Blood Oxygen </string>
     <string name="count_down">Countdown</string>
     <string name="string_devices_ui">Style setting of main interfaces</string>
-    <string name="string_default_style">默認風格</string>
+    <string name="string_default_style">Default style</string>
     <string name="style_1">Style 1</string>
     <string name="style_2"> Style 2</string>
     <string name="style_3"> Style 3</string>
@@ -714,12 +714,12 @@
     <string name="string_sleep_target">Sleep</string>
     <string name="string_information_reminder">Message notification</string>
     <string name="string_turning_wrist_screen">Turn the wrist</string>
-    <string name="string_blood_pressure_mode">private mode</string>
+    <string name="string_blood_pressure_mode">Private mode</string>
     <string name="string_switch_setting">Switch setting</string>
     <string name="string_take_photo">Take photo</string>
     <string name="string_reset_device_password">Reset device password</string>
     <string name="string_firmware_update"> Firmware update</string>
-    <string name="string_clear_data">clear data</string>
+    <string name="string_clear_data">Clear data</string>
     <string name="string_devices_disconnected">Disconnect</string>
     <string name="string_devices_is_disconnected">Is it disconnected?</string>
     <string name="string_init_device_password">Initial password 0000</string>
@@ -1020,7 +1020,7 @@
     <string name="prompt">Prompt</string>
     <string name="data_upload">Data upload success</string>
     <string name="data_upload_fail">Data upload failed</string>
-    <string name="input_email">Please input your email</string>
+    <string name="input_email">Please input your mobile phone</string>
     <string name="shouquancg">Authorized success</string>
     <string name="shouquanshib">Privilege grant failed</string>
     <string name="shouquanqu">Authorization cancel</string>
@@ -1052,7 +1052,7 @@
     <string name="blood">Blood pressure</string>
 
 
-    <string name="the_app_name">GuiderHX</string>
+    <string name="the_app_name">GuiderBand</string>
     <string name="input_password">Please enter your password</string>
     <string name="input_code">Please enter the verification code</string>
     <string name="input_nickname">Please enter a nickname</string>
