@@ -155,7 +155,7 @@
                 <TextView
                     style="@style/B30DeviceStyle"
                     android:layout_toRightOf="@+id/img15"
-                    android:text="血氧夜间检测" />
+                    android:text="@string/string_night_blood_oxygen" />
 
 
                 <ToggleButton

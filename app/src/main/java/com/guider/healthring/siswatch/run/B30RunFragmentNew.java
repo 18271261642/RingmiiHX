@@ -128,68 +128,6 @@ public class B30RunFragmentNew extends B30BaseFragment implements
         startActivity(new Intent(getActivity(), GPSSportHisyory.class));
     }
 
-
-//    使用这种方式 getActivity() 偶尔为空会崩溃
-//    /**
-//     * Fragment切换
-//     */
-//    /**********     xml布局是，加载fragment的必须是 FrameLayout布局，并且上面不能有所遮挡，负责会不显示    ***********/
-//    private W30sNewRunFragment w30sNewRunFragment = null;//GPS运动界面
-//    private B30DevicesFragment b30DevicesFragment = null;//手环运动界面
-//
-//    //设置Fragment
-//    private void setFragment(int dex) {
-//        try {
-//            //开启一个事务
-//            FragmentTransaction beginTransaction = null;
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-//                beginTransaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-//            }
-//            if (beginTransaction == null) return;
-//            if (w30sNewRunFragment != null) {
-//                beginTransaction.hide(w30sNewRunFragment);
-//            }
-//            if (b30DevicesFragment != null) {
-//                beginTransaction.hide(b30DevicesFragment);
-//                b30DevicesFragment = null;
-//            }
-//
-//            switch (dex) {
-//                case 0:
-//                    if (w30sNewRunFragment == null) {
-////                    w30sNewRunFragment = W30sNewRunFragment.newInstance();
-//                        w30sNewRunFragment = new W30sNewRunFragment();
-//                        //加入事物
-//                        beginTransaction.add(R.id.w30_run_content, w30sNewRunFragment);
-//                    } else {
-//                        //否则就显示
-//                        beginTransaction.show(w30sNewRunFragment);
-//                    }
-//                    break;
-//
-//                case 1:
-//                    if (b30DevicesFragment == null) {
-////                    b30DevicesFragment = B30DevicesFragment.newInstance();
-//                        b30DevicesFragment = new B30DevicesFragment();
-//                        //加入事物
-//                        beginTransaction.add(R.id.w30_run_content, b30DevicesFragment);
-//                    } else {
-//                        //否则就显示
-//                        beginTransaction.show(b30DevicesFragment);
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-//            //执行
-//            beginTransaction.commit();
-//        } catch (Error error) {
-//
-//        }
-//
-//    }
-
-
     public class RunVPAdapter extends FragmentPagerAdapter {
         List<Fragment> fragmentList = null;
         String[] stringsTitle = {getResources().getString(R.string.string_gps_run),
