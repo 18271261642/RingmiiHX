@@ -27,8 +27,8 @@ import android.widget.Toast;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
-import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
-import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
+// import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
+// import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -477,7 +477,7 @@ public class HellpEditActivity  extends WatchBaseActivity
                     Commont.COUNTNUMBER = 4;
                     Commont.GPSCOUNT = 2;
                     //Commont.isGPSed = true;
-                    getGps();
+                    // getGps();
                     call(textOne.getText().toString().trim());
                 }
                 break;
@@ -486,7 +486,7 @@ public class HellpEditActivity  extends WatchBaseActivity
                     Commont.COUNTNUMBER = 4;
                     Commont.GPSCOUNT = 2;
                     //Commont.isGPSed = true;
-                    getGps();
+                    // getGps();
                     call(textTwo.getText().toString().trim());
                 }
                 break;
@@ -495,7 +495,7 @@ public class HellpEditActivity  extends WatchBaseActivity
                     Commont.COUNTNUMBER = 4;
                     Commont.GPSCOUNT = 2;
                     //Commont.isGPSed = true;
-                    getGps();
+                    // getGps();
                     call(textThee.getText().toString().trim());
                 }
                 break;
@@ -508,7 +508,7 @@ public class HellpEditActivity  extends WatchBaseActivity
                     Commont.COUNTNUMBER = 0;
                     Commont.GPSCOUNT = 0;
                     //Commont.isGPSed = true;
-                    getGps();
+                    // getGps();
                     if (!TextUtils.isEmpty(textOne.getText().toString().trim())) {
                         call(textOne.getText().toString().trim());
                     } else {
@@ -698,7 +698,7 @@ public class HellpEditActivity  extends WatchBaseActivity
     }
 
 
-
+/*
     GPSGoogleUtils instance;
 
     void getGpsGoogle() {
@@ -730,7 +730,7 @@ public class HellpEditActivity  extends WatchBaseActivity
             getGpsGoogle();
         }
     }
-
+*/
 
     //点击事件调用的类
 

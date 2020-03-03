@@ -104,17 +104,13 @@
             android:required="false" />
 
 
-        <!--google-->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <!-- 高德地图 -->
+
+        <!-- 高德地图
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="3e36daca606e7e9ceb28b5da9050e82b" />
+        -->
+
         <!--友盟-->
         <meta-data
             android:name="UMENG_APPKEY"
@@ -122,10 +118,11 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="yyb" />
-        <!--百度-->
+        <!--百度
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="WqDWWq2sVskXySNkWUSgUNSkdjQqZVLS" />
+            -->
 
         <meta-data
             android:name="AuthorizeAdapter"
@@ -231,8 +228,7 @@
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
-
-
+        
         <!-- 最新 -->
         <activity
             android:name=".bzlmaps.googlemaps.BzlGoogleMapsActivity"
@@ -1047,11 +1043,11 @@
 
 
 
-        <!-- 百度地图的server -->
+        <!-- 百度地图的server
         <service
             android:name="com.baidu.location.f"
             android:enabled="true" />
-
+-->
 
         <!-- 下载的serveir -->
         <service android:name=".siswatch.utils.DownloadService" />
@@ -1061,12 +1057,10 @@
         <service android:name=".b31.bpoxy.ReadHRVAnSpo2DatatService" />
         <service android:name=".commdbserver.UploadCommDbServices" />
 
-        <!--谷歌地图的service-->
-        <service
-            android:name=".bzlmaps.googlemaps.FetchAddressIntentService"
-            android:exported="false" />
-        <!-- 高德地图定位服务 -->
+
+        <!-- 高德地图定位服务
         <service android:name="com.amap.api.location.APSService" />
+        -->
         <!-- /固件升级 -->
         <service android:name=".activity.wylactivity.wyl_util.service.DfuService" />
 

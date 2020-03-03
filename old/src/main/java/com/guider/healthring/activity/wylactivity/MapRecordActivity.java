@@ -567,7 +567,7 @@ public class MapRecordActivity extends BaseActivity {
 //
 //    @Override
 //    protected int getContentViewId() {
-//        return R.layout.activity_maprecord;
+//        return R.layout.activity_map;
 //    }
 //
 //    @Override

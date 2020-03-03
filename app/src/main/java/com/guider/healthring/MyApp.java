@@ -27,10 +27,13 @@ import com.guider.healthring.activity.wylactivity.wyl_util.service.NewSmsBroadCa
 import com.guider.healthring.b30.service.B30DataServer;
 import com.guider.healthring.b30.service.NewB30ConnStateService;
 import com.guider.healthring.bzlmaps.PhoneSosOrDisPhone;
-import com.guider.healthring.bzlmaps.baidulocal.LocationService;
+// import com.guider.healthring.bzlmaps.baidulocal.LocationService;
 import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
 // import com.mob.MobSDK;
+import com.guider.libbase.map.IMapLocation;
+import com.guider.libbase.map.IOnLocation;
+import com.guider.map.MapLocationImpl;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
@@ -76,6 +79,7 @@ public class MyApp extends LitePalApplication {
 
     public static PhoneSosOrDisPhone phoneSosOrDisPhone;
 
+    private IMapLocation mIMapLocation;
     static {
         phoneSosOrDisPhone = new PhoneSosOrDisPhone();
     }
@@ -114,7 +118,7 @@ public class MyApp extends LitePalApplication {
     //B30手环的服务
     private static NewB30ConnStateService b30ConnStateService;
 
-    public LocationService locationService;
+    // public LocationService locationService;
 
     NewSmsBroadCastReceiver newSmsBroadCastReceiver;
 
@@ -129,7 +133,7 @@ public class MyApp extends LitePalApplication {
         context = this;
         activities = new ArrayList<>();
 
-        locationService = new LocationService(application);
+        // locationService = new LocationService(application);
 
         Bugly.init(this, "ff6d0ec595", true);
 
@@ -225,6 +229,8 @@ public class MyApp extends LitePalApplication {
     public void onTerminate() {
         // 程序终止的时候执行
         super.onTerminate();
+
+        // mIMapLocation.stop();
     }
 
     @Override

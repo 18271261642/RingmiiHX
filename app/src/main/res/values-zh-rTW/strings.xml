@@ -686,6 +686,7 @@
     <string name="string_is_24_hour">24小時制</string>
     <string name="string_auto_blood_pressure">心率自動檢測</string>
     <string name="string_auto_heart">血壓自動檢測</string>
+    <string name="string_night_blood_oxygen">血氧夜間檢測</string>
     <string name="string_find_phone">查找手機</string>
     <string name="string_stopwatch_function">秒錶功能</string>
     <string name="string_disconnection_reminder">斷連提醒</string>
