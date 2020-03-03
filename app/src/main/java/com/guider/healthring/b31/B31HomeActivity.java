@@ -178,15 +178,18 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                         b31ViewPager.setCurrentItem(1, false);
                         break;
                     case R.id.t3:  //开跑
-                        b31ViewPager.setCurrentItem(2, false);
+                        long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
+                        DeviceActivity.start(B31HomeActivity.this , (int) accountId);
+
+//                        b31ViewPager.setCurrentItem(2, false);
                         break;
                     case R.id.t4:   //我的
                         b31ViewPager.setCurrentItem(3, false);
                         break;
                     case R.id.t5:   //开始测试
                         // TODO 跳转到设备选择列表
-                        long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
-                        DeviceActivity.start(B31HomeActivity.this , (int) accountId);
+//                        long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
+//                        DeviceActivity.start(B31HomeActivity.this , (int) accountId);
                         break;
                 }
             }
