@@ -38,7 +38,7 @@ import com.guider.health.common.net.net.RestService;
 import com.guider.health.common.net.net.RetrofitLogInterceptor;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
-import com.tencent.bugly.crashreport.CrashReport;
+// import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -154,7 +154,7 @@ public class ChooseDeviceFragment extends BaseFragment {
         Logger.i("accontID=" + UserManager.getInstance().getAccountId() + "\n" +
                 "mac=" + MyUtils.getMacAddress() + "\n" +
                 "doctorID = " + UserManager.getInstance().getDotorAccountId());
-        CrashReport.putUserData(_mActivity, "accountID", UserManager.getInstance().getAccountId() + "");
+        // CrashReport.putUserData(_mActivity, "accountID", UserManager.getInstance().getAccountId() + "");
         MeasureDataUploader.getInstance(_mActivity).startWorking();
     }
 

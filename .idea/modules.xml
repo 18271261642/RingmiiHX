@@ -33,6 +33,8 @@
       <module fileurl="file://$PROJECT_DIR$/ecg/ecg.iml" filepath="$PROJECT_DIR$/ecg/ecg.iml" />
       <module fileurl="file://$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" filepath="$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" />
       <module fileurl="file://$PROJECT_DIR$/libbase/libbase.iml" filepath="$PROJECT_DIR$/libbase/libbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbuglycn/libbuglycn.iml" filepath="$PROJECT_DIR$/libbuglycn/libbuglycn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" filepath="$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" />
       <module fileurl="file://$PROJECT_DIR$/libgaodemap/libgaodemap.iml" filepath="$PROJECT_DIR$/libgaodemap/libgaodemap.iml" />
       <module fileurl="file://$PROJECT_DIR$/libgooglemap/libgooglemap.iml" filepath="$PROJECT_DIR$/libgooglemap/libgooglemap.iml" />
       <module fileurl="file://$PROJECT_DIR$/rtc/rtc.iml" filepath="$PROJECT_DIR$/rtc/rtc.iml" />

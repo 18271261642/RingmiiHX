@@ -8,8 +8,8 @@ configurations.all {
     // transitive = false
     resolutionStrategy {
         force 'androidx.annotation:annotation:1.0.0'
-        force 'com.tencent.bugly:crashreport_upgrade:1.4.5'
-        force 'com.tencent.bugly:nativecrashreport:3.7.1'
+        // force 'com.tencent.bugly:crashreport_upgrade:1.4.5'
+        // force 'com.tencent.bugly:nativecrashreport:3.7.1'
         force 'androidx.appcompat:appcompat:1.0.0'
         force 'androidx.recyclerview:recyclerview:1.0.0'
         force 'com.github.bumptech.glide:glide:4.6.1'
@@ -195,9 +195,13 @@ dependencies {
     if (project.hasProperty("googlePlay")) {
         println "Add lib libgooglemap"
         implementation project(':libgooglemap')
+
+        implementation project(':libbuglygoogle')
     } else {
         implementation project(':libgaodemap')
         println "Add lib libgaodemap"
+
+        implementation project(':libbuglycn')
     }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -305,10 +309,6 @@ dependencies {
     implementation files('libs/jcc-bate-0.7.3.jar')
 
     implementation 'org.litepal.android:java:3.0.0'
-
-    api 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
-    api 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
-    api 'com.tencent.tinker:tinker-android-lib:latest.release'
 }
 
 android.applicationVariants.all { variant ->
