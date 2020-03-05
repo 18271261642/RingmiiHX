@@ -38,7 +38,7 @@ public class MeasureDataUploader {
 
     Context context;
 
-    boolean isWorking = false;
+    public boolean isWorking = false;
 
     /**
      * 重新提交缓存数据

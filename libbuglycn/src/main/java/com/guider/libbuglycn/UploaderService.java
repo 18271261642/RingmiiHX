@@ -1,15 +1,18 @@
-package com.guider.health.common.cache;
+package com.guider.libbuglycn;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.guider.health.common.device.standard.Constant;
+// import com.guider.health.common.cache.MeasureDataUploader;
+// import com.guider.health.common.device.standard.Constant;
 import com.tencent.bugly.beta.Beta;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+// import com.tencent.bugly.beta.Beta;
 
 /**
  * 检查缓存数据上传的服务
@@ -29,7 +32,7 @@ public class UploaderService extends Service{
     /**
      * 检查缓存的时间间隔
      */
-    private int CheckTime = 1000 * (Constant.isDebug ? 2 : 30);
+    private int CheckTime = 1000 * 30;
 
     @Nullable
     @Override
@@ -60,7 +63,7 @@ public class UploaderService extends Service{
      * 检查和重新上传失败的数据
      */
     private void checkAndReuploadFailData() {
-        MeasureDataUploader.getInstance(this).checkAndReuploadFaillData();
+        // MeasureDataUploader.getInstance(this).checkAndReuploadFaillData();
     }
 
     boolean hasPrompt = false;
@@ -69,17 +72,11 @@ public class UploaderService extends Service{
      * 不在测试过程中的情况下 , 检查更新
      */
     private void checkAppNewVersion() {
-//        if (!MeasureDataUploader.getInstance(this).isWorking) {
-//            if (!hasPrompt) {
-//                Beta.checkUpgrade(false , false);
-//            }
-//            UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
-//            if (upgradeInfo != null) {
-//                hasPrompt = true;
-//            }
-//        }
+        /*
         if (!MeasureDataUploader.getInstance(this).isWorking) {
                 Beta.checkUpgrade(false , false);
         }
+
+         */
     }
 }
