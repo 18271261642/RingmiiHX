@@ -7,12 +7,13 @@ import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
-
+/*
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
+*/
 
 import hat.bemo.APIupload.ChangeDateFormat;
 import hat.bemo.APIupload.Controller;
@@ -21,7 +22,7 @@ import hat.bemo.VO.VO_0x30;
 import hat.bemo.location.GpsController;
 import hat.bemo.measure.database.Update;
 
-public class MarkLocation implements BDLocationListener{
+public class MarkLocation { // implements BDLocationListener{
 	
 	 private VO_0x30 vo0x30 = new VO_0x30();
 	 private String gps_status = "1";
@@ -56,8 +57,8 @@ public class MarkLocation implements BDLocationListener{
 	    public static double a = 6378245.0;  
 	    public static double ee = 0.00669342162296594323;  
 	
-	public LocationClient mLocationClient = null;
-	private MyLocationListener myListener = new MyLocationListener();
+	// public LocationClient mLocationClient = null;
+	// private MyLocationListener myListener = new MyLocationListener();
 	
 	//BDAbstractLocationListener为7.2版本新增的Abstract类型的监听接口
 	//原有BDLocationListener接口暂时同步保留。具体介绍请参考后文中的说明
@@ -72,13 +73,13 @@ public class MarkLocation implements BDLocationListener{
 		MyApplication.BatteryInformation.Voltage = batteryIntent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0);
 		MyApplication.BatteryInformation.VoltagePercent = (((float)level / (float)scale) * 100.0f);
 		
-			 mLocationClient = new LocationClient(MyApplication.context);     
+			 // mLocationClient = new LocationClient(MyApplication.context);
 			    //声明LocationClient类
-			    mLocationClient.registerLocationListener(myListener);    
+			   // mLocationClient.registerLocationListener(myListener);
 			    //注册监听函数
 //			    mWifiManager.setWifiEnabled(true);
 			    initBaiduLocation();
-			    mLocationClient.start();
+			    // mLocationClient.start();
 			    
 			    if(LocType == 1){
 //					UploadSyncLocation();
@@ -106,6 +107,7 @@ public class MarkLocation implements BDLocationListener{
 	}
 	
 	 private void initBaiduLocation() {
+		/*
 		 LocationClientOption option = new LocationClientOption();
 
 		 option.setLocationMode(LocationMode.Hight_Accuracy);
@@ -152,8 +154,10 @@ public class MarkLocation implements BDLocationListener{
 		 //mLocationClient为第二步初始化过的LocationClient对象
 		 //需将配置好的LocationClientOption对象，通过setLocOption方法传递给LocationClient对象使用
 		 //更多LocationClientOption的配置，请参照类参考中LocationClientOption类的详细说明
+		 */
 	 }
-	
+
+	 /*
 	 public class MyLocationListener implements BDLocationListener{
 		    public void onReceiveLocation(BDLocation location){
 		        //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
@@ -201,7 +205,8 @@ public class MarkLocation implements BDLocationListener{
 		        
 		    }
 		}
-	 	
+
+	  */
 	 			public final Runnable SOSUpload1 = new Runnable() {
 					public void run() {
 						
@@ -230,7 +235,7 @@ public class MarkLocation implements BDLocationListener{
 								
 							System.out.println("Mark CloseBaidu");
 							MarkHandler3.removeCallbacks(CloseBaidu);
-							mLocationClient.stop();
+							// mLocationClient.stop();
 								
 						}
 							
@@ -381,10 +386,11 @@ public class MarkLocation implements BDLocationListener{
 		
 	}
 
+	/*
 	@Override
 	public void onReceiveLocation(BDLocation arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
+*/
 }

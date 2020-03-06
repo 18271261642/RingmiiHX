@@ -114,10 +114,14 @@ public class WatchBaseActivity extends AppCompatActivity {
             tv.setText(msg + "");
             dialog.show();
         }
-        //mHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIALOG, 30 * 1000);
+        // mHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIALOG, 30 * 1000);
     }
 
 
+    public void hideLoadingDialog() {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+    }
 //    public void showLoadingDialog2(final String bleId) {
 //        Log.e("TAG", "----点击啦-3--" + bleId);
 //        Log.d("------zza---", "弹出输入提示后----" + bleId);

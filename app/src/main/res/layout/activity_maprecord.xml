@@ -61,13 +61,17 @@
         <!--android:id="@+id/test_qixinggoogle_map"-->
         <!--android:name="com.google.android.gms.maps.MapFragment"-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-
-
-        <com.amap.api.maps.MapView
+        <!--android:layout_height="match_parent" />
+         <com.amap.api.maps.MapView
             android:id="@+id/test_qixing_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" />-->
+        <include
+            layout="@layout/view_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
 
         <ImageView
             android:id="@+id/qixingfugai_hostory"

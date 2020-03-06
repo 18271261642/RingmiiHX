@@ -30,8 +30,8 @@ import com.guider.healthring.b30.service.UpDataToGDServices;
 import com.guider.healthring.b30.service.UpDataToGDServicesNew;
 import com.guider.healthring.b30.service.UpHrvDataToGDServices;
 import com.guider.healthring.bleutil.MyCommandManager;
-import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
-import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
+// import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
+// import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
 import com.guider.healthring.bzlmaps.sos.SendSMSBroadCast;
 import com.guider.healthring.commdbserver.CommDataFragment;
 import com.guider.healthring.siswatch.WatchBaseActivity;
@@ -304,8 +304,8 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
 
 
 
-    GPSGoogleUtils instance;
-
+    // GPSGoogleUtils instance;
+/*
     void getGpsGoogle() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -317,7 +317,7 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
             }
         }, 3000);
     }
-
+*/
     /**
      * 打电话
      *

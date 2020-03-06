@@ -7,11 +7,9 @@
     android:layout_height="match_parent"
     tools:context="com.guider.healthring.bzlmaps.gaodemaps.BzlGaoDeActivity">
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+    <include layout="@layout/activity_map"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
     <TextView
         android:id="@+id/text_time_data"

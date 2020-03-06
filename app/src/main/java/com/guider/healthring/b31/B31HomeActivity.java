@@ -25,12 +25,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.DeviceActivity;
-import com.guider.healthring.activity.LoginActivity;
 import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.b30.b30minefragment.B30MineFragment;
 import com.guider.healthring.b30.b30run.B36RunFragment;
@@ -38,20 +36,15 @@ import com.guider.healthring.b30.service.UpNewDataToGDServices;
 import com.guider.healthring.b30.service.VerB30PwdListener;
 import com.guider.healthring.b31.record.B31RecordFragment;
 import com.guider.healthring.bleutil.MyCommandManager;
-import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
-import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
 import com.guider.healthring.bzlmaps.sos.SendSMSBroadCast;
 import com.guider.healthring.commdbserver.CommDataFragment;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
-import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.view.CusInputDialogView;
 import com.guider.healthring.widget.BottomSelectView;
 import com.guider.healthring.widget.NoScrollViewPager;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -351,7 +344,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
 
 
 
-    GPSGoogleUtils instance;
+    // GPSGoogleUtils instance;
 
 
     /**
@@ -452,7 +445,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
         List<String> permissionNames = Permission.transformText(context, data);
         String message = getResources().getString(R.string.string_get_permission) + "\n" + permissionNames;
 
-        new android.app.AlertDialog.Builder(context)
+        new AlertDialog.Builder(context)
                 .setCancelable(false)
                 .setTitle(getResources().getString(R.string.prompt))
                 .setMessage(message)

@@ -1,2 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guider.libgooglemap" />
+    package="com.guider.map">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application>
+        <!--google-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBn2pd95dFYdnPTR3ks5poGlnsC-t27JTc" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <!--谷歌地图的service-->
+        <service
+            android:name=".FetchAddressIntentService"
+            android:exported="false" />
+    </application>
+</manifest>
+

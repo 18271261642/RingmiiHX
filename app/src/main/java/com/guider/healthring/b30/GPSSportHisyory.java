@@ -150,7 +150,7 @@ public class GPSSportHisyory extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(GPSSportHisyory.this, MapRecordActivity.class);
 //                Intent intent = new Intent(getActivity(), BzlMaps_HistoryActivity.class);
 //                Log.d("---------", latLonBeanList.toString() + "\n" + new Gson().toJson(latLonBeanList));
-                intent.putExtra("mapdata", latLonBeanList.get(position).getLatLons().trim());
+                intent.putExtra("mapdata", sportMapsList.get(position).getLatLons()); // latLonBeanList.get(position).getLatLons().trim());
                 intent.putExtra("mapdata2", new Gson().toJson(mapb));
                 startActivity(intent);
             }

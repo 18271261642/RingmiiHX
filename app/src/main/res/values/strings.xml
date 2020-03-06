@@ -694,6 +694,7 @@
     <string name="string_is_24_hour">24小时制</string>
     <string name="string_auto_blood_pressure">心率自动检测</string>
     <string name="string_auto_heart">血压自动检测</string>
+    <string name="string_night_blood_oxygen">BO night detection</string>
     <string name="string_find_phone">查找手机</string>
     <string name="string_stopwatch_function">秒表功能</string>
     <string name="string_disconnection_reminder">断连提醒</string>

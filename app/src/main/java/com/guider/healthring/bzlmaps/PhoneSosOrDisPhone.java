@@ -8,26 +8,20 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
 import com.google.gson.Gson;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
-import com.guider.healthring.R;
-import com.guider.healthring.bzlmaps.baidulocal.LocationService;
-import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
-import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
 import com.guider.healthring.siswatch.utils.PhoneUtils;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
-import com.guider.healthring.util.ToastUtil;
-import com.guider.healthring.util.VerifyUtil;
+import com.guider.libbase.map.IMapLocation;
+import com.guider.libbase.map.IOnLocation;
+import com.guider.map.MapLocationImpl;
 import com.veepoo.protocol.listener.data.IDeviceControlPhone;
 
 import java.util.ArrayList;
@@ -36,11 +30,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PhoneSosOrDisPhone implements IDeviceControlPhone {
+public class PhoneSosOrDisPhone implements IDeviceControlPhone, IOnLocation {
 
+    private static long lastUploadTime = 0;
+    // private LocationService locationService;
 
-    private LocationService locationService;
-
+    // 定位
+    private IMapLocation mIMapLocation;
 
     Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -72,12 +68,8 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone {
     @Override
     public void rejectPhone() {
         try {
-//                    TelephonyManager tm = (TelephonyManager) MyApp.getContext()
-//                            .getSystemService(Service.TELEPHONY_SERVICE);
-//                    PhoneUtils.endPhone(MyApp.getContext(),tm);
             PhoneUtils.dPhone();
             PhoneUtils.endCall(MyApp.getContext());
-            //PhoneUtils.endcall();
             Log.d("call---", "rejectPhone: " + "电话被挂断了");
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,81 +99,27 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone {
     //启动了SOS功能
     @Override
     public void sos() {
+        long now = System.currentTimeMillis();
+        if (now - lastUploadTime < 30 * 1000)
+            return;
+        lastUploadTime = now;
+        if (mIMapLocation == null) {
+            mIMapLocation = new MapLocationImpl();
+        }
         count ++;
-        Log.e("SOS","-------sos="+count);
+        Log.e("SOS","-------sos="+count + ", Commont.isSosOpen : " + Commont.isSosOpen);
         if (!Commont.isSosOpen) {
-            locationService = MyApp.getApplication().locationService;
-            locationService.registerListener(bdAbstractLocationListener);
-            locationService.start();
-
-
-
-
-//            Commont.isSosOpen = true;
-//            //Toast.makeText(this,"SOS 执行了 进入",Toast.LENGTH_SHORT).show();
-//            boolean isSos = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISHelpe, false);//sos
-//            String stringpersonOne = (String) SharedPreferencesUtils.getParam(MyApp.getInstance(), "personOne", "");
-//            String stringpersonTwo = (String) SharedPreferencesUtils.getParam(MyApp.getInstance(), "personTwo", "");
-//            String stringpersonThree = (String) SharedPreferencesUtils.getParam(MyApp.getInstance(), "personThree", "");
-//            if ((!TextUtils.isEmpty(stringpersonOne)
-//                    || !TextUtils.isEmpty(stringpersonTwo)
-//                    || !TextUtils.isEmpty(stringpersonThree))
-//                    && isSos) {
-//                //Toast.makeText(this,"SOS 执行了 电话和条件允许",Toast.LENGTH_SHORT).show();
-//                Commont.COUNTNUMBER = 0;
-//                Commont.GPSCOUNT = 0;
-////                Commont.isGPSed = true;
-//                Log.e("===", "======开始定位");
-//                if (initPermission(MyApp.getInstance())) {
-//                    getGps();
-//
-//                    Log.e("===", "======5 秒后打电话");
-//                    handler.sendEmptyMessageAtTime(0x01, 5000);
-//                } else {
-//                    Commont.isSosOpen = false;
-//                    ToastUtil.showShort(MyApp.getContext(), MyApp.getInstance().getResources().getString(R.string.string_sos_prmiss));
-//                }
-//                //handler.sendEmptyMessageAtTime(0x02, 1000 * 60 * 3);
-//            } else {
-//                Commont.isSosOpen = false;
-//                ToastUtil.showShort(MyApp.getContext(), MyApp.getInstance().getResources().getString(R.string.string_sos_tip));
-//            }
-
+            mIMapLocation.start(MyApp.getContext(), 1, this);
+            // locationService = MyApp.getApplication().locationService;
+            // locationService.registerListener(bdAbstractLocationListener);
+            // locationService.start();
         }
     }
 
-
-    private BDAbstractLocationListener bdAbstractLocationListener = new BDAbstractLocationListener() {
-        @Override
-        public void onReceiveLocation(BDLocation bdLocation) {
-
-            if(bdLocation == null)
-                return;
-            if(bdLocation.getLocType() == BDLocation.TypeOffLineLocationFail){
-                ToastUtil.showToast(MyApp.getApplication(),"定位失败,请打开GPS开关!");
-                return;
-            }
-            if(bdLocation.getLocType() ==  BDLocation.TypeServerError)
-                return;
-            //纬度
-            double latitude = bdLocation.getLatitude();
-            //经度
-            double longitude = bdLocation.getLongitude();
-            if(String.valueOf(latitude).contains("e") || String.valueOf(longitude).equals("e"))
-                return;
-
-            //详细地址
-            String detailStr = bdLocation.getAddrStr();
-
-
-            Log.e("SOS", "-------sos=" + detailStr + "--" + latitude + "-=" + longitude);
-            updateLocalMsgToGuiderServer(detailStr, latitude, longitude);
-
-        }
-    };
-
-
-
+    @Override
+    public void onLocation(double lng, double lat, String addr) {
+        updateLocalMsgToGuiderServer(addr, lat, lng);
+    }
 
     //上传经纬度到盖德平台
 
@@ -214,8 +152,8 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone {
                 @Override
                 public void onResult(String result) {
                     Log.e("位置","---------位置上传返回="+result);
-                    if(locationService != null)
-                        locationService.stop();
+                    if(mIMapLocation != null)
+                        mIMapLocation.stop();
                 }
             });
 
@@ -224,47 +162,6 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone {
             e.printStackTrace();
         }
     }
-
-
-
-
-    GPSGoogleUtils instance;
-
-    /**
-     * 获取定位以及发送短信
-     */
-    void getGps() {
-
-        boolean zh = VerifyUtil.isZh(MyApp.getInstance());
-        if (zh) {
-            Boolean zhonTW = MyApp.getInstance().getResources().getConfiguration().locale.getCountry().equals("TW");
-            Log.e("======", zh + "====" + zhonTW);
-            if (zhonTW) {
-                instance = GPSGoogleUtils.getInstance(MyApp.getInstance());
-                getGpsGoogle();
-            } else {
-                GPSGaoDeUtils.getInstance(MyApp.getInstance());
-            }
-        } else {
-            instance = GPSGoogleUtils.getInstance(MyApp.getInstance());
-            getGpsGoogle();
-        }
-
-    }
-
-
-    void getGpsGoogle() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                boolean b = instance.startLocationUpdates(MyApp.getInstance());
-                if (!b) {
-                    getGpsGoogle();
-                }
-            }
-        }, 3000);
-    }
-
 
     /**
      * 打电话
@@ -333,5 +230,4 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone {
             Manifest.permission.READ_CALL_LOG,//
             Manifest.permission.USE_SIP
     };
-
 }
