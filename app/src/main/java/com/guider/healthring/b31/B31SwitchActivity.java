@@ -244,8 +244,8 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
                 boolean isSos = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISHelpe, false);//sos
                 if (isSos) {
 //                    startActivity(HellpEditActivity.class);
-                    startActivity(new Intent(B31SwitchActivity.this,HellpEditActivity.class)
-                            .putExtra("type","b31"));
+                    // startActivity(new Intent(B31SwitchActivity.this,HellpEditActivity.class)
+                    //        .putExtra("type","b31"));
                 }
                 break;
         }
