@@ -2,6 +2,10 @@ package com.guider.health.common.device;
 
 import android.util.ArrayMap;
 
+import com.guider.health.apilib.ApiCallBack;
+import com.guider.health.apilib.ApiUtil;
+import com.guider.health.apilib.IGuiderApi;
+import com.guider.health.apilib.model.Devices;
 import com.guider.health.common.R;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.Glucose;
@@ -18,6 +22,10 @@ import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.standard.Constant;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by haix on 2019/7/24.
@@ -131,11 +139,6 @@ public class DeviceInit {
         if (list.size() > 0) {
             return;
         }
-        list.add(DEV_BP);      // 无创血糖
-        list.add(DEV_ECG_6);    // 六导心电
-        Config.DEVICE_KEYS.add(list.get(0));
-        Config.DEVICE_KEYS.add(list.get(1));
-
         pics.put(DEV_GLU, R.mipmap.device_wcxt);
         pics.put(DEV_ECG_6, R.mipmap.device_ldxd);
         pics.put(DEV_ECG_HD, R.mipmap.device_ldxd);
@@ -171,6 +174,27 @@ public class DeviceInit {
         names.put(DEV_ECG_tzq, "远程脏音测量");
         names.put(DEV_BP_MBB_88  , "脉搏波88");
         names.put(DEV_BP_MBB_9804, "脉搏波9804");
+
+        list.add(DEV_BP);      // 无创血糖
+        list.add(DEV_ECG_6);    // 六导心电
+        Config.DEVICE_KEYS.add(list.get(0));
+        Config.DEVICE_KEYS.add(list.get(1));
+
+        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
+                new ApiCallBack<List<Devices>>(){
+                    @Override
+                    public void onApiResponse(Call<List<Devices>> call, Response<List<Devices>> response) {
+                        super.onApiResponse(call, response);
+                        if (response != null && response.body() != null && !response.body().isEmpty()) {
+                            Config.DEVICE_KEYS.clear();
+                            for (Devices device : response.body()) {
+                                Config.DEVICE_KEYS.add(device.getBtName() + device.getVersion());
+                                Config.DEVICE_OBJ.put(device.getBtName() + device.getVersion(), device);
+                            }
+                        }
+                    }
+                }
+        );
     }
 
 }

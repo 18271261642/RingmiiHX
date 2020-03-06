@@ -20,6 +20,7 @@
       <module fileurl="file://$PROJECT_DIR$/w30sblelibrary/GuiderBand-w30sblelibrary.iml" filepath="$PROJECT_DIR$/w30sblelibrary/GuiderBand-w30sblelibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/wheelpicker/GuiderBand-wheelpicker.iml" filepath="$PROJECT_DIR$/wheelpicker/GuiderBand-wheelpicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RingmiiHX.iml" filepath="$PROJECT_DIR$/RingmiiHX.iml" />
       <module fileurl="file://$PROJECT_DIR$/apilib/apilib.iml" filepath="$PROJECT_DIR$/apilib/apilib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/arouter-annotation/arouter-annotation.iml" filepath="$PROJECT_DIR$/arouter-annotation/arouter-annotation.iml" />
@@ -33,9 +34,14 @@
       <module fileurl="file://$PROJECT_DIR$/ecg/ecg.iml" filepath="$PROJECT_DIR$/ecg/ecg.iml" />
       <module fileurl="file://$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" filepath="$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" />
       <module fileurl="file://$PROJECT_DIR$/libbase/libbase.iml" filepath="$PROJECT_DIR$/libbase/libbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbase/libbase.iml" filepath="$PROJECT_DIR$/libbase/libbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbuglycn/libbuglycn.iml" filepath="$PROJECT_DIR$/libbuglycn/libbuglycn.iml" />
       <module fileurl="file://$PROJECT_DIR$/libbuglycn/libbuglycn.iml" filepath="$PROJECT_DIR$/libbuglycn/libbuglycn.iml" />
       <module fileurl="file://$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" filepath="$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" filepath="$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" />
       <module fileurl="file://$PROJECT_DIR$/libgaodemap/libgaodemap.iml" filepath="$PROJECT_DIR$/libgaodemap/libgaodemap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgaodemap/libgaodemap.iml" filepath="$PROJECT_DIR$/libgaodemap/libgaodemap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgooglemap/libgooglemap.iml" filepath="$PROJECT_DIR$/libgooglemap/libgooglemap.iml" />
       <module fileurl="file://$PROJECT_DIR$/libgooglemap/libgooglemap.iml" filepath="$PROJECT_DIR$/libgooglemap/libgooglemap.iml" />
       <module fileurl="file://$PROJECT_DIR$/rtc/rtc.iml" filepath="$PROJECT_DIR$/rtc/rtc.iml" />
       <module fileurl="file://$PROJECT_DIR$/simpleble/simpleble.iml" filepath="$PROJECT_DIR$/simpleble/simpleble.iml" />
