@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+// apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'com.amap.api:3dmap:7.2.0'
+    implementation 'com.amap.api:location:4.8.0'
+
+    // implementation 'com.jakewharton:butterknife:8.8.1'
+    // annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    // implementation 'com.jiechic.library:xUtils:2.6.14'
+
+    implementation project(':libbase')
+}

@@ -1021,7 +1021,7 @@
     <string name="prompt">提示</string>
     <string name="data_upload">数据上传成功</string>
     <string name="data_upload_fail">数据上传失败</string>
-    <string name="input_email">请输入手机或电子邮箱</string>
+    <string name="input_email">请输入手机号</string>
     <string name="shouquancg">授权成功</string>
     <string name="shouquanshib">授权失败</string>
     <string name="shouquanqu">授权取消</string>
@@ -1049,10 +1049,10 @@
     <string name="allgemeiner">通用模式</string>
     <string name="privater">私人模式</string>
     <string name="healthtesting">健康测试</string>
-    <string name="blood">血压</string>
+    <string name="blood">Blood pressure</string>
 
 
-    <string name="the_app_name">GuierHX</string>
+    <string name="the_app_name">GuiderHX</string>
     <string name="input_password">请输入密码</string>
     <string name="input_code">请输入验证码</string>
     <string name="input_nickname">请输入昵称</string>

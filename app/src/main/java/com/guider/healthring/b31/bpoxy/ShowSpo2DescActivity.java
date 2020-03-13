@@ -79,7 +79,7 @@ public class ShowSpo2DescActivity extends WatchBaseActivity {
         }
         else if(desc.equals("desc_spo2_comm")){     //呼吸暂停常识
             commentB30TitleTv.setText("呼吸暂停");
-            url = "file:///android_asset/htmlsrc/breath_comm_knowle.html";
+            url = "file:///android_asset/htmlsrc/breath_comm_knowle_zh.html";
         }
 
         return url;

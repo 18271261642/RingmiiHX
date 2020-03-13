@@ -292,9 +292,9 @@ public class B30SwitchSetActivity extends WatchBaseActivity {
             case R.id.help_sos:
                 boolean isSos = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISHelpe, false);//sos
                 if (isSos) {
-                    startActivity(new Intent(B30SwitchSetActivity.this,HellpEditActivity.class)
-                            .putExtra("type","b30"));
-//                    startActivity(HellpEditActivity.class);
+                    // startActivity(new Intent(B30SwitchSetActivity.this,HellpEditActivity.class)
+                    //        .putExtra("type","b30"));
+                    // startActivity(HellpEditActivity.class);
                 }
                 break;
         }
@@ -655,8 +655,8 @@ public class B30SwitchSetActivity extends WatchBaseActivity {
                     EFunctionStatus sos = customSettingData.getSOS();
                     if (sos == EFunctionStatus.SUPPORT_OPEN) {
 //                        startActivity(HellpEditActivity.class);
-                        startActivity(new Intent(B30SwitchSetActivity.this,HellpEditActivity.class)
-                                .putExtra("type","b30"));
+                        // startActivity(new Intent(B30SwitchSetActivity.this,HellpEditActivity.class)
+                        //        .putExtra("type","b30"));
                     }
                 }
 

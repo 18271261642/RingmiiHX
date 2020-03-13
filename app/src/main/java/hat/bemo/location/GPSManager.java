@@ -19,11 +19,17 @@ import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-
+/*
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+
+ */
+
+import com.guider.libbase.map.IMapLocation;
+import com.guider.libbase.map.IOnLocation;
+import com.guider.map.MapLocationImpl;
 
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +44,7 @@ import hat.bemo.setting.SharedPreferences_status;
  * Created by apple on 2017/11/8.
  */
 
-public class GPSManager implements LocationListener {
+public class GPSManager implements LocationListener, IOnLocation {
     public static LocationManager lms;
     public static String bestProvider = LocationManager.GPS_PROVIDER;    //最佳資訊提供者
     private boolean getService = false;        //是否已開啟定位服務
@@ -57,7 +63,8 @@ public class GPSManager implements LocationListener {
     private String gpstype;
     private static MyCount mc;
 
-
+    private IMapLocation mIMapLocation = new MapLocationImpl();
+/*
     //baidu
     public LocationClient mLocationClient;
     public MyLocationListener mMyLocationListener;
@@ -89,8 +96,11 @@ public class GPSManager implements LocationListener {
 //        }
     }
 
+ */
+
     //baidu初始化
     private void initBaiduLocation() {
+        /*
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可選，默認高精度，設置定位模式，高精度，低功耗，僅設備
         option.setCoorType("bd09ll");//可選，默認gcj02，設置返回的定位結果坐標系，
@@ -102,10 +112,12 @@ public class GPSManager implements LocationListener {
         option.setIgnoreKillProcess(false);//可選，默認true，定位SDK內部是一個SERVICE，並放到了獨立進程，設置是否在stop的時候殺死這個進程，默認不殺死
 
         mLocationClient.setLocOption(option);
+         */
     }
 
     //呼叫定位
     public void startBaiduLocation() {
+        /*
         if (mLocationClient != null) {
             if (mLocationClient.isStarted()) {
                 mLocationClient.requestLocation();
@@ -113,11 +125,24 @@ public class GPSManager implements LocationListener {
                 mLocationClient.start();
             }
         }
+         */
+        mIMapLocation.start(MyApplication.context, 1, this);
     }
 
     //關閉
     public void stopBaiduClient() {
-        mLocationClient.stop();
+        mIMapLocation.stop();;
+    }
+
+    @Override
+    public void onLocation(double lng, double lat, String addr) {
+        MapPosition point = MapPositionUtil.bd09_To_Gps84(lat, lng);
+
+        String address = addr;
+        if (address == null) {
+            address = "";
+        }
+        mIMapLocation.stop();
     }
     /////
 
@@ -198,10 +223,11 @@ public class GPSManager implements LocationListener {
                 Log.e("GPS開關", "GPS_type2_2= " + type1);
                 Log.e("GPS開關", "GPS_type2_2= " + type2);
                 Log.e("GPS開關", "GPS_type2_2= "+SharedPreferences_status.getGps_status(MyApplication.context));
-                mLocationClient = new LocationClient(MyApplication.context);
-                mMyLocationListener = new MyLocationListener();
-                mLocationClient.registerLocationListener(mMyLocationListener);
-                initBaiduLocation();
+                // mLocationClient = new LocationClient(MyApplication.context);
+                // mMyLocationListener = new MyLocationListener();
+                // mLocationClient.registerLocationListener(mMyLocationListener);
+                // initBaiduLocation();
+                if (mIMapLocation == null)
 //				if(GpsController.getGpsStatus(MyApplication.context)){
 //
 //				}
@@ -211,9 +237,9 @@ public class GPSManager implements LocationListener {
             } else if (type1.equals("5") & type2.equals("5")) {
                 GpsController.setGpsStatus(MyApplication.context, true);
             } else if (type1.equals("baidu") && type2.equals("baidu")) {
-                mLocationClient = new LocationClient(MyApplication.context);
-                mMyLocationListener = new MyLocationListener();
-                mLocationClient.registerLocationListener(mMyLocationListener);
+                // mLocationClient = new LocationClient(MyApplication.context);
+                // mMyLocationListener = new MyLocationListener();
+                // mLocationClient.registerLocationListener(mMyLocationListener);
                 initBaiduLocation();
             } else {
                 Log.e("GPS開關", "GPS關閉3");

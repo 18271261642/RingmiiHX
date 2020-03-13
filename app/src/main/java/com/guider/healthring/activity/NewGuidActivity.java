@@ -1,6 +1,5 @@
 package com.guider.healthring.activity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,11 +14,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.guider.health.common.core.LocaleUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.adpter.HomeAdapter;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.util.SharedPreferencesUtils;
-import com.yanzhenjie.permission.AndPermission;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -62,6 +61,8 @@ public class NewGuidActivity extends WatchBaseActivity {
 //            ,R.drawable.ic_guid_3};
     private final int[] imageIds = {R.mipmap.image_guide_one, R.mipmap.image_guide_two
             ,R.mipmap.image_guide_three};
+    private final int[] imageEnIds = {R.mipmap.image_guide_one_en, R.mipmap.image_guide_two_en
+            ,R.mipmap.image_guide_three_en};
 
     @NonNull
     private List<View> createPageList() {
@@ -69,6 +70,7 @@ public class NewGuidActivity extends WatchBaseActivity {
         //去掉直接用mipmap.image,用添加ImageView方法，防止图片太大要求的内存太多，超出限制出现OOM
         //获取屏幕的默认分辨率
         Display display = getWindowManager().getDefaultDisplay();
+        boolean isZh = LocaleUtil.isZh();
         for (int i = 0; i < imageIds.length; i++) {
             ImageView image = new ImageView(this);
             image.setMinimumHeight(display.getHeight());
@@ -79,8 +81,9 @@ public class NewGuidActivity extends WatchBaseActivity {
             opt.inPreferredConfig = Bitmap.Config.RGB_565;
             opt.inPurgeable = true;
             opt.inInputShareable = true;
+
             InputStream is = getResources().openRawResource(
-                    imageIds[i] );
+                    isZh ? imageIds[i] : imageEnIds[i] );
             Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
             BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
             image.setBackgroundDrawable(bd);

@@ -2,6 +2,23 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/GuiderBand.iml" filepath="$PROJECT_DIR$/GuiderBand.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MPChartLib/GuiderBand-MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/GuiderBand-MPChartLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apilib/GuiderBand-apilib.iml" filepath="$PROJECT_DIR$/apilib/GuiderBand-apilib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bpm1000/GuiderBand-bpm1000.iml" filepath="$PROJECT_DIR$/bpm1000/GuiderBand-bpm1000.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circleviewprogress/GuiderBand-circleviewprogress.iml" filepath="$PROJECT_DIR$/circleviewprogress/GuiderBand-circleviewprogress.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/GuiderBand-common.iml" filepath="$PROJECT_DIR$/common/GuiderBand-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common_m500_1000/GuiderBand-common_m500_1000.iml" filepath="$PROJECT_DIR$/common_m500_1000/GuiderBand-common_m500_1000.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ecg/GuiderBand-ecg.iml" filepath="$PROJECT_DIR$/ecg/GuiderBand-ecg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fragmentation_core/GuiderBand-fragmentation_core.iml" filepath="$PROJECT_DIR$/fragmentation_core/GuiderBand-fragmentation_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbase/GuiderBand-libbase.iml" filepath="$PROJECT_DIR$/libbase/GuiderBand-libbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgaodemap/GuiderBand-libgaodemap.iml" filepath="$PROJECT_DIR$/libgaodemap/GuiderBand-libgaodemap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgooglemap/GuiderBand-libgooglemap.iml" filepath="$PROJECT_DIR$/libgooglemap/GuiderBand-libgooglemap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rtc/GuiderBand-rtc.iml" filepath="$PROJECT_DIR$/rtc/GuiderBand-rtc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simpleble/GuiderBand-simpleble.iml" filepath="$PROJECT_DIR$/simpleble/GuiderBand-simpleble.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tckeyboard/GuiderBand-tckeyboard.iml" filepath="$PROJECT_DIR$/tckeyboard/GuiderBand-tckeyboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/w30sblelibrary/GuiderBand-w30sblelibrary.iml" filepath="$PROJECT_DIR$/w30sblelibrary/GuiderBand-w30sblelibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wheelpicker/GuiderBand-wheelpicker.iml" filepath="$PROJECT_DIR$/wheelpicker/GuiderBand-wheelpicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/RingmiiHX.iml" filepath="$PROJECT_DIR$/RingmiiHX.iml" />
       <module fileurl="file://$PROJECT_DIR$/apilib/RingmiiHX-apilib.iml" filepath="$PROJECT_DIR$/apilib/RingmiiHX-apilib.iml" />
@@ -30,7 +47,11 @@
       <module fileurl="file://$PROJECT_DIR$/common_m500_1000/common_m500_1000.iml" filepath="$PROJECT_DIR$/common_m500_1000/common_m500_1000.iml" />
       <module fileurl="file://$PROJECT_DIR$/ecg/ecg.iml" filepath="$PROJECT_DIR$/ecg/ecg.iml" />
       <module fileurl="file://$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" filepath="$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/old/old.iml" filepath="$PROJECT_DIR$/old/old.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbase/libbase.iml" filepath="$PROJECT_DIR$/libbase/libbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbuglycn/libbuglycn.iml" filepath="$PROJECT_DIR$/libbuglycn/libbuglycn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" filepath="$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgaodemap/libgaodemap.iml" filepath="$PROJECT_DIR$/libgaodemap/libgaodemap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libgooglemap/libgooglemap.iml" filepath="$PROJECT_DIR$/libgooglemap/libgooglemap.iml" />
       <module fileurl="file://$PROJECT_DIR$/rtc/rtc.iml" filepath="$PROJECT_DIR$/rtc/rtc.iml" />
       <module fileurl="file://$PROJECT_DIR$/simpleble/simpleble.iml" filepath="$PROJECT_DIR$/simpleble/simpleble.iml" />
       <module fileurl="file://$PROJECT_DIR$/tckeyboard/tckeyboard.iml" filepath="$PROJECT_DIR$/tckeyboard/tckeyboard.iml" />

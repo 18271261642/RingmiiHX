@@ -132,74 +132,7 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
             @Override
             public void OnSettingDataChange(CustomSettingData customSettingData) {
                 Log.e(TAG, "----------customSettingData=" + customSettingData.toString() + "\n" + customSettingData.getAutoHeartDetect());
-                //自动心率测量
-                if (customSettingData.getAutoHeartDetect() == EFunctionStatus.SUPPORT_OPEN) {
-                    b31AutoHeartToggleBtn.setChecked(true);
-                } else {
-                    b31AutoHeartToggleBtn.setChecked(false);
-                }
-
-                //自动血压测量
-                if (customSettingData.getAutoBpDetect() == EFunctionStatus.SUPPORT_OPEN) {
-                    b30AutoBloadToggleBtn.setChecked(true);
-                } else if (customSettingData.getAutoBpDetect() == EFunctionStatus.UNSUPPORT) {
-                    rel_xueya.setVisibility(View.GONE);
-                } else {
-                    b30AutoBloadToggleBtn.setChecked(false);
-                }
-
-//                //秒表
-//                if (customSettingData.getSecondsWatch() == EFunctionStatus.SUPPORT_OPEN) {
-//                    b31SecondToggleBtn.setChecked(true);
-//                } else if (customSettingData.getAutoBpDetect() == EFunctionStatus.UNSUPPORT) {
-//                    rel_miaobiao.setVisibility(View.GONE);
-//                    view_miaobiao.setVisibility(View.GONE);
-//                } else {
-//                    b31SecondToggleBtn.setChecked(false);
-//                }
-
-                //查找手机
-                if (customSettingData.getFindPhoneUi() == EFunctionStatus.SUPPORT_OPEN) {
-                    b30SwitchFindPhoneToggleBtn.setChecked(true);
-                } else if (customSettingData.getFindPhoneUi() == EFunctionStatus.UNSUPPORT) {
-                    rel_findePhone.setVisibility(View.GONE);
-                    view_findePhone.setVisibility(View.GONE);
-                } else {
-                    b30SwitchFindPhoneToggleBtn.setChecked(false);
-                }
-
-
-                //断链提醒
-                if (customSettingData.getDisconnectRemind() == EFunctionStatus.SUPPORT_OPEN) {
-                    b31SwitchDisAlertTogg.setChecked(true);
-                } else {
-                    b31SwitchDisAlertTogg.setChecked(false);
-                }
-
-                //is  24
-                if (customSettingData.isIs24Hour()) {
-                    b30SwitchTimeTypeTogg.setChecked(true);
-                } else {
-                    b30SwitchTimeTypeTogg.setChecked(false);
-                }
-
-//                //佩戴检测
-//                if (customSettingData.getSkin() == EFunctionStatus.SUPPORT_OPEN) {
-//                    b31CheckWearToggleBtn.setChecked(true);
-//                } else {
-//                    b31CheckWearToggleBtn.setChecked(false);
-//                }
-
-                //is SOS
-                isOpenSOS = customSettingData.getSOS();
-                if (customSettingData.getSOS() == EFunctionStatus.SUPPORT_OPEN) {
-                    b30SwitchHlepSos.setChecked(true);
-                } else if (customSettingData.getSOS() == EFunctionStatus.UNSUPPORT) {
-                    help_sos.setVisibility(View.GONE);
-                } else {
-                    b30SwitchHlepSos.setChecked(false);
-                }
-
+                updateBtnStatus(customSettingData);
             }
         });
 
@@ -215,10 +148,77 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
                 }
             }
         });
-
-
     }
 
+    private void updateBtnStatus(CustomSettingData customSettingData) {
+        //自动心率测量
+        if (customSettingData.getAutoHeartDetect() == EFunctionStatus.SUPPORT_OPEN) {
+            b31AutoHeartToggleBtn.setChecked(true);
+        } else {
+            b31AutoHeartToggleBtn.setChecked(false);
+        }
+
+        //自动血压测量
+        if (customSettingData.getAutoBpDetect() == EFunctionStatus.SUPPORT_OPEN) {
+            b30AutoBloadToggleBtn.setChecked(true);
+        } else if (customSettingData.getAutoBpDetect() == EFunctionStatus.UNSUPPORT) {
+            rel_xueya.setVisibility(View.GONE);
+        } else {
+            b30AutoBloadToggleBtn.setChecked(false);
+        }
+
+//                //秒表
+//                if (customSettingData.getSecondsWatch() == EFunctionStatus.SUPPORT_OPEN) {
+//                    b31SecondToggleBtn.setChecked(true);
+//                } else if (customSettingData.getAutoBpDetect() == EFunctionStatus.UNSUPPORT) {
+//                    rel_miaobiao.setVisibility(View.GONE);
+//                    view_miaobiao.setVisibility(View.GONE);
+//                } else {
+//                    b31SecondToggleBtn.setChecked(false);
+//                }
+
+        //查找手机
+        if (customSettingData.getFindPhoneUi() == EFunctionStatus.SUPPORT_OPEN) {
+            b30SwitchFindPhoneToggleBtn.setChecked(true);
+        } else if (customSettingData.getFindPhoneUi() == EFunctionStatus.UNSUPPORT) {
+            rel_findePhone.setVisibility(View.GONE);
+            view_findePhone.setVisibility(View.GONE);
+        } else {
+            b30SwitchFindPhoneToggleBtn.setChecked(false);
+        }
+
+
+        //断链提醒
+        if (customSettingData.getDisconnectRemind() == EFunctionStatus.SUPPORT_OPEN) {
+            b31SwitchDisAlertTogg.setChecked(true);
+        } else {
+            b31SwitchDisAlertTogg.setChecked(false);
+        }
+
+        //is  24
+        if (customSettingData.isIs24Hour()) {
+            b30SwitchTimeTypeTogg.setChecked(true);
+        } else {
+            b30SwitchTimeTypeTogg.setChecked(false);
+        }
+
+//                //佩戴检测
+//                if (customSettingData.getSkin() == EFunctionStatus.SUPPORT_OPEN) {
+//                    b31CheckWearToggleBtn.setChecked(true);
+//                } else {
+//                    b31CheckWearToggleBtn.setChecked(false);
+//                }
+
+        //is SOS
+        isOpenSOS = customSettingData.getSOS();
+        if (customSettingData.getSOS() == EFunctionStatus.SUPPORT_OPEN) {
+            b30SwitchHlepSos.setChecked(true);
+        } else if (customSettingData.getSOS() == EFunctionStatus.UNSUPPORT) {
+            help_sos.setVisibility(View.GONE);
+        } else {
+            b30SwitchHlepSos.setChecked(false);
+        }
+    }
     private void initViews() {
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.string_switch_setting));
@@ -244,8 +244,8 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
                 boolean isSos = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISHelpe, false);//sos
                 if (isSos) {
 //                    startActivity(HellpEditActivity.class);
-                    startActivity(new Intent(B31SwitchActivity.this,HellpEditActivity.class)
-                            .putExtra("type","b31"));
+                    // startActivity(new Intent(B31SwitchActivity.this,HellpEditActivity.class)
+                    //        .putExtra("type","b31"));
                 }
                 break;
         }
@@ -416,7 +416,8 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
         MyApp.getInstance().getVpOperateManager().changeCustomSetting(iBleWriteResponse, new ICustomSettingDataListener() {
             @Override
             public void OnSettingDataChange(CustomSettingData customSettingData) {
-
+                B31SwitchActivity.this.hideLoadingDialog();
+                updateBtnStatus(customSettingData);
             }
         }, customSetting);
     }

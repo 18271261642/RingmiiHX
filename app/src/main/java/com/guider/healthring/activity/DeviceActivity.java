@@ -29,7 +29,6 @@ public class DeviceActivity extends BaseActivity {
     public static void start(Activity activity, int userId) {
         // 初始化工具类
         MyUtils.application = activity.getApplication();
-        ApiUtil.init(activity.getApplication() , MyUtils.getMacAddress());
         DeviceInit.getInstance().init();
         // 初始化用户信息
         UserManager.getInstance().setAccountId(userId);

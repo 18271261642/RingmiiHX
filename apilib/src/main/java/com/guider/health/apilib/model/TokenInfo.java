@@ -14,7 +14,7 @@ public class TokenInfo implements Parcelable {
 
     private String token;
     private String refreshToken;
-    private int accountId;
+    private long accountId;
     private int expired;
 
     public String getToken() {
@@ -33,11 +33,11 @@ public class TokenInfo implements Parcelable {
         this.refreshToken = refreshToken;
     }
 
-    public int getAccountId() {
+    public long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(long accountId) {
         this.accountId = accountId;
     }
 
@@ -58,7 +58,7 @@ public class TokenInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.token);
         dest.writeString(this.refreshToken);
-        dest.writeInt(this.accountId);
+        dest.writeLong(this.accountId);
         dest.writeInt(this.expired);
     }
 

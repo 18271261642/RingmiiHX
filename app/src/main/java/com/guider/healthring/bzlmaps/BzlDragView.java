@@ -26,10 +26,10 @@ public class BzlDragView {
 
 
     public interface BzlDragViewListenter {
-        //拖动监听
+        // 拖动监听
         void OnBzlDragViewListenter();
 
-        //点击监听
+        // 点击监听
         void OnClickBzlDragViewListenter();
     }
 
@@ -128,11 +128,6 @@ public class BzlDragView {
                             break;
                         }
 
-                        //此处加数值是为了用户手势不一定垂直一条线
-                        //禁止左拖拽
-//                        if (dx > 0) {
-//                            break;
-//                        }
                         //禁止左拖拽
                         if (dx < 0) {
                             break;
@@ -166,7 +161,6 @@ public class BzlDragView {
 
                         break;
                     case MotionEvent.ACTION_UP: // 手指离开屏幕的一瞬间
-
                         int lastx = iv_drag.getLeft();
                         int lasty = iv_drag.getTop();
                         upTime = System.currentTimeMillis();

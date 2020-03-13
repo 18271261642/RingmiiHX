@@ -16,6 +16,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.guider.health.common.core.LocaleUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.b31.model.B31Spo2hBean;
 import com.guider.healthring.siswatch.WatchBaseActivity;
@@ -181,27 +182,32 @@ public class ShowSpo2DetailActivity extends WatchBaseActivity {
                 showSpo2DetailMiddleTv.setText(getResources().getString(R.string.vpspo2h_state_breathbreak)
                         + "(" + getResources().getString(R.string.cishu) + ")");
                 showSpo2DetailRightTv.setText(getResources().getString(R.string.ave_value) + "(%)");
-                url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/breath_comm_knowle.html" : "file:////android_asset/b31html/breath_comm_knowle_tw.html";
+                // url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/breath_comm_knowle_zh.html" : "file:////android_asset/b31html/breath_comm_knowle_tw.html";
+                url = String.format("file:////android_asset/b31html/breath_comm_knowle_%s.html", LocaleUtil.getLanguageStr());
                 break;
             case 0x01:     //心脏负荷
                 showSpo2DetailMiddleTv.setText("");
                 showSpo2DetailRightTv.setText(getResources().getString(R.string.ave_value) + "(pi)");
-                url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/heart_load_zh.html" : "file:////android_asset/b31html/heart_load_tw.html";
+                // url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/heart_load_zh.html" : "file:////android_asset/b31html/heart_load_tw.html";
+                url = String.format("file:////android_asset/b31html/heart_load_%s.html", LocaleUtil.getLanguageStr());
                 break;
             case 0x02:     //睡眠活动
                 showSpo2DetailMiddleTv.setText("");
                 showSpo2DetailRightTv.setText(getResources().getString(R.string.accumulate));
-                url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/sleep_activity_zh.html" :  "file:////android_asset/b31html/sleep_activity_tw.html";
+                // url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/sleep_activity_zh.html" :  "file:////android_asset/b31html/sleep_activity_tw.html";
+                url = String.format("file:////android_asset/b31html/sleep_activity_%s.html", LocaleUtil.getLanguageStr());
                 break;
             case 0x03:     //呼吸率
                 showSpo2DetailMiddleTv.setText("");
                 showSpo2DetailRightTv.setText(getResources().getString(R.string.ave_value) + getResources().getString(R.string.cishu) + "/" + getResources().getString(R.string.signle_minute));
-                url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/respiratory_rate.html" : "file:////android_asset/b31html/respiratory_rate_tw.html";
+                // url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/respiratory_rate.html" : "file:////android_asset/b31html/respiratory_rate_tw.html";
+                url = String.format("file:////android_asset/b31html/respiratory_rate_%s.html", LocaleUtil.getLanguageStr());
                 break;
             case 0x04:     //低氧时间
                 showSpo2DetailMiddleTv.setText("");
                 showSpo2DetailRightTv.setText(getResources().getString(R.string.accumulate) + getResources().getString(R.string.second) + "/" + getResources().getString(R.string.signle_minute));
-                url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/low_o2_zh.html" : "file:////android_asset/b31html/low_o2_tw.html";
+                // url = locales.getCountry().equals("CN") ?  "file:////android_asset/b31html/low_o2_zh.html" : "file:////android_asset/b31html/low_o2_tw.html";
+                url = String.format("file:////android_asset/b31html/low_o2_%s.html", LocaleUtil.getLanguageStr());
                 break;
         }
 

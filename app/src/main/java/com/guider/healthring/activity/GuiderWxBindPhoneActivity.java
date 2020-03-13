@@ -43,9 +43,6 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
 
     private static final String TAG = "GuiderWxBindPhoneActivi";
 
-    private String GET_PHONE_CODE = "http://api.guiderhealth.com/api/v1/bind/sendcode?phone=";
-
-
     @BindView(R.id.wxBindPhoneVerCodeEdit)
     EditText wxBindPhoneVerCodeEdit;
     @BindView(R.id.wxBindGetVerCodeBtn)
@@ -94,7 +91,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
     }
 
     private void initViews() {
-        commentB30TitleTv.setText("綁定手機號");
+        commentB30TitleTv.setText(getResources().getString(R.string.bind_phone));
         countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
 
     }
@@ -329,7 +326,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
                 JSONObject dataJson = jsonObject.getJSONObject("data");
                 long accountId = dataJson.getLong("accountId");
                 SharedPreferencesUtils.setParam(this, "accountIdGD", accountId);
-                ToastUtil.showToast(this, "绑定成功");
+                ToastUtil.showToast(this, getResources().getString(R.string.bind_phone_success));
                 startActivity(NewSearchActivity.class);
                 finish();
             } catch (Exception e) {

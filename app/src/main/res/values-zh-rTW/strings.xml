@@ -686,6 +686,7 @@
     <string name="string_is_24_hour">24小時制</string>
     <string name="string_auto_blood_pressure">心率自動檢測</string>
     <string name="string_auto_heart">血壓自動檢測</string>
+    <string name="string_night_blood_oxygen">血氧夜間檢測</string>
     <string name="string_find_phone">查找手機</string>
     <string name="string_stopwatch_function">秒錶功能</string>
     <string name="string_disconnection_reminder">斷連提醒</string>
@@ -1011,7 +1012,7 @@
     <string name="data_upload_fail">數據上傳失敗</string>
 
     <string name="user_emil_regsiter">郵箱註冊</string>
-    <string name="input_email">請輸入手機或電子郵箱</string>
+    <string name="input_email">請輸入手機號碼</string>
     <string name="shouquancg">授權成功</string>
     <string name="shouquanshib">授權失敗</string>
     <string name="shouquanqu">授權取消</string>
@@ -1312,4 +1313,15 @@
 
 
     <!-- 城市管理，添加城市 -->
+
+    <string name="guider_band">蓋德手環</string>
+    <string name="guider_band_desc">蓋德手環 喚動新生活</string>
+
+    <string name="data_detail">詳細數據</string>
+
+    <string name="shake_photos">搖搖拍照</string>
+    <string name="gui_style">界面風格</string>
+
+    <string name="bind_phone">綁定手機號</string>
+    <string name="bind_phone_success">綁定成功</string>
 </resources>

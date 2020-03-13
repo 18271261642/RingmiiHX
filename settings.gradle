@@ -1,3 +1,4 @@
-include ':app',':old', ':wheelpicker',  ':circleviewprogress', ':w30sblelibrary',':MPChartLib'
+include ':app', ':wheelpicker',  ':circleviewprogress', ':w30sblelibrary',':MPChartLib', ':libgooglemap', ':libgaodemap', ':libbuglygoogle', ':libbuglycn'
 include ":apilib",":arouter-core",":bluetooth",":common",":ecg",":fragmentation_core",":tckeyboard",":arouter-annotation",":arouter-compiler",":common_m500_1000",":simpleble",":rtc",':bpm1000'
-//project(':litepals').projectDir = new File('litepal')':litepals',
+//project(':litepals').projectDir = new File('litepal')':litepals',':old',
+include ':libbase'
