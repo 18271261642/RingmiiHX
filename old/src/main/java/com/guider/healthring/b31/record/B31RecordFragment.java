@@ -272,7 +272,7 @@ public class B31RecordFragment extends LazyFragment implements NewConnBleHelpSer
     private boolean iSNllSleep = false;
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -581,6 +581,11 @@ public class B31RecordFragment extends LazyFragment implements NewConnBleHelpSer
                 }
             }
         }
+
+        boolean isB31HasBp = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_B31_HAS_BP_KEY, false);
+        Log.e(TAG, "----------isB31HasBp=" + isB31HasBp);
+        b30CusBloadLin.setVisibility(isB31HasBp ? View.VISIBLE : View.GONE);
+        item_blood.setVisibility(isB31HasBp ? View.VISIBLE : View.GONE);
     }
 
 
@@ -848,33 +853,6 @@ public class B31RecordFragment extends LazyFragment implements NewConnBleHelpSer
      */
     private void updatePageData() {
 
-//        String mac = WatchUtils.getSherpBleMac(getmContext());
-//        if (WatchUtils.isEmpty(mac))
-//            return;
-//
-//
-//
-//        String date = WatchUtils.obtainFormatDate(currDay);
-//        updateStepData(mac, date);  //更新步数
-//        updateSportData(mac, date); //更新运动图表数据
-//        updateRateData(mac, date);  //更新心率数据
-////        updateBpData(mac, date);//更新血压数据
-//        if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)
-//                && !MyCommandManager.DEVICENAME.equals("B31")) {
-//            if (b30CusBloadLin != null) b30CusBloadLin.setVisibility(View.VISIBLE);
-//            updateBpData(mac, date);//更新血压数据
-//            if (item_blood != null) item_blood.setVisibility(View.VISIBLE);
-//        } else {
-//            if (b30CusBloadLin != null) b30CusBloadLin.setVisibility(View.GONE);
-//            if (item_blood != null) item_blood.setVisibility(View.GONE);
-//        }
-//        updateSleepData(mac, WatchUtils.obtainFormatDate(currDay)); //睡眠数据
-//        //HRV
-//        updateHRVData(mac, date);
-//        //血氧
-//        updateSpo2Data(mac, date);
-
-
         String mac = WatchUtils.getSherpBleMac(getmContext());
         String date = WatchUtils.obtainFormatDate(currDay);
         if (WatchUtils.isEmpty(mac))
@@ -884,15 +862,6 @@ public class B31RecordFragment extends LazyFragment implements NewConnBleHelpSer
         updateSportData(mac, date); //更新运动图表数据
         updateRateData(mac, date);  //更新心率数据
 
-        if (!WatchUtils.isEmpty(mac)
-                && !mac.equals("B31")) {
-            if (b30CusBloadLin != null) b30CusBloadLin.setVisibility(View.VISIBLE);
-            updateBpData(mac, date);//更新血压数据
-            if (item_blood != null) item_blood.setVisibility(View.VISIBLE);
-        } else {
-            if (b30CusBloadLin != null) b30CusBloadLin.setVisibility(View.GONE);
-            if (item_blood != null) item_blood.setVisibility(View.GONE);
-        }
         updateSleepData(mac, WatchUtils.obtainFormatDate(currDay)); //睡眠数据
         //血压
         updateBpData(mac, date);//更新血压数据
@@ -900,40 +869,6 @@ public class B31RecordFragment extends LazyFragment implements NewConnBleHelpSer
         updateHRVData(mac, date);
         //血氧
         updateSpo2Data(mac, date);
-
-
-//        if (getActivity() != null && !getActivity().isFinishing())
-//            getActivity().runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    String mac = WatchUtils.getSherpBleMac(getmContext());
-//                    String date = WatchUtils.obtainFormatDate(currDay);
-//                    if (WatchUtils.isEmpty(mac))
-//                        return;
-//                    updateBpData(mac, date);//更新血压数据
-////                    Log.e(TAG, "-------mac=" + mac + "--date=" + date);
-//                    updateStepData(mac, date);  //更新步数
-//                    updateSportData(mac, date); //更新运动图表数据
-//                    updateRateData(mac, date);  //更新心率数据
-//                    updateSleepData(mac, WatchUtils.obtainFormatDate(currDay)); //睡眠数据\
-//
-//                    if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)
-//                            && !MyCommandManager.DEVICENAME.equals("B31")) {
-//                        if (b30CusBloadLin != null) b30CusBloadLin.setVisibility(View.VISIBLE);
-//                        updateBpData(mac, date);//更新血压数据
-//                        if (item_blood != null) item_blood.setVisibility(View.VISIBLE);
-//                    } else {
-//                        if (b30CusBloadLin != null) b30CusBloadLin.setVisibility(View.GONE);
-//                        if (item_blood != null) item_blood.setVisibility(View.GONE);
-//                    }
-//
-//                    //HRV
-//                    updateHRVData(mac, date);
-//                    //血氧
-//                    updateSpo2Data(mac, date);
-//
-//                }
-//            });
 
     }
 
@@ -1578,12 +1513,7 @@ public class B31RecordFragment extends LazyFragment implements NewConnBleHelpSer
                         if (b31HomeSwipeRefreshLayout != null) {
                             b31HomeSwipeRefreshLayout.setEnableRefresh(true);
                             b31HomeSwipeRefreshLayout.autoRefresh();
-                            showDeviceIcon();
-                            if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME) && MyCommandManager.DEVICENAME.equals("B31")) {
-                                if (item_blood != null) item_blood.setVisibility(View.GONE);
-                            } else {
-                                if (item_blood != null) item_blood.setVisibility(View.VISIBLE);
-                            }
+                            //showDeviceIcon();
                         }
                         /**
                          * 盖得 bemo 加载

@@ -30,7 +30,7 @@ public class LaunchActivity extends WatchBaseActivity {
     private static final String TAG = "LaunchActivity";
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

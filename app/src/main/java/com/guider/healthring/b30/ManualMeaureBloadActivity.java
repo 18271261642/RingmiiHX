@@ -143,21 +143,22 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity {
                 if (MyCommandManager.DEVICENAME != null) {
                     if (!isStart) {
                         isStart = true;
+                        showStateTv.setText("");
                         b30MeaureStartImg.setImageResource(R.drawable.detect_bp_pause);
+                        b30MeaureBloadProgressView.setTmpTxt(null);
+                        b30MeaureBloadProgressView.setScheduleDuring(50 * 1000);
                         b30MeaureBloadProgressView.setProgress(100);
-                        if (MyCommandManager.DEVICENAME != null) {
-                            MyApp.getInstance().getVpOperateManager().startDetectBP(bleWriteResponse, new IBPDetectDataListener() {
-                                @Override
-                                public void onDataChange(BpData bpData) {
-                                    if (Commont.isDebug)Log.e(TAG, "----bpData=" + bpData.toString());
-                                    Message message = handler.obtainMessage();
-                                    message.what = 1001;
-                                    message.obj = bpData;
-                                    handler.sendMessage(message);
-                                }
-                            }, privateMode ? EBPDetectModel.DETECT_MODEL_PRIVATE : EBPDetectModel
-                                    .DETECT_MODEL_PUBLIC);
-                        }
+                        MyApp.getInstance().getVpOperateManager().startDetectBP(bleWriteResponse, new IBPDetectDataListener() {
+                            @Override
+                            public void onDataChange(BpData bpData) {
+                                if (Commont.isDebug)Log.e(TAG, "----bpData=" + bpData.toString());
+                                Message message = handler.obtainMessage();
+                                message.what = 1001;
+                                message.obj = bpData;
+                                handler.sendMessage(message);
+                            }
+                        }, privateMode ? EBPDetectModel.DETECT_MODEL_PRIVATE : EBPDetectModel
+                                .DETECT_MODEL_PUBLIC);
                     } else {
                         stopMeaureBoload();
                     }

@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -44,6 +45,9 @@ public class B30CustomCircleProgressBar extends View {
     private Paint txtPaint; //绘制圆环内文字的画笔
 
     private ValueAnimator animator;
+
+    //设置进度的时间 单位：毫秒
+    private int scheduleDuring ;
 
     enum DirectionEnum {
         LEFT(0, 180.0f),
@@ -187,7 +191,7 @@ public class B30CustomCircleProgressBar extends View {
     //中间的进度百分比
     public String getProgressText() {
 
-      return tmpTxt != null ?tmpTxt : (int) ((progress / maxProgress) * 100) + "%";
+      return tmpTxt != null ?tmpTxt : (int)((progress / maxProgress) * 100) + "%";
 
     }
 
@@ -280,8 +284,15 @@ public class B30CustomCircleProgressBar extends View {
         if (progress > maxProgress) {
             progress = maxProgress;
         }
-        startAnim(progress,27 * 1000);
+        startAnim(progress,scheduleDuring);
     }
+
+
+    //设置总共的持续时间
+    public void setScheduleDuring(int scheduleDuring) {
+        this.scheduleDuring = scheduleDuring;
+    }
+
 
     private void startAnim(float startProgress,int dur) {
         animator = ObjectAnimator.ofFloat(0, startProgress);

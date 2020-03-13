@@ -19,18 +19,14 @@ import android.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.b30.b30homefragment.B30HomeFragment;
 import com.guider.healthring.b30.b30minefragment.B30MineFragment;
-import com.guider.healthring.b30.service.UpDataToGDServices;
-import com.guider.healthring.b30.service.UpDataToGDServicesNew;
-import com.guider.healthring.b30.service.UpHrvDataToGDServices;
+import com.guider.healthring.b30.service.UpNewDataToGDServices;
 import com.guider.healthring.bleutil.MyCommandManager;
-import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
 import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
 import com.guider.healthring.bzlmaps.sos.SendSMSBroadCast;
 import com.guider.healthring.commdbserver.CommDataFragment;
@@ -38,20 +34,17 @@ import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.run.B30RunFragment;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
-import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.widget.NoScrollViewPager;
+import com.inuker.bluetooth.library.utils.Task;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.Setting;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -69,9 +62,12 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
 
     private List<Fragment> b30FragmentList = new ArrayList<>();
 
+    //上传数据
+    UpNewDataToGDServices upDataToGDServicesNew = null;
+
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -129,19 +125,6 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
         //注册广播接收者的对象
         this.registerReceiver(sendSMSBroadCast, mIntentFilter);
 
-//        String isimei = (String) SharedPreferencesUtils.getParam(B30HomeActivity.this, "ISIMEI", "");
-//        if (WatchUtils.isEmpty(isimei)){
-//            String imei = SystemUtil.getIMEI(B30HomeActivity.this);
-//            if (!WatchUtils.isEmpty(imei)){
-//                if (Commont.isDebug)Log.e("====IEMI==", imei);
-//                SharedPreferencesUtils.setParam(B30HomeActivity.this, "ISIMEI", imei);
-//                Intent intent = new Intent(B30HomeActivity.this, MainActivity.class);
-//                intent.setFlags(101);//傳送設備碼
-//                intent.putExtra("data", imei);
-//                startActivity(intent);
-//                startActivityForResult(intent, 1); //REQUESTCODE--->1
-//            }
-//        }
     }
 
 
@@ -154,18 +137,22 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
     SendSMSBroadCast sendSMSBroadCast = null;
     private Vibrator vibrator;
 
+    @SuppressLint("MissingPermission")
     public void vibrate() {
-        if (vibrator.hasVibrator()) {
-            vibrator.vibrate(3000); //参数标识  震动持续多少毫秒
+        try {
+            if (vibrator.hasVibrator()) {
+                vibrator.vibrate(3000); //参数标识  震动持续多少毫秒
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
 
     private void initViews() {
         b30FragmentList.add(new B30HomeFragment());
-//        b30FragmentList.add(new B30DataFragment());
         b30FragmentList.add(new CommDataFragment());
-//        b30FragmentList.add(new W30sNewRunFragment());
         b30FragmentList.add(new B30RunFragment());//跑步
         b30FragmentList.add(new B30MineFragment());
         FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentAdapter(getSupportFragmentManager(), b30FragmentList);
@@ -238,69 +225,92 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
      * 启动上传数据的服务
      */
     public void startUploadDate() {
-        boolean uploading = MyApp.getInstance().isUploadDate();
-        // 判断一下是否正在上传数据
-        if (!uploading) {
-           // startService(new Intent(this, DateUploadService.class));
-        }
 
-        if (!MyApp.getInstance().isUploadDateGDNew()){
-            //上传到新的额服务器
-            if (upDataToGDServicesNew != null && upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
-                upDataToGDServicesNew.cancel(true); // 如果Task还在运行，则先取消它
-                upDataToGDServicesNew = null;
-                upDataToGDServicesNew = new UpDataToGDServicesNew();
-            } else {
-                upDataToGDServicesNew = new UpDataToGDServicesNew();
-            }
-            upDataToGDServicesNew.execute();
-        }
-        if (!MyApp.getInstance().isUploadDateGDHrv()){
-            //上传到新的服务器---hrv
-            if (upHrvDataToGDServices != null && upHrvDataToGDServices.getStatus() == AsyncTask.Status.RUNNING) {
-                upHrvDataToGDServices.cancel(true); // 如果Task还在运行，则先取消它
-                upHrvDataToGDServices = null;
-                upHrvDataToGDServices = new UpHrvDataToGDServices();
-            } else {
-                upHrvDataToGDServices = new UpHrvDataToGDServices();
-            }
-            upHrvDataToGDServices.execute();
-        }
+       try {
+          if(upDataToGDServicesNew != null && upDataToGDServicesNew.getStatus() == Task.Status.RUNNING){
+              upDataToGDServicesNew.cancel(true);
+              upDataToGDServicesNew = null;
+              upDataToGDServicesNew = new UpNewDataToGDServices();
+          } else {
+              upDataToGDServicesNew = new UpNewDataToGDServices();
+          }
+          upDataToGDServicesNew.execute();
+       }catch (Exception e){
+           e.printStackTrace();
+       }
 
 
-        boolean uploadingGD = MyApp.getInstance().isUploadDateGD();
-        if (Commont.isDebug)Log.d("========", "数据同步中  " + uploadingGD);
-        if (!uploadingGD) {
-//            UpdataThree downloadTask = new UpdataThree();
-//            downloadTask.execute("");
 
-//            if (upDataToGDServices != null) {
-//                upDataToGDServices.cancel(true);
-//                upDataToGDServices = null;
+
+
+
+
+
+
+
+//        boolean uploading = MyApp.getInstance().isUploadDate();
+//        // 判断一下是否正在上传数据
+//        if (!uploading) {
+//           // startService(new Intent(this, DateUploadService.class));
+//        }
+//
+//        if (!MyApp.getInstance().isUploadDateGDNew()){
+//            //上传到新的额服务器
+//            if (upDataToGDServicesNew != null && upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
+//                upDataToGDServicesNew.cancel(true); // 如果Task还在运行，则先取消它
+//                upDataToGDServicesNew = null;
+//                upDataToGDServicesNew = new UpDataToGDServicesNew();
+//            } else {
+//                upDataToGDServicesNew = new UpDataToGDServicesNew();
 //            }
-            try {
-                //上传到旧的服务器
-                if (upDataToGDServices != null && upDataToGDServices.getStatus() == AsyncTask.Status.RUNNING) {
-                    upDataToGDServices.cancel(true); // 如果Task还在运行，则先取消它
-                    upDataToGDServices = null;
-                    upDataToGDServices = new UpDataToGDServices();
-                } else {
-                    upDataToGDServices = new UpDataToGDServices();
-                }
-                upDataToGDServices.execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-//            startService(new Intent(this, DateUploadServiceGD.class));
-        }
+//            upDataToGDServicesNew.execute();
+//        }
+//        if (!MyApp.getInstance().isUploadDateGDHrv()){
+//            //上传到新的服务器---hrv
+//            if (upHrvDataToGDServices != null && upHrvDataToGDServices.getStatus() == AsyncTask.Status.RUNNING) {
+//                upHrvDataToGDServices.cancel(true); // 如果Task还在运行，则先取消它
+//                upHrvDataToGDServices = null;
+//                upHrvDataToGDServices = new UpHrvDataToGDServices();
+//            } else {
+//                upHrvDataToGDServices = new UpHrvDataToGDServices();
+//            }
+//            upHrvDataToGDServices.execute();
+//        }
+//
+//
+//        boolean uploadingGD = MyApp.getInstance().isUploadDateGD();
+//        if (Commont.isDebug)Log.d("========", "数据同步中  " + uploadingGD);
+//        if (!uploadingGD) {
+////            UpdataThree downloadTask = new UpdataThree();
+////            downloadTask.execute("");
+//
+////            if (upDataToGDServices != null) {
+////                upDataToGDServices.cancel(true);
+////                upDataToGDServices = null;
+////            }
+//            try {
+//                //上传到旧的服务器
+//                if (upDataToGDServices != null && upDataToGDServices.getStatus() == AsyncTask.Status.RUNNING) {
+//                    upDataToGDServices.cancel(true); // 如果Task还在运行，则先取消它
+//                    upDataToGDServices = null;
+//                    upDataToGDServices = new UpDataToGDServices();
+//                } else {
+//                    upDataToGDServices = new UpDataToGDServices();
+//                }
+//                upDataToGDServices.execute();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+////            startService(new Intent(this, DateUploadServiceGD.class));
+//        }
 
     }
 
-
-    UpDataToGDServices upDataToGDServices = null;
-    UpDataToGDServicesNew upDataToGDServicesNew = null;
-    UpHrvDataToGDServices upHrvDataToGDServices = null;
+//
+//    UpDataToGDServices upDataToGDServices = null;
+//    UpDataToGDServicesNew upDataToGDServicesNew = null;
+//    UpHrvDataToGDServices upHrvDataToGDServices = null;
 
 
 

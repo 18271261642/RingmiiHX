@@ -64,7 +64,7 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity {
     private boolean privateMode;
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -143,7 +143,10 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity {
                 if (MyCommandManager.DEVICENAME != null) {
                     if (!isStart) {
                         isStart = true;
+                        showStateTv.setText("");
                         b30MeaureStartImg.setImageResource(R.drawable.detect_bp_pause);
+                        b30MeaureBloadProgressView.setTmpTxt(null);
+                        b30MeaureBloadProgressView.setScheduleDuring(50 * 1000);
                         b30MeaureBloadProgressView.setProgress(100);
                         if (MyCommandManager.DEVICENAME != null) {
                             MyApp.getInstance().getVpOperateManager().startDetectBP(bleWriteResponse, new IBPDetectDataListener() {

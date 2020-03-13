@@ -491,7 +491,7 @@ public class WaveProgress extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mDarkWaveOffset = (float) animation.getAnimatedValue();
-                //  postInvalidate();
+                  postInvalidate();
             }
         });
         mDarkWaveAnimator.addListener(new Animator.AnimatorListener() {

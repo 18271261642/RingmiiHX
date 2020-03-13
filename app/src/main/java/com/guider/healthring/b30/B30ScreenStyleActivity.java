@@ -3,25 +3,35 @@ package com.guider.healthring.b30;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
+import com.guider.healthring.b30.bean.SkinColorBean;
+import com.guider.healthring.b30.view.OnDeviceStyleSelectListener;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.WatchBaseActivity;
-import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IScreenStyleListener;
 import com.veepoo.protocol.model.datas.ScreenStyleData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 
 /**
  * Created by Administrator on 2018/8/14.
@@ -30,114 +40,7 @@ import butterknife.OnClick;
 /**
  * 主题界面风格设置
  */
-//public class B30ScreenStyleActivity extends WatchBaseActivity {
-//
-//    private static final String TAG = "B30ScreenStyleActivity";
-//
-//    @BindView(R.id.commentB30BackImg)
-//    ImageView commentB30BackImg;
-//    @BindView(R.id.commentB30TitleTv)
-//    TextView commentB30TitleTv;
-//    @BindView(R.id.style1Img)
-//    ImageView style1Img;
-//    @BindView(R.id.style2Img)
-//    ImageView style2Img;
-//    @BindView(R.id.style3Img)
-//    ImageView style3Img;
-//
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_b30_themestyle);
-//        ButterKnife.bind(this);
-//
-//        initViews();
-//
-//        clearImg();
-//        style1Img.setVisibility(View.VISIBLE);
-//
-//        readStyleData();
-//    }
-//
-//    private void readStyleData() {
-//        if(MyCommandManager.DEVICENAME != null){
-//            MyApp.getVpOperateManager().readScreenStyle(iBleWriteResponse, new IScreenStyleListener() {
-//                @Override
-//                public void onScreenStyleDataChange(ScreenStyleData screenStyleData) {
-//                    Log.e(TAG,"----screenStyleData="+screenStyleData.toString());
-//                    switch (screenStyleData.getscreenStyle()){
-//                        case 0:
-//                            clearImg();
-//                            style1Img.setVisibility(View.VISIBLE);
-//                            break;
-//                        case 1:
-//                            clearImg();
-//                            style2Img.setVisibility(View.VISIBLE);
-//                            break;
-//                        case 2:
-//                            clearImg();
-//                            style3Img.setVisibility(View.VISIBLE);
-//                            break;
-//                    }
-//                }
-//            });
-//        }
-//    }
-//
-//    private void initViews() {
-//        commentB30BackImg.setVisibility(View.VISIBLE);
-//        commentB30TitleTv.setText("主界面风格设置");
-//    }
-//
-//    @OnClick({R.id.commentB30BackImg, R.id.defaultStyleRel, R.id.Style1Rel, R.id.Style2Rel})
-//    public void onViewClicked(View view) {
-//        switch (view.getId()) {
-//            case R.id.commentB30BackImg:
-//                finish();
-//                break;
-//            case R.id.defaultStyleRel:
-//                clearImg();
-//                style1Img.setVisibility(View.VISIBLE);
-//                settingStyle(0);
-//                break;
-//            case R.id.Style1Rel:
-//                clearImg();
-//                style2Img.setVisibility(View.VISIBLE);
-//                settingStyle(1);
-//                break;
-//            case R.id.Style2Rel:
-//                clearImg();
-//                style3Img.setVisibility(View.VISIBLE);
-//                settingStyle(2);
-//                break;
-//        }
-//    }
-//
-//    private void settingStyle(int styleId){
-//        if(MyCommandManager.DEVICENAME != null){
-//            MyApp.getVpOperateManager().settingScreenStyle(iBleWriteResponse, new IScreenStyleListener() {
-//                @Override
-//                public void onScreenStyleDataChange(ScreenStyleData screenStyleData) {
-//
-//                }
-//            }, styleId);
-//        }
-//    }
-//
-//    private void clearImg(){
-//        style1Img.setVisibility(View.INVISIBLE);
-//        style2Img.setVisibility(View.INVISIBLE);
-//        style3Img.setVisibility(View.INVISIBLE);
-//    }
-//
-//    private IBleWriteResponse iBleWriteResponse = new IBleWriteResponse() {
-//        @Override
-//        public void onResponse(int i) {
-//
-//        }
-//    };
-//}
-public class B30ScreenStyleActivity extends WatchBaseActivity {
+public class B30ScreenStyleActivity extends WatchBaseActivity implements OnDeviceStyleSelectListener {
 
     private static final String TAG = "B30ScreenStyleActivity";
 
@@ -145,31 +48,14 @@ public class B30ScreenStyleActivity extends WatchBaseActivity {
     ImageView commentB30BackImg;
     @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.style1Img)
-    ImageView style1Img;
-    @BindView(R.id.style2Img)
-    ImageView style2Img;
-    @BindView(R.id.style3Img)
-    ImageView style3Img;
-    @BindView(R.id.style33Img)
-    ImageView style33Img;
-    @BindView(R.id.Style3Rel)
-    RelativeLayout Style3Rel;
-    @BindView(R.id.style44Img)
-    ImageView style44Img;
-    @BindView(R.id.Style4Rel)
-    RelativeLayout Style4Rel;
-
-    @BindView(R.id.view_one)
-    View view_one;
-    @BindView(R.id.view_two)
-    View view_two;
-    @BindView(R.id.view_three)
-    View view_three;
-    @BindView(R.id.view_four)
-    View view_four;
-    @BindView(R.id.view_five)
+    @BindView(R.id.deviceStyleListView)
+    ListView deviceStyleListView;
     View view_five;
+
+
+    private List<SkinColorBean> resultList;
+    private DeviceStyleAdapter deviceStyleAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -179,103 +65,48 @@ public class B30ScreenStyleActivity extends WatchBaseActivity {
 
         initViews();
 
-        clearImg();
-        style1Img.setVisibility(View.VISIBLE);
-
         readStyleData();
     }
 
+
     private void readStyleData() {
-        if (MyCommandManager.DEVICENAME != null) {
-            MyApp.getInstance().getVpOperateManager().readScreenStyle(iBleWriteResponse, new IScreenStyleListener() {
-                @Override
-                public void onScreenStyleDataChange(ScreenStyleData screenStyleData) {
-                    Log.e(TAG, "----screenStyleData=" + screenStyleData.toString());
-                    switch (screenStyleData.getscreenStyle()) {
-                        case 0:
-                            clearImg();
-                            style1Img.setVisibility(View.VISIBLE);
-                            break;
-                        case 1:
-                            clearImg();
-                            style2Img.setVisibility(View.VISIBLE);
-                            break;
-                        case 2:
-                            clearImg();
-                            style3Img.setVisibility(View.VISIBLE);
-                            break;
-                        case 3:
-                            clearImg();
-                            style33Img.setVisibility(View.VISIBLE);
-                            break;
-                        case 4:
-                            clearImg();
-                            style44Img.setVisibility(View.VISIBLE);
-                            break;
-                    }
+
+        final int styleCount = (int) SharedPreferencesUtils.getParam(B30ScreenStyleActivity.this, Commont.SP_DEVICE_STYLE_COUNT, 0);
+
+        MyApp.getInstance().getVpOperateManager().readScreenStyle(iBleWriteResponse, new IScreenStyleListener() {
+            @Override
+            public void onScreenStyleDataChange(ScreenStyleData screenStyleData) {
+                resultList.clear();
+                Log.e(TAG, "--------screenStyleData=" + screenStyleData.toString());
+                for (int i = 0; i < styleCount; i++) {
+                    SkinColorBean deviceStyleBean = new SkinColorBean();
+                    deviceStyleBean.setImgId(i);
+                    deviceStyleBean.setChecked(i == screenStyleData.getscreenStyle());
+                    resultList.add(deviceStyleBean);
                 }
-            });
-        }
+
+                deviceStyleAdapter.notifyDataSetChanged();
+
+            }
+        });
     }
+
 
     private void initViews() {
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.string_devices_ui));
 
-
-        String bleName = (String) SharedPreferencesUtils.readObject(this, Commont.BLENAME);
-        //B36,B31总共有5个主界面风格
-        if (!WatchUtils.isEmpty(bleName) && (bleName.equals("500S") || bleName.equals("B31"))) {
-            Style3Rel.setVisibility(View.VISIBLE);
-            Style4Rel.setVisibility(View.VISIBLE);
-
-//            view_one.setVisibility(View.VISIBLE);
-//            view_two.setVisibility(View.VISIBLE);
-//            view_three.setVisibility(View.VISIBLE);
-            view_four.setVisibility(View.VISIBLE);
-            view_five.setVisibility(View.VISIBLE);
-        } else {
-            Style3Rel.setVisibility(View.INVISIBLE);
-            Style4Rel.setVisibility(View.INVISIBLE);
-            view_four.setVisibility(View.INVISIBLE);
-            view_five.setVisibility(View.INVISIBLE);
-        }
-
-    }
-
-    @OnClick({R.id.commentB30BackImg, R.id.defaultStyleRel,
-            R.id.Style1Rel, R.id.Style2Rel, R.id.Style3Rel, R.id.Style4Rel})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.commentB30BackImg:
+        resultList = new ArrayList<>();
+        deviceStyleAdapter = new DeviceStyleAdapter(resultList);
+        deviceStyleListView.setAdapter(deviceStyleAdapter);
+        deviceStyleAdapter.setOnDeviceStyleSelectListener(this);
+        commentB30BackImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
-                break;
-            case R.id.defaultStyleRel:
-                clearImg();
-                style1Img.setVisibility(View.VISIBLE);
-                settingStyle(0);
-                break;
-            case R.id.Style1Rel:
-                clearImg();
-                style2Img.setVisibility(View.VISIBLE);
-                settingStyle(1);
-                break;
-            case R.id.Style2Rel:
-                clearImg();
-                style3Img.setVisibility(View.VISIBLE);
-                settingStyle(2);
-                break;
-            case R.id.Style3Rel:    //B36的风格
-                clearImg();
-                style33Img.setVisibility(View.VISIBLE);
-                settingStyle(3);
-                break;
-            case R.id.Style4Rel:    //B36的风格
-                clearImg();
-                style44Img.setVisibility(View.VISIBLE);
-                settingStyle(4);
-                break;
-        }
+            }
+        });
+
     }
 
     private void settingStyle(int styleId) {
@@ -289,16 +120,6 @@ public class B30ScreenStyleActivity extends WatchBaseActivity {
         }
     }
 
-    private void clearImg() {
-        style1Img.setVisibility(View.INVISIBLE);
-        style2Img.setVisibility(View.INVISIBLE);
-        style3Img.setVisibility(View.INVISIBLE);
-
-        style33Img.setVisibility(View.INVISIBLE);
-        style44Img.setVisibility(View.INVISIBLE);
-//        view_four.setVisibility(View.INVISIBLE);
-//        view_five.setVisibility(View.INVISIBLE);
-    }
 
     private IBleWriteResponse iBleWriteResponse = new IBleWriteResponse() {
         @Override
@@ -306,5 +127,99 @@ public class B30ScreenStyleActivity extends WatchBaseActivity {
             Log.d("---------", i + "");
         }
     };
+
+
+    @Override
+    public void onItemStyleSelect(int position) {
+        settingStyle(position);
+    }
+
+
+    private class DeviceStyleAdapter extends BaseAdapter {
+
+        LayoutInflater layoutInflater;
+        private List<SkinColorBean> list;
+
+        private int selectId = -1;
+
+        private OnDeviceStyleSelectListener onDeviceStyleSelectListener;
+
+        public void setOnDeviceStyleSelectListener(OnDeviceStyleSelectListener onDeviceStyleSelectListener) {
+            this.onDeviceStyleSelectListener = onDeviceStyleSelectListener;
+        }
+
+        public DeviceStyleAdapter(List<SkinColorBean> list) {
+            this.list = list;
+            layoutInflater = LayoutInflater.from(B30ScreenStyleActivity.this);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = layoutInflater.inflate(R.layout.item_device_style_layout, parent, false);
+                holder.tv = convertView.findViewById(R.id.itemStyleTv);
+                holder.checkBox = convertView.findViewById(R.id.itemStyleCheckBox);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.tv.setText(position == 0 ? getResources().getString(R.string.string_default_style) : "Style " + position);
+
+            final CheckBox checkBox = holder.checkBox;
+            checkBox.setChecked(list.get(position).isChecked());
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (!buttonView.isPressed())
+                        return;
+                    if (onDeviceStyleSelectListener != null)
+                        onDeviceStyleSelectListener.onItemStyleSelect(position);
+                    if (checkBox.isChecked()) {
+                        selectId = position;
+                        list.get(position).setChecked(true);
+                    } else {
+                        selectId = -1;
+                    }
+
+                    for (int i = 0; i < list.size(); i++) {
+                        if (selectId != i) {
+                            list.get(i).setChecked(false);
+                        }
+                    }
+
+                    notifyDataSetChanged();
+                }
+            });
+
+
+            return convertView;
+        }
+
+
+        class ViewHolder {
+            TextView tv;
+            CheckBox checkBox;
+        }
+
+
+    }
+
 }
 

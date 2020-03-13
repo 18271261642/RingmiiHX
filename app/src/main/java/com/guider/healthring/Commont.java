@@ -19,6 +19,9 @@ public class Commont {
     public static final String WX_APP_SECRET = "984774e72efba8f2f21c8cbc91cbbff8";
 
 
+    //设备支持的主题风格数量key
+    public static final String SP_DEVICE_STYLE_COUNT = "sp_device_style_count";
+
 
 
     /**
