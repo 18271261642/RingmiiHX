@@ -71,7 +71,18 @@ public class ChooseDeviceFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getHealthRange();
+//        DeviceInit.getInstance().init(new DeviceInit.OnHasDeviceList() {
+//            @Override
+//            public void needLoad() {
+//                showDialog();
+//            }
+//
+//            @Override
+//            public void onHaveList() {
+//                hideDialog();
+//                getHealthRange();
+//            }
+//        });
     }
 
     //当增加设备时, 需要 resetTag setDeviceTag两个方法
@@ -90,9 +101,18 @@ public class ChooseDeviceFragment extends BaseFragment {
 
             resetTag = true;
 
-            init();
-            getDeviceList();
+            DeviceInit.getInstance().init(new DeviceInit.OnHasDeviceList() {
+                @Override
+                public void needLoad() {
+                    showDialog();
+                }
 
+                @Override
+                public void onHaveList() {
+                    hideDialog();
+                    init();
+                }
+            });
         }
     }
 
@@ -116,29 +136,7 @@ public class ChooseDeviceFragment extends BaseFragment {
 //            new CardiartAppUtil().checkAndLoadApk(_mActivity);
 //        }
 
-        getDeviceList();
     }
-
-    private void getDeviceList() {
-//        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
-//                new ApiCallBack<List<Devices>>(){
-//                    @Override
-//                    public void onApiResponse(Call<List<Devices>> call, Response<List<Devices>> response) {
-//                        super.onApiResponse(call, response);
-//                        if (response != null && response.body() != null && !response.body().isEmpty()) {
-//                            Config.DEVICE_KEYS.clear();
-//                            for (Devices device : response.body()) {
-//                                Config.DEVICE_KEYS.add(device.getBtName() + device.getVersion());
-//                                Config.DEVICE_OBJ.put(device.getBtName() + device.getVersion(), device);
-//                            }
-//                            init();
-//                        }
-//                    }
-//                }
-//        );
-    }
-
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -148,7 +146,18 @@ public class ChooseDeviceFragment extends BaseFragment {
         if (savedInstanceState == null) {
 
             deviceInit = DeviceInit.getInstance();
-            init();
+            DeviceInit.getInstance().init(new DeviceInit.OnHasDeviceList() {
+                @Override
+                public void needLoad() {
+                    showDialog();
+                }
+
+                @Override
+                public void onHaveList() {
+                    hideDialog();
+                    init();
+                }
+            });
 
         }
         Logger.i("accontID=" + UserManager.getInstance().getAccountId() + "\n" +
@@ -192,80 +201,6 @@ public class ChooseDeviceFragment extends BaseFragment {
             normalAdapter.notifyDataSetChanged();
         }
 
-
-//        final CheckableLinearLayout layout_glu = view.findViewById(R.id.device_glu);
-//        layout_glu.setChecked(false);
-//        final CheckableLinearLayout layout_ecg = view.findViewById(R.id.device_ecg);
-//        layout_ecg.setChecked(false);
-//        layout3 = view.findViewById(R.id.device3);
-//        layout3.setChecked(false);
-//        final CheckableLinearLayout layout_bp = view.findViewById(R.id.device_bp);
-//        layout_bp.setChecked(false);
-
-
-//        layout_glu.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                resetTag();
-//                if (layout_glu.changeCheckedStatus()) {
-//
-//                    Glucose.getInstance().setTag(true);
-//                    list.add(Config.GLU_FRAGMENT);
-//
-//                } else {
-//                    Glucose.getInstance().setTag(false);
-//                    list.remove(Config.GLU_FRAGMENT);
-//
-//                }
-//
-//            }
-//        });
-//
-//
-//        layout_ecg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                resetTag();
-//                if (layout_ecg.changeCheckedStatus()) {
-//                    HearRate.getInstance().setTag(true);
-//                    list.add(Config.ECG_FRAGMENT);
-//                } else {
-//                    HearRate.getInstance().setTag(false);
-//                    list.remove(Config.ECG_FRAGMENT);
-//                }
-//
-//            }
-//        });
-//
-//        layout3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                resetTag();
-//                if (layout3.changeCheckedStatus()) {
-//                    list.add(RouterPathManager.Null_PATH);
-//                } else {
-//                    list.remove(RouterPathManager.Null_PATH);
-//                }
-//            }
-//        });
-//
-//        layout_bp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                resetTag();
-//                if (layout_bp.changeCheckedStatus()) {
-//                    HeartPressBp.getInstance().setTag(true);
-//                    list.add(Config.BP_FRAGMENT);
-//                } else {
-//                    HeartPressBp.getInstance().setTag(false);
-//                    list.remove(Config.BP_FRAGMENT);
-//                }
-//
-//
-//            }
-//        });
-
         view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,18 +215,6 @@ public class ChooseDeviceFragment extends BaseFragment {
                 Config.mapX.put("ecg", true);
                 Config.mapX.put("glu", true);
                 Config.mapX.put("bp", true);
-
-
-                //如果没有选择, 默认都选
-//                if (RouterPathManager.Devices.size() == 0) {
-//                    RouterPathManager.Devices.add(Config.GLU_FRAGMENT);
-//                    Glucose.getInstance().setTag(true);
-//                    RouterPathManager.Devices.add(Config.ECG_FRAGMENT);
-//                    HearRate.getInstance().setTag(true);
-//                    RouterPathManager.Devices.add(Config.BP_FRAGMENT);
-//                    HeartPressBp.getInstance().setTag(true);
-//                    RouterPathManager.Devices.add(RouterPathManager.Null_PATH);
-//                }
 
                 if (RouterPathManager.Devices.size() == 0) {
                     for (String key : Config.DEVICE_KEYS) {

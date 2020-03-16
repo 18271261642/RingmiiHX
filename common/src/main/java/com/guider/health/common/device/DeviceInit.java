@@ -21,7 +21,6 @@ import com.guider.health.common.core.HeartPressYf;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.standard.Constant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -67,8 +66,6 @@ public class DeviceInit {
     public final ArrayMap<String, String> fragments = new ArrayMap<>();
 
     public final ArrayMap<String, String> names = new ArrayMap<>();
-
-    private ArrayList<String> list = new ArrayList();
 
     private String type = "";
 
@@ -135,8 +132,9 @@ public class DeviceInit {
 
     }
 
-    public void init() {
-        if (list.size() > 0) {
+    public void init(final OnHasDeviceList callback) {
+        if (Config.DEVICE_KEYS.size() > 0) {
+            callback.onHaveList();
             return;
         }
         pics.put(DEV_GLU, R.mipmap.device_wcxt);
@@ -175,11 +173,12 @@ public class DeviceInit {
         names.put(DEV_BP_MBB_88  , "脉搏波88");
         names.put(DEV_BP_MBB_9804, "脉搏波9804");
 
-        list.add(DEV_BP);      // 无创血糖
-        list.add(DEV_ECG_6);    // 六导心电
-        Config.DEVICE_KEYS.add(list.get(0));
-        Config.DEVICE_KEYS.add(list.get(1));
+        Config.DEVICE_KEYS.add(DEV_GLU);
+        Config.DEVICE_KEYS.add(DEV_BP);
 
+        if (callback != null) {
+            callback.needLoad();
+        }
         ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
                 new ApiCallBack<List<Devices>>(){
                     @Override
@@ -193,8 +192,22 @@ public class DeviceInit {
                             }
                         }
                     }
+
+                    @Override
+                    public void onRequestFinish() {
+                        super.onRequestFinish();
+                        if (callback != null) {
+                            callback.onHaveList();
+                        }
+                    }
                 }
         );
+    }
+
+    public interface OnHasDeviceList {
+
+        void needLoad();
+        void onHaveList();
     }
 
 }
