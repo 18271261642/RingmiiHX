@@ -57,15 +57,15 @@
                             android:layout_width="230dp"
                             android:layout_height="230dp"
                             android:layout_gravity="center"
-                            app:darkWaveAnimTime="3000"
+                            app:darkWaveAnimTime="5000"
                             app:darkWaveColor="#1ebae3"
-                            app:lightWaveAnimTime="4000"
+                            app:lightWaveAnimTime="5000"
                             app:lightWaveColor="#34c7e7"
                             app:lightWaveDirect="R2L"
                             app:lockWave="false"
                             app:valueColor="@color/white"
                             app:valueSize="45sp"
-                            app:waveHeight="20dp"
+                            app:waveHeight="10dp"
                             app:waveNum="1" />
 
 

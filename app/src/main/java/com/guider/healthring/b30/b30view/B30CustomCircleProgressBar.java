@@ -45,6 +45,8 @@ public class B30CustomCircleProgressBar extends View {
 
     private ValueAnimator animator;
 
+    private int scheduleDuring;
+
     enum DirectionEnum {
         LEFT(0, 180.0f),
         TOP(1, 270.0f),
@@ -271,6 +273,11 @@ public class B30CustomCircleProgressBar extends View {
     }
 
 
+    //设置总共的持续时间
+    public void setScheduleDuring(int scheduleDuring) {
+        this.scheduleDuring = scheduleDuring;
+    }
+
 
     //加锁保证线程安全,能在线程中使用
     public synchronized void setProgress(int progress) {
@@ -280,7 +287,7 @@ public class B30CustomCircleProgressBar extends View {
         if (progress > maxProgress) {
             progress = maxProgress;
         }
-        startAnim(progress,27 * 1000);
+        startAnim(progress,scheduleDuring);
     }
 
     private void startAnim(float startProgress,int dur) {
