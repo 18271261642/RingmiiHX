@@ -176,12 +176,11 @@ public class ChooseDeviceFragment extends BaseFragment {
     private final List<String> list = new LinkedList<>();
 
     private void init() {
-
         list.clear();
 
         view.findViewById(R.id.middle_line).setVisibility(View.GONE);
         view.findViewById(R.id.home).setVisibility(View.GONE);
-        ((TextView) view.findViewById(R.id.title)).setText("选择测量设备");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.choose_device));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,7 +226,9 @@ public class ChooseDeviceFragment extends BaseFragment {
                 Log.i("haix", "=============选择了:  bp: " + HeartPressBp.getInstance().isTag() + " glu: " + Glucose.getInstance().isTag() + " ecg: " + HearRate.getInstance().isTag());
 
 
-                Toast.makeText(_mActivity, "您共选择了 " + RouterPathManager.Devices.size() + " 个设备进行下面的测量!", Toast.LENGTH_LONG).show();
+                Toast.makeText(_mActivity, getResources().getString(R.string.choose_tips_pre)
+                        + RouterPathManager.Devices.size()
+                        + getResources().getString(R.string.choose_tips_tail), Toast.LENGTH_LONG).show();
 
                 String fragmentPath = RouterPathManager.Devices.remove();
                 if (fragmentPath != null) {
@@ -392,7 +393,7 @@ public class ChooseDeviceFragment extends BaseFragment {
     private void getHealthRange() {
         if (!NetStateController.isNetworkConnected(_mActivity)) {
 
-            Toast.makeText(_mActivity, "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, getResources().getString(R.string.no_network_tips), Toast.LENGTH_SHORT).show();
 
             return;
         }

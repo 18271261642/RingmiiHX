@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name" translatable="false">glu</string>
+    <string name="measure_3_qingyongshouzhi">Please put your finger into the sensor.</string>
+    <string name="measure_3_lianjieshibai">Device connection failed, Please make sure the power is turned on.</string>
+    <string name="measure_3_fuhehuanjing"> Meet Environmental Conditions </string>
+    <string name="glu_shebeidianliangdi">Low battery! Please charging before measure.</string>
+    <string name="glu_huanjingwendudi">The finger temperature is too low, which may affect the measure results.</string>
+    <string name="glu_huanjingwendugao">The ambient temperature is too high, which may affect the measure results.</string>
+    <string name="glu_huanjingtaigan">The ambient is too dry, which may affect the measure results.</string>
+    <string name="glu_shouzhiwendutaidi">The finger temperature is too low, which may affect the measure results.</string>
+    <string name="shouzhiwendugao">The finger temperature is too high, which may affect the measure results.</string>
+    <string name="glu_shouzhiweizhengque">Finger is not placed correctly!</string>
+    <string name="glu_shujushoujicuowu">Data collection error! Please reinsert your finger.</string>
+    <string name="glu_shouzhiganceyouhu">Finger sensing error may result in incorrect data collection.</string>
+    <string name="glu_shouzhiyiyikai">Finger Removed!</string>
+    <string name="glu_shouzhiweishenru">No finger inside!</string>
+    <string name="glu_chucuodeceshi">Error, Please measure again.</string>
+    <string name="glu_dingqijiankangjiancha">Regular Health Examination</string>
+    <string name="meitianyundong30fenzhong">Exercise 30 minutes a day</string>
+    <string name="congshishuyahuodong">Engage in stress-relieving activities to relax.</string>
+    <string name="glu_zhengqueyinshi">Health Diet, According to the following order and amount, 2 high fiber vegetables, 2 protein, 1 carbohydrate </string>
+    <string name="glu_weichichongzudeshuimian">Keep enough sleep</string>
+    <string name="glu_buchongshuifen">Rehydrate</string>
+
+
+</resources>

@@ -80,9 +80,12 @@ public class ProtonEcgResult extends ECGFragment {
         super.onActivityCreated(savedInstanceState);
 
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
-        ((TextView) view.findViewById(R.id.title)).setText("操作指南");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.operation_guide));
         TipTitleView tips = view.findViewById(R.id.tip_view);
-        tips.setTips("心电测量", "输入参数", "开始测量", "结果展示");
+        tips.setTips(getResources().getString(R.string.ecg_measurement),
+                getResources().getString(R.string.input_parameters),
+                getResources().getString(R.string.start_measuring),
+                getResources().getString(R.string.results_display));
         tips.toTip(3);
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override

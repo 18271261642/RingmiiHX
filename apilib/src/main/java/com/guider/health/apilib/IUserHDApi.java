@@ -121,7 +121,7 @@ public interface IUserHDApi {
      * @return
      */
     @POST("api/v1/nonbs/set")
-    Call<String> setNonbs(@Body NonbsBean body);
+    Call<NonbsBean> setNonbs(@Body NonbsBean body);
 
     /**
      * 获取血糖状态

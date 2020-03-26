@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="臂筒式血压计"
+                android:text="@string/arm_cylinder_sphygmomanometer"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作指南"
+                android:text="@string/operation_guide"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/celiangcaozuo"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_15" />
 
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/celiangjieguo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
@@ -105,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_45"
-                    android:text="正在测量中\n  请稍后..."
+                    android:text="@string/celiangzhong"
                     android:textColor="#7D7D7D"
                     android:textSize="@dimen/sp_28" />
 
@@ -116,7 +116,7 @@
                     android:layout_height="@dimen/dp_44"
                     android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/button_cancel"
-                    android:text="取消"
+                    android:text="@string/quxiao"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/dp_19"
                     android:visibility="gone" />
@@ -127,7 +127,7 @@
                     android:layout_height="@dimen/dp_44"
                     android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/button_cancel"
-                    android:text="连接失败 重新连接"
+                    android:text="@string/lianjieshibai_chongxin"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/dp_19"
                     android:visibility="invisible" />

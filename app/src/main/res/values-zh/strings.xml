@@ -1363,4 +1363,6 @@
 
     <string name="bind_phone">绑定手机号</string>
     <string name="bind_phone_success">绑定成功</string>
+
+    <string name="btn_health">健康</string>
 </resources>

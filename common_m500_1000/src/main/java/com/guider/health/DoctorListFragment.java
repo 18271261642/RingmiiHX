@@ -206,7 +206,7 @@ public class DoctorListFragment extends BaseFragment {
             } else {
                 //提示用户手动打开权限
 
-                Toast.makeText(_mActivity, "请求权限要打开，否则不能正常使用！", Toast.LENGTH_LONG).show();
+                Toast.makeText(_mActivity, getResources().getString(R.string.request_per), Toast.LENGTH_LONG).show();
 
             }
         }

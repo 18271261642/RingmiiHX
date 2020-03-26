@@ -61,7 +61,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="操作指南："
+                    android:text="@string/operation_guide"
                     android:textColor="#7D7D7D"
                     android:textSize="@dimen/sp_19" />
 
@@ -70,7 +70,7 @@
                     android:layout_width="@dimen/dp_280"
                     android:layout_height="@dimen/dp_121"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:text="等待测量...\n\n测量完成后即可获取结果."
+                    android:text="@string/waiting_for_measurement"
                     android:textColor="#171717"
                     android:textSize="@dimen/sp_21" />
 
@@ -79,7 +79,7 @@
                     android:visibility="gone"
                     android:layout_marginLeft="@dimen/dp_169"
                     android:layout_marginTop="@dimen/dp_22"
-                    android:text="已经解决 重新连接"
+                    android:text="@string/reconnect"
                     android:textSize="@dimen/dp_19"
                     android:textColor="#ffffff"
                     android:background="@drawable/button_cancel"

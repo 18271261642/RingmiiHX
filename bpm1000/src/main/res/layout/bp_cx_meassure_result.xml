@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="臂筒式血压计"
+                android:text="@string/arm_cylinder_sphygmomanometer"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作指南"
+                android:text="@string/operation_guide"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/celiangcaozuo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/celiangjieguo"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
@@ -133,7 +133,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="测量结果："
+                        android:text="@string/measurement_results"
                         android:textColor="#7D7D7D"
                         android:textSize="@dimen/sp_15" />
 
@@ -145,7 +145,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/sbp"
+                            android:text="@string/sbp_e"
                             android:textColor="#171717"
                             android:textSize="@dimen/sp_15" />
 
@@ -156,7 +156,7 @@
                             android:layout_marginLeft="@dimen/dp_6"
                             android:background="@drawable/text_box"
                             android:gravity="center"
-                            android:text="正常"
+                            android:text="@string/normal"
                             android:textColor="#171717"
                             android:textSize="@dimen/sp_15" />
                     </LinearLayout>
@@ -187,7 +187,7 @@
                                 android:layout_height="@dimen/dp_20"
                                 android:background="#F6CC7B"
                                 android:gravity="center"
-                                android:text="低压"
+                                android:text="@string/dbp_e"
                                 android:textColor="#FFFFFF"
                                 android:textSize="@dimen/sp_12" />
 
@@ -214,7 +214,7 @@
                                 android:layout_height="@dimen/dp_20"
                                 android:background="#7ABC5B"
                                 android:gravity="center"
-                                android:text="正常"
+                                android:text="@string/normal"
                                 android:textColor="#FFFFFF"
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
@@ -239,7 +239,7 @@
                                 android:layout_height="@dimen/dp_20"
                                 android:background="#F35D57"
                                 android:gravity="center"
-                                android:text="高压"
+                                android:text="@string/sbp_e"
                                 android:textColor="#FFFFFF"
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
@@ -255,7 +255,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/dbp"
+                            android:text="@string/dbp_e"
                             android:textColor="#171717"
                             android:textSize="@dimen/sp_15" />
 
@@ -324,7 +324,7 @@
                                 android:layout_height="@dimen/dp_20"
                                 android:background="#7ABC5B"
                                 android:gravity="center"
-                                android:text="正常"
+                                android:text="@string/normal"
                                 android:textColor="#FFFFFF"
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
@@ -348,7 +348,7 @@
                                 android:layout_height="@dimen/dp_20"
                                 android:background="#F35D57"
                                 android:gravity="center"
-                                android:text="异常"
+                                android:text="@string/abnormal"
                                 android:textColor="#FFFFFF"
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
@@ -366,7 +366,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_30"
-                android:text="参考范围:  普通人群: 收缩压 &lt; 120（mmHg），舒张压 &lt; 80（mmHg)\n                    慢病、老年人群: 收缩压 &lt; 140（mmHg），舒张压 &lt; 90（mmHg) "
+                android:text="@string/xueyashuoming"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -379,7 +379,7 @@
                 android:layout_marginLeft="@dimen/dp_410"
                 android:layout_marginTop="@dimen/dp_13"
                 android:background="@drawable/button_cancel"
-                android:text="下一步"
+                android:text="@string/next"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/dp_19" />
 

@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:lineSpacingExtra="@dimen/dp_5"
-                    android:text="1.将手臂伸入臂筒内，\n手臂肘部放在凹陷处。"
+                    android:text="@string/bp_ave_reminder_first_1"
                     android:textColor="#171717"
                     android:textSize="@dimen/sp_21" />
 
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
                     android:lineSpacingExtra="@dimen/dp_5"
-                    android:text="2.保持正确坐姿，\n按[开始/停止]按钮，\n开始测量血压。"
+                    android:text="@string/bp_ave_reminder_first_2"
                     android:textColor="#171717"
                     android:textSize="@dimen/sp_21" />
 
@@ -99,7 +99,7 @@
             android:layout_marginTop="@dimen/dp_13"
             android:layout_marginBottom="@dimen/dp_15"
             android:background="@drawable/button_cancel"
-            android:text="下一步"
+            android:text="@string/next"
             android:textColor="#ffffff"
             android:textSize="@dimen/dp_19"
             android:visibility="visible" />

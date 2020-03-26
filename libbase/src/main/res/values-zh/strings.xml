@@ -1325,4 +1325,7 @@
     <string name="bind_phone_success">綁定成功</string>
 
     <string name="phone_code_send_success">驗證碼發送成功</string>
+
+    <string name="login_failed">登錄失敗</string>
+    <string name="login_cancelled">登錄取消了</string>
 </resources>

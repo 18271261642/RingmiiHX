@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Build;
@@ -28,6 +30,7 @@ import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.utils.WatchUtils;
+import com.guider.healthring.util.AppUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.inuker.bluetooth.library.BluetoothClient;
 import com.inuker.bluetooth.library.Code;
@@ -406,6 +409,8 @@ public class NewB30ConnStateService extends Service {
     //启动前台服务
     private void regeditBackService() {
         try {
+            String appName = AppUtils.getAppName(getApplicationContext());
+            Bitmap appIcon = AppUtils.getBitmap(getApplicationContext());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel("1001", "guider_hx", NotificationManager.IMPORTANCE_LOW);
                 NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -417,9 +422,10 @@ public class NewB30ConnStateService extends Service {
                         .setCategory(Notification.CATEGORY_SERVICE)
                         .setOngoing(true)
                         .setPriority(NotificationManager.IMPORTANCE_LOW)
-                        .setContentTitle("Guider HX")
-                        .setContentText("Guider HX")
-                        .setSmallIcon(R.drawable.ic_gaide_launch)
+                        .setContentTitle(appName)
+                        .setContentText(appName)
+                        // .setB(appIcon)
+                        .setLargeIcon(appIcon)
                         .setAutoCancel(false)
                         .build();
 
@@ -428,9 +434,9 @@ public class NewB30ConnStateService extends Service {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
                     //Notification.Builder builder = new Notification.Builder(this,11);
-                    builder.setSmallIcon(R.drawable.ic_gaide_launch);
-                    builder.setContentText("Guider HX");
-                    builder.setContentTitle("Guider HX");
+                    builder.setLargeIcon(appIcon);
+                    builder.setContentText(appName);
+                    builder.setContentTitle(appName);
                     // 设置通知的点击行为：自动取消/跳转等
                     builder.setAutoCancel(false);
                     startForeground(12, builder.build());

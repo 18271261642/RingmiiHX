@@ -38,8 +38,13 @@ public class MyUtils {
     public static Context application;
 
     static String df = "11:11:11:11:11:12";
+    private static String mac = "11:11:11:11:11:12";
     public static String getMacAddress() {
-        return "11:11:11:11:11:12";
+        return mac;
+    }
+
+    public static void setMacAddress(String strMac) {
+        mac = strMac;
     }
 
     public static String getWifiAddress() {

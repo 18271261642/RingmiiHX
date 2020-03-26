@@ -220,6 +220,7 @@
 
 
                 <RelativeLayout
+                    android:visibility="gone"
                     android:id="@+id/bemoRel"
                     style="@style/B30DeviceRelStyle">
 

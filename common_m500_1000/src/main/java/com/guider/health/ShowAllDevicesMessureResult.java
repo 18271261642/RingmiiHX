@@ -56,7 +56,7 @@ public class ShowAllDevicesMessureResult extends BaseFragment {
         view.findViewById(R.id.middle_line).setVisibility(View.GONE);
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
 
-        ((TextView) view.findViewById(R.id.title)).setText("测量结果");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.measurement_results));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +144,7 @@ public class ShowAllDevicesMessureResult extends BaseFragment {
 
     private void request() {
         if (!NetStateController.isNetworkConnected(_mActivity)) {
-            Toast.makeText(_mActivity, "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, getResources().getString(R.string.no_network_tips), Toast.LENGTH_SHORT).show();
             return;
         }
         requestNum = resultListView.getNeedRequestNum();

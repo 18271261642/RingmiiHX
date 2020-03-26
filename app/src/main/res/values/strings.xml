@@ -1334,4 +1334,6 @@
     <string name="bind_phone">Bind phone</string>
 
     <string name="bind_phone_success">Bind phone success</string>
+
+    <string name="btn_health">Health</string>
 </resources>

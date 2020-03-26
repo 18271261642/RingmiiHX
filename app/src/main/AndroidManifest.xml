@@ -87,11 +87,11 @@
         android:allowClearUserData="true"
         android:debuggable="false"
         android:hardwareAccelerated="true"
-        android:icon="@drawable/ic_gaide_launch"
-        android:label="@string/the_app_name"
+        android:icon="${app_icon}"
+        android:label="${app_name}"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@drawable/ic_gaide_launch"
+        android:roundIcon="${app_icon}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:vmSafeMode="true"
@@ -203,10 +203,11 @@
         <!--微信登录的回调-->
         <activity
             android:name="com.guider.healthringx.wxapi.WXEntryActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            tools:replace="android:theme"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -1188,6 +1189,8 @@
 
         <activity android:name=".activity.DeviceActivity"
             android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".activity.DeviceActivityGlu">
         </activity>
     </application>
 

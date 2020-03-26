@@ -1319,4 +1319,7 @@
 
     <string name="bind_phone">Bind Mobile Phone</string>
     <string name="bind_phone_success">Bind Success</string>
+
+    <string name="login_failed">Login failed</string>
+    <string name="login_cancelled">Login Cancelled</string>
 </resources>

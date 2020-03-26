@@ -107,6 +107,16 @@ public class SmsMob {
         SMSSDK.unregisterEventHandler(eventHandler);
     }
 
+    public static String  getTempCode(String country) {
+        if (country.trim().startsWith("+"))
+            country = country.trim().replace("+", "");
+        String tempCode = "4004692";
+        if (country.equals("86") || Locale.getDefault().getLanguage().startsWith("zh")) {
+            tempCode = "16492964";
+        }
+        return tempCode;
+    }
+
     private static void runInUIThread(Runnable action) {
         ((Activity) mContext).runOnUiThread(action);
     }

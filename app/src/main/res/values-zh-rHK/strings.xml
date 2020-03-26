@@ -1323,4 +1323,6 @@
 
     <string name="bind_phone">綁定手機號</string>
     <string name="bind_phone_success">綁定成功</string>
+
+    <string name="btn_health">健康</string>
 </resources>

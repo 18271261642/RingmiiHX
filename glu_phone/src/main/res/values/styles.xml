@@ -1,0 +1,60 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme_phone" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+
+        <!--<item name="windowNoTitle">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!--<item name="android:windowAnimationStyle">@style/activityAnimatStyle</item>-->
+    </style>
+
+    <style name="myHeadLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_48</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="myBodyLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!--&lt;!&ndash;弹窗动画&ndash;&gt;-->
+    <!--<style name="mystyle" parent="android:Animation">-->
+    <!--&lt;!&ndash;//进入时的动画&ndash;&gt;-->
+    <!--<item name="android:windowEnterAnimation">@anim/dialog_enter</item>-->
+    <!--&lt;!&ndash;&lt;!&ndash;//退出时的动画&ndash;&gt;&ndash;&gt;-->
+    <!--<item name="android:windowExitAnimation">@anim/dialog_exit</item>-->
+    <!--</style>-->
+
+
+    <style name="activityAnimatStyle" parent="@android:style/Animation.Activity">
+
+        <!-- 新Activity 进入 -->
+        <item name="android:activityOpenEnterAnimation">@animator/glu_v_activity_enter</item>
+        <!-- 旧Activity退出 -->
+        <item name="android:activityOpenExitAnimation">@animator/glu_v_activity_exit</item>
+        <!-- 新Activity退出 -->
+        <item name="android:activityCloseExitAnimation">@animator/glu_v_activity_pop_exit</item>
+        <!-- 旧Activity进入 -->
+        <item name="android:activityCloseEnterAnimation">@animator/glu_v_activity_pop_enter</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+</resources>

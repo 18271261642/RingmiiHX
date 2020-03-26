@@ -1361,4 +1361,7 @@
     <string name="bind_phone_success">绑定成功</string>
 
     <string name="phone_code_send_success">验证码发送成功</string>
+
+    <string name="login_failed">登录失败</string>
+    <string name="login_cancelled">登录取消了</string>
 </resources>

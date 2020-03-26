@@ -131,13 +131,13 @@ public class SixLead extends AppCompatActivity {
 //            file.delete();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            openFail("心电图文件打开失败");
+            openFail(getResources().getString(R.string.ecg_file_open_error));
             Log.e(TAG, "waveHandled: bytes: "+ "error111" + e.toString());
             return;
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "waveHandled: bytes: "+ "error222");
-            openFail("心电图解析失败");
+            openFail(getResources().getString(R.string.ecg_file_handle_error));
             return;
         }
 
@@ -150,7 +150,7 @@ public class SixLead extends AppCompatActivity {
 
         }catch (NegativeArraySizeException e){
             e.printStackTrace();
-            openFail("心电图解析失败");
+            openFail(getResources().getString(R.string.ecg_file_handle_error));
             return;
         }
 

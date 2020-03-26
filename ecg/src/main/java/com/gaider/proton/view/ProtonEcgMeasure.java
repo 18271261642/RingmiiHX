@@ -51,9 +51,12 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_ECG_HD));
-        ((TextView) view.findViewById(R.id.title)).setText("开始测量");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.operation_guide));
         TipTitleView tips = view.findViewById(R.id.tip_title);
-        tips.setTips("心电测量","输入参数","开始测量", "结果展示");
+        tips.setTips(getResources().getString(R.string.ecg_measurement),
+                getResources().getString(R.string.input_parameters),
+                getResources().getString(R.string.start_measuring),
+                getResources().getString(R.string.results_display));
         tips.toTip(2);
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,13 +115,13 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
     @Override
     public void onStartSearch() {
         if (llStart.getVisibility() != View.VISIBLE) {
-            showTipView("正在搜索设备..." , null);
+            showTipView(getResources().getString(R.string.searching) , null);
         }
     }
 
     @Override
     public void notFindDevice() {
-        showTipView("未发现设备" , "重新搜索").setOnClickListener(new View.OnClickListener() {
+        showTipView(getResources().getString(R.string.no_devices_found) , getResources().getString(R.string.search_again)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.start();
@@ -128,7 +131,7 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
 
     @Override
     public void onConnectFail() {
-        showTipView("连接失败" , "重新连接").setOnClickListener(new View.OnClickListener() {
+        showTipView(getResources().getString(R.string.connection_failed) , getResources().getString(R.string.reconnect)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.start();
@@ -188,7 +191,7 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
 
     @Override
     public void onAnalysisResult(AlgorithmResult algorithmResult) {
-        showDialog("正在保存数据");
+        showDialog(getResources().getString(R.string.saving_data));
         if (ecgView.isRunning()) {
             ecgView.stopDrawWave();
         }

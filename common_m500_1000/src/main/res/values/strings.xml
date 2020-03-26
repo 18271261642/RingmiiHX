@@ -1,4 +1,30 @@
 <resources>
     <string name="app_name">盖德M500</string>
     <string name="kaishiceliang">开始测量</string>
+
+    <string name="next">下一步</string>
+
+    <string name="end_measurement">结束测量</string>
+    <string name="remeasure">重新测量</string>
+    <string name="print_report">打印报告</string>
+
+    <string name="blood_sugar">血糖</string>
+    <string name="blood_flow">血流速度</string>
+    <string name="hemoglobin">血红蛋白</string>
+    <string name="blood_oxygen">血氧浓度</string>
+    <string name="glu_tips">提醒您保持良好的饮食习惯，保持规律运动，并定时测量血糖.</string>
+
+    <!--心电 心率 饮酒风险 精神压力 情绪变化 体脂率 -->
+
+    <string name="choose_device">选择测量设备</string>
+    <string name="choose_tips_pre">您共选择了</string>
+    <string name="choose_tips_tail">个设备进行下面的测量!</string>
+    <string name="no_network_tips">没有网络, 请打开网络!</string>
+
+    <string name="normal">正常</string>
+    <string name="abnormal">异常</string>
+
+    <string name="request_per">请求权限要打开，否则不能正常使用！</string>
+
+    <string name="measurement_results">测量结果</string>
 </resources>

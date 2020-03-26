@@ -50,9 +50,12 @@ public class ProtonEcgFirst extends ECGFragment implements KeyBoardActionListene
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_ECG_HD));
-        ((TextView) view.findViewById(R.id.title)).setText("操作指南");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.operation_guide));
         TipTitleView tips = view.findViewById(R.id.tip_view);
-        tips.setTips("心电测量", "输入参数", "开始测量", "结果展示");
+        tips.setTips(getResources().getString(R.string.ecg_measurement),
+                getResources().getString(R.string.input_parameters),
+                getResources().getString(R.string.start_measuring),
+                getResources().getString(R.string.results_display));
         tips.toTip(1);
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,19 +81,19 @@ public class ProtonEcgFirst extends ECGFragment implements KeyBoardActionListene
             return;
         }
         if (TextUtils.isEmpty(etAge.getText().toString())) {
-            Toast.makeText(_mActivity, "请输入年龄", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, getResources().getString(R.string.input_age), Toast.LENGTH_SHORT).show();
             return;
         } else if (TextUtils.isEmpty(etWidth.getText().toString())) {
-            Toast.makeText(_mActivity, "请输入体重", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, getResources().getString(R.string.input_weight), Toast.LENGTH_SHORT).show();
             return;
         } else if (TextUtils.isEmpty(etHeight.getText().toString())) {
-            Toast.makeText(_mActivity, "请输入身高", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, getResources().getString(R.string.input_height), Toast.LENGTH_SHORT).show();
             return;
         } else if (!man.isChecked() && !woman.isChecked()) {
-            Toast.makeText(_mActivity, "请选择性别", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, getResources().getString(R.string.choose_gender), Toast.LENGTH_SHORT).show();
             return;
         } else if (!smoke.isChecked() && !noSmoke.isChecked()) {
-            Toast.makeText(_mActivity, "请选择是否吸烟", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, getResources().getString(R.string.choose_smoking), Toast.LENGTH_SHORT).show();
             return;
         }
         UserManager.getInstance().setBirth(MyUtils.ageToDate(etAge.getText().toString(), UserManager.getInstance().getBirth()));

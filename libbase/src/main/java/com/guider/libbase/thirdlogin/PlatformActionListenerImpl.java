@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.guider.health.common.utils.JsonUtil;
+import com.guider.libbase.R;
 
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ public class PlatformActionListenerImpl implements PlatformActionListener {
             @Override
             public void run() {
                 throwable.printStackTrace();
-                Toast.makeText(mContext, "登陆失败" + i, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -40,7 +41,7 @@ public class PlatformActionListenerImpl implements PlatformActionListener {
         runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mContext, "登陆取消了", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.login_cancelled), Toast.LENGTH_SHORT).show();
             }
         });
     }

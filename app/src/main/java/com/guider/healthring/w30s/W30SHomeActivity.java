@@ -20,8 +20,14 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
+import com.guider.healthring.activity.DeviceActivity;
+import com.guider.healthring.activity.DeviceActivityGlu;
+import com.guider.healthring.b30.B30HomeActivity;
+import com.guider.healthring.b31.B31HomeActivity;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.utils.BlueAdapterUtils;
 import com.guider.healthring.siswatch.utils.PhoneStateListenerInterface;
@@ -32,6 +38,7 @@ import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.data.W30sNewsH9DataFragment;
 import com.guider.healthring.siswatch.run.W30sNewRunFragment;
+import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.w30s.fragment.W30SMineFragment;
 import com.guider.healthring.w30s.fragment.W30SRecordFragment;
 import com.guider.healthring.widget.NoScrollViewPager;
@@ -186,6 +193,11 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
         if (h18iFragmentList == null) return;
         FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentAdapter(getSupportFragmentManager(), h18iFragmentList);
         h18iViewPager.setAdapter(fragmentPagerAdapter);
+
+        // 设置文本
+        if (BuildConfig.HEALTH != 0)
+            h18iBottomBar.getTabAtPosition(2).setTitle(getResources().getString(R.string.btn_health));
+
         h18iBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
@@ -194,7 +206,22 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
                         h18iViewPager.setCurrentItem(0);
                         break;
                     case R.id.b30_tab_set:  //开跑
-                        h18iViewPager.setCurrentItem(2);
+                        switch (BuildConfig.HEALTH) {
+                            case 0 : // 运动
+                                h18iViewPager.setCurrentItem(2);
+                                break;
+                            case 1: // 横板健康
+                                long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                DeviceActivity.start(W30SHomeActivity.this, (int) accountId);
+                                break;
+                            case 2: // 竖版无创
+                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                DeviceActivityGlu.startGlu(W30SHomeActivity.this, (int) accountIdV);
+                                break;
+                            default:
+                                h18iViewPager.setCurrentItem(2);
+                                break;
+                        }
                         break;
                     case R.id.b30_tab_data:     //数据
                         h18iViewPager.setCurrentItem(1);

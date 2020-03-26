@@ -1,4 +1,26 @@
 <resources>
     <string name="app_name">ecg</string>
     <string name="shebeiceliang">设备测量</string>
+
+    <string name="ecg_file_open_error">心电图文件打开失败</string>
+    <string name="ecg_file_handle_error">心电图解析失败</string>
+
+    <string name="input_age">请输入年龄</string>
+    <string name="input_weight">请输入体重</string>
+    <string name="input_height">请输入身高</string>
+    <string name="choose_gender">请选择性别</string>
+    <string name="choose_smoking">请选择是否吸烟</string>
+
+    <string name="operation_guide">操作指南</string>
+    <string name="ecg_measurement">心电测量</string>
+    <string name="input_parameters">输入参数</string>
+    <string name="start_measuring">开始测量</string>
+    <string name="results_display">结果展示</string>
+
+    <string name="searching">正在搜索设备...</string>
+    <string name="no_devices_found">未发现设备</string>
+    <string name="search_again">重新搜索</string>
+    <string name="connection_failed">连接失败</string>
+    <string name="reconnect">重新连接</string>
+    <string name="saving_data">正在保存数据</string>
 </resources>

@@ -16,7 +16,7 @@
     <tab
         icon="@drawable/shuj_nor"
         id="@+id/b30_tab_set"
-        title="@string/running" />
+        title="@string/Running" />
 
     <!--icon="@drawable/wode_icon_sel"-->
     <tab

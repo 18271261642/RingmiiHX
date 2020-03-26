@@ -8,6 +8,7 @@ import com.guider.health.apilib.model.HasWechatId;
 import com.guider.health.apilib.model.HealthAdvice;
 import com.guider.health.apilib.model.IsFocusWechat;
 import com.guider.health.apilib.model.ParamThirdUserAccount;
+import com.guider.health.apilib.model.SimpleUserInfo;
 import com.guider.health.apilib.model.TokenInfo;
 import com.guider.health.apilib.model.UserInfo;
 import com.guider.health.apilib.model.WechatInfo;
@@ -158,7 +159,8 @@ public interface IGuiderApi {
      */
     @PUT("api/v1/usersimpleinfo")
     Call<String> simpUserInfo(@Body() UserInfo userInfo);
-
+    @PUT("api/v1/usersimpleinfo")
+    Call<SimpleUserInfo> editSimpUserInfo(@Body() SimpleUserInfo userInfo);
     /**
      * 获取用户信息
      *

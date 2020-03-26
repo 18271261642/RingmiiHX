@@ -326,7 +326,7 @@ public class MapRunImpl extends MapBaseImpl implements IMapRun, OnMapReadyCallba
             }
         } else {
             try {
-                throw new Exception("非法坐标值");
+                throw new Exception(mContext.getResources().getString(R.string.illegal_coordinate_value));
             } catch (Exception var33) {
                 var33.printStackTrace();
                 return 0.0F;

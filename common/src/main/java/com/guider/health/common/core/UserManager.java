@@ -69,6 +69,33 @@ public class UserManager {
     private String issue;
     private String beginData;
     private String endData;
+    private String cardId;
+    private String headUrl;
+    private String phone;
+
+    public String getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(String cardId) {
+        this.cardId = cardId;
+    }
+
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public Bitmap getBitmap() {
         return bitmap;

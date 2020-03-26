@@ -20,15 +20,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
+import com.guider.healthring.activity.DeviceActivity;
+import com.guider.healthring.activity.DeviceActivityGlu;
 import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.b30.b30homefragment.B30HomeFragment;
 import com.guider.healthring.b30.b30minefragment.B30MineFragment;
 import com.guider.healthring.b30.service.UpDataToGDServices;
 import com.guider.healthring.b30.service.UpDataToGDServicesNew;
 import com.guider.healthring.b30.service.UpHrvDataToGDServices;
+import com.guider.healthring.b31.B31HomeActivity;
 import com.guider.healthring.bleutil.MyCommandManager;
 // import com.guider.healthring.bzlmaps.sos.GPSGaoDeUtils;
 // import com.guider.healthring.bzlmaps.sos.GPSGoogleUtils;
@@ -129,6 +133,8 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
         //注册广播接收者的对象
         this.registerReceiver(sendSMSBroadCast, mIntentFilter);
 
+
+
 //        String isimei = (String) SharedPreferencesUtils.getParam(B30HomeActivity.this, "ISIMEI", "");
 //        if (WatchUtils.isEmpty(isimei)){
 //            String imei = SystemUtil.getIMEI(B30HomeActivity.this);
@@ -173,6 +179,11 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
             b30ViewPager.setAdapter(fragmentPagerAdapter);
             b30ViewPager.setOffscreenPageLimit(0);
         }
+
+        // 设置文本
+        if (BuildConfig.HEALTH != 0)
+            b30BottomBar.getTabAtPosition(2).setTitle(getResources().getString(R.string.btn_health));
+
         if (b30BottomBar != null) b30BottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
@@ -185,7 +196,22 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
                         b30ViewPager.setCurrentItem(1, false);
                         break;
                     case R.id.b30_tab_set:  //开跑
-                        b30ViewPager.setCurrentItem(2, false);
+                        switch (BuildConfig.HEALTH) {
+                            case 0 : // 运动
+                                b30ViewPager.setCurrentItem(2, false);
+                                break;
+                            case 1: // 横板健康
+                                long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                DeviceActivity.start(B30HomeActivity.this, (int) accountId);
+                                break;
+                            case 2: // 竖版无创
+                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                DeviceActivityGlu.startGlu(B30HomeActivity.this, (int) accountIdV);
+                                break;
+                            default:
+                                b30ViewPager.setCurrentItem(2, false);
+                                break;
+                        }
                         break;
                     case R.id.b30_tab_my:   //我的
                         b30ViewPager.setCurrentItem(3, false);

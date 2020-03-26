@@ -24,6 +24,7 @@ import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
+import com.guider.libbase.sms.SmsMob;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
@@ -146,7 +147,8 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
         // 注册一个事件回调，用于处理SMSSDK接口请求的结果
         SMSSDK.registerEventHandler(eventHandler);
         // 请求验证码，其中country表示国家代码，如“86”；phone表示手机号码，如“13800138000”
-        SMSSDK.getVerificationCode(StringUtils.substringAfter(areaCode,"+").trim(), phoeCode);
+        // SMSSDK.getVerificationCode(StringUtils.substringAfter(areaCode,"+").trim(), phoeCode);
+        SMSSDK.getVerificationCode(areaCode, phoeCode, SmsMob.getTempCode(areaCode), null);
         if (countTimeUtils == null)
             countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
         countTimeUtils.start();

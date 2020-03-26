@@ -7,7 +7,7 @@
 
     <Button
         android:id="@+id/next"
-        android:text="下一步"
+        android:text="@string/next"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_19"
         android:layout_alignParentBottom="true"

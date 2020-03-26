@@ -3,23 +3,32 @@ package com.guider.healthring.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import com.guider.glu_phone.view.AttentionInfo;
 import com.guider.health.ChooseDeviceFragment;
+import com.guider.health.apilib.ApiUtil;
 import com.guider.health.bluetooth.core.BleBluetooth;
 import com.guider.health.common.core.BaseActivity;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.UserManager;
+import com.guider.health.common.device.DeviceInit;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.R;
 
 public class DeviceActivity extends BaseActivity {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device);
 
-        BleBluetooth.getInstance().init(this);
-        loadRootFragment(R.id.main_content, new ChooseDeviceFragment());
+            setContentView(R.layout.activity_device);
+
+            BleBluetooth.getInstance().init(this);
+
+            MyUtils.setMacAddress(BuildConfig.MAC);
+            ChooseDeviceFragment cdf = new ChooseDeviceFragment();
+            loadRootFragment(R.id.main_content, cdf);
+
     }
 
 
