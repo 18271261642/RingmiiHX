@@ -50,4 +50,5 @@
     <string name="op_error">操作失敗</string>
 
     <string name="invalid_param">非法參數</string>
+    <string name="tips_setting">請先點擊右上角設置身高/體重參數</string>
 </resources>

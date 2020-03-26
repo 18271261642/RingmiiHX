@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.guider.glu_phone.R;
 import com.guider.glu_phone.net.NetRequest;
 import com.guider.health.common.core.MyUtils;
+import com.guider.health.common.core.UserManager;
+import com.guider.health.common.utils.ToastUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -55,6 +57,12 @@ public class AttentionInfo extends GlocoseFragment{
                 if (code == 0){
                     // 成功
                     mGluSetFragment.setFlagInfo(true);
+
+                    // 身高体重非法直接跳转到
+                    if (UserManager.getInstance().getHeight() <= 0 ||
+                        UserManager.getInstance().getWeight() <= 0) {
+                        start(mGluSetFragment);
+                    }
                 }
             }
         });
@@ -75,8 +83,12 @@ public class AttentionInfo extends GlocoseFragment{
         view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if(!MyUtils.isNormalClickTime()){
+                    return;
+                }
+                if (UserManager.getInstance().getHeight() <= 0 ||
+                        UserManager.getInstance().getWeight() <= 0) {
+                    ToastUtil.showLong(_mActivity, getResources().getString(R.string.tips_setting));
                     return;
                 }
                 start(new ChooseTime());

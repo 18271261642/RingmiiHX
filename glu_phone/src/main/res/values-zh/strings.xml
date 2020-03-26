@@ -49,4 +49,5 @@
     <string name="op_success">操作成功</string>
     <string name="op_error">操作失败</string>
     <string name="invalid_param">非法参数</string>
+    <string name="tips_setting">请先点击右上角设置身高/体重参数</string>
 </resources>

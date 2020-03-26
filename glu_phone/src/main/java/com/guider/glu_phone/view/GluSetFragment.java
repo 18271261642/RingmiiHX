@@ -41,6 +41,10 @@ public class GluSetFragment extends GlocoseFragment {
         mFlagInfo = flag;
     }
 
+    public boolean getFlagInfo() {
+        return mFlagInfo;
+    }
+
     public void setFlagSetting(boolean flag) {
         mFlagSetting = flag;
     }
