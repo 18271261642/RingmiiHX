@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,7 +37,9 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.guider.health.apilib.enums.Gender;
 import com.guider.health.common.utils.JsonUtil;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
+import com.guider.healthring.CustomMade;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.bean.BlueUser;
@@ -153,6 +156,13 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        // 定制logo
+        int id = CustomMade.getSmallLogo();
+        if (id > 0) {
+            ImageView ivLogo = findViewById(R.id.logo_img);
+            ivLogo.setImageResource(id);
+        }
 
         iwxapi = WXAPIFactory.createWXAPI(this, Commont.WX_APP_SECRET, true);
         iwxapi.registerApp(Commont.WX_APP_ID);

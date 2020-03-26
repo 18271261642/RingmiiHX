@@ -25,6 +25,10 @@ public class Commont {
      * 判断B31是否带有血压功能
      */
     public static final String IS_B31_HAS_BP_KEY = "is_b31_bp";
+
+    //设备支持的主题风格数量key
+    public static final String SP_DEVICE_STYLE_COUNT = "sp_device_style_count";
+
     public static final boolean isDebug = true;//日志
     public static boolean DevicesSport = false;
     public static int COUNTNUMBER = 4;

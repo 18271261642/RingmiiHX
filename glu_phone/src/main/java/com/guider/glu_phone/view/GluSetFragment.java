@@ -21,6 +21,7 @@ import com.guider.glu_phone.R;
 import com.guider.glu_phone.net.NetRequest;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.UserManager;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.health.common.utils.ToastUtil;
 
 import java.lang.ref.WeakReference;
@@ -153,13 +154,36 @@ public class GluSetFragment extends GlocoseFragment {
 
     private void updateData() {
         // 身高 体重
-        UserManager.getInstance().setHeight(Integer.valueOf(etHeight.getText().toString()));
-        UserManager.getInstance().setWeight(Integer.valueOf(etWeight.getText().toString()));
+        String strHeight = etHeight.getText().toString();
+        String strWeight = etWeight.getText().toString();
+        if (StringUtil.isEmpty(strHeight) || StringUtil.isEmpty(strWeight)) {
+            showInvalidParam();
+            return;
+        }
+        int height = Integer.valueOf(strHeight);
+        int weight = Integer.valueOf(strWeight);
+        if (height <= 0 || weight <= 0) {
+            showInvalidParam();
+            return;
+        }
+        UserManager.getInstance().setHeight(height);
+        UserManager.getInstance().setWeight(weight);
         // 无创参数
         boolean normal = rbNormal.isChecked() ? true : false;
         BodyIndex.getInstance().setDiabetesType(normal ? BodyIndex.Normal : BodyIndex.Abnormal);
-        if (!normal)
+        if (!normal) {
+            String strValue = etGlu.getText().toString();
+            if (StringUtil.isEmpty(strValue)) {
+                showInvalidParam();
+                return;
+            }
+            int value = Integer.valueOf(strValue);
+            if (value <= 0) {
+                showInvalidParam();
+                return;
+            }
             BodyIndex.getInstance().setValue(Float.valueOf(etGlu.getText().toString()));
+        }
 
         setAll();
     }
@@ -228,5 +252,9 @@ public class GluSetFragment extends GlocoseFragment {
 
     private void fail() {
         ToastUtil.showLong(_mActivity, getResources().getString(R.string.op_error));
+    }
+
+    private void showInvalidParam() {
+        ToastUtil.showLong(_mActivity, getResources().getString(R.string.invalid_param));
     }
 }

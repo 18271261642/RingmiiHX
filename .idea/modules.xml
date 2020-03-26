@@ -21,6 +21,20 @@
       <module fileurl="file://$PROJECT_DIR$/wheelpicker/GuiderBand-wheelpicker.iml" filepath="$PROJECT_DIR$/wheelpicker/GuiderBand-wheelpicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/RingmiiHX.iml" filepath="$PROJECT_DIR$/RingmiiHX.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apilib/RingmiiHX-apilib.iml" filepath="$PROJECT_DIR$/apilib/RingmiiHX-apilib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arouter-annotation/RingmiiHX-arouter-annotation.iml" filepath="$PROJECT_DIR$/arouter-annotation/RingmiiHX-arouter-annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arouter-compiler/RingmiiHX-arouter-compiler.iml" filepath="$PROJECT_DIR$/arouter-compiler/RingmiiHX-arouter-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arouter-core/RingmiiHX-arouter-core.iml" filepath="$PROJECT_DIR$/arouter-core/RingmiiHX-arouter-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bluetooth/RingmiiHX-bluetooth.iml" filepath="$PROJECT_DIR$/bluetooth/RingmiiHX-bluetooth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bpm1000/RingmiiHX-bpm1000.iml" filepath="$PROJECT_DIR$/bpm1000/RingmiiHX-bpm1000.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/RingmiiHX-common.iml" filepath="$PROJECT_DIR$/common/RingmiiHX-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common_m500_1000/RingmiiHX-common_m500_1000.iml" filepath="$PROJECT_DIR$/common_m500_1000/RingmiiHX-common_m500_1000.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ecg/RingmiiHX-ecg.iml" filepath="$PROJECT_DIR$/ecg/RingmiiHX-ecg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fragmentation_core/RingmiiHX-fragmentation_core.iml" filepath="$PROJECT_DIR$/fragmentation_core/RingmiiHX-fragmentation_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/old/RingmiiHX-old.iml" filepath="$PROJECT_DIR$/old/RingmiiHX-old.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rtc/RingmiiHX-rtc.iml" filepath="$PROJECT_DIR$/rtc/RingmiiHX-rtc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simpleble/RingmiiHX-simpleble.iml" filepath="$PROJECT_DIR$/simpleble/RingmiiHX-simpleble.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tckeyboard/RingmiiHX-tckeyboard.iml" filepath="$PROJECT_DIR$/tckeyboard/RingmiiHX-tckeyboard.iml" />
       <module fileurl="file://$PROJECT_DIR$/apilib/apilib.iml" filepath="$PROJECT_DIR$/apilib/apilib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/arouter-annotation/arouter-annotation.iml" filepath="$PROJECT_DIR$/arouter-annotation/arouter-annotation.iml" />

@@ -97,7 +97,7 @@ public class NewConnBleHelpService {
 
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler(){
+    private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -183,6 +183,13 @@ public class NewConnBleHelpService {
         }, new IDeviceFuctionDataListener() {   //设置支持的功能
             @Override
             public void onFunctionSupportDataChange(FunctionDeviceSupportData functionDeviceSupportData) {
+
+                //B31带血压功能的标识
+                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+
+                //设置支持的主题风格
+                int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
+                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
 //                Log.e(TAG, "--111---functionDeviceSupportData--=" + functionDeviceSupportData.toString());
 //                Log.e(TAG, "-----contactMsgLength=" + functionDeviceSupportData.getContactMsgLength() + "--all=" + functionDeviceSupportData.getAllMsgLength());
             }
@@ -334,6 +341,12 @@ public class NewConnBleHelpService {
         }, new IDeviceFuctionDataListener() {
             @Override
             public void onFunctionSupportDataChange(FunctionDeviceSupportData functionDeviceSupportData) {
+                //B31带血压功能的标识
+                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+
+                //设置支持的主题风格
+                int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
+                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
 //                Log.e(TAG, "-----functionDeviceSupportData--=" + functionDeviceSupportData.toString());
 //                Log.e(TAG, "-----contactMsgLength=" + functionDeviceSupportData.getContactMsgLength() + "--all=" + functionDeviceSupportData.getAllMsgLength());
             }
