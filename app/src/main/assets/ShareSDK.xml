@@ -49,4 +49,5 @@
 <Wework Enable="false" />
 <HWAccount Enable="false" />
 <Oasis Enable="false" />
+<XMAccount Enable="false" />
 </DevInfor>
