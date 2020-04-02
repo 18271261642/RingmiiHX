@@ -169,15 +169,17 @@
             android:name="com.guider.healthring.activity.LaunchActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.WxScanActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
 <!--        <action android:name="android.intent.action.SEND" />-->
 <!--        <action android:name="android.intent.action.SENDTO" />-->

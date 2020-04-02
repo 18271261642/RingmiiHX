@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
     <LinearLayout
         style="@style/myBodyLayout"
@@ -24,13 +24,13 @@
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_13"
                 android:layout_gravity="center_vertical"
-                android:background="@mipmap/m500" />
+                android:background="@mipmap/logon_guider" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="六导心电"
+                android:text="@string/ecg"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作指南"
+                android:text="@string/op_guide"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/testing"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
+                android:text="@string/device_test"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_16" />
 
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/test_result"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
@@ -113,7 +113,7 @@
             android:layout_marginTop="@dimen/dp_20"
             android:textSize="@dimen/dp_15"
             android:textColor="#ACACAC"
-            android:text="询问是否分析心电图"
+            android:text="@string/analyzing_ecg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:text="稍后"
+                android:text="@string/later"
                 android:textSize="@dimen/sp_19"
                 android:id="@+id/analysis_cancel"
                 android:background="@drawable/button_cancel"
@@ -132,7 +132,7 @@
                 android:layout_height="@dimen/dp_44" />
 
             <Button
-                android:text="好"
+                android:text="@string/ok"
                 android:textSize="@dimen/sp_19"
                 android:layout_marginLeft="@dimen/dp_27"
                 android:id="@+id/analysis_go"

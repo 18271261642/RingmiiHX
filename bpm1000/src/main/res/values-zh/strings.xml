@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name" translatable="false">bp</string>
+    <string name="lianjieshibai">連接失敗</string>
+    <string name="celiangzhong">正在測量中\n請稍後...</string>
+    <string name="xueyashuoming">參考範圍:  普通人群: 收縮壓: 120（mmHg），舒張壓: 80（mmHg)\n                    慢病、老年人群: 收縮壓:  140（mmHg），舒張壓 &lt; 90（mmHg) </string>
+    <string name="lianjieshibai_chongxin">連接失敗 重新連接</string>
+    <string name="celiangcaozuo">測量操作</string>
+    <string name="celiangjieguo">測量結果</string>
+    <string name="measurement_results">測量結果 : </string>
+    <string name="_1_5_n2_n3">1. 測量前靜坐5分鐘，袖帶中心與心臟保持同壹高度。 \n2. 按下【開關】按鈕開始測量。 \n3. 測量中請不要說話和移動身體。</string>
+    <string name="querenkaiji">確認已開機 下壹步</string>
+    <string name="xiayibu">下壹步</string>
+    <string name="zhengchang">正常</string>
+    <string name="yichang">異常</string>
+    <string name="_1_n2_2_3cm_n3">1、連接設備，露臂、手掌向上、肘部伸直，套袖帶 \n2、袖帶氣管指向下手臂，袖帶下緣距肘窩2-3cm \n3、袖帶膠管放在肱動脈搏動點</string>
+    <string name="xueya">血壓</string>
+    <string name="quxiao">取消</string>
+    <string name="shebeiceliang">設備測量</string>
+    <string name="caozuotixing">操作提醒</string>
+
+    <string name="operation_guide">操作指南：</string>
+    <string name="operation_guide_e">操作指南：</string>
+    <string name="waiting_for_measurement">等待測量...\n\n測量完成後即可獲取結果.</string>
+    <string name="reconnect">已經解決 重新連接</string>
+
+    <string name="normal">正常</string>
+    <string name="abnormal">異常</string>
+
+    <string name="next">下壹步</string>
+
+    <string name="central_arterial_stiffness_index">中心動脈硬度指標</string>
+    <string name="upper_arm_arteriosclerosis_index">上臂動脈硬化指標</string>
+
+    <string name="bp_ave_reminder_first_1">1.將手臂伸入臂筒內，\n手臂肘部放在凹陷處。</string>
+    <string name="bp_ave_reminder_first_2">2.保持正確坐姿，\n按[開始/停止]按鈕，\n開始測量血壓。</string>
+
+    <string name="arm_cylinder_sphygmomanometer">臂筒血壓計式</string>
+
+    <string name="dbp_e">低壓</string>
+    <string name="sbp_e">高壓</string>
+</resources>

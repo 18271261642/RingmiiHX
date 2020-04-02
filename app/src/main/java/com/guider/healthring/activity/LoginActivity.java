@@ -58,6 +58,7 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
 import com.guider.healthring.util.VerifyUtil;
+import com.guider.healthring.util.WxScanUtil;
 import com.guider.healthring.view.PrivacyActivity;
 import com.guider.healthring.view.PromptDialog;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
@@ -461,6 +462,21 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                             JSONObject dataJsonObject = jsonObject.getJSONObject("data");
                             long accountId = dataJsonObject.getLong("accountId");
                             SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
+
+                            WxScanUtil.handle(LoginActivity.this, accountId, new WxScanUtil.IWxScan() {
+                                @Override
+                                public void onError() {
+                                    startActivity(NewSearchActivity.class);
+                                    finish();
+                                }
+                                @Override
+                                public void onOk() {
+                                    Intent intent = new Intent(LoginActivity.this, WxScanActivity.class);
+                                    intent.putExtra("accountId", accountId);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
                         }
 
                     }catch (Exception e){
@@ -653,8 +669,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                     SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
                     SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
 
-                    startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                    finish();
+                    // startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
+                    // finish();
                 }
 
             }else{

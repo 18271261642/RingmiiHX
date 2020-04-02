@@ -64,7 +64,7 @@ public class NetRequest {
     public void getUserInfo(WeakReference<Activity> activity, final NetCallBack callBack) {
         if (activity.get() != null) {
             if (!NetStateController.isNetworkConnected(activity.get())) {
-                Toast.makeText(activity.get(), "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity.get(), activity.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -108,7 +108,7 @@ public class NetRequest {
     public void eidtSimpleUserInfo(WeakReference<Activity> activity, final NetCallBack callBack) {
         if (activity.get() != null) {
             if (!NetStateController.isNetworkConnected(activity.get())) {
-                Toast.makeText(activity.get(), "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity.get(), activity.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -178,7 +178,7 @@ public class NetRequest {
         if (activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
 
-                Toast.makeText(activityWeakReference.get(), "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -213,7 +213,7 @@ public class NetRequest {
         if (activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
 
-                Toast.makeText(activityWeakReference.get(), "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -263,6 +263,7 @@ public class NetRequest {
         dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
         dialog.setContentView(com.guider.health.common.R.layout.common_dialog);
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         baseTextview = dialog.findViewById(com.guider.health.common.R.id.loading);
         TextView tvMsg = dialog.findViewById(com.guider.health.common.R.id.msg);
         if (msg == null) {

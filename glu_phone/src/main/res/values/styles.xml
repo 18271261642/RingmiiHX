@@ -13,19 +13,6 @@
         <!--<item name="android:windowAnimationStyle">@style/activityAnimatStyle</item>-->
     </style>
 
-    <style name="myHeadLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp_48</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@android:color/white</item>
-    </style>
-
-    <style name="myBodyLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
     <!--&lt;!&ndash;弹窗动画&ndash;&gt;-->
     <!--<style name="mystyle" parent="android:Animation">-->
     <!--&lt;!&ndash;//进入时的动画&ndash;&gt;-->

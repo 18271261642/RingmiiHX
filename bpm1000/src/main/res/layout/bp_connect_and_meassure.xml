@@ -6,7 +6,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
 
     <LinearLayout
@@ -17,15 +17,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_13"
                 android:layout_gravity="center_vertical"
-                android:background="@mipmap/m500" />
+                android:background="@mipmap/logon_guider" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -105,11 +103,11 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_58"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -118,12 +116,10 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-
                 <TextView
                     android:id="@+id/bp_reminder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_45"
                     android:gravity="center"
                     android:text="@string/celiangzhong"
                     android:textColor="#7D7D7D"
@@ -145,7 +141,7 @@
                     android:id="@+id/bp_re"
                     android:layout_width="@dimen/dp_229"
                     android:layout_height="@dimen/dp_44"
-                    android:layout_marginTop="@dimen/dp_30"
+                    android:layout_marginTop="@dimen/dp_20"
                     android:background="@drawable/button_cancel"
                     android:text="@string/lianjieshibai_chongxin"
                     android:textColor="#ffffff"
@@ -159,7 +155,7 @@
                 android:id="@+id/operat_reminders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_20"
                 android:text="@string/xueyashuoming"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />

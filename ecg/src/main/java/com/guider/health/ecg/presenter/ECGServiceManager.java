@@ -15,6 +15,8 @@ import com.guider.health.bluetooth.core.BleBluetooth;
 import com.guider.health.bluetooth.core.Bluetooth;
 import com.guider.health.bluetooth.core.ClientThread;
 import com.guider.health.common.core.HearRate;
+import com.guider.health.common.core.MyUtils;
+import com.guider.health.ecg.R;
 import com.guider.health.ecg.model.ECGTrueModel;
 import com.guider.health.ecg.view.ECGViewInterface;
 import com.tencent.bugly.crashreport.BuglyLog;
@@ -39,9 +41,7 @@ import tw.com.jchang.geniiecgbt.decompNDK;
  */
 
 public class ECGServiceManager {
-
-
-    Handler truehandler = new Handler() {
+    private Handler truehandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             int status = msg.arg1;
@@ -59,9 +59,7 @@ public class ECGServiceManager {
                     }
                     break;
                 case 3:
-
                     break;
-
                 case 4:
                     // 电量检查通过
                     startMeasure();
@@ -75,7 +73,6 @@ public class ECGServiceManager {
                     break;
                 case 101:
                     //波形
-
                     if (measureViewDataWeakReference.get() != null) {
                         measureViewDataWeakReference.get().measureWare((int) msg.obj);
                     }
@@ -87,8 +84,6 @@ public class ECGServiceManager {
                         measureViewDataWeakReference.get().measureTime((int) msg.obj);
                     }
                     break;
-
-
                 case 10001:
                     //拉取数据时间
                     if (measureViewDataWeakReference.get() != null) {
@@ -105,19 +100,14 @@ public class ECGServiceManager {
                     //拉取数据结束
                     if (measureViewDataWeakReference.get() != null) {
                         measureViewDataWeakReference.get().onAnalysisEnd();
-
                         saveFile();
                         startGetToken();
                     }
                     break;
-
-
                 case 2222:
-
                     //超时
                     if (measureViewDataWeakReference.get() != null) {
                         measureViewDataWeakReference.get().measureTimeOut("连接超时" , true);
-
                     }
                     break;
             }
@@ -157,10 +147,8 @@ public class ECGServiceManager {
     private InputStream inputStream;
     public void toSocketConnect(final BluetoothDevice btDevice) {
         ClientThread.toSocketConnectDevice(btDevice, new ClientThread.SocketConnectListener() {
-
             @Override
             public void connectsuccess(BluetoothSocket socket, final BluetoothDevice device, OutputStream out, InputStream in) {
-
                 outputStream = out;
                 inputStream = in;
                 bluetoothSocket = socket;
@@ -170,7 +158,6 @@ public class ECGServiceManager {
 
             @Override
             public void connectfaile(BluetoothDevice device) {
-
                 if (measureViewDataWeakReference.get() != null) {
                     handler.post(new Runnable() {
                         @Override
@@ -178,7 +165,6 @@ public class ECGServiceManager {
                             measureViewDataWeakReference.get().connectFaile(1);
                         }
                     });
-
                 }
             }
         });
@@ -206,7 +192,6 @@ public class ECGServiceManager {
 
 
     public void startResultAnalysis() {
-
         ECGTrueModel.read_upload(truehandler);
     }
 
@@ -218,13 +203,12 @@ public class ECGServiceManager {
                 String path = Environment.getExternalStorageDirectory().getAbsolutePath()
                         + File.separator+"ECG"+File.separator;
                 ecpEcgFile(path , ECGTrueModel.file_data);
-                new decompNDK().decpEcgFile(path + "temp.lp4");
+                // new decompNDK().decpEcgFile(path + "temp.lp4");
             }
         }).start();
     }
 
     public void startGetToken() {
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -261,41 +245,51 @@ public class ECGServiceManager {
 
                                 }
                             } else {
-                                String msg = "心电异常 , 请重新测量";
+                                String msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.ecg_abnormal); // "心电异常 , 请重新测量";
                                 BuglyLog.e("EcgStatusCode" , TextUtils.isEmpty(statusCode)?"Null--Status" : statusCode);
                                 if (statusCode == null) {
 
                                 } else {
                                     switch (statusCode) {
                                         case "03":
-                                            msg = "输入资料验证失败";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.info_error);
+                                            // msg = "输入资料验证失败";
                                             break;
                                         case "04":
-                                            msg = "讯号不佳，请重新测量";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.poor_singal);
+                                            // msg = "讯号不佳，请重新测量";
                                             break;
                                         case "05":
-                                            msg = "Token 过期(身分验证失败)";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.token_expired);
+                                            // msg = "Token 过期(身分验证失败)";
                                             break;
                                         case "06":
-                                            msg = "其他错误";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.other_error);
+                                            // msg = "其他错误";
                                             break;
                                         case "29":
-                                            msg = "讯号不佳，请重新测量";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.poor_singal);
+                                            // msg = "讯号不佳，请重新测量";
                                             break;
                                         case "34":
-                                            msg = "副档名不为 Lp4";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.ecg_abnormal);
+                                            // msg = "副档名不为 Lp4";
                                             break;
                                         case "35":
-                                            msg = "讯号不佳，请重新测量";
+                                            // msg = "讯号不佳，请重新测量";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.poor_singal);
                                             break;
                                         case "36":
-                                            msg = "讯号不佳，请重新测量";
+                                            // msg = "讯号不佳，请重新测量";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.poor_singal);
                                             break;
                                         case "37":
-                                            msg = "讯号不佳，请重新测量";
+                                            // msg = "讯号不佳，请重新测量";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.poor_singal);
                                             break;
                                         case "38":
-                                            msg = "讯号不佳，请重新测量";
+                                            // msg = "讯号不佳，请重新测量";
+                                            msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.poor_singal);
                                             break;
                                     }
                                 }
@@ -315,7 +309,7 @@ public class ECGServiceManager {
                     });
                 } else {
                     if (measureViewDataWeakReference.get() != null) {
-                        measureViewDataWeakReference.get().measureTimeOut("Token获取失败" , false);
+                        measureViewDataWeakReference.get().measureTimeOut(measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.token_get_error) , false);
                     }
                 }
             }
@@ -324,20 +318,13 @@ public class ECGServiceManager {
     }
 
     private void ecpEcgFile(String path, ArrayList<Byte> datalist) {
-
         byte[] array = new byte[datalist.size()];
         for (int i = 0; i < array.length; i++) {
             array[i] = (byte) datalist.get(i);
-
-
         }
 
         try {
-
-
-
             File file = new File(path + "temp.lp4");
-
             File floder_file = new File(path);
 
             if (!floder_file.exists()) {
@@ -349,95 +336,38 @@ public class ECGServiceManager {
             }
 
 
-
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(array);
             fos.close();
 
             Log.d("tag","writeToFile  success");
-
         } catch (Exception e) {
             Log.d("tag", "sssddd = " + e.getMessage());
         }
     }
 
     public void startDeviceMessure() {
-
         ECGTrueModel.wave30(truehandler);
     }
 
-
     public void startScanBlueToothDevice(boolean isClearBluetooth) {
-
         toScanDevice(isClearBluetooth);
-
     }
 
-
-
-
     private void toScanDevice(boolean isClearBluetooth) {
-
-
         mDevice = null;
 
         setListner();
         connect(isClearBluetooth);
-
-//        executor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                BleBluetooth.getInstance().scanBle(1500, new BleBluetooth.ScanCallback() {
-//
-//                    @Override
-//                    public void scanBle(BluetoothDevice device, int rssi, byte[] scanRecord) {
-//                        //Log.i("haix", "扫描到设备: " + device.getName() + " 地址: " + device.getAddress());
-//                        if ("CmateH".equals(device.getName())) {
-//
-//                            HearRate.getInstance().setDeviceAddress(device.getAddress());
-//
-//                            Log.i("haix", "匹配到设备: " + device.getName());
-//
-//                            toPair();
-//
-//
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void scanBleStop() {
-//                        Log.i("haix", "scanFinish: " + mDevice);
-//                        if (mDevice == null) {
-//                            if (measureViewDataWeakReference.get() != null) {
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        measureViewDataWeakReference.get().scanFailed();
-//                                    }
-//                                });
-//
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
     }
 
     private void toPair() {
-
-
         setListner();
         BleBluetooth.getInstance().nowStopScan();
-
-        //connect();
-
     }
 
     public void stopDeviceConnect() {
-
         Bluetooth.getInstance().cancelDiscovery();
-
         ECGTrueModel.stopMeasure();
 
         try {
@@ -469,23 +399,18 @@ public class ECGServiceManager {
             List<BluetoothDevice> deviceLists = new ArrayList();
             Bluetooth.getInstance().getBondDevices(deviceLists);
             for (BluetoothDevice device : deviceLists) {
-
                 if ("CmateH".equals(device.getName())) {
-
                     mDevice = device;
-                    HearRate.getInstance().setDeviceAddress(mDevice.getAddress());
+                    HearRate.getInstance().setDeviceAddress(MyUtils.getMacAddress());
                 }
             }
-
         }
 
         if (mDevice == null) {
             if (measureViewDataWeakReference.get() != null) {
                 Bluetooth.getInstance().searchBluetoothDevices(measureViewDataWeakReference.get().getViewContext());
             }
-
         } else {
-
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -496,38 +421,25 @@ public class ECGServiceManager {
     }
 
     private void setListner() {
-
         Bluetooth.getInstance().setMakePairBlueToothListener(new Bluetooth.MakePairBlueToothListener() {
-
             @Override
             public void foundDevice(BluetoothDevice btDevice) {
-
                 Log.i("haix", "扫描到设备: " + btDevice.getName() + " 地址: " + btDevice.getAddress());
                 if ("CmateH".equals(btDevice.getName())) {
-
                     Log.i("haix", "匹配成功------------------");
-
                     if (mDevice == null) {
                         mDevice = btDevice;
                         //toConnect(mDevice);
-
-                        HearRate.getInstance().setDeviceAddress(mDevice.getAddress());
-
+                        HearRate.getInstance().setDeviceAddress(MyUtils.getMacAddress());
                         executor.execute(new Runnable() {
                             @Override
                             public void run() {
-
                                 toSocketConnect(mDevice);
                             }
                         });
-
                     }
-
-
                 }
-
             }
-
             @Override
             public void pairing(BluetoothDevice btDevice) {
 
@@ -540,7 +452,6 @@ public class ECGServiceManager {
 
             @Override
             public void scanFinish(final BluetoothDevice btDevice) {
-
                 if (mDevice == null) {
                     if (measureViewDataWeakReference.get() != null) {
                         handler.post(new Runnable() {
@@ -549,13 +460,9 @@ public class ECGServiceManager {
                                 measureViewDataWeakReference.get().scanFailed();
                             }
                         });
-
                     }
                 }
-
             }
         });
     }
-
-
 }

@@ -517,7 +517,7 @@ public class ECGTrueModel{
                     ArrayList<Byte> updelist = new ArrayList<Byte>();
 
                     for (int i = 0; i < list_count; i++) {
-                        updelist.add(Byte.valueOf(i + ""));
+                        updelist.add((byte)(i & 0xFF));
                     }
 
 
@@ -540,87 +540,54 @@ public class ECGTrueModel{
 
     public static void readbattery(final android.os.Handler handlerxx)
     {
-
         mhandler = handlerxx;
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                while(!ischecklifefinish)
-                {
+                while(!ischecklifefinish) {
                     SystemClock.sleep(20);
                 }
 
-                while(true)
-                {
-                    byte[] ret = send_BTCommand(new byte[]{(byte) 0xaa, 0x10, 0x01, 0x01, 0x00, 0x00, 0x00});
+                while(true) {
+                    byte [] ret = send_BTCommand(new byte[]{(byte) 0xaa, 0x10, 0x01, 0x01, 0x00, 0x00, 0x00});
 
-//                            if(ret[1] == 0x10)
-
-                    if(ret.length == 1)
-                    {
+                    if(ret.length == 1) {
                         Log.d("eeeecgpp","停止---成功");
                         break;
-                    }
-                    else  if(ret[1] == 0x10)
-                    {
+                    } else if(ret[1] == 0x10) {
                         Log.d("eeeecgpp","停止---失敗");
                         break;
                     }
-
                 }
-
 
                 int value = -1;
-
                 byte[] getbyte = send_BTCommand(new byte[]{(byte) 0xaa, 0x03, 0, 0, 0, 0, 0x00});
 
-                if (getbyte.length == 1)
-                {
+                if (getbyte.length == 1) {
                     Log.d("eeeecgpp", "錯誤");
-                }
-                else
-                {
+                } else {
                     value = byteArrayToInt(new byte[]{getbyte[3],getbyte[2]});
-
                     Log.d("eeeecgpp","batteryPower = "+ value);
 
-
-
-
-                    if(value >= 1990)
-                    {
+                    if(value >= 1990) {
                         Log.d("eeeecgpp","battery100");
                         value = 100;
-                    }
-                    else if(value >= 1955 && value < 1990)
-                    {
+                    } else if(value >= 1955 && value < 1990) {
                         Log.d("eeeecgpp","battery75");
                         value = 75;
-                    }
-                    else if(value >= 1920 && value < 1955)
-                    {
+                    } else if(value >= 1920 && value < 1955) {
                         Log.d("eeeecgpp","battery50");
                         value = 50;
-                    }
-                    else if(value >= 1880 && value < 1920)
-                    {
+                    } else if(value >= 1880 && value < 1920) {
                         Log.d("eeeecgpp","battery25");
                         value = 25;
-                    }
-                    else
-                    {
+                    } else {
                         Log.d("eeeecgpp","battery0");
                         value = 0;
                     }
-
                 }
 
-
-
                 Message msg = new Message();
-
                 if (value <= 25) {
                     msg.arg1 = 5;
                 } else {
@@ -628,9 +595,7 @@ public class ECGTrueModel{
                 }
 
                 msg.obj = value;
-
                 handlerxx.sendMessage(msg);
-
             }
         }).start();
     }
@@ -648,9 +613,7 @@ public class ECGTrueModel{
                 ret = false;
                 break;
             }
-
             index++;
-
             final int finalIndex = index;
         }
 
@@ -662,36 +625,12 @@ public class ECGTrueModel{
 
 
     public static byte[] send_BTCommand(final byte[] commandByte) {
-
-//        mBluetoothAdapter.stopLeScan(mLeScanCallback);
-//        mBluetoothAdapter.cancelDiscovery();
-
-        if (outStream == null)//還沒開port
-        {
-
+        if (outStream == null) { // 還沒開port
             Log.d(bluetooth_Tag, "尚未配對連線");
-
-//            isconnect = false;
-//
-//            last_device = null;
-//
-//            newBluetoothDevice.clear();
-
             close();
-//            Log.d(bluetooth_Tag, "startScanstartScanEEE");
-//
-//            mBluetoothAdapter.stopLeScan(mLeScanCallback);
-//
-//            mBluetoothAdapter.startLeScan(mLeScanCallback);//開始搜尋BLE設備
-
-
         } else {
-
-
             checklifetime = System.currentTimeMillis() + 1000;
-
             byte[] outBuf = commandByte;
-
             byte outBufSum = 0;
             for (int i = 0; i < 6; i++)
                 outBufSum += outBuf[i];
@@ -699,15 +638,12 @@ public class ECGTrueModel{
             outBuf[6] = outBufSum;
 
             String result = "";
-
             for (int i = 0; i < outBuf.length; i++)
                 result += "  " + Integer.toString((outBuf[i] & 0xff) + 0x100, 16).substring(1);
 
             //Log.d(bluetooth_Tag, "發指令 = " + result + "");
 
             try {
-
-
                 boolean ECGrvStart = false;    // true: ECG data receiving can start
                 int bytesAvailable;
 
@@ -718,12 +654,11 @@ public class ECGTrueModel{
                 int commResentMax = 10;
                 int commRetryMax = 3;
 
-
                 while (!ECGrvStart) {
-
-
                     waitRetryN++;
-                    if (waitRetryN % waitRetryMax == waitRetryMax - 1 && waitRetryN < waitRetryMax * commResentMax && inStream.available() == 0) {
+                    if (waitRetryN % waitRetryMax == waitRetryMax - 1
+                            && waitRetryN < waitRetryMax * commResentMax
+                            && inStream.available() == 0) {
                         // Output the command
                         Log.d(bluetooth_Tag, "Resend Command");
                         outStream.write(outBuf);
@@ -738,21 +673,11 @@ public class ECGTrueModel{
 
                         mhandler.sendMessage(msg);
 
-
                         Log.d(bluetooth_Tag, "startScanstartScanFFF");
                         close();
 
-//                        if (mBluetoothAdapter == null) {
-//                            mBluetoothManager = (BluetoothManager) context.getSystemService(BLUETOOTH_SERVICE);
-//                            mBluetoothAdapter = mBluetoothManager.getAdapter();
-//                        }
-
-//                        mBluetoothAdapter.startLeScan(mLeScanCallback);//開始搜尋BLE設備
-
                         return new byte[]{0x00};
-
                     }
-
 
                     bytesAvailable = inStream.available();
 
@@ -762,72 +687,34 @@ public class ECGTrueModel{
                         byte[] packetBytes = new byte[bytesAvailable];
                         inStream.read(packetBytes);
 
-
                         String receive = "";
 
                         for (int i = 0; i < packetBytes.length; i++)
                             receive += "  " + Integer.toString((packetBytes[i] & 0xff) + 0x100, 16).substring(1);
 
-                        //Log.d(bluetooth_Tag, "收指令 = " + receive + "");
-                        //Log.d(bluetooth_Tag, "-------------------------------------------------");
-
                         ECGrvStart = true;
-
 
                         return packetBytes;
                     }
-
                     SystemClock.sleep(3);
                 }
-
             } catch (IOException ex) {
-
                 Log.d(bluetooth_Tag, "Disconnect, re_connecting");
-
-
                 close();
-
                 Log.d(bluetooth_Tag, "startScanstartScanGGG");
-                //mBluetoothAdapter.startLeScan(mLeScanCallback);//開始搜尋BLE設備
-
             }
-
-
         }
-
         datalength = 7;
-
         return new byte[]{0x00};
-
-
     }//send command
 
     ///////////////////////////測量/////////////////////////////////////////
 
     //跑波30秒
     public static void wave30(final android.os.Handler read_handler) {
-//        chartSet1.setColor(Color.BLACK);
-//
-//        chartSet1.setDrawCircles(false);
-//
-//        chartSet1.setDrawFilled(false);
-//
-//        chartSet1.setFillAlpha(0);
-//
-//        chartSet1.setCircleRadius(0);
-//
-//        chartSet1.setLineWidth((float) 1.5);
-//
-//        chartSet1.setDrawValues(false);
-//
-//        chartSet1.setDrawFilled(true);
-
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-
                 int status = -1;
 
                 while (!ischecklifefinish) {
@@ -842,97 +729,45 @@ public class ECGTrueModel{
 
                 outBuf[6] = outBufSum;
 
-
                 try {
                     Log.e("VtControlTask", "start recording in app...");
                     // ECG data receiving loop
-
-
                     int bytesAvailable;
-
-                    // Output the "GetFileList" command to start ECG data transmitting
-
-//                    outStream.write(outBuf);
                     send_BTCommand(outBuf);
 
                     int outcount = 0;
-
-
                     startTime = System.currentTimeMillis();
-
                     count30 = 30;
 
-
                     while (true) {
-
                         try {
                             bytesAvailable = inStream.available();
                         } catch (IOException e) {
                             e.printStackTrace();
                             break;
                         }
-//
-//
-
                         Log.d("bytesAvailable", "bytesAvailable = " + bytesAvailable);
 
-                        if (bytesAvailable >= 7)    // Wait until ECG data income
-                        {
+                        if (bytesAvailable >= 7)  {  // Wait until ECG data income
                             outcount = 0;
-
-
-                            Log.d("bytesAvailable", "bytesAvailable = " + bytesAvailable);
-
 
                             final byte[] result = new byte[7];
                             inStream.read(result);
 
-
-//                            //波型图
-
-//                            ((Activity)context).runOnUiThread(new Runnable() {
-//                                @SuppressLint("NewApi")
-//                                @Override
-//                                public void run() {
-
                             double ch2 = byteArrayToInt(new byte[]{result[4]}) * 128 + byteArrayToInt(new byte[]{result[5]});
                             int ch4 = getStreamLP((int) ch2);
-
                             if (ch4 >= 2500) {
-
                                 ch4 = 2500;
-
                             } else if (ch4 <= 1500) {
-
                                 ch4 = 1500;
-
                             }
-
 
                             Message msg = new Message();
                             msg.arg1 = 101;
                             msg.obj = ch4;
-
                             read_handler.sendMessage(msg);
 
-
-//                                    if(chartSet1Entries.size() >= 300)
-//                                        chartSet1Entries.clear();
-//
-//                                    Entry chartSet1Entrie = new Entry(chartSet1Entries.size(),ch4);
-//
-//                                    chartSet1Entries.add(chartSet1Entrie);
-//
-//                                    chartSet1.setValues(chartSet1Entries);
-//
-//
-//                                    chart2.setData(new LineData(chartSet1));
-//
-//                                    chart2.setVisibleXRangeMinimum(300);
-//
-//                                    chart2.invalidate();
-
-
+                            // 测量时间
                             if ((startTime + 1000) < System.currentTimeMillis()) {
                                 startTime = System.currentTimeMillis();
                                 count30--;
@@ -941,57 +776,32 @@ public class ECGTrueModel{
                                 msg1.obj = count30;
                                 read_handler.sendMessage(msg1);
                                 //timeCount_TV.setText(""+count30+"秒");
-
                             }
-
-
-//                                }
-//                            });
-
                         }
 
                         if (count30 == 0) {
-
-
                             while (true) {
                                 byte[] ret = send_BTCommand(new byte[]{(byte) 0xaa, 0x10, 0x01, 0x01, 0x00, 0x00, 0x00});
-
-
                                 if (ret.length == 1) {
-//                                    Log.d(bluetooth_Tag,"停止---成功");
                                     break;
                                 } else if (ret[1] == 0x10) {
-//                                    Log.d(bluetooth_Tag,"停止---失敗");
                                     break;
                                 }
-
                             }
-
-
                             outcount = 500;
-
                             break;
                         }
-
-
                         outcount++;
-
 
                         if (outcount == 150) {
 //                            bytesAvailable = inStream.available();
-
-
                             final byte[] result = new byte[bytesAvailable];
                             inStream.read(result);
-
                             break;
                         }
-
-
                         checklifetime = System.currentTimeMillis() + 1000;
-                        SystemClock.sleep(10);
+                        SystemClock.sleep(5);
                     }
-
 
                     ////清除
                     int clearcount = 0;
@@ -1000,15 +810,11 @@ public class ECGTrueModel{
                         final byte[] result = new byte[bytesAvailable = inStream.available()];
                         inStream.read(result);
 
-
                         clearcount++;
-
                         if (clearcount == 60)
                             break;
 
-                        SystemClock.sleep(25);
-
-
+                        SystemClock.sleep(10);
                     }
 
                     if (outcount >= 500) {
@@ -1025,21 +831,15 @@ public class ECGTrueModel{
                         inStream.read(result);
                         Log.d("sssss", "timeouttimeout");
                     }
-
-
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     Log.d("sssss", "oops, try end the connection due to exception");
-
                 }
-
 
                 Message msg = new Message();
                 msg.arg1 = status;
 
                 read_handler.sendMessage(msg);
-
-
             }
         }).start();
 
@@ -1047,27 +847,16 @@ public class ECGTrueModel{
 
     //停止量測
     public static void stopMeasure() {
-
         isStop = true;
-
         Log.d(bluetooth_Tag, "停止量測");
-
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-
                 while (!ischecklifefinish) {
                     SystemClock.sleep(20);
                 }
-
                 while (true) {
-
-
                     byte[] ret = send_BTCommand(new byte[]{(byte) 0xaa, 0x10, 0x01, 0x01, 0x00, 0x00, 0x00});
-
-//                            if(ret[1] == 0x10)
 
                     if (ret.length == 1) {
                         Log.d(bluetooth_Tag, "停止---失敗");
@@ -1076,30 +865,9 @@ public class ECGTrueModel{
                         Log.d(bluetooth_Tag, "停止---成功");
                         break;
                     }
-
                 }
-
-//                ((Activity) context).runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        new android.os.Handler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//
-//                            }
-//                        }, 1500);
-//
-//                    }
-//                });
-
-
-//
-
             }
         }).start();
-
-
     }
 
     ///////////////////////////測量/////////////////////////////////////////
@@ -1108,27 +876,17 @@ public class ECGTrueModel{
     /////////////////////////讀取上傳資料//////////////////////////////////
 
     public static void read_upload(final android.os.Handler read_handler) {
-
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 int status = -1;
-
-
                 byte[] getbyte = send_BTCommand(new byte[]{(byte) 0xaa, 0x20, 0, 0, 0, 0, 0x00});//讀取檔案上傳數量
-
 
                 if (getbyte.length == 1) {
                     Log.d(bluetooth_Tag, "錯誤 -- 讀取檔案上傳數量");
                 } else {
-
                     byte index = 0;
-
-
                     if (true) {
-
                         byte[] getbyte0 = send_BTCommand(new byte[]{(byte) 0xaa, 0x21, index, 0, 0, 0, 0});//讀取檔案大小
 
                         if (getbyte0.length == 1) {
@@ -1155,17 +913,11 @@ public class ECGTrueModel{
                                 } else {
                                     //讀取失敗
                                 }
-
-
                             }
-
                         }
-
-
                     } else {
                         Log.d(bluetooth_Tag, "錯誤");
                     }
-
                 }//
 
                 Message msg = new Message();
@@ -1271,12 +1023,10 @@ public class ECGTrueModel{
     public static int getStreamLP(int NewSample) {
         int tmp = 0;
 
-
         for (int array = 4; array >= 1; array--) {
             mX[array] = mX[array - 1];
             mY[array] = mY[array - 1];
         }
-
 
         mX[0] = (double) (NewSample);
         mY[0] = mAcoef[0] * mX[0];
@@ -1285,19 +1035,14 @@ public class ECGTrueModel{
             mY[0] += mAcoef[i] * mX[i] - mBcoef[i] * mY[i];
         }
 
-
         for (int array = 20; array >= 1; array--) {
             mStreamBuf[array] = mStreamBuf[array - 1];
         }
 
-
         mStreamBuf[0] = NewSample;
 
         tmp = mStreamBuf[20] + (2000 - (int) (mY[0]));
-
-
         return tmp;
-
     }
 
 
@@ -1550,7 +1295,6 @@ public class ECGTrueModel{
             return b[0] << 24 | (b[1] & 0xff) << 16 | (b[2] & 0xff) << 8 | (b[3] & 0xff);
         else if (b.length == 2)
             return 0x00 << 24 | 0x00 << 16 | (b[0] & 0xff) << 8 | (b[1] & 0xff);
-
         else if (b.length == 1)
             return 0x00 << 24 | 0x00 << 16 | (0x00 & 0xff) << 8 | (b[0] & 0xff);
 

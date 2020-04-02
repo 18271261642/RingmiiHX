@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_49"
-        android:text="血压"
+        android:text="@string/bp"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_15"
         android:textStyle="bold" />
@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="血糖"
+                android:text="@string/glu"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="血流速度"
+                android:text="@string/blood_speed"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -90,7 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="血红蛋白"
+                android:text="@string/hemoglobin"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -117,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="血氧浓度"
+                android:text="@string/bo"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -157,7 +157,7 @@
         android:layout_marginRight="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_8"
         android:lineSpacingExtra="@dimen/dp_4"
-        android:text="提醒您保持良好的饮食习惯，保持规律运动，并定时测量血糖."
+        android:text="@string/bs_suggest"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_10" />
 

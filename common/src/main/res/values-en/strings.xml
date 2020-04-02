@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">selectime</string>
+    <string name="cancle">Cancel</string>
+    <string name="title">Please select a time</string>
+    <string name="commit">Confirm</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
+    <string name="day">Day</string>
+    <string name="hour">Hour</string>
+    <string name="minute">Minute</string>
+
+    <string name="excise_finish">Completed all exercises today</string>
+
+    <string name="sbp" translatable="false">SBP(mmHg) :</string>
+    <string name="dbp" translatable="false">DBP(mmHg) :</string>
+    <string name="heart" translatable="false">Heart rate(bpm) :</string>
+    <string name="ui_cancel">Cancel</string>
+    <string name="ui_sure">Confirm</string>
+    <string name="fanhui">Return</string>
+    <string name="shouye">Home</string>
+    <string name="tiaoguo">Skip measurement</string>
+    <string name="liudao">Six-lead ECG measurement</string>
+    <string name="fore">Arm blood pressure measurement</string>
+
+    <!--
+    public static final String DEV_ECG_6 = "CmateHv100";
+    public static final String DEV_GLU = "BDE_WEIXIN_TTMv100";
+    public static final String DEV_BP = "FORA P30 PLUSv100";
+    public static final String DEV_BP_CX = "CXBPv100";
+    public static final String DEV_BP_YF = "YFKJv100";
+    public static final String DEV_BP_AVE = "AVE-2000v100";
+    public static final String DEV_BP_MBB_88 = "RBP1810130249v100";
+    public static final String DEV_BP_MBB_9804 = "BP06D21905750026v100";
+    public static final String DEV_ECG_12 = "WWKECGv100";
+    public static final String DEV_ECG_tzq = "device_tzqv100";
+    public static final String DEV_ECG_HD = "device_hdv100";
+    public static final String DEV_FORA_GLU = "FORA GD40bv100";
+    -->
+    <string name="CmateHv100">Guider ECG</string>
+    <string name="BDE_WEIXIN_TTMv100">Guier CGM</string>
+    <string name="FORAP30PLUSv100">Guider sphygmometer</string>
+    <string name="CXBPv100">Boom tube blood pressure measurement</string>
+    <string name="YFKJv100">Arteriosclerosis measurement</string>
+    <string name="AVE2000v100">Arteriosclerosis measurement</string>
+    <string name="RBP1810130249v100">Pulse wave88</string>
+    <string name="BP06D21905750026v100">Pulse wave804</string>
+    <string name="WWKECGv100">12-lead ECG measurement</string>
+    <string name="device_tzqv100">Remote visceral measurement</string>
+    <string name="device_hdv100">Red bean ECG</string>
+    <string name="FORAGD40bv100">Fora blood sugar</string>
+
+    <string name="zy_download_tips">Downloading, please be patient...</string>
+</resources>

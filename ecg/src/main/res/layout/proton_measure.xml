@@ -8,7 +8,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
     <LinearLayout
         style="@style/myBodyLayout"
@@ -25,7 +25,7 @@
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_13"
                 android:layout_gravity="center_vertical"
-                android:background="@mipmap/m500" />
+                android:background="@mipmap/logon_guider" />
 
             <com.guider.health.common.views.TipTitleView
                 android:id="@+id/tip_title"
@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/dp_30"
-                    tools:text="链接失败" />
+                    tools:text="@string/link_error" />
 
                 <Button
                     android:id="@+id/btn"
@@ -67,7 +67,7 @@
                     android:background="@drawable/button_cancel"
                     android:paddingLeft="@dimen/dp_30"
                     android:paddingRight="@dimen/dp_30"
-                    android:text="确认已开机 下一步"
+                    android:text="@string/confirm_device_open"
                     android:textColor="#FAFCFF"
                     android:textSize="@dimen/dp_19" />
 
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_12"
                         android:lineSpacingMultiplier="1.2"
-                        android:text="请将双手拇指放到贴片上，即可直接开始进行测量"
+                        android:text="@string/ecg_test_tips1"
                         android:textColor="#171717" />
                 </LinearLayout>
 
@@ -127,7 +127,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="心率 :" />
+                        android:text="@string/heart_rate" />
 
 
                     <TextView
@@ -147,7 +147,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="电量:" />
+                        android:text="@string/power" />
 
                     <TextView
                         android:id="@+id/power"
@@ -167,7 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="信号强度:" />
+                        android:text="@string/singal" />
 
                     <TextView
                         android:id="@+id/signal"
@@ -262,7 +262,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_6"
-                            android:text="心电图存在扰动 , 手指不要移动"
+                            android:text="@string/ecg_test_tips2"
                             android:textColor="#fff"
                             android:textSize="@dimen/sp_12" />
 

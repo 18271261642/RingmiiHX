@@ -134,7 +134,6 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
         initViews();
 
         initData();
-
     }
 
     private void initData() {

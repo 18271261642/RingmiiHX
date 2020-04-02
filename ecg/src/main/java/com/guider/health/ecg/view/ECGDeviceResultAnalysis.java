@@ -80,14 +80,9 @@ public class ECGDeviceResultAnalysis extends ECGFragment {
 
 
         view.findViewById(R.id.analysis_go).setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View v) {
-
                 ECGServiceManager.getInstance().startResultAnalysis();
-
-
                 View view = LayoutInflater.from(_mActivity).inflate(R.layout.ecg_dialog, null);
                 textView = view.findViewById(R.id.ecg_loading_pic);
                 text = view.findViewById(R.id.ecg_loading_text);

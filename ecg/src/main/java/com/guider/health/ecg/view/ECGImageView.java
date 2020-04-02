@@ -42,7 +42,7 @@ public class ECGImageView extends FrameLayout {
         this.onSaveFinish = listener;
     }
 
-    public void saveImage() {
+    public boolean saveImage() {
         path = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + File.separator+"ECG"+File.separator + "temp.lp4";
 
@@ -61,7 +61,9 @@ public class ECGImageView extends FrameLayout {
 
         try {
             // 讀檔到fi
-            FileInputStream fi = new FileInputStream(new File(path));
+            File file = new File(path);
+            file.getParentFile().mkdirs();
+            FileInputStream fi = new FileInputStream(file);
             // fi檔資料取到buffer，且bytes筆資料
             bytes = fi.read(buffer);
             // 126208 => 928包 * 32 => 29.696秒
@@ -74,12 +76,14 @@ public class ECGImageView extends FrameLayout {
             e.printStackTrace();
             openFail("心电图文件打开失败");
             Log.e(TAG, "waveHandled: bytes: "+ "error111" + e.toString());
-            return;
+            onSaveFinish.onError();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(TAG, "waveHandled: bytes: "+ "error222");
             openFail("心电图解析失败");
-            return;
+            onSaveFinish.onError();
+            return false;
         }
 
 
@@ -92,7 +96,8 @@ public class ECGImageView extends FrameLayout {
         }catch (NegativeArraySizeException e){
             e.printStackTrace();
             openFail("心电图解析失败");
-            return;
+            onSaveFinish.onError();
+            return false;
         }
 
         int ans = 0;
@@ -142,25 +147,32 @@ public class ECGImageView extends FrameLayout {
             public void run() {
                 Bitmap chartBitmap = chart.getChartBitmap();
                 try {
-                    FileOutputStream out = new FileOutputStream(new File(imagePth));
+                    File file = new File(imagePth);
+                    file.getParentFile().mkdirs();
+                    FileOutputStream out = new FileOutputStream(file);
                     chartBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                     out.flush();
                     out.close();
                     chartBitmap.recycle();
                     if (onSaveFinish != null) {
-                        onSaveFinish.onSaveFinish();
+                        onSaveFinish.onSaveFinish(imagePth);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                    onSaveFinish.onError();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    onSaveFinish.onError();
                 }
             }
         }, 3000);
+
+        return true;
     }
 
     public interface OnSaveFinishCall {
-        void onSaveFinish();
+        void onSaveFinish(String imagePath);
+        void onError();
     }
 
     // loge

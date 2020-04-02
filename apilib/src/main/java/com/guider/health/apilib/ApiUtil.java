@@ -3,6 +3,7 @@ package com.guider.health.apilib;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.bind.DateTypeAdapter;
 
 import java.io.File;
 import java.util.Date;
@@ -60,6 +61,46 @@ public class ApiUtil {
             return new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(ResultConverterFactory.create(new Gson().newBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").registerTypeAdapter(Date.class, new DateTypeAdapterNormal()).create()))
+                    .client(builder.build())
+                    .build()
+                    .create(clz);
+        }
+    }
+
+    private static <I> I createApi(String url, Class<I> clz, boolean needTimeZone, boolean needFormat, int timmeout) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(loggingInterceptor);
+        }
+        builder.readTimeout(timmeout * 2, TimeUnit.SECONDS)
+                .connectTimeout(timmeout, TimeUnit.SECONDS)
+                .writeTimeout(timmeout * 2, TimeUnit.SECONDS);
+        if (needFormat)
+            builder.addInterceptor(new RequestHead(context));
+        if (!needFormat) {
+            return new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(builder.build())
+                    .build()
+                    .create(clz);
+        } else if (needTimeZone) {
+            return new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(ResultConverterFactory.create(
+                            new Gson().newBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").registerTypeAdapter(Date.class, new DateTypeAdapter()
+                            ).create()))
+                    .client(builder.build())
+                    .build()
+                    .create(clz);
+        } else {
+            return new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(ResultConverterFactory.create(
+                            new Gson().newBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                                    .registerTypeAdapter(Date.class, new DateTypeAdapterNormal()).create()))
                     .client(builder.build())
                     .build()
                     .create(clz);

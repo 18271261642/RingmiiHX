@@ -52,7 +52,7 @@ public class ViewHolderOfCx extends BaseResultViewHolder {
 
     @Override
     protected String getName() {
-        return "血压";
+        return getContext().getResources().getString(R.string.bp);
     }
 
     @Override

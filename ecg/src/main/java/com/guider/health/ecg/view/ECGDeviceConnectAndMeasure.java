@@ -58,13 +58,9 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
         view.findViewById(R.id.home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 _mActivity.setResult(112);
 
                 _mActivity.finish();
@@ -75,10 +71,7 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 _mActivity.setResult(113);
-
                 _mActivity.finish();
                 System.exit(0);
             }
@@ -87,37 +80,30 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_ECG_6 , true));
 
-
         lineChart = view.findViewById(R.id.wave);
         time_measure = view.findViewById(R.id.time_measure);
         initChart();
 
-
         ECGServiceManager.getInstance().startScanBlueToothDevice(false);
-        //Toast.makeText(_mActivity, "正在连接蓝牙中....", Toast.LENGTH_SHORT).show();
-
-
     }
 
 
     @Override
     public void scanFailed() {
-
         ECGServiceManager.getInstance().stopDeviceConnect();
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 //view.findViewById(R.id.bp_cancel).setVisibility(View.GONE);
                 final Button bt = view.findViewById(R.id.ecg_reconnect);
                 bt.setVisibility(View.VISIBLE);
                 final TextView tip = (TextView) view.findViewById(R.id.ecg_reminder);
-                tip.setText("未找到设备\n请确认设备已经打开");
-                bt.setText("已经解决 重新连接");
+                tip.setText(getResources().getString(R.string.no_found_device));
+                bt.setText(getResources().getString(R.string.reconnect));
                 bt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        tip.setText("正在连接中\n 请稍后...");
+                        tip.setText(getResources().getString(R.string.connecting));
                         ((LinearLayout) view.findViewById(R.id.wave_info)).setVisibility(View.INVISIBLE);
                         bt.setVisibility(View.INVISIBLE);
                         ECGServiceManager.getInstance().startScanBlueToothDevice(false);
@@ -130,24 +116,22 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
 
     @Override
     public void connectFaile(int code) {
-
         ECGServiceManager.getInstance().stopDeviceConnect();
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 //view.findViewById(R.id.bp_cancel).setVisibility(View.GONE);
                 final Button bt = view.findViewById(R.id.ecg_reconnect);
                 bt.setVisibility(View.VISIBLE);
                 final TextView tip = (TextView) view.findViewById(R.id.ecg_reminder);
-                tip.setText("连接失败\n请确认设备已经打开");
-                bt.setText("已经解决 重新连接");
+                tip.setText(getResources().getString(R.string.conn_error));
+                bt.setText(getResources().getString(R.string.reconnect));
                 bt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //((TextView) view.findViewById(R.id.bp_reminder)).setText("正在测量中\n  请稍后...");
                         //view.findViewById(R.id.bp_cancel).setVisibility(View.VISIBLE);
-                        tip.setText("正在连接中\n 请稍后...");
+                        tip.setText(getResources().getString(R.string.connecting));
                         ((LinearLayout) view.findViewById(R.id.wave_info)).setVisibility(View.INVISIBLE);
                         bt.setVisibility(View.INVISIBLE);
                         ECGServiceManager.getInstance().startScanBlueToothDevice(false);
@@ -167,46 +151,32 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 ECGServiceManager.getInstance().startDeviceMessure();
             }
         });
-
     }
 
 
     @Override
     public void measureTime(final int time) {
-
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 time_measure.setProgress(time);
-
             }
         });
-
     }
 
     @Override
     public void measureWare(final int ware) {
-
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 chartSet.setColor(Color.BLACK);
-
                 chartSet.setDrawCircles(false);
-
                 chartSet.setDrawFilled(false);
-
                 chartSet.setFillAlpha(0);
-
                 chartSet.setCircleRadius(0);
-
                 chartSet.setLineWidth((float) 1.5);
-
                 chartSet.setDrawValues(false);
-
                 chartSet.setDrawFilled(true);
-
 
                 if (chartSet1Entries.size() >= 300)
                     chartSet1Entries.clear();
@@ -214,16 +184,11 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 Entry chartSet1Entrie = new Entry(chartSet1Entries.size(), ware);
 
                 chartSet1Entries.add(chartSet1Entrie);
-
                 chartSet.setValues(chartSet1Entries);
 
-
                 lineChart.setData(new LineData(chartSet));
-
                 lineChart.setVisibleXRangeMinimum(300);
-
                 lineChart.invalidate();
-
             }
         });
 
@@ -231,7 +196,6 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
 
     @Override
     public void measureComplete() {
-
         baseHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -241,36 +205,28 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 loading_pic = view.findViewById(R.id.ecg_loading_pic);
                 loading_text = view.findViewById(R.id.ecg_loading_text);
                 loading_tip = view.findViewById(R.id.ecg_loading_tip);
-                loading_tip.setText("请勿操作设备，数据上传中...");
+                loading_tip.setText(getResources().getString(R.string.data_uploading));
                 showDialog(view);
 
                 animation();
                 myAlphaAnimation.startNow();
             }
         }, 100);
-
-
     }
 
     @Override
     public void onAnalysisTime(final int time) {
-
-
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 loading_text.setText(time + "%");
 
-
             }
         });
-
-
     }
 
     @Override
     public void measureTimeOut(final String msg , final boolean isNeedRemeasure) {
-
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -282,7 +238,7 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 }
                 hideDialog();
                 if (!isNeedRemeasure) {
-                    recommit.setText("重新提交");
+                    recommit.setText(getResources().getString(R.string.recommit));
                     recommit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -291,7 +247,7 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                         }
                     });
                 } else {
-                    recommit.setText("重新测量");
+                    recommit.setText(getResources().getString(R.string.retest));
                     recommit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -303,8 +259,6 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 }
             }
         });
-
-
     }
 
     void reupload() {
@@ -317,7 +271,7 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 loading_pic = view.findViewById(R.id.ecg_loading_pic);
                 loading_text = view.findViewById(R.id.ecg_loading_text);
                 loading_tip = view.findViewById(R.id.ecg_loading_tip);
-                loading_tip.setText("请勿操作设备，数据上传中...");
+                loading_tip.setText(getResources().getString(R.string.data_uploading));
                 showDialog(view);
 
                 animation();
@@ -329,24 +283,20 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
 
     @Override
     public void onAnalysisEnd() {
-
         Log.i("haix", "读取文档数据完成");
-
     }
 
     @Override
     public void powerLow(String power) {
         super.powerLow(power);
-        Toast.makeText(_mActivity, "电量低 , 请及时充电", Toast.LENGTH_SHORT).show();
+        Toast.makeText(_mActivity, getResources().getString(R.string.low_power), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void measureFailed(String msg) {
-
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 ECGServiceManager.getInstance().stopDeviceConnect();
                 if (myAlphaAnimation != null) {
                     myAlphaAnimation.cancel();
@@ -360,7 +310,6 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
                 System.exit(0);
             }
         });
-
     }
 
 
@@ -386,10 +335,7 @@ public class ECGDeviceConnectAndMeasure extends ECGFragment {
 
             }
         });
-
-
     }
-
 
     public void animation() {
         myAlphaAnimation = new RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);//设置图片动画属性，各参数说明可参照api

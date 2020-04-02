@@ -66,7 +66,7 @@ public class GLUDeviceConnect extends GLUFragment {
             }
         });
 
-        ((TextView) view.findViewById(R.id.title)).setText("设备连接");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.device_conn));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,21 +102,18 @@ public class GLUDeviceConnect extends GLUFragment {
                 final ImageView iconImage = view.findViewById(R.id.glu_connect_icon);
 
                 buttonFailed.setVisibility(View.VISIBLE);
-                buttonFailed.setText("已经解决 重新连接");
+                buttonFailed.setText(getResources().getString(R.string.bt_reconnectting));
                 iconImage.setImageResource(R.mipmap.icon_ble);
                 if (status == -101) {
-                    operatReminders.setText(
-                            "1.请确认设备已正常开启\n" +
-                            "2.请确认系统【蓝牙】已开启或重启系统蓝牙\n" +
-                            "3.请确认系统【位置信息】功能已开启");
+                    operatReminders.setText(getResources().getString(R.string.conn_error1));
                 } else {
-                    operatReminders.setText("连接失败, 请确保设备开关已经打开");
+                    operatReminders.setText(getResources().getString(R.string.conn_error2));
                 }
                 buttonFailed.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        operatReminders.setText("蓝牙连接中...");
+                        operatReminders.setText(getResources().getString(R.string.bt_connetting));
                         //buttonConnect.setVisibility(View.VISIBLE);
                         buttonFailed.setVisibility(View.GONE);
                         GLUServiceManager.getInstance().startDeviceConnect(_mActivity);

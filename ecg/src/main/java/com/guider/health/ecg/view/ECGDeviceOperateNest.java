@@ -48,7 +48,7 @@ public class ECGDeviceOperateNest extends ECGFragment {
         super.onActivityCreated(savedInstanceState);
 
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
-        ((TextView) view.findViewById(R.id.title)).setText("心电仪测量操作");
+        ((TextView) view.findViewById(R.id.title)).setText(_mActivity.getResources().getString(R.string.ecg_test_op));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +106,7 @@ public class ECGDeviceOperateNest extends ECGFragment {
                 e.printStackTrace();
             }
         }else if(requestCode == REQUEST_CODE && resultCode == TOBACK){
-            Toast.makeText(_mActivity, "测量失败, 请重新测量", Toast.LENGTH_LONG).show();
+            Toast.makeText(_mActivity, _mActivity.getResources().getString(R.string.test_error), Toast.LENGTH_LONG).show();
             //点返回
         } else if (resultCode == SkipClick.CODE_SKIP) {
             Log.i("sssssssssrr", "关闭弹窗了");

@@ -184,13 +184,6 @@ public class BPModel {
 
             System.out.println("Mark 這邊5");
 
-            //Mark 改成7個值也可以唷
-//            int dbp = intParse(characteristic, 2);
-//            int sbp = intParse(characteristic, 4);
-//            int heart = intParse(characteristic, 5);
-
-
-
             HeartPressBp.getInstance().setSbp(String.valueOf(intParse(characteristic, 2)));
             HeartPressBp.getInstance().setDbp(String.valueOf(intParse(characteristic, 4)));
             HeartPressBp.getInstance().setHeart(String.valueOf(intParse(characteristic, 5)));
@@ -205,10 +198,7 @@ public class BPModel {
     public void turnOffDevice(ArrayList<Byte> characteristicValues, BluetoothGattCharacteristic characteristic,
                               BluetoothGatt gatt) {
         if (characteristic.getValue() != null & characteristicValues.size() == 4) {
-
             System.out.println("Mark 這邊6");
-
-
             try {
                 gatt.disconnect();
                 gatt.close();
@@ -217,7 +207,6 @@ public class BPModel {
             }
         }
     }
-
 
     public String hexString(int value) {
         String hexStr = Integer.toHexString(value);

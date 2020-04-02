@@ -15,7 +15,7 @@
             android:id="@+id/msg"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:text="已完成今日所有锻炼"
+            android:text="@string/excise_finish"
             android:textSize="16sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"

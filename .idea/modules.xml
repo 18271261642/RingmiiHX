@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/GuiderBand.iml" filepath="$PROJECT_DIR$/GuiderBand.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/GuiderBand-MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/GuiderBand-MPChartLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/apilib/GuiderBand-apilib.iml" filepath="$PROJECT_DIR$/apilib/GuiderBand-apilib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arouter-annotation/GuiderBand-arouter-annotation.iml" filepath="$PROJECT_DIR$/arouter-annotation/GuiderBand-arouter-annotation.iml" />
       <module fileurl="file://$PROJECT_DIR$/bpm1000/GuiderBand-bpm1000.iml" filepath="$PROJECT_DIR$/bpm1000/GuiderBand-bpm1000.iml" />
       <module fileurl="file://$PROJECT_DIR$/circleviewprogress/GuiderBand-circleviewprogress.iml" filepath="$PROJECT_DIR$/circleviewprogress/GuiderBand-circleviewprogress.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/GuiderBand-common.iml" filepath="$PROJECT_DIR$/common/GuiderBand-common.iml" />

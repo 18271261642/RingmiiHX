@@ -1,5 +1,6 @@
 package com.guider.healthring.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
+import com.guider.healthring.util.WxScanUtil;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
@@ -209,9 +211,6 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
                         if (result == SMSSDK.RESULT_COMPLETE) {
                             // TODO 处理验证码验证通过的结果
                             Log.e("===验证码", "处理验证码验证通过的结果  " + data.toString());
-//                                registerRemote();
-//                                //注册盖德的账号
-//                                registerGuiderAccount();
                             //手机号
                             String phoeCodes = wxBindPhoneCodeEdit.getText().toString();
 
@@ -329,8 +328,22 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
                 long accountId = dataJson.getLong("accountId");
                 SharedPreferencesUtils.setParam(this, "accountIdGD", accountId);
                 ToastUtil.showToast(this, getResources().getString(R.string.bind_phone_success));
-                startActivity(NewSearchActivity.class);
-                finish();
+
+
+                WxScanUtil.handle(GuiderWxBindPhoneActivity.this, accountId, new WxScanUtil.IWxScan() {
+                    @Override
+                    public void onError() {
+                        startActivity(NewSearchActivity.class);
+                        finish();
+                    }
+                    @Override
+                    public void onOk() {
+                        Intent intent = new Intent(GuiderWxBindPhoneActivity.this, WxScanActivity.class);
+                        intent.putExtra("accountId", accountId);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

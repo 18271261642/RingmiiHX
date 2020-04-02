@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.guider.health.common.core.ForaGlucose;
 import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.HearRate;
 import com.guider.health.common.core.HearRate12;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResultListView extends LinearLayout {
-
     ArrayList<BaseResultViewHolder> holderList;
 
     RequestCallback callback;
@@ -104,6 +104,12 @@ public class ResultListView extends LinearLayout {
                     return;
                 }
                 resultViewHolder = new ViewHolderOfEcg12(this);
+                break;
+            case DeviceInit.DEV_FORA_GLU:            // 福尔血糖:
+                if (ForaGlucose.getForaGluInstance().getGlucose() <= 0) {
+                    return;
+                }
+                resultViewHolder = new ViewHolderOfForaGlu(this);
                 break;
             default:
                 resultViewHolder = new ViewHolderOfNull(this);

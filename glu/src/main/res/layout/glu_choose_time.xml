@@ -7,478 +7,484 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
 
-    <LinearLayout
-        style="@style/myBodyLayout"
-        android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_13"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/m500" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="无创血糖"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_15" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="参数输入"
-                android:textColor="#F18937"
-                android:textSize="@dimen/sp_16" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="开机提示"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="蓝牙连接"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-        </LinearLayout>
-
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_86"
-            android:layout_marginTop="@dimen/dp_23">
+            style="@style/myBodyLayout"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/hhhh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="身高"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_18" />
-
-                <EditText
-                    android:id="@+id/height"
-                    android:layout_width="@dimen/dp_132"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginLeft="@dimen/dp_8"
-                    android:background="@drawable/text_box"
-                    android:digits="1234567890"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:textSize="@dimen/sp_18" />
+                <ImageView
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_13"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/logon_guider" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="cm"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_18" />
+                    android:text="@string/glu"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_15" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/input_param"
+                    android:textColor="#F18937"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/open_tips"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/bt_connect"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/device_test"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/test_result"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
-            <LinearLayout
+
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/hhhh"
-                android:layout_marginTop="@dimen/dp_14"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/hhhh">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="体重"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_18" />
-
-                <EditText
-                    android:id="@+id/weight"
-                    android:layout_width="@dimen/dp_132"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginLeft="@dimen/dp_8"
-                    android:background="@drawable/text_box"
-                    android:digits="1234567890"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:textSize="@dimen/sp_18" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_8"
-                    android:text="kg"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_18" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/hhhh"
-                app:layout_constraintTop_toTopOf="parent">
-
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_23">
 
                 <LinearLayout
-                    android:id="@+id/right_1"
+                    android:id="@+id/hhhh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_44"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/h"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/dp_8"
-                        android:text="血糖水平:"
-                        android:textSize="@dimen/sp_19" />
-
-                    <LinearLayout
-                        android:id="@+id/green"
-                        android:layout_width="@dimen/dp_116"
-                        android:layout_height="@dimen/dp_44"
-                        android:background="@drawable/shape_left"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:stateListAnimator="@null">
-
-                        <com.guider.health.common.views.RoundCheckBox
-                            android:id="@+id/checkbox_left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false" />
-
-                        <TextView
-                            android:id="@+id/glu_normal_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="正常"
-                            android:textColor="@drawable/glu_textview_text_color"
-                            android:textSize="@dimen/sp_19" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/red"
-                        android:layout_width="@dimen/dp_200"
-                        android:layout_height="@dimen/dp_44"
-                        android:layout_marginLeft="-1dp"
-                        android:background="@drawable/shape_right"
-                        android:gravity="center">
-
-                        <com.guider.health.common.views.RoundCheckBox
-                            android:id="@+id/checkbox_right"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false" />
-
-                        <TextView
-                            android:id="@+id/glu_abnormal_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="异常≥7mmol/L"
-                            android:textColor="@drawable/glu_textview_text_color"
-                            android:textSize="@dimen/sp_19" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:id="@+id/not_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_44"
-                    android:layout_marginTop="@dimen/dp_7"
-                    android:orientation="horizontal"
-                    android:visibility="visible"
-                    app:layout_constraintLeft_toRightOf="@+id/hhhh"
-                    app:layout_constraintTop_toBottomOf="@+id/right_1">
-
-
-                    <TextView
-                        android:id="@+id/text_foot_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="清晨空腹:"
-                        android:textSize="@dimen/sp_19" />
+                        android:text="@string/height"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_18" />
 
                     <EditText
-                        android:id="@+id/input_glu_value"
+                        android:id="@+id/height"
                         android:layout_width="@dimen/dp_132"
                         android:layout_height="@dimen/dp_35"
-                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_8"
                         android:background="@drawable/text_box"
+                        android:digits="1234567890"
                         android:gravity="center"
-                        android:inputType="number|numberDecimal"
+                        android:inputType="number"
                         android:textSize="@dimen/sp_18" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/dp_9"
-                        android:text="mmlo/L"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:text="cm"
                         android:textColor="#171717"
-                        android:textSize="@dimen/sp_19" />
+                        android:textSize="@dimen/sp_18" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/hhhh"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/hhhh">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/weight"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_18" />
+
+                    <EditText
+                        android:id="@+id/weight"
+                        android:layout_width="@dimen/dp_132"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:background="@drawable/text_box"
+                        android:digits="1234567890"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:textSize="@dimen/sp_18" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:text="kg"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_18" />
 
                 </LinearLayout>
 
 
-            </LinearLayout>
-
-        </android.support.constraint.ConstraintLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_28"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/empty_food"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@mipmap/time0" />
-
-                    <TextView
-                        android:visibility="gone"
-                        android:id="@+id/empty_food_selected"
-                        android:layout_width="@dimen/dp_23"
-                        android:layout_height="@dimen/dp_23"
-                        android:background="@mipmap/selected"
-                        app:layout_constraintCircle="@+id/empty_food"
-                        app:layout_constraintCircleAngle="30"
-                        app:layout_constraintCircleRadius="@dimen/dp_80" />
-                </android.support.constraint.ConstraintLayout>
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_19"
-                    android:text="清晨空腹"
-                    android:textColor="#7D7D7D"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/hhhh"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <LinearLayout
+                        android:id="@+id/right_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/dp_8"
+                            android:text="@string/glu_level"
+                            android:textSize="@dimen/sp_19" />
+
+                        <LinearLayout
+                            android:id="@+id/green"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dp_44"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/shape_left"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:stateListAnimator="@null">
+
+                            <com.guider.health.common.views.RoundCheckBox
+                                android:id="@+id/checkbox_left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false" />
+
+                            <TextView
+                                android:id="@+id/glu_normal_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/normal"
+                                android:textColor="@drawable/glu_textview_text_color"
+                                android:textSize="@dimen/sp_19" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/red"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dp_44"
+                            android:layout_marginLeft="-1dp"
+                            android:background="@drawable/shape_right"
+                            android:gravity="center"
+                            android:layout_marginRight="@dimen/dp_10"
+                            android:layout_marginEnd="@dimen/dp_10">
+
+                            <com.guider.health.common.views.RoundCheckBox
+                                android:id="@+id/checkbox_right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false" />
+
+                            <TextView
+                                android:id="@+id/glu_abnormal_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/abnormal_glu"
+                                android:textColor="@drawable/glu_textview_text_color"
+                                android:textSize="@dimen/sp_19" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:id="@+id/not_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        app:layout_constraintLeft_toRightOf="@+id/hhhh"
+                        app:layout_constraintTop_toBottomOf="@+id/right_1">
+
+
+                        <TextView
+                            android:id="@+id/text_foot_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/fpg_"
+                            android:textSize="@dimen/sp_19" />
+
+                        <EditText
+                            android:id="@+id/input_glu_value"
+                            android:layout_width="@dimen/dp_100"
+                            android:layout_height="@dimen/dp_35"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/text_box"
+                            android:gravity="center"
+                            android:inputType="number|numberDecimal"
+                            android:textSize="@dimen/sp_18" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/dp_9"
+                            android:text="mmlo/L"
+                            android:textColor="#171717"
+                            android:textSize="@dimen/sp_19" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_70"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_10"
+                android:orientation="horizontal">
 
-                <android.support.constraint.ConstraintLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/empty_food"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/time0" />
+
+                        <TextView
+                            android:id="@+id/empty_food_selected"
+                            android:layout_width="@dimen/dp_15"
+                            android:layout_height="@dimen/dp_15"
+                            android:background="@mipmap/selected"
+                            android:visibility="gone"
+                            app:layout_constraintCircle="@+id/empty_food"
+                            app:layout_constraintCircleAngle="30"
+                            app:layout_constraintCircleRadius="@dimen/dp_80" />
+                    </android.support.constraint.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_19"
+                        android:text="@string/fpg"
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/time1_food"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/time3" />
+
+                        <TextView
+                            android:id="@+id/time1_food_selected"
+                            android:layout_width="@dimen/dp_15"
+                            android:layout_height="@dimen/dp_15"
+                            android:background="@mipmap/selected"
+                            android:visibility="gone"
+                            app:layout_constraintCircle="@+id/time1_food"
+                            app:layout_constraintCircleAngle="30"
+                            app:layout_constraintCircleRadius="@dimen/dp_80" />
+                    </android.support.constraint.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_19"
+                        android:text="@string/twohppg"
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
-                        android:id="@+id/time1_food"
+                        android:id="@+id/time2_food"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/time2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_19"
+                        android:text="@string/twohppg_normal"
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_70"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/time3_food"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@mipmap/time3" />
+
                     <TextView
-                        android:visibility="gone"
-                        android:id="@+id/time1_food_selected"
-                        android:layout_width="@dimen/dp_23"
-                        android:layout_height="@dimen/dp_23"
-                        android:background="@mipmap/selected"
-                        app:layout_constraintCircle="@+id/time1_food"
-                        app:layout_constraintCircleAngle="30"
-                        app:layout_constraintCircleRadius="@dimen/dp_80" />
-                </android.support.constraint.ConstraintLayout>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_19"
+                        android:text="@string/twohppg_full"
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/not_normal_page"
+                    layout="@layout/eat_medicine_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_19"
-                    android:text="餐后2小时"
-                    android:textColor="#7D7D7D"
-                    android:textSize="@dimen/sp_15" />
+                    android:layout_marginLeft="@dimen/dp_50"
+                    android:visibility="visible" />
+
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_70"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/time2_food"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@mipmap/time2" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_19"
-                    android:text="餐后2小时\n摄食量:适中"
-                    android:textColor="#7D7D7D"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_70"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/time3_food"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@mipmap/time3" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_19"
-                    android:text="餐后2小时\n摄食量:大"
-                    android:textColor="#7D7D7D"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
-
-            <include
-                android:id="@+id/not_normal_page"
-                layout="@layout/eat_medicine_layout"
-                android:layout_width="@dimen/dp_316"
-                android:layout_height="@dimen/dp_136"
-                android:layout_marginLeft="@dimen/dp_70"
-                android:visibility="visible" />
+            <Button
+                android:id="@+id/next"
+                android:layout_width="@dimen/dp_394"
+                android:layout_height="@dimen/dp_44"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/button_cancel"
+                android:stateListAnimator="@null"
+                android:text="@string/next_step"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/sp_18" />
 
         </LinearLayout>
-
-        <Button
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_21"
-            android:id="@+id/next"
-            android:layout_width="@dimen/dp_394"
-            android:layout_height="@dimen/dp_44"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/button_cancel"
-            android:stateListAnimator="@null"
-            android:text="下一步"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/sp_18" />
-
-    </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>
 
 

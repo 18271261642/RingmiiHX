@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.guider.health.bluetooth.core.BleBluetooth;
 import com.guider.health.common.core.Glucose;
+import com.guider.health.common.core.MyUtils;
 
 
 /**
@@ -69,7 +70,7 @@ public class GLUScanAndConnectBluetooth implements Runnable {
 
                         Log.i("haix", "发现指定设备BDE_WEIXIN_TTM");
                         device = btDevice;
-                        Glucose.getInstance().setDeviceAddress(device.getAddress());
+                        Glucose.getInstance().setDeviceAddress(MyUtils.getMacAddress());
 
                         toConnect();
                     }

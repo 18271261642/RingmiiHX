@@ -46,7 +46,7 @@ public class GLUOperateReminders extends GLUFragment {
         GLUServiceManager.getInstance().setViewObject(this);
 
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
-        ((TextView) view.findViewById(R.id.title)).setText("操作提示");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.op_tips));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

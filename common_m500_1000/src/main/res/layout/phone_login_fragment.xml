@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
     <!--<android.support.constraint.ConstraintLayout-->
         <!--android:layout_width="@dimen/dp_812"-->

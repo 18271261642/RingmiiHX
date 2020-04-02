@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.guider.health.all.BuildConfig;
 import com.guider.health.all.R;
 import com.guider.health.arouter_annotation.Route;
 import com.guider.health.common.cache.MeasureDataUploader;
@@ -70,19 +71,6 @@ public class ChooseDeviceFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        DeviceInit.getInstance().init(new DeviceInit.OnHasDeviceList() {
-//            @Override
-//            public void needLoad() {
-//                showDialog();
-//            }
-//
-//            @Override
-//            public void onHaveList() {
-//                hideDialog();
-//                getHealthRange();
-//            }
-//        });
     }
 
     //当增加设备时, 需要 resetTag setDeviceTag两个方法
@@ -98,9 +86,7 @@ public class ChooseDeviceFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-
             resetTag = true;
-
             DeviceInit.getInstance().init(new DeviceInit.OnHasDeviceList() {
                 @Override
                 public void needLoad() {
@@ -120,10 +106,6 @@ public class ChooseDeviceFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        if (layout3 != null) {
-//            layout3.setChecked(false);
-//            list.clear();
-//        }
 
         if (normalAdapter != null) {
             normalAdapter.notifyDataSetChanged();
@@ -144,7 +126,6 @@ public class ChooseDeviceFragment extends BaseFragment {
         UserManager.getInstance().getUserInfoOnServer(_mActivity);
         BleClient.init(_mActivity);
         if (savedInstanceState == null) {
-
             deviceInit = DeviceInit.getInstance();
             DeviceInit.getInstance().init(new DeviceInit.OnHasDeviceList() {
                 @Override
@@ -158,7 +139,6 @@ public class ChooseDeviceFragment extends BaseFragment {
                     init();
                 }
             });
-
         }
         Logger.i("accontID=" + UserManager.getInstance().getAccountId() + "\n" +
                 "mac=" + MyUtils.getMacAddress() + "\n" +
@@ -203,7 +183,6 @@ public class ChooseDeviceFragment extends BaseFragment {
         view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!MyUtils.isNormalClickTime()) {
                     return;
                 }
@@ -223,7 +202,9 @@ public class ChooseDeviceFragment extends BaseFragment {
                     }
                 }
                 UserManager.getInstance();
-                Log.i("haix", "=============选择了:  bp: " + HeartPressBp.getInstance().isTag() + " glu: " + Glucose.getInstance().isTag() + " ecg: " + HearRate.getInstance().isTag());
+                Log.i("haix", "=============选择了:  bp: " + HeartPressBp.getInstance().isTag()
+                        + " glu: " + Glucose.getInstance().isTag()
+                        + " ecg: " + HearRate.getInstance().isTag());
 
 
                 Toast.makeText(_mActivity, getResources().getString(R.string.choose_tips_pre)
@@ -241,12 +222,12 @@ public class ChooseDeviceFragment extends BaseFragment {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-
             }
         });
-
     }
 
 
@@ -254,19 +235,17 @@ public class ChooseDeviceFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 4) {
-            //什么都不做
+            // 什么都不做
         }
-
     }
 
 
-    //重新设置单例的tag
+    // 重新设置单例的tag
     private boolean resetTag = true;
 
     private void resetTag() {
         if (resetTag) {
             resetTag = false;
-
             deviceInit.setDeviceTagFalse();
         }
     }
@@ -274,7 +253,7 @@ public class ChooseDeviceFragment extends BaseFragment {
 
     // ① 创建Adapter
     public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
-        //② 创建ViewHolder
+        // ② 创建ViewHolder
         public class VH extends RecyclerView.ViewHolder {
             public final ImageView pic;
             public final TextView text;
@@ -288,34 +267,30 @@ public class ChooseDeviceFragment extends BaseFragment {
             }
         }
 
-
-//        public NormalAdapter(List<String> data) {
-//            this.mDatas = data;
-//
-//        }
-
-        //③ 在Adapter中实现3个方法
+        // ③ 在Adapter中实现3个方法
         @Override
         public void onBindViewHolder(final VH holder, final int position) {
-
             String key = Config.DEVICE_KEYS.get(position);
-
             String deviceName = Config.DEVICE_OBJ.get(key) == null ? "" : Config.DEVICE_OBJ.get(key).getName();
             if (!TextUtils.isEmpty(deviceName)) {
                 holder.text.setText(deviceName);
-
             } else {
                 holder.text.setText(deviceInit.names.get(key));
             }
 
-
-            String picURL = Config.DEVICE_OBJ.get(Config.DEVICE_KEYS.get(position)) == null ? "" : Config.DEVICE_OBJ.get(Config.DEVICE_KEYS.get(position)).getImgUrl();
+            String picURL = Config.DEVICE_OBJ.get(Config.DEVICE_KEYS.get(position)) == null ?
+                    "" : Config.DEVICE_OBJ.get(Config.DEVICE_KEYS.get(position)).getImgUrl();
             if (!TextUtils.isEmpty(picURL)) {
                 Picasso.with(_mActivity)
                         .load(picURL)
+                        .resize(256, 256)
                         .into(holder.pic);
             } else {
-                holder.pic.setImageResource(deviceInit.pics.get(Config.DEVICE_KEYS.get(position)));
+                Picasso.with(_mActivity)
+                        .load(deviceInit.pics.get(Config.DEVICE_KEYS.get(position)))
+                        .resize(256, 256)
+                        .into(holder.pic);
+                // holder.pic.setImageResource(deviceInit.pics.get(Config.DEVICE_KEYS.get(position)));
             }
 
             holder.device.setChecked(false);
@@ -329,24 +304,17 @@ public class ChooseDeviceFragment extends BaseFragment {
             holder.device.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //item 点击事件
-
+                    // item 点击事件
                     resetTag();
                     if (holder.device.changeCheckedStatus()) {
-
                         deviceInit.setDeviceTag(Config.DEVICE_KEYS.get(position), true);
                         list.add(deviceInit.fragments.get(Config.DEVICE_KEYS.get(position)));
-
                     } else {
                         deviceInit.setDeviceTag(Config.DEVICE_KEYS.get(position), false);
                         list.remove(deviceInit.fragments.get(Config.DEVICE_KEYS.get(position)));
-
                     }
-
-
                 }
             });
-
         }
 
         @Override
@@ -356,17 +324,14 @@ public class ChooseDeviceFragment extends BaseFragment {
 
         @Override
         public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-
-            //LayoutInflater.from指定写法
+            // LayoutInflater.from指定写法
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_view, parent, false);
             return new VH(v);
         }
     }
 
     public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
-
         private int dividerHeight;
-
 
         public SimplePaddingDecoration(Context context) {
             dividerHeight = context.getResources().getDimensionPixelSize(R.dimen.dp_15);
@@ -377,108 +342,8 @@ public class ChooseDeviceFragment extends BaseFragment {
             super.getItemOffsets(outRect, view, parent, state);
             int position = parent.getChildLayoutPosition(view);
             if (position != 0) {
-
                 outRect.left = dividerHeight;//类似加了一个bottom padding
             }
-
         }
     }
-
-    private static final int TIME_OUT = 60;
-    private OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
-            .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .addInterceptor(new RetrofitLogInterceptor())
-            .build();
-
-    private void getHealthRange() {
-        if (!NetStateController.isNetworkConnected(_mActivity)) {
-
-            Toast.makeText(_mActivity, getResources().getString(R.string.no_network_tips), Toast.LENGTH_SHORT).show();
-
-            return;
-        }
-
-
-        //00:00:46:79:E5:5A
-        HashMap params = new HashMap();
-        params.put("accountId", UserManager.getInstance().getAccountId());
-
-
-        try {
-
-
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL_apihd).client(OK_HTTP_CLIENT).build();
-            RestService restService = retrofit.create(RestService.class);
-            Call<ResponseBody> call = restService.get("api/v1/healthrange", params);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    try {
-
-                        if (response.body() == null) {
-                            return;
-                        }
-                        String result = response.body().string();
-
-                        JSONObject jsonObject = JSON.parseObject(result);
-
-                        int code = jsonObject.getInteger("code");
-
-                        if (code >= 0) {
-
-
-                            JSONObject jb = jsonObject.getJSONObject("data");
-
-                            if (jb != null && !jb.isEmpty()) {
-
-                                HealthRange.getInstance().setSbpIdealMin(jb.getInteger("sbpIdealMin"));
-                                HealthRange.getInstance().setSbpIdealMax(jb.getInteger("sbpIdealMax"));
-                                HealthRange.getInstance().setDbpIdealMin(jb.getInteger("dbpIdealMin"));
-                                HealthRange.getInstance().setDbpIdealMax(jb.getInteger("dbpIdealMax"));
-                                HealthRange.getInstance().setSbpHMin(jb.getInteger("sbpHMin"));
-                                HealthRange.getInstance().setDbpHMin(jb.getInteger("dbpHMin"));
-                                HealthRange.getInstance().setFbsMin(jb.getDouble("fbsMin"));
-                                HealthRange.getInstance().setFbsMax(jb.getDouble("fbsMax"));
-                                HealthRange.getInstance().setPbsMax(jb.getDouble("pbsMax"));
-                                HealthRange.getInstance().setPbsMin(jb.getDouble("pbsMin"));
-                                HealthRange.getInstance().setBmiMin(jb.getDouble("bmiMin"));
-                                HealthRange.getInstance().setBmiMax(jb.getDouble("bmiMax"));
-                                HealthRange.getInstance().setBoMin(jb.getInteger("boMin"));
-                                HealthRange.getInstance().setHrMin(jb.getInteger("hrMin"));
-                                HealthRange.getInstance().setHrMax(jb.getInteger("hrMax"));
-
-                                Log.i("haix", "测试健康数据: " + HealthRange.getInstance().toString());
-
-                            } else {
-                                //                        "code":0,"msg":"成功","data":[]
-                                //失败
-                            }
-
-
-                        } else {
-                            //失败
-                        }
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                    Log.i("haix", "失败2---");
-                }
-            });
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-
-        }
-
-    }
-
 }

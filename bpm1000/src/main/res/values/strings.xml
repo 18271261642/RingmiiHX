@@ -1,41 +1,41 @@
 <resources>
     <string name="app_name" translatable="false">bp</string>
-    <string name="lianjieshibai">连接失败</string>
-    <string name="celiangzhong">正在测量中\n请稍后...</string>
-    <string name="xueyashuoming">参考范围:  普通人群: 收缩压 &lt; 120（mmHg），舒张压 &lt; 80（mmHg)\n                    慢病、老年人群: 收缩压 &lt; 140（mmHg），舒张压 &lt; 90（mmHg) </string>
-    <string name="lianjieshibai_chongxin">连接失败 重新连接</string>
-    <string name="celiangcaozuo">测量操作</string>
-    <string name="celiangjieguo">测量结果</string>
-    <string name="measurement_results">测量结果 : </string>
-    <string name="_1_5_n2_n3">1. 测量前静坐5分钟，袖带中心与心脏保持同一高度。 \n2. 按下【开关】按钮开始测量。 \n3. 测量中请不要说话和移动身体。</string>
-    <string name="querenkaiji">确认已开机 下一步</string>
-    <string name="xiayibu">下一步</string>
-    <string name="zhengchang">正常</string>
-    <string name="yichang">异常</string>
-    <string name="_1_n2_2_3cm_n3">1、连接设备，露臂、手掌向上、肘部伸直，套袖带 \n2、袖带气管指向下手臂，袖带下缘距肘窝2-3cm \n3、袖带胶管放在肱动脉搏动点</string>
-    <string name="xueya">血压</string>
-    <string name="quxiao">取消</string>
-    <string name="shebeiceliang">设备测量</string>
-    <string name="caozuotixing">操作提醒</string>
+    <string name="lianjieshibai">Connection failed</string>
+    <string name="celiangzhong">Measuring \nPlease wait a moment...</string>
+    <string name="xueyashuoming">Reference range:  General population: SBP: 120(mmHg），DBP: 80(mmHg)\nChronic disease, elderly population: SBP: 140(mmHg），DBP: 90(mmHg)</string>
+    <string name="lianjieshibai_chongxin">Connection failed reconnect</string>
+    <string name="celiangcaozuo">Operation</string>
+    <string name="celiangjieguo">Results</string>
+    <string name="measurement_results">Measurement results : </string>
+    <string name="_1_5_n2_n3">1. Sit still for 5 minutes before measuring, keeping the center of the cuff at the same height as the heart. \n2. Press the [Switch] button to start measurement. \n3. Please do not talk or move your body during the measurement</string>
+    <string name="querenkaiji">Next</string>
+    <string name="xiayibu">Next</string>
+    <string name="zhengchang">Normal</string>
+    <string name="yichang">Abnormal</string>
+    <string name="_1_n2_2_3cm_n3">1. Connect the device, open arms, palms up, elbows straight, cuff cuff \n2, cuff trachea pointing to the lower arm, the lower edge of the cuff from the elbow socket 2-3cm \n3, the cuff hose is placed on the brachial artery pulse point</string>
+    <string name="xueya">Blood pressure</string>
+    <string name="quxiao">Cancel</string>
+    <string name="shebeiceliang">Measurement</string>
+    <string name="caozuotixing">Reminder</string>
 
-    <string name="operation_guide">操作指南：</string>
-    <string name="operation_guide_e">操作指南：</string>
-    <string name="waiting_for_measurement">等待测量...\n\n测量完成后即可获取结果.</string>
-    <string name="reconnect">已经解决 重新连接</string>
+    <string name="operation_guide">Operation guide：</string>
+    <string name="operation_guide_e">Operation guide：</string>
+    <string name="waiting_for_measurement">Waiting for measurement ... \n \nObtain results after measurement.</string>
+    <string name="reconnect">Resolved Reconnect</string>
 
-    <string name="normal">正常</string>
-    <string name="abnormal">异常</string>
+    <string name="normal">Normal</string>
+    <string name="abnormal">Abnormal</string>
 
-    <string name="next">下一步</string>
+    <string name="next">Next</string>
 
-    <string name="central_arterial_stiffness_index">中心动脉硬度指标</string>
-    <string name="upper_arm_arteriosclerosis_index">上臂动脉硬化指标</string>
+    <string name="central_arterial_stiffness_index">Central arterial stiffness index</string>
+    <string name="upper_arm_arteriosclerosis_index">Upper Arm Arteriosclerosis Index</string>
 
-    <string name="bp_ave_reminder_first_1">1.将手臂伸入臂筒内，\n手臂肘部放在凹陷处。</string>
-    <string name="bp_ave_reminder_first_2">2.保持正确坐姿，\n按[开始/停止]按钮，\n开始测量血压。</string>
+    <string name="bp_ave_reminder_first_1">1. Extend your arm into the barrel, \n place your elbow in the recess.</string>
+    <string name="bp_ave_reminder_first_2">2. Maintain the correct sitting position, \npress the [Start/Stop] button, \nstart to measure blood pressure.</string>
 
-    <string name="arm_cylinder_sphygmomanometer">臂筒血压计式</string>
+    <string name="arm_cylinder_sphygmomanometer">Bronze sphygmomanometer</string>
 
-    <string name="dbp_e">低压</string>
-    <string name="sbp_e">高压</string>
+    <string name="dbp_e">DBP</string>
+    <string name="sbp_e">SBP</string>
 </resources>

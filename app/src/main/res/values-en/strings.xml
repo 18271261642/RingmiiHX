@@ -1318,5 +1318,10 @@
 
     <!-- Weather -->
 
-
+    <string name = "wx_scan">Wechat scan</string>
+    <string name = "wx_scan_long_click">Long press QR to save</string>
+    <string name = "wx_scan_tips">Open WeChat Scan, scan the QR code to enter the [Guider Health] attention page, or add a friend on WeChat, select the public account to search for the "Guider Health" public account and follow, and follow you at any time</string>
+    <string name = "wx_scan_skip">Skip></string>
+    <string name = "wx_scan_screen_save_ok">Screenshot saved successfully!</string>
+    <string name = "wx_scan_screen_save_error">Screenshot failed to save!</string>
 </resources>

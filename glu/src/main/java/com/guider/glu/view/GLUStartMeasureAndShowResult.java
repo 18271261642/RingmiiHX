@@ -72,7 +72,7 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
             }
         });
 
-        ((TextView) view.findViewById(R.id.title)).setText("设备测量");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.device_test));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +152,7 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                promp.setText("初始化失败 , 请重启设备");
+                promp.setText(getResources().getString(R.string.init_error));
                 view.findViewById(R.id.glu_cancel).setVisibility(View.VISIBLE);
             }
         });
@@ -216,14 +216,14 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                promp.setText(promp.getText().toString() + "\n请重启设备后重新测量.");
+                promp.setText(promp.getText().toString() + "\n" + getResources().getString(R.string.reboot_device));
                 promp.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 view.findViewById(R.id.loadinglayout).setVisibility(View.GONE);
                 view.findViewById(R.id.glu_touch_tip).setVisibility(View.GONE);
                 view.findViewById(R.id.tip_icon).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.glu_cancel).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.loadingroot).setVisibility(View.VISIBLE);
-                Toast.makeText(_mActivity, "测量错误, 请点击取消进行重新测量", Toast.LENGTH_SHORT).show();
+                Toast.makeText(_mActivity, getResources().getString(R.string.test_error), Toast.LENGTH_SHORT).show();
 
             }
         });

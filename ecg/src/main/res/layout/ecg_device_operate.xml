@@ -7,7 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
     <LinearLayout
         style="@style/myBodyLayout"
@@ -17,21 +17,19 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_13"
                 android:layout_gravity="center_vertical"
-                android:background="@mipmap/m500" />
+                android:background="@mipmap/logon_guider" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="六导心电"
+                android:text="@string/ecg"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -48,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作指南"
+                android:text="@string/op_guide"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_16" />
 
@@ -64,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/testing"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -80,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
+                android:text="@string/device_test"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -97,56 +95,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/test_result"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
 
-
-
         <LinearLayout
             android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_29"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
 
             <LinearLayout
+                android:layout_weight="2"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_width="@dimen/dp_214"
-                android:layout_height="@dimen/dp_266">
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_marginTop="@dimen/dp_37"
-                    android:layout_width="@dimen/dp_177"
-                    android:layout_height="@dimen/dp_162"
-                    android:background="@mipmap/ecg" />
+                    android:layout_weight="8"
+                    android:layout_width="@dimen/dp_150"
+                    android:layout_height="0dp"
+                    android:scaleType="fitCenter"
+                    android:background="@mipmap/ecg"
+                    android:gravity="center"/>
 
                 <TextView
-                    android:text="六导智慧心电检测"
+                    android:layout_weight="2"
+                    android:text="@string/ecg_device_name"
                     android:textColor="#7D7D7D"
                     android:textSize="@dimen/sp_18"
                     android:layout_marginTop="@dimen/dp_35"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="0dp"
+                    android:gravity="center"/>
             </LinearLayout>
 
 
 
             <LinearLayout
+                android:layout_weight="3"
                 android:layout_marginLeft="@dimen/dp_36"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="操作指南："
+                    android:text="@string/op_guide_"
                     android:textColor="#7D7D7D"
                     android:textSize="@dimen/sp_19" />
 
@@ -154,17 +156,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_17"
-                    android:text="1. 长按电源开关约2秒\n2. 电源指灯亮起\n3. 完成开机准备"
+                    android:text="@string/ecg_tips4"
                     android:textColor="#171717"
                     android:textSize="@dimen/sp_21" />
 
                 <Button
                     android:id="@+id/next"
-                    android:text="确认已开机 下一步"
+                    android:text="@string/confirm_device_open"
                     android:textSize="@dimen/dp_19"
                     android:textColor="#ffffff"
-                    android:layout_marginLeft="@dimen/dp_234"
-                    android:layout_marginTop="@dimen/dp_33"
+                    android:layout_gravity="bottom|end"
                     android:paddingLeft="@dimen/dp_30"
                     android:paddingRight="@dimen/dp_30"
                     android:background="@drawable/button_cancel"

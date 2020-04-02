@@ -46,7 +46,7 @@ public class ECGDeviceMeasureResult extends ECGFragment {
         }
 
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
-        ((TextView) view.findViewById(R.id.title)).setText("测量结果");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.test_result)); // "测量结果");
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +56,7 @@ public class ECGDeviceMeasureResult extends ECGFragment {
         });
 
         double aDouble = Double.valueOf(HearRate.getInstance().getHeartRate());
-        ((TextView) view.findViewById(R.id.heart)).setText("心率: " + (int)aDouble + " " + new Unit().heart);
+        ((TextView) view.findViewById(R.id.heart)).setText(getResources().getString(R.string.avg_hr) + ": " + (int)aDouble + " " + new Unit().heart);
 
         HearRate.getInstance().startStandardRun(new StandardCallback() {
             @Override
@@ -107,11 +107,11 @@ public class ECGDeviceMeasureResult extends ECGFragment {
 
     private void setServer() {
         //心率健康
-        ((TextView) view.findViewById(R.id.heart_rate)).setText("心率健康: " + HearRate.getInstance().getStr_PNN50());
+        ((TextView) view.findViewById(R.id.heart_rate)).setText(getResources().getString(R.string.health_hr) + HearRate.getInstance().getStr_PNN50());
         //压力指数
-        ((TextView) view.findViewById(R.id.pressure_index)).setText("压力指数: " + HearRate.getInstance().getStr_SDNN());
+        ((TextView) view.findViewById(R.id.pressure_index)).setText(getResources().getString(R.string.stress) + HearRate.getInstance().getStr_SDNN());
         //疲劳指数
-        ((TextView) view.findViewById(R.id.fatigue_index)).setText("疲劳指数: " + HearRate.getInstance().getStr_LFHF());
+        ((TextView) view.findViewById(R.id.fatigue_index)).setText(getResources().getString(R.string.tired) + HearRate.getInstance().getStr_LFHF());
     }
 
     private void setLocal() {
@@ -150,13 +150,13 @@ public class ECGDeviceMeasureResult extends ECGFragment {
         if (results != null && results.size() == 4) {
             //心率健康
             HearRate.getInstance().setStr_PNN50(results.get(1));
-            ((TextView) view.findViewById(R.id.heart_rate)).setText("心率健康: " + results.get(1));
+            ((TextView) view.findViewById(R.id.heart_rate)).setText(getResources().getString(R.string.health_hr) + results.get(1));
             //压力指数
             HearRate.getInstance().setStr_SDNN(results.get(2));
-            ((TextView) view.findViewById(R.id.pressure_index)).setText("压力指数: " + results.get(2));
+            ((TextView) view.findViewById(R.id.pressure_index)).setText(getResources().getString(R.string.stress) + results.get(2));
             //疲劳指数
             HearRate.getInstance().setStr_LFHF(results.get(3));
-            ((TextView) view.findViewById(R.id.fatigue_index)).setText("疲劳指数: " + results.get(3));
+            ((TextView) view.findViewById(R.id.fatigue_index)).setText(getResources().getString(R.string.tired) + results.get(3));
         }
 
     }

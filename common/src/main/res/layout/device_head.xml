@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingLeft="@dimen/dp_27"
-    android:paddingRight="@dimen/dp_27"
-    style="@style/myHeadLayout">
+    style="@style/myHeadLayout"
+    android:background="@drawable/normal_back_head">
 
     <LinearLayout
         android:id="@+id/back"

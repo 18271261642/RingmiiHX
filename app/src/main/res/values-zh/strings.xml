@@ -1365,4 +1365,11 @@
     <string name="bind_phone_success">绑定成功</string>
 
     <string name="btn_health">健康</string>
+
+    <string name="wx_scan">微信 扫一扫</string>
+    <string name="wx_scan_long_click">长按微信二维码保存</string>
+    <string name="wx_scan_tips">打开微信“扫一扫”,扫描二维码进入[盖德健康]关注页面,或微信添加好友选择公众号搜索“盖德健康”公众号并关注，随时关注您</string>
+    <string name="wx_scan_skip">跳过></string>
+    <string name="wx_scan_screen_save_ok">屏幕截图保存成功!</string>
+    <string name="wx_scan_screen_save_error">屏幕截图保存失败!</string>
 </resources>

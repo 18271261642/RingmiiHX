@@ -45,5 +45,6 @@ dependencies {
     implementation project(path: ':simpleble')
     implementation project(path: ':rtc')
     implementation project(path: ':apilib')
+    implementation project(':bluetooth')
     implementation 'com.squareup:javapoet:1.7.0'
 }

@@ -1,11 +1,12 @@
 package com.guider.health.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class BaseResultViewHolder<T> {
-
+    private Context mContext;
     View view;
     int requestStatus = REQUEST_STATUS_NEVER;
     public static int REQUEST_STATUS_OK = 1;
@@ -14,8 +15,8 @@ public abstract class BaseResultViewHolder<T> {
     int code = 0;
     int request = 0;
 
-
     public BaseResultViewHolder(ViewGroup viewGroup) {
+        mContext = viewGroup.getContext();
         this.view = LayoutInflater.from(viewGroup.getContext()).inflate(getLayout(), viewGroup, false);
     }
 
@@ -46,4 +47,8 @@ public abstract class BaseResultViewHolder<T> {
     public abstract void request(RequestCallback callback);
 
     public abstract boolean hasData();
+
+    protected Context getContext() {
+        return mContext;
+    }
 }

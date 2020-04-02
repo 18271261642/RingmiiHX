@@ -18,6 +18,7 @@ import com.guider.health.bp.view.TipTitleView;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.HeartPressAve;
 import com.guider.health.common.core.HeartPressBp;
+import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.utils.SkipClick;
 import com.sdk.core.OnBPxxActionListener;
@@ -223,7 +224,7 @@ public class BPOperaterReminder1 extends BPFragment {
             if ("AVE-2000".equals(device.getName())) {
                 BleClient.instance().stopSearching();
                 BleClient.instance().recordDevice(device);
-                HeartPressBp.getInstance().setDeviceAddress(device.getMac());
+                HeartPressBp.getInstance().setDeviceAddress(MyUtils.getMacAddress());
                 mBPxx.StartKeepAlive();
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override

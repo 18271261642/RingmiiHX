@@ -11,6 +11,7 @@ import com.guider.health.common.utils.JsonUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.activity.GuiderWxBindPhoneActivity;
+import com.guider.healthring.activity.WxScanActivity;
 import com.guider.healthring.bean.GuiderWXUserInfoBean;
 import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.bean.WXUserBean;
@@ -21,6 +22,7 @@ import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
+import com.guider.healthring.util.WxScanUtil;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.tencent.mm.sdk.openapi.BaseReq;
@@ -97,7 +99,7 @@ public class WXEntryActivityAdapter {
                                     SharedPreferencesUtils.saveObject(mContext, "userInfo", userStr);
                                     SharedPreferencesUtils.saveObject(mContext, Commont.USER_INFO_DATA, userStr);
 
-                                    startActivity(NewSearchActivity.class);
+                                    // startActivity(NewSearchActivity.class);
                                     // finish();
                                 }
                             }
@@ -167,7 +169,6 @@ public class WXEntryActivityAdapter {
         requestPressent.getRequestJSONObject(1003,GUIDER_WX_LOGIN_URL, mContext,new Gson().toJson(maps),3);
     }
 
-
     //解析登录到盖德返回信息，判断是否需要绑定手机号
     private void analysiWXToGuiderData(String str) {
         try {
@@ -180,10 +181,20 @@ public class WXEntryActivityAdapter {
             if(!flag){      //false不需要绑定手机号
                 long accountId = guiderWXUserInfoBean.getData().getTokenInfo().getAccountId();
                 SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
-                startActivity(NewSearchActivity.class);
-                // finish();
-            }else{
 
+                WxScanUtil.handle(mContext, accountId, new WxScanUtil.IWxScan() {
+                    @Override
+                    public void onError() {
+                        startActivity(NewSearchActivity.class);
+                    }
+                    @Override
+                    public void onOk() {
+                        Intent intent = new Intent(mContext, WxScanActivity.class);
+                        intent.putExtra("accountId", accountId);
+                        mContext.startActivity(intent);
+                    }
+                });
+            }else{
                 if(wxUserBean == null)
                     return;
 
@@ -196,7 +207,6 @@ public class WXEntryActivityAdapter {
                 String wxStr = new Gson().toJson(param);
 
                 startActivity(GuiderWxBindPhoneActivity.class,new String[]{"wxStr"},new String[]{wxStr});
-
             }
 
 

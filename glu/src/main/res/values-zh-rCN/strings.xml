@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name" translatable="false">glu</string>
+    <string name="measure_3_qingyongshouzhi">请用手指插入到手指夹型传感器</string>
+    <string name="measure_3_lianjieshibai">设备连接失败, 请确保电源已经打开</string>
+    <string name="measure_3_fuhehuanjing">符合环境条件</string>
+    <string name="glu_shebeidianliangdi">, 设备电量低, 请在测试前充电</string>
+    <string name="glu_huanjingwendudi">, 环境温度太低, 可能会影响测试结果!</string>
+    <string name="glu_huanjingwendugao">, 环境温度太高, 可能会影响测试结果!</string>
+    <string name="glu_huanjingtaigan">, 环境太干燥,可能会影响测试结果!</string>
+    <string name="glu_shouzhiwendutaidi">手指温度太低, 可能会影响测试结果</string>
+    <string name="shouzhiwendugao">手指温度太高, 可能会影响测试结果</string>
+    <string name="glu_shouzhiweizhengque">手指未正确伸入!</string>
+    <string name="glu_shujushoujicuowu">数据收集错误,请重新插入手指!</string>
+    <string name="glu_shouzhiganceyouhu">手指感测有误，可能导致错误的数据收集。</string>
+    <string name="glu_shouzhiyiyikai">手指已移开!</string>
+    <string name="glu_shouzhiweishenru">手指未伸入!</string>
+    <string name="glu_chucuodeceshi">出错的测试, 请再次测试</string>
+    <string name="glu_dingqijiankangjiancha">定期健康检查</string>
+    <string name="meitianyundong30fenzhong">每天运动30分钟</string>
+    <string name="congshishuyahuodong">从事舒压活动，让自己多放松</string>
+    <string name="glu_zhengqueyinshi">正确饮食, 依照下列饮食顺序和份量, 2份高纤蔬菜, 2份蛋白质, 1份碳水化合物</string>
+    <string name="glu_weichichongzudeshuimian">维持充足的睡眠</string>
+    <string name="glu_buchongshuifen">补充水份</string>
+
+    <string name="not_take_med">未服药</string>
+    <string name="sulfonylureas">璜脲类</string>
+    <string name="biguanide">双胍类</string>
+    <string name="liver_enzyme_inhibitor_drugs">肝酶抑制剂</string>
+
+    <string name="glu">无创血糖</string>
+    <string name="input_param">参数输入</string>
+    <string name="open_tips">开机提示</string>
+    <string name="bt_connect">蓝牙连接</string>
+    <string name="device_test">设备测量</string>
+    <string name="test_result">测量结果</string>
+
+    <string name="height">身高</string>
+    <string name="weight">体重</string>
+
+    <string name="glu_level">血糖水平:</string>
+
+    <string name="normal">正常</string>
+    <string name="abnormal">异常</string>
+    <string name="abnormal_glu">异常≥7mmol/L</string>
+
+    <string name="fpg">清晨空腹</string>
+    <string name="fpg_">清晨空腹:</string>
+    <string name="twohppg">餐后2小时</string>
+    <string name="twohppg_normal">餐后2小时\n摄食量:适中</string>
+    <string name="twohppg_full">餐后2小时\n摄食量:大</string>
+
+    <string name="next_step">下一步</string>
+
+    <string name="op_guide">操作指南：</string>
+    <string name="bt_connetting">蓝牙连接中...</string>
+    <string name="bt_reconnectting">已经解决 重新连接</string>
+
+    <string name="into_finger">请伸入手指</string>
+    <string name="finish_in_time">请在规定时间内完成操作</string>
+    <string name="glu_test_tips">建议的环境温度 20℃—27℃        合适的手指温度29℃—35℃</string>
+    <string name="initing_device">正在初始化设备, 请勿伸入手指 !</string>
+    <string name="retry">已重启设备 , 重试</string>
+
+    <string name="glu_device">无创血糖仪</string>
+    <string name="op_guide_empty">操作指南</string>
+    <string name="boot_device_tips">请先长按设备的开机键2秒钟，右侧蓝灯点亮既为正常开机。</string>
+    <string name="confirm_device">确认已开机 下一步</string>
+
+    <string name="init_error">初始化失败 , 请重启设备</string>
+    <string name="test_error">测量错误, 请点击取消进行重新测量</string>
+    <string name="reboot_device">请重启设备后重新测量.</string>
+
+    <string name="device_conn">设备连接</string>
+    <string name="conn_error1">1.请确认设备已正常开启\n2.请确认系统【蓝牙】已开启或重启系统蓝牙\n3.请确认系统【位置信息】功能已开启</string>
+    <string name="conn_error2">连接失败, 请确保设备开关已经打开</string>
+
+    <string name="no_network">没有网络, 请打开网络</string>
+
+    <string name="device_conn_error">设备连接失败, 请确保电源已经打开</string>
+
+    <string name="param_input">测量参数输入</string>
+    <string name="op_tips">操作提示</string>
+</resources>

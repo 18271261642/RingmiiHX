@@ -13,6 +13,7 @@ import com.guider.health.bp.view.BPFragment;
 import com.guider.health.bp.view.TipTitleView;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.HeartPressBp;
+import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.utils.SkipClick;
 
@@ -112,7 +113,7 @@ public class BPOperaterReminder0 extends BPFragment {
         @Override
         public void onConnectSuccess(SimpleDevice device) {
             super.onConnectSuccess(device);
-            HeartPressBp.getInstance().setDeviceAddress(device.getMac());
+            HeartPressBp.getInstance().setDeviceAddress(MyUtils.getMacAddress());
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

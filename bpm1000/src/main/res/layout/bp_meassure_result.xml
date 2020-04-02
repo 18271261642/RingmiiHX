@@ -6,7 +6,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
 
     <LinearLayout
@@ -17,15 +17,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_13"
                 android:layout_gravity="center_vertical"
-                android:background="@mipmap/m500" />
+                android:background="@mipmap/logon_guider" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -104,16 +102,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_28"
+            android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
 
                 <FrameLayout
                     android:layout_width="@dimen/dp_214"
@@ -381,10 +380,11 @@
                 android:id="@+id/operat_reminders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_20"
                 android:text="@string/xueyashuoming"
                 android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_15" />
+                android:textSize="@dimen/sp_15"
+                android:layout_gravity="center_horizontal"/>
 
 
             <Button
@@ -392,12 +392,12 @@
                 android:layout_width="@dimen/dp_134"
                 android:layout_height="@dimen/dp_44"
                 android:visibility="visible"
-                android:layout_marginLeft="@dimen/dp_410"
-                android:layout_marginTop="@dimen/dp_13"
+                android:layout_marginTop="@dimen/dp_10"
                 android:background="@drawable/button_cancel"
                 android:text="@string/xiayibu"
                 android:textColor="#ffffff"
-                android:textSize="@dimen/dp_19" />
+                android:textSize="@dimen/dp_19"
+                android:layout_gravity="right|bottom|end"/>
 
         </LinearLayout>
 

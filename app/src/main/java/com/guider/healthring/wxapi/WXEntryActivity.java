@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.activity.GuiderWxBindPhoneActivity;
+import com.guider.healthring.activity.LoginActivity;
+import com.guider.healthring.activity.WxScanActivity;
 import com.guider.healthring.bean.BlueUser;
 import com.guider.healthring.bean.GuiderWXUserInfoBean;
 import com.guider.healthring.bean.WXUserBean;
@@ -19,6 +21,7 @@ import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
+import com.guider.healthring.util.WxScanUtil;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.tencent.mm.sdk.openapi.BaseReq;
@@ -269,8 +272,21 @@ public class WXEntryActivity extends WatchBaseActivity implements IWXAPIEventHan
             if(!flag){      //false不需要绑定手机号
                 long accountId = guiderWXUserInfoBean.getData().getTokenInfo().getAccountId();
                 SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
-                startActivity(NewSearchActivity.class);
-                finish();
+
+                WxScanUtil.handle(WXEntryActivity.this, accountId, new WxScanUtil.IWxScan() {
+                    @Override
+                    public void onError() {
+                        startActivity(NewSearchActivity.class);
+                        finish();
+                    }
+                    @Override
+                    public void onOk() {
+                        Intent intent = new Intent(WXEntryActivity.this, WxScanActivity.class);
+                        intent.putExtra("accountId", accountId);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }else{
 
                 if(wxUserBean == null)

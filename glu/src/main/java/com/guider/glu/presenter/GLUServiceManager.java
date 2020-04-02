@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.guider.glu.R;
 import com.guider.glu.model.BodyIndex;
 import com.guider.glu.model.GLUMeasureModel;
 import com.guider.glu.model.PersonalInfo;
@@ -45,11 +46,9 @@ public class GLUServiceManager {
 
     private static GLUServiceManager serviceManager = new GLUServiceManager();
     private GLUServiceManager(){
-
     }
 
     public static GLUServiceManager getInstance(){
-
         return serviceManager;
     }
 
@@ -59,13 +58,11 @@ public class GLUServiceManager {
     private WeakReference<GLUViewInterface> fView;
 
     public void setBodyIndex(String timeMeal, String diabetesType, String glucose, String weight, String height) {
-
         BodyIndex.getInstance().setTimeMeal(timeMeal);
         BodyIndex.getInstance().setDiabetesType(diabetesType);
         BodyIndex.getInstance().setGlucose(glucose);
         BodyIndex.getInstance().setWeigh(weight);
         BodyIndex.getInstance().setHeight(height);
-
     }
 
     public void setViewObject(GLUViewInterface view) {
@@ -85,12 +82,9 @@ public class GLUServiceManager {
     public void generateData(BluetoothGatt gatt,
                              BluetoothGattCharacteristic characteristic) {
         synchronized (this) {
-
             if (characteristic == null || gatt == null) {
                 Log.i("haix", "-------------GLU第一个请求发出去了--------------");
-
                 measureModel.sendDataToDevice();
-
             } else {
                 Log.i("haix", "-------------GLUread后的请求--------------");
                 if (characteristic.getUuid().equals(GLUDeviceUUID.SERVICE_UUID)) {
@@ -98,129 +92,13 @@ public class GLUServiceManager {
 
                 } else if (characteristic.getUuid().equals(GLUDeviceUUID.DATA_LINE_UUID)) {
                     measureModel.dataLineUUID(characteristic.getValue());
-
                 }
             }
-
         }
-
     }
 
     public void uploadHeightAndWeight(final int height, final int weight){
 
-//        try {
-//
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("accountId", UserManager.getInstance().getAccountId());
-//
-//            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(OK_HTTP_CLIENT).build();
-//            RestService restService = retrofit.create(RestService.class);
-//            Call<ResponseBody> call = restService.get("api/v1/userinfo", map);
-//
-//            call.enqueue(new Callback<ResponseBody>() {
-//                @Override
-//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                    try {
-//                        String result = response.body().string();
-//
-//
-//                        JSONObject jo = JSON.parseObject(result);
-//                        int code = jo.getInteger("code");
-//
-//
-//                        JSONObject data = jo.getJSONObject("data");
-//
-//                        if (code >= 0 && data != null) {
-//
-//                            PersonalInfo personalInfo = data.toJavaObject(PersonalInfo.class);
-//                            if (personalInfo.getWeight() != weight || personalInfo.getWeight() != height){
-//                                personalInfo.setHeight(height);
-//                                personalInfo.setWeight(weight);
-//                                updataPersonalInfo(personalInfo);
-//                            }else{
-//                                if (fView.get() != null) {
-//                                    fView.get().uploadPersonalInfoSucceed();
-//                                }
-//                            }
-//
-//                        }else{
-//                            if (fView.get() != null) {
-//                                fView.get().uploadPersonalInfoFailed();
-//                            }
-//                        }
-//
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//                }
-//            });
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    private void updataPersonalInfo(PersonalInfo personalInfo){
-        try {
-
-            JSONObject jsonObject = (JSONObject) JSON.toJSON(personalInfo);
-            final RequestBody requestBody =
-                    RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
-
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(OK_HTTP_CLIENT).build();
-            RestService restService = retrofit.create(RestService.class);
-
-
-            Call<ResponseBody> call = restService.putWithBody("api/v1/userinfo", requestBody);
-
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    try {
-                        String result = response.body().string();
-
-
-                        JSONObject jo = JSON.parseObject(result);
-                        int code = jo.getInteger("code");
-
-
-                        JSONObject data = jo.getJSONObject("data");
-
-                        if (code >= 0 && data != null) {
-
-                            if (fView.get() != null) {
-                                fView.get().uploadPersonalInfoSucceed();
-                            }
-
-
-                        }else{
-                            if (fView.get() != null) {
-                                fView.get().uploadPersonalInfoFailed();
-                            }
-
-                        }
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private static final int TIME_OUT = 60;
@@ -235,7 +113,6 @@ public class GLUServiceManager {
     }
 
     public void startMeassure(){
-
         measureModel.makeInputData(BodyIndex.getInstance().getTimeMeal(),
                 BodyIndex.getInstance().getDiabetesType(),
                 BodyIndex.getInstance().getGlucose(),
@@ -249,9 +126,7 @@ public class GLUServiceManager {
     }
 
     public void connectFailed(int status) {
-
         Log.i("haix", "连接失败1");
-
         if (fView.get() != null) {
             fView.get().connectFailed(status);
         }
@@ -305,7 +180,6 @@ public class GLUServiceManager {
     }
 
     public void connSuccess_phone() {
-
         startSendByteToMeassure();
     }
 
@@ -326,9 +200,7 @@ public class GLUServiceManager {
     }
 
     public void startSendByteToMeassure(){
-
         measureModel.makeInputData();
-
         setMeasureListener();
         generateData(null, null);
     }
@@ -356,7 +228,7 @@ public class GLUServiceManager {
         if (activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
 
-                Toast.makeText(activityWeakReference.get(), "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -385,8 +257,6 @@ public class GLUServiceManager {
         jsonObject.put("urea", "1".equals(BodyIndex.getInstance().getSulphonylureasState()));
         jsonObject.put("value", BodyIndex.getInstance().getValue());
 
-
-
         final RequestBody requestBody =
                 RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
 
@@ -403,19 +273,10 @@ public class GLUServiceManager {
                     JSONObject jsonObject = JSON.parseObject(result);
                     int code = jsonObject.getInteger("code");
                     if (code >= 0) {
-//
-                        //operatorCallBack.result(code, "成功");
                     } else {
-//                        if (cardInfoView.get() != null) {
-//                            cardInfoView.get().uploadCardInfoFailed();
-//                        }
-
                         //失败
                         String msg = jsonObject.getString("msg");
-                        //operatorCallBack.result(code, msg);
                     }
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     //operatorCallBack.result(1, "异常");
@@ -437,8 +298,7 @@ public class GLUServiceManager {
     public void getNonbsSet(WeakReference<Activity> activityWeakReference, final CallBack operatorCallBack) {
         if (activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
-
-                Toast.makeText(activityWeakReference.get(), "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -447,10 +307,7 @@ public class GLUServiceManager {
         HashMap params = new HashMap();
         params.put("accountId", UserManager.getInstance().getAccountId());
 
-
         try {
-
-
             Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL_apihd).client(OK_HTTP_CLIENT).build();
             RestService restService = retrofit.create(RestService.class);
             Call<ResponseBody> call = restService.get("/api/v1/nonbs/set", params);
@@ -458,8 +315,6 @@ public class GLUServiceManager {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
-
-
                         String result = response.body().string();
 
                         JSONObject jsonObject = JSON.parseObject(result);
@@ -519,15 +374,12 @@ public class GLUServiceManager {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-
         }
     }
 
 
     public void setMeasureListener() {
-
         measureModel.setMeasureResultListener(new GLUMeasureModel.MeasureResultListener() {
-
             @Override
             public void measureTime(String time) {
                 toMeasureTime(time);
@@ -585,7 +437,4 @@ public class GLUServiceManager {
 
         });
     }
-
-
-
 }

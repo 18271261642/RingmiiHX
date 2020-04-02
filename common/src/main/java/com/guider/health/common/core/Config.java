@@ -24,6 +24,7 @@ public class Config {
     public final static String ECG_FRAGMENT = "com.guider.health.ecg.view.ECGDeviceOperate";
     public final static String ECG_HD_FRAGMENT = "com.gaider.proton.view.ProtonEcgFirst";
     public final static String GLU_FRAGMENT = "com.guider.glu.view.GLUChooseTime";
+    public final static String FORA_GLU_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
     // 移动版
     public static String BP_FRAGMENT = "com.guider.health.bp.view.bp.BPFirstOperaterReminder";
     // AVE
@@ -47,24 +48,10 @@ public class Config {
     public final static String PRINT_FRAGMENT = "com.guider.printlib.PrintingResultFragment";
     public final static String DAO12_FRAGMENT = "cn.wuweikang.view.VideoShow";
 
-
-
-
-
     public final static HashMap<String, Boolean> mapX = new HashMap<>();
-
 
     public static String IndexOxygen;
 
-//    public static String IndexBPress;
-
-
-
-
     public static final List<String> DEVICE_KEYS = new ArrayList<>();
     public static final ArrayMap<String, Devices> DEVICE_OBJ = new ArrayMap<>();
-
-
-
-
 }

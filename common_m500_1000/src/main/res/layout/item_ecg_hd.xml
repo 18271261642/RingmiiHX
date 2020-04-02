@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_49"
-        android:text="心电"
+        android:text="@string/ecg"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_15"
         android:textStyle="bold" />
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="心率"
+                android:text="@string/heart_rate"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -63,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="饮酒风险"
+                android:text="@string/drinking_risk"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -91,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="精神压力"
+                android:text="@string/mental_stress"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -119,7 +119,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="情绪变化"
+                android:text="@string/mood_change"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="体脂率"
+                android:text="@string/body_fat"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 

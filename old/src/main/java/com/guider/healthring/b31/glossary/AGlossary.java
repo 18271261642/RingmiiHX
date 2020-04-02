@@ -63,7 +63,7 @@ public abstract class AGlossary {
     @Override
     public String toString() {
         return "AGlossary{" +
-                "head='" + head + '\'' +
+                "device_head='" + head + '\'' +
                 ", groupString=" + Arrays.toString(groupString) +
                 ", itemString=" + Arrays.toString(itemString) +
                 '}';

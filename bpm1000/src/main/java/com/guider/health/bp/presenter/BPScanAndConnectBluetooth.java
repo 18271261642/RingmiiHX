@@ -41,7 +41,6 @@ public class BPScanAndConnectBluetooth{
                             toConnect();
                         }
                     }, 500);
-//                    return device;
                 }
                 return null;
             }
@@ -59,41 +58,10 @@ public class BPScanAndConnectBluetooth{
 //                toConnect();
             }
         });
-//        BleBluetooth.getInstance().scanBle(60000, new BleBluetooth.ScanCallback() {
-//
-//            @Override
-//            public void scanBle(BluetoothDevice btDevice, int rssi, byte[] scanRecord) {
-//
-//
-//                Log.i("haix", "device: "+btDevice.getName()+ " 地址: "+ btDevice.getAddress());
-//
-//                if (FORA_P30.equals(btDevice.getName())) {
-//                    if (device == null){
-//                        device = btDevice;
-//                        HeartPressBp.getInstance().setDeviceAddress(device.getAddress());
-//
-//                        toConnect();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void scanBleStop() {
-//
-//
-//                if (device == null){
-//                    measure.scanAndconnectFailed();
-//                }
-//            }
-//        });
-
     }
 
     public void toConnect() {
-
         BleBluetooth.getInstance().connectBle(new BPDeviceUUID(), device, new BleBluetooth.BluetoothGattStateListener() {
-
-
             @Override
             public void onWrite(BluetoothGatt gatt, BluetoothGattDescriptor characteristic) {
                     measure.generateData(null, null);
@@ -101,29 +69,20 @@ public class BPScanAndConnectBluetooth{
 
             @Override
             public void onWriteSuccess(BluetoothGattCharacteristic characteristic) {
-
             }
 
             @Override
             public void onRead(BluetoothGatt gatt,
                                BluetoothGattCharacteristic characteristic) {
-
                     measure.generateData(gatt, characteristic);
-
             }
 
             @Override
             public void connectFailed(int status) {
-
                 if (device == null){
                     measure.scanAndconnectFailed();
                 }
-
             }
         });
-
     }
-
-
-
 }

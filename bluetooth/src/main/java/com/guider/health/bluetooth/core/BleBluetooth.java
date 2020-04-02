@@ -178,7 +178,6 @@ public class BleBluetooth {
     }
 
     public void nowStopScan() {
-
         if (mScanCallBack != null) {
             mHandler.removeCallbacksAndMessages(null);
             bluetoothAdapter.stopLeScan(leScanCallback);

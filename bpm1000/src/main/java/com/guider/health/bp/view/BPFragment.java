@@ -21,7 +21,6 @@ public class BPFragment extends BaseFragment implements BPVIewInterface {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         BPServiceManager.getInstance().setViewObject(this);
     }
 
@@ -29,15 +28,10 @@ public class BPFragment extends BaseFragment implements BPVIewInterface {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-
         if (!hidden) {
-
             BPServiceManager.getInstance().setViewObject(this);
         }
-
-
     }
-
 
     @Override
     public void connectAndMessureIsOK() {
@@ -56,12 +50,13 @@ public class BPFragment extends BaseFragment implements BPVIewInterface {
 
     protected void showDialog(int layout) {
         dialog = new Dialog(_mActivity);
-        //去掉标题线
+        // 去掉标题线
         dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
         dialog.setContentView(layout);
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
 
-        //背景透明
+        // 背景透明
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.show();
 

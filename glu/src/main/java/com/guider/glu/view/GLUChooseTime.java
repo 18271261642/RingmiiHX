@@ -256,21 +256,21 @@ public class GLUChooseTime extends GLUFragment {
                             not_normal_page.setVisibility(View.VISIBLE);
                             BodyIndex.getInstance().setDiabetesType("");//设置不正常
                             if (Glucose.getInstance().getFoodTime() == 0){
-                                text_foot_time.setText("清晨空腹:");
+                                text_foot_time.setText(getResources().getString(R.string.fpg) + ":");
 
                                 Glucose.getInstance().setFoodTime(0);
                                 if (isOpenEatM){
-                                    text_foot_time.setText("清晨空腹:");
+                                    text_foot_time.setText(getResources().getString(R.string.fpg) + ":");
                                     empty_food_seleted.setVisibility(View.VISIBLE);
                                     time1_food_selected.setVisibility(View.GONE);
                                 }
 
                             }else{
-                                text_foot_time.setText("餐后2小时:");
+                                text_foot_time.setText(getResources().getString(R.string.twohppg) + ":");
 
                                 Glucose.getInstance().setFoodTime(2);
                                 if (isOpenEatM){
-                                    text_foot_time.setText("餐后2小时:");
+                                    text_foot_time.setText(getResources().getString(R.string.twohppg) + ":");
                                     empty_food_seleted.setVisibility(View.GONE);
                                     time1_food_selected.setVisibility(View.VISIBLE);
                                 }
@@ -388,12 +388,11 @@ public class GLUChooseTime extends GLUFragment {
         });
 
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
-        ((TextView) view.findViewById(R.id.title)).setText("测量参数输入");
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.param_input));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pop();
-
             }
         });
 
@@ -409,7 +408,7 @@ public class GLUChooseTime extends GLUFragment {
                 //toNextView(Ti.EMPTY_FOOD);
                 Glucose.getInstance().setFoodTime(0);
                 if (isOpenEatM){
-                    text_foot_time.setText("清晨空腹:");
+                    text_foot_time.setText(getResources().getString(R.string.fpg_));
                     empty_food_seleted.setVisibility(View.VISIBLE);
                     time1_food_selected.setVisibility(View.GONE);
                 }
@@ -423,7 +422,7 @@ public class GLUChooseTime extends GLUFragment {
                 //toNextView(Ti.ONETIME_FOOD);
                 Glucose.getInstance().setFoodTime(2);
                 if (isOpenEatM){
-                    text_foot_time.setText("餐后2小时:");
+                    text_foot_time.setText(getResources().getString(R.string.twohppg) + ":");
                     empty_food_seleted.setVisibility(View.GONE);
                     time1_food_selected.setVisibility(View.VISIBLE);
                 }
@@ -475,9 +474,9 @@ public class GLUChooseTime extends GLUFragment {
                     not_normal_page.setVisibility(View.VISIBLE);
                     BodyIndex.getInstance().setDiabetesType("");//设置不正常
                     if (Glucose.getInstance().getFoodTime() == 0){
-                        text_foot_time.setText("清晨空腹:");
+                        text_foot_time.setText(getResources().getString(R.string.fpg_));
                     }else{
-                        text_foot_time.setText("餐后2小时:");
+                        text_foot_time.setText(getResources().getString(R.string.twohppg) + ":");
                     }
 
                     statusInit();

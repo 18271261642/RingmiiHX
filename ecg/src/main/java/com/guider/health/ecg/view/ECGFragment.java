@@ -113,12 +113,13 @@ public class ECGFragment extends BaseFragment implements ECGViewInterface {
 
     protected void showDialog(View view) {
         dialog = new Dialog(_mActivity);
-        //去掉标题线
+        // 去掉标题线
         dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
 
-        //背景透明
+        // 背景透明
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.show();
 

@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_49"
-        android:text="血压"
+        android:text="@string/bp"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_15"
         android:textStyle="bold" />
@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="动脉硬化指数"
+                android:text="@string/dmyh_index"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -90,7 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="收缩压"
+                android:text="@string/sbp"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -117,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="舒张压"
+                android:text="@string/dbp"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -144,7 +144,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="心率"
+                android:text="@string/heart_rate"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -184,7 +184,7 @@
         android:layout_marginRight="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_8"
         android:lineSpacingExtra="@dimen/dp_4"
-        android:text="建议您注意调整饮食、控制体重、 保持规律的运动、定期量血压并保持心情愉悦哦。"
+        android:text="@string/dmyh_suggest"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_10" />
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <com.guider.health.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/device"
-    android:layout_width="@dimen/dp_154"
-    android:layout_height="@dimen/dp_247"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/box_checked"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -16,10 +15,11 @@
 
         <ImageView
             android:id="@+id/device_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="180dp"
             android:layout_marginBottom="@dimen/sp_15"
             android:adjustViewBounds="true"
+            android:scaleType="centerInside"
             android:src="@mipmap/device_tzq"
             app:layout_constraintBottom_toTopOf="@id/device_text"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -27,18 +27,17 @@
 
         <TextView
             android:id="@+id/device_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
             android:layout_marginTop="@dimen/dp_50"
             android:layout_marginBottom="@dimen/dp_15"
-            android:text="无创血糖检测"
+            android:text="@string/zangyin"
             android:textColor="#7D7D7D"
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-
+            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center"/>
     </android.support.constraint.ConstraintLayout>
 </com.guider.health.CheckableLinearLayout>
 

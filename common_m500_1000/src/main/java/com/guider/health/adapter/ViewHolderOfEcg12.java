@@ -55,7 +55,7 @@ public class ViewHolderOfEcg12 extends BaseResultViewHolder {
 
     @Override
     protected String getName() {
-        return "心电";
+        return getContext().getResources().getString(R.string.ecg);
     }
 
     @Override

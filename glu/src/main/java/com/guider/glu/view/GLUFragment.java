@@ -26,27 +26,16 @@ public class GLUFragment extends BaseFragment implements GLUViewInterface {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         GLUServiceManager.getInstance().setViewObject(this);
     }
-
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-
         if (!hidden) {
-
             GLUServiceManager.getInstance().setViewObject(this);
         }
-
-
     }
-
-
-
-
-
 
     @Override
     public void connectFailed(int status) {
@@ -147,6 +136,7 @@ public class GLUFragment extends BaseFragment implements GLUViewInterface {
     protected Dialog dialog;
     protected void showGLUDialog(int layout, String result){
         dialog = new Dialog(_mActivity);
+        dialog.setCancelable(false);
         //去掉标题线
         dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
         dialog.setContentView(layout);
@@ -173,6 +163,4 @@ public class GLUFragment extends BaseFragment implements GLUViewInterface {
         }
 
     }
-
-
 }

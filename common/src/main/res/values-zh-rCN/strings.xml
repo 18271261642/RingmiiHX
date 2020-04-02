@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">selectime</string>
+    <string name="cancle">取消</string>
+    <string name="title">请选择时间</string>
+    <string name="commit">确定</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+
+    <string name="excise_finish">已完成今日所有锻炼</string>
+
+    <string name="sbp" translatable="false">收缩压(mmHg) :</string>
+    <string name="dbp" translatable="false">舒张压(mmHg) :</string>
+    <string name="heart" translatable="false">心率(bpm) :</string>
+    <string name="ui_cancel">取消</string>
+    <string name="ui_sure">确认</string>
+    <string name="fanhui">返回</string>
+    <string name="shouye">首页</string>
+    <string name="tiaoguo">跳过测量</string>
+    <string name="liudao">六导心电测量</string>
+    <string name="fore">臂式血压测量</string>
+
+    <!--
+    public static final String DEV_ECG_6 = "CmateHv100";
+    public static final String DEV_GLU = "BDE_WEIXIN_TTMv100";
+    public static final String DEV_BP = "FORA P30 PLUSv100";
+    public static final String DEV_BP_CX = "CXBPv100";
+    public static final String DEV_BP_YF = "YFKJv100";
+    public static final String DEV_BP_AVE = "AVE-2000v100";
+    public static final String DEV_BP_MBB_88 = "RBP1810130249v100";
+    public static final String DEV_BP_MBB_9804 = "BP06D21905750026v100";
+    public static final String DEV_ECG_12 = "WWKECGv100";
+    public static final String DEV_ECG_tzq = "device_tzqv100";
+    public static final String DEV_ECG_HD = "device_hdv100";
+    public static final String DEV_FORA_GLU = "FORA GD40bv100";
+    -->
+    <string name="CmateHv100">六导心电测量</string>
+    <string name="BDE_WEIXIN_TTMv100">无创血糖测量</string>
+    <string name="FORAP30PLUSv100">臂式血压测量</string>
+    <string name="CXBPv100">臂筒式血压测量</string>
+    <string name="YFKJv100">动脉硬化测量</string>
+    <string name="AVE2000v100">动脉硬化测量</string>
+    <string name="RBP1810130249v100">脉搏波88</string>
+    <string name="BP06D21905750026v100">脉搏波9804</string>
+    <string name="WWKECGv100">十二导心电测量</string>
+    <string name="device_tzqv100">远程脏音测量</string>
+    <string name="device_hdv100">红豆心电</string>
+    <string name="FORAGD40bv100">福尔血糖</string>
+
+    <string name="zy_download_tips">正在下载中 , 请耐心等待...</string>
+</resources>

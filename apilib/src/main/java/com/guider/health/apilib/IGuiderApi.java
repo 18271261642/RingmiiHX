@@ -249,4 +249,14 @@ public interface IGuiderApi {
     Call<BeanOfWecaht> verifyThirdAccount(@Query("appId") String appId , @Query("openId") String openId);
     @POST("api/v1/accountthird/phone/login")
     Call<BeanOfWecaht> bindPhoneAndLogin(@Body ParamThirdUserAccount param);
+
+    @GET("api/v1/accountthird/type")
+    Call<List<String>> getUserBindThidAccount(@Query("accountId ") long appId);
+
+    // 根据accountId查询用户是否关注公众号
+    @GET("api/v1/wechat/subscribe")
+    Call<String> getUserBindWxPublic(@Query("appId") String appId, @Query("accountId") long accountId);
+
+    @GET("api/v1/wechat/qr")
+    Call<String> createWXQr(@Query("appId") String appId, @Query("expireSeconds") long expireSeconds, @Query("sceneStr") String sceneStr);
 }

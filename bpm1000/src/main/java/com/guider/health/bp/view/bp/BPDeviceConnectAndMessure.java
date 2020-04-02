@@ -25,18 +25,13 @@ import ble.BleClient;
  */
 
 public class BPDeviceConnectAndMessure extends BPFragment {
-
-
     private View view;
-
     Handler handler = new Handler();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bp_connect_and_meassure, container, false);
-
-
         return view;
     }
 
@@ -54,7 +49,6 @@ public class BPDeviceConnectAndMessure extends BPFragment {
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 BPServiceManager.getInstance().stopDeviceConnect();
                 pop();
             }
@@ -63,7 +57,7 @@ public class BPDeviceConnectAndMessure extends BPFragment {
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_BP));
 
-        //开始测量
+        // 开始测量
         BleClient.init(_mActivity);
         BPServiceManager.getInstance().startMeasure();
         handler = new Handler();
@@ -87,7 +81,6 @@ public class BPDeviceConnectAndMessure extends BPFragment {
         _mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 showDialog(R.layout.bp_dialog);
                 baseHandler.postDelayed(new Runnable() {
                     @Override
@@ -97,8 +90,6 @@ public class BPDeviceConnectAndMessure extends BPFragment {
                         startWithPop(new BPMeasureResult());
                     }
                 }, 2000);
-
-
             }
         });
 
@@ -113,7 +104,6 @@ public class BPDeviceConnectAndMessure extends BPFragment {
                 changeUi2Fail();
             }
         });
-
     }
 
     private void changeUi2Fail() {

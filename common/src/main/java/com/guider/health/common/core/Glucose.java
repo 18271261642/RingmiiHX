@@ -18,8 +18,6 @@ import java.util.List;
  */
 
 public class Glucose extends BaseDataSave implements Parcelable {
-
-
     public Glucose() {
         Logger.i("构造函数");
     }
@@ -27,7 +25,6 @@ public class Glucose extends BaseDataSave implements Parcelable {
     private static Glucose mGlucose = new Glucose();
 
     public static Glucose getInstance() {
-
         return mGlucose;
     }
 

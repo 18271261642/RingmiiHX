@@ -87,8 +87,13 @@ public class ECGDeviceMeasureResult0 extends ECGFragment {
         final ECGImageView imageView = view.findViewById(R.id.ecg_img);
         imageView.setOnSaveFinishCall(new ECGImageView.OnSaveFinishCall() {
             @Override
-            public void onSaveFinish() {
-                String path = imageView.getFilePath();
+            public void onError() {
+                hideDialog();
+            }
+
+            @Override
+            public void onSaveFinish(String path) {
+                // String path = imageView.getFilePath();
                 MeasureDataUploader.getInstance(_mActivity).uploadHeartState(
                         HearRate.getInstance().getDeviceAddress(),
                         HearRate.getInstance().getDiaDescribe(),
@@ -140,9 +145,9 @@ public class ECGDeviceMeasureResult0 extends ECGFragment {
 
         // 设置文字
         heart.setText(instance.getHeartRate());
-        xinlvjiankang.setText("心率健康:" + str_pnn50);
-        yalizhishu.setText("压力指数:" + str_sdnn);
-        pilaozhishu.setText("疲劳指数:" + str_lfhf);
+        xinlvjiankang.setText(getResources().getString(R.string.health_hr) + str_pnn50);
+        yalizhishu.setText(getResources().getString(R.string.stress) + str_sdnn);
+        pilaozhishu.setText(getResources().getString(R.string.tired)+ str_lfhf);
 
         // 设置心率指针
         Float myHeart = Float.valueOf(instance.getHeartRate());
@@ -154,12 +159,12 @@ public class ECGDeviceMeasureResult0 extends ECGFragment {
         // 设置压力指数
         switch (str_sdnn) {
             case Constant.HEALTHRANGE_SDNN_NORMAL:
-                params = setOffset(true, (FrameLayout.LayoutParams) tag_yalizhishu.getLayoutParams());
+                params = setOffset(tag_pilaozhishu, true, (FrameLayout.LayoutParams) tag_yalizhishu.getLayoutParams());
                 break;
             case Constant.HEALTHRANGE_SDNN_MILD:
                 break;
             case Constant.HEALTHRANGE_SDNN_MEDIUM:
-                params = setOffset(false , (FrameLayout.LayoutParams) tag_yalizhishu.getLayoutParams());
+                params = setOffset(tag_pilaozhishu, false , (FrameLayout.LayoutParams) tag_yalizhishu.getLayoutParams());
                 break;
         }
         if (params != null) {
@@ -169,13 +174,13 @@ public class ECGDeviceMeasureResult0 extends ECGFragment {
         // 设置疲劳指数
         switch (str_lfhf) {
             case Constant.HEALTHRANGE_LFHF_NORMAL:
-                params = setOffset(true , (FrameLayout.LayoutParams) tag_pilaozhishu.getLayoutParams());
+                params = setOffset(tag_pilaozhishu, true , (FrameLayout.LayoutParams) tag_pilaozhishu.getLayoutParams());
                 break;
             case Constant.HEALTHRANGE_LFHF_MILD:
-                params = setOffset(true , (FrameLayout.LayoutParams) tag_pilaozhishu.getLayoutParams());
+                params = setOffset(tag_pilaozhishu, true , (FrameLayout.LayoutParams) tag_pilaozhishu.getLayoutParams());
                 break;
             case Constant.HEALTHRANGE_LFHF_MEDIUM:
-                params = setOffset(false , (FrameLayout.LayoutParams) tag_pilaozhishu.getLayoutParams());
+                params = setOffset(tag_pilaozhishu, false , (FrameLayout.LayoutParams) tag_pilaozhishu.getLayoutParams());
                 break;
         }
         if (params != null) {
@@ -185,12 +190,12 @@ public class ECGDeviceMeasureResult0 extends ECGFragment {
         // 设置心率健康
         switch (str_pnn50) {
             case Constant.HEALTHRANGE_PNN50_NORMAL:
-                params = setOffset(true , (FrameLayout.LayoutParams) tag_xinlvjiankang.getLayoutParams());
+                params = setOffset(tag_xinlvjiankang, true , (FrameLayout.LayoutParams) tag_xinlvjiankang.getLayoutParams());
                 break;
             case Constant.HEALTHRANGE_PNN50_MILD:
                 break;
             case Constant.HEALTHRANGE_PNN50_MEDIUM:
-                params = setOffset(false , (FrameLayout.LayoutParams) tag_xinlvjiankang.getLayoutParams());
+                params = setOffset(tag_xinlvjiankang, false , (FrameLayout.LayoutParams) tag_xinlvjiankang.getLayoutParams());
                 break;
         }
         if (params != null) {
@@ -198,11 +203,14 @@ public class ECGDeviceMeasureResult0 extends ECGFragment {
         }
     }
 
-    private FrameLayout.LayoutParams setOffset(boolean isLeft , FrameLayout.LayoutParams layoutParams) {
+    private FrameLayout.LayoutParams setOffset(View view, boolean isLeft , FrameLayout.LayoutParams layoutParams) {
+        int off = view.getWidth() / 3;
         if (isLeft) {
-            layoutParams.setMarginEnd((int) _mActivity.getResources().getDimension(R.dimen.dp_130));
+            layoutParams.setMarginEnd(off);
+            layoutParams.setMargins(0, 0, off, 0);
         } else {
-            layoutParams.setMargins((int) _mActivity.getResources().getDimension(R.dimen.dp_130) , 0 , 0 , 0);
+            layoutParams.setMarginStart(off);
+            layoutParams.setMargins(off, 0, 00, 0);
         }
         return layoutParams;
     }

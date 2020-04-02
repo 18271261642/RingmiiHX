@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">glu</string>
     <string name="measure_3_qingyongshouzhi">Please put your finger into the sensor.</string>
     <string name="measure_3_lianjieshibai">Device connection failed, Please make sure the power is turned on.</string>
-    <string name="measure_3_fuhehuanjing"> Meet Environmental Conditions </string>
+    <string name="measure_3_fuhehuanjing">Meet Environmental Conditions</string>
     <string name="glu_shebeidianliangdi">Low battery! Please charging before measure.</string>
     <string name="glu_huanjingwendudi">The finger temperature is too low, which may affect the measure results.</string>
     <string name="glu_huanjingwendugao">The ambient temperature is too high, which may affect the measure results.</string>
@@ -18,9 +18,89 @@
     <string name="glu_dingqijiankangjiancha">Regular Health Examination</string>
     <string name="meitianyundong30fenzhong">Exercise 30 minutes a day</string>
     <string name="congshishuyahuodong">Engage in stress-relieving activities to relax.</string>
-    <string name="glu_zhengqueyinshi">Health Diet, According to the following order and amount, 2 high fiber vegetables, 2 protein, 1 carbohydrate </string>
+    <string name="glu_zhengqueyinshi">Health Diet, According to the following order and amount, 2 high fiber vegetables, 2 protein, 1 carbohydrate</string>
     <string name="glu_weichichongzudeshuimian">Keep enough sleep</string>
     <string name="glu_buchongshuifen">Rehydrate</string>
 
 
+    <string name="not_take_med">Not taking medicine</string>
+        
+    <string name="sulfonylureas">Sulfonylureas</string>
+        
+    <string name="biguanide">Biguanides</string>
+        
+    <string name="liver_enzyme_inhibitor_drugs">Liver enzyme inhibitors</string>
+        
+    <string name="glu">Non-invasive blood glucose</string>
+    <string name="input_param">Parameter</string>
+    <string name="open_tips">Startup Tips</string>
+    <string name="bt_connect">Connection</string>
+    <string name="device_test">Measurement</string> 
+    <string name="test_result">Results</string>
+    <string name="height">height</string>    
+    <string name="weight">weight</string>
+        
+    <string name="glu_level">Glycemic\n  Level</string>
+      
+    <string name="normal">normal</string>    
+    <string name="abnormal">Abnormal</string>    
+    <string name="abnormal_glu">Abnormal≥7mmol/L</string>
+
+        
+    <string name="fpg">Early morning fasting</string>    
+    <string name="fpg_">Early morning fasting:</string>   
+    <string name="twohppg">2 hours after a meal</string>    
+    <string name="twohppg_normal">2 hours after a meal \nFood intake: moderate</string>   
+    <string name="twohppg_full">2 hours after a meal \nFood intake: large</string>
+        
+    <string name="next_step">Next step</string>
+       
+    <string name="op_guide">How-to guide:</string>
+        
+    <string name="bt_connetting">Bluetooth connection ...</string>
+        
+    <string name="bt_reconnectting">Resolved Reconnecting</string>
+
+        
+    <string name="into_finger">Please reach in your fingers</string>
+        
+    <string name="finish_in_time">Please complete the operation within the specified time</string>
+        
+    <string name="glu_test_tips">Recommended ambient temperature 20 ℃ -27 ℃ Suitable finger temperature 29 ℃ -35 ℃</string>
+        
+    <string name="initing_device">The device is being initialized, please do n’t put your fingers in!</string>
+        
+    <string name="retry">The device has been restarted, try again</string>
+
+        
+    <string name="glu_device">Non-invasive blood glucose meter</string>
+        
+    <string name="op_guide_empty">Operation Guide</string>
+        
+    <string name="boot_device_tips">Please press and hold the power button of the device for 2 seconds, the blue light on the right side will light up for normal boot.</string>
+        
+    <string name="confirm_device">Confirm the power on Next step</string>
+
+        
+    <string name="init_error">Init failed, please restart the device</string>
+        
+    <string name="test_error">Measurement error, please click Cancel to re-measure</string>
+        
+    <string name="reboot_device">Please restart the device and measure again.</string>
+
+        
+    <string name="device_conn">device connection</string>
+        
+    <string name="conn_error1">1. Please confirm that the device is turned on normally \n2. Please confirm that the system [Bluetooth] is turned on or restart the system Bluetooth \n3. Please confirm that the system [Location Information] feature is turned on</string>
+        
+    <string name="conn_error2">The connection failed, please make sure the device switch is turned on</string>
+
+        
+    <string name="no_network">No network, please open the network</string>
+
+        
+    <string name="device_conn_error">Device connection failed, please make sure the power is on</string>
+
+    <string name="param_input">Parameter input</string>
+    <string name="op_tips">Operation tips</string>
 </resources>

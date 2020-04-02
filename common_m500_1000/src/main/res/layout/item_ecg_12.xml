@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_49"
-        android:text="心电"
+        android:text="@string/ecg"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_15"
         android:textStyle="bold" />
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="心率"
+                android:text="@string/heart_rate"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_15" />
 
@@ -60,7 +60,7 @@
             android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="结论"
+            android:text="@string/result"
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:textSize="@dimen/sp_16" />

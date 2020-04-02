@@ -19,8 +19,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <include layout="@layout/head" />
-
+        <include layout="@layout/device_head" />
 
         <LinearLayout
             style="@style/myBodyLayout"
@@ -30,8 +29,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_49"
-                android:layout_marginTop="@dimen/dp_23"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -44,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="六导心电"
+                    android:text="@string/ecg"
                     android:textColor="#ACACAC"
                     android:textSize="@dimen/sp_15" />
 
@@ -61,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="操作指南"
+                    android:text="@string/op_guide"
                     android:textColor="#ACACAC"
                     android:textSize="@dimen/sp_14" />
 
@@ -77,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="测量操作"
+                    android:text="@string/testing"
                     android:textColor="#ACACAC"
                     android:textSize="@dimen/sp_14" />
 
@@ -93,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="设备测量"
+                    android:text="@string/device_test"
                     android:textColor="#ACACAC"
                     android:textSize="@dimen/sp_14" />
 
@@ -110,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="测量结果"
+                    android:text="@string/test_result"
                     android:textColor="#F18937"
                     android:textSize="@dimen/sp_16" />
             </LinearLayout>
@@ -123,8 +120,6 @@
                     android:id="@+id/fragment_progress"
                     android:layout_width="@dimen/dp_192"
                     android:layout_height="@dimen/dp_192"
-                    android:layout_marginLeft="@dimen/dp_100"
-                    android:layout_marginTop="@dimen/dp_52"
                     android:background="@drawable/progress_backgro"
                     android:padding="@dimen/dp_30"
                     android:visibility="invisible"
@@ -145,42 +140,17 @@
                 </FrameLayout>
 
                 <LinearLayout
-                    android:layout_width="@dimen/dp_192"
-                    android:layout_height="@dimen/dp_192"
-                    android:layout_marginLeft="@dimen/dp_100"
-                    android:layout_marginTop="@dimen/dp_52"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="心率"
-                        android:textColor="#171717"
-                        android:textSize="@dimen/sp_22"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/heart"
-                        android:layout_width="@dimen/dp_90"
-                        android:layout_height="@dimen/dp_90"
-                        android:layout_marginLeft="@dimen/dp_20"
-                        android:background="@mipmap/icon_bpmback"
-                        android:gravity="center"
-                        android:text="80"
-                        android:textColor="#000000"
-                        android:textSize="@dimen/sp_42"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center">
 
                 <LinearLayout
                     android:id="@+id/linear"
                     android:layout_width="@dimen/dp_294"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_100"
                     android:orientation="vertical"
                     app:layout_constraintLeft_toRightOf="@+id/fragment_progress"
                     app:layout_constraintTop_toTopOf="@+id/fragment_progress">
@@ -201,7 +171,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_20"
-                            android:text="心率健康:良好"
+                            android:text="@string/hr_good"
                             android:textColor="#171717"
                             android:textSize="@dimen/sp_16" />
 
@@ -214,7 +184,7 @@
                         android:layout_marginTop="@dimen/dp_5">
 
                         <ImageView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@mipmap/icon_progress_line" />
@@ -224,7 +194,8 @@
                             android:layout_width="@dimen/dp_2"
                             android:layout_height="@dimen/dp_20"
                             android:layout_gravity="center_horizontal"
-                            android:background="#000000" />
+                            android:background="#000000"
+                            android:layout_marginEnd="30dp"/>
                     </FrameLayout>
 
                     <LinearLayout
@@ -269,7 +240,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_20"
-                            android:text="压力指数:良好"
+                            android:text="@string/stress_good"
                             android:textColor="#171717"
                             android:textSize="@dimen/sp_16" />
 
@@ -282,7 +253,7 @@
                         android:layout_marginTop="@dimen/dp_5">
 
                         <ImageView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@mipmap/icon_progress_line" />
@@ -299,13 +270,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="正常"-->
-                        <!--android:textColor="#7D7D7D"-->
-                        <!--android:textSize="@dimen/sp_14" />-->
 
                         <View
                             android:layout_width="0dp"
@@ -337,7 +301,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_20"
-                            android:text="疲劳指数:良好"
+                            android:text="@string/tired_good"
                             android:textColor="#171717"
                             android:textSize="@dimen/sp_16" />
 
@@ -350,7 +314,7 @@
                         android:layout_marginTop="@dimen/dp_5">
 
                         <ImageView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@mipmap/icon_progress_line" />
@@ -390,14 +354,43 @@
 
                 </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/heart_rate"
+                            android:textColor="#171717"
+                            android:textSize="@dimen/sp_22"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/heart"
+                            android:layout_width="@dimen/dp_90"
+                            android:layout_height="@dimen/dp_90"
+                            android:layout_marginLeft="@dimen/dp_20"
+                            android:background="@mipmap/icon_bpmback"
+                            android:gravity="center"
+                            android:text="80"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/sp_42"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
                 <Button
                     android:id="@+id/loog_img"
                     android:layout_width="@dimen/dp_134"
                     android:layout_height="@dimen/dp_44"
-                    android:layout_marginRight="@dimen/sp_30"
-                    android:layout_marginBottom="@dimen/sp_30"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:background="@drawable/button_cancel"
-                    android:text="查看心电图"
+                    android:text="@string/look_ecg_image"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/dp_19"
                     android:visibility="visible"
@@ -408,10 +401,10 @@
                     android:id="@+id/ecg_result_next"
                     android:layout_width="@dimen/dp_134"
                     android:layout_height="@dimen/dp_44"
-                    android:layout_marginRight="@dimen/sp_30"
-                    android:layout_marginBottom="@dimen/sp_30"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:background="@drawable/button_cancel"
-                    android:text="下一步"
+                    android:text="@string/next_step"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/dp_19"
                     android:visibility="visible"

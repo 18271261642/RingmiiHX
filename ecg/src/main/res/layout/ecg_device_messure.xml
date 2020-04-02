@@ -7,7 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/head" />
+    <include layout="@layout/device_head" />
 
     <LinearLayout
         style="@style/myBodyLayout"
@@ -17,21 +17,19 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_13"
                 android:layout_gravity="center_vertical"
-                android:background="@mipmap/m500" />
+                android:background="@mipmap/logon_guider" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="六导心电"
+                android:text="@string/ecg"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -48,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作指南"
+                android:text="@string/op_guide"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -64,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/testing"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -80,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
+                android:text="@string/device_test"
                 android:textColor="#F18937"
                 android:textSize="@dimen/sp_16" />
 
@@ -97,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
+                android:text="@string/test_result"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
@@ -105,23 +103,20 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_84"
-            android:layout_marginRight="@dimen/dp_40"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_25">
 
             <LinearLayout
                 android:visibility="invisible"
                 android:id="@+id/wave_info"
-                android:layout_marginTop="@dimen/dp_17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/wave"
                     android:layout_width="@dimen/dp_450"
                     android:layout_height="@dimen/dp_130"
-                    android:layout_marginLeft="@dimen/dp_45"
                     android:background="#F18937"></com.github.mikephil.charting.charts.LineChart>
 
                 <com.guider.health.ecg.view.ECGCompletedView
@@ -139,18 +134,19 @@
 
             </LinearLayout>
 
-
-
             <ImageView
                 android:layout_width="@dimen/dp_77"
                 android:layout_height="@dimen/dp_251"
-                android:background="@mipmap/people" />
+                android:background="@mipmap/people"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_80"
+                android:layout_marginStart="@dimen/dp_80"/>
 
             <TextView
                 android:id="@+id/ecg_reminder"
                 android:visibility="visible"
                 android:layout_centerInParent="true"
-                android:text="正在连接中\n 请稍后..."
+                android:text="@string/connecting"
                 android:textSize="@dimen/sp_25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -160,11 +156,11 @@
                 android:id="@+id/ecg_reconnect"
                 android:layout_width="@dimen/dp_229"
                 android:layout_height="@dimen/dp_44"
-                android:layout_below="@id/wave_info"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="29dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="29dp"
                 android:background="@drawable/button_cancel"
-                android:text="已经解决 重新连接"
+                android:text="@string/fix_reconnect"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/dp_19"
                 android:visibility="invisible" />

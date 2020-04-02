@@ -30,22 +30,18 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 
 public class BPMeasureResult extends BPFragment {
-
     private View view;
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bp_meassure_result, container, false);
-
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         if (savedInstanceState != null) {
             return;
         }
@@ -63,15 +59,6 @@ public class BPMeasureResult extends BPFragment {
             }
         });
 
-
-//        if (120 > sbp && dbp < 80){
-//            view.findViewById(R.id.bp_heart5).setVisibility(View.VISIBLE);
-//            HeartPressBp.getInstance().setStr_SDNN("正常");
-//        }else{
-//            view.findViewById(R.id.bp_heart6).setVisibility(View.VISIBLE);
-//            HeartPressBp.getInstance().setStr_SDNN("异常");
-//        }
-
         int dbp = Integer.parseInt(HeartPressBp.getInstance().getDbp());
         int sbp = Integer.parseInt(HeartPressBp.getInstance().getSbp());
 
@@ -81,27 +68,19 @@ public class BPMeasureResult extends BPFragment {
         ((TextView) view.findViewById(R.id.bp_press2)).setText(dbp+"");
         ((TextView) view.findViewById(R.id.bp_result)).setText(HeartPressBp.getInstance().getSbp() + "/" + HeartPressBp.getInstance().getDbp());
 
-
         view.findViewById(R.id.bp_result_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (RouterPathManager.Devices.size() > 0) {
-
                     String fragmentPath = RouterPathManager.Devices.remove();
-
                     try {
                         popTo(Class.forName(Config.HOME_DEVICE), false);
-
                         start((ISupportFragment) Class.forName(fragmentPath).newInstance());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 } else {
-
                     try {
-
                         popTo(Class.forName(Config.HOME_DEVICE), false);
                         start((ISupportFragment) Class.forName(Config.END_FRAGMENT).newInstance());
                     } catch (Exception e) {
@@ -110,41 +89,6 @@ public class BPMeasureResult extends BPFragment {
                 }
             }
         });
-//        if (Config.mapX.get("bp")) {
-//            baseHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    Config.mapX.put("bp", false);
-//
-//                    if (RouterPathManager.Devices.size() > 0) {
-//
-//                        String fragmentPath = RouterPathManager.Devices.remove();
-//
-//                        try {
-//                            popTo(Class.forName(Config.HOME_DEVICE), false);
-//
-//                            start((ISupportFragment) Class.forName(fragmentPath).newInstance());
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    } else {
-//
-//                        try {
-//
-//                            popTo(Class.forName(Config.HOME_DEVICE), false);
-//                            start((ISupportFragment) Class.forName(Config.END_FRAGMENT).newInstance());
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//
-//                }
-//            }, 5000);
-//        }
-
     }
 
     private void setStandard() {
@@ -203,7 +147,6 @@ public class BPMeasureResult extends BPFragment {
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -216,7 +159,5 @@ public class BPMeasureResult extends BPFragment {
                 e.printStackTrace();
             }
         }
-
     }
-
 }

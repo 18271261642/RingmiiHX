@@ -1,6 +1,7 @@
 package com.guider.health.common.device;
 
 import com.guider.health.common.core.Config;
+import com.guider.health.common.core.ForaGlucose;
 import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.HearRate;
 import com.guider.health.common.core.HearRate12;
@@ -76,6 +77,11 @@ public class MeasureDeviceManager {
                         needShowList.add(devase);
                     }
                     break;
+                case DeviceInit.DEV_FORA_GLU:  // 福尔血糖 TODO
+                    if(ForaGlucose.getForaGluInstance().isTag()) {
+                        needShowList.add(devase);
+                    }
+                    break;
             }
         }
         return needShowList;
@@ -115,6 +121,9 @@ public class MeasureDeviceManager {
                 break;
             case DeviceInit.DEV_GLU:  // 血糖
                 Glucose.getInstance().setTag(false);
+                break;
+            case DeviceInit.DEV_FORA_GLU:  // 福尔血糖 TODO
+                ForaGlucose.getForaGluInstance().setTag(false);
                 break;
         }
     }

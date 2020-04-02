@@ -7,193 +7,42 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <include layout="@layout/device_head" />
 
-    <include layout="@layout/head" />
-
-
-    <LinearLayout
-        style="@style/myBodyLayout"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_41">
+            style="@style/myBodyLayout"
+            android:background="@drawable/normal_back_body"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_marginLeft="@dimen/dp_80"
-                android:layout_marginRight="@dimen/dp_80"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_20" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/next"
+                android:layout_width="@dimen/dp_394"
+                android:layout_height="@dimen/dp_44"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/button_cancel"
+                android:stateListAnimator="@null"
+                android:text="@string/kaishiceliang"
+                android:textColor="#FAFCFF"
+                android:textSize="@dimen/sp_19" />
         </LinearLayout>
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_marginTop="@dimen/dp_41">-->
-
-        <!--<com.guider.health.CheckableLinearLayout-->
-        <!--android:id="@+id/device_glu"-->
-        <!--android:layout_width="@dimen/dp_154"-->
-        <!--android:layout_height="@dimen/dp_247"-->
-        <!--android:background="@drawable/box_checked"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_60"-->
-        <!--android:background="@mipmap/device1" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_50"-->
-        <!--android:text="无创血糖检测"-->
-        <!--android:textColor="#7D7D7D"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-        <!--</com.guider.health.CheckableLinearLayout>-->
-
-        <!--<com.guider.health.CheckableLinearLayout-->
-        <!--android:id="@+id/device_ecg"-->
-        <!--android:layout_width="@dimen/dp_154"-->
-        <!--android:layout_height="@dimen/dp_247"-->
-        <!--android:layout_marginLeft="@dimen/dp_20"-->
-        <!--android:background="@drawable/box_checked"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_27"-->
-        <!--android:background="@mipmap/device2" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_25"-->
-        <!--android:text="六导心电检测"-->
-        <!--android:textColor="#7D7D7D"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-        <!--</com.guider.health.CheckableLinearLayout>-->
-
-        <!--<com.guider.health.CheckableLinearLayout-->
-        <!--android:id="@+id/device_bp"-->
-        <!--android:layout_width="@dimen/dp_154"-->
-        <!--android:layout_height="@dimen/dp_247"-->
-        <!--android:layout_marginLeft="@dimen/dp_20"-->
-        <!--android:background="@drawable/box_checked"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_49"-->
-        <!--android:background="@mipmap/device4" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_31"-->
-        <!--android:text="动脉脉搏检测"-->
-        <!--android:textColor="#7D7D7D"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-        <!--</com.guider.health.CheckableLinearLayout>-->
-
-        <!--<com.guider.health.CheckableLinearLayout-->
-        <!--android:id="@+id/device3"-->
-        <!--android:layout_width="@dimen/dp_154"-->
-        <!--android:layout_height="@dimen/dp_247"-->
-        <!--android:layout_marginLeft="@dimen/dp_20"-->
-        <!--android:background="@drawable/box_checked"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_37"-->
-        <!--android:background="@mipmap/device3" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_24"-->
-        <!--android:text="脏器脏音检测"-->
-        <!--android:textColor="#7D7D7D"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-        <!--</com.guider.health.CheckableLinearLayout>-->
-
-
-        <!--<com.guider.health.CheckableLinearLayout-->
-        <!--android:id="@+id/device_glu1"-->
-        <!--android:layout_width="@dimen/dp_154"-->
-        <!--android:layout_height="@dimen/dp_247"-->
-        <!--android:background="@drawable/box_checked"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_60"-->
-        <!--android:background="@mipmap/device1" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_50"-->
-        <!--android:text="无创血糖检测"-->
-        <!--android:textColor="#7D7D7D"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-        <!--</com.guider.health.CheckableLinearLayout>-->
-
-        <!--<com.guider.health.CheckableLinearLayout-->
-        <!--android:id="@+id/device_glu2"-->
-        <!--android:layout_width="@dimen/dp_154"-->
-        <!--android:layout_height="@dimen/dp_247"-->
-        <!--android:background="@drawable/box_checked"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_60"-->
-        <!--android:background="@mipmap/device1" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_50"-->
-        <!--android:text="无创血糖检测"-->
-        <!--android:textColor="#7D7D7D"-->
-        <!--android:textSize="@dimen/sp_14" />-->
-        <!--</com.guider.health.CheckableLinearLayout>-->
-
-        <!--</LinearLayout>-->
-
-
-        <Button
-            android:id="@+id/next"
-            android:layout_width="@dimen/dp_394"
-            android:layout_height="@dimen/dp_44"
-            android:layout_marginTop="@dimen/dp_20"
-            android:background="@drawable/button_cancel"
-            android:stateListAnimator="@null"
-            android:text="@string/kaishiceliang"
-            android:textColor="#FAFCFF"
-            android:textSize="@dimen/sp_19" />
-    </LinearLayout>
-
+    </ScrollView>
 
 </LinearLayout>

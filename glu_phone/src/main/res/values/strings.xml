@@ -21,7 +21,7 @@
     <string name="measure_5_miao">Second</string>
     <string name="measure_5_qingbaochi">Please keep calm and keep your current position.</string>
     <string name="measure_6_qingkaiji"> Please long press the device’s power button for 2 seconds and the right side’s blue light is turned on.</string>
-    <string name="measure_6_btn_querenkaiji">Confirm that it is powered on Next</string>
+    <string name="measure_6_btn_querenkaiji">Next</string>
     <string name="result_1_maibo">Pulse</string>
     <string name="result_1_xuehongdanbai">Hemoglobin</string>
     <string name="result_1_xueyangbaohe">Blood Oxygen(%)</string>

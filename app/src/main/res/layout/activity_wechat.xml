@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp_10"
+    android:background="@mipmap/wx_scan_bg"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_50"
+        android:text="@string/wx_scan"
+        android:textSize="@dimen/size_25"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_wx_scan"
+        android:paddingLeft="@dimen/dp_50"
+        android:paddingStart="@dimen/dp_50"
+        android:paddingRight="@dimen/dp_50"
+        android:paddingEnd="@dimen/dp_50"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="0dp"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/iv_wechat_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_300"
+            android:minWidth="@dimen/dp_300"
+            android:src="@mipmap/loading_pic"
+            android:scaleType="fitXY"
+            android:layout_marginStart="@dimen/dp_30"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:text="@string/wx_scan_long_click"
+            android:textSize="@dimen/sp_25" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:text="@string/wx_scan_tips"
+            android:textSize="@dimen/sp_15" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/dp_50"
+        android:layout_marginRight="@dimen/dp_50"
+        android:layout_marginBottom="@dimen/dp_30"
+        android:text="@string/wx_scan_skip"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/sp_14" />
+</RelativeLayout>

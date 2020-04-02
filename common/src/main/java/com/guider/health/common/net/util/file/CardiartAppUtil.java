@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.guider.health.common.R;
 import com.guider.health.common.core.BaseFragment;
 import com.guider.health.common.core.SPUtils;
 import com.guider.health.common.net.app.version.DownloadManagerUtil;
@@ -46,7 +47,7 @@ public class CardiartAppUtil {
             if (dowloadId != -1) {
                 util.clearCurrentTask(dowloadId);
             }
-            long downloadID = util.download(apkUrl, "PhonoMagicsGuider", "PhonoMagicsGuider" + "正在下载中 , 请耐心等待...");
+            long downloadID = util.download(apkUrl, "PhonoMagicsGuider", "PhonoMagicsGuider" + activity.getResources().getString(R.string.zy_download_tips));
             if (downloadID <= 0) {
                 return;
             }

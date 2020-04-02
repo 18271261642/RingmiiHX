@@ -1325,4 +1325,11 @@
     <string name="bind_phone_success">綁定成功</string>
 
     <string name="btn_health">健康</string>
+
+    <string name="wx_scan">微信 掃壹掃</string>
+    <string name="wx_scan_long_click">長按微信二維碼保存</string>
+    <string name="wx_scan_tips">打開微信“掃壹掃”,掃描二維碼進入[蓋德健康]關註頁面,或微信添加好友選擇公眾號搜索“蓋德健康”公眾號並關註，隨時關註您</string>
+    <string name="wx_scan_skip">跳過></string>
+    <string name="wx_scan_screen_save_ok">屏幕截圖保存成功!</string>
+    <string name="wx_scan_screen_save_error">屏幕截圖保存失敗!</string>
 </resources>

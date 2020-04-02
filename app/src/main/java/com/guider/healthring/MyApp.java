@@ -124,7 +124,9 @@ public class MyApp extends LitePalApplication {
 
     @Override
     public void onCreate() {
+        MyUtils.setMacAddress(BuildConfig.MAC); // 模拟手环APP
         ApiUtil.init(getApplication() , MyUtils.getMacAddress());
+        MyUtils.application = getApplication();
         super.onCreate();
         AppisOne = true;
         AppisOneStar = true;

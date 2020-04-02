@@ -57,7 +57,7 @@ public class ViewHolderOfGlu extends BaseResultViewHolder {
 
     @Override
     protected String getName() {
-        return "血糖";
+        return getContext().getResources().getString(R.string.blood_sugar);
     }
 
     @Override

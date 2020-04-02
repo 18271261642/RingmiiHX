@@ -2,6 +2,7 @@ package com.guider.glu.model;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
  */
 
 public class GLUMeasureModel{
-
     public ArrayList<String> inputArrayList = new ArrayList<String>();
 
     /**
@@ -67,37 +67,6 @@ public class GLUMeasureModel{
         inputArrayList.add(userDataStr.toString());
         inputArrayList.add("CCHJJC$");
         inputArrayList.add("CCSTAT$");
-
-//        inputArrayList.add("CCDLJC$");
-//
-//        String userDataStr = "DDYHSJ";
-//        userDataStr = userDataStr + BodyIndex.getInstance().getTimeMeal();//0and2
-//        if (BodyIndex.getInstance().getDiabetesType().equals("Normal")) {//正常不正常
-//            userDataStr = userDataStr + "0";
-//            userDataStr = userDataStr + "000";
-//        } else {
-//            userDataStr = userDataStr + "2";
-//
-//            int testValue = (int) BodyIndex.getInstance().getValue();
-//            Float gulcoseValue = BodyIndex.getInstance().getValue() * 10;
-//            if (testValue < 10) {
-//                userDataStr = userDataStr + "0" + String.format("%.0f", gulcoseValue);
-//            } else {
-//                userDataStr = userDataStr + String.format("%.0f", gulcoseValue);
-//            }
-//        }
-//
-//        //三种药哪个吃药哪个为1, 不吃为0, 最后拼个0
-//        userDataStr = userDataStr + getBMIValue(UserManager.getInstance().getWeight()+"", UserManager.getInstance().getHeight()+"");
-//        String medication = "" + BodyIndex.getInstance().getSulphonylureasState() + "" +
-//                BodyIndex.getInstance().getBiguanidesState() + "" +
-//                BodyIndex.getInstance().getGlucosedesesSate() + "0";
-//        userDataStr = userDataStr + medication + "$";
-//
-//        inputArrayList.add(userDataStr);
-//        inputArrayList.add("CCHJJC$");
-//        inputArrayList.add("CCSTAT$");
-
     }
 
     public void reSetList(){
@@ -109,20 +78,6 @@ public class GLUMeasureModel{
 
 
     public void makeInputData() {
-
-
-//        inputArrayList.add("CCDLJC$");
-//        inputArrayList.add("DDYHSJ000002110000$");
-//        inputArrayList.add("CCHJJC$");
-//        inputArrayList.add("CCSTAT$");
-
-
-//        String SulphonylureasState = "0";//磺酰脲
-//        String BiguanidesState = "0";//双胍类
-//        String GlucosedesesSate = "0";//肝酶抑制剂
-
-
-
         inputArrayList.add("CCDLJC$");
 
         String userDataStr = "DDYHSJ";
@@ -176,7 +131,6 @@ public class GLUMeasureModel{
     int fourthPacketCount = 0;
 
     public void readData(String data) {
-
         //Log.i("haix", "+++++++++data: "+data);
         if (data.startsWith("DDDLZT")) {
 
@@ -279,7 +233,6 @@ public class GLUMeasureModel{
     public String surfaceTemp = "";
     public String surfaceHumidity = "";
     public String batteryLevel = ""; //電量
-
 
 
     public void readFirstPacket() {
@@ -434,7 +387,6 @@ public class GLUMeasureModel{
                 }
             }
         });
-
     }
 
 
@@ -445,7 +397,7 @@ public class GLUMeasureModel{
         switch (caseStr) {
             case "Not_Connected":
                 //设备连接失败, 请确保电源已经打开
-                measureResultListener.measureRemind("设备连接失败, 请确保电源已经打开");
+                measureResultListener.measureRemind( MyUtils.application.getString(R.string.device_conn_error));
                 if (timerForTest != null) {
                     timerForTest.cancel();
                     timerForTest = null;
@@ -631,15 +583,10 @@ public class GLUMeasureModel{
 
         insertFingerTimerCounter = new CountDownTimer(12000, 1000) {
             public void onTick(long millisUntilFinished) {
-//                String text = String.format(Locale.getDefault(), "%02d ",
-//                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60);
-                //insertFingerTimer.setText(text);
-
                 measureResultListener.fingerTime((int)millisUntilFinished/1000);
             }
 
             public void onFinish() {
-                //insertFingerTimer.setVisibility(View.GONE);
                 changeScreensAccordingToCase("CCFRCS");
             }
         };

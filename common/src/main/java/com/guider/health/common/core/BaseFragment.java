@@ -116,6 +116,7 @@ public class BaseFragment extends MySupportFragment{
         dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.common_dialog);
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         baseTextview = dialog.findViewById(R.id.loading);
         TextView tvMsg = dialog.findViewById(R.id.msg);
         if (msg == null) {

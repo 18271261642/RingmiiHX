@@ -7,9 +7,7 @@ import android.util.ArrayMap;
  */
 
 public interface BPVIewInterface {
-
     void connectAndMessureIsOK();
     void startUploadData();
-
     void connectNotSuccess();
 }
