@@ -6,6 +6,8 @@ configurations.all {
         force 'com.squareup.okhttp3:okhttp:4.0.1'
         force 'org.jetbrains.kotlin:kotlin-stdlib:1.3.40'
         force 'androidx.annotation:annotation:1.0.0'
+        force 'org.apache.httpcomponents:httpcore:4.4.5'
+        force 'com.google.guava:guava:23.0'
         failOnVersionConflict()
     }
 }

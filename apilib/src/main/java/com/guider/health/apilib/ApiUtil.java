@@ -3,7 +3,6 @@ package com.guider.health.apilib;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.bind.DateTypeAdapter;
 
 import java.io.File;
 import java.util.Date;
@@ -49,11 +48,15 @@ public class ApiUtil {
                     .build()
                     .create(clz);
         } else if (needTimeZone) {
+            Gson gson = new Gson()
+                    .newBuilder()
+                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                    .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                    .create();
+            ResultConverterFactory rcf = ResultConverterFactory.create(gson);
             return new Retrofit.Builder()
                     .baseUrl(url)
-                    .addConverterFactory(ResultConverterFactory.create(
-                            new Gson().newBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").registerTypeAdapter(Date.class, new DateTypeAdapter()
-                            ).create()))
+                    .addConverterFactory(rcf)
                     .client(builder.build())
                     .build()
                     .create(clz);
@@ -87,11 +90,15 @@ public class ApiUtil {
                     .build()
                     .create(clz);
         } else if (needTimeZone) {
+            Gson gson = new Gson()
+                    .newBuilder()
+                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                    .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                    .create();
+            ResultConverterFactory rcf = ResultConverterFactory.create(gson);
             return new Retrofit.Builder()
                     .baseUrl(url)
-                    .addConverterFactory(ResultConverterFactory.create(
-                            new Gson().newBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").registerTypeAdapter(Date.class, new DateTypeAdapter()
-                            ).create()))
+                    .addConverterFactory(rcf)
                     .client(builder.build())
                     .build()
                     .create(clz);

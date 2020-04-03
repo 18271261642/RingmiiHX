@@ -6,9 +6,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
-import com.guider.health.apilib.DateTypeAdapter;
 import com.guider.health.apilib.IUserHDApi;
 import com.guider.health.apilib.model.hd.ArtMeasure;
 import com.guider.health.apilib.model.hd.BloodoxygenMeasure;

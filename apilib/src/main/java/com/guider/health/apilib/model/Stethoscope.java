@@ -46,5 +46,4 @@ public class Stethoscope extends TEntityNoUpdate implements Serializable {
      * 设备mac地址
      */
     String deviceCode;
-
 }

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.android.application'
 
 def andr = rootProject.ext.android
 def appId = rootProject.ext.appId
@@ -21,27 +20,6 @@ android {
                 includeCompileClasspath true
             }
         }
-
-//        javaCompileOptions {
-//            annotationProcessorOptions {
-//                arguments = [moduleName: project.getName()]
-//            }
-//        }
-
-//        buildConfigField("boolean", "isLibrary", String.valueOf(isLibrary))
-//
-//        sourceSets{
-//            main{
-//                if (isLibrary){
-//                    Manifest.srcFile 'src/main/lib_manifest/AndroidManifest.xml'
-//                }else {
-//                    Manifest.srcFile 'src/main/AndroidManifest.xml'
-//                    java.srcDirs 'src/main/lib_manifest/java', 'src/main/java'
-//
-//                }
-//            }
-//        }
-
     }
     buildTypes {
         release {
@@ -57,6 +35,14 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 Task googlePlayTask = project.task('bundleGooglePlayLib') {
@@ -79,52 +65,34 @@ project.tasks.whenTaskAdded { Task theTask ->
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //retrofit2
     api 'com.squareup.retrofit2:retrofit:2.4.0'
 //    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
     //okhttp3
     api 'com.squareup.okhttp3:okhttp:3.10.0'
-    api 'com.alibaba:fastjson:1.2.49'
+    api 'com.alibaba:fastjson:1.2.51'
 
     librarys.each { k, v -> api v }
 
-    //annotationProcessor project(':arouter-compiler')
-    //api的方式有传递性
-    //api project(':arouter-core')
-
-    if (isLibrary) {
-//        implementation project(':arouter_a')
-//        implementation project(':arouter_b')
-    }
-
-    compile project(':fragmentation_core')
+    api project(':fragmentation_core')
     api 'joda-time:joda-time:2.9.4'
 
     implementation project(path: ':apilib')
-    //compile 'net.vidageek:mirror:1.6.1'
 
     // DBFlow
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:4.2.1"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:4.2.1"
     implementation "com.github.Raizlabs.DBFlow:dbflow:4.2.1"
 
-    // Bugly
-//    compile 'com.tencent.bugly:crashreport:latest.release' // 这个是不带升级的
-    // compile 'com.tencent.bugly:nativecrashreport:3.1.0'
-    // compile 'com.tencent.bugly:crashreport_upgrade:1.4.2'
-
     // Dialog
-    compile 'com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar'
+    api 'com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar'
 
     // Picasso
     api 'com.squareup.picasso:picasso:2.5.2'
 
     // 仿IOS联动选择器
-    compile 'com.contrarywind:Android-PickerView:4.1.8'
+    api 'com.contrarywind:Android-PickerView:4.1.8'
 
     if (project.hasProperty("googlePlay")) {
         println "Add lib libbuglygoogle"

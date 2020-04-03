@@ -17,7 +17,7 @@ public class ResultGsonResponseConverter<T> implements Converter<ResponseBody, T
     private final Gson gson;
     private final TypeAdapter<T> adapter;
 
-    ResultGsonResponseConverter(Gson gson, TypeAdapter<T> adapter) {
+    public ResultGsonResponseConverter(Gson gson, TypeAdapter<T> adapter) {
         this.gson = gson;
         this.adapter = adapter;
     }

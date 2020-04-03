@@ -96,7 +96,7 @@ public interface IGuiderApi {
     Call<BeanOfWecaht> getWechatGroup(@Query("sence") String sence,
                                       @Query("deviceCode") String deviceCode,
                                       @Query("wechatAppId") String wechatAppId
-                                      );
+    );
 
     /**
      * 微信绑定手机号
@@ -188,7 +188,7 @@ public interface IGuiderApi {
     Call<List<Devices>> getDeviceList(@Query("mac") String mac);
 
     @GET("api/v1/wechat/subscribe")
-    Call<HasWechatId> checkUserHasWechatId(@Query("appId") String appId , @Query("accountId") String accountId);
+    Call<HasWechatId> checkUserHasWechatId(@Query("appId") String appId, @Query("accountId") String accountId);
 
 
     /**
@@ -230,14 +230,14 @@ public interface IGuiderApi {
      * 获取所有省市区
      */
     @GET("api/v1/allarea")
-    Call<List<City>> getCitys(@Query("page") int page , @Query("row") int row);
+    Call<List<City>> getCitys(@Query("page") int page, @Query("row") int row);
 
     /**
      * 解除与该用户的关系
      * @return
      */
     @DELETE("api/v1/doctor/{accountId}/user")
-    Call<String> deleteUser(@Path("accountId") int accountId , @Query("userAccountId") int userAccountId);
+    Call<String> deleteUser(@Path("accountId") int accountId, @Query("userAccountId") int userAccountId);
 
     /**
      *
@@ -246,7 +246,7 @@ public interface IGuiderApi {
      * @return
      */
     @GET("api/v1/accountthird/verify/login")
-    Call<BeanOfWecaht> verifyThirdAccount(@Query("appId") String appId , @Query("openId") String openId);
+    Call<BeanOfWecaht> verifyThirdAccount(@Query("appId") String appId, @Query("openId") String openId);
     @POST("api/v1/accountthird/phone/login")
     Call<BeanOfWecaht> bindPhoneAndLogin(@Body ParamThirdUserAccount param);
 
