@@ -148,8 +148,6 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         initViews();
         h9DataOper();
         initData();
-
-
     }
 
     private void h9DataOper() {

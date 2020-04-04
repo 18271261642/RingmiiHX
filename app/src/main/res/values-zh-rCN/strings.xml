@@ -1363,4 +1363,8 @@
     <string name="wx_scan_skip">跳过></string>
     <string name="wx_scan_screen_save_ok">屏幕截图保存成功!</string>
     <string name="wx_scan_screen_save_error">屏幕截图保存失败!</string>
+
+    <string name="health_and_safe">健康与安全</string>
+    <string name="family">家人</string>
+    <string name="sos_history">SOS 历史</string>
 </resources>

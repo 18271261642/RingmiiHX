@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <EditText
+        android:id="@+id/etext_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_line_edit_text"
+        android:textColor="#9a9a9a"
+        android:textCursorDrawable="@null"
+        android:cursorVisible="true"/>
+    <LinearLayout
+        android:id="@+id/llayout_bottomline"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/bottomline_gray"
+        android:orientation="vertical"
+        >
+    </LinearLayout>
+</LinearLayout>

@@ -41,6 +41,8 @@ configurations.all {
         force 'com.google.auto:auto-common:0.10'
         force 'com.google.guava:guava:24.0-jre'
         force 'com.google.code.findbugs:jsr305:2.0.1'
+
+        force 'com.squareup.picasso:picasso:2.5.2'
         failOnVersionConflict()
     }
 }
@@ -135,6 +137,9 @@ android {
             java.srcDirs = ['src/main/java', 'src/main/java/locate', 'src/main/java/GetLocation']
             jniLibs.srcDir 'libs'
             jni.srcDirs = []
+            assets {
+                srcDirs 'src/main/assets', 'src/main/assets/family'
+            }
         }
     }
 
@@ -189,36 +194,10 @@ android {
 }
 
 // GooglePlay 版本打包
+/*
 Task googlePlayTask = project.task('bundleGooglePlayLib') {
         project.ext.googlePlay = 'true'
         println "Package Google Play Bundle Release . . ."
-}
-
-// task bundleGooglePlay (type: Copy) {
-Task bundleGooglePlay = project.task("bundleGooglePlay") {
-    doLast {
-        println "rename aab begin"
-        from("build/outputs/bundle/release/")
-        include 'app.aab'
-        destinationDir file('build/outputs/bundle/release/')
-
-        def fileName = "GuiderBand"
-        if (android.defaultConfig.versionName != null) {
-            fileName = "${fileName}-${android.defaultConfig.versionName}"
-        }
-
-        def today = new Date().format('yyyyMMddHHmm');
-        fileName = "${fileName}-${today}"
-
-        if (project.hasProperty("googlePlay")) {
-            fileName = "${fileName}-GooglePlay"
-        } else {
-            fileName = "${fileName}-CN"
-        }
-        println "${fileName}"
-        rename 'app.aab', "${fileName}.aab"
-        // delete 'app.aab'
-   }
 }
 
 project.tasks.whenTaskAdded { Task theTask ->
@@ -232,7 +211,7 @@ project.tasks.whenTaskAdded { Task theTask ->
         project.tasks.first().mustRunAfter(googlePlayTask)
     }
 }
-
+*/
 dependencies {
     if (project.hasProperty("googlePlay")) {
         println "Add lib libgooglemap"
@@ -352,6 +331,10 @@ dependencies {
     implementation files('libs/jcc-bate-0.7.3.jar')
 
     implementation 'org.litepal.android:java:3.0.0'
+
+    implementation 'com.just.agentweb:agentweb:4.1.3'
+    implementation 'com.just.agentweb:filechooser:4.1.3'// (可选)
+    implementation 'com.download.library:Downloader:4.1.3'// (可选)
 }
 
 android.applicationVariants.all { variant ->
@@ -368,7 +351,7 @@ android.applicationVariants.all { variant ->
                 tail = ".aab"
             }
 
-            fileName = fileName.replace('app', "GuiderBand")
+            fileName = fileName.replace('app-app', "GuiderBand")
 
             if (android.defaultConfig.versionName != null) {
                 fileName = fileName.replace(tail, "-${android.defaultConfig.versionName}${tail}")
@@ -388,3 +371,4 @@ android.applicationVariants.all { variant ->
         }
     }
 }
+

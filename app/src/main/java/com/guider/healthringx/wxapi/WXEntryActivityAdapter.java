@@ -181,6 +181,8 @@ public class WXEntryActivityAdapter {
             if(!flag){      //false不需要绑定手机号
                 long accountId = guiderWXUserInfoBean.getData().getTokenInfo().getAccountId();
                 SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
+                String token = guiderWXUserInfoBean.getData().getTokenInfo().getToken();
+                SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", token);
 
                 WxScanUtil.handle(mContext, accountId, new WxScanUtil.IWxScan() {
                     @Override

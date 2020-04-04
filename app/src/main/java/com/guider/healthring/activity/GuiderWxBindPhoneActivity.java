@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.bean.AreCodeBean;
@@ -327,6 +328,8 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
                 JSONObject dataJson = jsonObject.getJSONObject("data");
                 long accountId = dataJson.getLong("accountId");
                 SharedPreferencesUtils.setParam(this, "accountIdGD", accountId);
+                String token = dataJson.getString("token");
+                SharedPreferencesUtils.setParam(this, "tokenGD", accountId);
                 ToastUtil.showToast(this, getResources().getString(R.string.bind_phone_success));
 
 

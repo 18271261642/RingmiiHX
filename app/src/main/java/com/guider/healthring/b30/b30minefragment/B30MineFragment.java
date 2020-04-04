@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.guider.health.common.core.UserManager;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -43,6 +44,7 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
+import com.guider.libbase.activity.WebviewActivity;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ICustomSettingDataListener;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
@@ -224,7 +226,7 @@ public class B30MineFragment extends LazyFragment implements RequestView {
 
     @OnClick({R.id.b30userImageHead, R.id.b30MineDeviceRel, R.id.b30MineSportRel,
             R.id.b30MineSleepRel, R.id.b30MineUnitRel, R.id.b30MineAboutRel,
-            R.id.b30LogoutBtn,R.id.bemoRel})
+            R.id.b30LogoutBtn,R.id.bemoRel, R.id.rl_family, R.id.rl_sos})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b30userImageHead: //头像
@@ -279,8 +281,23 @@ public class B30MineFragment extends LazyFragment implements RequestView {
                 break;
             case R.id.bemoRel:
                 startActivity(new Intent(getActivity(),BemoSwitchActivity.class));
+            case R.id.rl_family: // 我的家人
+                startWebviewActivity("https://app.guiderhealth.com/#/family");
+                break;
+            case R.id.rl_sos:
+                startWebviewActivity("https://app.guiderhealth.com/#/friend/sos");
                 break;
         }
+    }
+
+
+    private void startWebviewActivity(String url) {
+        long accountId = (long) SharedPreferencesUtils.getParam(getContext(), "accountIdGD", 0L);
+        String token = (String) SharedPreferencesUtils.getParam(getContext(), "tokenGD", "1");
+        Intent intent = new Intent(getContext(), WebviewActivity.class);
+        intent.putExtra("url", String.format("%s?accountId=%d&token=%s", url, accountId, token));
+        Log.i(TAG, "startWebviewActivity url :" + url);
+        startActivity(intent);
     }
 
 

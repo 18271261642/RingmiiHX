@@ -102,7 +102,8 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:vmSafeMode="true"
         tools:ignore="HardcodedDebugMode"
-        tools:replace="android:label,android:name,android:icon">
+        tools:replace="android:label,android:name,android:icon"
+        android:usesCleartextTraffic="true">
 
 
         <uses-library
@@ -178,6 +179,10 @@
         <activity
             android:name=".activity.WxScanActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name="com.guider.libbase.activity.WebviewActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

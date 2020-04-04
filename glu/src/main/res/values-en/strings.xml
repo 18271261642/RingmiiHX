@@ -40,7 +40,7 @@
     <string name="height">height</string>    
     <string name="weight">weight</string>
         
-    <string name="glu_level">Glycemic\n  Level</string>
+    <string name="glu_level">Glycemic level</string>
       
     <string name="normal">normal</string>    
     <string name="abnormal">Abnormal</string>    

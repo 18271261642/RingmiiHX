@@ -462,7 +462,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                             JSONObject dataJsonObject = jsonObject.getJSONObject("data");
                             long accountId = dataJsonObject.getLong("accountId");
                             SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
-
+                            String token = dataJsonObject.getString("token");
+                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", accountId);
                             WxScanUtil.handle(LoginActivity.this, accountId, new WxScanUtil.IWxScan() {
                                 @Override
                                 public void onError() {
