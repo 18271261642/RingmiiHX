@@ -50,6 +50,8 @@
       <module fileurl="file://$PROJECT_DIR$/glu/glu.iml" filepath="$PROJECT_DIR$/glu/glu.iml" group="GuiderBandV4/glu" />
       <module fileurl="file://$PROJECT_DIR$/glu_phone/glu_phone.iml" filepath="$PROJECT_DIR$/glu_phone/glu_phone.iml" group="GuiderBandV4/glu_phone" />
       <module fileurl="file://$PROJECT_DIR$/libbase/libbase.iml" filepath="$PROJECT_DIR$/libbase/libbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libbasecn/libbasecn.iml" filepath="$PROJECT_DIR$/libbasecn/libbasecn.iml" group="GuiderBandV4/libbasecn" />
+      <module fileurl="file://$PROJECT_DIR$/libbasegoogle/libbasegoogle.iml" filepath="$PROJECT_DIR$/libbasegoogle/libbasegoogle.iml" group="GuiderBandV4/libbasegoogle" />
       <module fileurl="file://$PROJECT_DIR$/libbuglycn/libbuglycn.iml" filepath="$PROJECT_DIR$/libbuglycn/libbuglycn.iml" group="GuiderBandV4/libbuglycn" />
       <module fileurl="file://$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" filepath="$PROJECT_DIR$/libbuglygoogle/libbuglygoogle.iml" group="GuiderBandV4/libbuglygoogle" />
       <module fileurl="file://$PROJECT_DIR$/libgaodemap/libgaodemap.iml" filepath="$PROJECT_DIR$/libgaodemap/libgaodemap.iml" />

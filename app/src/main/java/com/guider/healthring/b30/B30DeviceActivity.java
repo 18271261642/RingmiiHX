@@ -176,7 +176,7 @@ public class B30DeviceActivity extends WatchBaseActivity implements Rationale<Li
     private void readDetectBp(BpSettingData bpSettingData) {
         bpData = bpSettingData;
         boolean privateBlood = bpSettingData.getModel() == EBPDetectModel.DETECT_MODEL_PRIVATE;
-        if (Commont.isDebug)Log.e(TAG, "----死人血压模式= " + MyCommandManager.DEVICENAME
+        if (Commont.isDebug)Log.e(TAG, "----私人血压模式= " + MyCommandManager.DEVICENAME
                 + " == " + bpData
                 + " == " + privateBlood);
         privateBloadToggleBtn.setChecked(privateBlood);

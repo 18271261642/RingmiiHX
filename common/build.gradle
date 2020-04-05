@@ -44,7 +44,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
+/*
 Task googlePlayTask = project.task('bundleGooglePlayLib') {
     project.ext.googlePlay = 'true'
     println "Package Google Play Bundle Release . . ."
@@ -61,7 +61,7 @@ project.tasks.whenTaskAdded { Task theTask ->
         project.tasks.first().mustRunAfter(googlePlayTask)
     }
 }
-
+*/
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -94,13 +94,11 @@ dependencies {
     // 仿IOS联动选择器
     api 'com.contrarywind:Android-PickerView:4.1.8'
 
-    if (project.hasProperty("googlePlay")) {
+    if (rootProject.googlePlay) {
         println "Add lib libbuglygoogle"
-
         api project(':libbuglygoogle')
     } else {
         println "Add lib libbuglycn"
-
         api project(':libbuglycn')
     }
 }

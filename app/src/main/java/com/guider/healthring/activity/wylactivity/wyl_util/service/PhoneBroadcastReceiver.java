@@ -119,22 +119,17 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    //发送电话号码
+    // 发送电话号码
     private void sendPhoneAlertData(String phoneNumber, String tag) {
-
-        getPhoneContacts(phoneNumber, tag);
-
+        // getPhoneContacts(phoneNumber, tag);
         //判断是否有读取联系人和通讯录的权限
-//        if (!AndPermission.hasPermissions(MyApp.getContext(), Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG)) {
-//            AndPermission.with(MyApp.getContext()).runtime().permission(Manifest.permission.READ_CONTACTS,
-//                    Manifest.permission.READ_CALL_LOG).start();
-//        } else {
-//            getPhoneContacts(phoneNumber, tag);
-//        }
-
-
+        if (!AndPermission.hasPermissions(MyApp.getContext(), Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG)) {
+            AndPermission.with(MyApp.getContext()).runtime().permission(Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.READ_CALL_LOG).start();
+        } else {
+            getPhoneContacts(phoneNumber, tag);
+        }
     }
-
 
     public interface OnCallPhoneListener {
         void callPhoneAlert(String phoneTag);

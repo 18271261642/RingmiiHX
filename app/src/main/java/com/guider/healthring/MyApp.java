@@ -4,6 +4,7 @@ package com.guider.healthring;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,6 +13,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 
@@ -130,7 +133,7 @@ public class MyApp extends LitePalApplication {
         super.onCreate();
         AppisOne = true;
         AppisOneStar = true;
-        //LeakCanary.install(this);
+        // LeakCanary.install(this);
         application = this;
         context = this;
         activities = new ArrayList<>();
@@ -139,20 +142,9 @@ public class MyApp extends LitePalApplication {
 
         Bugly.init(this, "ff6d0ec595", true);
 
-        //mob 初始化
-         //MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
-
-        // MobSDK.init(this, "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
-        // MobSDK.init(this, "2dc65dc4724aa", "5c4cd9ab545da0ccebd0d4b6d46c73fd");
-       // CrashReport.initCrashReport(application, "6345284c79", true);
-
-        //启动B30的服务
+        // 启动B30的服务
         startB30Server();
         bindAlertServices();    //绑定通知的服务
-
-
-       // bindGuiderService();
-
 
         try {
             setDatabase();
@@ -161,10 +153,18 @@ public class MyApp extends LitePalApplication {
             error.printStackTrace();
         }
 
+        // 如果是国内版本，注册短信及电话接收，以便手环能够收到提醒
+        if (!BuildConfig.GOOGLEPLAY) {
+            // 短信
+            newSmsBroadCastReceiver = new NewSmsBroadCastReceiver();
+            IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+            registerReceiver(newSmsBroadCastReceiver, intentFilter);
+            // 电话
+            TelephonyManager manager = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+            manager.listen(getCustomPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
+        }
 
-//        newSmsBroadCastReceiver = new NewSmsBroadCastReceiver();
-//        IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-//        registerReceiver(newSmsBroadCastReceiver,intentFilter);
+        // 打印签名信息
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.guider.healthringx",

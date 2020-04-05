@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.android.internal.telephony.ITelephony;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -136,15 +137,15 @@ public class B30MessAlertActivity extends WatchBaseActivity {
 
         initViews();
 
-        //申请权限
-        //requestPermiss();
+        // 申请权限
+        if (!BuildConfig.GOOGLEPLAY)
+            requestPermiss();
 
         getPhoneStatus();
-        //读取社交消息设置
+        // 读取社交消息设置
         readSocialMsg();
 
-        //getDoNotDisturb();
-
+        // getDoNotDisturb();
     }
 
 
@@ -194,8 +195,11 @@ public class B30MessAlertActivity extends WatchBaseActivity {
         if (!AndPermission.hasPermissions(B30MessAlertActivity.this, new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CALL_LOG})) {
             AndPermission.with(B30MessAlertActivity.this)
                     .runtime()
-                    .permission(Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG)
-//                            ,Manifest.permission.WRITE_CALL_LOG)
+                    .permission(Manifest.permission.CALL_PHONE,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.READ_CONTACTS,
+                            Manifest.permission.READ_CALL_LOG,
+                            Manifest.permission.WRITE_CALL_LOG)
                     .rationale(new Rationale<List<String>>() {
                         @Override
                         public void showRationale(Context context, List<String> data, RequestExecutor executor) {
@@ -206,12 +210,12 @@ public class B30MessAlertActivity extends WatchBaseActivity {
         }
 
         if (!AndPermission.hasPermissions(B30MessAlertActivity.this, new String[]{
-//                Manifest.permission.READ_SMS,
+                Manifest.permission.READ_SMS,
                 Manifest.permission.READ_CONTACTS})) {
             AndPermission.with(B30MessAlertActivity.this)
                     .runtime()
                     .permission(
-//                            Manifest.permission.READ_SMS,
+                            Manifest.permission.READ_SMS,
                             Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.READ_CONTACTS,
                             Manifest.permission.READ_CALL_LOG)//,Manifest.permission.WRITE_CALL_LOG)

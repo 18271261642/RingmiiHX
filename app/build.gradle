@@ -43,6 +43,8 @@ configurations.all {
         force 'com.google.code.findbugs:jsr305:2.0.1'
 
         force 'com.squareup.picasso:picasso:2.5.2'
+
+        force 'org.apache.httpcomponents:httpcore:4.4.5'
         failOnVersionConflict()
     }
 }
@@ -90,16 +92,16 @@ android {
         }
 
     }
+
     buildTypes {
         debug {
-            // 显示Log
-//            buildConfigField "boolean", "LOG_DEBUG", "true"
-            /*     versionNameSuffix*/
             minifyEnabled false
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-           // signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debug
             shrinkResources false
+            // 区分是否是国际版本
+            buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
         }
         release {
             debuggable false
@@ -109,8 +111,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            // 区分是否是国际版本
+            buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
         }
-
     }
     greendao {
         schemaVersion 6
@@ -138,7 +141,7 @@ android {
             jniLibs.srcDir 'libs'
             jni.srcDirs = []
             assets {
-                srcDirs 'src/main/assets', 'src/main/assets/family'
+                srcDirs 'src/main/assets'
             }
         }
     }
@@ -213,16 +216,16 @@ project.tasks.whenTaskAdded { Task theTask ->
 }
 */
 dependencies {
-    if (project.hasProperty("googlePlay")) {
-        println "Add lib libgooglemap"
+    if (rootProject.googlePlay) {
+        println "Add lib libgoogle"
         implementation project(':libgooglemap')
-
         implementation project(':libbuglygoogle')
+        implementation project(':libbasegoogle')
     } else {
+        println "Add lib libcn"
         implementation project(':libgaodemap')
-        println "Add lib libgaodemap"
-
         implementation project(':libbuglycn')
+        implementation project(':libbasecn')
     }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -362,7 +365,7 @@ android.applicationVariants.all { variant ->
                 fileName = fileName.replace(tail, "-${today}${tail}")
             }
 
-            if (project.hasProperty("googlePlay")) {
+            if (project.googlePlay) {
                 fileName = fileName.replace(tail, "-GooglePlay${tail}")
             } else {
                 fileName = fileName.replace(tail, "-CN${tail}")

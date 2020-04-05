@@ -1,5 +1,6 @@
 package com.guider.healthring.activity.wylactivity.wyl_util.service;
 
+import com.guider.libbase.util.Log;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.os.Build;
@@ -86,13 +87,13 @@ public class AlertService extends MyNotificationListenerService {
     @Override
     public void onCreate() {
         super.onCreate();
-//        Log.d(TAG, "----------1111-onCreate--");
+        Log.d(TAG, "----------onCreate--");
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn, RankingMap rankingMap) {
         super.onNotificationPosted(sbn, rankingMap);
-//        Log.d(TAG, "---------222-onCreate--");
+        Log.d(TAG, "---------222-onCreate--");
     }
 
     //当系统收到新的通知后出发回调
@@ -102,7 +103,7 @@ public class AlertService extends MyNotificationListenerService {
         try {
             //获取应用包名
             String packageName = sbn.getPackageName();
-            //Log.d(TAG, "=====kkkk===" + sbn.toString());
+            Log.d(TAG, "=====kkkk===" + packageName);
 //            Log.e(TAG, packageName);
             //获取notification对象
             Notification notification = sbn.getNotification();
