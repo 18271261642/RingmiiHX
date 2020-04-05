@@ -1335,6 +1335,6 @@
     <string name="wx_scan_screen_save_error">屏幕截圖保存失敗!</string>
 
     <string name="health_and_safe">健康與安全</string>
-    <string name="family">家人</string>
-    <string name="sos_history">SOS 歷史</string>
+    <string name="family">我的家人</string>
+    <string name="sos_history">SOS記錄</string>
 </resources>

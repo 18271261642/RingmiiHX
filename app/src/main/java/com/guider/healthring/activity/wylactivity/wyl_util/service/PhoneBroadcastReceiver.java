@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.bleutil.MyCommandManager;
@@ -121,13 +122,16 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 
     // 发送电话号码
     private void sendPhoneAlertData(String phoneNumber, String tag) {
-        // getPhoneContacts(phoneNumber, tag);
-        //判断是否有读取联系人和通讯录的权限
-        if (!AndPermission.hasPermissions(MyApp.getContext(), Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG)) {
-            AndPermission.with(MyApp.getContext()).runtime().permission(Manifest.permission.READ_CONTACTS,
-                    Manifest.permission.READ_CALL_LOG).start();
-        } else {
+        if (BuildConfig.GOOGLEPLAY)
             getPhoneContacts(phoneNumber, tag);
+        else {
+            //判断是否有读取联系人和通讯录的权限
+            if (!AndPermission.hasPermissions(MyApp.getContext(), Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG)) {
+                AndPermission.with(MyApp.getContext()).runtime().permission(Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.READ_CALL_LOG).start();
+            } else {
+                getPhoneContacts(phoneNumber, tag);
+            }
         }
     }
 
