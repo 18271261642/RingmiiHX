@@ -161,7 +161,8 @@ public class WebviewAgent implements IWebviewAgent{
                     @Override
                     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                         super.onReceivedHttpError(view, request, errorResponse);
-                        Log.e(TAG, "onReceivedHttpError" + errorResponse.getData().toString());
+                        if (errorResponse != null && errorResponse.getData() != null)
+                            Log.e(TAG, "onReceivedHttpError" + errorResponse.getData().toString());
                         showLoading(false);
                     }
 

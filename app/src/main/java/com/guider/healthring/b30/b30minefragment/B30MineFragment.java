@@ -23,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.guider.health.common.core.UserManager;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -171,6 +172,10 @@ public class B30MineFragment extends LazyFragment implements RequestView {
     private void initViews() {
         commentB30TitleTv.setText(getResources().getString(R.string.menu_settings));
 
+        //非国际版隐藏家人选项
+        if (!BuildConfig.GOOGLEPLAY) {
+            b30MineView.findViewById(R.id.ll_family).setVisibility(View.GONE);
+        }
     }
 
     @SuppressLint("SetTextI18n")

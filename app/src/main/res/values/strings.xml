@@ -1344,6 +1344,7 @@
     <string name = "wx_scan_screen_save_ok">Screenshot saved successfully!</string>
     <string name = "wx_scan_screen_save_error">Screenshot failed to save!</string>
 
+    <string name="family_health">Family health</string>
     <string name="health_and_safe">Health and safe</string>
     <string name="family">My family members</string>
     <string name="sos_history">SOS recording</string>
