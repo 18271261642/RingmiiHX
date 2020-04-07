@@ -25,9 +25,9 @@ public class BaseAndroidInterface {
     @JavascriptInterface
     public void getUserInfo(String method) {
         Log.i("haix", "getUserInfo: " + method);
-        int accountId = (int) SPUtils.get(mContext, "accountIdGD", 0);
+        long accountId = (long) SPUtils.get(mContext, "accountIdGD", 0L);
         String token = (String) SPUtils.get(mContext, "tokenGD", "1");
-        UserManager.getInstance().setAccountId(accountId);
+        UserManager.getInstance().setAccountId((int) accountId);
         UserManager.getInstance().setToken(token);
 
         if ("".equals(token)) {

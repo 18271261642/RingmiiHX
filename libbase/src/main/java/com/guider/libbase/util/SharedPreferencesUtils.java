@@ -109,6 +109,8 @@ public class SharedPreferencesUtils {
 
         if ("String".equals(type)) {
             return sp.getString(key, (String) defaultObject);
+        } else if ("Integer".equals(type) && key.equals("accountIdGD")) {
+            return (long)sp.getInt(key, (Integer) defaultObject);
         } else if ("Integer".equals(type)) {
             return sp.getInt(key, (Integer) defaultObject);
         } else if ("Boolean".equals(type)) {

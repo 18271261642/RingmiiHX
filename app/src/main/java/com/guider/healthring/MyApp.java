@@ -127,6 +127,16 @@ public class MyApp extends LitePalApplication {
 
     @Override
     public void onCreate() {
+        // 重新处理accountId
+        try {
+            long strAccountId = (long) SharedPreferencesUtils.getParam(getApplicationContext(), "accountIdGD", 0L);
+        } catch (ClassCastException cce) {
+            cce.printStackTrace();
+            int strAccountId = (int) SharedPreferencesUtils.getParam(getApplicationContext(), "accountIdGD", 0);
+            if (strAccountId != 0)
+                SharedPreferencesUtils.setParam(getApplicationContext(), "accountIdGD", (long)strAccountId);
+        }
+
         MyUtils.setMacAddress(BuildConfig.MAC); // 模拟手环APP
         ApiUtil.init(getApplication() , MyUtils.getMacAddress());
         MyUtils.application = getApplication();

@@ -22,6 +22,7 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.google.GooglePlus;
 import cn.sharesdk.line.Line;
+import cn.sharesdk.line.utils.LineAuthenticationParams;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.whatsapp.WhatsApp;
 import retrofit2.Call;
@@ -151,7 +152,8 @@ public class ThirdLogin {
                 } else { // 直接跳转，注意这里需要第三方操作，特别是对于类似手环
                     if (thirdLoginCallback != null)
                         thirdLoginCallback.onUserInfo(map);
-                    SharedPreferencesUtils.setParam(mContext, "accountIdGD", info.getTokenInfo().getAccountId());
+                    SharedPreferencesUtils.setParam(mContext, "accountIdGD", (long)info.getTokenInfo().getAccountId());
+                    SharedPreferencesUtils.setParam(mContext, "tokenGD", info.getTokenInfo().getToken());
                     mCompelet.run();
                 }
             }

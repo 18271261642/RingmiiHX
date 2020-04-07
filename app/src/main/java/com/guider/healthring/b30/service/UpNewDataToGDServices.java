@@ -360,7 +360,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         if (dataBean != null) {
                             accountId = dataBean.getAccountId();
 
-                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
+                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", (long)accountId);
                             String token = dataBean.getToken();
                             SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", accountId);
                             if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆成功：开始上传步数");
