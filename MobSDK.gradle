@@ -38,16 +38,6 @@ MobSDK {
                 enable true
             }
 
-            Line {
-                id 32
-                sortId 32
-                appId "1653887386"
-                appSecret "bf5562a026c005661240cba553656b88"
-                callbackUri "https://www.mob.com/"
-                callbackscheme "lineauth"
-                enable true
-            }
-
             WhatsApp {
                 id 35
                 sortId 35

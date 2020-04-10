@@ -2,7 +2,6 @@ package com.guider.glu.model;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,13 +14,17 @@ import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.UserManager;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
  * Created by haix on 2019/6/4.
  */
 
-public class GLUMeasureModel{
+public class GLUMeasureModel {
+    private static String TAG = "GLUMeasureModel";
+    // 血糖值转换比例
+    private int mScale = 10;
     public ArrayList<String> inputArrayList = new ArrayList<String>();
 
     /**
@@ -39,7 +42,6 @@ public class GLUMeasureModel{
      * @param height    身高
      */
     public void makeInputData(String timeMeal, String diabetesType, String glucose, String weight, String height) {
-
         inputArrayList.add("CCDLJC$");
         StringBuilder userDataStr = new StringBuilder();
         userDataStr.append("DDYHSJ");
@@ -50,7 +52,7 @@ public class GLUMeasureModel{
         // 血糖
         if (TextUtils.isEmpty(diabetesType)) {
             Float aFloat = Float.valueOf(glucose);
-            int v = (int) (aFloat * 10);
+            int v = Math.round (aFloat * mScale);
             userDataStr.append(v >= 100 ? v : "0" + v);
         } else {
             userDataStr.append("000");
@@ -67,6 +69,7 @@ public class GLUMeasureModel{
         inputArrayList.add(userDataStr.toString());
         inputArrayList.add("CCHJJC$");
         inputArrayList.add("CCSTAT$");
+        Log.d(TAG, "makeInputData " + userDataStr.toString());
     }
 
     public void reSetList(){
@@ -76,20 +79,26 @@ public class GLUMeasureModel{
         fourthPacketCount = 0;
     }
 
-
     public void makeInputData() {
+        Log.d(TAG, "makeInputData");
+        makeInputData(BodyIndex.getInstance().getTimeMeal(),
+                BodyIndex.getInstance().getDiabetesType(),
+                BodyIndex.getInstance().getValue() + "",
+                UserManager.getInstance().getWeight() + "",
+                UserManager.getInstance().getHeight() + "");
+        /*
         inputArrayList.add("CCDLJC$");
 
         String userDataStr = "DDYHSJ";
-        userDataStr = userDataStr + BodyIndex.getInstance().getTimeMeal();//0and2
-        if (BodyIndex.getInstance().getDiabetesType().equals("Normal")) {//正常不正常
+        userDataStr = userDataStr + BodyIndex.getInstance().getTimeMeal(); // 0and2
+        if (BodyIndex.getInstance().getDiabetesType().equals("Normal")) {  // 正常不正常
             userDataStr = userDataStr + "0";
             userDataStr = userDataStr + "000";
         } else {
             userDataStr = userDataStr + "2";
 
             int testValue = (int) BodyIndex.getInstance().getValue();
-            Float gulcoseValue = BodyIndex.getInstance().getValue() * 10;
+            Float gulcoseValue = BodyIndex.getInstance().getValue() * mScale;
             if (testValue < 10) {
                 userDataStr = userDataStr + "0" + String.format("%.0f", gulcoseValue);
             } else {
@@ -97,7 +106,7 @@ public class GLUMeasureModel{
             }
         }
 
-        //三种药哪个吃药哪个为1, 不吃为0, 最后拼个0
+        // 三种药哪个吃药哪个为1, 不吃为0, 最后拼个0
         userDataStr = userDataStr + getBMIValue(UserManager.getInstance().getWeight()+"", UserManager.getInstance().getHeight()+"");
         String medication = "" + BodyIndex.getInstance().getSulphonylureasState() + "" +
                 BodyIndex.getInstance().getBiguanidesState() + "" +
@@ -107,7 +116,7 @@ public class GLUMeasureModel{
         inputArrayList.add(userDataStr);
         inputArrayList.add("CCHJJC$");
         inputArrayList.add("CCSTAT$");
-
+        */
     }
 
     public String getBMIValue(String weight, String height) {
@@ -131,14 +140,13 @@ public class GLUMeasureModel{
     int fourthPacketCount = 0;
 
     public void readData(String data) {
-        //Log.i("haix", "+++++++++data: "+data);
+        // Log.d(TAG, "+++++++++data: "+data);
         if (data.startsWith("DDDLZT")) {
-
             String strBlock = data.substring(6, data.length() - 1);
-            //todo  这里有转换异常"087$DDJSOK"
+            // TODO  这里有转换异常"087$DDJSOK"
             try {
                 int batteryLevel = Integer.parseInt(strBlock);
-                //int batteryLevel = Integer.valueOf(strBlock);
+                // int batteryLevel = Integer.valueOf(strBlock);
                 if (batteryLevel <= 20) {
                     changeScreensAccordingToCase("Battery_Level_Low");
                 }
@@ -217,7 +225,7 @@ public class GLUMeasureModel{
                 }
 
                 Log.i("haix", "测量结束");
-                //跳转到 ResultActivity
+                // 跳转到 ResultActivity
                 measureResultListener.measureFinish();
             }
         }
@@ -234,7 +242,6 @@ public class GLUMeasureModel{
     public String surfaceHumidity = "";
     public String batteryLevel = ""; //電量
 
-
     public void readFirstPacket() {
         firstPacketString = firstPacketString.replace("DDCSZY", "");
         firstPacketString = firstPacketString.replace("$", "");
@@ -243,7 +250,9 @@ public class GLUMeasureModel{
         hemoglobin = firstPacketString.substring(5, 9);
         speed = firstPacketString.substring(9);
 
-        Glucose.getInstance().setGlucose(Double.parseDouble(glucose) / 10);
+        BigDecimal bd = BigDecimal.valueOf(Double.parseDouble(glucose) / mScale)
+                .setScale(2, BigDecimal.ROUND_HALF_UP);
+        Glucose.getInstance().setGlucose(bd.doubleValue());
         Glucose.getInstance().setOxygenSaturation(oxygenSaturation);
         Glucose.getInstance().setHemoglobin(hemoglobin);
         Glucose.getInstance().setSpeed(speed);
@@ -274,22 +283,18 @@ public class GLUMeasureModel{
 
         Glucose.getInstance().setPulse(pulse);
         Glucose.getInstance().setBatteryLevel(batteryLevel);
-
     }
 
     int inputValueIndex = -1;
 
     public void sendDataToDevice() {
-
         Log.i("haix", "测量------- list大小: "+ inputArrayList.size() + " inputValueIndex的值: "+inputValueIndex);
-
         if (inputValueIndex < inputArrayList.size() - 1) {
             inputValueIndex = inputValueIndex + 1;
             String str = inputArrayList.get(inputValueIndex);
-
             Log.i("haix","定入字符串: "+ str);
             writeData(str);
-            //sendDataTimeHandler.postDelayed(sendDataRunnable, 8000);
+            // sendDataTimeHandler.postDelayed(sendDataRunnable, 8000);
         }
     }
 
@@ -331,8 +336,7 @@ public class GLUMeasureModel{
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-//                Log.i("haix", "向设备发送字符串: " +BleBluetooth.getInstance().bytesToHexString(packages.get(0)) );
+                // Log.i("haix", "向设备发送字符串: " +BleBluetooth.getInstance().bytesToHexString(packages.get(0)) );
                 if (packages.size() >= 1) {
                     BleBluetooth.getInstance().writeBuffer(packages.get(0));
                 }
@@ -346,11 +350,9 @@ public class GLUMeasureModel{
     public void characteristicUUID(BluetoothGatt gatt,
                                    BluetoothGattCharacteristic characteristic) {
         if (characteristic.getValue()[0] == 0x05) {
-
             byte[] handshake = {0x05};
             characteristic.setValue(handshake);
             gatt.writeCharacteristic(characteristic);
-
         }
     }
 
@@ -387,6 +389,7 @@ public class GLUMeasureModel{
                 }
             }
         });
+
     }
 
 
@@ -396,8 +399,8 @@ public class GLUMeasureModel{
         Log.i("haix", "血糖打印结果: "+caseStr);
         switch (caseStr) {
             case "Not_Connected":
-                //设备连接失败, 请确保电源已经打开
-                measureResultListener.measureRemind( MyUtils.application.getString(R.string.device_conn_error));
+                // ,设备连接失败, 请确保电源已经打开
+                // measureResultListener.measureRemind(MyUtils.application.getString(R.string.measure_3_lianjieshibai));
                 if (timerForTest != null) {
                     timerForTest.cancel();
                     timerForTest = null;
@@ -587,6 +590,7 @@ public class GLUMeasureModel{
             }
 
             public void onFinish() {
+                // insertFingerTimer.setVisibility(View.GONE);
                 changeScreensAccordingToCase("CCFRCS");
             }
         };
@@ -608,7 +612,7 @@ public class GLUMeasureModel{
             }
 
             public void onFinish() {
-                //saveDataAndMoveToNextScreen();
+                // saveDataAndMoveToNextScreen();
             }
         };
         timerForTest.start();
@@ -617,8 +621,7 @@ public class GLUMeasureModel{
     public void countTime() {
         executionTimeCounter = new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
-                //timer.setText("" + millisUntilFinished / 1000);
-                //测试
+                // 测试
                 measureResultListener.measureTime(millisUntilFinished/1000+"");
             }
 
@@ -657,9 +660,8 @@ public class GLUMeasureModel{
                 break;
         }
 
-        //請保持冷靜、保持當前的姿態
-        //instructionFirstTV.setText(getResources().getString(R.string.stayCalm));
-
+        // 請保持冷靜、保持當前的姿態
+        // instructionFirstTV.setText(getResources().getString(R.string.stayCalm));
     }
 
     private MeasureResultListener measureResultListener;
@@ -678,5 +680,4 @@ public class GLUMeasureModel{
         void error(String er);
         void fingerTime(int time);
     }
-
 }

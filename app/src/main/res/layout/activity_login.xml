@@ -257,6 +257,11 @@
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true" />
 
+                    <com.linecorp.linesdk.widget.LoginButton
+                        android:id="@+id/lb_line"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp" />
+
                 </RelativeLayout>
             </LinearLayout>
 

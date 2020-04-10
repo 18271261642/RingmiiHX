@@ -54,4 +54,6 @@ dependencies {
     api 'com.theartofdev.edmodo:android-image-cropper:2.2.5'
     api 'com.github.lovetuzitong:MultiImageSelector:1.2'
     api 'id.zelory:compressor:1.0.2'
+
+    api 'com.linecorp.linesdk:linesdk:5.3.1'
 }

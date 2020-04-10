@@ -30,7 +30,7 @@
 <Yixin Enable="false" />
 <YixinMoments Enable="false" />
 <Mingdao Enable="false" />
-<Line Id="32" SortId="32" callbackscheme="lineauth" Enable="true" ChannelID="1653887386" ChannelSecret="bf5562a026c005661240cba553656b88" RedirectUri="https://www.mob.com/" />
+<Line Enable="false" />
 <WhatsApp Id="35" SortId="35" Enable="true" />
 <KakaoTalk Enable="false" />
 <KakaoStory Enable="false" />

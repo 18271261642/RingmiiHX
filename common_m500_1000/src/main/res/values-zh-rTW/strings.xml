@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">蓋德M500</string>
+    <string name="kaishiceliang">開始測量</string>
+
+    <string name="next">下壹步</string>
+
+    <string name="end_measurement">結束測量</string>
+    <string name="remeasure">重新測量</string>
+    <string name="print_report">打印報告</string>
+
+    <string name="blood_sugar">血糖</string>
+    <string name="blood_flow">血流速度</string>
+    <string name="blood_oxygen">血氧濃度</string>
+    <string name="glu_tips">提醒您保持良好的飲食習慣，保持規律運動，並定時測量血糖.</string>
+
+    <!--心电 心率 饮酒风险 精神压力 情绪变化 体脂率 -->
+
+    <string name="choose_device">選擇測量設備</string>
+    <string name="choose_tips_pre">您共選擇了</string>
+    <string name="choose_tips_tail">個設備進行下面的測量!</string>
+    <string name="no_network_tips">沒有網絡, 請打開網絡!</string>
+
+    <string name="normal">正常</string>
+    <string name="abnormal">異常</string>
+
+    <string name="request_per">請求權限要打開，否則不能正常使用！</string>
+
+    <string name="measurement_results">測量結果</string>
+
+
+    <string name="glu">血糖</string>
+    <string name="test_result">測量結果</string>
+    <string name="fora_glu_reminder_title">福爾血糖測量提示</string>
+    <string name="fora_glu_tips">1. 請按長M鍵打開機器\n\n2. 請將試紙吸血後插入插槽\n\n3. 請下滑左側按鍵打開藍牙，此時左上角藍燈亮起</string>
+    <string name="start_test">開始測量</string>
+    <string name="fora_glu_start_tips">測量開始</string>
+    <string name="restart_test">重新開始測量</string>
+    <string name="fora_glu_reult_format">您的血糖值為：\n%.2f mmol/L</string>
+    <string name="fora_glu_redult_title">福爾血糖測量結果</string>
+
+    <string name="zangyin">臟音檢測</string>
+
+    <string name="dmyh">動脈硬化測量</string>
+    <string name="sbp">收縮壓</string>
+    <string name="dbp">舒張壓</string>
+    <string name="heart_rate">心率</string>
+    <string name="dmyh_suggest">建議您註意調整飲食、控制體重、 保持規律的運動、定期量血壓並保持心情愉悅哦。</string>
+
+    <string name="bp">血壓</string>
+
+    <string name="ecg">心電</string>
+    <string name="heart_rate_health">心率健康</string>
+    <string name="stress_index">壓力指數</string>
+    <string name="tired_index">疲勞指數</string>
+
+    <string name="result">結論</string>
+
+    <string name="drinking_risk">飲酒風險</string>
+    <string name="mental_stress">精神壓力</string>
+    <string name="mood_change">情緒變化</string>
+    <string name="body_fat">體脂率</string>
+
+    <string name="blood_speed">血流速度</string>
+    <string name="hemoglobin">血紅蛋白</string>
+    <string name="bo">血氧濃度</string>
+    <string name="bs_suggest">提醒您保持良好的飲食習慣，保持規律運動，並定時測量血糖.</string>
+
+    <string name="dmyh_index">動脈硬化指數</string>
+
+    <string name="talk_to_doctor">和醫生通話</string>
+</resources>

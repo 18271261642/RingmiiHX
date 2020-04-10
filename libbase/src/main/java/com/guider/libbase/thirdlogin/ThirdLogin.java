@@ -3,7 +3,11 @@ package com.guider.libbase.thirdlogin;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.annimon.stream.function.FunctionalInterface;
 import com.guider.health.apilib.ApiCallBack;
@@ -12,17 +16,24 @@ import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.apilib.model.BeanOfWecaht;
 import com.guider.health.common.utils.JsonUtil;
 import com.guider.health.common.utils.SharedPreferencesUtils;
+import com.guider.health.common.utils.StringUtil;
+import com.guider.libbase.thirdlogin.line.ILineLogin;
+import com.linecorp.linesdk.LineApiResponseCode;
+import com.linecorp.linesdk.LoginListener;
+import com.linecorp.linesdk.Scope;
+import com.linecorp.linesdk.auth.LineAuthenticationParams;
+import com.linecorp.linesdk.auth.LineLoginResult;
+import com.linecorp.linesdk.widget.LoginButton;
 import com.mob.MobSDK;
 import com.mob.OperationCallback;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import cn.sharesdk.facebook.Facebook;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.google.GooglePlus;
-import cn.sharesdk.line.Line;
-import cn.sharesdk.line.utils.LineAuthenticationParams;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.whatsapp.WhatsApp;
 import retrofit2.Call;
@@ -82,10 +93,91 @@ public class ThirdLogin {
     public void lineLogin(final String appId, final ThirdLoginCallback thirdLoginCallback, Runnable action) {
         if (action != null)
             mCompelet = action;
-        thidLogin(Line.NAME, appId, false, thirdLoginCallback, new HandleOriginUserInfo() {
+        thidLogin("Line", appId, false, thirdLoginCallback, new HandleOriginUserInfo() {
             @Override
             public HashMap<String, Object> handle(HashMap<String, Object> hashMap) {
                 return handleFields(hashMap, appId, "userId", "displayName", "pictureUrl");
+            }
+        });
+    }
+
+    public synchronized void lineOfficeLogin(Context context, final LoginButton loginButton, final String appId, Fragment fragment,
+                                             final ThirdLoginCallback thirdLoginCallback, Runnable action) {
+        if (action != null)
+            mCompelet = action;
+        // final LoginButton loginButton = new LoginButton(context);
+        // if the button is inside a Fragment, this function should be called.
+        if (fragment != null)
+            loginButton.setFragment(fragment);
+
+        // replace the string to your own channel id.
+        loginButton.setChannelId(appId);
+
+        // configure whether login process should be done by LINE App, or by WebView.
+        loginButton.enableLineAppAuthentication(true);
+
+        // set up required scopes.
+        loginButton.setAuthenticationParams(new LineAuthenticationParams.Builder()
+                .scopes(Arrays.asList(Scope.PROFILE, Scope.OPENID_CONNECT))
+                .botPrompt(LineAuthenticationParams.BotPrompt.normal)
+                .build()
+        );
+
+        // A delegate for delegating the login result to the internal login handler.
+        // LoginDelegate loginDelegate = LoginDelegate.Factory.create();
+        if (fragment != null && fragment instanceof  ILineLogin) {
+            loginButton.setLoginDelegate(((ILineLogin)fragment).getLoginDelegate());
+        } else if (context instanceof ILineLogin) {
+            loginButton.setLoginDelegate(((ILineLogin)context).getLoginDelegate());
+        }
+
+        loginButton.addLoginListener(new LoginListener() {
+            @Override
+            public void onLoginSuccess(@NonNull LineLoginResult result) {
+                // Toast.makeText(mContext, "Login success", Toast.LENGTH_SHORT).show();
+                if (thirdLoginCallback != null) {
+                    final HashMap<String, Object> ret = new HashMap<>();
+                    ret.put("userId", result.getLineProfile().getUserId());
+                    if (result.getLineProfile().getPictureUrl() != null
+                            && StringUtil.isEmpty(result.getLineProfile().getPictureUrl().getPath()))
+                        ret.put("pictureUrl", result.getLineProfile().getPictureUrl().getPath());
+                    else
+                        ret.put("pictureUrl", "");
+                    ret.put("displayName", result.getLineProfile().getDisplayName());
+
+                    onUserInfo(appId, ret, thirdLoginCallback, new HandleOriginUserInfo() {
+                        @Override
+                        public HashMap<String, Object> handle(HashMap<String, Object> hashMap) {
+                            return handleFields(hashMap, appId, "userId", "displayName", "pictureUrl");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onLoginFailure(@Nullable LineLoginResult result) {
+                Log.e(TAG, "onLoginFailure : " + result.toString());
+                if (result.getResponseCode() == LineApiResponseCode.CANCEL) {
+                    showToast("Login cancel");
+                } else {
+                    showToast(result.getErrorData().getMessage());
+                }
+            }
+        });
+
+        ((Activity)mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loginButton.performClick();
+            }
+        });
+    }
+
+    private void showToast(final String text) {
+        ((Activity)mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -107,11 +199,12 @@ public class ThirdLogin {
         }
          */
         Platform plat = ShareSDK.getPlatform(name);
-        //移除授权状态和本地缓存，下次授权会重新授权
+
+        // 移除授权状态和本地缓存，下次授权会重新授权
         plat.removeAccount(true);
-        //SSO授权，传false默认是客户端授权
+        // SSO授权，传false默认是客户端授权
         plat.SSOSetting(false);
-        //授权回调监听，监听oncomplete，onerror，oncancel三种状态
+        // 授权回调监听，监听oncomplete，onerror，oncancel三种状态
         plat.setPlatformActionListener(new PlatformActionListenerImpl(mContext) {
             @Override
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
@@ -122,9 +215,23 @@ public class ThirdLogin {
                     thirdLoginCallback.onUserInfo(hashMap);
             }
         });
-        //抖音登录适配安卓9.0
+
+        // 自定义
+        /*
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("response_type", "code");
+        param.put("client_id", appId);
+        param.put("redirect_uri", "https://www.mob.com/");
+        param.put("scope", "profile");
+        param.put("nonce", "11111111");
+        param.put("state", "12345abcde");
+        param.put("bot_prompt", "normal");
+        plat.customerProtocol("https://access.line.me/oauth2/v2.1/authorize/consent", "GET",
+                (short) Line.ACTION_AUTHORIZING, param, null);
+        */
+        // 抖音登录适配安卓9.0
         ShareSDK.setActivity((Activity) mContext);
-        //要数据不要功能，主要体现在不会重复出现授权界面
+        // 要数据不要功能，主要体现在不会重复出现授权界面
         plat.showUser(null);
     }
 

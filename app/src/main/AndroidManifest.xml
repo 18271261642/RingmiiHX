@@ -134,7 +134,7 @@
         <meta-data
             android:name="AuthorizeAdapter"
             android:value="cn.sharesdk.demo.MyAdapter" />
-
+        <!--
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -158,7 +158,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        -->
 
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"

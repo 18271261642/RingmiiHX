@@ -67,6 +67,8 @@ import com.guider.healthring.xinlangweibo.SinaUserInfo;
 import com.guider.healthringx.wxapi.WXEntryActivity;
 import com.guider.healthringx.wxapi.WXEntryActivityAdapter;
 import com.guider.libbase.thirdlogin.ThirdLogin;
+import com.guider.libbase.thirdlogin.line.ILineLogin;
+import com.linecorp.linesdk.LoginDelegate;
 import com.tencent.connect.common.Constants;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendAuth;
@@ -92,8 +94,12 @@ import butterknife.OnClick;
  * Created by thinkpad on 2017/3/3.
  */
 
-public class LoginActivity extends WatchBaseActivity implements Callback , RequestView {//}, PlatformActionListener {
+public class LoginActivity extends WatchBaseActivity implements Callback , RequestView, ILineLogin {//}, PlatformActionListener {
 
+    /**
+     * Line第三方登陆相关
+     */
+    private final LoginDelegate loginDelegate = LoginDelegate.Factory.create();
 
     @BindView(R.id.login_visitorTv)
     TextView loginVisitorTv;
@@ -372,7 +378,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 startActivity(PrivacyActivity.class);
                 break;
             case R.id.line_iv: // LINE 登陆
-                mThirdLogin.lineLogin("1653887386", hashMap -> {
+                mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line), "1653887386", null, hashMap -> {
                     // 用户信息可以做自己的操作
                     registerRingUser(hashMap);
                 }, () -> {
@@ -490,6 +496,9 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
     }
 
+    public LoginDelegate getLoginDelegate() {
+        return loginDelegate;
+    }
 
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
@@ -501,6 +510,9 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
             if (resultCode == -1) {
 
             }
+        } else if (loginDelegate.onActivityResult(requestCode, resultCode, data)) {
+            // Login result is consumed.
+            return;
         }
     }
 

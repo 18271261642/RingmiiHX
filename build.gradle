@@ -64,8 +64,8 @@ allprojects {
         minSdkVersion = 14
         targetSdkVersion = compileSdkVersion
 
-        codeVersion = 206
-        appVersion = "2.4.0"
+        codeVersion = 207
+        appVersion = "2.4.1"
         isMyOutputFile = true
 
         googlePlay = true
