@@ -102,6 +102,14 @@ android {
             shrinkResources false
             // 区分是否是国际版本
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
+
+            if (rootProject.googlePlay) { // 国际版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            } else { // 大陆版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            }
         }
         release {
             debuggable false
@@ -113,6 +121,14 @@ android {
             signingConfig signingConfigs.release
             // 区分是否是国际版本
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
+
+            if (rootProject.googlePlay) { // 国际版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            } else { // 大陆版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            }
         }
     }
     greendao {
@@ -245,7 +261,7 @@ dependencies {
     // implementation project(':common')
     implementation project(':ecg')
 
-    // implementation project(':apilib')
+    api project(':apilib')
     implementation project(':common_m500_1000')
     implementation project(':bpm1000')
     implementation project(':simpleble')

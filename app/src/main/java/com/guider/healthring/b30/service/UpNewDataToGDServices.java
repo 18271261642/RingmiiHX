@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.B18I.b18iutils.B18iUtils;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -59,7 +60,7 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
 
 public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpNewDataToGDServices";
-    private final String Base_Url = "http://api.guiderhealth.com/api/v1/";//"http://47.92.218.150:8082/api/v1/";
+    private final String Base_Url = BuildConfig.APIURL + "api/v1/";//http://api.guiderhealth.com/
 
 
 

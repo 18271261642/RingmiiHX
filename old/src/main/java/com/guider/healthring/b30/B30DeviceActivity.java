@@ -315,9 +315,9 @@ public class B30DeviceActivity extends WatchBaseActivity implements Rationale<Li
 
 
     /**
-     * 解绑设备
+     * 解绑设备 http://47.92.218.150:8082/
      */
-    private final String Base_Url = "http://47.92.218.150:8082/api/v1/";
+    private final String Base_Url = BuildConfig.APIURL + "api/v1/";
     void unbindDevices() {
         try {
             long accountIdGD = (long) SharedPreferencesUtils.getParam(MyApp.getInstance(), "accountIdGD", 0L);

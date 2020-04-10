@@ -23,24 +23,6 @@ public class RequestHead implements Interceptor {
             return;
         }
         appid = "b3c327c04d8b0471";
-        /*
-        ApplicationInfo info = context.getApplicationInfo();
-        String packageName = info.packageName;
-        switch (packageName) {
-            case "com.guider.health.m1000":
-                appid = "9yTIUXvpNgjVAjec";
-                break;
-            case "com.guider.health.m500":
-                appid = "4AQAax2u3FZUHTZM";
-                break;
-            case "com.guider.health.m100":
-                appid = "KzBIa6vCu9KIKt0f";
-                break;
-            case "com.guider.glu_phone":
-                appid = "izwWwFtN8myYBUBq";
-                break;
-        }
-         */
 
         Locale locale = context.getResources().getConfiguration().locale;
         String language = locale.getCountry().toLowerCase();

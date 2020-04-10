@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.aigestudio.wheelpicker.widgets.DatePick;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.bumptech.glide.request.RequestOptions;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.bean.GuiderUserInfo;
 import com.guider.healthring.siswatch.NewSearchActivity;
@@ -401,7 +402,7 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
 
             String birthdarStr = brithdayvalTv.getText().toString();
             guiderUserInfo.setBirthday(birthdarStr+"T00:00:00Z");
-            String userUrl = "http://api.guiderhealth.com/api/v1/usersimpleinfo";
+            String userUrl = BuildConfig.APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
             if(requestPressent != null){
                 //Log.e(TAG,"-------盖德参数="+new Gson().toJson(guiderUserInfo));
                 requestPressent.getRequestPutJsonObject(12,userUrl,this,new Gson().toJson(guiderUserInfo),12);

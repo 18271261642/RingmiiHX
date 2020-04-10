@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.B18I.b18iutils.B18iUtils;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -38,7 +39,7 @@ import java.util.Map;
 
 public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpDataToGDServicesNew";
-    private final String Base_Url = "http://47.92.218.150:8082/api/v1/";
+    private final String Base_Url = BuildConfig.APIURL + "api/v1/"; // http://47.92.218.150:8082/
     /**
      * 上传是否完成的状态: 运动数据
      */
@@ -535,7 +536,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
 //                        params.put("CALORIE", 0);
 //                        params.put("CDATE", date + " " + stepDate + "-00");
                        // String upStepPatch = Base_Url + "walkstep";
-                        String upStepPatch = "http://apihd.guiderhealth.com/api/v1/walkrecord";
+                        String upStepPatch = BuildConfig.APIHDURL + "api/v1/walkrecord"; // http://apihd.guiderhealth.com/
                         JSONObject json = new JSONObject(params);
                         List<JSONObject> list = new ArrayList<>();
                         list.add(json);
@@ -625,7 +626,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
 //        MyLogUtil.e(TAG, "sleep- 上传睡眠参数：" + params.toString());
         //String usSleepPath = Base_Url + "sleepActivities";
 
-        String usSleepPath = "http://api.guiderhealth.com/api/v1/sleepquality";
+        String usSleepPath = BuildConfig.APIURL + "api/v1/sleepquality"; // http://api.guiderhealth.com/
         OkHttpTool.getInstance().doRequest(usSleepPath, list.toString(), this, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
@@ -690,7 +691,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
                         list.add(json);
 
                         //String path = Base_Url + "heartbeat";
-                        String path = "http://apihd.guiderhealth.com/api/v1/heartbeat";
+                        String path = BuildConfig.APIHDURL + "api/v1/heartbeat"; // http://apihd.guiderhealth.com/
 
 //                        MyLogUtil.e(TAG, "heart- 心率上传参数" + params.toString());
 
@@ -782,7 +783,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
 
                         //String path = Base_Url + "bloodPressures ";
 
-                        String path = "http://apihd.guiderhealth.com/api/v1/bloodpressure";
+                        String path = BuildConfig.APIHDURL + "api/v1/bloodpressure"; // http://apihd.guiderhealth.com/
 
                         MyLogUtil.e(TAG, "bp- 血压上传参数" + params.toString());
 

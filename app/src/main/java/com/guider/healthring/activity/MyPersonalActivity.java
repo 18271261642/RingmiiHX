@@ -34,6 +34,7 @@ import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -228,7 +229,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
             long accountId = (long) SharedPreferencesUtils.getParam(MyPersonalActivity.this,"accountIdGD",0L);
             if(accountId == 0)
                 return;
-            String guiderUrl ="http://api.guiderhealth.com/api/v1/userinfo?accountId="+accountId;
+            String guiderUrl = BuildConfig.APIURL + "api/v1/userinfo?accountId="+accountId; // http://api.guiderhealth.com/
             if(requestPressent != null){
                 requestPressent.getRequestJSONObjectGet(11,guiderUrl,this,11);
             }
@@ -912,7 +913,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         guser.setAddr("");
         guser.setCardId("");
         guser.setBirthday(birthdayTv.getText().toString()+"T00:00:00Z");
-        String userUrl = "http://api.guiderhealth.com/api/v1/usersimpleinfo";
+        String userUrl = BuildConfig.APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
         if(requestPressent != null){
             Log.e(TAG,"-------盖德参数="+gson.toJson(guser));
             requestPressent.getRequestPutJsonObject(12,userUrl,this,gson.toJson(guser),12);

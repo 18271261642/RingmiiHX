@@ -178,7 +178,7 @@ public class Commont {
     //盖德数据接口
 
     //public static final String GAI_DE_BASE_URL = "http://api.guiderhealth.com/api/v1/";
-    public static final String GAI_DE_BASE_URL = "http://apihd.guiderhealth.com/api/v1/";
+    public static final String GAI_DE_BASE_URL = BuildConfig.APIHDURL; // ."http://apihd.guiderhealth.com/api/v1/";
 
 
     //public static final String GAI_DE_BASE_URL = "http://210b2a63.nat123.cc/api/v1/";

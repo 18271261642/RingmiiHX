@@ -1,6 +1,6 @@
 package com.guider.health.apilib;
 
-public class Consts {
+public class ApiConsts {
     public static String WX_APPID = "wx6054546f7e4e24b6"; // 正式AppID
     public static String API_HOST_HD = "http://apihd.guiderhealth.com/";
     public static String API_HOST = "http://api.guiderhealth.com/";

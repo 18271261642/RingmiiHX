@@ -35,6 +35,24 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (rootProject.googlePlay) { // 国际版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            } else { // 大陆版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            }
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (rootProject.googlePlay) { // 国际版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            } else { // 大陆版
+                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+            }
         }
     }
 

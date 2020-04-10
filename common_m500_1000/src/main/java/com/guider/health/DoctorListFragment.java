@@ -264,7 +264,7 @@ public class DoctorListFragment extends BaseFragment {
             map.put("fromAccountId", from);
             map.put("toAccountId", to);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(OK_HTTP_CLIENT).build();
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(ApiUtil.getOkHttpClient()).build();
             RestService restService = retrofit.create(RestService.class);
             Call<ResponseBody> call = restService.get("api/v1/consultchat", map);
 
@@ -326,7 +326,7 @@ public class DoctorListFragment extends BaseFragment {
                     RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
 
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(OK_HTTP_CLIENT).build();
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(ApiUtil.getOkHttpClient()).build();
             RestService restService = retrofit.create(RestService.class);
             // isDev = 0非开发模式  1开发模式
             Call<ResponseBody> call = restService.postOnlyBody("api/v1/rtc?isDev=0", requestBody);
@@ -430,12 +430,11 @@ public class DoctorListFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
-
+    /*
     private static final int TIME_OUT = 60;
     private OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .addInterceptor(new RetrofitLogInterceptor())
             .build();
-
-
+    */
 }

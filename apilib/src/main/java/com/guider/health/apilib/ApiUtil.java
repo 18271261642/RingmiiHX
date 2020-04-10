@@ -17,9 +17,29 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiUtil {
-
+    private static OkHttpClient mOkHttpClient;
     private static Context context;
     static String mac;
+
+    static {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(loggingInterceptor);
+        }
+        builder.addInterceptor(new RequestHead(context));
+        mOkHttpClient = builder.build();
+
+        // 访问域名处理
+        ApiConsts.API_HOST = BuildConfig.APIURL;
+        ApiConsts.API_HOST_HD = BuildConfig.APIHDURL;
+    }
+
+    public static OkHttpClient getOkHttpClient() {
+        return mOkHttpClient;
+    }
+
     public static void init(Context context , String mac) {
         ApiUtil.context = context.getApplicationContext();
         ApiUtil.mac = mac;
@@ -123,14 +143,14 @@ public class ApiUtil {
     }
 
     public static <I> I createHDApi(Class<I> clz, boolean needTimeZone) {
-        return createApi(Consts.API_HOST_HD, clz, needTimeZone);
+        return createApi(ApiConsts.API_HOST_HD, clz, needTimeZone);
     }
     public static <I> I createApi(Class<I> clz, boolean needTimeZone) {
-        return createApi(Consts.API_HOST, clz, needTimeZone);
+        return createApi(ApiConsts.API_HOST, clz, needTimeZone);
     }
 
     public static <I> I createRingApi(Class<I> clz) {
-        return createApi(Consts.API_RING, clz, false, false);
+        return createApi(ApiConsts.API_RING, clz, false, false);
     }
 
     /**

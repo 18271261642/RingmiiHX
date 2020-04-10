@@ -25,6 +25,7 @@ import com.alivc.rtc.AliRtcEngineImpl;
 import com.aliyun.rtcdemo.R;
 import com.aliyun.rtcdemo.bean.RTCAuthInfo;
 import com.aliyun.rtcdemo.presenter.AliRtcLoginPresenter;
+import com.guider.health.apilib.ApiUtil;
 import com.guider.health.common.core.DateUtil;
 import com.guider.health.common.core.NetIp;
 import com.guider.health.common.core.UserManager;
@@ -202,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
             map.put("fromAccountId", from);
             map.put("toAccountId", to);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(OK_HTTP_CLIENT).build();
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(ApiUtil.getOkHttpClient()).build();
             RestService restService = retrofit.create(RestService.class);
             Call<ResponseBody> call = restService.get("api/v1/consultchat", map);
 
@@ -265,7 +266,7 @@ public class LoginActivity extends AppCompatActivity {
                     RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toJSONString());
 
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(OK_HTTP_CLIENT).build();
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(ApiUtil.getOkHttpClient()).build();
             RestService restService = retrofit.create(RestService.class);
             Call<ResponseBody> call = restService.postOnlyBody("api/v1/rtc", requestBody);
             call.enqueue(new Callback<ResponseBody>() {
@@ -364,10 +365,11 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    /*
     private static final int TIME_OUT = 60;
     private OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .addInterceptor(new RetrofitLogInterceptor())
             .build();
+     */
 }

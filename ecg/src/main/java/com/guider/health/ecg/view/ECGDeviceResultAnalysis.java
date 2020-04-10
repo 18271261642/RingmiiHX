@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.guider.health.apilib.ApiUtil;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.DateUtil;
 import com.guider.health.common.core.RouterPathManager;
@@ -104,13 +105,13 @@ public class ECGDeviceResultAnalysis extends ECGFragment {
 
 
     }
-
+/*
     private static final int TIME_OUT = 60;
     private OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .addInterceptor(new RetrofitLogInterceptor())
             .build();
-
+*/
     @Override
     public void onAnalysisResult(String result) {
 
@@ -151,7 +152,7 @@ public class ECGDeviceResultAnalysis extends ECGFragment {
             final RequestBody requestBody =
                     RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonArray.toJSONString());
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(OK_HTTP_CLIENT).build();
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL).client(ApiUtil.getOkHttpClient()).build();
             RestService restService = retrofit.create(RestService.class);
             Call<ResponseBody> call = restService.postOnlyBody("api/v1/heartstate", requestBody);
             call.enqueue(new Callback<ResponseBody>() {

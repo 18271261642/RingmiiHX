@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.gson.Gson;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.activity.GuiderWxBindPhoneActivity;
@@ -44,8 +45,8 @@ public class WXEntryActivity extends WatchBaseActivity implements IWXAPIEventHan
 
     private static final String TAG = "WXEntryActivity";
 
-    //盖德微信登录
-    private String GUIDER_WX_LOGIN_URL = "http://api.guiderhealth.com/api/v2/third/login/wachat/tokeninfo";
+    //盖德微信登录 http://api.guiderhealth.com/
+    private String GUIDER_WX_LOGIN_URL = BuildConfig.APIURL + "api/v2/third/login/wachat/tokeninfo";
 
     private IWXAPI iwxapi;
     /**

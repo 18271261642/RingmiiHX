@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.B18I.b18iutils.B18iUtils;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -36,7 +37,7 @@ import java.util.Map;
 
 public class UpHrvDataToGDServices extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpHrvDataToGDServices";
-    private final String Base_Url = "http://47.92.218.150:8082/api/v1/";
+    private final String Base_Url = BuildConfig.APIURL + "api/v1/"; // http://47.92.218.150:8082/
 
     private final int STATE_HRV = 1;
     private final int STATE_SPO2 = 2;

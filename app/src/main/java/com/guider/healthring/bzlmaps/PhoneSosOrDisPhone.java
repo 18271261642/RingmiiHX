@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.siswatch.utils.PhoneUtils;
@@ -145,7 +146,7 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone, IOnLocation {
             params.put("deviceCode",bleMac == null ? "00" : bleMac);
             params.put("lng",lng);
             params.put("lat",lat);
-            String url = "http://api.guiderhealth.com/api/v1/sos/position";
+            String url = BuildConfig.APIURL + "api/v1/sos/position"; // http://api.guiderhealth.com/
             String parStr = new Gson().toJson(params);
             Log.e("位置","----------参数="+parStr);
             OkHttpTool.getInstance().doRequest(url, parStr, null, new OkHttpTool.HttpResult() {

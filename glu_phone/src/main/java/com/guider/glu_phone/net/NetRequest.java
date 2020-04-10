@@ -41,12 +41,13 @@ import retrofit2.Retrofit;
  */
 
 public class NetRequest {
+    /*
     private static final int TIME_OUT = 60;
     private OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .addInterceptor(new RetrofitLogInterceptor())
             .build();
-
+    */
     public interface NetCallBack{
         void result(int code, String result);
     }

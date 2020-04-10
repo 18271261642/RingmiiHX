@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.health.common.utils.JsonUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -51,7 +52,7 @@ public class WXEntryActivityAdapter {
     private static final String TAG = "WXEntryActivity";
 
     //盖德微信登录
-    private String GUIDER_WX_LOGIN_URL = "http://api.guiderhealth.com/api/v2/third/login/wachat/tokeninfo";
+    private String GUIDER_WX_LOGIN_URL = BuildConfig.APIURL +  "api/v2/third/login/wachat/tokeninfo"; // http://api.guiderhealth.com/
     /**
      * 国内用这个
      */

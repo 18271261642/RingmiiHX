@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -274,7 +275,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView 
         map.put("phone", phoneTxt);
         map.put("phonecode", Md5Util.Md532(phoneCode));
         String mapjson = gson.toJson(map);
-        String urls = "http://api.guiderhealth.com/api/v1/login/phone";
+        String urls = BuildConfig.APIURL + "api/v1/login/phone"; // http://api.guiderhealth.com/
         if (requestPressent != null) {
             requestPressent.getRequestJSONObject(0x01, urls, RegisterActivity2.this, mapjson, 1);
 
@@ -325,7 +326,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView 
     private void registerGuiderAccount() {
         String phoneStr = username.getText().toString();
         if (requestPressent != null && WatchUtils.isEmpty(phoneStr)) {
-            String loginUrl = "http://api.guiderhealth.com/api/v1/login/onlyphone?phone=" + phoneStr;
+            String loginUrl = BuildConfig.APIURL + "api/v1/login/onlyphone?phone=" + phoneStr; // http://api.guiderhealth.com/
             requestPressent.getRequestJSONObject(1001, loginUrl, RegisterActivity2.this, 1);
             //http://api.guiderhealth.com/api/v1/phonecode?phone=
         }

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
-import com.guider.health.apilib.Consts;
+import com.guider.health.apilib.ApiConsts;
 import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.common.utils.AppUtils;
 import com.guider.health.common.utils.ScreenShotUtils;
@@ -73,7 +73,7 @@ public class WxScanActivity extends AppCompatActivity implements View.OnClickLis
     private synchronized void loadingWxQr(ImageView ivSaveScreeShot, long accountId) {
         mNeedReload = 1;
         ApiUtil.createApi(IGuiderApi.class, true)
-                .createWXQr(Consts.WX_APPID, 2592000, "appBind=" + accountId)
+                .createWXQr(ApiConsts.WX_APPID, 2592000, "appBind=" + accountId)
                 .enqueue(new ApiCallBack<String>() {
                     @Override
                     public void onApiResponse(Call<String> call, Response<String> response) {

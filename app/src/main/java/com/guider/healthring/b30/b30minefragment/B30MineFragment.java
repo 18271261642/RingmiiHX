@@ -160,7 +160,8 @@ public class B30MineFragment extends LazyFragment implements RequestView {
             long accountId = (long) SharedPreferencesUtils.getParam(getContext(),"accountIdGD",0L);
             if(accountId == 0)
                 return;
-            String guiderUrl ="http://api.guiderhealth.com/api/v1/userinfo?accountId="+accountId;
+            // http://api.guiderhealth.com/
+            String guiderUrl = BuildConfig.APIURL + "api/v1/userinfo?accountId="+accountId;
             if(requestPressent != null){
                 requestPressent.getRequestJSONObjectGet(11,guiderUrl,getContext(),11);
             }
@@ -492,9 +493,9 @@ public class B30MineFragment extends LazyFragment implements RequestView {
 
 
     /**
-     * 解绑设备
+     * 解绑设备 http://47.92.218.150:8082/
      */
-    private final String Base_Url = "http://47.92.218.150:8082/api/v1/";
+    private final String Base_Url = BuildConfig.APIURL + "api/v1/";
 
     void unbindDevices() {
         Long l;

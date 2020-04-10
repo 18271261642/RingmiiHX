@@ -35,9 +35,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.health.apilib.enums.Gender;
 import com.guider.health.common.utils.JsonUtil;
-import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.CustomMade;
 import com.guider.healthring.MyApp;
@@ -455,7 +455,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
 
         //登录到盖德后台
-        String loginUrl = "http://api.guiderhealth.com/api/v1/login/onlyphone?phone=" + uName;
+        String loginUrl = BuildConfig.APIURL + "api/v1/login/onlyphone?phone=" + uName; // http://api.guiderhealth.com/
         Log.e(TAG,"-------手机号登录的url="+loginUrl);
         OkHttpTool.getInstance().doRequest(loginUrl, null, "1", new OkHttpTool.HttpResult() {
             @Override

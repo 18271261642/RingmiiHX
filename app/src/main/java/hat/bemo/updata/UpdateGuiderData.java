@@ -3,6 +3,7 @@ package hat.bemo.updata;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -40,7 +41,8 @@ public class UpdateGuiderData {
         maps.put("deviceCode",deviceMac);
         bloodList.add(maps);
         Log.e(TAG,"---------bemo血压参数="+maps.toString());
-        OkHttpTool.getInstance().doRequest("http://apihd.guiderhealth.com/api/v1/bloodpressure", new Gson().toJson(bloodList), "", new OkHttpTool.HttpResult() {
+        // http://apihd.guiderhealth.com/
+        OkHttpTool.getInstance().doRequest(BuildConfig.APIHDURL + "api/v1/bloodpressure", new Gson().toJson(bloodList), "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
                 Log.e(TAG,"--------bemo血压上传="+result);
@@ -72,7 +74,8 @@ public class UpdateGuiderData {
         maps.put("deviceCode",deviceCode);
         spo2List.add(maps);
         Log.e(TAG,"---------bemo血氧参数="+maps.toString());
-        OkHttpTool.getInstance().doRequest("http://apihd.guiderhealth.com/api/v1/bloodoxygen", new Gson().toJson(spo2List), "", new OkHttpTool.HttpResult() {
+        // http://apihd.guiderhealth.com/
+        OkHttpTool.getInstance().doRequest(BuildConfig.APIHDURL + "api/v1/bloodoxygen", new Gson().toJson(spo2List), "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
                 Log.e(TAG,"--------bemo血氧上传="+result);
@@ -103,7 +106,8 @@ public class UpdateGuiderData {
         maps.put("deviceCode",mac);
         listMap.add(maps);
         Log.e(TAG,"---------bemo体温参数="+maps.toString());
-        OkHttpTool.getInstance().doRequest("http://apihd.guiderhealth.com/api/v1/bodytemp", new Gson().toJson(listMap), "", new OkHttpTool.HttpResult() {
+        // http://apihd.guiderhealth.com/
+        OkHttpTool.getInstance().doRequest(BuildConfig.APIHDURL + "api/v1/bodytemp", new Gson().toJson(listMap), "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
                 Log.e(TAG,"--------bemo体温上传返回="+result);
@@ -138,7 +142,8 @@ public class UpdateGuiderData {
         maps.put("deviceCode",mac);
         listMap.add(maps);
         Log.e(TAG,"---------bemo血糖参数="+maps.toString());
-        OkHttpTool.getInstance().doRequest("http://apihd.guiderhealth.com/api/v1/bloodsugar", new Gson().toJson(listMap), "", new OkHttpTool.HttpResult() {
+        // http://apihd.guiderhealth.com/
+        OkHttpTool.getInstance().doRequest(BuildConfig.APIHDURL + "api/v1/bloodsugar", new Gson().toJson(listMap), "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
                 Log.e(TAG,"-------bemo血糖上传返回="+result);
