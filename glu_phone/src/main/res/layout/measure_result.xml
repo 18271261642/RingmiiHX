@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/glu_middle"
             android:layout_centerHorizontal="true"
-            android:text="mmlo/L" />
+            android:text="mmol/L" />
     </RelativeLayout>
 
 

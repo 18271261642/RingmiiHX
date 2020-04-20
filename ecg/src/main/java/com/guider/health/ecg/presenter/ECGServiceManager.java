@@ -16,6 +16,7 @@ import com.guider.health.bluetooth.core.Bluetooth;
 import com.guider.health.bluetooth.core.ClientThread;
 import com.guider.health.common.core.HearRate;
 import com.guider.health.common.core.MyUtils;
+import com.guider.health.common.utils.SharedPreferencesUtils;
 import com.guider.health.ecg.R;
 import com.guider.health.ecg.model.ECGTrueModel;
 import com.guider.health.ecg.view.ECGViewInterface;
@@ -239,10 +240,11 @@ public class ECGServiceManager {
                                 HearRate.getInstance().setPredictedSymptoms(jsonObject.getString("PredictedSymptoms"));
                                 HearRate.getInstance().setPervousSystemBalanceLight(jsonObject.getString("NervousSystemBalanceLight"));
                                 HearRate.getInstance().setStressLight(jsonObject.getString("StressLight"));
+                                // 换取cha文件的id
+                                SharedPreferencesUtils.setParam(measureViewDataWeakReference.get().getViewContext(),
+                                        "EcgFileId", jsonObject.getString("FileId"));
                                 if (measureViewDataWeakReference.get() != null) {
-
                                     measureViewDataWeakReference.get().onAnalysisResult(result);
-
                                 }
                             } else {
                                 String msg = measureViewDataWeakReference.get().getViewContext().getResources().getString(R.string.ecg_abnormal); // "心电异常 , 请重新测量";
@@ -315,6 +317,14 @@ public class ECGServiceManager {
             }
         }).start();
 
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
     }
 
     private void ecpEcgFile(String path, ArrayList<Byte> datalist) {

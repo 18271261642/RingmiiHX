@@ -33,12 +33,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/glu"
-                android:textColor="#ffffff"
-                android:textSize="@dimen/sp_15" />
+            <!--
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/blood_sugar"
+               android:textColor="#ffffff"
+               android:textSize="@dimen/sp_15" />
+               -->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/value_glu"/>
 
             <View
                 android:layout_width="0dp"

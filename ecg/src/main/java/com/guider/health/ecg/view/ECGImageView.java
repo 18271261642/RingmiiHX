@@ -1,5 +1,6 @@
 package com.guider.health.ecg.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -21,13 +22,18 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.guider.health.common.net.MainActivity;
+import com.guider.health.common.utils.SharedPreferencesUtils;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.health.ecg.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ECGImageView extends FrameLayout {
@@ -42,50 +48,57 @@ public class ECGImageView extends FrameLayout {
         this.onSaveFinish = listener;
     }
 
-    public boolean saveImage() {
-        path = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + File.separator+"ECG"+File.separator + "temp.lp4";
+    public void saveImage() {
+        String fileId = (String) SharedPreferencesUtils.getParam(getContext(), "EcgFileId", "FileId");
+        if (StringUtil.isEmpty(fileId)) {
+            openFail(getContext().getString(R.string.ecg_bt_error7)); // "Please upload ECG first."
+            return;
+        }
 
-        // 解壓縮此文件
-//        decompNDK myDecompNDK = new decompNDK();
-//        myDecompNDK.decpEcgFile(path);
+        path = "http://203.66.73.52/CMateTaiwanWeb/CHADownload?filename=" + fileId;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                InputStream is;
 
-        // 刪除檔案
+                try {
+                    // or, from a URL, then retrieve an InputStream from a URL
+                    is = new URL(path).openStream();
 
+                    // fi檔資料取到buffer，且bytes筆資料
+                    buffer = readInputStream(is);
+                    bytes = buffer.length;
+
+                    _saveImage();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    openFail(getContext().getString(R.string.ecg_file_open_error)); // "心电图文件打开失败");
+                }
+            }
+        }).start();
+    }
+
+
+    public byte[] readInputStream(InputStream inStream) throws Exception {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        //创建一个Buffer字符串
+        byte[] buffer = new byte[1024];
+        //每次读取的字符串长度，如果为-1，代表全部读取完毕
+        int len = 0;
+        //使用一个输入流从buffer里把数据读取出来
+        while ((len = inStream.read(buffer)) != -1) {
+            //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
+            outStream.write(buffer, 0, len);
+        }
+        //关闭输入流
+        inStream.close();
+        //把outStream里的数据写入内存
+        return outStream.toByteArray();
+    }
+    public boolean _saveImage() {
         // 先确定图片路径
         imagePth = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + File.separator + "ECG" + File.separator + System.currentTimeMillis() +".jpg";
-
-        // 替換文字
-        path = path.replace(".lp4",".cha");
-
-        try {
-            // 讀檔到fi
-            File file = new File(path);
-            file.getParentFile().mkdirs();
-            FileInputStream fi = new FileInputStream(file);
-            // fi檔資料取到buffer，且bytes筆資料
-            bytes = fi.read(buffer);
-            // 126208 => 928包 * 32 => 29.696秒
-            Log.e(TAG, "waveHandled: bytes: "+bytes);
-            // 刪除檔案
-//            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-//                + File.separator+"ECG");
-//            file.delete();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            openFail("心电图文件打开失败");
-            Log.e(TAG, "waveHandled: bytes: "+ "error111" + e.toString());
-            onSaveFinish.onError();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(TAG, "waveHandled: bytes: "+ "error222");
-            openFail("心电图解析失败");
-            onSaveFinish.onError();
-            return false;
-        }
-
 
         try{
 
@@ -95,7 +108,7 @@ public class ECGImageView extends FrameLayout {
 
         }catch (NegativeArraySizeException e){
             e.printStackTrace();
-            openFail("心电图解析失败");
+            openFail(getContext().getString(R.string.ecg_file_handle_error)); // "心电图解析失败");
             onSaveFinish.onError();
             return false;
         }
@@ -139,34 +152,15 @@ public class ECGImageView extends FrameLayout {
             }
         }
 
-
-        go();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Bitmap chartBitmap = chart.getChartBitmap();
-                try {
-                    File file = new File(imagePth);
-                    file.getParentFile().mkdirs();
-                    FileOutputStream out = new FileOutputStream(file);
-                    chartBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    out.flush();
-                    out.close();
-                    chartBitmap.recycle();
-                    if (onSaveFinish != null) {
-                        onSaveFinish.onSaveFinish(imagePth);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    onSaveFinish.onError();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    onSaveFinish.onError();
+        // 确保UI线程中制图绘制
+        if (getContext() instanceof Activity) {
+            ((Activity)getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    go();
                 }
-            }
-        }, 3000);
-
+            });
+        }
         return true;
     }
 
@@ -366,6 +360,30 @@ public class ECGImageView extends FrameLayout {
 
         handled();
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap chartBitmap = chart.getChartBitmap();
+                try {
+                    File file = new File(imagePth);
+                    file.getParentFile().mkdirs();
+                    FileOutputStream out = new FileOutputStream(file);
+                    chartBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    out.flush();
+                    out.close();
+                    chartBitmap.recycle();
+                    if (onSaveFinish != null) {
+                        onSaveFinish.onSaveFinish(imagePth);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    onSaveFinish.onError();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    onSaveFinish.onError();
+                }
+            }
+        }, 0);
 
     }
 

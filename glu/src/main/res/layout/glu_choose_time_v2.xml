@@ -316,7 +316,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dp_9"
-                        android:text="mmlo/L"
+                        android:text="mmol/L"
                         android:textColor="#171717"
                         android:textSize="@dimen/sp_15" />
                 </LinearLayout>

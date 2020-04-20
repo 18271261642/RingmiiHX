@@ -263,7 +263,7 @@ public class GLUServiceManager {
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL_apihd).client(ApiUtil.getOkHttpClient()).build();
         RestService restService = retrofit.create(RestService.class);
-        Call<ResponseBody> call = restService.postOnlyBody("/api/v1/nonbs/set", requestBody);
+        Call<ResponseBody> call = restService.postOnlyBody("api/v1/nonbs/set", requestBody);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -311,7 +311,7 @@ public class GLUServiceManager {
         try {
             Retrofit retrofit = new Retrofit.Builder().baseUrl(NetIp.BASE_URL_apihd).client(ApiUtil.getOkHttpClient()).build();
             RestService restService = retrofit.create(RestService.class);
-            Call<ResponseBody> call = restService.get("/api/v1/nonbs/set", params);
+            Call<ResponseBody> call = restService.get("api/v1/nonbs/set", params);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

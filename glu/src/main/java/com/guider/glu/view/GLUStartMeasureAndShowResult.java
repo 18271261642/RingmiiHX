@@ -22,8 +22,10 @@ import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.Judgement;
 import com.guider.health.common.core.ParamHealthRangeAnlysis;
 import com.guider.health.common.device.DeviceInit;
+import com.guider.health.common.device.IUnit;
 import com.guider.health.common.device.standard.StandardCallback;
 import com.guider.health.common.utils.SkipClick;
+import com.guider.health.common.utils.UnitUtil;
 import com.guider.health.common.views.RoundProgress;
 
 import java.util.ArrayList;
@@ -263,8 +265,9 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
                 Glucose.getInstance().setIndexOxygen(results.get(1));
             }
 
-            showGLUDialog(GLUServiceManager.getInstance().getGlucoseResult() + "");
-
+            IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+            double value = iUnit.getGluShowValue(GLUServiceManager.getInstance().getGlucoseResult(), 2);
+            showGLUDialog( value+ "");
         } catch (Exception e) {
             e.printStackTrace();
         }

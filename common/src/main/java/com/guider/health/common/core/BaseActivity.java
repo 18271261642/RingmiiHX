@@ -46,7 +46,6 @@ public class BaseActivity extends MySupportActivity{
         super.onCreate(savedInstanceState);
 
         SoftKeyBoardListener.setListener(this, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
-
             @Override
             public void keyBoardShow(int height) {
                 hideBottomUIMenu();
@@ -62,7 +61,6 @@ public class BaseActivity extends MySupportActivity{
 
     //全屏
     protected void hideBottomUIMenu() {
-
         if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) {
             View v = this.getWindow().getDecorView();
             v.setSystemUiVisibility(View.GONE);
@@ -72,8 +70,6 @@ public class BaseActivity extends MySupportActivity{
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(uiOptions);
         }
-
-
     }
 
     @Override
@@ -107,7 +103,6 @@ public class BaseActivity extends MySupportActivity{
     // 每当用户接触了屏幕，都会执行此方法
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-
         long mLastActionTime = System.currentTimeMillis();
         MyTimerTask.getInstance().updataStartRetentionTime(mLastActionTime);
 

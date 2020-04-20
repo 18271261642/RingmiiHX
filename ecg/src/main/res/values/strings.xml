@@ -43,6 +43,7 @@
     <string name="other_error">Other errors</string>
     <string name="token_expired">Token expired (identity verification failed)</string>
     <string name="no_lp4">The extension is not Lp4</string>
+    <string name="ecg_bt_error7">Please upload ECG first.</string>
 
     <string name="token_get_error">Token acquisition failed</string>
 

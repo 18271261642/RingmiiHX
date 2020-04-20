@@ -43,6 +43,7 @@
     <string name="other_error">其他錯誤</string>
     <string name="token_expired">Token 過期(身分驗證失敗)</string>
     <string name="no_lp4">副檔名不為 Lp4</string>
+    <string name = "ecg_bt_error7">請先上傳心電文件</string>
 
     <string name="token_get_error">Token獲取失敗</string>
 

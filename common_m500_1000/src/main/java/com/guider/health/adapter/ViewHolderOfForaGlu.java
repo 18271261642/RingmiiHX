@@ -18,8 +18,10 @@ import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.NetIp;
 import com.guider.health.common.core.UserManager;
+import com.guider.health.common.device.IUnit;
 import com.guider.health.common.device.Unit;
 import com.guider.health.common.net.app.Httper;
+import com.guider.health.common.utils.UnitUtil;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -65,8 +67,11 @@ public class ViewHolderOfForaGlu extends BaseResultViewHolder {
     void setResult(Object result) {
         if (hasData()) {
             Glucose instance = ForaGlucose.getForaGluInstance();
-            Unit unit = new Unit();
-            TooLazyToWrite.setTextView(view, R.id.fora_glu, instance.getGlucose() +  unit.bloodSugar);
+            // Unit unit = new Unit();
+            IUnit iUnit = UnitUtil.getIUnit(mContext);
+            TooLazyToWrite.setTextView(view, R.id.fora_glu, iUnit.getGluShowValue(instance.getGlucose(), 2) +  iUnit.getGluUnit());
+
+            // TooLazyToWrite.setTextView(view, R.id.fora_glu, instance.getGlucose() +  unit.bloodSugar);
             // TooLazyToWrite.setTextView(view, R.id.xueliusu, instance.getSpeed() +  unit.bloodFlow);
             // TooLazyToWrite.setTextView(view, R.id.xuehongdanbai, instance.getHemoglobin() +  unit.hemoglobin);
             // TooLazyToWrite.setTextView(view, R.id.xueyang, instance.getOxygenSaturation() +  unit.bloodO2);

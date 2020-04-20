@@ -20,9 +20,11 @@ import com.guider.health.common.core.DateUtil;
 import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.NetIp;
 import com.guider.health.common.core.UserManager;
+import com.guider.health.common.device.IUnit;
 import com.guider.health.common.device.standard.StandardCallback;
 import com.guider.health.common.net.net.RestService;
 import com.guider.health.common.net.net.RetrofitLogInterceptor;
+import com.guider.health.common.utils.UnitUtil;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -158,8 +160,13 @@ public class MeasureResult extends GlocoseFragment{
                 }
             });
 
+            // 根据国别处理血糖单位
+            IUnit iUnit = UnitUtil.getIUnit(this._mActivity);
+            double value = iUnit.getGluShowValue(Glucose.getInstance().getGlucose(), 2);
+            ((TextView) view.findViewById(R.id.glu_result)).setText(value + ""); // 值
+            ((TextView) view.findViewById(R.id.glu_result_danwei)).setText(iUnit.getGluUnit()); // 单位
 
-            ((TextView) view.findViewById(R.id.glu_result)).setText(Glucose.getInstance().getGlucose()+"");
+            // ((TextView) view.findViewById(R.id.glu_result)).setText(Glucose.getInstance().getGlucose()+"");
             ((TextView) view.findViewById(R.id.pulse_result)).setText(Glucose.getInstance().getPulse());
             ((TextView) view.findViewById(R.id.hemoglobin_result)).setText(Glucose.getInstance().getHemoglobin());
             ((TextView) view.findViewById(R.id.oxygen_result)).setText(Glucose.getInstance().getOxygenSaturation());

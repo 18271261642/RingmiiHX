@@ -82,7 +82,7 @@ public interface IGuiderApi {
      * @param sence
      * @return
      */
-    @POST("/api/v2/wechat/scan/group/wechatBind")
+    @POST("api/v2/wechat/scan/group/wechatBind")
     Call<IsFocusWechat> checkIsFocus(@Query("sence") String sence);
 
     /**

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class BaseResultViewHolder<T> {
-    private Context mContext;
+    protected Context mContext;
     View view;
     int requestStatus = REQUEST_STATUS_NEVER;
     public static int REQUEST_STATUS_OK = 1;

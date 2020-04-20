@@ -22,15 +22,6 @@ public class ApiUtil {
     static String mac;
 
     static {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addInterceptor(loggingInterceptor);
-        }
-        builder.addInterceptor(new RequestHead(context));
-        mOkHttpClient = builder.build();
-
         // 访问域名处理
         ApiConsts.API_HOST = BuildConfig.APIURL;
         ApiConsts.API_HOST_HD = BuildConfig.APIHDURL;
@@ -43,6 +34,17 @@ public class ApiUtil {
     public static void init(Context context , String mac) {
         ApiUtil.context = context.getApplicationContext();
         ApiUtil.mac = mac;
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.MINUTES)
+                .readTimeout(2, TimeUnit.MINUTES)
+                .writeTimeout(2, TimeUnit.MINUTES);
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(loggingInterceptor);
+        }
+        builder.addInterceptor(new RequestHead(context));
+        mOkHttpClient = builder.build();
     }
 
     private static <I> I createApi(String url, Class<I> clz, boolean needTimeZone) {

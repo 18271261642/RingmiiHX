@@ -17,8 +17,7 @@ class MyTimerTask extends TimerTask {
     private Timer mTimer; // 计时器，每1秒执行一次任务
     private long mLastActionTime; // 上一次操作时间
 
-    private MyTimerTask(){
-
+    private MyTimerTask() {
     }
 
     private static MyTimerTask myTimerTask = new MyTimerTask();
@@ -29,7 +28,6 @@ class MyTimerTask extends TimerTask {
 
     public void initTimerTask(long time){
         mLastActionTime = time;
-
         if (mTimer == null){
             mTimer = new Timer();
             mTimer.schedule(this, 0, 1000);
@@ -60,12 +58,9 @@ class MyTimerTask extends TimerTask {
     public void run() {
         // 5s未操作
         if (System.currentTimeMillis() - mLastActionTime > RETENTION_TIME) {
-
             if (callBack != null){
                 callBack.stopTimer();
             }
-
         }
-
     }
 }

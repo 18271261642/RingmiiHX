@@ -26,7 +26,9 @@ import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.RouterPathManager;
 import com.guider.health.common.core.UserManager;
 import com.guider.health.common.device.DeviceInit;
+import com.guider.health.common.device.IUnit;
 import com.guider.health.common.utils.SkipClick;
+import com.guider.health.common.utils.UnitUtil;
 import com.guider.health.common.views.RoundCheckBox;
 import com.kyleduo.switchbutton.SwitchButton;
 
@@ -75,11 +77,8 @@ public class GLUChooseTime extends GLUFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.glu_choose_time, container, false);
-
         Log.i("haix", "设备数量: " + RouterPathManager.Devices.size());
-
         return view;
     }
 
@@ -107,6 +106,16 @@ public class GLUChooseTime extends GLUFragment {
         rightCheckBox.setChecked(false);
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_GLU));
+
+        // 根据国别处理单位
+        IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+        // 异常单选框
+        TextView tvGluUnit = view.findViewById(R.id.glu_abnormal_textview);
+        String unit = iUnit.getGluShowValue(7, 2) + iUnit.getGluUnit();
+        tvGluUnit.setText(tvGluUnit.getText().toString().replace("7mmol/L", unit));
+        // 异常输入单位
+        TextView tvGluInputUnit = view.findViewById(R.id.tv_abnormal_input_unit);
+        tvGluInputUnit.setText(tvGluInputUnit.getText().toString().replace("mmol/L", iUnit.getGluUnit()));
 
         ///--------- todo 吃药初始化
         not_normal = view.findViewById(R.id.not_normal);
@@ -243,8 +252,9 @@ public class GLUChooseTime extends GLUFragment {
             @Override
             public void result(int code, String re) {
                 if (code == 0){
-                    input_glu_value.setText(BodyIndex.getInstance().getValue()+"");
-                    statusInit();
+                    IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+                    double value = iUnit.getGluShowValue(BodyIndex.getInstance().getValue(), 2);
+                    input_glu_value.setText(value + "");
                     if ("".equals(BodyIndex.getInstance().getDiabetesType())){
                         // 后台返回这个用户有糖尿病
                         leftCheckBox.setChecked(false);
@@ -505,7 +515,11 @@ public class GLUChooseTime extends GLUFragment {
                     Toast.makeText(_mActivity, "请输入血糖值", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                BodyIndex.getInstance().setValue(Float.parseFloat(input_glu));
+
+                // 单位处理
+                IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+                double value = iUnit.getGluRealValue(Double.valueOf(input_glu), 2);
+                BodyIndex.getInstance().setValue((float) value);
                 BodyIndex.getInstance().setId(UserManager.getInstance().getId());
             }
         }
