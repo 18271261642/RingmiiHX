@@ -2,10 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/image_la"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scaleType="centerCrop"
-    android:background="@drawable/ic_guider_launch_empty">
-
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_guider_launch_empty"/>
     <TextView
         android:id="@+id/tv_gb_desc"
         android:layout_width="wrap_content"
@@ -16,6 +18,7 @@
         android:layout_marginBottom="10dp"
         android:textSize="20sp"/>
     <TextView
+        android:visibility="invisible"
         android:id="@+id/tv_gb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

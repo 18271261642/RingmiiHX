@@ -35,7 +35,7 @@
     <string name="start_test">Start measuring</string>
     <string name="fora_glu_start_tips">Measurement starts</string>
     <string name="restart_test">Restart measurement</string>
-    <string name="fora_glu_reult_format">Your blood sugar value：\n%.2f mmol/L</string>
+    <string name="fora_glu_reult_format">Your blood sugar value：\n%.2f </string>
     <string name="fora_glu_redult_title">Measurement results</string>
 
     <string name="zangyin">Visceral sound detection</string>

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
@@ -20,6 +21,7 @@ public class ApiUtil {
     private static OkHttpClient mOkHttpClient;
     private static Context context;
     static String mac;
+    private static Map<String, String> mHeaders;
 
     static {
         // 访问域名处理
@@ -30,8 +32,13 @@ public class ApiUtil {
     public static OkHttpClient getOkHttpClient() {
         return mOkHttpClient;
     }
-
+    public static Map<String, String> getHeaders() {
+        return mHeaders;
+    }
     public static void init(Context context , String mac) {
+        ApiConsts.API_HOST = BuildConfig.APIURL;
+        ApiConsts.API_HOST_HD = BuildConfig.APIHDURL;
+
         ApiUtil.context = context.getApplicationContext();
         ApiUtil.mac = mac;
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -43,13 +50,16 @@ public class ApiUtil {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(loggingInterceptor);
         }
-        builder.addInterceptor(new RequestHead(context));
+        RequestHead requestHead = new RequestHead(context);
+        mHeaders = requestHead.getHeaders();
+        builder.addInterceptor(requestHead);
         mOkHttpClient = builder.build();
     }
 
     private static <I> I createApi(String url, Class<I> clz, boolean needTimeZone) {
         return createApi(url, clz, needTimeZone, true);
     }
+
     private static <I> I createApi(String url, Class<I> clz, boolean needTimeZone, boolean needFormat) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {

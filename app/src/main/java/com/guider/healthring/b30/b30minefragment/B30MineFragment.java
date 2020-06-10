@@ -287,11 +287,11 @@ public class B30MineFragment extends LazyFragment implements RequestView {
                 break;
             case R.id.bemoRel:
                 startActivity(new Intent(getActivity(),BemoSwitchActivity.class));
-            case R.id.rl_family: // 我的家人
-                startWebviewActivity("https://app.guiderhealth.com/#/family");
+            case R.id.rl_family: // 我的家人 https://app.guiderhealth.com/
+                startWebviewActivity(BuildConfig.WEBDOMAIN + "#/family");
                 break;
-            case R.id.rl_sos:
-                startWebviewActivity("https://app.guiderhealth.com/#/friend/sos");
+            case R.id.rl_sos: // https://app.guiderhealth.com/
+                startWebviewActivity(BuildConfig.WEBDOMAIN + "#/friend/sos");
                 break;
         }
     }

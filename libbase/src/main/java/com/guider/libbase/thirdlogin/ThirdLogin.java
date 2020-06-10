@@ -240,7 +240,7 @@ public class ThirdLogin {
                             final HandleOriginUserInfo handleOriginUserInfo) {
         final HashMap<String, Object> map = handleOriginUserInfo == null ? hashMap : handleOriginUserInfo.handle(hashMap);
         final String openId = map.get("openId").toString();
-        mIGuiderApi.verifyThirdAccount(appId, openId).enqueue(new ApiCallBack<BeanOfWecaht>() {
+        mIGuiderApi.verifyThirdAccount(appId, openId, 0, 0).enqueue(new ApiCallBack<BeanOfWecaht>() {
             @Override
             public void onResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
                 BeanOfWecaht info = response.body();

@@ -76,7 +76,6 @@ public class CustomBlueAdapter extends RecyclerView.Adapter<CustomBlueAdapter.Cu
             });
 
 
-
             if(bleName.contains("Ringmii")){
                 holder.img.setImageResource(R.mipmap.hx_search);
                 return;
@@ -102,10 +101,7 @@ public class CustomBlueAdapter extends RecyclerView.Adapter<CustomBlueAdapter.Cu
                 return;
             }
             holder.img.setImageResource(R.mipmap.ic_seach_null);
-
-
         }
-
     }
 
     @Override

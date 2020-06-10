@@ -885,7 +885,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
         Log.e(TAG,"------图片地址="+path);
 
-        String guiderImgUrl = "http://api.guiderhealth.com/upload/file";
+        String guiderImgUrl = BuildConfig.APIURL + "upload/file";
         OkHttpTool.getInstance().doRequestUploadFile(guiderImgUrl, new File(path).getName(), path, "11", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {

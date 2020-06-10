@@ -92,7 +92,6 @@ public class ChooseDeviceFragment extends BaseFragment {
                 public void needLoad() {
                     showDialog();
                 }
-
                 @Override
                 public void onHaveList() {
                     hideDialog();

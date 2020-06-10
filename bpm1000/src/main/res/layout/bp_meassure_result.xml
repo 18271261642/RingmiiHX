@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="血压"
+                android:text="@string/xueya"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
+                android:text="@string/celiangcaozuo"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_15" />
 
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作提醒"
+                android:text="@string/caozuotixing"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
+                android:text="@string/shebeiceliang"
                 android:textColor="#ACACAC"
                 android:textSize="@dimen/sp_14" />
 

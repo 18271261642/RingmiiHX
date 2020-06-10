@@ -293,15 +293,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             String loginUrl = Base_Url + "login/onlyphone?phone=" + phone;
             Log.e(TAG,"-------手机号登录的url="+loginUrl);
             OkHttpTool.getInstance().doRequest(loginUrl,null, "1", loginHttpResult,false);
-//
-//            OkHttpTool.getInstance().doRequest(Base_Url + "login/onlyphone", params,null, new OkHttpTool.HttpResult() {
-//                @Override
-//                public void onResult(String result) {
-//                    Log.e(TAG,"--------手机号返回="+result);
-//                }
-//            },true);
-
-
         } else {
             /**
              * {
@@ -627,61 +618,12 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         }
         uploadGDSleepData();    //睡眠
         //getHeartUpToServices();
-
         uploadGDHeartData();    //心率
-
         //getBpUpToServices();
-
         uploadGDBloodData();    //血压
-
         getHrvToServices();
-
         getSpo2ToServices();
-
         uploadRingData();
-
-
-
-
-
-
-//        boolean uploadingGD = MyApp.getInstance().isUploadDateGDNew();
-//        if (!uploadingGD) {
-//            MyApp.getInstance().setUploadDateGDNew(true);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-//            upSport = false;
-//            upSleep = false;
-//            upHeart = false;
-//            upBool = false;
-//
-//            upHrv = false;
-//            upSpo2 = false;
-//
-//            //上传数据的顺序为  步数---睡眠----心率----血压
-//            //STATE_SPORT     STATE_SLEEP   STATE_RATE   STATE_BP
-//            //handlerNewResult(STATE_SPORT);
-//            // 开始 读取上传运动数据
-//            //getStepUpToServices();
-//
-//            //getSleepUpToServices();
-//
-//            uploadGDSleepData();    //睡眠
-//            //getHeartUpToServices();
-//
-//            uploadGDHeartData();    //心率
-//
-//            //getBpUpToServices();
-//
-//            uploadGDBloodData();    //血压
-//
-//            getHrvToServices();
-//
-//            getSpo2ToServices();
-//
-//            uploadRingData();
-//
-//
-//            if (handler != null) handler.sendEmptyMessageDelayed(0x01, 50 * 1000);//30秒后去看
-//        }
     }
 
 
@@ -941,7 +883,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
     //统一上传接口
     private void uploadRingData() {
-
         if(hrvOriginDataList.isEmpty() && hrvMapList.isEmpty())
             return;
         //总的结果

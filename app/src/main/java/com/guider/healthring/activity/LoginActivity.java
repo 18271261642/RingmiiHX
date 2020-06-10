@@ -299,8 +299,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 } else {
                     ToastUtil.showToast(this, getResources().getString(R.string.string_login_toast));
                 }
-
-
                 break;
             case R.id.xinlang_iv://f新浪登录
 //                authInfo = new AuthInfo(context, SWB_APP_ID, SWB_REDIRECT_URL, SWB_SCOPE);
@@ -451,9 +449,9 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
         if (requestPressent != null) {
             requestPressent.getRequestJSONObject(0x01, Commont.FRIEND_BASE_URL + URLs.logon, LoginActivity.this, mapjson, 1);
         }
+    }
 
-
-
+    private void loginGuider(String uName) {
         //登录到盖德后台
         String loginUrl = BuildConfig.APIURL + "api/v1/login/onlyphone?phone=" + uName; // http://api.guiderhealth.com/
         Log.e(TAG,"-------手机号登录的url="+loginUrl);
@@ -469,7 +467,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                             long accountId = dataJsonObject.getLong("accountId");
                             SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
                             String token = dataJsonObject.getString("token");
-                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", accountId);
+                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", token);
                             WxScanUtil.handle(LoginActivity.this, accountId, new WxScanUtil.IWxScan() {
                                 @Override
                                 public void onError() {
@@ -492,8 +490,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 }
             }
         }, false);
-
-
     }
 
     public LoginDelegate getLoginDelegate() {
@@ -665,7 +661,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     }
 
 
-    //用户输入账号登录
+    // 手环方用户输入账号登录
     private void loginForUserPhone(String result, int tag) {
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -677,13 +673,13 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                     UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
                     Common.customer_id = userInfoBean.getUserid();
 
-                    //保存userid
+                    // 保存userid
                     SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
                     SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
                     SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
 
-                    // startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                    // finish();
+                    String usernametxt = username.getText().toString();
+                    loginGuider(usernametxt);
                 }
 
             }else{

@@ -2,10 +2,12 @@ package com.guider.healthring.b30.service;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.facebook.stetho.json.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -15,10 +17,14 @@ import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.b30.bean.B30HalfHourDB;
 import com.guider.healthring.b30.bean.B30HalfHourDao;
+import com.guider.healthring.b30.bean.BaseResultVoNew;
 import com.guider.healthring.b30.bean.ResultVoNew;
+import com.guider.healthring.bean.BlueUser;
+import com.guider.healthring.bean.TypeUserDatas;
 import com.guider.healthring.bean.WXUserBean;
 import com.guider.healthring.h9.utils.H9TimeUtil;
 import com.guider.healthring.siswatch.utils.WatchUtils;
+import com.guider.healthring.util.GetJsonDataUtil;
 import com.guider.healthring.util.MyLogUtil;
 import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -27,15 +33,25 @@ import com.veepoo.protocol.model.datas.HalfHourBpData;
 import com.veepoo.protocol.model.datas.HalfHourRateData;
 import com.veepoo.protocol.model.datas.HalfHourSportData;
 import com.veepoo.protocol.model.datas.SleepData;
+import com.veepoo.protocol.model.datas.SportData;
 import com.veepoo.protocol.model.datas.TimeData;
+import com.veepoo.protocol.util.HrvScoreUtil;
+import com.veepoo.protocol.util.Spo2hOriginUtil;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BREATH;
+import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HEART;
+import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_LOWSPO2H;
+import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SLEEP;
+import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
 
 public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpDataToGDServicesNew";
@@ -60,9 +76,10 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
     private String userId;
     private String upDataSysTime;
     private String timeDifference;
-    int accountId = 0;
+    long accountId = 0;
     private String phone, wechartJson;
 
+    private TypeUserDatas typeUserDatas;
 
     // 方法1：onPreExecute（）
     // 作用：执行 线程任务前的操作
@@ -70,6 +87,13 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         deviceCode = (String) SharedPreferencesUtils.readObject(MyApp.getInstance(), Commont.BLEMAC);
+
+        String userDetailedData = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "UserDetailedData");
+        if (!WatchUtils.isEmpty(userDetailedData)) {
+            typeUserDatas = new Gson().fromJson(userDetailedData, TypeUserDatas.class);
+            Log.e(TAG,"-------onPreExecute--typeUserDatas="+typeUserDatas);
+        }
+        /*
         userId = (String) SharedPreferencesUtils.readObject(MyApp.getInstance(), "userId");
 
         phone = "" + (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "phoneNumber");
@@ -77,6 +101,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
 
         upDataSysTime = (String) SharedPreferencesUtils.getParam(MyApp.getInstance(), "UpGdServices", "2017-11-02 15:00:00");
         timeDifference = H9TimeUtil.getTimeDifferencesec(upDataSysTime, B18iUtils.getSystemDataStart());
+        */
     }
 
     // 方法2：doInBackground（）
@@ -146,7 +171,13 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
                 Log.e(TAG, "数据库中存在数据------开始登陆账户-----去上传==（运动->睡眠->心率->血压）");
 
                 //登陆到盖得后台
-                loginGdServices();
+                long guiderId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
+                if(guiderId != 0){
+                    accountId = guiderId;
+                    bindDevices(guiderId);
+                } else {
+                    loginGdServices();
+                }
 //                if (!WatchUtils.isEmpty(timeDifference)) {
 //                    int number = Integer.valueOf(timeDifference.trim());
 //                    if (!MyApp.isLogin || Math.abs(number) >= 13 * 60) {//十五分钟可以设置一次
@@ -168,6 +199,67 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
      * 登陆到盖得后台
      */
     private void loginGdServices() {
+        Map<String, String> params = new HashMap<>();
+        params.clear();
+
+        if (typeUserDatas == null) {
+            String userDetailedData = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "UserDetailedData");
+            if (!WatchUtils.isEmpty(userDetailedData)) {
+                typeUserDatas = new Gson().fromJson(userDetailedData, TypeUserDatas.class);
+            }
+        }
+        if (typeUserDatas == null) return;
+        String typeData = typeUserDatas.getTypeData()+"--str="+typeUserDatas.getDataJson();
+        Log.e(TAG,"----typeData="+typeData+typeData.equals("LOGION_PHONE"));
+
+        String phoneType = "LOGION_PHONE";
+
+
+        if (typeUserDatas.getTypeData().equals(phoneType)) {
+            String dataJson = typeUserDatas.getDataJson();
+            BlueUser blueUser = new Gson().fromJson(dataJson, BlueUser.class);
+            String phone = blueUser.getPhone();
+            Log.e(TAG,"-----phone="+phone);
+            // params.put("phone", phone);
+            if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆参数：" + params.toString());
+            String loginUrl = Base_Url + "login/onlyphone?phone=" + phone;
+            Log.e(TAG,"-------手机号登录的url="+loginUrl);
+            OkHttpTool.getInstance().doRequest(loginUrl,null, "1", loginHttpResult,false);
+        } else {
+            /**
+             * {
+             *   "appId": "onxAK59awxJ17IjZnaYslUiOshEE",
+             *   "headimgurl": "http://thirdwx.qlogo.cn/mmopen/vi_32/qndNbICrNwia9HQHMq8Bu4CAJ6KCfum9RQe408vq76KibSYiaicibbQXOuhlJzibEL8PrX1E3l6iaQH4UMjllrM6icVhIQ/132",
+             *   "nickname": "丶",
+             *   "openid": "onxAK59awxJ17IjZnaYslUiOshEE",
+             *   "sex": 1,
+             *   "unionid": "oaVtW5_Yp-o9NPhbmlqFfUn-5He0"
+             * }
+             */
+
+            String dataJson = typeUserDatas.getDataJson();
+            Log.e(TAG,"-------dataJson="+dataJson);
+            WXUserBean wxUserBean = new Gson().fromJson(dataJson, WXUserBean.class);
+            Log.e(TAG,"------wxUserBean="+wxUserBean.toString());
+            params.put("appId", wxUserBean.getOpenid() + "");
+            params.put("headimgurl", wxUserBean.getHeadimgurl() + "");
+            params.put("nickname", wxUserBean.getNickname() + "");
+            params.put("openid", wxUserBean.getOpenid());
+            params.put("sex", (wxUserBean.getSex().equals("M")?1:0)+"");
+            params.put("unionid", wxUserBean.getUnionid() + "");
+            if (Commont.isDebug)Log.e(TAG, "222游客注册或者登陆参数：" + params.toString());
+            JSONObject json = new JSONObject(params);
+
+            if (Commont.isDebug)Log.e(TAG, "====  json  " + json.toString());
+            OkHttpTool.getInstance().doRequest(Base_Url + "/login/wachat",
+                    json.toString(), this, loginHttpResult);
+        }
+    }
+
+    /**
+     * 登陆到盖得后台
+     */
+    private void loginGdServicesOld() {
         Map<String, String> params = new HashMap<>();
         params.clear();
 
@@ -213,6 +305,125 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
      * 登陆返回
      */
     OkHttpTool.HttpResult loginHttpResult = new OkHttpTool.HttpResult() {
+        @Override
+        public void onResult(String result) {
+            MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
+
+            if (!WatchUtils.isEmpty(result)) {
+                if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆上传返回" + result);
+
+                ResultVoNew resultVo = null;
+                try {
+                    resultVo = new Gson().fromJson(result, ResultVoNew.class);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+                //{"STATUS":"500","CARDID":"E7:A7:0F:11:BE:B5","USERNAME":"使用者","MESSAGE":"Duplicate entry 'E7:A7:0F:11:BE:B5-2019-01-07 00:00:00' for key 'PRIMARY'"}
+                //{"STATUS":"500","CARDID":"D6:64:CB:24:7E:74","USERNAME":"使用者", "MESSAGE":"Duplicate entry 'D6:64:CB:24:7E:74-2018-12-07 03:30:00' for key 'PRIMARY'"},position:1
+                //LogTestUtil.e(TAG, "=====返回" + (resultVo != null && resultVo.MESSAGE.contains("PRIMARY")));
+                final int RESULT_CODE = 0;// 上传数据成功结果码
+                if (resultVo != null) {
+                    if (resultVo.getCode() == RESULT_CODE) {
+
+                        ResultVoNew.DataBean dataBean = resultVo.getData();
+                        if (dataBean != null) {
+                            accountId = dataBean.getAccountId();
+
+                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", (long)accountId);
+                            String token = dataBean.getToken();
+                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", accountId);
+                            if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆成功：开始上传步数");
+                            MyApp.isLogin = true;
+                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "UpGdServices", B18iUtils.getSystemDataStart());
+
+                            //并发一起上传
+                            //findUnUpdataToservices();
+
+
+                            //登陆成功之后----同步用户信息
+                            //sycyToServices_GD(accountId);
+                            bindDevices(accountId);
+
+                        } else {
+                            MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
+
+                            if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                            Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
+                            MyApp.getInstance().sendBroadcast(intent);
+                            onCancelled();
+                        }
+
+
+                    } else {
+                        MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
+
+                        if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                        Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
+                        MyApp.getInstance().sendBroadcast(intent);
+                        onCancelled();
+                    }
+                } else {
+                    MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
+
+                    if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                    Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
+                    MyApp.getInstance().sendBroadcast(intent);
+                    onCancelled();
+                }
+
+            } else {
+                MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
+
+                if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
+                MyApp.getInstance().sendBroadcast(intent);
+                onCancelled();
+            }
+
+        }
+    };
+
+    /**
+     * 绑定设备
+     *
+     * @param accountId
+     */
+    void bindDevices(long accountId) {
+
+        Map<String, Object> params = new HashMap<>();
+//        params.put("accountId", accountId);//accountId
+//        params.put("deviceCode", deviceCode);//deviceCode
+//        JSONObject json = new JSONObject(params);
+        String upStepPatch = Base_Url + "user/" + accountId + "/deviceandcompany/bind?deviceCode=" + deviceCode;
+        //{accountId}/deviceandcompany/bind?deviceCode=
+        OkHttpTool.getInstance().doRequest(upStepPatch, null, this, new OkHttpTool.HttpResult() {
+            @Override
+            public void onResult(String result) {
+                try {
+                    if (!WatchUtils.isEmpty(result)) {
+                        Log.e(TAG,"------bindDevices--="+result);
+                        if(result.contains("Unable"))
+                            return;
+                        BaseResultVoNew baseResultVoNew = new Gson().fromJson(result, BaseResultVoNew.class);
+                        if (Commont.isDebug)Log.d(TAG, "=======绑定该设备A= " + result);
+                        if (baseResultVoNew.getCode() == 0 || baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
+                            if (Commont.isDebug)Log.d(TAG, "=======绑定该设备= " + result);
+                            //并发一起上传
+                            findUnUpdataToservices();
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        },false);
+    }
+
+    /**
+     * 登陆返回
+     */
+    OkHttpTool.HttpResult loginHttpResultOld = new OkHttpTool.HttpResult() {
         @Override
         public void onResult(String result) {
             MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
@@ -343,32 +554,136 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
             upHeart = false;
             upBool = false;
 
-
-            //上传数据的顺序为  步数---睡眠----心率----血压
+            // 上传数据的顺序为  步数---睡眠----心率----血压
             //STATE_SPORT     STATE_SLEEP   STATE_RATE   STATE_BP
-            //handlerNewResult(STATE_SPORT);
+            // handlerNewResult(STATE_SPORT);
             // 开始 读取上传运动数据
             getStepUpToServices();
-
             getSleepUpToServices();
-
-
             getHeartUpToServices();
-
-
             getBpUpToServices();
-
-
+            uploadRingData();
             if (handler != null) handler.sendEmptyMessageDelayed(0x01, 20000);
         }
     }
 
+    //统一上传接口
+    private void uploadRingData() {
+        //总的结果
+        Map<String,Object> allResultMap = new HashMap<>();
+        allResultMap.put("accountId",accountId);
+        allResultMap.put("deviceCode",deviceCode);
+        allResultMap.put("testTime",WatchUtils.getCurrentDate());
+        //运动
+        Map<String,Object> sportDataMap = new HashMap<>();
+
+        List<B30HalfHourDB> sportGDList = B30HalfHourDao.getInstance().findGDTodayData(deviceCode,B30HalfHourDao.TYPE_SPORT);
+        if(sportGDList == null || sportGDList.isEmpty())return;
+        String orginStr = sportGDList.get(sportGDList.size()-1).getOriginData();
+
+        // Log.e(TAG,"--------运动="+orginStr);
+        List<HalfHourSportData> halfHourSportData = new Gson().fromJson(orginStr,
+                new TypeToken<List<HalfHourSportData>>(){}.getType());
+
+        List<Map<String,Object>> sportList = new ArrayList<>();
+        for(HalfHourSportData hSport : halfHourSportData){
+            if(hSport.getDate().equals(WatchUtils.getCurrentDate())){
+                Map<String,Object> sMap = new HashMap<>();
+
+                TimeData timeData = hSport.getTime();
+
+                String spo2Dates = timeData.getDateAndClockForSleepSecond();
+
+                Date dateStart = W30BasicUtils.stringToDate(spo2Dates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+                String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
+
+                sMap.put("stepValue",hSport.getStepValue());
+                sMap.put("disValue",hSport.getDisValue());
+                sMap.put("calValue",hSport.getCalValue());
+                sMap.put("testTime",iso8601Timestamp);
+                sportList.add(sMap);
+            }
+        }
+
+        sportDataMap.put("data",sportList);
+        String step_detail = B30HalfHourDao.getInstance().findOriginData(deviceCode,WatchUtils.getCurrentDate(),B30HalfHourDao.TYPE_STEP_DETAIL);
+        if(WatchUtils.isEmpty(step_detail)){
+            sportDataMap.put("totalStep",0);
+            sportDataMap.put("totalDis",0.0);
+            sportDataMap.put("totalCal",0.0);
+        }else{
+            SportData sportData = new Gson().fromJson(step_detail,SportData.class);
+            sportDataMap.put("totalStep",sportData.getStep());
+            sportDataMap.put("totalDis",sportData.getDis());
+            sportDataMap.put("totalCal",sportData.getKcal());
+        }
+
+        allResultMap.put("sport",sportDataMap);
+
+        //hrv
+        Map<String,Object> hrvTempMap = new HashMap<>();
+        hrvTempMap.put("data", new ArrayList<Map<String,Object>>());
+        hrvTempMap.put("hrvIndex", 0);
+        allResultMap.put("hrv",hrvTempMap);
+
+        //spo2
+        ParamNewDayData pndd = new ParamNewDayData();
+        allResultMap.put("spo2", pndd); // "{ \"onedayDataArrLowSpo2h\" : [0,0,0 ],\"data\" : [],\"onedayDataArrLowBreath\" : [0,0,0],\"onedayDataArrSleep\" : [0,0,0],\"onedayDataArrHeart\" : [0,0,0],\"onedayDataArrSpo2h\" : [0,0,0],\"tmpLt\" : [],\"OSAHS\" : -1}");
+        String allParmas = new Gson().toJson(allResultMap);
+
+        String filePath = Environment.getExternalStorageDirectory()+"/DCIM/";
+        new GetJsonDataUtil().writeTxtToFile(WatchUtils.getCurrentDate1()+allParmas,filePath,"ringData.json");
+
+        //String allUrl = "http://apihd.guiderhealth.com/api/v1/ringdata";
+        String allUrl = Commont.GAI_DE_BASE_URL + "ringdata";
+        OkHttpTool.getInstance().doRequest(allUrl, allParmas, "", new OkHttpTool.HttpResult() {
+            @Override
+            public void onResult(String result) {
+                Log.e(TAG,"--------所有上传返回="+result);
+            }
+        });
+    }
+
+    public class ParamNewDayData {
+        /**
+         * 分析结果
+         */
+        String OSAHS = "-1";
+        /**
+         * 呼吸暂停[{time:3322,value:1.0}]
+         * time秒为单位转换成分秒就是对应的时间
+         */
+        List<Map<String, Object>> tmpLt = new ArrayList<>();
+        /**
+         * 低氧数据[最大值，最新值，平均值]
+         */
+        int[] onedayDataArrLowSpo2h = {0, 0, 0};
+        /**
+         * 呼吸率[最大值，最新值，平均值]
+         */
+        int[] onedayDataArrLowBreath = {0, 0, 0};
+        /**
+         * 睡眠活动[最大值，最新值，平均值]
+         */
+        int[] onedayDataArrSleep = {0, 0, 0};
+        /**
+         * 心脏负荷[最大值，最新值，平均值]
+         */
+        int[] onedayDataArrHeart = {0, 0, 0};
+        /**
+         * 血氧[最大值，最新值，平均值]
+         */
+        int[] onedayDataArrSpo2h = {0, 0, 0};
+        /**
+         * 血氧历史数据
+         */
+        List<Map<String, Object>> data = new ArrayList<>();
+    }
 
     /**
      * 读取步数 上传步数到后台
      */
     private void getStepUpToServices() {
-
         if (sportData != null && !sportData.isEmpty()) {
             Log.e(TAG, "一共有 " + sportData.size() + " 天运动数据");
             for (int i = (sportData.size() - 1); i >= 0; i--) {
@@ -619,14 +934,8 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
         JSONObject json = new JSONObject(params);
         List<JSONObject> list = new ArrayList<>();
         list.add(json);
-//        params.put("SLEEPTIME", times);
-//        params.put("CARDID", deviceCode);
-//        params.put("CDATE", date + " 00-00-00");
 
-//        MyLogUtil.e(TAG, "sleep- 上传睡眠参数：" + params.toString());
-        //String usSleepPath = Base_Url + "sleepActivities";
-
-        String usSleepPath = BuildConfig.APIURL + "api/v1/sleepquality"; // http://api.guiderhealth.com/
+        String usSleepPath = BuildConfig.APIHDURL + "api/v1/sleepquality"; // http://api.guiderhealth.com/
         OkHttpTool.getInstance().doRequest(usSleepPath, list.toString(), this, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {

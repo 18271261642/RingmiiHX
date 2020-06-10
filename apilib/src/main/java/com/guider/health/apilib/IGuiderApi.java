@@ -246,7 +246,8 @@ public interface IGuiderApi {
      * @return
      */
     @GET("api/v1/accountthird/verify/login")
-    Call<BeanOfWecaht> verifyThirdAccount(@Query("appId") String appId, @Query("openId") String openId);
+    Call<BeanOfWecaht> verifyThirdAccount(@Query("appId") String appId, @Query("openId") String openId,
+                                          @Query("groupId") long groupId, @Query("doctorAccountId") long doctorAccountId);
     @POST("api/v1/accountthird/phone/login")
     Call<BeanOfWecaht> bindPhoneAndLogin(@Body ParamThirdUserAccount param);
 

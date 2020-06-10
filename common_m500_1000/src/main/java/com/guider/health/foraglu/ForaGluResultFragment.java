@@ -19,7 +19,10 @@ import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.RouterPathManager;
 import com.guider.health.common.device.DeviceInit;
+import com.guider.health.common.device.IUnit;
+import com.guider.health.common.device.UnitImpl;
 import com.guider.health.common.utils.SkipClick;
+import com.guider.health.common.utils.UnitUtil;
 
 import ble.BleClient;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -67,7 +70,9 @@ public class ForaGluResultFragment extends BaseFragment {
     private void initBodyView() {
         // 结果展示
         TextView tvResult = view.findViewById(R.id.tv_fora_glu_reslut);
-        tvResult.setText(String.format(getResources().getString(R.string.fora_glu_reult_format), ForaGlucose.getForaGluInstance().getGlucose()));
+        IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+        double value = iUnit.getGluShowValue(ForaGlucose.getForaGluInstance().getGlucose(), 2);
+        tvResult.setText(String.format(getResources().getString(R.string.fora_glu_reult_format), value) + iUnit.getGluUnit());
 
         MeasureDataUploader.getInstance(_mActivity).uploadBloodSugar(
                 MyUtils.getMacAddress(),

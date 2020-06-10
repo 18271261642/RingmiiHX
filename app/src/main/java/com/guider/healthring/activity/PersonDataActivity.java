@@ -471,7 +471,7 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
 
     //上传盖德图片
     private void uploadGuiderPic(String path) {
-        String guiderImgUrl = "http://api.guiderhealth.com/upload/file";
+        String guiderImgUrl = BuildConfig.APIURL + "upload/file";
         OkHttpTool.getInstance().doRequestUploadFile(guiderImgUrl, new File(path).getName(), path, "11", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {

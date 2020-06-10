@@ -1318,6 +1318,20 @@
 
     <!-- Weather -->
 
+    <string name="guider_band">GuiderBand</string>
+    <string name="guider_band_desc">Bringing HealthCare Closer to You!</string>
+
+    <string name="data_detail">Detailed Data</string>
+
+    <string name="shake_photos">Shake photos</string>
+    <string name="gui_style">GUI style</string>
+
+    <string name="bind_phone">Bind phone</string>
+
+    <string name="bind_phone_success">Bind phone success</string>
+
+    <string name="btn_health">Health</string>
+
     <string name = "wx_scan">Wechat scan</string>
     <string name = "wx_scan_long_click">Long press QR to save</string>
     <string name = "wx_scan_tips">Open WeChat Scan, scan the QR code to enter the [Guider Health] attention page, or add a friend on WeChat, select the public account to search for the "Guider Health" public account and follow, and follow you at any time</string>

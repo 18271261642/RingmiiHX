@@ -139,6 +139,7 @@ public class MyApp extends LitePalApplication {
 
         MyUtils.setMacAddress(BuildConfig.MAC); // 模拟手环APP
         ApiUtil.init(getApplication() , MyUtils.getMacAddress());
+        Commont.GAI_DE_BASE_URL = BuildConfig.APIHDURL + "api/v1/";
         MyUtils.application = getApplication();
         super.onCreate();
         AppisOne = true;

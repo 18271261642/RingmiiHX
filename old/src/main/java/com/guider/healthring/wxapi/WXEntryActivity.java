@@ -42,7 +42,7 @@ public class WXEntryActivity extends WatchBaseActivity implements IWXAPIEventHan
     private static final String TAG = "WXEntryActivity";
 
     //盖德微信登录
-    private String GUIDER_WX_LOGIN_URL = "http://api.guiderhealth.com/api/v2/third/login/wachat/tokeninfo";
+    private String GUIDER_WX_LOGIN_URL = BuildConfig.APIURL + "api/v2/third/login/wachat/tokeninfo"; // "http://api.guiderhealth.com/
 
     private IWXAPI iwxapi;
     /**

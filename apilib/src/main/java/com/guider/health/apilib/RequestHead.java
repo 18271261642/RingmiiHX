@@ -7,7 +7,9 @@ import android.util.Log;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -35,6 +37,14 @@ public class RequestHead implements Interceptor {
         else
             acceptLanguage = "en";
         Log.i("RequestHead", language + "lan " + acceptLanguage);
+    }
+
+    public Map<String, String> getHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("mac" , ApiUtil.mac);
+        headers.put("appid" , appid);
+        headers.put("Accept-Language" , acceptLanguage);
+        return headers;
     }
 
     @NotNull

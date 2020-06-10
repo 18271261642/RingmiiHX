@@ -35,7 +35,7 @@
     <string name="start_test">开始测量</string>
     <string name="fora_glu_start_tips">测量开始</string>
     <string name="restart_test">重新开始测量</string>
-    <string name="fora_glu_reult_format">您的血糖值为：\n%.2f mmol/L</string>
+    <string name="fora_glu_reult_format">您的血糖值为：\n%.2f </string>
     <string name="fora_glu_redult_title">福尔血糖测量结果</string>
 
     <string name="zangyin">脏音检测</string>

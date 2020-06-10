@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.guider.health.apilib.ApiUtil;
+import com.guider.healthring.BuildConfig;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -25,6 +28,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * 通过OkHttp3获取服务端数据工具类
@@ -50,13 +54,20 @@ public class OkHttpTool {
      * 私有化构造
      */
     private OkHttpTool() {
-//        mHttpClient = new OkHttpClient();
+        // mHttpClient = new OkHttpClient();
         // 要配什么参数(如:超时)在这里配
+        /*
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(90,TimeUnit.SECONDS);
         builder.readTimeout(70, TimeUnit.SECONDS);//默认10秒太少,上传手环数据时有超时的情况
         builder.writeTimeout(70, TimeUnit.SECONDS);
-        mHttpClient = builder.build();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(loggingInterceptor);
+        }
+        */
+        mHttpClient = ApiUtil.getOkHttpClient();
     }
 
     /**
@@ -85,7 +96,8 @@ public class OkHttpTool {
     public void doRequest(String path, String json, Object tag, HttpResult callBack) {
         Request.Builder builder = new Request.Builder().tag(tag);
         if (!TextUtils.isEmpty(mSession)) builder.addHeader("cookie", mSession);
-        builder.addHeader("appid","b3c327c04d8b0471");
+        // builder.addHeader("appid","b3c327c04d8b0471");
+        initHeaders(builder);
         RequestBody body = RequestBody.create(CONTENT_TYPE_JSON, json);
         builder.post(body);
         builder.url(path);
@@ -103,7 +115,8 @@ public class OkHttpTool {
      */
     public void doRequestUploadFile(String path,String fileName,String filePath,Object tag,HttpResult callBack){
         Request.Builder builder = new Request.Builder().tag(tag);
-        builder.addHeader("appid","b3c327c04d8b0471");
+        // builder.addHeader("appid","b3c327c04d8b0471");
+        initHeaders(builder);
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", fileName,RequestBody.create(MediaType.parse("application/otcet-stream"), new File(filePath)))
@@ -129,7 +142,8 @@ public class OkHttpTool {
     public void doRequest(String path, Map<String, String> params, Object tag, HttpResult callBack, boolean isGet) {
         Request.Builder builder = new Request.Builder().tag(tag);
         if (!TextUtils.isEmpty(mSession)) builder.addHeader("cookie", mSession);
-        builder.addHeader("appid","b3c327c04d8b0471");
+        // builder.addHeader("appid","b3c327c04d8b0471");
+        initHeaders(builder);
         if (isGet) {
             try {
                 path = path + spliceParamsByGet(params);
@@ -153,7 +167,8 @@ public class OkHttpTool {
 
     public void doPut(String path, String json, Object tag, HttpResult callBack) {
         Request.Builder builder = new Request.Builder().tag(tag);
-        builder.addHeader("appid","b3c327c04d8b0471");
+        // builder.addHeader("appid","b3c327c04d8b0471");
+        initHeaders(builder);
         if (!TextUtils.isEmpty(mSession)) builder.addHeader("cookie", mSession);
         RequestBody body = RequestBody.create(CONTENT_TYPE_JSON, json);
         builder.put(body);
@@ -163,7 +178,8 @@ public class OkHttpTool {
 
     public void doDelete(String path, String json, Object tag, HttpResult callBack) {
         Request.Builder builder = new Request.Builder().tag(tag);
-        builder.addHeader("appid","b3c327c04d8b0471");
+        // builder.addHeader("appid","b3c327c04d8b0471");
+        initHeaders(builder);
         if (!TextUtils.isEmpty(mSession)) builder.addHeader("cookie", mSession);
         RequestBody body = RequestBody.create(CONTENT_TYPE_JSON, json);
         builder.delete(body);
@@ -182,7 +198,8 @@ public class OkHttpTool {
      */
     public void doRequest(String path, Map<String, Object> params, Object tag, HttpResult callBack) {
         Request.Builder builder = new Request.Builder().tag(tag);
-        builder.addHeader("appid","b3c327c04d8b0471");
+        // builder.addHeader("appid","b3c327c04d8b0471");
+        initHeaders(builder);
         if (!TextUtils.isEmpty(mSession)) builder.addHeader("cookie", mSession);
         JSONObject json = new JSONObject(params);
         Log.d("上传的json", "---：" + json.toString());
@@ -190,6 +207,14 @@ public class OkHttpTool {
         builder.post(body);
         builder.url(path);
         httpRequest(builder.build(), callBack);
+    }
+
+    private void initHeaders(Request.Builder builder) {
+        Map<String, String> headers = ApiUtil.getHeaders();
+        if (headers == null) return;
+        for (String header : headers.keySet()) {
+            builder.addHeader(header,headers.get(header));
+        }
     }
 
     /**
