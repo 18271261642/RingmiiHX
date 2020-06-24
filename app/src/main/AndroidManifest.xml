@@ -118,13 +118,13 @@
             android:value="3e36daca606e7e9ceb28b5da9050e82b" />
         -->
 
-        <!--友盟-->
+        <!--友盟
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5d1d5bfc3fc195eb84000980" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="yyb" />
+            android:value="yyb" />-->
         <!--百度
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="测量结果"
+            android:text="@string/test_result"
             android:textSize="@dimen/sp_30" />
 
 

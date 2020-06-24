@@ -225,19 +225,19 @@
 
                 <!--微信-->
                 <RelativeLayout
-                    android:padding="20dp"
                     android:id="@+id/weixin_iv"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.0" >
+                    android:layout_weight="1.0"
+                    android:padding="20dp">
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@mipmap/weixinyuan"
-                        android:contentDescription="@null"
+                        android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true" />
+                        android:contentDescription="@null"
+                        android:src="@mipmap/weixinyuan" />
 
                 </RelativeLayout>
 
@@ -274,17 +274,27 @@
     </LinearLayout>
 
 
-
-    <TextView
-        android:id="@+id/privacyTv"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/privacy"
-        android:textColor="@color/new_colorAccent"
-        android:textSize="12sp"
+        android:gravity="center"
         android:layout_gravity="center"
-        android:padding="5dp"
-        android:gravity="center"/>
-
-
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/cb_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="true"/>
+        <TextView
+            android:id="@+id/privacyTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy"
+            android:textColor="@color/new_colorAccent"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:gravity="center"/>
+    </LinearLayout>
 </LinearLayout>

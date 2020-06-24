@@ -3,6 +3,8 @@ package com.guider.libbase.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,6 +33,12 @@ public class WebviewActivity extends AppCompatActivity {
 
     private String mSelectPhotoCallback;
 
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            mWebviewAgent = new WebviewAgent(WebviewActivity.this, WebviewActivity.this.getIntent().getStringExtra("url"), mRootView, null);
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +50,7 @@ public class WebviewActivity extends AppCompatActivity {
 
         Log.i(TAG, "time : " + DateUtil.localNowString());
 
-        mWebviewAgent = new WebviewAgent(this, getIntent().getStringExtra("url"), mRootView, null);
+        mHandler.sendEmptyMessage(1);
     }
 
     protected Drawable getWebiviewBackground() {
@@ -59,26 +67,31 @@ public class WebviewActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        mWebviewAgent.onWebviewShow();
+        if (mWebviewAgent != null)
+            mWebviewAgent.onWebviewShow();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        mWebviewAgent.onWebviewHide();
+        if (mWebviewAgent != null)
+            mWebviewAgent.onWebviewHide();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWebviewAgent.onWeviewDestroy();
+        if (mWebviewAgent != null)
+            mWebviewAgent.onWeviewDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        if (mWebviewAgent.onBack())
-            return;
+        if (mWebviewAgent != null) {
+            if (mWebviewAgent.onBack())
+                return;
+        }
        finish();
     }
 

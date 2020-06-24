@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.os.Handler;
 
 import com.guider.health.bluetooth.core.BleBluetooth;
+import com.guider.health.bluetooth.core.DeviceUUID;
 
 import ble.BleClient;
 import ble.SimpleDevice;
@@ -20,18 +21,22 @@ import ble.callback.SimpleCallback;
 public class BleScanAndConnectBluetooth {
 
     private BluetoothDevice device;
-    private final static String FORA_P30 = "FORA GD40";
+    private static String BT_NAME = "FORA GD40";
 
     private GluServiceManager measure;
-    public BleScanAndConnectBluetooth(GluServiceManager m){
+    private DeviceUUID deviceUUID;
+
+    public BleScanAndConnectBluetooth(GluServiceManager m, DeviceUUID deviceUUID, String btName){
         this.measure = m;
+        this.deviceUUID = deviceUUID;
+        this.BT_NAME = btName;
     }
 
     public void run() {
         BleClient.instance().searchDevice(1000 * 90, new SimpleCallback() {
             @Override
             protected SimpleDevice onFindDevice(SimpleDevice device) {
-                if (FORA_P30.equals(device.getName())) {
+                if (BT_NAME.equals(device.getName())) {
                     BleScanAndConnectBluetooth.this.device = device.deviceInfo.device;
 
                     BleClient.instance().stopSearching();
@@ -66,7 +71,7 @@ public class BleScanAndConnectBluetooth {
     }
 
     public void toConnect() {
-        BleBluetooth.getInstance().connectBle(new ForaGluDeviceUUID(), device, new BleBluetooth.BluetoothGattStateListener() {
+        BleBluetooth.getInstance().connectBle(deviceUUID, device, new BleBluetooth.BluetoothGattStateListener() {
             @Override
             public void onWrite(BluetoothGatt gatt, BluetoothGattDescriptor characteristic) {
                     measure.generateData(null, null);

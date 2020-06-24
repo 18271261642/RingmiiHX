@@ -48,6 +48,8 @@
     <string name="device_tzqv100">遠程臟音測量</string>
     <string name="device_hdv100">紅豆心電</string>
     <string name="FORAGD40bv100">福爾血糖</string>
+    <string name="FORABO">福爾血氧</string>
+    <string name="FORAET">福爾耳溫</string>
 
     <string name="zy_download_tips">正在下載中 , 請耐心等待...</string>
 </resources>

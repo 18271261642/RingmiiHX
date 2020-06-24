@@ -14,7 +14,6 @@ import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.apilib.model.BeanOfWecaht;
-import com.guider.health.common.utils.JsonUtil;
 import com.guider.health.common.utils.SharedPreferencesUtils;
 import com.guider.health.common.utils.StringUtil;
 import com.guider.libbase.thirdlogin.line.ILineLogin;
@@ -30,12 +29,12 @@ import com.mob.OperationCallback;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import cn.sharesdk.facebook.Facebook;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.google.GooglePlus;
+
 import cn.sharesdk.wechat.friends.Wechat;
-import cn.sharesdk.whatsapp.WhatsApp;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -77,18 +76,7 @@ public class ThirdLogin {
         thidLogin(Wechat.NAME, null, true, thirdLoginCallback, null);
     }
 
-    public void googleLogin() {
-        thidLogin(GooglePlus.NAME, null, false,null, null);
-    }
 
-    public void facebookLogin(final String appId) {
-        thidLogin(Facebook.NAME, appId, false, null, new HandleOriginUserInfo() {
-            @Override
-            public HashMap<String, Object> handle(HashMap<String, Object> hashMap) {
-                return handleFields(hashMap, appId, "id", "name", "url");
-            }
-        });
-    }
 
     public void lineLogin(final String appId, final ThirdLoginCallback thirdLoginCallback, Runnable action) {
         if (action != null)
@@ -180,10 +168,6 @@ public class ThirdLogin {
                 Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void whatsAppLogin() {
-        thidLogin(WhatsApp.NAME, null, false,null, null);
     }
 
     public void thidLogin(String name, final String appId, final boolean customCallBack, final ThirdLoginCallback thirdLoginCallback,

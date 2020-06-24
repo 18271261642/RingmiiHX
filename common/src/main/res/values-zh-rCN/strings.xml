@@ -48,6 +48,8 @@
     <string name="device_tzqv100">远程脏音测量</string>
     <string name="device_hdv100">红豆心电</string>
     <string name="FORAGD40bv100">福尔血糖</string>
+    <string name="FORABO">福尔血氧</string>
+    <string name="FORAET">福尔耳温</string>
 
     <string name="zy_download_tips">正在下载中 , 请耐心等待...</string>
 </resources>

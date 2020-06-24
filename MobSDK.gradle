@@ -9,38 +9,11 @@ MobSDK {
     ShareSDK {
         // 平台配置信息
         devInfo {
-
             Wechat {
                 id 1
                 sortId 1
                 appId "wxc093e3bf0907af3a"
                 appSecret "984774e72efba8f2f21c8cbc91cbbff8"
-                enable true
-            }
-             
-
-            Facebook {
-                id 8
-                sortId 8
-                appKey "2410241225744479"
-                appSecret "5937eb424b5c8c71002a0034b329aeb8"
-                callbackUri "https://mob.com"
-                shareByAppClient true
-                enable true
-            }
-
-            GooglePlus {
-                id 21
-                sortId 21
-                appId "581088622398-hj8mmjgk61cluk1969ur2shelo24rqnr.apps.googleusercontent.com"
-                callbackUri "http://localhost"
-                shareByAppClient true
-                enable true
-            }
-
-            WhatsApp {
-                id 35
-                sortId 35
                 enable true
             }
         }

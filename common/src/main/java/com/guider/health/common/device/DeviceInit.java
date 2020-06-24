@@ -8,6 +8,8 @@ import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.apilib.model.Devices;
 import com.guider.health.common.R;
 import com.guider.health.common.core.Config;
+import com.guider.health.common.core.ForaBO;
+import com.guider.health.common.core.ForaET;
 import com.guider.health.common.core.ForaGlucose;
 import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.HearRate;
@@ -45,6 +47,9 @@ public class DeviceInit {
     public static final String DEV_ECG_tzq = "device_tzqv1.0.0";
     public static final String DEV_ECG_HD = "device_hdv1.0.0";
     public static final String DEV_FORA_GLU = "FORA GD40v1.0.0";
+    public static final String DEV_FORA_BO = "FORA BOv1.0.0"; // 福尔血氧
+    public static final String DEV_FORA_ET = "FORA ETv1.0.0"; // 福尔耳温
+    // TODO 添加新的蓝牙设备
 
     protected DeviceInit() {}
     private volatile static DeviceInit instance;
@@ -115,9 +120,17 @@ public class DeviceInit {
             case DEV_ECG_12:          // 12导
                 HearRate12.getInstance().setTag(b);
                 break;
-            case DEV_FORA_GLU: // TODO 福尔血糖标志设置
+            case DEV_FORA_GLU: // 福尔血糖标志设置
                 ForaGlucose.getForaGluInstance().setTag(b);
                 break;
+            case DEV_FORA_BO:          // 福尔血氧标志设置
+                ForaBO.getForaBOInstance().setTag(b);
+                break;
+            case DEV_FORA_ET:          // 福尔耳温标志设置
+                ForaET.getForaETInstance().setTag(b);
+                break;
+
+            // TODO 添加新设备标志设置
         }
     }
 
@@ -131,7 +144,10 @@ public class DeviceInit {
         HeartPressMbb_9804.getInstance().setTag(false);
         HeartPressMbb_88.getInstance().setTag(false);
         HearRate12.getInstance().setTag(false);
-        ForaGlucose.getForaGluInstance().setTag(false); // TODO
+        ForaGlucose.getForaGluInstance().setTag(false);
+        ForaBO.getForaBOInstance().setTag(false);
+        ForaET.getForaETInstance().setTag(false);
+        // TODO 新设备标志
     }
 
     public void init(final OnHasDeviceList callback) {
@@ -150,7 +166,10 @@ public class DeviceInit {
         pics.put(DEV_ECG_tzq, R.mipmap.device_tzq);
         pics.put(DEV_BP_MBB_88  , R.mipmap.device_mbb_88);
         pics.put(DEV_BP_MBB_9804, R.mipmap.device_mbb_98);
-        pics.put(DEV_FORA_GLU, R.mipmap.device_fora_glu_logo); // TODO
+        pics.put(DEV_FORA_GLU, R.mipmap.device_fora_glu_logo);
+        pics.put(DEV_FORA_BO, R.mipmap.device_fora_glu_logo);
+        pics.put(DEV_FORA_ET, R.mipmap.device_fora_glu_logo);
+        // TODO 新设备图片
 
         fragments.put(DEV_GLU, Config.GLU_FRAGMENT);
         fragments.put(DEV_ECG_6, Config.ECG_FRAGMENT);
@@ -163,7 +182,10 @@ public class DeviceInit {
         fragments.put(DEV_ECG_tzq, Config.ECG_ZANG_YIN);
         fragments.put(DEV_BP_MBB_88  , Config.BP_MBB88_FRAGMENT);
         fragments.put(DEV_BP_MBB_9804, Config.BP_MBB9804_FRAGMENT);
-        fragments.put(DEV_FORA_GLU, Config.FORA_GLU_FRAGMENT); // TODO
+        fragments.put(DEV_FORA_GLU, Config.FORA_GLU_FRAGMENT);
+        fragments.put(DEV_FORA_BO, Config.FORA_BO_FRAGMENT);
+        fragments.put(DEV_FORA_ET, Config.FORA_ET_FRAGMENT);
+        // TODO 新设备FRAGMENT
 
         names.put(DEV_ECG_6, MyUtils.application.getString(R.string.CmateHv100));
         names.put(DEV_BP, MyUtils.application.getString(R.string.FORAP30PLUSv100));
@@ -176,49 +198,16 @@ public class DeviceInit {
         names.put(DEV_ECG_tzq, MyUtils.application.getString(R.string.device_tzqv100)); // 远程脏音测量
         names.put(DEV_BP_MBB_88  , MyUtils.application.getString(R.string.RBP1810130249v100)); // 脉搏波88
         names.put(DEV_BP_MBB_9804, MyUtils.application.getString(R.string.BP06D21905750026v100)); // 脉搏波9804"
-        names.put(DEV_FORA_GLU, MyUtils.application.getString(R.string.FORAGD40bv100)); // TODO
+        names.put(DEV_FORA_GLU, MyUtils.application.getString(R.string.FORAGD40bv100));
+        names.put(DEV_FORA_BO, MyUtils.application.getString(R.string.FORABO));
+        names.put(DEV_FORA_ET, MyUtils.application.getString(R.string.FORAET));
+        // TODO 新设备名字
 
         Config.DEVICE_KEYS.add(DEV_GLU);
         Config.DEVICE_KEYS.add(DEV_ECG_6);
         Config.DEVICE_KEYS.add(DEV_BP);
         Config.DEVICE_KEYS.add(DEV_FORA_GLU);
 
-        /*
-        Devices device = new Devices();
-
-        // 无创
-        device.setBtName("BDE_WEIXIN_TTM");
-        device.setVersion("v1.0.0");
-        device.setName(names.get(DEV_GLU));
-        Config.DEVICE_OBJ.put(DEV_GLU, device);
-
-        // CMate
-        device.setBtName("CmateH");
-        device.setVersion("v1.0.0");
-        device.setName(names.get(DEV_ECG_6));
-        Config.DEVICE_OBJ.put(DEV_ECG_6, device);
-
-        // Fora血压
-        device.setBtName("FORA P30 PLUS");
-        device.setVersion("v1.0.0");
-        device.setName(names.get(DEV_BP));
-        Config.DEVICE_OBJ.put(DEV_BP, device);
-
-        // Fora血糖
-        device = new Devices();
-        device.setBtName("FORA GD40");
-        device.setVersion("v1.0.0");
-        device.setName(names.get(DEV_FORA_GLU));
-        Config.DEVICE_OBJ.put(DEV_FORA_GLU, device);
-
-
-        if (callback != null) {
-            callback.needLoad();
-        }
-
-        callback.onHaveList();
-        if(names.containsKey(DEV_FORA_GLU)) return;
-        */
         ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
                 new ApiCallBack<List<Devices>>(){
                     @Override

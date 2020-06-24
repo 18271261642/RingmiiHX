@@ -11,14 +11,10 @@ import android.widget.Toast;
 
 import com.guider.glu.presenter.GLUServiceManager;
 import com.guider.glu_phone.net.NetRequest;
-import com.guider.glu_phone.view.AgentWebFragment;
-import com.guider.glu_phone.view.AndroidInterface;
 import com.guider.glu_phone.view.TurnOnOperation;
 import com.guider.health.bluetooth.core.BleBluetooth;
 import com.guider.health.common.core.BaseActivity;
 import com.guider.health.common.core.BaseFragment;
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareConfig;
 
 import java.lang.ref.WeakReference;
 
@@ -37,19 +33,20 @@ public class GlucoseMeasureActivity extends BaseActivity {
 
         setContentView(R.layout.glucose_measure_layout);
 
-
+        /*
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(GlucoseMeasureActivity.this).setShareConfig(config);
         UMShareAPI mShareAPI = UMShareAPI.get(GlucoseMeasureActivity.this);
-
-
+        */
+        /*
         BaseFragment fragment = findFragment(AgentWebFragment.class);
 
         if (fragment == null) {
-
             loadRootFragment(R.id.content, new AgentWebFragment());
         }
+
+         */
 
         NetRequest.getInstance().getHealthRange(new WeakReference<Activity>(this));
 
@@ -84,8 +81,8 @@ public class GlucoseMeasureActivity extends BaseActivity {
             }
 
             if (fragment.getClass().toString().contains("MeasureResult")){
-                AndroidInterface.measureDid = true;
-                popTo(AgentWebFragment.class, false);
+                // AndroidInterface.measureDid = true;
+                // popTo(AgentWebFragment.class, false);
             }else if (fragment.getClass().toString().contains("AgentWebFragment")){
                 if (System.currentTimeMillis() - firstTime >= 2000) {
                     Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();

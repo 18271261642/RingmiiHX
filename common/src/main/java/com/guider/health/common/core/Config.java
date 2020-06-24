@@ -25,6 +25,11 @@ public class Config {
     public final static String ECG_HD_FRAGMENT = "com.gaider.proton.view.ProtonEcgFirst";
     public final static String GLU_FRAGMENT = "com.guider.glu.view.GLUChooseTime";
     public final static String FORA_GLU_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
+    // 福尔血氧
+    public final static String FORA_BO_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
+    // 福尔耳温
+    public final static String FORA_ET_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
+    // TODO 添加新设备首页
     // 移动版
     public static String BP_FRAGMENT = "com.guider.health.bp.view.bp.BPFirstOperaterReminder";
     // AVE

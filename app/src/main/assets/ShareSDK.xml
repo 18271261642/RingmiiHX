@@ -6,11 +6,11 @@
 <QZone Enable="false" />
 <Renren Enable="false" />
 <KaiXin Enable="false" />
-<Facebook Id="8" SortId="8" ShareByAppClient="true" Enable="true" ConsumerKey="2410241225744479" ConsumerSecret="5937eb424b5c8c71002a0034b329aeb8" RedirectUrl="https://mob.com" />
+<Facebook Enable="false" />
 <Twitter Enable="false" />
 <Evernote Enable="false" />
 <FourSquare Enable="false" />
-<GooglePlus Id="21" SortId="21" ShareByAppClient="true" Enable="true" ClientID="581088622398-hj8mmjgk61cluk1969ur2shelo24rqnr.apps.googleusercontent.com" RedirectUrl="http://localhost" />
+<GooglePlus Enable="false" />
 <Instagram Enable="false" />
 <LinkedIn Enable="false" />
 <Tumblr Enable="false" />
@@ -31,7 +31,7 @@
 <YixinMoments Enable="false" />
 <Mingdao Enable="false" />
 <Line Enable="false" />
-<WhatsApp Id="35" SortId="35" Enable="true" />
+<WhatsApp Enable="false" />
 <KakaoTalk Enable="false" />
 <KakaoStory Enable="false" />
 <FacebookMessenger Enable="false" />

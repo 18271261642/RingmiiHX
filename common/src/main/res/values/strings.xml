@@ -48,6 +48,8 @@
     <string name="device_tzqv100">Remote visceral measurement</string>
     <string name="device_hdv100">Red bean ECG</string>
     <string name="FORAGD40bv100">Fora blood sugar</string>
+    <string name="FORABO">Fora blood oxygen</string>
+    <string name="FORAET">Fora temp</string>
 
     <string name="zy_download_tips">Downloading, please be patient...</string>
 </resources>

@@ -1338,4 +1338,6 @@
     <string name="health_and_safe">健康與安全</string>
     <string name="family">我的家人</string>
     <string name="sos_history">SOS記錄</string>
+
+    <string name="not_checked_privacy">請先點擊同意用戶隱私政策</string>
 </resources>

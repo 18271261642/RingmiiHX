@@ -15,6 +15,7 @@ public class Constant {
     public static final String XUEYA = "BLOODPRESSURE";   // 血压
     public static final String XUETANG = "BLOODSUGAR";    // 血糖
     public static final String XUEYANG = "BLOODOXYGEN";   // 血氧
+    public static final String TEMP = "TEMP";              // 体温
     public static final String XUELIUSU = "BARTERY";      // 血流速度
     public static final String XUEHONGDANBAI = "HEMOGLOBIN";// 血红蛋白
 

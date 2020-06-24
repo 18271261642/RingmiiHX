@@ -154,7 +154,7 @@ public class MeasureResult extends GlocoseFragment{
             view.findViewById(R.id.head_back).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AndroidInterface.measureDid = true;
+                    // AndroidInterface.measureDid = true;
                     popTo(AttentionInfo.class, false);
                     _mActivity.finish();
                 }

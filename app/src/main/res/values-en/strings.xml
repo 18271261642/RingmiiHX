@@ -1343,4 +1343,6 @@
     <string name="health_and_safe">Health and safe</string>
     <string name="family">My family members</string>
     <string name="sos_history">SOS recording</string>
+
+    <string name="not_checked_privacy">Please click to agree to the user privacy policy</string>
 </resources>

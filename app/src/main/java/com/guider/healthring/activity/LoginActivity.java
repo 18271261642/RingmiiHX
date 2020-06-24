@@ -20,6 +20,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,6 +67,7 @@ import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.guider.healthring.xinlangweibo.SinaUserInfo;
 import com.guider.healthringx.wxapi.WXEntryActivity;
 import com.guider.healthringx.wxapi.WXEntryActivityAdapter;
+import com.guider.libbase.activity.WebviewActivity;
 import com.guider.libbase.thirdlogin.ThirdLogin;
 import com.guider.libbase.thirdlogin.line.ILineLogin;
 import com.linecorp.linesdk.LoginDelegate;
@@ -154,7 +156,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     private IWXAPI iwxapi;
 
     private RequestPressent requestPressent;
-
+    @BindView(R.id.cb_privacy)
+    CheckBox mCBPrivacy;
 
     private ThirdLogin mThirdLogin;
     private WXEntryActivityAdapter mWXEntryActivityAdapter;
@@ -174,12 +177,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
         iwxapi = WXAPIFactory.createWXAPI(this, Commont.WX_APP_SECRET, true);
         iwxapi.registerApp(Commont.WX_APP_ID);
         mThirdLogin = new ThirdLogin(this);
-        //Google Play用这个
-//        iwxapi = WXAPIFactory.createWXAPI(this, "wx7e5e9e90ae4d8f51", true);
-//        iwxapi.registerApp("wx7e5e9e90ae4d8f51");
-
-
-
 
         initViews();
     }
@@ -272,7 +269,9 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 1112);
     }
 
-
+    private boolean checkPrivacy() {
+        return mCBPrivacy.isChecked();
+    }
 
     @OnClick({R.id.register_btn, R.id.forget_tv,
             R.id.login_btn, R.id.xinlang_iv,
@@ -280,6 +279,10 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
             R.id.login_visitorTv,R.id.privacyTv, R.id.line_iv})
     public void onClick(View view) {
         Context context = view.getContext();
+        if (!checkPrivacy()) {
+            ToastUtil.showToast(this, getResources().getString(R.string.not_checked_privacy));
+            return;
+        }
         switch (view.getId()) {
 
             case R.id.register_btn://注册
@@ -373,7 +376,10 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                 });
                 break;
             case R.id.privacyTv:    //隐私政策
-                startActivity(PrivacyActivity.class);
+                // startActivity(PrivacyActivity.class);
+                Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
+                intent.putExtra("url", "http://cmate.guidertech.com/#/open");
+                startActivity(intent);
                 break;
             case R.id.line_iv: // LINE 登陆
                 mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line), "1653887386", null, hashMap -> {
