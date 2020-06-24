@@ -40,12 +40,14 @@
                         android:id="@+id/roateImgView"
                         android:layout_width="15dp"
                         android:layout_gravity="center"
+                        android:visibility="gone"
                         android:src="@drawable/ic_phone_code_more"
                         android:layout_height="15dp" />
 
                     <TextView
                         android:id="@+id/tv_phone_head"
                         android:layout_width="@dimen/size_50"
+                        android:visibility="gone"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="+86"
@@ -63,8 +65,9 @@
                             style="@style/MyEditText"
                             android:drawablePadding="@dimen/size_10"
                             android:hint="@string/input_name"
-                            android:inputType="phone"
+                            android:inputType="number"
                             android:maxLines="1"
+                            android:drawableLeft="@mipmap/yonghuming_dianji"
                             android:singleLine="true"
                             android:textColorHint="@color/new_colorAccent" />
 
@@ -93,6 +96,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputLayout
