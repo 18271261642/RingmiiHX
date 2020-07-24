@@ -19,19 +19,13 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * B30手环系统设置页面
  */
-public class B30SysSettingActivity extends WatchBaseActivity {
+public class B30SysSettingActivity extends WatchBaseActivity implements View.OnClickListener{
 
 
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.version_tv)
     TextView versionTv;
 
 
@@ -39,12 +33,20 @@ public class B30SysSettingActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_syssetting);
-        ButterKnife.bind(this);
-
+        initViewIds();
 
         initViews();
 
         initData();
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        versionTv = findViewById(R.id.version_tv);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.updatePwdLin).setOnClickListener(this);
+        findViewById(R.id.feebackLin).setOnClickListener(this);
+        findViewById(R.id.aboutLin).setOnClickListener(this);
     }
 
     private void initData() {
@@ -75,8 +77,7 @@ public class B30SysSettingActivity extends WatchBaseActivity {
         barTitles.setText(getResources().getString(R.string.system_settings));
 
     }
-
-    @OnClick({R.id.image_back, R.id.updatePwdLin, R.id.feebackLin, R.id.aboutLin})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:   //返回

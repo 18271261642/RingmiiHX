@@ -24,16 +24,11 @@ import com.guider.healthring.b30.GPSSportHisyory;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * Created by Admin
  * Date 2018/12/13
  */
-public class B36RunFragment extends Fragment {
+public class B36RunFragment extends Fragment implements View.OnClickListener{
 
 
     private static final String TAG = "B36RunFragment";
@@ -41,12 +36,8 @@ public class B36RunFragment extends Fragment {
 
     View runView;
 
-    @BindView(R.id.fragmentViewPager)
     ViewPager fragmentViewPager;
-    Unbinder unbinder;
-    @BindView(R.id.gpsSportTv)
     TextView gpsSportTv;
-    @BindView(R.id.deviceSportTc)
     TextView deviceSportTc;
     private String[] titleStr = new String[]{"GPS运动", "手环运动"};
 
@@ -70,12 +61,20 @@ public class B36RunFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         runView = inflater.inflate(R.layout.fragment_b36_run_layout, container, false);
-        unbinder = ButterKnife.bind(this, runView);
-
+        initViewIds();
         initViews();
 
 
         return runView;
+    }
+
+    private void initViewIds() {
+        fragmentViewPager =runView.findViewById(R.id.fragmentViewPager);
+        gpsSportTv =runView.findViewById(R.id.gpsSportTv);
+        deviceSportTc =runView.findViewById(R.id.deviceSportTc);
+        gpsSportTv.setOnClickListener(this);
+        deviceSportTc.setOnClickListener(this);
+        runView.findViewById(R.id.deviceSportHistoryImg).setOnClickListener(this);
     }
 
     private void initViews() {
@@ -123,13 +122,8 @@ public class B36RunFragment extends Fragment {
         return mContext==null?MyApp.getContext():mContext;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
-    @OnClick({R.id.gpsSportTv, R.id.deviceSportTc,R.id.deviceSportHistoryImg})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.gpsSportTv:

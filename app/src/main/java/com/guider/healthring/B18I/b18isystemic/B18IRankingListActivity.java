@@ -30,9 +30,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * @aboutContent: 排行榜
  * @author： 安
@@ -43,25 +40,28 @@ import butterknife.ButterKnife;
 
 public class B18IRankingListActivity extends WatchBaseActivity {
     private final String TAG = "----->>>" + this.getClass().toString();
-    @BindView(R.id.rankingRecyle)
     RecyclerView rankingRecyle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.layout_appbar)
     AppBarLayout layoutAppbar;
-    @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.toobarText)
     TextView toobarText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_ranking_list_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         setToobar();
         whichDevice();//判断是B18i还是H9
         setContentViews();
+    }
+
+    private void initViewIds() {
+        rankingRecyle = findViewById(R.id.rankingRecyle);
+        layoutAppbar = findViewById(R.id.layout_appbar);
+        toolbar = findViewById(R.id.toolbar);
+        imageBack = findViewById(R.id.image_back);
+        toobarText = findViewById(R.id.toobarText);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

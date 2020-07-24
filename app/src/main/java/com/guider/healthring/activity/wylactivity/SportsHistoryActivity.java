@@ -37,19 +37,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-
 /**
  * Created by admin on 2017/3/30.
  * 运动历史记录
  */
 
 public class SportsHistoryActivity extends BaseActivity {
-    @BindView(R.id.tv_title)
     TextView title;
-    @BindView(R.id.listview_history)
     ListViewForScrollView mylistview;
-    @BindView(R.id.data_type_text)
     TextView data_type_text;
 
     private static String url = "http://47.90.83.197:8080/watch/sport/getOutdoorSport";//查询地图数据
@@ -74,6 +69,7 @@ public class SportsHistoryActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        initViewIds();
         title.setText(getResources().getString(R.string.sports_history));
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         myid = 0;
@@ -200,6 +196,12 @@ public class SportsHistoryActivity extends BaseActivity {
         }
 
         Mapdata(df.format(new Date()));
+    }
+
+    private void initViewIds() {
+        title = findViewById(R.id.tv_title);
+        mylistview = findViewById(R.id.listview_history);
+        data_type_text = findViewById(R.id.data_type_text);
     }
 
     @Override

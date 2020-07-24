@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.URLs;
@@ -20,53 +22,55 @@ import com.yanzhenjie.nohttp.Logger;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yanzhenjie.nohttp.download.DownloadRequest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2018/5/25.
  */
 
-public class W30OTAActivity extends WatchBaseActivity implements RequestView{
+public class W30OTAActivity extends WatchBaseActivity implements RequestView, View.OnClickListener {
 
     private static final String TAG = "W30OTAActivity";
 
 
-    @BindView(R.id.progressBar_upgrade)
     ProgressBar progressBarUpgrade;
-    @BindView(R.id.btn_start_up)
     Button btnStartUp;
 
     RequestPressent requestPressent;
-    int localVersion ;
+    int localVersion;
     private String downloadUrl = null;
     /**
      * 下载请求.
      */
     private DownloadRequest mDownloadRequest;
-    private String downPath ;
+    private String downPath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w30s_frrinware_upgrade);
-        ButterKnife.bind(this);
+        initViewIds();
 
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
-        localVersion = Integer.valueOf((String)SharedPreferenceUtil.get(W30OTAActivity.this,"W30S_V","ab"));
-        downPath = Environment.getExternalStorageDirectory()+"RaceDown/";
+        localVersion = Integer.valueOf((String) SharedPreferenceUtil.get(W30OTAActivity.this, "W30S_V", "ab"));
+        downPath = Environment.getExternalStorageDirectory() + "RaceDown/";
 
         getNetWorke();
+    }
+
+    private void initViewIds() {
+        progressBarUpgrade = findViewById(R.id.progressBar_upgrade);
+        btnStartUp = findViewById(R.id.btn_start_up);
+        btnStartUp.setOnClickListener(this);
     }
 
     /**
      * getNetWorke()获取后台版本
      */
-    public void getNetWorke(){
+    public void getNetWorke() {
         try {
             String w30S_v = (String) SharedPreferenceUtil.get(W30OTAActivity.this, "W30S_V", "20");
             if (WatchUtils.isEmpty(w30S_v)) return;
@@ -83,9 +87,10 @@ public class W30OTAActivity extends WatchBaseActivity implements RequestView{
         }
     }
 
-    @OnClick(R.id.btn_start_up)
-    public void onViewClicked() {
-        downloadData(); //下载升级包
+    @Override
+    public void onClick(View view) {
+        if (view == btnStartUp)
+            downloadData(); //下载升级包
     }
 
     private void downloadData() {
@@ -96,7 +101,7 @@ public class W30OTAActivity extends WatchBaseActivity implements RequestView{
         } else if (mDownloadRequest == null || mDownloadRequest.isFinished()) {// 没有开始或者下载完成了，就重新下载。
 
             mDownloadRequest = new DownloadRequest(downloadUrl, RequestMethod.GET,
-                    downPath,true, true);
+                    downPath, true, true);
 
             // what 区分下载。
             // downloadRequest 下载请求对象。
@@ -122,13 +127,13 @@ public class W30OTAActivity extends WatchBaseActivity implements RequestView{
     @Override
     public void successData(int what, Object object, int daystag) {
 
-        Log.e(TAG,"---------succ-="+object);
-        if(what == 1){
+        Log.e(TAG, "---------succ-=" + object);
+        if (what == 1) {
             UpDataBean upDataBean = new Gson().fromJson(object.toString(), UpDataBean.class);
-            if(upDataBean.getResultCode().equals("001")){
+            if (upDataBean.getResultCode().equals("001")) {
                 int version = Integer.valueOf(upDataBean.getVersion().trim());
                 String downUrl = upDataBean.getUrl();
-                if(version > localVersion){     //有新版本
+                if (version > localVersion) {     //有新版本
                     downloadUrl = downUrl;
                 }
 
@@ -165,6 +170,7 @@ public class W30OTAActivity extends WatchBaseActivity implements RequestView{
 
 
         }
+
         @Override
         public void onProgress(int what, int progress, long fileCount, long speed) {
             updateProgress(progress, speed);

@@ -16,10 +16,6 @@ import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent: 设置闹钟界面
  * @author： 安
@@ -28,25 +24,16 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class W30STimePicker extends WatchBaseActivity {
+public class W30STimePicker extends WatchBaseActivity implements View.OnClickListener{
 
-    @BindView(R.id.timer_set)
     TimePicker timerSet;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.checkbox_day)
     CheckBox checkboxDay;
-    @BindView(R.id.checkbox_one)
     CheckBox checkboxOne;
-    @BindView(R.id.checkbox_two)
     CheckBox checkboxTwo;
-    @BindView(R.id.checkbox_three)
     CheckBox checkboxThree;
-    @BindView(R.id.checkbox_four)
     CheckBox checkboxFour;
-    @BindView(R.id.checkbox_five)
     CheckBox checkboxFive;
-    @BindView(R.id.checkbox_six)
     CheckBox checkboxSix;
     private int H, M;
     private boolean TYPE = true;
@@ -62,12 +49,26 @@ public class W30STimePicker extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w30s_time_picker_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         timerSet.setIs24HourView(true);//是否显示24小时制？默认false
         intent = getIntent();
         type = intent.getStringExtra("type");
         setTitles(type);
         setCheckBoxClick();
+    }
+
+    private void initViewIds() {
+        timerSet = findViewById(R.id.timer_set);
+        barTitles = findViewById(R.id.bar_titles);
+        checkboxDay = findViewById(R.id.checkbox_day);
+        checkboxOne = findViewById(R.id.checkbox_one);
+        checkboxTwo = findViewById(R.id.checkbox_two);
+        checkboxThree = findViewById(R.id.checkbox_three);
+        checkboxFour = findViewById(R.id.checkbox_four);
+        checkboxFive = findViewById(R.id.checkbox_five);
+        checkboxSix = findViewById(R.id.checkbox_six);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.image_right).setOnClickListener(this);
     }
 
     private void setCheckBoxClick() {
@@ -184,7 +185,7 @@ public class W30STimePicker extends WatchBaseActivity {
     }
 
 
-    @OnClick({R.id.image_back, R.id.image_right})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_right:

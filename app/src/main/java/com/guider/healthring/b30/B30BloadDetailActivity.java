@@ -34,15 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 /**
  * B30血压详情界面
  */
-public class B30BloadDetailActivity extends WatchBaseActivity {
+public class B30BloadDetailActivity extends WatchBaseActivity implements View.OnClickListener{
 
     /**
      * 跳转到B30BloadDetailActivity,并附带参数
@@ -56,32 +52,22 @@ public class B30BloadDetailActivity extends WatchBaseActivity {
         context.startActivity(intent);
     }
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
 //    @BindView(R.id.b30DetailBloadView)
 //    B30CusBloadView b30DetailBloadView;
-    @BindView(R.id.b30DetailLowestBloadTv)
     TextView b30DetailLowestBloadTv;
-    @BindView(R.id.b30DetailHeightBloadTv)
     TextView b30DetailHeightBloadTv;
-    @BindView(R.id.b30DetailLowestBloadDateTv)
     TextView b30DetailLowestBloadDateTv;
-    @BindView(R.id.b30DetailHeightBloadDateTv)
     TextView b30DetailHeightBloadDateTv;
-    @BindView(R.id.b30DetailBloadRecyclerView)
     RecyclerView b30DetailBloadRecyclerView;
-    @BindView(R.id.bloadCurrDateTv)
     TextView bloadCurrDateTv;
 
     private B30BloadDetailAdapter b30BloadDetailAdapter;
     private List<HalfHourBpData> dataList;
 
     //血压图表
-    @BindView(R.id.cusB30BpView)
     CusB30CusBloadView cusB30BpView;
 
 
@@ -103,9 +89,26 @@ public class B30BloadDetailActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_bload_detail);
-        ButterKnife.bind(this);
+        initViewIds();
         initViews();
         initData();
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        b30DetailLowestBloadTv = findViewById(R.id.b30DetailLowestBloadTv);
+        b30DetailHeightBloadTv = findViewById(R.id.b30DetailHeightBloadTv);
+        b30DetailLowestBloadDateTv = findViewById(R.id.b30DetailLowestBloadDateTv);
+        b30DetailHeightBloadDateTv = findViewById(R.id.b30DetailHeightBloadDateTv);
+        b30DetailBloadRecyclerView = findViewById(R.id.b30DetailBloadRecyclerView);
+        bloadCurrDateTv = findViewById(R.id.bloadCurrDateTv);
+        cusB30BpView = findViewById(R.id.cusB30BpView);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        findViewById(R.id.bloadCurrDateLeft).setOnClickListener(this);
+        findViewById(R.id.bloadCurrDateRight).setOnClickListener(this);
     }
 
     private void initViews() {
@@ -280,9 +283,8 @@ public class B30BloadDetailActivity extends WatchBaseActivity {
     }
 
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg, R.id.bloadCurrDateLeft,
-            R.id.bloadCurrDateRight})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:
                 finish();

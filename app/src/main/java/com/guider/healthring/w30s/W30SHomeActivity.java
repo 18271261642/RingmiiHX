@@ -49,8 +49,6 @@ import com.suchengkeji.android.w30sblelibrary.W30SBLEServices;
 import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
 import java.util.ArrayList;
 import java.util.List;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @aboutContent:
@@ -63,9 +61,7 @@ import butterknife.ButterKnife;
 public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateListenerInterface{
     private final String TAG = "W30SHomeActivity";
     private List<Fragment> h18iFragmentList = new ArrayList<>();
-    @BindView(R.id.h18i_view_pager)
     NoScrollViewPager h18iViewPager;
-    @BindView(R.id.h18i_bottomBar)
     BottomBar h18iBottomBar;
     MyBroadcastReceiver myBroadcastReceivers = null;
     public BluetoothAdapter bluetoothAdapter;
@@ -84,7 +80,7 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
         super.onCreate(savedInstanceState);
         Log.e(TAG, "--------home-w30-=onCreate---");
         setContentView(R.layout.activity_w30s_home);
-        ButterKnife.bind(this);
+        initViewIds();
         mylanmac = (String) SharedPreferenceUtil.get(MyApp.getContext(), Commont.BLEMAC, "");
         w30SBleName = (String) SharedPreferenceUtil.get(MyApp.getApplication(), "mylanya", "");
         initViews();
@@ -92,6 +88,11 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
 
         myBroadcastReceivers = new MyBroadcastReceiver();
         disPhoneCallBack = new DisPhoneCallBack();
+    }
+
+    private void initViewIds() {
+        h18iViewPager = findViewById(R.id.h18i_view_pager);
+        h18iBottomBar = findViewById(R.id.h18i_bottomBar);
     }
 
 

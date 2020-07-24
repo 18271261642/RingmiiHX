@@ -21,36 +21,36 @@ import com.veepoo.protocol.listener.data.IPwdDataListener;
 import com.veepoo.protocol.model.datas.PwdData;
 import com.veepoo.protocol.model.enums.EPwdStatus;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 重置设备密码
  */
-public class B30ResetActivity extends WatchBaseActivity {
+public class B30ResetActivity extends WatchBaseActivity implements View.OnClickListener{
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.b30OldPwdEdit)
     EditText b30OldPwdEdit;
-    @BindView(R.id.b30NewPwdEdit)
     EditText b30NewPwdEdit;
-    @BindView(R.id.b30AgainNewPwdEdit)
     EditText b30AgainNewPwdEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_reset);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
 
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg =findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv =findViewById(R.id.commentB30TitleTv);
+        b30OldPwdEdit =findViewById(R.id.b30OldPwdEdit);
+        b30NewPwdEdit =findViewById(R.id.b30NewPwdEdit);
+        b30AgainNewPwdEdit =findViewById(R.id.b30AgainNewPwdEdit);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.b30ResetPwdBtn).setOnClickListener(this);
     }
 
     private void initViews() {
@@ -59,7 +59,7 @@ public class B30ResetActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.b30ResetPwdBtn})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:

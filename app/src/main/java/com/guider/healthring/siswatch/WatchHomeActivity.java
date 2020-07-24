@@ -60,8 +60,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/7/17.
@@ -78,14 +76,9 @@ public class WatchHomeActivity extends WatchBaseActivity implements PhoneStateLi
     private static final int H8_CONECT_SUCCESS_CODE = 777;  //连接成功
     private static final int H8_DISCONNECT_CODE = 888;  //连接失败
 
-
-    @BindView(R.id.view_pager)
     NoScrollViewPager viewPager;
-    @BindView(R.id.bottomBar)
     BottomBar bottomBar;
-    @BindView(R.id.myCoordinator)
     CoordinatorLayout myCoordinator;
-    @BindView(R.id.record_bottomsheet)
     BottomSheetLayout recordBottomsheet;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
@@ -182,13 +175,20 @@ private WatchBluetoothService mBluetoothService = null;
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_home);
-        ButterKnife.bind(this);
+        initViewIds();
         EventBus.getDefault().register(this);
         initViews();
         initData();
         //注册相关信息
         regeditData();
 
+    }
+
+    private void initViewIds() {
+        viewPager = findViewById(R.id.view_pager);
+        bottomBar = findViewById(R.id.bottomBar);
+        myCoordinator = findViewById(R.id.myCoordinator);
+        recordBottomsheet = findViewById(R.id.record_bottomsheet);
     }
 
     private void regeditData() {

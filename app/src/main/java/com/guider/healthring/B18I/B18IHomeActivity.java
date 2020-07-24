@@ -47,8 +47,6 @@
 //import java.util.Calendar;
 //import java.util.List;
 //
-//import butterknife.BindView;
-//import butterknife.ButterKnife;
 //import cn.appscomm.bluetooth.app.BluetoothSDK;
 //import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 //
@@ -120,7 +118,6 @@
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_h38i_home);
-//        ButterKnife.bind(this);
 //        Log.e(TAG, "-----onCreate----");
 //        //注册监听连接状态的广播
 //        registerReceiver(connReceiver,new IntentFilter(B18ICONNECT_ACTION));

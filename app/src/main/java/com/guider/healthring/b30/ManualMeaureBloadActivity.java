@@ -18,42 +18,30 @@ import com.guider.healthring.b30.b30view.B30CustomCircleProgressBar;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IBPDetectDataListener;
 import com.veepoo.protocol.model.datas.BpData;
 import com.veepoo.protocol.model.enums.EBPDetectModel;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 测量血压界面
  */
-public class ManualMeaureBloadActivity extends WatchBaseActivity {
+public class ManualMeaureBloadActivity extends WatchBaseActivity implements  View.OnClickListener{
 
     private static final String TAG = "ManualMeaureBloadActivi";
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-    @BindView(R.id.b30MeaureBloadProgressView)
     B30CustomCircleProgressBar b30MeaureBloadProgressView;
-    @BindView(R.id.b30MeaureStartImg)
     ImageView b30MeaureStartImg;
-    @BindView(R.id.b30MeaurePlaceHolderImg)
     ImageView b30MeaurePlaceHolderImg;
-    @BindView(R.id.showStateTv)
     TextView showStateTv;
-    @BindView(R.id.manual_blood_public_line)
     View manual_blood_public_line;
-    @BindView(R.id.manual_blood_private_line)
     View manual_blood_private_line;
-    @BindView(R.id.private_mode_setting)
     TextView private_mode_setting;
 
     //开始或者停止测量的标识
@@ -93,11 +81,30 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_meaure_b31_bload);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
 
         initData();
+
+    }
+
+    private void initViewIds() {
+        commentB30BackImg =findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv =findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg =findViewById(R.id.commentB30ShareImg);
+        b30MeaureBloadProgressView =findViewById(R.id.b30MeaureBloadProgressView);
+        b30MeaureStartImg =findViewById(R.id.b30MeaureStartImg);
+        b30MeaurePlaceHolderImg =findViewById(R.id.b30MeaurePlaceHolderImg);
+        showStateTv =findViewById(R.id.showStateTv);
+        manual_blood_public_line =findViewById(R.id.manual_blood_public_line);
+        manual_blood_private_line =findViewById(R.id.manual_blood_private_line);
+        private_mode_setting =findViewById(R.id.private_mode_setting);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        b30MeaureStartImg.setOnClickListener(this);
+        findViewById(R.id.manual_blood_public).setOnClickListener(this);
+        findViewById(R.id.manual_blood_private).setOnClickListener(this);
+        private_mode_setting.setOnClickListener(this);
 
     }
 
@@ -111,9 +118,8 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity {
         commentB30ShareImg.setVisibility(View.GONE);
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg, R.id.b30MeaureStartImg, R.id.manual_blood_public
-            , R.id.manual_blood_private, R.id.private_mode_setting})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
                 finish();

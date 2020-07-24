@@ -42,10 +42,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： 安
@@ -54,15 +50,11 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class H9HeartHistoryListActivity extends WatchBaseActivity {
+public class H9HeartHistoryListActivity extends WatchBaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.h9HeartHistoryLV)
     ListView h9HeartHistoryLV;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.swipe_refreshList)
     SwipeRefreshLayout swipeRefreshList;
-    @BindView(R.id.bar_mores)
     TextView barMores;
 
     private SubscriberOnNextListener subscriberOnNextListener;
@@ -118,7 +110,7 @@ public class H9HeartHistoryListActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_h9_hearthistory);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.heart_repor));
         barMores.setText("data_time");
 //        getH9HeartHistory();
@@ -155,6 +147,15 @@ public class H9HeartHistoryListActivity extends WatchBaseActivity {
                 }
             }
         };
+    }
+
+    private void initViewIds() {
+        h9HeartHistoryLV =findViewById(R.id.h9HeartHistoryLV);
+        barTitles =findViewById(R.id.bar_titles);
+        swipeRefreshList =findViewById(R.id.swipe_refreshList);
+        barMores =findViewById(R.id.bar_mores);
+        barMores.setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -274,8 +275,8 @@ public class H9HeartHistoryListActivity extends WatchBaseActivity {
 //        }
 //    }
 
-    @OnClick({R.id.image_back, R.id.bar_mores})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

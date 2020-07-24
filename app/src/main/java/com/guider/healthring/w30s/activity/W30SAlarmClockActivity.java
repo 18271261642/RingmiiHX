@@ -39,10 +39,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： An
@@ -51,7 +47,7 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class W30SAlarmClockActivity extends WatchBaseActivity {
+public class W30SAlarmClockActivity extends WatchBaseActivity implements View.OnClickListener {
     private final int REQUEST_ALARM_CLOCK_NEW = 1;// 新建闹钟的requestCode
     private final int REQUEST_ALARM_CLOCK_EDIT = 2;// 修改闹钟的requestCode
     private final int HANDLER_RESULT = 0x01;//
@@ -59,22 +55,15 @@ public class W30SAlarmClockActivity extends WatchBaseActivity {
     private final int HANDLER_DELETE = 0x02;
     W30SAlarmClockBean w30SAlarmClockBean = new W30SAlarmClockBean();
     //标题头
-    @BindView(R.id.bar_titles)
     TextView barTitles;
     //闹钟数量
-    @BindView(R.id.text_w30s_alarm_number)
     TextView textW30sAlarmNumber;
     //无闹钟显示
-    @BindView(R.id.rela_view)
     RelativeLayout relaView;
     //闹钟列表
-    @BindView(R.id.alarm_rec)
     RecyclerView alarmRec;
-    @BindView(R.id.image_add_remind)
     ImageView imageAddRemind;
-    @BindView(R.id.text_ones)
     TextView textOnes;
-    @BindView(R.id.text_twos)
     TextView textTwos;
     private List<W30SAlarmClockBean> allDataList;
     private MyAdapter myAdapter;
@@ -111,11 +100,24 @@ public class W30SAlarmClockActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_clock_w30s);
-        ButterKnife.bind(this);
+        initViewIds();
         if (!isZh(this)) {
             textOnes.setVisibility(View.GONE);
             textTwos.setVisibility(View.GONE);
         }
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        textW30sAlarmNumber = findViewById(R.id.text_w30s_alarm_number);
+        relaView = findViewById(R.id.rela_view);
+        alarmRec = findViewById(R.id.alarm_rec);
+        imageAddRemind = findViewById(R.id.image_add_remind);
+        textOnes = findViewById(R.id.text_ones);
+        textTwos = findViewById(R.id.text_twos);
+        imageAddRemind.setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.image_add_remind).setOnClickListener(this);
     }
 
     @Override
@@ -216,8 +218,9 @@ public class W30SAlarmClockActivity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.image_back, R.id.image_add_remind})
-    public void onViewClicked(View view) {
+
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

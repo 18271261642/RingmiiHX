@@ -38,10 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： An
@@ -50,15 +46,11 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class SleepHistoryActivity extends WatchBaseActivity implements RequestView {
+public class SleepHistoryActivity extends WatchBaseActivity implements RequestView,View.OnClickListener {
     private static final String TAG = "SleepHistoryActivity";
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.step_or_sleep_list)
     ListView stepOrSleepList;
-    @BindView(R.id.bar_mores)
     TextView barMores;
-    @BindView(R.id.image_data_type)
     ImageView imageDataType;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     //    SubscriberOnNextListener subscriberOnNextListener;
@@ -72,16 +64,25 @@ public class SleepHistoryActivity extends WatchBaseActivity implements RequestVi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w30s_sleep_or_step_history_activity);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.sleep_data_history));
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
 //        barMores.setVisibility(View.GONE);
     }
 
+    private void  initViewIds(){
+        barTitles = findViewById(R.id.bar_titles);
+        stepOrSleepList = findViewById(R.id.step_or_sleep_list);
+        barMores = findViewById(R.id.bar_mores);
+        imageDataType = findViewById(R.id.image_data_type);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        barMores.setOnClickListener(this);
+    }
 
-    @OnClick({R.id.image_back, R.id.bar_mores})
-    public void onViewClicked(View view) {
+
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

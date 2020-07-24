@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
+
 import com.guider.healthring.B18I.b18iutils.B18iUtils;
 import com.guider.healthring.B18I.evententity.B18iEventBus;
 import com.guider.healthring.Commont;
@@ -51,17 +52,18 @@ import com.sdk.bluetooth.protocol.command.device.WatchID;
 import com.sdk.bluetooth.protocol.command.expands.FinishCorroctionTime;
 import com.sdk.bluetooth.protocol.command.setting.SwitchSetting;
 import com.sdk.bluetooth.protocol.command.user.UserInfo;
+
 import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -96,13 +98,9 @@ public class H9HomeActivity extends WatchBaseActivity {
     boolean TWTTER = false;
     boolean LIN = false;
 
-    @BindView(R.id.h18i_view_pager)
     NoScrollViewPager h18iViewPager;
-    @BindView(R.id.h18i_bottomBar)
     BottomBar h18iBottomBar;
-    @BindView(R.id.myCoordinator)
     CoordinatorLayout myCoordinator;
-    @BindView(R.id.record_h18ibottomsheet)
     BottomSheetLayout recordH18ibottomsheet;
     private List<Fragment> h18iFragmentList = new ArrayList<>();
     private BluetoothAdapter defaultAdapter;
@@ -176,7 +174,7 @@ public class H9HomeActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_h38i_home);
-        ButterKnife.bind(this);
+        initViewIds();
         EventBus.getDefault().register(this);
         //注册连接状态的广播
         registerReceiver(h9Receiver, new IntentFilter(H9CONNECT_STATE_ACTION));
@@ -184,10 +182,11 @@ public class H9HomeActivity extends WatchBaseActivity {
         initViews();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
+    private void initViewIds() {
+        h18iViewPager = findViewById(R.id.h18i_view_pager);
+        h18iBottomBar = findViewById(R.id.h18i_bottomBar);
+        myCoordinator = findViewById(R.id.myCoordinator);
+        recordH18ibottomsheet = findViewById(R.id.record_h18ibottomsheet);
     }
 
     @Override

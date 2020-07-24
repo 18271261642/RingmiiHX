@@ -15,10 +15,6 @@ import android.widget.TextView;
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： An
@@ -27,24 +23,30 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class FindFriendActivity extends WatchBaseActivity {
+public class FindFriendActivity extends WatchBaseActivity implements View.OnClickListener{
 
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.edit_seach)
     EditText editSeach;
-    @BindView(R.id.w30s_listView)
     ListView w30sListView;
-    @BindView(R.id.frend_find_ok)
     TextView frendFindOk;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friend);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.add_frendes));
         inEdit();
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        editSeach = findViewById(R.id.edit_seach);
+        w30sListView = findViewById(R.id.w30s_listView);
+        frendFindOk = findViewById(R.id.frend_find_ok);
+        frendFindOk.setOnClickListener(this);
+        findViewById(R.id.image_new_frend).setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
     }
 
     private void inEdit() {
@@ -82,8 +84,8 @@ public class FindFriendActivity extends WatchBaseActivity {
         });
     }
 
-    @OnClick({R.id.image_new_frend, R.id.frend_find_ok, R.id.image_back})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_new_frend:
                 startActivity(NewFindFriendActivity.class);

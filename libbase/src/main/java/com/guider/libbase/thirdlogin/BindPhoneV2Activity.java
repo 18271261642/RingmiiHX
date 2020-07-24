@@ -54,7 +54,6 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_phone_layout);
-        // ButterKnife.bind(this);
         SmsMob.init(this);
 
         wxBindPhoneVerCodeEdit = findViewById(R.id.wxBindPhoneVerCodeEdit);

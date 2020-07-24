@@ -33,10 +33,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 import cn.appscomm.bluetooth.protocol.SwitchType;
@@ -50,13 +46,9 @@ import cn.appscomm.bluetooth.protocol.SwitchType;
  */
 public class SedentaryReminder extends WatchBaseActivity {
 
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.switch_reminder)
     Switch switchReminder;
-    @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.sedentary_text)
     TextView sedentaryText;
     private static final String TAG = "SedentaryReminder";
     private String is18i;
@@ -70,7 +62,7 @@ public class SedentaryReminder extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_sedentary_reminder_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.Sedentaryreminder));
         addDatas();
         switchReminder.setOnCheckedChangeListener(new ChangeListenter());
@@ -78,6 +70,20 @@ public class SedentaryReminder extends WatchBaseActivity {
             @Override
             public void onClick(View view) {
                 setSendtaryDatas();
+            }
+        });
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        switchReminder = findViewById(R.id.switch_reminder);
+        imageBack = findViewById(R.id.image_back);
+        sedentaryText = findViewById(R.id.sedentary_text);
+        barTitles = findViewById(R.id.bar_titles);
+        imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -156,15 +162,6 @@ public class SedentaryReminder extends WatchBaseActivity {
 //                });
 //
 //                break;
-        }
-    }
-
-    @OnClick({R.id.image_back})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image_back:
-                finish();
-                break;
         }
     }
 

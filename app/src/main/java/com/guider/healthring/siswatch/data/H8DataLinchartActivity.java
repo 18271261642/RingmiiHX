@@ -32,10 +32,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import lecho.lib.hellocharts.formatter.ColumnChartValueFormatter;
 import lecho.lib.hellocharts.formatter.SimpleColumnChartValueFormatter;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
@@ -50,37 +46,23 @@ import lecho.lib.hellocharts.view.ColumnChartView;
  * Created by sunjianhua on 2017/11/8.
  */
 
-public class H8DataLinchartActivity extends WatchBaseActivity {
+public class H8DataLinchartActivity extends WatchBaseActivity implements  View.OnClickListener{
 
     private static final String TAG = "H8DataLinchartActivity";
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.newH8DataWeekTv)
     TextView newH8DataWeekTv;
-    @BindView(R.id.newH8DataMonthTv)
     TextView newH8DataMonthTv;
-    @BindView(R.id.newH8DataYearTv)
     TextView newH8DataYearTv;
-    @BindView(R.id.newH8DataStepShowTv)
     TextView newH8DataStepShowTv;
-    @BindView(R.id.newH8DataStepChartView)
     ColumnChartView newH8DataStepChartView;
-    @BindView(R.id.xTv11)
     TextView xTv11;
-    @BindView(R.id.xTv22)
     TextView xTv22;
-    @BindView(R.id.xTv33)
     TextView xTv33;
-    @BindView(R.id.xTv44)
     TextView xTv44;
-    @BindView(R.id.xTv55)
     TextView xTv55;
-    @BindView(R.id.xTv66)
     TextView xTv66;
-    @BindView(R.id.xTv77)
     TextView xTv77;
 
 
@@ -100,13 +82,33 @@ public class H8DataLinchartActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_h8_datalinchart);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
         initData();
 
 
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        newH8DataWeekTv = findViewById(R.id.newH8DataWeekTv);
+        newH8DataMonthTv = findViewById(R.id.newH8DataMonthTv);
+        newH8DataYearTv = findViewById(R.id.newH8DataYearTv);
+        newH8DataStepShowTv = findViewById(R.id.newH8DataStepShowTv);
+        newH8DataStepChartView = findViewById(R.id.newH8DataStepChartView);
+        xTv11 = findViewById(R.id.xTv11);
+        xTv22 = findViewById(R.id.xTv22);
+        xTv33 = findViewById(R.id.xTv33);
+        xTv44 = findViewById(R.id.xTv44);
+        xTv55 = findViewById(R.id.xTv55);
+        xTv66 = findViewById(R.id.xTv66);
+        xTv77 = findViewById(R.id.xTv77);
+        newH8DataWeekTv.setOnClickListener(this);
+        newH8DataMonthTv.setOnClickListener(this);
+        newH8DataYearTv.setOnClickListener(this);
     }
 
     private void initData() {
@@ -345,8 +347,8 @@ public class H8DataLinchartActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.newH8DataWeekTv, R.id.newH8DataMonthTv, R.id.newH8DataYearTv})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.newH8DataWeekTv:  //周
                 clearClickTvStyle();

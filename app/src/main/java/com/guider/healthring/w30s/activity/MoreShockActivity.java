@@ -16,10 +16,6 @@ import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.w30s.utils.W30BasicUtils;
 import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： An
@@ -28,24 +24,33 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class MoreShockActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class MoreShockActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
-    @BindView(R.id.sw_sedentary_remind)
     Switch swSedentaryRemind;
-    @BindView(R.id.sw_dring_remind)
     Switch swDringRemind;
-    @BindView(R.id.sw_medicine_remind)
     Switch swMedicineRemind;
-    @BindView(R.id.sw_metting_remind)
     Switch swMettingRemind;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more_shock);
-        ButterKnife.bind(this);
+        initViewIds();
+    }
+
+    private void initViewIds() {
+        swSedentaryRemind = findViewById(R.id.sw_sedentary_remind);
+        swDringRemind = findViewById(R.id.sw_dring_remind);
+        swMedicineRemind = findViewById(R.id.sw_medicine_remind);
+        swMettingRemind = findViewById(R.id.sw_metting_remind);
+        barTitles = findViewById(R.id.bar_titles);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.line_sedentary_remind).setOnClickListener(this);
+        findViewById(R.id.line_dring_remind).setOnClickListener(this);
+        findViewById(R.id.line_medicine_remind).setOnClickListener(this);
+        findViewById(R.id.line_metting_remind).setOnClickListener(this);
     }
 
     @Override
@@ -168,8 +173,8 @@ public class MoreShockActivity extends WatchBaseActivity implements CompoundButt
 
     }
 
-    @OnClick({R.id.image_back, R.id.line_sedentary_remind, R.id.line_dring_remind, R.id.line_medicine_remind, R.id.line_metting_remind})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         Intent intent = new Intent(MoreShockActivity.this, ShockDetailedActivity.class);
         switch (view.getId()) {
             case R.id.image_back:

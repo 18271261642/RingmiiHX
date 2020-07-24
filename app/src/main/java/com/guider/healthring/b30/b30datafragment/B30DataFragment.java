@@ -45,17 +45,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 
 /**
  * B30数据界面
  */
 @SuppressWarnings("deprecation")
-public class B30DataFragment extends LazyFragment implements B30DataServer.B30DataServerListener {
+public class B30DataFragment extends LazyFragment
+        implements B30DataServer.B30DataServerListener ,View.OnClickListener{
 
     private static final String TAG = "B30DataFragment";
     private Runnable runnableStep = null;
@@ -63,33 +59,22 @@ public class B30DataFragment extends LazyFragment implements B30DataServer.B30Da
     private Runnable runnableHeart = null;
     private Runnable runnableBlue = null;
     View dataView;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    Unbinder unbinder;
-    @BindView(R.id.b30DataWeekTv)
     TextView b30DataWeekTv;
-    @BindView(R.id.b30DataMonthTv)
     TextView b30DataMonthTv;
-    @BindView(R.id.b30DataYearTv)
     TextView b30DataYearTv;
 
-    @BindView(R.id.step_average_tv)
     TextView stepAverageTv;
-    @BindView(R.id.sleep_average_tv)
     TextView sleepAverageTv;
-    @BindView(R.id.heart_average_tv)
     TextView heartAverageTv;
-    @BindView(R.id.blood_average_tv)
     TextView bloodAverageTv;
 
     //血压的图布局
-    @BindView(R.id.rel_blood)
     RelativeLayout rel_blood;
 
     /**
      * 步数的图表
      */
-    @BindView(R.id.stepDataChartView)
     BarChart stepDataChartView;
     /**
      * x轴数据
@@ -108,7 +93,6 @@ public class B30DataFragment extends LazyFragment implements B30DataServer.B30Da
     /**
      * 睡眠图表
      */
-    @BindView(R.id.sleepDataChartView)
     BarChart sleepDataChartView;
 
     //睡眠相关
@@ -126,7 +110,6 @@ public class B30DataFragment extends LazyFragment implements B30DataServer.B30Da
     /**
      * 心率图表
      */
-    @BindView(R.id.heartDataChartView)
     BarChart heartDataChartView;
     /**
      * 心率数值
@@ -143,7 +126,6 @@ public class B30DataFragment extends LazyFragment implements B30DataServer.B30Da
     //    private Map<String, Integer> dayMap;
     private List<BarEntry> heartBarEntryList;
 
-    @BindView(R.id.charBloadView)
     B30BloadDataView charBloadView;
 
     private Gson gson;
@@ -162,7 +144,7 @@ public class B30DataFragment extends LazyFragment implements B30DataServer.B30Da
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         dataView = inflater.inflate(R.layout.fragment_b30_data, container, false);
-        unbinder = ButterKnife.bind(this, dataView);
+        initViewIds();
 //        Log.e(TAG, "----onCreateView---");
         commentB30TitleTv.setText(getResources().getString(R.string.data));
 
@@ -173,6 +155,25 @@ public class B30DataFragment extends LazyFragment implements B30DataServer.B30Da
         return dataView;
 
 
+    }
+
+    private void initViewIds() {
+        commentB30TitleTv = dataView.findViewById(R.id.commentB30TitleTv);
+        b30DataWeekTv = dataView.findViewById(R.id.b30DataWeekTv);
+        b30DataMonthTv = dataView.findViewById(R.id.b30DataMonthTv);
+        b30DataYearTv = dataView.findViewById(R.id.b30DataYearTv);
+        stepAverageTv = dataView.findViewById(R.id.step_average_tv);
+        sleepAverageTv = dataView.findViewById(R.id.sleep_average_tv);
+        heartAverageTv = dataView.findViewById(R.id.heart_average_tv);
+        bloodAverageTv = dataView.findViewById(R.id.blood_average_tv);
+        rel_blood = dataView.findViewById(R.id.rel_blood);
+        stepDataChartView = dataView.findViewById(R.id.stepDataChartView);
+        sleepDataChartView = dataView.findViewById(R.id.sleepDataChartView);
+        heartDataChartView = dataView.findViewById(R.id.heartDataChartView);
+        charBloadView = dataView.findViewById(R.id.charBloadView);
+        b30DataWeekTv.setOnClickListener(this);
+        b30DataMonthTv.setOnClickListener(this);
+        b30DataYearTv.setOnClickListener(this);
     }
 
     @Override
@@ -217,16 +218,7 @@ public class B30DataFragment extends LazyFragment implements B30DataServer.B30Da
 //        Log.e(TAG, "----isVisible---" + isVisible);
     }
 
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-//        Log.e(TAG, "---onDestroyView----");
-
-    }
-
-    @OnClick({R.id.b30DataWeekTv, R.id.b30DataMonthTv, R.id.b30DataYearTv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b30DataWeekTv:    //日

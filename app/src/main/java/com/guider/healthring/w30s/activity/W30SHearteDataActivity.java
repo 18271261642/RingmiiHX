@@ -27,10 +27,6 @@ import com.suchengkeji.android.w30sblelibrary.bean.servicebean.W30SSportData;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
@@ -54,24 +50,19 @@ public class W30SHearteDataActivity extends WatchBaseActivity {
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};//X轴的标注
     private List<PointValue> mPointValues = new ArrayList<>();
     private List<AxisValue> mAxisValues = new ArrayList<>();
-    @BindView(R.id.leaf_chart)
     LeafLineChart leafLineChart;
-    @BindView(R.id.heartedata_list)
     ListView listView;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
     W30sHearteDataAdapter dataAdapter=null;
     String is18i;
-    @BindView(R.id.bar_mores)
     TextView barMores;
-    @BindView(R.id.heart_chart)
     LineChartView lineChart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h9_hearte_data_activity);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.string_harete_data));
         leafLineChart.setVisibility(View.GONE);
         barMores.setVisibility(View.GONE);
@@ -131,6 +122,20 @@ public class W30SHearteDataActivity extends WatchBaseActivity {
 //                leafLineChart.postInvalidate();
 //            }
 //        };
+    }
+
+    private void initViewIds() {
+        leafLineChart = findViewById(R.id.leaf_chart);
+        listView = findViewById(R.id.heartedata_list);
+        barTitles = findViewById(R.id.bar_titles);
+        barMores = findViewById(R.id.bar_mores);
+        lineChart = findViewById(R.id.heart_chart);
+        findViewById(R.id.image_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -468,14 +473,6 @@ public class W30SHearteDataActivity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.image_back})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.image_back:
-                finish();
-                break;
-        }
-    }
 
     class W30sHearteDataAdapter extends BaseAdapter {
         private LayoutInflater layoutInflater;

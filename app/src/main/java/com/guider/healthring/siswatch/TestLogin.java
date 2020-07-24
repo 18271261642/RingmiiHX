@@ -1,5 +1,6 @@
 package com.guider.healthring.siswatch;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,23 +32,15 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2017/7/18.
  */
 
-public class TestLogin extends AppCompatActivity {
+public class TestLogin extends AppCompatActivity implements  View.OnClickListener{
 
-    @BindView(R.id.test_name)
     EditText testName;
-    @BindView(R.id.test_pwd)
     EditText testPwd;
-    @BindView(R.id.test_loginbtn)
     Button testLoginbtn;
-    @BindView(R.id.test_testbtn)
     Button testTestbtn;
 
     Calendar calendar;
@@ -56,13 +49,22 @@ public class TestLogin extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_login);
-        ButterKnife.bind(this);
+        initViewIds();
         calendar = Calendar.getInstance();
 
     }
 
-    @OnClick({R.id.test_loginbtn, R.id.test_testbtn})
-    public void onViewClicked(View view) {
+    private void  initViewIds(){
+        testName = findViewById(R.id.test_name);
+        testPwd = findViewById(R.id.test_pwd);
+        testLoginbtn = findViewById(R.id.test_loginbtn);
+        testTestbtn = findViewById(R.id.test_testbtn);
+        testLoginbtn.setOnClickListener(this);
+        testTestbtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.test_loginbtn:
                 String name = testName.getText().toString().trim();
@@ -81,6 +83,7 @@ public class TestLogin extends AppCompatActivity {
 //                    }
 //                });
                 TimePickerDialog timePickerDialog = new TimePickerDialog(TestLogin.this, new TimePickerDialog.OnTimeSetListener() {
+                    @SuppressLint("NewApi")
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                         Log.e("TestLogin","--------------------"+timePicker.getHour()+":"+timePicker.getMinute());

@@ -19,11 +19,6 @@ import android.widget.TextView;
 import com.guider.healthring.R;
 import com.guider.healthring.w30s.activity.FindFriendActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * @aboutContent: 联系人界面
  * @author： An
@@ -32,27 +27,31 @@ import butterknife.Unbinder;
  * @company: 东莞速成科技有限公司
  */
 
-public class W30SFrendensFragment extends Fragment {
+public class W30SFrendensFragment extends Fragment implements View.OnClickListener{
 
-    @BindView(R.id.w30s_listView)
     ListView w30sListView;
-    Unbinder unbinder;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.edit_seach)
     EditText editSeach;
-    @BindView(R.id.frend_find_ok)
     TextView frendFindOk;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_w30s_fredens, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        initViewIds(view);
         barTitles.setText(getResources().getString(R.string.string_contacts));
 
         inEdit();
         return view;
+    }
+
+    private void initViewIds(View view) {
+        w30sListView = view.findViewById(R.id.w30s_listView);
+        barTitles = view.findViewById(R.id.bar_titles);
+        editSeach = view.findViewById(R.id.edit_seach);
+        frendFindOk = view.findViewById(R.id.frend_find_ok);
+        view.findViewById(R.id.image_add).setOnClickListener(this);
+        frendFindOk.setOnClickListener(this);
     }
 
     private void inEdit() {
@@ -90,15 +89,8 @@ public class W30SFrendensFragment extends Fragment {
         });
     }
 
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.image_add, R.id.frend_find_ok})
-    public void onViewClicked(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_add:
                 startActivity(new Intent(getContext(), FindFriendActivity.class));

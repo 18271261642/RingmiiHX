@@ -27,11 +27,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2018/8/13.
  */
@@ -39,20 +34,15 @@ import butterknife.OnClick;
 /**
  * 久坐提醒设置时间
  */
-public class B30LongSitSetActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener{
+public class B30LongSitSetActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener{
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.showB30LongSitStartTv)
     TextView showB30LongSitStartTv;
-    @BindView(R.id.showB30LongSitEndTv)
     TextView showB30LongSitEndTv;
-    @BindView(R.id.showB30LongSitTv)
     TextView showB30LongSitTv;
-    @BindView(R.id.longSitToggleBtn)
     ToggleButton longSitToggleBtn;
 
 
@@ -72,13 +62,26 @@ public class B30LongSitSetActivity extends WatchBaseActivity implements Compound
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_long_sitset);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
         initData();
         //读取久坐提醒
         readLongSitData();
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        showB30LongSitStartTv = findViewById(R.id.showB30LongSitStartTv);
+        showB30LongSitEndTv = findViewById(R.id.showB30LongSitEndTv);
+        showB30LongSitTv = findViewById(R.id.showB30LongSitTv);
+        longSitToggleBtn = findViewById(R.id.longSitToggleBtn);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.b30LongSitStartRel).setOnClickListener(this);
+        findViewById(R.id.b30LongSitEndRel).setOnClickListener(this);
+        findViewById(R.id.b30LongSitTimeRel).setOnClickListener(this);
+        findViewById(R.id.b30LongSitSaveBtn).setOnClickListener(this);
     }
 
     private void readLongSitData() {
@@ -189,9 +192,8 @@ public class B30LongSitSetActivity extends WatchBaseActivity implements Compound
         longSitToggleBtn.setOnCheckedChangeListener(this);
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.b30LongSitStartRel, R.id.b30LongSitEndRel,
-            R.id.b30LongSitTimeRel, R.id.b30LongSitSaveBtn})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
                 finish();

@@ -98,8 +98,7 @@ import com.guider.healthring.base.BaseActivity;
 //import java.util.Timer;
 //import java.util.TimerTask;
 //
-//import butterknife.BindView;
-//import butterknife.OnClick;
+
 
 /**
  * Created by admin on 2017/3/28.

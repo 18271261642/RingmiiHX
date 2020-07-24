@@ -46,9 +46,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import vpno.nordicsemi.android.dfu.DfuProgressListener;
 import vpno.nordicsemi.android.dfu.DfuServiceInitiator;
 import vpno.nordicsemi.android.dfu.DfuServiceListenerHelper;
@@ -62,7 +59,7 @@ import vpno.nordicsemi.android.dfu.DfuServiceListenerHelper;
  * @company: 东莞速成科技有限公司
  */
 
-public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements RequestView {
+public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements RequestView,View.OnClickListener {
 
     private static final String TAG = "NewW30sFirmwareUpgrade";
     
@@ -72,15 +69,10 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
 //    private static final String FileStringPath = Environment.getExternalStorageDirectory()+"/RaceFit/";//"/storage/emulated/0/Android/com.bozlun.bozhilun.android/cache/W30V3.zip";
     
     String upDataStringUrl = "";//固件升级链接
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.progress_number)
     TextView progressNumber;//下载升级进度说明
-    @BindView(R.id.up_prooss)
     LinearLayout up_prooss;
-    @BindView(R.id.btn_start_up)
     Button btnStartUp;//按钮
-    @BindView(R.id.progressBar_upgrade)
     ProgressBar proBar;
     private RequestPressent requestPressent;
     private Handler mHandler = new Handler(new HandlerCallBack());
@@ -95,10 +87,20 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w30s_frrinware_upgrade);
-        ButterKnife.bind(this);
+        initViewIds();
         regeditMsg();
         init();
         Log.e(TAG,"------FileStringPath="+FileStringPath);
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        progressNumber = findViewById(R.id.progress_number);
+        up_prooss = findViewById(R.id.up_prooss);
+        btnStartUp = findViewById(R.id.btn_start_up);
+        proBar = findViewById(R.id.progressBar_upgrade);
+        btnStartUp.setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
     }
 
     private void init() {
@@ -276,8 +278,8 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
      *
      * @param view
      */
-    @OnClick({R.id.btn_start_up, R.id.image_back})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_start_up:
                 if (btnStartUp.isEnabled()) {

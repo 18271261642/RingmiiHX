@@ -9,10 +9,6 @@ import android.widget.TextView;
 
 import com.guider.healthring.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent: 个人资料
  * @author： 安
@@ -23,14 +19,19 @@ import butterknife.OnClick;
 
 public class MinePersonDataActivity extends AppCompatActivity {
     private static final String TAG = "--MinePersonDataActivity";
-    @BindView(R.id.bar_titles)
     TextView barTitles;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_person_data_layout);
-        ButterKnife.bind(this);
+        barTitles = findViewById(R.id.bar_titles);
+        findViewById(R.id.image_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         barTitles.setText(getResources().getString(R.string.personal_str));
         whichDevice();//判断是B18i还是H9
     }
@@ -47,14 +48,5 @@ public class MinePersonDataActivity extends AppCompatActivity {
 //        } else {
 //            initGetH9Tar();
 //        }
-    }
-
-    @OnClick({R.id.image_back})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image_back:
-                finish();
-                break;
-        }
     }
 }

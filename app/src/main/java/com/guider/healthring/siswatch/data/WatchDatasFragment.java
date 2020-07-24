@@ -40,9 +40,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import lecho.lib.hellocharts.formatter.ColumnChartValueFormatter;
 import lecho.lib.hellocharts.formatter.SimpleColumnChartValueFormatter;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
@@ -67,28 +64,20 @@ import lecho.lib.hellocharts.view.LineChartView;
 public class WatchDatasFragment extends Fragment {
 
     View watchDataView;
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    Unbinder unbinder;
 
     double kcal = 0.65;
 
     List<WatchDataDatyBean> watchDataList;
-    @BindView(R.id.watchcolumnchart)
     ColumnChartView watchcolumnchart;
 
     //步数的主张图图表
-    @BindView(R.id.watchkmchart)
     ColumnChartView watchkmchart;
     //卡路里折线图表
-    @BindView(R.id.watchlineChatView)
     LineChartView watchlineChatView;
     //卡路里图表
-    @BindView(R.id.watchkcalchart)
     ColumnChartView watchkcalchart;
-    @BindView(R.id.watch_dataRefresh)
     SwipeRefreshLayout watchDataRefresh;
     private ColumnChartData data;   //步数的图表数据源
     private ColumnChartData kmData;  //里程的图表数据源
@@ -128,13 +117,24 @@ public class WatchDatasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         watchDataView = inflater.inflate(R.layout.fragment_watch_data, null);
-        unbinder = ButterKnife.bind(this, watchDataView);
-
+        initViewIds();
         initViews();
 
         getDataStepsData(); //获取数据统计
 
         return watchDataView;
+    }
+
+    private void initViewIds() {
+        tvTitle = watchDataView.findViewById(R.id.tv_title);
+        toolbar = watchDataView.findViewById(R.id.toolbar);
+        watchcolumnchart = watchDataView.findViewById(R.id.watchcolumnchart);
+        watchkmchart = watchDataView.findViewById(R.id.watchkmchart);
+        watchlineChatView = watchDataView.findViewById(R.id.watchlineChatView);
+        watchkcalchart = watchDataView.findViewById(R.id.watchkcalchart);
+        watchDataRefresh = watchDataView.findViewById(R.id.watch_dataRefresh);
+
+
     }
 
     /**
@@ -567,9 +567,4 @@ public class WatchDatasFragment extends Fragment {
         super.onResume();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }

@@ -55,10 +55,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 import cn.appscomm.bluetooth.model.ReminderData;
@@ -74,18 +70,13 @@ import rx.Subscriber;
  * @company: 东莞速成科技有限公司
  */
 
-public class AlarmClockRemindActivity extends WatchBaseActivity {
+public class AlarmClockRemindActivity extends WatchBaseActivity implements  View.OnClickListener{
 
     private final String TAG = "----->>>" + this.getClass().toString();
-    @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.btn_new_remind)
     Button btnNewRemind;
-    @BindView(R.id.prompt_layout_text)
     LinearLayout promptLayoutText;
-    @BindView(R.id.list_alarm)
     ListView listAlarm;
 
     private final int REQUEST_ALARM_CLOCK_NEW = 1;// 新建闹钟的requestCode
@@ -101,9 +92,19 @@ public class AlarmClockRemindActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_alarm_clock_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.alarmclock));
         whichDevice();//判断是B18i还是H9
+    }
+
+    private void initViewIds() {
+        imageBack = findViewById(R.id.image_back);
+        barTitles = findViewById(R.id.bar_titles);
+        btnNewRemind = findViewById(R.id.btn_new_remind);
+        promptLayoutText = findViewById(R.id.prompt_layout_text);
+        listAlarm = findViewById(R.id.list_alarm);
+        imageBack.setOnClickListener(this);
+        findViewById(R.id.btn_new_remind).setOnClickListener(this);
     }
 
     private String is18i;
@@ -395,7 +396,7 @@ public class AlarmClockRemindActivity extends WatchBaseActivity {
         }
     };
 
-    @OnClick({R.id.btn_new_remind, R.id.image_back})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:

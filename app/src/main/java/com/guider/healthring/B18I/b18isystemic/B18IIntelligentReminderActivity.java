@@ -29,10 +29,6 @@ import com.sdk.bluetooth.protocol.command.setting.SwitchSetting;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 import cn.appscomm.bluetooth.protocol.SwitchType;
@@ -45,47 +41,28 @@ import cn.appscomm.bluetooth.protocol.SwitchType;
  * @company: 东莞速成科技有限公司
  */
 
-public class B18IIntelligentReminderActivity extends WatchBaseActivity {
+public class B18IIntelligentReminderActivity extends WatchBaseActivity
+        implements View.OnClickListener{
 
     private final String TAG = "----->>>" + this.getClass().toString();
     private static final int READ_PHONE_CONTENT_CODE = 1001;
     private static final int GET_CALENDAR_CODE = 1002;
 
-    @BindView(R.id.switch_Lose)
     Switch switchLose;
-    @BindView(R.id.switch_phone)
     Switch switchPhone;
-    @BindView(R.id.switch_messge)
     Switch switchMessge;
-    @BindView(R.id.switch_missPhone)
     Switch switchMissPhone;
-    @BindView(R.id.switch_email)
     Switch switchEmail;
-    @BindView(R.id.switch_social)
     Switch switchCocial;
-
-
-    @BindView(R.id.switch_QQ)
     Switch switchQQ;
-    @BindView(R.id.switch_Wechat)
     Switch switchWechat;
-    @BindView(R.id.switch_Facebook)
     Switch switchFacebook;
-    @BindView(R.id.switch_Twittter)
     Switch switchTwittter;
-    @BindView(R.id.switch_Linkedin)
     Switch switchLinkedin;
-    @BindView(R.id.liner_social)
     LinearLayout linerSocial;
-
-
-    @BindView(R.id.switch_calendar)
     Switch switchCalendar;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.watch_msgOpenNitBtn)
     RelativeLayout watchMsgOpenNitBtn;
-    @BindView(R.id.watch_msgOpenAccessBtn)
     RelativeLayout watchMsgOpenAccessBtn;
     private boolean LOST = false;
     private boolean PHONE = false;
@@ -106,7 +83,7 @@ public class B18IIntelligentReminderActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_intelligent_reminder_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.notice_str));
         linerSocial.setVisibility(View.GONE);
         whichDevice();//判断是B18i还是H9
@@ -131,6 +108,27 @@ public class B18IIntelligentReminderActivity extends WatchBaseActivity {
                 finish();
             }
         });
+    }
+
+    private void initViewIds() {
+        switchLose = findViewById(R.id.switch_Lose);
+        switchPhone = findViewById(R.id.switch_phone);
+        switchMessge = findViewById(R.id.switch_messge);
+        switchMissPhone = findViewById(R.id.switch_missPhone);
+        switchEmail = findViewById(R.id.switch_email);
+        switchCocial = findViewById(R.id.switch_social);
+        switchQQ = findViewById(R.id.switch_QQ);
+        switchWechat = findViewById(R.id.switch_Wechat);
+        switchFacebook = findViewById(R.id.switch_Facebook);
+        switchTwittter = findViewById(R.id.switch_Twittter);
+        switchLinkedin = findViewById(R.id.switch_Linkedin);
+        linerSocial = findViewById(R.id.liner_social);
+        switchCalendar = findViewById(R.id.switch_calendar);
+        barTitles = findViewById(R.id.bar_titles);
+        watchMsgOpenNitBtn = findViewById(R.id.watch_msgOpenNitBtn);
+        watchMsgOpenAccessBtn = findViewById(R.id.watch_msgOpenAccessBtn);
+        watchMsgOpenNitBtn.setOnClickListener(this);
+        watchMsgOpenAccessBtn.setOnClickListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -193,8 +191,8 @@ public class B18IIntelligentReminderActivity extends WatchBaseActivity {
 
     private byte myByte = 0;
 
-    @OnClick({R.id.watch_msgOpenNitBtn, R.id.watch_msgOpenAccessBtn})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watch_msgOpenNitBtn:  //手动打开通知
                 Intent intentr = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);

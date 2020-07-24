@@ -42,10 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2017/7/19.
  */
@@ -53,61 +49,59 @@ import butterknife.OnClick;
 /**
  * H8闹钟显示页面
  */
-public class WatchAlarmActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class WatchAlarmActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
     private static final int WATCH_EDIT_REQUEST_CODE = 1001;
     //下拉刷新重新获取闹钟
     private static final int REFRESH_GET_ALARMDATA_CODE = 1333;
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
     //第一个闹钟时间
-    @BindView(R.id.watch_alarm_oneTv)
     TextView watchAlarmOneTv;
     //第二个闹钟时间
-    @BindView(R.id.watch_alarm_thirdTv)
     TextView watchAlarmThirdTv;
     //第三个闹钟时间
-    @BindView(R.id.watch_alarm_twoTv)
     TextView watchAlarmTwoTv;
     //第一个闹钟开个按钮
-    @BindView(R.id.watch_alarm_one_switch)
     SwitchCompat watchAlarmOneSwitch;
     //第二个闹钟开个按钮
-    @BindView(R.id.watch_alarm_two_switch)
     SwitchCompat watchAlarmTwoSwitch;
     //第三个闹钟开关按钮
-    @BindView(R.id.watch_alarm_third_switch)
     SwitchCompat watchAlarmThirdSwitch;
     //第一个闹钟的重复显示
-    @BindView(R.id.firstalarmRepeatTv)
     TextView firstalarmRepeatTv;
     //第一个闹钟的周显示
-    @BindView(R.id.firstalarmWeekShowTv)
     TextView firstalarmWeekShowTv;
     //第二个闹钟的重复显示
-    @BindView(R.id.secondalarmRepeatTv)
     TextView secondalarmRepeatTv;
     //第二个闹钟的周显示
-    @BindView(R.id.secondalarmWeekShowTv)
     TextView secondalarmWeekShowTv;
     //第三个闹钟的重复显示
-    @BindView(R.id.thirdalarmRepeatTv)
     TextView thirdalarmRepeatTv;
     //第三个闹钟的周显示
-    @BindView(R.id.thirdalarmWeekShowTv)
     TextView thirdalarmWeekShowTv;
 
     Calendar calendar;
 
-    @BindView(R.id.watch_alarm_oneLin)
     LinearLayout watchAlarmOneLin;
-    @BindView(R.id.watch_alarm_twoLin)
     LinearLayout watchAlarmTwoLin;
-    @BindView(R.id.watch_alarm_thirdLin)
     LinearLayout watchAlarmThirdLin;
+    TextView watchTestShowView;
+
+    int[] weekArray = new int[]{1, 2, 4, 8, 16, 32, 64};
+    Map<String, String> weekMaps = new HashMap<>();
+    String alarmrepeat; //重复
+
+    int week1repeat;
+    int week2repeat;
+    int week3repeat;
+    SwipeRefreshLayout alarmSwipeRefresh;
+    TextView WatchAlarmDialogTv;
+
+    private List<AlarmTestBean> alarmTestBeen;
+
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -125,29 +119,13 @@ public class WatchAlarmActivity extends WatchBaseActivity implements CompoundBut
 
         }
     };
-    @BindView(R.id.watch_test_showView)
-    TextView watchTestShowView;
-
-    int[] weekArray = new int[]{1, 2, 4, 8, 16, 32, 64};
-    Map<String, String> weekMaps = new HashMap<>();
-    String alarmrepeat; //重复
-
-    int week1repeat;
-    int week2repeat;
-    int week3repeat;
-    @BindView(R.id.alarmSwipeRefresh)
-    SwipeRefreshLayout alarmSwipeRefresh;
-    @BindView(R.id.WatchAlarmDialogTv)
-    TextView WatchAlarmDialogTv;
-
-    private List<AlarmTestBean> alarmTestBeen;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_alarm);
         Log.e("闹钟显示页面", "-----onCreate-----");
-        ButterKnife.bind(this);
+        initViewIds();
         EventBus.getDefault().register(this);
         registerReceiver(broadcastReceiver, WatchUtils.regeditAlarmBraod());
         calendar = Calendar.getInstance();
@@ -161,6 +139,33 @@ public class WatchAlarmActivity extends WatchBaseActivity implements CompoundBut
         getAlarmSatae(); //获取开关的状态
         //获取闹钟
         getAllAlarmData();
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        watchAlarmOneTv = findViewById(R.id.watch_alarm_oneTv);
+        watchAlarmThirdTv = findViewById(R.id.watch_alarm_thirdTv);
+        watchAlarmTwoTv = findViewById(R.id.watch_alarm_twoTv);
+        watchAlarmOneSwitch = findViewById(R.id.watch_alarm_one_switch);
+        watchAlarmTwoSwitch = findViewById(R.id.watch_alarm_two_switch);
+        watchAlarmThirdSwitch = findViewById(R.id.watch_alarm_third_switch);
+        firstalarmRepeatTv = findViewById(R.id.firstalarmRepeatTv);
+        firstalarmWeekShowTv = findViewById(R.id.firstalarmWeekShowTv);
+        secondalarmRepeatTv = findViewById(R.id.secondalarmRepeatTv);
+        secondalarmWeekShowTv = findViewById(R.id.secondalarmWeekShowTv);
+        thirdalarmRepeatTv = findViewById(R.id.thirdalarmRepeatTv);
+        thirdalarmWeekShowTv = findViewById(R.id.thirdalarmWeekShowTv);
+        watchAlarmOneLin = findViewById(R.id.watch_alarm_oneLin);
+        watchAlarmTwoLin = findViewById(R.id.watch_alarm_twoLin);
+        watchAlarmThirdLin = findViewById(R.id.watch_alarm_thirdLin);
+        watchTestShowView = findViewById(R.id.watch_test_showView);
+        alarmSwipeRefresh = findViewById(R.id.alarmSwipeRefresh);
+        WatchAlarmDialogTv = findViewById(R.id.WatchAlarmDialogTv);
+        watchTestShowView.setOnClickListener(this);
+        watchAlarmOneLin.setOnClickListener(this);
+        watchAlarmTwoLin.setOnClickListener(this);
+        watchAlarmThirdLin.setOnClickListener(this);
     }
 
 
@@ -480,8 +485,8 @@ public class WatchAlarmActivity extends WatchBaseActivity implements CompoundBut
         unregisterReceiver(broadcastReceiver);
     }
 
-    @OnClick({R.id.watch_test_showView, R.id.watch_alarm_oneLin, R.id.watch_alarm_twoLin, R.id.watch_alarm_thirdLin})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watch_alarm_oneLin:
                 Intent intent = new Intent(WatchAlarmActivity.this, WatchEditAlarmActivity.class);

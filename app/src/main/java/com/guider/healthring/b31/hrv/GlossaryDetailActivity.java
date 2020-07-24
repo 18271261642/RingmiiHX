@@ -24,9 +24,6 @@ import com.guider.healthring.b31.glossary.RateVariGlossary;
 import com.guider.healthring.b31.glossary.SleepBreathBreakGlossary;
 import com.guider.healthring.b31.glossary.SleepGlossary;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 名词解释
@@ -34,19 +31,28 @@ import butterknife.OnClick;
 public class GlossaryDetailActivity extends Activity {
 
     ExpandableListView mExpandList;
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vpgloassay_activity_detail);
-        ButterKnife.bind(this);
+        initViewIds();
         mExpandList = (ExpandableListView) findViewById(R.id.glossary_list);
         commentB30BackImg.setVisibility(View.VISIBLE);
         initAdapter();
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30BackImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -99,10 +105,5 @@ public class GlossaryDetailActivity extends Activity {
                 return new OxgenGlossary(context);
         }
         return new OsahsGlossary(context);
-    }
-
-    @OnClick(R.id.commentB30BackImg)
-    public void onClick() {
-        finish();
     }
 }

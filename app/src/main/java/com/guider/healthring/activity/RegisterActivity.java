@@ -48,8 +48,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 import rx.Observable;
@@ -62,25 +60,16 @@ import rx.functions.Func1;
  * 注册页面
  */
 
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseActivity implements View.OnClickListener{
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.register_agreement_my)
     TextView registerAgreement;
-    @BindView(R.id.username_input)
     TextInputLayout usernameInput;
-    @BindView(R.id.textinput_password_regster)
     TextInputLayout textinputPassword;
-    @BindView(R.id.code_et_regieg)
     EditText codeEt;
-    @BindView(R.id.username_regsiter)
     EditText username;
-    @BindView(R.id.password_logonregigter)
     EditText password;
-    @BindView(R.id.send_btn)
     Button sendBtn;
-    @BindView(R.id.textinput_code)
     TextInputLayout textinput_code;
     private DialogSubscriber dialogSubscriber;
     private Subscriber subscriber;
@@ -89,6 +78,7 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        initViewIds();
 //        SMSSDK.initSDK(getApplicationContext(), "169d6eaccd2ac", "753aa57cf4a85122671fcc7d4c379ac5");
 //        SMSSDK.initSDK(getApplicationContext(), "27d747209c6db", "716ae323ee316f142777ebc73f89c90f");
         tvTitle.setText(R.string.user_regsiter);
@@ -167,6 +157,21 @@ public class RegisterActivity extends BaseActivity {
 
     }
 
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        registerAgreement = findViewById(R.id.register_agreement_my);
+        usernameInput = findViewById(R.id.username_input);
+        textinputPassword = findViewById(R.id.textinput_password_regster);
+        codeEt = findViewById(R.id.code_et_regieg);
+        username = findViewById(R.id.username_regsiter);
+        password = findViewById(R.id.password_logonregigter);
+        sendBtn = findViewById(R.id.send_btn);
+        textinput_code = findViewById(R.id.textinput_code);
+        toolbar = findViewById(R.id.toolbar);
+        findViewById(R.id.login_btn_reger).setOnClickListener(this);
+        sendBtn.setOnClickListener(this);
+    }
+
     @Override
     protected int getContentViewId() {
         return R.layout.activity_regsiter;
@@ -209,7 +214,7 @@ public class RegisterActivity extends BaseActivity {
                 .subscribe(subscriber);
     }
 
-    @OnClick({R.id.login_btn_reger, R.id.send_btn})
+    @Override
     public void onClick(View view) {
         final String phoneTxt = username.getText().toString().trim();
         switch (view.getId()) {

@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guider.healthring.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 
@@ -22,13 +20,11 @@ import cn.appscomm.bluetooth.interfaces.ResultCallBack;
  * @company: 东莞速成科技有限公司
  */
 
-public class SettingAboutActivity extends AppCompatActivity {
+public class SettingAboutActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.version_tv)
     TextView versionTv;
-
+    ImageView image_back;
 
 
     @Override
@@ -36,7 +32,10 @@ public class SettingAboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_about_layout);
 //        setContentView(R.layout.b18i_app_firmware_update_layout);
-        ButterKnife.bind(this);
+        barTitles = findViewById(R.id.bar_titles);
+        versionTv = findViewById(R.id.version_tv);
+        image_back = findViewById(R.id.image_back);
+        image_back.setOnClickListener(this);
         barTitles.setText(getResources().getString(R.string.abour));
         BluetoothSDK.getDeviceVersion(resultCallBack);
     }
@@ -47,9 +46,9 @@ public class SettingAboutActivity extends AppCompatActivity {
         BluetoothSDK.getDeviceVersion(resultCallBack);
     }
 
-    @OnClick({R.id.image_back})
-    public void onClick(View view) {
-        switch (view.getId()) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.image_back:
                 finish();
                 break;

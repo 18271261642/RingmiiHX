@@ -27,27 +27,18 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2017/10/26.
  */
 
 public class GetWatchTimeActivity extends WatchBaseActivity implements TimeInterface {
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.showWatchTimeTv)
     TextView showWatchTimeTv;
-    @BindView(R.id.showAnalysisTimeTv)
     TextView showAnalysisTimeTv;
-    @BindView(R.id.showSysTimeTv)
     TextView showSysTimeTv;
-
+    Button searchWatchBtn;
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -62,15 +53,14 @@ public class GetWatchTimeActivity extends WatchBaseActivity implements TimeInter
             }
         }
     };
-    @BindView(R.id.searchWatchBtn)
-    Button searchWatchBtn;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_watchtime);
-        ButterKnife.bind(this);
+        initViewIds();
         EventBus.getDefault().register(this);
         EventBus.getDefault().post(new MessageEvent("getWatchTime"));
 
@@ -81,12 +71,27 @@ public class GetWatchTimeActivity extends WatchBaseActivity implements TimeInter
 
     }
 
+    private void initViewIds(){
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        showWatchTimeTv = findViewById(R.id.showWatchTimeTv);
+        showAnalysisTimeTv = findViewById(R.id.showAnalysisTimeTv);
+        showSysTimeTv = findViewById(R.id.showSysTimeTv);
+        searchWatchBtn = findViewById(R.id.searchWatchBtn);
+        searchWatchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onViewClicked();
+            }
+        });
+
+    }
+
     @Override
     public void getWatchTime(Object o) {
         Log.e("GETQW", "------jiekou------" + Arrays.toString((byte[]) o));
     }
 
-    @OnClick(R.id.searchWatchBtn)
     public void onViewClicked() {
         EventBus.getDefault().post(new MessageEvent("laidianphone"));
     }

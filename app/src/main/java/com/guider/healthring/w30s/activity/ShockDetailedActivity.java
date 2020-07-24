@@ -22,11 +22,6 @@ import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： An
@@ -35,27 +30,17 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class ShockDetailedActivity extends WatchBaseActivity {
+public class ShockDetailedActivity extends WatchBaseActivity implements View.OnClickListener{
 
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.text_shock_time)
     TextView textShockTime;
-    @BindView(R.id.text_start_shock_time)
     TextView textStartShockTime;
-    @BindView(R.id.text_stop_shock_time)
     TextView textStopShockTime;
-    @BindView(R.id.tixingjiange)
     LinearLayout tixingjiange;
-    @BindView(R.id.kaishijieshu)
     LinearLayout kaishijieshu;
-    @BindView(R.id.riqi)
     LinearLayout riqi;
-    @BindView(R.id.shijian)
     LinearLayout shijian;
-    @BindView(R.id.text_data_time)
     TextView textDataTime;
-    @BindView(R.id.text_timers_time)
     TextView textTimersTime;
     private String type;
     private ArrayList<String> ShockTimeList;
@@ -65,10 +50,29 @@ public class ShockDetailedActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shock_detailed);
-        ButterKnife.bind(this);
-
-
+        initViewIds();
         getIntents();
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        textShockTime = findViewById(R.id.text_shock_time);
+        textStartShockTime = findViewById(R.id.text_start_shock_time);
+        textStopShockTime = findViewById(R.id.text_stop_shock_time);
+        tixingjiange = findViewById(R.id.tixingjiange);
+        kaishijieshu = findViewById(R.id.kaishijieshu);
+        riqi = findViewById(R.id.riqi);
+        shijian = findViewById(R.id.shijian);
+        textDataTime = findViewById(R.id.text_data_time);
+        textTimersTime = findViewById(R.id.text_timers_time);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.btn_save).setOnClickListener(this);
+        findViewById(R.id.text_shock_time_line).setOnClickListener(this);
+        textDataTime.setOnClickListener(this);
+        textTimersTime.setOnClickListener(this);
+        textStartShockTime.setOnClickListener(this);
+        textStopShockTime.setOnClickListener(this);
+
     }
 
 
@@ -182,9 +186,8 @@ public class ShockDetailedActivity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.image_back, R.id.btn_save, R.id.text_shock_time_line,
-            R.id.text_data_time, R.id.text_timers_time, R.id.text_start_shock_time, R.id.text_stop_shock_time})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

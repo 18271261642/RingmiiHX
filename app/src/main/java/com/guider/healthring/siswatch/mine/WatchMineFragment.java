@@ -33,10 +33,7 @@ import com.guider.healthring.util.URLs;
 import com.guider.healthring.xinlangweibo.SinaUserInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+
 
 /**
  * Created by Administrator on 2017/7/17.
@@ -45,28 +42,21 @@ import butterknife.Unbinder;
 /**
  * sis watch 我的fragmet
  */
-public class WatchMineFragment extends LazyFragment {
+public class WatchMineFragment extends LazyFragment implements View.OnClickListener{
 
     View watchMineView;
-    Unbinder unbinder;
     //用户昵称
-    @BindView(R.id.watch_mine_uname)
     TextView watchMineUname;
     //头像
-    @BindView(R.id.watch_mine_userheadImg)
     ImageView watchMineUserheadImg;
     //总公里数
-    @BindView(R.id.watch_distanceTv)
     TextView watchDistanceTv;
     //日平均步数
-    @BindView(R.id.watch_mine_avageStepsTv)
     TextView watchMineAvageStepsTv;
     //达标天数
-    @BindView(R.id.watch_mine_dabiaoTv)
     TextView watchMineDabiaoTv;
 
     //显示蓝牙名字和地址
-    @BindView(R.id.showBleNameTv)
     TextView showBleNameTv;
 
     private SinaUserInfo userInfo;
@@ -89,8 +79,7 @@ public class WatchMineFragment extends LazyFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         watchMineView = inflater.inflate(R.layout.fragment_watch_mine, container,false);
-        unbinder = ButterKnife.bind(this, watchMineView);
-
+        initViewIds();
         initViews();
 
         initData();
@@ -99,6 +88,20 @@ public class WatchMineFragment extends LazyFragment {
 
 
         return watchMineView;
+    }
+
+    private void initViewIds() {
+        watchMineUname = watchMineView.findViewById(R.id.watch_mine_uname);
+        watchMineUserheadImg = watchMineView.findViewById(R.id.watch_mine_userheadImg);
+        watchDistanceTv = watchMineView.findViewById(R.id.watch_distanceTv);
+        watchMineAvageStepsTv = watchMineView.findViewById(R.id.watch_mine_avageStepsTv);
+        watchMineDabiaoTv = watchMineView.findViewById(R.id.watch_mine_dabiaoTv);
+        showBleNameTv = watchMineView.findViewById(R.id.showBleNameTv);
+        watchMineView.findViewById(R.id.watchMinepersonalData).setOnClickListener(this);
+        watchMineView.findViewById(R.id.watchMineDevice).setOnClickListener(this);
+        watchMineView.findViewById(R.id.watchmineSetting).setOnClickListener(this);
+        watchMineView.findViewById(R.id.watch_mine_userheadImg).setOnClickListener(this);
+        watchMineView.findViewById(R.id.card_frend).setOnClickListener(this);
     }
 
     private void initViews() {
@@ -257,16 +260,8 @@ public class WatchMineFragment extends LazyFragment {
         };
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-
-    }
-
-
-    @OnClick({R.id.watchMinepersonalData, R.id.watchMineDevice, R.id.watchmineSetting, R.id.watch_mine_userheadImg, R.id.card_frend})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watch_mine_userheadImg://用户头像点击
             case R.id.watchMinepersonalData:    //个人资料

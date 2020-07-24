@@ -24,33 +24,22 @@ import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ISpo2hDataListener;
 import com.veepoo.protocol.model.datas.Spo2hData;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * B31血氧测试
  * Created by Admin
  * Date 2018/12/18
  */
-public class B31ManSpO2Activity extends WatchBaseActivity {
+public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B31ManSpO2Activity";
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-    @BindView(R.id.b31MeaureSpo2ProgressView)
     CustomCircleProgressBar b31MeaureSpo2ProgressView;
-    @BindView(R.id.b31MeaureStartImg)
     ImageView b31MeaureStartImg;
-    @BindView(R.id.showSpo2ResultTv)
     TextView showSpo2ResultTv;
-    @BindView(R.id.spo2ShowGifImg)
     ImageView spo2ShowGifImg;
 
 
@@ -91,11 +80,24 @@ public class B31ManSpO2Activity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_man_spo2);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        b31MeaureSpo2ProgressView = findViewById(R.id.b31MeaureSpo2ProgressView);
+        b31MeaureStartImg = findViewById(R.id.b31MeaureStartImg);
+        showSpo2ResultTv = findViewById(R.id.showSpo2ResultTv);
+        spo2ShowGifImg = findViewById(R.id.spo2ShowGifImg);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        b31MeaureStartImg.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -111,8 +113,7 @@ public class B31ManSpO2Activity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
-            R.id.b31MeaureStartImg})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

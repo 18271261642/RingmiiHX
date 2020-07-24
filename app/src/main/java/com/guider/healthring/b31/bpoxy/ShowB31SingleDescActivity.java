@@ -47,70 +47,50 @@ import org.litepal.LitePal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static com.guider.healthring.b31.bpoxy.enums.EnumGlossary.HEART;
 
 /**
  * Created by Admin
  * Date 2019/1/19
  */
-public class ShowB31SingleDescActivity extends WatchBaseActivity {
+public class ShowB31SingleDescActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "ShowB31SingleDescActivi";
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commArrowDate)
     TextView commArrowDate;
 
     //心脏负荷图表
-    @BindView(R.id.single_block_chartview_heart)
     LineChart singleBlockChartviewHeart;
     //心脏负荷布局
-    @BindView(R.id.b31SingleBlockHeart)
     LinearLayout b31SingleBlockHeart;
 
     //睡眠活动图表
-    @BindView(R.id.single_block_chartview_sleep)
     LineChart singleBlockChartviewSleep;
     //睡眠活动布局
-    @BindView(R.id.b31SingleBlockSleep)
     LinearLayout b31SingleBlockSleep;
 
     //呼吸率图表
-    @BindView(R.id.single_block_chartview_breath)
     LineChart singleBlockChartviewBreath;
     //呼吸率布局
-    @BindView(R.id.b31SingleBlockBreath)
     LinearLayout b31SingleBlockBreath;
 
 
     //低氧时间图表
-    @BindView(R.id.single_block_chartview_lowspo2h)
     LineChart singleBlockChartviewLowspo2h;
     //低氧时间布局
-    @BindView(R.id.b31SingleBlockLowspo2h)
     LinearLayout b31SingleBlockLowspo2h;
 
 
     //血氧呼吸暂停图表
-    @BindView(R.id.singleBlockChartviewSpo2h)
     LineChart singleBlockChartviewSpo2h;
     //血氧呼吸暂停图表布局
-    @BindView(R.id.single_block_spo2h)
     LinearLayout singleBlockSpo2h;
     //列表
-    @BindView(R.id.singleSpo2DetailRecyclerView)
     RecyclerView singleSpo2DetailRecyclerView;
     //名词解释的view
-    @BindView(R.id.singleDescExpandView)
     CusExpandableListView singleDescExpandView;
     //需要的数据源
     private List<Map<String, Float>> resultListMap;
@@ -150,9 +130,7 @@ public class ShowB31SingleDescActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_b31_single_desc);
-        ButterKnife.bind(this);
-
-
+        initViewIds();
         initViews();
         currDay = getIntent().getStringExtra(Constant.DETAIL_DATE);
         showVisableView();
@@ -160,6 +138,28 @@ public class ShowB31SingleDescActivity extends WatchBaseActivity {
         initSpo2hUtil();
 
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commArrowDate = findViewById(R.id.commArrowDate);
+        singleBlockChartviewHeart = findViewById(R.id.single_block_chartview_heart);
+        b31SingleBlockHeart = findViewById(R.id.b31SingleBlockHeart);
+        singleBlockChartviewSleep = findViewById(R.id.single_block_chartview_sleep);
+        b31SingleBlockSleep = findViewById(R.id.b31SingleBlockSleep);
+        singleBlockChartviewBreath = findViewById(R.id.single_block_chartview_breath);
+        b31SingleBlockBreath = findViewById(R.id.b31SingleBlockBreath);
+        singleBlockChartviewLowspo2h = findViewById(R.id.single_block_chartview_lowspo2h);
+        b31SingleBlockLowspo2h = findViewById(R.id.b31SingleBlockLowspo2h);
+        singleBlockChartviewSpo2h = findViewById(R.id.singleBlockChartviewSpo2h);
+        singleBlockSpo2h = findViewById(R.id.single_block_spo2h);
+        singleSpo2DetailRecyclerView = findViewById(R.id.singleSpo2DetailRecyclerView);
+        singleDescExpandView = findViewById(R.id.singleDescExpandView);
+
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.commArrowLeft).setOnClickListener(this);
+        findViewById(R.id.commArrowRight).setOnClickListener(this);
     }
 
     private void showVisableView() {
@@ -255,8 +255,7 @@ public class ShowB31SingleDescActivity extends WatchBaseActivity {
     }
 
 
-    @OnClick({R.id.commentB30BackImg, R.id.commArrowLeft,
-            R.id.commArrowRight})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回按钮

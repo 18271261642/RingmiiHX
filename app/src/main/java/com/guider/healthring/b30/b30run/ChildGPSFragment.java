@@ -39,40 +39,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * Created by Admin
  * Date 2018/12/13
  */
-public class ChildGPSFragment extends LazyFragment implements OutDoorSportAdapterNew.OnOutDoorSportItemClickListener {
+public class ChildGPSFragment extends LazyFragment
+        implements OutDoorSportAdapterNew.OnOutDoorSportItemClickListener,View.OnClickListener {
 
     private static final String TAG = "ChildGPSFragment";
 
     View view;
-    Unbinder unbinder;
-
 
     //当天运动汇总的数据
-    @BindView(R.id.gpsSportAllTotalTv)
     TextView gpsSportAllTotalTv;
 
     //跑步或骑车的总里程
-    @BindView(R.id.gpsSportTypeTotalKmTv)
     TextView gpsSportTypeTotalKmTv;
 
-    @BindView(R.id.gpsSportRunTv)
     TextView gpsSportRunTv;
-    @BindView(R.id.gpsSportCycleTv)
     TextView gpsSportCycleTv;
-    @BindView(R.id.gpsSportRecyclerView)
     RecyclerView gpsSportRecyclerView;
-    @BindView(R.id.gpsSportNoDataImg)
     ImageView gpsSportNoDataImg;
-    @BindView(R.id.gpsSportTypeTv)
     TextView gpsSportTypeTv;
 
     //数据集合
@@ -138,15 +125,27 @@ public class ChildGPSFragment extends LazyFragment implements OutDoorSportAdapte
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gps_sport_layout, container, false);
-        unbinder = ButterKnife.bind(this, view);
-
-
+        initViewIds();
         initViews();
 
         initData();
 
 
         return view;
+    }
+
+    private void initViewIds() {
+        gpsSportAllTotalTv = view.findViewById(R.id.gpsSportAllTotalTv);
+        gpsSportTypeTotalKmTv = view.findViewById(R.id.gpsSportTypeTotalKmTv);
+        gpsSportRunTv = view.findViewById(R.id.gpsSportRunTv);
+        gpsSportCycleTv = view.findViewById(R.id.gpsSportCycleTv);
+        gpsSportRecyclerView = view.findViewById(R.id.gpsSportRecyclerView);
+        gpsSportNoDataImg = view.findViewById(R.id.gpsSportNoDataImg);
+        gpsSportTypeTv = view.findViewById(R.id.gpsSportTypeTv);
+        view.findViewById(R.id.gpsSportRunImg).setOnClickListener(this);
+        view.findViewById(R.id.gpsSportCycleImg).setOnClickListener(this);
+        gpsSportRunTv.setOnClickListener(this);
+        gpsSportCycleTv.setOnClickListener(this);
     }
 
 
@@ -310,13 +309,6 @@ public class ChildGPSFragment extends LazyFragment implements OutDoorSportAdapte
 
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-//        Log.e(TAG, "------onDestroyView-------");
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.gpsSportRunImg, R.id.gpsSportCycleImg, R.id.gpsSportRunTv, R.id.gpsSportCycleTv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.gpsSportRunImg:   //开始跑步

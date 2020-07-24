@@ -56,11 +56,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 
 /**
  * Created by Administrator on 2018/7/20.
@@ -69,27 +64,19 @@ import butterknife.Unbinder;
 /**
  * B30 我的界面
  */
-public class B30MineFragment extends LazyFragment implements RequestView {
+public class B30MineFragment extends LazyFragment implements RequestView,View.OnClickListener {
     private static final String TAG = "B30MineFragment";
     View b30MineView;
-    Unbinder unbinder;
 
-    @BindView(R.id.b30userImageHead)
     ImageView b30UserImageHead;
-    @BindView(R.id.b30UserNameTv)
     TextView b30UserNameTv;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.b30MineDeviceTv)
     TextView b30MineDeviceTv;
     /**
      * 公制|英制
      */
-    @BindView(R.id.b30MineUnitTv)
     TextView b30MineUnitTv;
-    @BindView(R.id.b30MineSportGoalTv)
     TextView b30MineSportGoalTv;
-    @BindView(R.id.b30MineSleepGoalTv)
     TextView b30MineSleepGoalTv;
 
     private RequestPressent requestPressent;
@@ -115,13 +102,32 @@ public class B30MineFragment extends LazyFragment implements RequestView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b30MineView = inflater.inflate(R.layout.fragment_b30_mine_layout, container, false);
-        unbinder = ButterKnife.bind(this, b30MineView);
-
+        initViewIds();
         initViews();
 
         initData();
 
         return b30MineView;
+    }
+
+    private void initViewIds() {
+        b30UserImageHead = b30MineView.findViewById(R.id.b30userImageHead);
+        b30UserNameTv = b30MineView.findViewById(R.id.b30UserNameTv);
+        commentB30TitleTv = b30MineView.findViewById(R.id.commentB30TitleTv);
+        b30MineDeviceTv = b30MineView.findViewById(R.id.b30MineDeviceTv);
+        b30MineUnitTv = b30MineView.findViewById(R.id.b30MineUnitTv);
+        b30MineSportGoalTv = b30MineView.findViewById(R.id.b30MineSportGoalTv);
+        b30MineSleepGoalTv = b30MineView.findViewById(R.id.b30MineSleepGoalTv);
+        b30UserImageHead.setOnClickListener(this);
+        b30MineView.findViewById(R.id.b30MineDeviceRel).setOnClickListener(this);
+        b30MineView.findViewById(R.id.b30MineSportRel).setOnClickListener(this);
+        b30MineView.findViewById(R.id.b30MineSleepRel).setOnClickListener(this);
+        b30MineView.findViewById(R.id.b30MineUnitRel).setOnClickListener(this);
+        b30MineView.findViewById(R.id.b30MineAboutRel).setOnClickListener(this);
+        b30MineView.findViewById(R.id.b30LogoutBtn).setOnClickListener(this);
+        b30MineView.findViewById(R.id.bemoRel).setOnClickListener(this);
+        b30MineView.findViewById(R.id.rl_family).setOnClickListener(this);
+        b30MineView.findViewById(R.id.rl_sos).setOnClickListener(this);
     }
 
     private void initData() {
@@ -210,29 +216,13 @@ public class B30MineFragment extends LazyFragment implements RequestView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
         if (requestPressent != null) {
             requestPressent.detach();
         }
     }
 
 
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
-
-    @OnClick({R.id.b30userImageHead, R.id.b30MineDeviceRel, R.id.b30MineSportRel,
-            R.id.b30MineSleepRel, R.id.b30MineUnitRel, R.id.b30MineAboutRel,
-            R.id.b30LogoutBtn,R.id.bemoRel, R.id.rl_family, R.id.rl_sos})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b30userImageHead: //头像

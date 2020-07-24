@@ -34,35 +34,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 展示血氧的每个图表的详细数据
  * Created by Admin
  * Date 2019/1/5
  */
-public class ShowSpo2DetailActivity extends WatchBaseActivity {
+public class ShowSpo2DetailActivity extends WatchBaseActivity implements  View.OnClickListener{
 
     private static final String TAG = "ShowSpo2DetailActivity";
 
-
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commArrowDate)
     TextView commArrowDate;
-    @BindView(R.id.showSpo2DetailLeftTv)
     TextView showSpo2DetailLeftTv;
-    @BindView(R.id.showSpo2DetailMiddleTv)
     TextView showSpo2DetailMiddleTv;
-    @BindView(R.id.showSpo2DetailRightTv)
     TextView showSpo2DetailRightTv;
-    @BindView(R.id.showSpo2DetailRecyclerView)
     RecyclerView showSpo2DetailRecyclerView;
-    @BindView(R.id.b31Spo2DescWb)
     WebView b31Spo2DescWb;
 
     private List<Spo2hOriginData> list = new ArrayList<>();
@@ -96,9 +83,7 @@ public class ShowSpo2DetailActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_spo2_detail_layout);
-        ButterKnife.bind(this);
-
-
+        initViewIds();
         initViews();
 
         initData();
@@ -106,6 +91,20 @@ public class ShowSpo2DetailActivity extends WatchBaseActivity {
         readLocalDeviceData(currDay);
 
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commArrowDate = findViewById(R.id.commArrowDate);
+        showSpo2DetailLeftTv = findViewById(R.id.showSpo2DetailLeftTv);
+        showSpo2DetailMiddleTv = findViewById(R.id.showSpo2DetailMiddleTv);
+        showSpo2DetailRightTv = findViewById(R.id.showSpo2DetailRightTv);
+        showSpo2DetailRecyclerView = findViewById(R.id.showSpo2DetailRecyclerView);
+        b31Spo2DescWb = findViewById(R.id.b31Spo2DescWb);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.commArrowLeft).setOnClickListener(this);
+        findViewById(R.id.commArrowRight).setOnClickListener(this);
     }
 
     private void initData() {
@@ -262,8 +261,7 @@ public class ShowSpo2DetailActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commArrowLeft,
-            R.id.commArrowRight})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

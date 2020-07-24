@@ -11,9 +11,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.aigestudio.wheelpicker.widgets.ProvincePick;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -37,22 +34,16 @@ import org.apache.commons.lang.StringUtils;
 /**
  * B30转腕亮屏设置
  */
-public class B30TrunWristSetActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener{
+public class B30TrunWristSetActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener{
     private static final String TAG = "B30TrunWristSetActivity";
 
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.b30TrunWristStartTv)
     TextView b30TrunWristStartTv;
-    @BindView(R.id.b30TrunWristendTv)
     TextView b30TrunWristendTv;
-    @BindView(R.id.b30TrunWristSeekBar)
     SeekBar b30TrunWristSeekBar;
-    @BindView(R.id.showSeekBarValueTv)
     TextView showSeekBarValueTv;
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.turnWristToggleBtn)
     ToggleButton turnWristToggleBtn;
 
     private ArrayList<String> hourList;
@@ -69,11 +60,24 @@ public class B30TrunWristSetActivity extends WatchBaseActivity implements Compou
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_turn_wrist_set);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
         initData();
 
+    }
+
+    private void initViewIds() {
+        commentB30TitleTv =findViewById(R.id.commentB30TitleTv);
+        b30TrunWristStartTv =findViewById(R.id.b30TrunWristStartTv);
+        b30TrunWristendTv =findViewById(R.id.b30TrunWristendTv);
+        b30TrunWristSeekBar =findViewById(R.id.b30TrunWristSeekBar);
+        showSeekBarValueTv =findViewById(R.id.showSeekBarValueTv);
+        commentB30BackImg =findViewById(R.id.commentB30BackImg);
+        turnWristToggleBtn =findViewById(R.id.turnWristToggleBtn);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.b30WristStartRel).setOnClickListener(this);
+        findViewById(R.id.b30WristEndRel).setOnClickListener(this);
+        findViewById(R.id.b30TrunWristSaveBtn).setOnClickListener(this);
     }
 
     private void initData() {
@@ -152,8 +156,8 @@ public class B30TrunWristSetActivity extends WatchBaseActivity implements Compou
         });
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.b30WristStartRel, R.id.b30WristEndRel, R.id.b30TrunWristSaveBtn})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
                 finish();

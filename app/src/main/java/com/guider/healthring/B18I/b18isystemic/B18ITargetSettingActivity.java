@@ -37,9 +37,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 
@@ -52,31 +49,19 @@ import cn.appscomm.bluetooth.interfaces.ResultCallBack;
  * @company: 东莞速成科技有限公司
  */
 
-public class B18ITargetSettingActivity extends WatchBaseActivity {
+public class B18ITargetSettingActivity extends WatchBaseActivity implements  View.OnClickListener{
     public final String TAG = "----->>>" + this.getClass();
-    @BindView(R.id.step_Number)
     TextView stepNumbers;
-    @BindView(R.id.calories_Burn)
     TextView caloriesBurns;
-    @BindView(R.id.sleep_Time)
     TextView sleepTime;
-    @BindView(R.id.target_Distance)
     TextView targetDistances;
-    @BindView(R.id.ischange_no)
     TextView ischangeNo;
-    @BindView(R.id.ischange_ok)
     TextView ischangeOk;
-    @BindView(R.id.stepsNumber)
     LinearLayout stepsNumber;
-    @BindView(R.id.caloriesBurn)
     LinearLayout caloriesBurn;
-    @BindView(R.id.sleepingTime)
     LinearLayout sleepingTime;
-    @BindView(R.id.targetDistance)
     LinearLayout targetDistance;
-    @BindView(R.id.yitiaoxian)
     View yitiaoxian;
-    @BindView(R.id.image_fanhui)
     ImageView imageFanhui;
 
 
@@ -90,9 +75,31 @@ public class B18ITargetSettingActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_target_setting_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         whichDevice();//判断是B18i还是H9
 //        whichDevice();//判断是B18i还是H9
+    }
+
+    private void initViewIds() {
+        stepNumbers = findViewById(R.id.step_Number);
+        caloriesBurns = findViewById(R.id.calories_Burn);
+        sleepTime = findViewById(R.id.sleep_Time);
+        targetDistances = findViewById(R.id.target_Distance);
+        ischangeNo = findViewById(R.id.ischange_no);
+        ischangeOk = findViewById(R.id.ischange_ok);
+        stepsNumber = findViewById(R.id.stepsNumber);
+        caloriesBurn = findViewById(R.id.caloriesBurn);
+        sleepingTime = findViewById(R.id.sleepingTime);
+        targetDistance = findViewById(R.id.targetDistance);
+        yitiaoxian = findViewById(R.id.yitiaoxian);
+        imageFanhui = findViewById(R.id.image_fanhui);
+        stepsNumber.setOnClickListener(this);
+        caloriesBurn.setOnClickListener(this);
+        sleepingTime.setOnClickListener(this);
+        targetDistance.setOnClickListener(this);
+        ischangeNo.setOnClickListener(this);
+        ischangeOk.setOnClickListener(this);
+        imageFanhui.setOnClickListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -265,9 +272,8 @@ public class B18ITargetSettingActivity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.stepsNumber, R.id.caloriesBurn, R.id.sleepingTime,
-            R.id.targetDistance, R.id.ischange_no, R.id.ischange_ok, R.id.image_fanhui})
-    public void onclick(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.stepsNumber:
                 setStepNumber();

@@ -52,7 +52,7 @@ public class ViewHolderOfAve extends BaseResultViewHolder {
 
     @Override
     protected String getName() {
-        return getContext().getResources().getString(R.string.zxyhindex);
+        return "中心硬化指数";
     }
 
     @Override

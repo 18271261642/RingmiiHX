@@ -1,5 +1,6 @@
 package com.guider.healthring.w30s.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,11 +40,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： An
@@ -52,18 +48,15 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class StepHistoryDataActivity extends WatchBaseActivity implements RequestView {
+public class StepHistoryDataActivity extends WatchBaseActivity
+        implements RequestView,View.OnClickListener{
     private static final String TAG = "StepHistoryDataActivity";
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.step_or_sleep_list)
     ListView stepOrSleepList;
-    @BindView(R.id.image_data_type)
     ImageView imageDataType;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     //步数的相关
     List<WatchDataDatyBean> stepList;
-    @BindView(R.id.bar_mores)
     TextView barMores;
     private HistoryCustomPopuWindow customPopuWindow;//popWinow
     private StepDataAdapter stepDataAdapter;
@@ -73,11 +66,20 @@ public class StepHistoryDataActivity extends WatchBaseActivity implements Reques
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w30s_sleep_or_step_history_activity);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.sports_history));
 //        barMores.setVisibility(View.GONE);
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        stepOrSleepList = findViewById(R.id.step_or_sleep_list);
+        imageDataType = findViewById(R.id.image_data_type);
+        barMores = findViewById(R.id.bar_mores);
+        barMores.setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
     }
 
     @Override
@@ -96,8 +98,8 @@ public class StepHistoryDataActivity extends WatchBaseActivity implements Reques
         }
     }
 
-    @OnClick({R.id.image_back, R.id.bar_mores})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();
@@ -257,6 +259,7 @@ public class StepHistoryDataActivity extends WatchBaseActivity implements Reques
      *
      * @param timeDatas
      */
+    @SuppressLint("LongLogTag")
     private void getStepData(String timeDatas) {
         Log.d("---------timeData----------", timeDatas);
         if (stepList != null) {

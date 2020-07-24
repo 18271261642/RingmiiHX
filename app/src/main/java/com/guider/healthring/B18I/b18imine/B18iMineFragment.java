@@ -32,35 +32,24 @@ import com.guider.healthring.util.URLs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * 我的界面
  * Created by Administrator on 2017/8/25.
  */
 
-public class B18iMineFragment extends Fragment {
+public class B18iMineFragment extends Fragment implements  View.OnClickListener{
     private final String TAG = "----->>>" + this.getClass();
     View b18iMineView;
     //头像显示ImageView
-    @BindView(R.id.userImageHead)
     ImageView userImageHead;
     //用户名称显示TextView
-    @BindView(R.id.userName)
     TextView userName;
     //总公里数显示TextView
-    @BindView(R.id.totalKilometers)
     TextView totalKilometers;
     //日均步数显示TextView
-    @BindView(R.id.equalStepNumber)
     TextView equalStepNumber;
     //达标天数显示TextView
-    @BindView(R.id.standardDay)
     TextView standardDay;
-    Unbinder unbinder;
 
     private int DISTANCE = 0;
     private int STEP = 0;
@@ -72,7 +61,7 @@ public class B18iMineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b18iMineView = inflater.inflate(R.layout.fragment_b18i_mine, container, false);
-        unbinder = ButterKnife.bind(this, b18iMineView);
+        initViewIds();
 
         initData();
 
@@ -81,6 +70,21 @@ public class B18iMineFragment extends Fragment {
         //获取数据展示
         getUserSportData();
         return b18iMineView;
+    }
+
+    private void initViewIds() {
+        userImageHead = b18iMineView.findViewById(R.id.userImageHead);
+        userName = b18iMineView.findViewById(R.id.userName);
+        totalKilometers = b18iMineView.findViewById(R.id.totalKilometers);
+        equalStepNumber = b18iMineView.findViewById(R.id.equalStepNumber);
+        standardDay = b18iMineView.findViewById(R.id.standardDay);
+        b18iMineView.findViewById(R.id.privatemode_cardview).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.personalData).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.targetSetting).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.smartAlert).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.findFriends).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.mineSetting).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.userImageHead).setOnClickListener(this);
     }
 
     //获取显示的数据
@@ -226,13 +230,6 @@ public class B18iMineFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.privatemode_cardview, R.id.targetSetting,
-            R.id.personalData, R.id.smartAlert, R.id.findFriends, R.id.mineSetting, R.id.userImageHead})
     public void onClick(View view) {
 
         switch (view.getId()) {

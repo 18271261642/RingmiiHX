@@ -44,10 +44,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/7/17.
@@ -56,43 +52,41 @@ import butterknife.Unbinder;
 /**
  * 记录页面fragment tongyong
  */
-public class WatchRecordFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class WatchRecordFragment extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
 
     View recordView;
     //左边布局
-    @BindView(R.id.newH8RecordTopRel)
     RelativeLayout newH8RecordTopRel;
     //显示时间tv
-    @BindView(R.id.new_h8_recordtop_dateTv)
     TextView newH8RecordtopDateTv;
     //分享按钮
-    @BindView(R.id.new_h8_recordShareImg)
     ImageView newH8RecordShareImg;
     //拍照按钮
-    @BindView(R.id.new_h8_recordPhotoImg)
     ImageView newH8RecordPhotoImg;
     //连接状态
-    @BindView(R.id.new_h8_recordwatch_connectStateTv)
     TextView newH8RecordwatchConnectStateTv;
     //波浪形进度条
-    @BindView(R.id.recordwave_progress_bar)
     WaveProgress recordwaveProgressBar;
-    @BindView(R.id.watch_recordTagstepTv)
     TextView watchRecordTagstepTv;
-    Unbinder unbinder;
     //目标选择列表
     ArrayList<String> daily_numberofstepsList;
 
     //卡里路
-    @BindView(R.id.watch_recordKcalTv)
     TextView watchRecordKcalTv;
     //距离
-    @BindView(R.id.watch_recordMileTv)
     TextView watchRecordMileTv;
     //计算卡里路常量
     double kcalcanstanc = 65.4;  //计算卡路里常量
-    @BindView(R.id.watch_record_swipe)
     SwipeRefreshLayout watchRecordSwipe;
+
+    String connectstate;
+
+    TextView watchRestateTv;
+    LinearLayout watchRecordPro;
+    ImageView watchRecordTyophyImg;
+
+    private boolean mReceiverTag = false;   //广播接受者标识
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -120,18 +114,6 @@ public class WatchRecordFragment extends Fragment implements SwipeRefreshLayout.
         }
     };
 
-    String connectstate;
-
-    @BindView(R.id.watchRestateTv)
-    TextView watchRestateTv;
-    @BindView(R.id.watch_record_pro)
-    LinearLayout watchRecordPro;
-    @BindView(R.id.watch_recordTyophyImg)
-    ImageView watchRecordTyophyImg;
-
-
-    private boolean mReceiverTag = false;   //广播接受者标识
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,7 +126,7 @@ public class WatchRecordFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recordView = inflater.inflate(R.layout.fragment_watch_record, null);
-        unbinder = ButterKnife.bind(this, recordView);
+        initViwIds();
 
         initViews();
         initStepList();
@@ -154,6 +136,27 @@ public class WatchRecordFragment extends Fragment implements SwipeRefreshLayout.
 //        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.icon_trophy);
 //        recordwaveProgressBar.setBitmap(bitmap);
         return recordView;
+    }
+
+    private void initViwIds() {
+        newH8RecordTopRel = recordView.findViewById(R.id.newH8RecordTopRel);
+        newH8RecordtopDateTv = recordView.findViewById(R.id.new_h8_recordtop_dateTv);
+        newH8RecordShareImg = recordView.findViewById(R.id.new_h8_recordShareImg);
+        newH8RecordPhotoImg = recordView.findViewById(R.id.new_h8_recordPhotoImg);
+        newH8RecordwatchConnectStateTv = recordView.findViewById(R.id.new_h8_recordwatch_connectStateTv);
+        recordwaveProgressBar = recordView.findViewById(R.id.recordwave_progress_bar);
+        watchRecordTagstepTv = recordView.findViewById(R.id.watch_recordTagstepTv);
+        watchRecordKcalTv = recordView.findViewById(R.id.watch_recordKcalTv);
+        watchRecordMileTv = recordView.findViewById(R.id.watch_recordMileTv);
+        watchRecordSwipe = recordView.findViewById(R.id.watch_record_swipe);
+        watchRestateTv = recordView.findViewById(R.id.watchRestateTv);
+        watchRecordPro = recordView.findViewById(R.id.watch_record_pro);
+        watchRecordTyophyImg = recordView.findViewById(R.id.watch_recordTyophyImg);
+        newH8RecordTopRel.setOnClickListener(this);
+        newH8RecordShareImg.setOnClickListener(this);
+        watchRecordTagstepTv.setOnClickListener(this);
+        newH8RecordPhotoImg.setOnClickListener(this);
+
     }
 
     private void initViews() {
@@ -264,14 +267,13 @@ public class WatchRecordFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
 
     long firstTimesss;
 
-    @OnClick({R.id.newH8RecordTopRel, R.id.new_h8_recordShareImg, R.id.watch_recordTagstepTv, R.id.new_h8_recordPhotoImg})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.newH8RecordTopRel:    //电量
                 if (null == MyCommandManager.DEVICENAME) {

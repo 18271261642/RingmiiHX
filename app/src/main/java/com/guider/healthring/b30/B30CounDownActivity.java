@@ -30,10 +30,6 @@ import com.veepoo.protocol.model.settings.CountDownSetting;
 import java.util.Calendar;
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 倒计时界面
  */
@@ -41,21 +37,16 @@ import butterknife.OnClick;
 /**
  * 倒计时界面
  */
-public class B30CounDownActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class B30CounDownActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
     private static final String TAG = "B30CounDownActivity";
-    @BindView(R.id.commentB30BackImg)
+
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.showCounDownTv)
     TextView showCounDownTv;
-    @BindView(R.id.showScreentViewTogg)
     ToggleButton showScreentViewTogg;
-    @BindView(R.id.oftenDateTv)
     TextView oftenDateTv;
-    @BindView(R.id.startCounDownBtn)
     Button startCounDownBtn;
-    @BindView(R.id.oftenDateRel)
     RelativeLayout oftenDateRel;
 
     private TimePickerView timePickerView;
@@ -99,12 +90,25 @@ public class B30CounDownActivity extends WatchBaseActivity implements CompoundBu
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_coun_down);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
         initData();
 
         readCoundDown();
+
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        showCounDownTv = findViewById(R.id.showCounDownTv);
+        showScreentViewTogg = findViewById(R.id.showScreentViewTogg);
+        oftenDateTv = findViewById(R.id.oftenDateTv);
+        startCounDownBtn = findViewById(R.id.startCounDownBtn);
+        oftenDateRel = findViewById(R.id.oftenDateRel);
+        commentB30BackImg.setOnClickListener(this);
+        startCounDownBtn.setOnClickListener(this);
+        oftenDateRel.setOnClickListener(this);
 
     }
 
@@ -148,7 +152,7 @@ public class B30CounDownActivity extends WatchBaseActivity implements CompoundBu
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.startCounDownBtn, R.id.oftenDateRel})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:

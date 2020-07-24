@@ -39,10 +39,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent: 心率数据
  * @author： 安
@@ -51,20 +47,17 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class H9HearteDataActivity extends WatchBaseActivity implements RequestView {
+public class H9HearteDataActivity extends WatchBaseActivity
+        implements RequestView ,View.OnClickListener{
     private static final String TAG = "H9HearteDataActivity";
-    @BindView(R.id.heartedata_list)
     ListView heartedataList;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.image_data_type)
     ImageView imageDataType;
     private RequestPressent requestPressent;
     List<HeartDataBean.HeartRateBean> heartNewDataList = new ArrayList<>();
     List<String> stringDataList = new ArrayList<>();
     H9HearteDataAdapter dataAdapter = null;
     String is18i;
-    @BindView(R.id.bar_mores)
     TextView barMores;
     private String systemDatasss;
 
@@ -73,11 +66,20 @@ public class H9HearteDataActivity extends WatchBaseActivity implements RequestVi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h9_hearte_data_activity);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.heart_rate));
         is18i = getIntent().getStringExtra("is18i");
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
+    }
+
+    private void initViewIds() {
+        heartedataList = findViewById(R.id.heartedata_list);
+        barTitles = findViewById(R.id.bar_titles);
+        imageDataType = findViewById(R.id.image_data_type);
+        barMores = findViewById(R.id.bar_mores);
+        barMores.setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
     }
 
 
@@ -499,8 +501,8 @@ public class H9HearteDataActivity extends WatchBaseActivity implements RequestVi
         });
     }
 
-    @OnClick({R.id.image_back, R.id.bar_mores})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

@@ -301,15 +301,13 @@ dependencies {
     implementation files('libs/OTA.jar')
     implementation(name: 'bluetooth', ext: 'aar')
     // implementation project(':dfu')
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'io.reactivex:rxjava:1.1.0'
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
-    implementation 'org.greenrobot:greendao:3.2.0'
-    implementation 'org.greenrobot:greendao-generator:3.2.0'
+    implementation 'org.greenrobot:greendao:3.3.0'
+    implementation 'org.greenrobot:greendao-generator:3.3.0'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     implementation 'com.afollestad.material-dialogs:core:0.9.5.0'

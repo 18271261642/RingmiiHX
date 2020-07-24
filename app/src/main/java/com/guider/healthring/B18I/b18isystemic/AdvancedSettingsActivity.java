@@ -20,9 +20,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * @aboutContent: 高级设置
  * @author： 安
@@ -33,27 +30,31 @@ import butterknife.ButterKnife;
 
 public class AdvancedSettingsActivity extends WatchBaseActivity {
 
-    @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.advanced_sedentary)
     LinearLayout advancedSedentary;
-    @BindView(R.id.advanced_sleep)
     LinearLayout advancedSleep;
-    @BindView(R.id.xiantiao)
     View xiantiao;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_advanced_settings_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         whichDevice();//判断是B18i还是H9
         barTitles.setText(getResources().getString(R.string.advanced_setting));
         imageBack.setOnClickListener(new Onclick());
         advancedSedentary.setOnClickListener(new Onclick());
         advancedSleep.setOnClickListener(new Onclick());
+    }
+
+    private void initViewIds() {
+        imageBack = findViewById(R.id.image_back);
+        barTitles = findViewById(R.id.bar_titles);
+        advancedSedentary = findViewById(R.id.advanced_sedentary);
+        advancedSleep = findViewById(R.id.advanced_sleep);
+        xiantiao = findViewById(R.id.xiantiao);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

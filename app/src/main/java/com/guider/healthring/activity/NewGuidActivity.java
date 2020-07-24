@@ -13,19 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.guider.health.common.core.LocaleUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.adpter.HomeAdapter;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.util.SharedPreferencesUtils;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 欢迎页
@@ -33,14 +28,13 @@ import butterknife.ButterKnife;
 public class NewGuidActivity extends WatchBaseActivity {
 
 
-    @BindView(R.id.viewPager)
     ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-        ButterKnife.bind(this);
+        viewPager = findViewById(R.id.viewPager);
 
         initData();
 

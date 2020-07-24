@@ -29,84 +29,66 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 
 /**
  * Created by admin on 2017/3/30.
  */
 
-public class MapRecordActivity extends BaseActivity implements IMapRecordView {
+public class MapRecordActivity extends BaseActivity implements IMapRecordView,View.OnClickListener {
 
     private static final String TAG = "MapRecordActivity";
 
-    @BindView(R.id.huwaiqixing_years)
     TextView Starttime;
     /**
      * 开始时间
      */
-    @BindView(R.id.qichekong_qizhiliangyy)
     TextView Kongqi;
     /**
      * 空气质量
      */
-    @BindView(R.id.qiche_kongqiyu)
     ImageView TianqiImage;
     /**
      * 天气图片
      */
-    @BindView(R.id.qiche_wendu)
     TextView Wendu;
     /**
      * 温度
      */
-    @BindView(R.id.test_chronometer_times)
     Chronometer Duration;
     /**
      * 总计时间
      */
-    @BindView(R.id.test_full_kilometer)
     TextView Fullkilometer;
     /**
      * 总公里
      */
-    @BindView(R.id.test_peisu)
     TextView Pace;
     /**
      * 配速
      */
-    @BindView(R.id.test_xiaohao_kclal)
     TextView Consume;
     /**
      * 消耗
      */
-    @BindView(R.id.qiche_mypmyy)
     LinearLayout linearLayoutONE;
     /**
      * p25视图
      */
-    @BindView(R.id.qichemypm_www)
     LinearLayout linearLayoutTwo;
     /**
      * 温度视图
      */
-    @BindView(R.id.test_huwaiqixing_ditut)
     RelativeLayout linearLayoutThere;
     /**
      * 温度视图
      */
-    @BindView(R.id.qixingshu_waipao_bustar)
     LinearLayout Back;
     /**
      * 返回
      */
-
-    @BindView(R.id.qixingfugai_hostory)
     ImageView fugaiwu;
 
     boolean isoneline = false;//是不是第一次划线
-    @BindView(R.id.shuwaipao_buhuwai)
     TextView BIAOTI;
 
     private IMapRecord mIMapRecord;
@@ -114,9 +96,29 @@ public class MapRecordActivity extends BaseActivity implements IMapRecordView {
 
     @Override
     protected void initViews() {
+        initViewIds();
     }
 
-    @OnClick({R.id.qixingshu_waipao_bustar, R.id.huwaiq_ixingbubao_fengxiang})
+    private void initViewIds(){
+        Starttime =findViewById(R.id.huwaiqixing_years);
+        Kongqi =findViewById(R.id.qichekong_qizhiliangyy);
+        TianqiImage =findViewById(R.id.qiche_kongqiyu);
+        Wendu =findViewById(R.id.qiche_wendu);
+        Duration =findViewById(R.id.test_chronometer_times);
+        Fullkilometer =findViewById(R.id.test_full_kilometer);
+        Pace =findViewById(R.id.test_peisu);
+        Consume =findViewById(R.id.test_xiaohao_kclal);
+        linearLayoutONE =findViewById(R.id.qiche_mypmyy);
+        linearLayoutTwo =findViewById(R.id.qichemypm_www);
+        linearLayoutThere =findViewById(R.id.test_huwaiqixing_ditut);
+        Back =findViewById(R.id.qixingshu_waipao_bustar);
+        fugaiwu =findViewById(R.id.qixingfugai_hostory);
+        BIAOTI =findViewById(R.id.shuwaipao_buhuwai);
+        Back.setOnClickListener(this);
+        findViewById(R.id.huwaiq_ixingbubao_fengxiang).setOnClickListener(this);
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.qixingshu_waipao_bustar:

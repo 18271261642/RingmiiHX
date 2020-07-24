@@ -78,11 +78,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -95,7 +90,7 @@ import rx.Subscriber;
  * @company: 东莞速成科技有限公司
  */
 
-public class H9RecordFragment extends Fragment {
+public class H9RecordFragment extends Fragment implements View.OnClickListener{
 
     private final String TAG = "H9RecordFragment";
     public static final String H9CONNECT_STATE_ACTION = "com.example.bozhilun.android.h9.connstate";
@@ -104,40 +99,27 @@ public class H9RecordFragment extends Fragment {
 //    @BindView(R.id.nextImage)
 //    ImageView nextImage;
     View b18iRecordView;
-    Unbinder unbinder;
-    @BindView(R.id.b18i_viewpager)
     ViewPager l38iViewpager;
-    @BindView(R.id.text_stute)
     TextView textStute;
-    @BindView(R.id.batteryLayout)
     LinearLayout batteryLayout;
     private int PAGES = 0;//页码
-    @BindView(R.id.line_pontion)
     LinearLayout linePontion;
     private float GOAL = 7000;//默认目标
     private float STEP = 0;//步数
-    @BindView(R.id.swipeRefresh)
     CusRefreshLayout swipeRefresh;//刷新控件
     //显示手表图标左上角
-    @BindView(R.id.batteryshouhuanImg)
     ImageView shouhuanImg;
     //显示连接状态的TextView
-    @BindView(R.id.battery_watch_connectStateTv)
     TextView watchConnectStateTv;
     //点击图标
-    @BindView(R.id.watch_poorRel)
     RelativeLayout watchPoorRel;
     //显示日期的TextView
-    @BindView(R.id.battery_watch_recordtop_dateTv)
     TextView watchRecordtopDateTv;
     //分享
-    @BindView(R.id.battery_watchRecordShareImg)
     ImageView watchRecordShareImg;
     //显示电量的图片
-    @BindView(R.id.batteryTopView)
     ImageView watchTopBatteryImgView;
     //显示电量
-    @BindView(R.id.batteryPowerTv)
     TextView batteryPowerTv;
     private boolean mReceiverTag = false;
     int kmormi; //距离显示是公制还是英制
@@ -179,7 +161,7 @@ public class H9RecordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         b18iRecordView = inflater.inflate(R.layout.fragment_b18i_record, container, false);
-        unbinder = ButterKnife.bind(this, b18iRecordView);
+        initViewIds();
         saveStateToArguments();
         setDatas();
         initViews();
@@ -211,6 +193,23 @@ public class H9RecordFragment extends Fragment {
             }
         });
         return b18iRecordView;
+    }
+
+    private void initViewIds() {
+        l38iViewpager = b18iRecordView.findViewById(R.id.b18i_viewpager);
+        textStute = b18iRecordView.findViewById(R.id.text_stute);
+        batteryLayout = b18iRecordView.findViewById(R.id.batteryLayout);
+        linePontion = b18iRecordView.findViewById(R.id.line_pontion);
+        swipeRefresh = b18iRecordView.findViewById(R.id.swipeRefresh);
+        shouhuanImg = b18iRecordView.findViewById(R.id.batteryshouhuanImg);
+        watchConnectStateTv = b18iRecordView.findViewById(R.id.battery_watch_connectStateTv);
+        watchPoorRel = b18iRecordView.findViewById(R.id.watch_poorRel);
+        watchRecordtopDateTv = b18iRecordView.findViewById(R.id.battery_watch_recordtop_dateTv);
+        watchRecordShareImg = b18iRecordView.findViewById(R.id.battery_watchRecordShareImg);
+        watchTopBatteryImgView = b18iRecordView.findViewById(R.id.batteryTopView);
+        batteryPowerTv = b18iRecordView.findViewById(R.id.batteryPowerTv);
+        watchRecordShareImg.setOnClickListener(this);
+        watchPoorRel.setOnClickListener(this);
     }
 
     private boolean isHidden = true;//离开界面隐藏显示同步数据的
@@ -297,7 +296,6 @@ public class H9RecordFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
         saveStateToArguments();
     }
 
@@ -1311,8 +1309,8 @@ public class H9RecordFragment extends Fragment {
                 }, 1, 0));
     }
 
-    @OnClick({R.id.watch_poorRel, R.id.battery_watchRecordShareImg})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watch_poorRel:    //点击是否连接
                 if (MyCommandManager.DEVICENAME != null) {    //已连接

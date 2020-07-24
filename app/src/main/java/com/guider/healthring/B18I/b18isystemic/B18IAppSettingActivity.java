@@ -41,9 +41,6 @@ import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 
@@ -55,13 +52,11 @@ import cn.appscomm.bluetooth.interfaces.ResultCallBack;
  * @company: 东莞速成科技有限公司
  */
 
-public class B18IAppSettingActivity extends WatchBaseActivity {
+public class B18IAppSettingActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private final String TAG = "B18IAppSettingActivity";
-    @BindView(R.id.bar_titles)
     TextView barTitles;
     private int ResetNUMBER = 0x66;
-    @BindView(R.id.version_tv)
     TextView versionTv;
 
     Handler mHandler = new Handler(new Handler.Callback() {
@@ -90,7 +85,7 @@ public class B18IAppSettingActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_appsetting_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.menu_settings));
         whichDevice();//判断是B18i还是H9
         try {
@@ -101,6 +96,17 @@ public class B18IAppSettingActivity extends WatchBaseActivity {
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        versionTv = findViewById(R.id.version_tv);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.btn_exit).setOnClickListener(this);
+        findViewById(R.id.reset_device).setOnClickListener(this);
+        findViewById(R.id.line_help).setOnClickListener(this);
+        findViewById(R.id.line_above).setOnClickListener(this);
+        findViewById(R.id.change_pass).setOnClickListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -150,7 +156,7 @@ public class B18IAppSettingActivity extends WatchBaseActivity {
         if (TextUtils.isEmpty(is18i)) finish();
     }
 
-    @OnClick({R.id.image_back, R.id.btn_exit, R.id.reset_device, R.id.line_help, R.id.line_above, R.id.change_pass})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:

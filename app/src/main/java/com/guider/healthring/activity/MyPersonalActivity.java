@@ -83,10 +83,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -94,7 +90,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 个人信息
  */
 
-public class MyPersonalActivity extends WatchBaseActivity implements RequestView {
+public class MyPersonalActivity extends WatchBaseActivity implements RequestView,View.OnClickListener {
 
     private static final String TAG = "MyPersonalActivity";
 
@@ -105,50 +101,27 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
     //    @BindView(R.id.tv_title)
 //    TextView tvTitle;
-    @BindView(R.id.mine_logo_iv_personal)
     CircleImageView mineLogoIv;
-    @BindView(R.id.nickname_tv)
     TextView nicknameTv;
-    @BindView(R.id.sex_tv)
     TextView sexTv;
-    @BindView(R.id.height_tv)
     TextView heightTv;
-    @BindView(R.id.weight_tv)
     TextView weightTv;
-    @BindView(R.id.birthday_tv)
     TextView birthdayTv;
-    @BindView(R.id.bottomsheet)
     BottomSheetLayout bottomSheetLayout;
-    @BindView(R.id.personal_avatar_relayout)
     RelativeLayout personalAvatarRelayout;
-    @BindView(R.id.nickname_relayout_personal)
     RelativeLayout nicknameRelayoutPersonal;
-    @BindView(R.id.sex_relayout)
     RelativeLayout sexRelayout;
-    @BindView(R.id.height_relayout)
     RelativeLayout heightRelayout;
-    @BindView(R.id.weight_relayout)
     RelativeLayout weightRelayout;
-    @BindView(R.id.birthday_relayout)
     RelativeLayout birthdayRelayout;
     //单位设置的RadioGroup
-    @BindView(R.id.radioGroup_unti)
     RadioGroup radioGroupUnti;
     //单位设置的布局
-    @BindView(R.id.personal_UnitLin)
     LinearLayout personalUnitLin;
-    @BindView(R.id.radio_km)
     RadioButton radioKm;
-    @BindView(R.id.radio_mi)
     RadioButton radioMi;
-
-    @BindView(R.id.guiderUserInfoTv)
     TextView guiderUserInfoTv;
-
-
-
     //显示的肤色
-    @BindView(R.id.defaultSkinColorImg)
     ImageView defaultSkinColorImg;
     private String nickName, sex, height, weight, birthday, flag;
     private DialogSubscriber dialogSubscriber;
@@ -202,13 +175,41 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
-        ButterKnife.bind(this);
-
+        initViewIds();
 
         initViews();
 
 
         initData();
+    }
+
+    private void initViewIds() {
+        mineLogoIv = findViewById(R.id.mine_logo_iv_personal);
+        nicknameTv = findViewById(R.id.nickname_tv);
+        sexTv = findViewById(R.id.sex_tv);
+        heightTv = findViewById(R.id.height_tv);
+        weightTv = findViewById(R.id.weight_tv);
+        birthdayTv = findViewById(R.id.birthday_tv);
+        bottomSheetLayout = findViewById(R.id.bottomsheet);
+        personalAvatarRelayout = findViewById(R.id.personal_avatar_relayout);
+        nicknameRelayoutPersonal = findViewById(R.id.nickname_relayout_personal);
+        sexRelayout = findViewById(R.id.sex_relayout);
+        heightRelayout = findViewById(R.id.height_relayout);
+        weightRelayout = findViewById(R.id.weight_relayout);
+        birthdayRelayout = findViewById(R.id.birthday_relayout);
+        radioGroupUnti = findViewById(R.id.radioGroup_unti);
+        personalUnitLin = findViewById(R.id.personal_UnitLin);
+        radioKm = findViewById(R.id.radio_km);
+        radioMi = findViewById(R.id.radio_mi);
+        guiderUserInfoTv = findViewById(R.id.guiderUserInfoTv);
+        defaultSkinColorImg = findViewById(R.id.defaultSkinColorImg);
+        personalAvatarRelayout.setOnClickListener(this);
+        findViewById(R.id.nickname_relayout_personal).setOnClickListener(this);
+        sexRelayout.setOnClickListener(this);
+        heightRelayout.setOnClickListener(this);
+        weightRelayout.setOnClickListener(this);
+        birthdayRelayout.setOnClickListener(this);
+        findViewById(R.id.skinColorRel).setOnClickListener(this);
     }
 
     private void initData() {
@@ -406,10 +407,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         OkHttpObservable.getInstance().getData(commonSubscriber, URLs.HTTPs + URLs.getUserInfo, mapjson);
     }
 
-    @OnClick({R.id.personal_avatar_relayout,
-            R.id.nickname_relayout_personal,
-            R.id.sex_relayout, R.id.height_relayout,
-            R.id.weight_relayout, R.id.birthday_relayout, R.id.skinColorRel})
+    @Override
     public void onClick(View view) {
         String userId = (String) SharedPreferencesUtils.readObject(MyPersonalActivity.this, "userId");
         SharedPreferences share = getSharedPreferences("Login_id", 0);

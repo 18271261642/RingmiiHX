@@ -3,9 +3,6 @@ package com.guider.health.apilib.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import lombok.Data;
-
-@Data
 public class WechatUserInfo implements Parcelable {
 
 
@@ -26,8 +23,76 @@ public class WechatUserInfo implements Parcelable {
     private String birthday;
     private int wechatAccountId = 1;
 
+    public String getOpenId() {
+        return openId;
+    }
 
-    public WechatUserInfo(String openId, String nickname, int gender, String unionId, String headUrl ,String birthday) {
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
+    }
+
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public int getWechatAccountId() {
+        return wechatAccountId;
+    }
+
+    public void setWechatAccountId(int wechatAccountId) {
+        this.wechatAccountId = wechatAccountId;
+    }
+
+    public static Creator<WechatUserInfo> getCREATOR() {
+        return CREATOR;
+    }
+
+    public WechatUserInfo(String openId, String nickname, int gender, String unionId,
+                          String headUrl , String birthday) {
         this.openId = openId;
         this.nickname = nickname;
         this.gender = gender;
@@ -59,7 +124,7 @@ public class WechatUserInfo implements Parcelable {
         this.headUrl = in.readString();
     }
 
-    public static final Parcelable.Creator<WechatUserInfo> CREATOR = new Parcelable.Creator<WechatUserInfo>() {
+    public static final Creator<WechatUserInfo> CREATOR = new Creator<WechatUserInfo>() {
         @Override
         public WechatUserInfo createFromParcel(Parcel source) {
             return new WechatUserInfo(source);

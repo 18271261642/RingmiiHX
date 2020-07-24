@@ -53,11 +53,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -68,33 +63,20 @@ import rx.functions.Func1;
  * 注册页面
  */
 
-public class RegisterActivity2 extends WatchBaseActivity implements RequestView {
+public class RegisterActivity2 extends WatchBaseActivity implements RequestView,View.OnClickListener {
 
     private static final String TAG = "RegisterActivity2";
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.tv_phone_head)
     TextView tv_phone_head;
-
-    @BindView(R.id.register_agreement_my)
     TextView registerAgreement;
-    @BindView(R.id.username_input)
     TextInputLayout usernameInput;
-    @BindView(R.id.textinput_password_regster)
     TextInputLayout textinputPassword;
-    @BindView(R.id.code_et_regieg)
     EditText codeEt;
-    @BindView(R.id.username_regsiter)
     EditText username;
-    @BindView(R.id.password_logonregigter)
     EditText password;
-    @BindView(R.id.send_btn)
     Button sendBtn;
-    @BindView(R.id.textinput_code)
     TextInputLayout textinput_code;
-
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     private Subscriber subscriber;
@@ -116,13 +98,30 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regsiter2);
-        ButterKnife.bind(this);
-
-
+        initViewIds();
         initViews();
 
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
+
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        tv_phone_head = findViewById(R.id.tv_phone_head);
+        registerAgreement = findViewById(R.id.register_agreement_my);
+        usernameInput = findViewById(R.id.username_input);
+        textinputPassword = findViewById(R.id.textinput_password_regster);
+        codeEt = findViewById(R.id.code_et_regieg);
+        username = findViewById(R.id.username_regsiter);
+        password = findViewById(R.id.password_logonregigter);
+        sendBtn = findViewById(R.id.send_btn);
+        textinput_code = findViewById(R.id.textinput_code);
+        toolbar = findViewById(R.id.toolbar);
+        findViewById(R.id.login_btn_reger).setOnClickListener(this);
+        sendBtn.setOnClickListener(this);
+        findViewById(R.id.login_btn_emil_reger).setOnClickListener(this);
+        tv_phone_head.setOnClickListener(this);
 
     }
 
@@ -205,8 +204,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView 
                 .subscribe(subscriber);
     }
 
-    @OnClick({R.id.login_btn_reger, R.id.send_btn,
-            R.id.login_btn_emil_reger, R.id.tv_phone_head})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn_emil_reger://跳转到邮箱注册

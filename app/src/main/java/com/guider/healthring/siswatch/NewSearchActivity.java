@@ -55,10 +55,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static com.guider.healthring.siswatch.utils.WatchConstants.isScanConn;
 import static com.guider.healthring.siswatch.utils.WatchUtils.B31_NAME;
 
@@ -71,7 +67,7 @@ import static com.guider.healthring.siswatch.utils.WatchUtils.B31_NAME;
  */
 public class NewSearchActivity extends GetUserInfoActivity implements
         CustomBlueAdapter.OnSearchOnBindClickListener
-        , SwipeRefreshLayout.OnRefreshListener {
+        , SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
 //        BluetoothManagerScanListener
 //        BluetoothManagerDeviceConnectListener {
 
@@ -85,19 +81,13 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     private String H9CONNECT_STATE_ACTION = "com.example.bozhilun.android.h9.connstate";
 
     //RecycleView
-    @BindView(R.id.search_recycler)
     RecyclerView searchRecycler;
     //Swiper
-    @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     //跑马灯textView
-    @BindView(R.id.search_alertTv)
     TextView searchAlertTv;
-    @BindView(R.id.newSearchTitleLeft)
     FrameLayout newSearchTitleLeft;
-    @BindView(R.id.newSearchTitleTv)
     TextView newSearchTitleTv;
-    @BindView(R.id.newSearchRightImg1)
     ImageView newSearchRightImg1;
 
 
@@ -141,13 +131,25 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         super.onCreate(savedInstanceState);
         Log.e(TAG, "-------onCreate----");
         setContentView(R.layout.activity_search_device);
-        ButterKnife.bind(this);
+        initViewIds();
         //启动B30的服务
         MyApp.startB30Server();
 
         initViews();
         h9DataOper();
         initData();
+    }
+
+    private void initViewIds() {
+        searchRecycler = findViewById(R.id.search_recycler);
+        swipeRefresh = findViewById(R.id.swipe_refresh);
+        searchAlertTv = findViewById(R.id.search_alertTv);
+        newSearchTitleLeft = findViewById(R.id.newSearchTitleLeft);
+        newSearchTitleTv = findViewById(R.id.newSearchTitleTv);
+        newSearchRightImg1 = findViewById(R.id.newSearchRightImg1);
+        newSearchTitleLeft.setOnClickListener(this);
+        newSearchRightImg1.setOnClickListener(this);
+
     }
 
     private void h9DataOper() {
@@ -637,8 +639,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     }
 
     @SuppressLint("MissingPermission")
-    @OnClick({R.id.newSearchTitleLeft, R.id.newSearchRightImg1})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.newSearchTitleLeft:   //返回
                 startActivity(B31HomeActivity.class);

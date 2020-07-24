@@ -37,31 +37,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 /**
  * Created by An on 2018/9/13.
  */
 
-public class B30SettingAlarmActiivty extends WatchBaseActivity {
+public class B30SettingAlarmActiivty extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B30SettingAlarmActiivty";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.iv_alarm_type)
     ImageView iv_alarm_type;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.tv_alarm_time)
     TextView tv_alarm_time;
-    @BindView(R.id.tv_alarm_type)
     TextView tv_alarm_type;
-    @BindView(R.id.gv_alarm_type)
     GridView gv_alarm_type;
-    @BindView(R.id.b30AlarmSaveBtn)
     Button b30AlarmSaveBtn;
     /**
      * 闹钟图标数组,资源ID
@@ -72,7 +61,6 @@ public class B30SettingAlarmActiivty extends WatchBaseActivity {
             R.drawable.selected11, R.drawable.selected12, R.drawable.selected13, R.drawable.selected14,
             R.drawable.selected15, R.drawable.selected16, R.drawable.selected17, R.drawable.selected18,
             R.drawable.selected19, R.drawable.selected20};
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
     /**
      * 小时数据源
@@ -99,7 +87,7 @@ public class B30SettingAlarmActiivty extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_setting_alarm);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
@@ -122,6 +110,22 @@ public class B30SettingAlarmActiivty extends WatchBaseActivity {
                 iv_alarm_type.setImageResource(alarmTypeImageList[i]);
             }
         });
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        iv_alarm_type = findViewById(R.id.iv_alarm_type);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        tv_alarm_time = findViewById(R.id.tv_alarm_time);
+        tv_alarm_type = findViewById(R.id.tv_alarm_type);
+        gv_alarm_type = findViewById(R.id.gv_alarm_type);
+        b30AlarmSaveBtn = findViewById(R.id.b30AlarmSaveBtn);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.tv_alarm_time_layout).setOnClickListener(this);
+        findViewById(R.id.tv_alarm_type_layout).setOnClickListener(this);
+        b30AlarmSaveBtn.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -232,10 +236,8 @@ public class B30SettingAlarmActiivty extends WatchBaseActivity {
         tv_alarm_type.setText(WatchUtils.obtainAlarmDate(this, repeat));
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.tv_alarm_time_layout,
-            R.id.tv_alarm_type_layout, R.id.b30AlarmSaveBtn,
-            R.id.commentB30ShareImg})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:// 返回
                 finish();
@@ -599,7 +601,6 @@ public class B30SettingAlarmActiivty extends WatchBaseActivity {
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_b30_setting_alarm);
-//        ButterKnife.bind(this);
 //        commentB30BackImg.setVisibility(View.VISIBLE);
 //
 //

@@ -64,49 +64,49 @@ public class Healthrange {
     private int accountId;
     private int apneaMaxNum;
     private int apneaStageMaxNum;
-    private int arterialCompliance;
+    private float arterialCompliance;
     private int asiCriticalMax;
     private int asiMedium;
     private int asiMildMax;
     private int asiNormalMax;
-    private int bloodCapMax;
-    private int bloodCapMin;
-    private int bmiMax;
-    private int bmiMin;
+    private float bloodCapMax;
+    private float bloodCapMin;
+    private float bmiMax;
+    private float bmiMin;
     private int boMin;
     private int braArteryMax;
-    private int braArteryMin;
-    private int breathRateMax;
+    private float braArteryMin;
+    private float breathRateMax;
     private int breathRateMin;
     private String createTime;
     private int dbpHMin;
     private int dbpIdealMax;
     private int dbpIdealMin;
-    private int fbsMax;
-    private int fbsMin;
-    private int heartLoadMax;
-    private int heartLoadMin;
+    private float fbsMax;
+    private float fbsMin;
+    private float heartLoadMax;
+    private float heartLoadMin;
     private int hemoglobinAdultManMax;
-    private int hemoglobinAdultManMin;
-    private int hemoglobinAdultWomanMax;
-    private int hemoglobinAdultWomanMin;
-    private int hemoglobinChildrenMax;
-    private int hemoglobinChildrenMin;
-    private int hemoglobinNewbornMax;
-    private int hemoglobinNewbornMin;
+    private float hemoglobinAdultManMin;
+    private float hemoglobinAdultWomanMax;
+    private float hemoglobinAdultWomanMin;
+    private float hemoglobinChildrenMax;
+    private float hemoglobinChildrenMin;
+    private float hemoglobinNewbornMax;
+    private float hemoglobinNewbornMin;
     private int hrMax;
     private int hrMin;
     private int hrvAbnormalMax;
     private int hrvMildMax;
     private int hypoxiaMin;
     private int id;
-    private int ifhfNormalMax;
-    private int ifhfNormalMin;
-    private int ifhfOverworkMax;
-    private int ifhfOverworkMin;
-    private int pbsMax;
-    private int pbsMin;
-    private int pnn50NormalMax;
+    private float ifhfNormalMax;
+    private float ifhfNormalMin;
+    private float ifhfOverworkMax;
+    private float ifhfOverworkMin;
+    private float pbsMax;
+    private float pbsMin;
+    private float pnn50NormalMax;
     private int pwvMax;
     private int sbpHMin;
     private int sbpIdealMax;
@@ -142,7 +142,7 @@ public class Healthrange {
         this.apneaStageMaxNum = apneaStageMaxNum;
     }
 
-    public int getArterialCompliance() {
+    public float getArterialCompliance() {
         return arterialCompliance;
     }
 
@@ -182,7 +182,7 @@ public class Healthrange {
         this.asiNormalMax = asiNormalMax;
     }
 
-    public int getBloodCapMax() {
+    public float getBloodCapMax() {
         return bloodCapMax;
     }
 
@@ -190,7 +190,7 @@ public class Healthrange {
         this.bloodCapMax = bloodCapMax;
     }
 
-    public int getBloodCapMin() {
+    public float getBloodCapMin() {
         return bloodCapMin;
     }
 
@@ -198,7 +198,7 @@ public class Healthrange {
         this.bloodCapMin = bloodCapMin;
     }
 
-    public int getBmiMax() {
+    public float getBmiMax() {
         return bmiMax;
     }
 
@@ -206,7 +206,7 @@ public class Healthrange {
         this.bmiMax = bmiMax;
     }
 
-    public int getBmiMin() {
+    public float getBmiMin() {
         return bmiMin;
     }
 
@@ -230,7 +230,7 @@ public class Healthrange {
         this.braArteryMax = braArteryMax;
     }
 
-    public int getBraArteryMin() {
+    public float getBraArteryMin() {
         return braArteryMin;
     }
 
@@ -238,7 +238,7 @@ public class Healthrange {
         this.braArteryMin = braArteryMin;
     }
 
-    public int getBreathRateMax() {
+    public float getBreathRateMax() {
         return breathRateMax;
     }
 
@@ -286,7 +286,7 @@ public class Healthrange {
         this.dbpIdealMin = dbpIdealMin;
     }
 
-    public int getFbsMax() {
+    public float getFbsMax() {
         return fbsMax;
     }
 
@@ -294,7 +294,7 @@ public class Healthrange {
         this.fbsMax = fbsMax;
     }
 
-    public int getFbsMin() {
+    public float getFbsMin() {
         return fbsMin;
     }
 
@@ -302,7 +302,7 @@ public class Healthrange {
         this.fbsMin = fbsMin;
     }
 
-    public int getHeartLoadMax() {
+    public float getHeartLoadMax() {
         return heartLoadMax;
     }
 
@@ -310,7 +310,7 @@ public class Healthrange {
         this.heartLoadMax = heartLoadMax;
     }
 
-    public int getHeartLoadMin() {
+    public float getHeartLoadMin() {
         return heartLoadMin;
     }
 
@@ -326,7 +326,7 @@ public class Healthrange {
         this.hemoglobinAdultManMax = hemoglobinAdultManMax;
     }
 
-    public int getHemoglobinAdultManMin() {
+    public float getHemoglobinAdultManMin() {
         return hemoglobinAdultManMin;
     }
 
@@ -334,7 +334,7 @@ public class Healthrange {
         this.hemoglobinAdultManMin = hemoglobinAdultManMin;
     }
 
-    public int getHemoglobinAdultWomanMax() {
+    public float getHemoglobinAdultWomanMax() {
         return hemoglobinAdultWomanMax;
     }
 
@@ -342,7 +342,7 @@ public class Healthrange {
         this.hemoglobinAdultWomanMax = hemoglobinAdultWomanMax;
     }
 
-    public int getHemoglobinAdultWomanMin() {
+    public float getHemoglobinAdultWomanMin() {
         return hemoglobinAdultWomanMin;
     }
 
@@ -350,7 +350,7 @@ public class Healthrange {
         this.hemoglobinAdultWomanMin = hemoglobinAdultWomanMin;
     }
 
-    public int getHemoglobinChildrenMax() {
+    public float getHemoglobinChildrenMax() {
         return hemoglobinChildrenMax;
     }
 
@@ -358,7 +358,7 @@ public class Healthrange {
         this.hemoglobinChildrenMax = hemoglobinChildrenMax;
     }
 
-    public int getHemoglobinChildrenMin() {
+    public float getHemoglobinChildrenMin() {
         return hemoglobinChildrenMin;
     }
 
@@ -366,7 +366,7 @@ public class Healthrange {
         this.hemoglobinChildrenMin = hemoglobinChildrenMin;
     }
 
-    public int getHemoglobinNewbornMax() {
+    public float getHemoglobinNewbornMax() {
         return hemoglobinNewbornMax;
     }
 
@@ -374,7 +374,7 @@ public class Healthrange {
         this.hemoglobinNewbornMax = hemoglobinNewbornMax;
     }
 
-    public int getHemoglobinNewbornMin() {
+    public float getHemoglobinNewbornMin() {
         return hemoglobinNewbornMin;
     }
 
@@ -430,7 +430,7 @@ public class Healthrange {
         this.id = id;
     }
 
-    public int getIfhfNormalMax() {
+    public float getIfhfNormalMax() {
         return ifhfNormalMax;
     }
 
@@ -438,7 +438,7 @@ public class Healthrange {
         this.ifhfNormalMax = ifhfNormalMax;
     }
 
-    public int getIfhfNormalMin() {
+    public float getIfhfNormalMin() {
         return ifhfNormalMin;
     }
 
@@ -446,7 +446,7 @@ public class Healthrange {
         this.ifhfNormalMin = ifhfNormalMin;
     }
 
-    public int getIfhfOverworkMax() {
+    public float getIfhfOverworkMax() {
         return ifhfOverworkMax;
     }
 
@@ -454,7 +454,7 @@ public class Healthrange {
         this.ifhfOverworkMax = ifhfOverworkMax;
     }
 
-    public int getIfhfOverworkMin() {
+    public float getIfhfOverworkMin() {
         return ifhfOverworkMin;
     }
 
@@ -462,7 +462,7 @@ public class Healthrange {
         this.ifhfOverworkMin = ifhfOverworkMin;
     }
 
-    public int getPbsMax() {
+    public float getPbsMax() {
         return pbsMax;
     }
 
@@ -470,7 +470,7 @@ public class Healthrange {
         this.pbsMax = pbsMax;
     }
 
-    public int getPbsMin() {
+    public float getPbsMin() {
         return pbsMin;
     }
 
@@ -478,7 +478,7 @@ public class Healthrange {
         this.pbsMin = pbsMin;
     }
 
-    public int getPnn50NormalMax() {
+    public float getPnn50NormalMax() {
         return pnn50NormalMax;
     }
 

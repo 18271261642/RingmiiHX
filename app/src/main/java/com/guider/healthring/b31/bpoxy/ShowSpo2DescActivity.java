@@ -12,31 +12,21 @@ import android.widget.TextView;
 
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Admin
  * Date 2018/12/29
  */
 public class ShowSpo2DescActivity extends WatchBaseActivity {
 
-
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.showSpo2DescWebView)
     WebView showSpo2DescWebView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_show_spo2desc);
-        ButterKnife.bind(this);
-
+        initViewIds();
 
         initViews();
 
@@ -50,6 +40,18 @@ public class ShowSpo2DescActivity extends WatchBaseActivity {
         });
         showSpo2DescWebView.loadUrl(getLoadUrl(desc));
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        showSpo2DescWebView = findViewById(R.id.showSpo2DescWebView);
+        commentB30BackImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -96,8 +98,4 @@ public class ShowSpo2DescActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick(R.id.commentB30BackImg)
-    public void onClick() {
-        finish();
-    }
 }

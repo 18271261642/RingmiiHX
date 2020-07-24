@@ -17,6 +17,14 @@ public class Devices {
     private String descript;
     private int typeMask;
 
+    public Devices() {}
+
+    public Devices(String btName, String version, String name, String imgUrl) {
+        setBtName(btName);
+        setVersion(version);
+        setName(name);
+        setImgUrl(imgUrl);
+    }
 
     public int getId() {
         return id;

@@ -50,9 +50,6 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.Setting;
 import java.util.List;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
@@ -62,34 +59,23 @@ import butterknife.OnClick;
 /**
  * 设备页面
  */
-public class B30DeviceActivity extends WatchBaseActivity implements Rationale<List<String>> {
+public class B30DeviceActivity extends WatchBaseActivity
+        implements Rationale<List<String>> ,View.OnClickListener{
 
     private static final String TAG = "B30DeviceActivity";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.longSitToggleBtn)
     ToggleButton longSitToggleBtn;
-    @BindView(R.id.turnWristToggleBtn)
     ToggleButton turnWristToggleBtn;
-    @BindView(R.id.privateBloadToggleBtn)
     ToggleButton privateBloadToggleBtn;
-    @BindView(R.id.b30DeviceStyleRel)
     RelativeLayout b30DeviceStyleRelR;
-    @BindView(R.id.b30DevicePrivateBloadRel)
     RelativeLayout b30DevicePrivateBloadRelR;
 
 
-    @BindView(R.id.view_daojishi)
     View view_daojishi;
-    @BindView(R.id.b31DeviceCounDownRel)
     RelativeLayout b31DeviceCounDownRel;
-
-    @BindView(R.id.view_sty)
     View view_sty;
-    @BindView(R.id.view_bp)
     View view_bp;
 
     /**
@@ -102,11 +88,40 @@ public class B30DeviceActivity extends WatchBaseActivity implements Rationale<Li
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_device_layout);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
         initData();
+
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        longSitToggleBtn = findViewById(R.id.longSitToggleBtn);
+        turnWristToggleBtn = findViewById(R.id.turnWristToggleBtn);
+        privateBloadToggleBtn = findViewById(R.id.privateBloadToggleBtn);
+        b30DeviceStyleRelR = findViewById(R.id.b30DeviceStyleRel);
+        b30DevicePrivateBloadRelR = findViewById(R.id.b30DevicePrivateBloadRel);
+        view_daojishi = findViewById(R.id.view_daojishi);
+        b31DeviceCounDownRel = findViewById(R.id.b31DeviceCounDownRel);
+        view_sty = findViewById(R.id.view_sty);
+        view_bp = findViewById(R.id.view_bp);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.b30DeviceMsgRel).setOnClickListener(this);
+        findViewById(R.id.b30DeviceAlarmRel).setOnClickListener(this);
+        findViewById(R.id.b30DeviceLongSitRel).setOnClickListener(this);
+        findViewById(R.id.b30DeviceWristRel).setOnClickListener(this);
+        findViewById(R.id.b30DevicePrivateBloadRel).setOnClickListener(this);
+        findViewById(R.id.b30DeviceSwitchRel).setOnClickListener(this);
+        findViewById(R.id.b30DevicePtoRel).setOnClickListener(this);
+        findViewById(R.id.b30DeviceResetRel).setOnClickListener(this);
+        findViewById(R.id.b30DeviceStyleRel).setOnClickListener(this);
+        findViewById(R.id.b30DevicedfuRel).setOnClickListener(this);
+        findViewById(R.id.b30DeviceClearDataRel).setOnClickListener(this);
+        findViewById(R.id.b30DisConnBtn).setOnClickListener(this);
+        findViewById(R.id.b31DeviceCounDownRel).setOnClickListener(this);
 
     }
 
@@ -184,12 +199,8 @@ public class B30DeviceActivity extends WatchBaseActivity implements Rationale<Li
     }
 
 
-    @OnClick({R.id.commentB30BackImg, R.id.b30DeviceMsgRel, R.id.b30DeviceAlarmRel,
-            R.id.b30DeviceLongSitRel, R.id.b30DeviceWristRel, R.id.b30DevicePrivateBloadRel,
-            R.id.b30DeviceSwitchRel, R.id.b30DevicePtoRel, R.id.b30DeviceResetRel,
-            R.id.b30DeviceStyleRel, R.id.b30DevicedfuRel, R.id.b30DeviceClearDataRel, R.id.b30DisConnBtn,
-            R.id.b31DeviceCounDownRel})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
                 finish();

@@ -13,10 +13,6 @@ import android.widget.TextView;
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent: 添加好友
  * @author： 安
@@ -25,22 +21,27 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class FindFriendActivity extends WatchBaseActivity {
+public class FindFriendActivity extends WatchBaseActivity implements  View.OnClickListener{
     private static final String TAG = "--FindFriendActivity";
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.number_edit)
     EditText numberEdit;
-    @BindView(R.id.frends_list)
     ListView frendsList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_frends_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.add_frendes));
         whichDevice();//判断是B18i还是H9
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        numberEdit = findViewById(R.id.number_edit);
+        frendsList = findViewById(R.id.frends_list);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.scan_text).setOnClickListener(this);
     }
 
     private String is18i;
@@ -59,8 +60,8 @@ public class FindFriendActivity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.image_back, R.id.scan_text})
-    public void onClisk(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

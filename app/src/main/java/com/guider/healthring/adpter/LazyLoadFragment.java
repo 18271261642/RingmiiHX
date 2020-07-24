@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * Fragment预加载问题的解决方案：
  * 1.可以懒加载的Fragment
@@ -28,13 +25,11 @@ public abstract class LazyLoadFragment extends Fragment {
     protected boolean isLoad = false;
     protected final String TAG = "LazyLoadFragment";
     private View view;
-    Unbinder unbinder;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(setContentView(), container, false);
-        unbinder = ButterKnife.bind(this, view);
         isInit = true;
         /**初始化的时候去加载数据**/
         isCanLoadData();
@@ -79,7 +74,6 @@ public abstract class LazyLoadFragment extends Fragment {
         super.onDestroyView();
         isInit = false;
         isLoad = false;
-        unbinder.unbind();
     }
 
     protected void showToast(String message) {

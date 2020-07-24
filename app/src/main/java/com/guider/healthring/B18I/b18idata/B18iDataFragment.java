@@ -36,10 +36,6 @@ import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.model.HeartRateData;
 import cn.appscomm.bluetooth.model.SleepData;
@@ -64,33 +60,21 @@ import lecho.lib.hellocharts.view.ColumnChartView;
 public class B18iDataFragment extends Fragment {
     private static final String TAG = "--B18iDataFragment";
     View b18iDataView;
-    @BindView(R.id.leaf_square_chart)
     ColumnChartView columnChartView;
-    @BindView(R.id.b18i_table)
     TabLayout tableLayout;
-    @BindView(R.id.b18i_viewpagers)
     ViewPager viewPager;
-    Unbinder unbinder;
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     private MyViewPagerAdapter adapter;
 
 
     /**************************************************************************************/
-    @BindView(R.id.distanceData)
     TextView distanceData;
-    @BindView(R.id.heartData)
     TextView heartData;
-    @BindView(R.id.kcalData)
     TextView kcalData;
-    @BindView(R.id.deepSleepData)
     TextView deepSleepData;
-    @BindView(R.id.lightSleepData)
     TextView lightSleepData;
-    @BindView(R.id.shallowSleepData)
     TextView shallowSleepData;
     //Y数值
     private List<Integer> mValues = new ArrayList<>();
@@ -109,8 +93,7 @@ public class B18iDataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b18iDataView = inflater.inflate(R.layout.fragment_b18i_data, container, false);
-        unbinder = ButterKnife.bind(this, b18iDataView);
-
+        initViewIds();
         List<String> times2 = B18iUtils.getTimes2();
         int integer1 = Integer.valueOf(times2.get(1));
         int integer = Integer.valueOf(times2.get(2));
@@ -128,6 +111,22 @@ public class B18iDataFragment extends Fragment {
         getDatas();
         setContent();
         return b18iDataView;
+    }
+
+    private void initViewIds() {
+        columnChartView = b18iDataView.findViewById(R.id.leaf_square_chart);
+        tableLayout = b18iDataView.findViewById(R.id.b18i_table);
+        viewPager = b18iDataView.findViewById(R.id.b18i_viewpagers);
+        tvTitle = b18iDataView.findViewById(R.id.tv_title);
+        toolbar = b18iDataView.findViewById(R.id.toolbar);
+        distanceData = b18iDataView.findViewById(R.id.distanceData);
+        heartData = b18iDataView.findViewById(R.id.heartData);
+        kcalData = b18iDataView.findViewById(R.id.kcalData);
+        deepSleepData = b18iDataView.findViewById(R.id.deepSleepData);
+        lightSleepData = b18iDataView.findViewById(R.id.lightSleepData);
+        shallowSleepData = b18iDataView.findViewById(R.id.shallowSleepData);
+
+
     }
 
     private List<B18iStepDatas> stepDatasList;
@@ -188,13 +187,6 @@ public class B18iDataFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onB18iEventBus(B18iEventBus event) {

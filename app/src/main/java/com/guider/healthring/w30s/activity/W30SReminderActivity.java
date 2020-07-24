@@ -25,9 +25,6 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 
 import java.util.List;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * @aboutContent:
@@ -37,38 +34,26 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class W30SReminderActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class W30SReminderActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
     private static final int REQD_MSG_CONTENT_CODE = 1001;  //读取短信内容权限code
     private static final int REQUEST_REQDPHONE_STATE_CODE = 1002;
 
     private static final String BOZLUN_PACKNAME_EN = "com.bozlun.bozhilun.android";
 
-    @BindView(R.id.switch_Skype)
     Switch switchSkype;
-    @BindView(R.id.switch_WhatsApp)
     Switch switchWhatsApp;
-    @BindView(R.id.switch_Facebook)
     Switch switchFacebook;
-    @BindView(R.id.switch_LinkendIn)
     Switch switchLinkendIn;
-    @BindView(R.id.switch_Twitter)
     Switch switchTwitter;
-    @BindView(R.id.switch_Viber)
     Switch switchViber;
-    @BindView(R.id.switch_LINE)
     Switch switchLINE;
-    @BindView(R.id.switch_WeChat)
     Switch switchWeChat;
-    @BindView(R.id.switch_QQ)
     Switch switchQQ;
-    @BindView(R.id.switch_Msg)
     Switch switchMsg;
-    @BindView(R.id.switch_Phone)
     Switch switchPhone;
-    @BindView(R.id.watch_msgOpenAccessBtn)
     RelativeLayout watch_msgOpenAccessBtn;
-    @BindView(R.id.newSearchTitleTv)
     TextView newSearchTitleTv;
 
 
@@ -76,12 +61,32 @@ public class W30SReminderActivity extends WatchBaseActivity implements CompoundB
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_w30s_reminder);
-        ButterKnife.bind(this);
+        initViewIds();
 
         newSearchTitleTv.setText(getResources().getString(R.string.string_application_reminding));
         watch_msgOpenAccessBtn.setVisibility(View.GONE);
         getSwitchState();
         initSwitch();
+    }
+
+    private void initViewIds() {
+        switchSkype = findViewById(R.id.switch_Skype);
+        switchWhatsApp = findViewById(R.id.switch_WhatsApp);
+        switchFacebook = findViewById(R.id.switch_Facebook);
+        switchLinkendIn = findViewById(R.id.switch_LinkendIn);
+        switchTwitter = findViewById(R.id.switch_Twitter);
+        switchViber = findViewById(R.id.switch_Viber);
+        switchLINE = findViewById(R.id.switch_LINE);
+        switchWeChat = findViewById(R.id.switch_WeChat);
+        switchQQ = findViewById(R.id.switch_QQ);
+        switchMsg = findViewById(R.id.switch_Msg);
+        switchPhone = findViewById(R.id.switch_Phone);
+        watch_msgOpenAccessBtn = findViewById(R.id.watch_msgOpenAccessBtn);
+        newSearchTitleTv = findViewById(R.id.newSearchTitleTv);
+        watch_msgOpenAccessBtn.setOnClickListener(this);
+        findViewById(R.id.watch_msgOpenNitBtn).setOnClickListener(this);
+        findViewById(R.id.newSearchTitleLeft).setOnClickListener(this);
+        findViewById(R.id.newSearchRightImg1).setOnClickListener(this);
     }
 
     private void getSwitchState() {
@@ -123,10 +128,8 @@ public class W30SReminderActivity extends WatchBaseActivity implements CompoundB
         switchPhone.setOnCheckedChangeListener(this);
     }
 
-
-    @OnClick({R.id.watch_msgOpenNitBtn,R.id.newSearchTitleLeft,
-            R.id.watch_msgOpenAccessBtn,R.id.newSearchRightImg1})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.newSearchTitleLeft:
                 finish();

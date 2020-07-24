@@ -12,9 +12,6 @@ import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.util.SharedPreferencesUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Admin
@@ -23,18 +20,15 @@ import butterknife.OnClick;
 public class BemoSwitchActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.bemoSwitchToggleButton)
     ToggleButton bemoSwitchToggleButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bemo_switch);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
@@ -45,17 +39,24 @@ public class BemoSwitchActivity extends WatchBaseActivity implements CompoundBut
 
     }
 
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        bemoSwitchToggleButton = findViewById(R.id.bemoSwitchToggleButton);
+        commentB30BackImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
     private void initViews() {
         commentB30TitleTv.setText(getResources().getString(R.string.bemo_switch));
         commentB30BackImg.setVisibility(View.VISIBLE);
         bemoSwitchToggleButton.setOnCheckedChangeListener(this);
 
 
-    }
-
-    @OnClick(R.id.commentB30BackImg)
-    public void onClick() {
-        finish();
     }
 
     @Override

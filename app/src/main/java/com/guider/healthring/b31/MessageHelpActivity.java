@@ -17,39 +17,28 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.Setting;
 import java.util.List;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 手动打开权限页面
  * Created by Admin
  * Date 2019/5/7
  */
-public class MessageHelpActivity extends WatchBaseActivity {
+public class MessageHelpActivity extends WatchBaseActivity implements View.OnClickListener{
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
     //打开通知
-    @BindView(R.id.helpNotificationTv)
     TextView helpNotificationTv;
     //读取联系人的权限
-    @BindView(R.id.helpContPermissionTv)
     TextView helpContPermissionTv;
     //拨打电话权限
-    @BindView(R.id.helpPhonePermissionTv)
     TextView helpPhonePermissionTv;
     //读取通话记录权限
-    @BindView(R.id.helpCallLogPermissionTv)
     TextView helpCallLogPermissionTv;
     //读取联系人权限
-    @BindView(R.id.helpContPermission2Tv)
     TextView helpContPermission2Tv;
     //发送短信权限
-    @BindView(R.id.helpSMSPermissionTv)
     TextView helpSMSPermissionTv;
 
 
@@ -68,11 +57,26 @@ public class MessageHelpActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_msg_help_layout);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
+    }
 
-
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        helpNotificationTv = findViewById(R.id.helpNotificationTv);
+        helpContPermissionTv = findViewById(R.id.helpContPermissionTv);
+        helpPhonePermissionTv = findViewById(R.id.helpPhonePermissionTv);
+        helpCallLogPermissionTv = findViewById(R.id.helpCallLogPermissionTv);
+        helpContPermission2Tv = findViewById(R.id.helpContPermission2Tv);
+        helpSMSPermissionTv = findViewById(R.id.helpSMSPermissionTv);
+        commentB30BackImg.setOnClickListener(this);
+        helpNotificationTv.setOnClickListener(this);
+        helpContPermissionTv.setOnClickListener(this);
+        helpPhonePermissionTv.setOnClickListener(this);
+        helpCallLogPermissionTv.setOnClickListener(this);
+        helpContPermission2Tv.setOnClickListener(this);
+        helpSMSPermissionTv.setOnClickListener(this);
     }
 
 
@@ -130,10 +134,7 @@ public class MessageHelpActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.helpNotificationTv,
-            R.id.helpContPermissionTv, R.id.helpPhonePermissionTv,
-            R.id.helpCallLogPermissionTv, R.id.helpContPermission2Tv,
-            R.id.helpSMSPermissionTv})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

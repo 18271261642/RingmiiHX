@@ -35,11 +35,6 @@ import com.guider.healthring.util.URLs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * @aboutContent:
  * @author： 安
@@ -48,28 +43,22 @@ import butterknife.Unbinder;
  * @company: 东莞速成科技有限公司
  */
 
-public class H9MineFragment extends Fragment {
+public class H9MineFragment extends Fragment implements View.OnClickListener{
 
     View b18iMineView;
-    Unbinder unbinder;
 
     //头像显示ImageView
-    @BindView(R.id.userImageHead)
     ImageView userImageHead;
     //用户名称显示TextView
-    @BindView(R.id.userName)
     TextView userName;
     //总公里数显示TextView
-    @BindView(R.id.totalKilometers)
     TextView totalKilometers;
     //日均步数显示TextView
-    @BindView(R.id.equalStepNumber)
     TextView equalStepNumber;
     //达标天数显示TextView
-    @BindView(R.id.standardDay)
     TextView standardDay;
-    @BindView(R.id.privatemode_cardview)//排行榜
-            CardView privatemodeCardview;
+    //排行榜
+    CardView privatemodeCardview;
 
 
     private CommonSubscriber commonSubscriber, commonSubscriber2;
@@ -79,7 +68,7 @@ public class H9MineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         b18iMineView = inflater.inflate(R.layout.fragment_b18i_mine, container, false);
-        unbinder = ButterKnife.bind(this, b18iMineView);
+        initViewIds();
 
         initData();
         //获取用户信息
@@ -87,6 +76,22 @@ public class H9MineFragment extends Fragment {
         //获取数据展示
         getUserSportData();
         return b18iMineView;
+    }
+
+    private void initViewIds() {
+        userImageHead = b18iMineView.findViewById(R.id.userImageHead);
+        userName = b18iMineView.findViewById(R.id.userName);
+        totalKilometers = b18iMineView.findViewById(R.id.totalKilometers);
+        equalStepNumber = b18iMineView.findViewById(R.id.equalStepNumber);
+        standardDay = b18iMineView.findViewById(R.id.standardDay);
+        privatemodeCardview = b18iMineView.findViewById(R.id.privatemode_cardview);
+        privatemodeCardview.setOnClickListener(this);
+        b18iMineView.findViewById(R.id.targetSetting).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.personalData).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.smartAlert).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.findFriends).setOnClickListener(this);
+        b18iMineView.findViewById(R.id.mineSetting).setOnClickListener(this);
+        userImageHead.setOnClickListener(this);
     }
 
     private void initData() {
@@ -194,14 +199,8 @@ public class H9MineFragment extends Fragment {
         OkHttpObservable.getInstance().getData(commonSubscriber2, myInfoUrl, js.toString());
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
-    @OnClick({R.id.privatemode_cardview, R.id.targetSetting,
-            R.id.personalData, R.id.smartAlert, R.id.findFriends, R.id.mineSetting, R.id.userImageHead})
+    @Override
     public void onClick(View view) {
 
         switch (view.getId()) {

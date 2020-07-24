@@ -72,7 +72,7 @@ public class TokenInfo implements Parcelable {
         this.expired = in.readInt();
     }
 
-    public static final Parcelable.Creator<TokenInfo> CREATOR = new Parcelable.Creator<TokenInfo>() {
+    public static final Creator<TokenInfo> CREATOR = new Creator<TokenInfo>() {
         @Override
         public TokenInfo createFromParcel(Parcel source) {
             return new TokenInfo(source);

@@ -44,10 +44,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2017/11/16.
  */
@@ -55,26 +51,18 @@ import butterknife.OnClick;
 public class H8ShareActivity extends WatchBaseActivity {
     private static final String TAG = "H8ShareActivity";
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
     //总数
-    @BindView(R.id.h8ShareTotalTv)
     RiseNumberTextView h8ShareTotalTv;
     //累计
-    @BindView(R.id.h8ShareGrandTv)
     TextView h8ShareGrandTv;
 
     List<WatchDataDatyBean> watchDataList;
     Map<String, Integer> sumMap;
-    @BindView(R.id.h8ShareBtn)
     Button h8ShareBtn;
-    @BindView(R.id.h8_dataShareHeadImg)
     ImageView h8DataShareHeadImg;
-    @BindView(R.id.h8SharedUserNameTv)
     TextView h8SharedUserNameTv;
-    @BindView(R.id.rela_logo)
     RelativeLayout rela_logo;
 
     private List<Integer> totalStesList;
@@ -83,7 +71,7 @@ public class H8ShareActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_h8share);
-        ButterKnife.bind(this);
+        initViewIds();
 
         if (MyCommandManager.DEVICENAME != null && MyCommandManager.DEVICENAME.equals("W30")) {
             rela_logo.setVisibility(View.GONE);
@@ -93,6 +81,31 @@ public class H8ShareActivity extends WatchBaseActivity {
         getUserInfo();
         getTotalDatas();    //获取总数
 
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        h8ShareTotalTv = findViewById(R.id.h8ShareTotalTv);
+        h8ShareGrandTv = findViewById(R.id.h8ShareGrandTv);
+        h8ShareBtn = findViewById(R.id.h8ShareBtn);
+        h8DataShareHeadImg = findViewById(R.id.h8_dataShareHeadImg);
+        h8SharedUserNameTv = findViewById(R.id.h8SharedUserNameTv);
+        rela_logo = findViewById(R.id.rela_logo);
+        h8ShareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                h8ShareBtn.setVisibility(View.GONE);
+                toolbar.setVisibility(View.GONE);
+                showLoadingDialog("Loading...");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.sendEmptyMessage(1001);
+                    }
+                }, 3000);
+            }
+        });
     }
 
     private void getUserInfo() {
@@ -282,17 +295,4 @@ public class H8ShareActivity extends WatchBaseActivity {
 //        Common.showShare(H8ShareActivity.this, null, false, filePath);
     }
 
-    @OnClick(R.id.h8ShareBtn)
-    public void onViewClicked() {
-        h8ShareBtn.setVisibility(View.GONE);
-        toolbar.setVisibility(View.GONE);
-        showLoadingDialog("Loading...");
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                handler.sendEmptyMessage(1001);
-            }
-        }, 3000);
-
-    }
 }

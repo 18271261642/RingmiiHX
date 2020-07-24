@@ -59,8 +59,6 @@ dependencies {
 //    debugImplementation rootProject.ext.dependencies["leakcanary-android-fragment"]
 //    releaseImplementation rootProject.ext.dependencies["leakcanary-android-no-op"]
 //    implementation rootProject.ext.dependencies["rxandroid"]
-//    implementation rootProject.ext.dependencies["butterknife"]
-//    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     //implementation rootProject.ext.dependencies["retrofit"]
     //implementation rootProject.ext.dependencies["retrofit-converter-gson"]
 //    implementation rootProject.ext.dependencies["adapter-rxjava"]

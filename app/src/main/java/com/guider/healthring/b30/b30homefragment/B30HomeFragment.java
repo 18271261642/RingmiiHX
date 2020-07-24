@@ -77,73 +77,47 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 
 /**
  * Created by Administrator on 2018/7/20.
  */
 
-public class B30HomeFragment extends LazyFragment implements NewConnBleHelpService.ConnBleMsgDataListener {
+public class B30HomeFragment extends LazyFragment
+        implements NewConnBleHelpService.ConnBleMsgDataListener,View.OnClickListener {
 
     View b30HomeFragment;
-    @BindView(R.id.b30ProgressBar)
     WaveProgress b30ProgressBar;
-    Unbinder unbinder;
     //日期
-    @BindView(R.id.b30_top_dateTv)
     TextView b30TopDateTv;
     //电量
-    @BindView(R.id.batteryTopImg)
     ImageView batteryTopImg;
-    @BindView(R.id.batteryPowerTv)
     TextView batteryPowerTv;
-    @BindView(R.id.b30connectStateTv)
     TextView b30ConnectStateTv;
 
     //目标步数
-    @BindView(R.id.b30GoalStepTv)
     TextView b30GoalStepTv;
     //运动步数的chart
-    @BindView(R.id.b30BarChart)
     BarChart b30BarChart;
     //步数数据
     List<BarEntry> b30ChartList;
     //血压
-    @BindView(R.id.bloadLastTimeTv)
     TextView bloadLastTimeTv;
-    @BindView(R.id.b30BloadValueTv)
     TextView b30BloadValueTv;
     /**
      * 血压图表
      */
-    @BindView(R.id.b30HomeBloadChart)
     B30CusBloadView b30HomeBloadChart;
     //睡眠图表
-    @BindView(R.id.b30CusSleepView)
     B30CusSleepView b30CusSleepView;
-    @BindView(R.id.b30StartEndTimeTv)
     TextView b30StartEndTimeTv;
-    @BindView(R.id.b30HomeSwipeRefreshLayout)
     SmartRefreshLayout b30HomeSwipeRefreshLayout;
-    @BindView(R.id.homeTodayTv)
     TextView homeTodayTv;
-    @BindView(R.id.homeTodayImg)
     ImageView homeTodayImg;
-    @BindView(R.id.homeYestTodayTv)
     TextView homeYestTodayTv;
-    @BindView(R.id.iv_top)
     ImageView iv_top;
-    @BindView(R.id.homeYestdayImg)
     ImageView homeYestdayImg;
-    @BindView(R.id.homeBeYestdayTv)
     TextView homeBeYestdayTv;
-    @BindView(R.id.homeBeYestdayImg)
     ImageView homeBeYestdayImg;
-    @BindView(R.id.homeFastStatusTv)
     TextView homeFastStatusTv;
     /**
      * 日期的集合
@@ -159,24 +133,18 @@ public class B30HomeFragment extends LazyFragment implements NewConnBleHelpServi
 
 
     private List<BarEntry> tmpB30StepList;
-    @BindView(R.id.b30SportChartLin1)
     LinearLayout b30SportChartLin1;
-    @BindView(R.id.b30ChartTopRel)
     RelativeLayout b30ChartTopRel;
 
     //心率图标
-    @BindView(R.id.b30HomeHeartChart)
     B30CusHeartView b30CusHeartView;
     //最后一次时间
-    @BindView(R.id.lastTimeTv)
     TextView lastTimeTv;
     //心率值
-    @BindView(R.id.b30HeartValueTv)
     TextView b30HeartValueTv;
     //心率图标数据
     List<Integer> heartList;
     //最大步数
-    @BindView(R.id.b30SportMaxNumTv)
     TextView b30SportMaxNumTv;
     //用于计算最大步数
     private List<Integer> tmpIntegerList;
@@ -332,12 +300,54 @@ public class B30HomeFragment extends LazyFragment implements NewConnBleHelpServi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b30HomeFragment = inflater.inflate(R.layout.fragment_b30_home_layout, container, false);
-        unbinder = ButterKnife.bind(this, b30HomeFragment);
+        initViewIds();
 
         initViews();
         initData();
 //        MyLogUtil.e("---------------记录---onCreateView");
         return b30HomeFragment;
+    }
+
+    private void initViewIds() {
+        b30ProgressBar = b30HomeFragment.findViewById(R.id.b30ProgressBar);
+        b30TopDateTv = b30HomeFragment.findViewById(R.id.b30_top_dateTv);
+        batteryTopImg = b30HomeFragment.findViewById(R.id.batteryTopImg);
+        batteryPowerTv = b30HomeFragment.findViewById(R.id.batteryPowerTv);
+        b30ConnectStateTv = b30HomeFragment.findViewById(R.id.b30connectStateTv);
+        b30GoalStepTv = b30HomeFragment.findViewById(R.id.b30GoalStepTv);
+        b30BarChart = b30HomeFragment.findViewById(R.id.b30BarChart);
+        bloadLastTimeTv = b30HomeFragment.findViewById(R.id.bloadLastTimeTv);
+        b30BloadValueTv = b30HomeFragment.findViewById(R.id.b30BloadValueTv);
+        b30HomeBloadChart = b30HomeFragment.findViewById(R.id.b30HomeBloadChart);
+        b30CusSleepView = b30HomeFragment.findViewById(R.id.b30CusSleepView);
+        b30StartEndTimeTv = b30HomeFragment.findViewById(R.id.b30StartEndTimeTv);
+        b30HomeSwipeRefreshLayout = b30HomeFragment.findViewById(R.id.b30HomeSwipeRefreshLayout);
+        homeTodayTv = b30HomeFragment.findViewById(R.id.homeTodayTv);
+        homeTodayImg = b30HomeFragment.findViewById(R.id.homeTodayImg);
+        homeYestTodayTv = b30HomeFragment.findViewById(R.id.homeYestTodayTv);
+        iv_top = b30HomeFragment.findViewById(R.id.iv_top);
+        homeYestdayImg = b30HomeFragment.findViewById(R.id.homeYestdayImg);
+        homeBeYestdayTv = b30HomeFragment.findViewById(R.id.homeBeYestdayTv);
+        homeBeYestdayImg = b30HomeFragment.findViewById(R.id.homeBeYestdayImg);
+        homeFastStatusTv = b30HomeFragment.findViewById(R.id.homeFastStatusTv);
+        b30SportChartLin1 = b30HomeFragment.findViewById(R.id.b30SportChartLin1);
+        b30ChartTopRel = b30HomeFragment.findViewById(R.id.b30ChartTopRel);
+        b30CusHeartView = b30HomeFragment.findViewById(R.id.b30HomeHeartChart);
+        lastTimeTv = b30HomeFragment.findViewById(R.id.lastTimeTv);
+        b30HeartValueTv = b30HomeFragment.findViewById(R.id.b30HeartValueTv);
+        b30SportMaxNumTv = b30HomeFragment.findViewById(R.id.b30SportMaxNumTv);
+        b30SportChartLin1.setOnClickListener(this);
+        b30BarChart.setOnClickListener(this);
+        b30HomeFragment.findViewById(R.id.b30CusHeartLin).setOnClickListener(this);
+        b30HomeFragment.findViewById(R.id.b30CusBloadLin).setOnClickListener(this);
+        b30HomeFragment.findViewById(R.id.b30MeaureHeartImg).setOnClickListener(this);
+        b30HomeFragment.findViewById(R.id.b30MeaureBloadImg).setOnClickListener(this);
+        b30HomeFragment.findViewById(R.id.b30SleepLin).setOnClickListener(this);
+        b30HomeFragment.findViewById(R.id.homeFastLin).setOnClickListener(this);
+        homeTodayTv.setOnClickListener(this);
+        homeYestTodayTv.setOnClickListener(this);
+        homeBeYestdayTv.setOnClickListener(this);
+        b30HomeFragment.findViewById(R.id.battery_watchRecordShareImg).setOnClickListener(this);
     }
 
     private void initData() {
@@ -458,12 +468,6 @@ public class B30HomeFragment extends LazyFragment implements NewConnBleHelpServi
                 if (activity != null) activity.reconnectDevice();// 重新连接
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
@@ -998,12 +1002,8 @@ public class B30HomeFragment extends LazyFragment implements NewConnBleHelpServi
         b30BarChart.animateXY(1000, 2000);//设置动画
     }
 
-    @OnClick({R.id.b30SportChartLin1, R.id.b30BarChart, R.id.b30CusHeartLin,
-            R.id.b30CusBloadLin, R.id.b30MeaureHeartImg, R.id.b30MeaureBloadImg,
-            R.id.b30SleepLin,  R.id.homeFastLin,
-            R.id.homeTodayTv, R.id.homeYestTodayTv, R.id.homeBeYestdayTv,
-            R.id.battery_watchRecordShareImg})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.b30SportChartLin1: // 运动数据详情
             case R.id.b30BarChart: // 运动数据详情

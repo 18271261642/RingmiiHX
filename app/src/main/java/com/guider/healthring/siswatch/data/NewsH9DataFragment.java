@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,11 +49,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import lecho.lib.hellocharts.formatter.ColumnChartValueFormatter;
 import lecho.lib.hellocharts.formatter.SimpleColumnChartValueFormatter;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
@@ -68,62 +64,42 @@ import lecho.lib.hellocharts.view.ColumnChartView;
  * Created by sunjianhua on 2017/11/1.
  */
 
-public class NewsH9DataFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, RequestView {
+public class NewsH9DataFragment extends BaseFragment
+        implements SwipeRefreshLayout.OnRefreshListener, RequestView,View.OnClickListener {
 
     private static final String TAG = "NewsH9DataFragment";
 
     View newH9DataView;
 
     //步数统计图
-    @BindView(R.id.newH9DataStepChartView)
     ColumnChartView newH9DataStepChartView;
     //心率统计图
-    @BindView(R.id.newH9DataHeartChartView)
     ColumnChartView newH9DataHeartChartView;
     //睡眠统计图
-    @BindView(R.id.newH9DataSleepChartView)
     ColumnChartView newH9DataSleepChartView;
     //步数显示tv
-    @BindView(R.id.newH9DataStepShowTv)
     TextView newH9DataStepShowTv;
     //心率显示tv
-    @BindView(R.id.newH9DataHeartShowTv)
     TextView newH9DataHeartShowTv;
     //睡眠显示tv
-    @BindView(R.id.newH9DataSleepShowTv)
     TextView newH9DataSleepShowTv;
 
-    Unbinder unbinder;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     //步数的相关
     List<WatchDataDatyBean> stepList;
-    @BindView(R.id.newH9DataWeekTv)
     TextView newH9DataWeekTv;
-    @BindView(R.id.newH9DataMonthTv)
     TextView newH9DataMonthTv;
-    @BindView(R.id.newH9DataYearTv)
     TextView newH9DataYearTv;
-    @BindView(R.id.newH9DataSwipe)
     SwipeRefreshLayout newH9DataSwipe;
-    @BindView(R.id.h8_data_titleTv)
     TextView h8DataTitleTv;
-    @BindView(R.id.h8_data_titleLinImg)
     ImageView h8DataTitleLinImg;
-    @BindView(R.id.h8_dataLinChartImg)
     ImageView h8DataLinChartImg;
-    @BindView(R.id.newH9DataStepChartView_text)
     TextView newH9DataStepChartViewText;
-    @BindView(R.id.newH9DataHeartChartView_text)
     TextView newH9DataHeartChartViewText;
-    @BindView(R.id.newH9DataSleepChartView_text)
     TextView newH9DataSleepChartViewText;
-    @BindView(R.id.scroll_view)
     ScrollView scrollView;
-    @BindView(R.id.step_text_show)
     TextView stepTextShow;
-    @BindView(R.id.heart_text_show)
     TextView heartTextShow;
-    @BindView(R.id.sleep_text_show)
     TextView sleepTextShow;
     private ColumnChartData data;   //步数的图表数据源
     //步数数值
@@ -190,24 +166,50 @@ public class NewsH9DataFragment extends BaseFragment implements SwipeRefreshLayo
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         newH9DataView = inflater.inflate(R.layout.fragment_new_h9_data, container, false);
-        unbinder = ButterKnife.bind(this, newH9DataView);
+        initViewIds();
         initViews();
         clearClickTvStyle();
         newH9DataWeekTv.setTextColor(getResources().getColor(R.color.white));
         newH9DataWeekTv.setBackgroundResource(R.drawable.newh9data_unselecte_text_shap_one);
 //        getAllChartData(7);
 //        getDatas();
-        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
                 newH9DataHeartChartView.postInvalidate();
                 newH9DataStepChartView.postInvalidate();
                 newH9DataSleepChartView.postInvalidate();
                 newH9DataSwipe.postInvalidate();
-            }
-        });
+            });
+        }
         return newH9DataView;
+    }
+
+    private void initViewIds() {
+        newH9DataStepChartView = newH9DataView.findViewById(R.id.newH9DataStepChartView);
+        newH9DataHeartChartView = newH9DataView.findViewById(R.id.newH9DataHeartChartView);
+        newH9DataSleepChartView = newH9DataView.findViewById(R.id.newH9DataSleepChartView);
+        newH9DataStepShowTv = newH9DataView.findViewById(R.id.newH9DataStepShowTv);
+        newH9DataHeartShowTv = newH9DataView.findViewById(R.id.newH9DataHeartShowTv);
+        newH9DataSleepShowTv = newH9DataView.findViewById(R.id.newH9DataSleepShowTv);
+        newH9DataWeekTv = newH9DataView.findViewById(R.id.newH9DataWeekTv);
+        newH9DataMonthTv = newH9DataView.findViewById(R.id.newH9DataMonthTv);
+        newH9DataYearTv = newH9DataView.findViewById(R.id.newH9DataYearTv);
+        newH9DataSwipe = newH9DataView.findViewById(R.id.newH9DataSwipe);
+        h8DataTitleTv = newH9DataView.findViewById(R.id.h8_data_titleTv);
+        h8DataTitleLinImg = newH9DataView.findViewById(R.id.h8_data_titleLinImg);
+        h8DataLinChartImg = newH9DataView.findViewById(R.id.h8_dataLinChartImg);
+        newH9DataStepChartViewText = newH9DataView.findViewById(R.id.newH9DataStepChartView_text);
+        newH9DataHeartChartViewText = newH9DataView.findViewById(R.id.newH9DataHeartChartView_text);
+        newH9DataSleepChartViewText = newH9DataView.findViewById(R.id.newH9DataSleepChartView_text);
+        scrollView = newH9DataView.findViewById(R.id.scroll_view);
+        stepTextShow = newH9DataView.findViewById(R.id.step_text_show);
+        heartTextShow = newH9DataView.findViewById(R.id.heart_text_show);
+        sleepTextShow = newH9DataView.findViewById(R.id.sleep_text_show);
+        newH9DataWeekTv.setOnClickListener(this);
+        newH9DataMonthTv.setOnClickListener(this);
+        newH9DataYearTv.setOnClickListener(this);
+        newH9DataView.findViewById(R.id.h8_dataShareImg).setOnClickListener(this);
     }
 
 
@@ -851,12 +853,6 @@ public class NewsH9DataFragment extends BaseFragment implements SwipeRefreshLayo
         if (newH9DataSwipe != null) newH9DataSwipe.setOnRefreshListener(this);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
     //步数图表显示
     private void showStepsChat(final int count) {
         int numberTime = 0;
@@ -1184,9 +1180,8 @@ public class NewsH9DataFragment extends BaseFragment implements SwipeRefreshLayo
     }
 
 
-    @OnClick({R.id.newH9DataWeekTv, R.id.newH9DataMonthTv, R.id.newH9DataYearTv,
-            R.id.h8_dataShareImg})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.newH9DataWeekTv:  //周的点击
                 if (heartList != null) heartList.clear();

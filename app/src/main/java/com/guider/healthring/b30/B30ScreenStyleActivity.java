@@ -29,9 +29,6 @@ import com.veepoo.protocol.model.datas.ScreenStyleData;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 
 /**
  * Created by Administrator on 2018/8/14.
@@ -44,11 +41,8 @@ public class B30ScreenStyleActivity extends WatchBaseActivity implements OnDevic
 
     private static final String TAG = "B30ScreenStyleActivity";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.deviceStyleListView)
     ListView deviceStyleListView;
     View view_five;
 
@@ -61,11 +55,18 @@ public class B30ScreenStyleActivity extends WatchBaseActivity implements OnDevic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_themestyle);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
         readStyleData();
+    }
+
+    private void initViewIds() {
+        commentB30BackImg =findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv =findViewById(R.id.commentB30TitleTv);
+        deviceStyleListView =findViewById(R.id.deviceStyleListView);
+
     }
 
 

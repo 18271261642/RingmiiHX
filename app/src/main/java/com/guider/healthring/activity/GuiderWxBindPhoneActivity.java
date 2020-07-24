@@ -32,10 +32,6 @@ import com.guider.libbase.sms.SmsMob;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
@@ -44,24 +40,16 @@ import cn.smssdk.SMSSDK;
  * Created by Admin
  * Date 2019/9/24
  */
-public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements RequestView {
+public class GuiderWxBindPhoneActivity extends WatchBaseActivity
+        implements RequestView,View.OnClickListener {
 
     private static final String TAG = "GuiderWxBindPhoneActivi";
 
-    @BindView(R.id.wxBindPhoneVerCodeEdit)
     EditText wxBindPhoneVerCodeEdit;
-    @BindView(R.id.wxBindGetVerCodeBtn)
     Button wxBindGetVerCodeBtn;
-
-
-
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.wxBindPhoneCodeTv)
     TextView wxBindPhoneCodeTv;
-    @BindView(R.id.wxBindPhoneCodeEdit)
     EditText wxBindPhoneCodeEdit;
-    @BindView(R.id.wxBindSubBtn)
     Button wxBindSubBtn;
 
     //倒计时
@@ -78,9 +66,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guider_bind_wx_layout);
-        ButterKnife.bind(this);
-
-
+        initViewIds();
         initViews();
 
         wxStr = getIntent().getStringExtra("wxStr");
@@ -88,6 +74,18 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
         initData();
 
 
+    }
+
+    private void initViewIds() {
+        wxBindPhoneVerCodeEdit = findViewById(R.id.wxBindPhoneVerCodeEdit);
+        wxBindGetVerCodeBtn = findViewById(R.id.wxBindGetVerCodeBtn);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        wxBindPhoneCodeTv = findViewById(R.id.wxBindPhoneCodeTv);
+        wxBindPhoneCodeEdit = findViewById(R.id.wxBindPhoneCodeEdit);
+        wxBindSubBtn = findViewById(R.id.wxBindSubBtn);
+        wxBindPhoneCodeTv.setOnClickListener(this);
+        wxBindGetVerCodeBtn.setOnClickListener(this);
+        wxBindSubBtn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -101,7 +99,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity implements Requ
 
     }
 
-    @OnClick({R.id.wxBindPhoneCodeTv, R.id.wxBindGetVerCodeBtn, R.id.wxBindSubBtn,})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.wxBindPhoneCodeTv:    //选择区号

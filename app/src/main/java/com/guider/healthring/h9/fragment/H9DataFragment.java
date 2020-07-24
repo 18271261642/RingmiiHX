@@ -44,9 +44,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import lecho.lib.hellocharts.formatter.ColumnChartValueFormatter;
 import lecho.lib.hellocharts.formatter.SimpleColumnChartValueFormatter;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
@@ -67,29 +64,18 @@ import lecho.lib.hellocharts.view.ColumnChartView;
 
 public class H9DataFragment extends Fragment {
     private final String TAG = "----->>>" + this.getClass();
-    @BindView(R.id.leaf_square_chart)
     ColumnChartView columnChartView;//直方图
     View b18iDataView;
-    Unbinder unbinder;
-
-    @BindView(R.id.b18i_table)
     TabLayout tableLayout;
-    @BindView(R.id.b18i_viewpager)
     ViewPager viewPager;
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
     //距离
-    @BindView(R.id.distanceData)
     TextView distanceData;
     //心率
-    @BindView(R.id.heartData)
     TextView heartData;
     //卡路里
-    @BindView(R.id.kcalData)
     TextView kcalData;
-    @BindView(R.id.h9DataSwipe)
     SwipeRefreshLayout h9DataSwipe;
 
     private CommonSubscriber commonSubscriber;
@@ -114,8 +100,7 @@ public class H9DataFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         b18iDataView = inflater.inflate(R.layout.fragment_b18i_data, container, false);
-        unbinder = ButterKnife.bind(this, b18iDataView);
-
+        initViewIds();
         toolbar.setBackgroundColor(Color.parseColor("#32c0ff"));
         //刷新
         h9DataSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -181,6 +166,19 @@ public class H9DataFragment extends Fragment {
         };
         getDatas();//获取数据
         return b18iDataView;
+    }
+
+    private void initViewIds() {
+        columnChartView = b18iDataView.findViewById(R.id.leaf_square_chart);
+        tableLayout = b18iDataView.findViewById(R.id.b18i_table);
+        viewPager = b18iDataView.findViewById(R.id.b18i_viewpager);
+        tvTitle = b18iDataView.findViewById(R.id.tv_title);
+        toolbar = b18iDataView.findViewById(R.id.toolbar);
+        distanceData = b18iDataView.findViewById(R.id.distanceData);
+        heartData = b18iDataView.findViewById(R.id.heartData);
+        kcalData = b18iDataView.findViewById(R.id.kcalData);
+        h9DataSwipe = b18iDataView.findViewById(R.id.h9DataSwipe);
+
     }
 
     /**
@@ -476,12 +474,6 @@ public class H9DataFragment extends Fragment {
             mValues.add(score[i]);
             views.add(new View(getContext()));
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     private class MyViewPagerAdapter extends PagerAdapter {

@@ -56,9 +56,6 @@ import com.yanzhenjie.permission.Setting;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2018/7/20.
  */
@@ -66,9 +63,7 @@ import butterknife.ButterKnife;
 public class B30HomeActivity extends WatchBaseActivity implements Rationale<List<String>> {
 
 
-    @BindView(R.id.b30View_pager)
     NoScrollViewPager b30ViewPager;
-    @BindView(R.id.b30BottomBar)
     BottomBar b30BottomBar;
 
     private List<Fragment> b30FragmentList = new ArrayList<>();
@@ -119,7 +114,7 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_home);
-        ButterKnife.bind(this);
+        initViewIds();
         initViews();
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
@@ -148,6 +143,12 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
 //                startActivityForResult(intent, 1); //REQUESTCODE--->1
 //            }
 //        }
+    }
+
+    private void initViewIds() {
+        b30ViewPager = findViewById(R.id.b30View_pager);
+        b30BottomBar = findViewById(R.id.b30BottomBar);
+
     }
 
 

@@ -49,10 +49,6 @@ import com.yanzhenjie.permission.RequestExecutor;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent: 功能设置界面
  * @author： 安
@@ -60,31 +56,22 @@ import butterknife.OnClick;
  * @mailBox: an.****.life@gmail.com
  * @company: 东莞速成科技有限公司
  */
-public class W30SSettingActivity extends WatchBaseActivity {
+public class W30SSettingActivity extends WatchBaseActivity implements  View.OnClickListener{
     private final String TAG = "----->>>" + this.getClass();
     private final int HandlerTime = 500;
     private final int ResetNUMBER = 201314;
     private final int ResetFactory = 131420;
 
-    @BindView(R.id.switch_bright)
     Switch switchBright;
-    @BindView(R.id.switch_heart)
     Switch switchHeart;
-    @BindView(R.id.switch_nodisturb)
     Switch switchNodisturb;
-    @BindView(R.id.radio_km)
     RadioButton radioKm;
-    @BindView(R.id.radio_mi)
     RadioButton radioMi;
-    @BindView(R.id.radioGroup_unti)
     RadioGroup radioGroupUnti;
-    @BindView(R.id.radio_24)
     RadioButton radio24;
-    @BindView(R.id.radio_12)
     RadioButton radio12;
-    @BindView(R.id.radioGroup_time)
     RadioGroup radioGroupTime;
-
+    TextView barTitles;
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -112,8 +99,7 @@ public class W30SSettingActivity extends WatchBaseActivity {
 
         }
     };
-    @BindView(R.id.bar_titles)
-    TextView barTitles;
+
 
 
 
@@ -121,9 +107,32 @@ public class W30SSettingActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w30s_setting_layout);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initData();
+
+    }
+
+    private void initViewIds() {
+        switchBright = findViewById(R.id.switch_bright);
+        switchHeart = findViewById(R.id.switch_heart);
+        switchNodisturb = findViewById(R.id.switch_nodisturb);
+        radioKm = findViewById(R.id.radio_km);
+        radioMi = findViewById(R.id.radio_mi);
+        radioGroupUnti = findViewById(R.id.radioGroup_unti);
+        radio24 = findViewById(R.id.radio_24);
+        radio12 = findViewById(R.id.radio_12);
+        radioGroupTime = findViewById(R.id.radioGroup_time);
+        barTitles = findViewById(R.id.bar_titles);
+        findViewById(R.id.set_updata).setOnClickListener(this);
+        findViewById(R.id.set_findeDevice).setOnClickListener(this);
+        findViewById(R.id.set_photograph).setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.set_notifi_app).setOnClickListener(this);
+        findViewById(R.id.set_clock).setOnClickListener(this);
+        findViewById(R.id.set_more_shock).setOnClickListener(this);
+        findViewById(R.id.targetSetting).setOnClickListener(this);
+        findViewById(R.id.set_factory).setOnClickListener(this);
+        findViewById(R.id.set_unbind).setOnClickListener(this);
 
     }
 
@@ -186,10 +195,8 @@ public class W30SSettingActivity extends WatchBaseActivity {
     private static final int REQUEST_REQDPHONE_STATE_CODE = 1001;
     private static final int REQUEST_OPENCAMERA_CODE = 1002;
 
-    @OnClick({R.id.set_updata, R.id.set_findeDevice, R.id.set_photograph,
-            R.id.image_back, R.id.set_notifi_app, R.id.set_clock, R.id.set_more_shock,
-            R.id.targetSetting, R.id.set_factory, R.id.set_unbind})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.set_updata://固件升级
                 if (MyCommandManager.DEVICENAME != null) {

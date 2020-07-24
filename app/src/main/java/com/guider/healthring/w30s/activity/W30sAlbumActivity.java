@@ -24,9 +24,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2018/3/31.
  */
@@ -35,9 +32,7 @@ public class W30sAlbumActivity extends WatchBaseActivity implements OnAlbumItemC
 
     private static final String TAG = "W30sAlbumActivity";
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
 
@@ -56,10 +51,14 @@ public class W30sAlbumActivity extends WatchBaseActivity implements OnAlbumItemC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_w30s_album_list);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
 
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
     }
 
     private void initViews() {

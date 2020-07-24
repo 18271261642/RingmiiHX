@@ -44,11 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * Created by Administrator on 2017/7/17.
  */
@@ -56,31 +51,23 @@ import butterknife.Unbinder;
 /**
  * 开跑页面
  */
-public class WatchRunFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class WatchRunFragment extends BaseFragment
+        implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
 
     private static final String TAG = "WatchRunFragment";
 
     View watchRunView;
-    @BindView(R.id.commentRunRecyclerView)
     RecyclerView commentRunRecyclerView;
-    Unbinder unbinder;
     //总计距离
-    @BindView(R.id.watch_run_totalDiscTv)
     TextView watchRunTotalDiscTv;
     //累计时长
-    @BindView(R.id.watch_run_totalTimeTv)
     TextView watchRunTotalTimeTv;
     //平均配速
-    @BindView(R.id.watch_run_averageSpeedTv)
     TextView watchRunAverageSpeedTv;
     //跑步次数
-    @BindView(R.id.watch_run_totalNumTv)
     TextView watchRunTotalNumTv;
-    @BindView(R.id.watch_runSwipe)
     SwipeRefreshLayout watchRunSwipe;
-    @BindView(R.id.watch_run_sportTypeTitleTv)
     TextView watchRunSportTypeTitleTv;
-    @BindView(R.id.today_data_type)
     ImageView todayDataType;
 
     private List<OutDoorSportBean> outDoorSportBeanList;
@@ -97,9 +84,23 @@ public class WatchRunFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         watchRunView = inflater.inflate(R.layout.comment_run_home_fragment, container, false);
-        unbinder = ButterKnife.bind(this, watchRunView);
+        initViewIds();
         initViews();
         return watchRunView;
+    }
+
+    private void initViewIds() {
+        commentRunRecyclerView = watchRunView.findViewById(R.id.commentRunRecyclerView);
+        watchRunTotalDiscTv = watchRunView.findViewById(R.id.watch_run_totalDiscTv);
+        watchRunTotalTimeTv = watchRunView.findViewById(R.id.watch_run_totalTimeTv);
+        watchRunAverageSpeedTv = watchRunView.findViewById(R.id.watch_run_averageSpeedTv);
+        watchRunTotalNumTv = watchRunView.findViewById(R.id.watch_run_totalNumTv);
+        watchRunSwipe = watchRunView.findViewById(R.id.watch_runSwipe);
+        watchRunSportTypeTitleTv = watchRunView.findViewById(R.id.watch_run_sportTypeTitleTv);
+        todayDataType = watchRunView.findViewById(R.id.today_data_type);
+        watchRunSportTypeTitleTv.setOnClickListener(this);
+        watchRunView.findViewById(R.id.watch_run_sportHistoryTitleTv).setOnClickListener(this);
+        watchRunView.findViewById(R.id.watch_runStartBtn).setOnClickListener(this);
     }
 
     @Override
@@ -291,12 +292,6 @@ public class WatchRunFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
     public void onRefresh() {
         if (ConnectManages.isNetworkAvailable(getActivity())) {
             watchRunSwipe.setRefreshing(true);
@@ -306,8 +301,8 @@ public class WatchRunFragment extends BaseFragment implements SwipeRefreshLayout
         }
     }
 
-    @OnClick({R.id.watch_run_sportTypeTitleTv, R.id.watch_run_sportHistoryTitleTv, R.id.watch_runStartBtn})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         String runTypeString[] = new String[]{getResources().getString(R.string.outdoor_running), getResources().getString(R.string.outdoor_cycling)};
         switch (view.getId()) {
             case R.id.watch_run_sportTypeTitleTv:   //类型标题

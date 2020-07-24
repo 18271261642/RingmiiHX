@@ -26,10 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 //
 ///**
 // * 睡眠详情
@@ -88,7 +84,6 @@ import butterknife.OnClick;
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_b30_sleep_detail_layout);
-//        ButterKnife.bind(this);
 //        initViews();
 //        initData();
 //    }
@@ -188,13 +183,11 @@ import butterknife.OnClick;
 /**
  * 睡眠详情
  */
-public class B30SleepDetailActivity extends WatchBaseActivity {
+public class B30SleepDetailActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B30SleepDetailActivity";
 
-    @BindView(R.id.sleepSeekBar)
     SeekBar sleepSeekBar;
-    @BindView(R.id.commB31TitleLayout)
     Toolbar commB31TitleLayout;
 
     /**
@@ -209,29 +202,17 @@ public class B30SleepDetailActivity extends WatchBaseActivity {
         context.startActivity(intent);
     }
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-    @BindView(R.id.detailSleepQuitRatingBar)
     RatingBar detailSleepQuitRatingBar;
-    @BindView(R.id.detailCusSleepView)
     B30CusSleepView detailCusSleepView;
-    @BindView(R.id.detailAllSleepTv)
     TextView detailAllSleepTv;
-    @BindView(R.id.detailAwakeNumTv)
     TextView detailAwakeNumTv;
-    @BindView(R.id.detailStartSleepTv)
     TextView detailStartSleepTv;
-    @BindView(R.id.detailAwakeTimeTv)
     TextView detailAwakeTimeTv;
-    @BindView(R.id.detailDeepTv)
     TextView detailDeepTv;
-    @BindView(R.id.detailHightSleepTv)
     TextView detailHightSleepTv;
-    @BindView(R.id.sleepCurrDateTv)
     TextView sleepCurrDateTv;
 
     private List<Integer> listValue;
@@ -251,9 +232,30 @@ public class B30SleepDetailActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_sleep_detail_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         initViews();
         initData();
+    }
+
+    private void initViewIds() {
+        sleepSeekBar = findViewById(R.id.sleepSeekBar);
+        commB31TitleLayout = findViewById(R.id.commB31TitleLayout);
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        detailSleepQuitRatingBar = findViewById(R.id.detailSleepQuitRatingBar);
+        detailCusSleepView = findViewById(R.id.detailCusSleepView);
+        detailAllSleepTv = findViewById(R.id.detailAllSleepTv);
+        detailAwakeNumTv = findViewById(R.id.detailAwakeNumTv);
+        detailStartSleepTv = findViewById(R.id.detailStartSleepTv);
+        detailAwakeTimeTv = findViewById(R.id.detailAwakeTimeTv);
+        detailDeepTv = findViewById(R.id.detailDeepTv);
+        detailHightSleepTv = findViewById(R.id.detailHightSleepTv);
+        sleepCurrDateTv = findViewById(R.id.sleepCurrDateTv);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        findViewById(R.id.sleepCurrDateLeft).setOnClickListener(this);
+        findViewById(R.id.sleepCurrDateRight).setOnClickListener(this);
     }
 
     private void initViews() {
@@ -366,8 +368,8 @@ public class B30SleepDetailActivity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg, R.id.sleepCurrDateLeft, R.id.sleepCurrDateRight})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
                 finish();

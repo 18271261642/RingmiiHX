@@ -5,7 +5,6 @@ import android.widget.TextView;
 import com.guider.healthring.R;
 import com.guider.healthring.base.BaseActivity;
 
-import butterknife.BindView;
 
 /**
  * Created by admin on 2017/5/5.
@@ -14,10 +13,11 @@ import butterknife.BindView;
 
 public class HelpActivity extends BaseActivity{
 
-    @BindView(R.id.tv_title)
+
     TextView tvTitle;
     @Override
     protected void initViews() {
+        tvTitle = findViewById(R.id.tv_title);
         tvTitle.setText(getResources().getString(R.string.help));
     }
 

@@ -34,67 +34,47 @@ import com.veepoo.protocol.model.settings.CheckWearSetting;
 import com.veepoo.protocol.model.settings.CustomSetting;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * B31开关设置界面
  * Created by Admin
  * Date 2018/12/19
  */
-public class B31SwitchActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class B31SwitchActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
 
     private static final String TAG = "B31SwitchActivity";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
     //佩戴检测
-    @BindView(R.id.b31CheckWearToggleBtn)
     ToggleButton b31CheckWearToggleBtn;
     //心率自动检测
-    @BindView(R.id.b31AutoHeartToggleBtn)
     ToggleButton b31AutoHeartToggleBtn;
     //血压自动检测
-    @BindView(R.id.b30AutoBloadToggleBtn)
     ToggleButton b30AutoBloadToggleBtn;
     //血氧夜间检测
-    @BindView(R.id.b31AutoBPOxyToggbleBtn)
     ToggleButton b31AutoBPOxyToggbleBtn;
     //秒表功能
-    @BindView(R.id.b31SecondToggleBtn)
     ToggleButton b31SecondToggleBtn;
     //断连提醒
-    @BindView(R.id.b31SwitchDisAlertTogg)
     ToggleButton b31SwitchDisAlertTogg;
     //24小时制
-    @BindView(R.id.b30SwitchTimeTypeTogg)
     ToggleButton b30SwitchTimeTypeTogg;
     //SOS
-    @BindView(R.id.b30SwitchHlepSos)
     ToggleButton b30SwitchHlepSos;
     //查找手机
-    @BindView(R.id.b30SwitchFindPhoneToggleBtn)
     ToggleButton b30SwitchFindPhoneToggleBtn;
 
 
-    @BindView(R.id.help_sos)
     RelativeLayout help_sos;
 
-    @BindView(R.id.rel_xueya)
     RelativeLayout rel_xueya;
 
-    @BindView(R.id.rel_miaobiao)
     RelativeLayout rel_miaobiao;
-    @BindView(R.id.view_miaobiao)
     View view_miaobiao;
 
-    @BindView(R.id.rel_findePhone)
     RelativeLayout rel_findePhone;
-    @BindView(R.id.view_findePhone)
     View view_findePhone;
 
 
@@ -112,15 +92,35 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_switch_layout);
-        ButterKnife.bind(this);
-
-
+        initViewIds();
         //没有秒表功能，取消
         rel_miaobiao.setVisibility(View.GONE);
         view_miaobiao.setVisibility(View.GONE);
         initViews();
 
         readDeviceCusSetting();
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        b31CheckWearToggleBtn = findViewById(R.id.b31CheckWearToggleBtn);
+        b31AutoHeartToggleBtn = findViewById(R.id.b31AutoHeartToggleBtn);
+        b30AutoBloadToggleBtn = findViewById(R.id.b30AutoBloadToggleBtn);
+        b31AutoBPOxyToggbleBtn = findViewById(R.id.b31AutoBPOxyToggbleBtn);
+        b31SecondToggleBtn = findViewById(R.id.b31SecondToggleBtn);
+        b31SwitchDisAlertTogg = findViewById(R.id.b31SwitchDisAlertTogg);
+        b30SwitchTimeTypeTogg = findViewById(R.id.b30SwitchTimeTypeTogg);
+        b30SwitchHlepSos = findViewById(R.id.b30SwitchHlepSos);
+        b30SwitchFindPhoneToggleBtn = findViewById(R.id.b30SwitchFindPhoneToggleBtn);
+        help_sos = findViewById(R.id.help_sos);
+        rel_xueya = findViewById(R.id.rel_xueya);
+        rel_miaobiao = findViewById(R.id.rel_miaobiao);
+        view_miaobiao = findViewById(R.id.view_miaobiao);
+        rel_findePhone = findViewById(R.id.rel_findePhone);
+        view_findePhone = findViewById(R.id.view_findePhone);
+        commentB30BackImg.setOnClickListener(this);
+        help_sos.setOnClickListener(this);
     }
 
     private void readDeviceCusSetting() {
@@ -234,8 +234,8 @@ public class B31SwitchActivity extends WatchBaseActivity implements CompoundButt
         b30AutoBloadToggleBtn.setOnCheckedChangeListener(this);//血压自动设置
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.help_sos})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:
                 finish();

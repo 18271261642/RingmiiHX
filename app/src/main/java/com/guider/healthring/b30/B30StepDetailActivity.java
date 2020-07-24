@@ -40,15 +40,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2018/8/4.
  */
 
-public class B30StepDetailActivity extends WatchBaseActivity {
+public class B30StepDetailActivity extends WatchBaseActivity implements View.OnClickListener{
 
     /**
      * 跳转到B30StepDetailActivity,并附带参数
@@ -62,28 +58,16 @@ public class B30StepDetailActivity extends WatchBaseActivity {
         context.startActivity(intent);
     }
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-
-    @BindView(R.id.b30ChartTopRel)
     RelativeLayout b30ChartTopRel;
-    @BindView(R.id.b30BarChart)
     BarChart b30BarChart;
-    @BindView(R.id.b30SportChartLin1)
     LinearLayout b30SportChartLin1;
-    @BindView(R.id.b30StepDetailRecyclerView)
     RecyclerView b30StepDetailRecyclerView;
-    @BindView(R.id.countStepTv)
     TextView countStepTv;
-    @BindView(R.id.countDisTv)
     TextView countDisTv;
-    @BindView(R.id.countKcalTv)
     TextView countKcalTv;
-    @BindView(R.id.stepCurrDateTv)
     TextView stepCurrDateTv;
 
     /**
@@ -111,9 +95,28 @@ public class B30StepDetailActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_step_detail_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         initViews();
         initData();
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        b30ChartTopRel = findViewById(R.id.b30ChartTopRel);
+        b30BarChart = findViewById(R.id.b30BarChart);
+        b30SportChartLin1 = findViewById(R.id.b30SportChartLin1);
+        b30StepDetailRecyclerView = findViewById(R.id.b30StepDetailRecyclerView);
+        countStepTv = findViewById(R.id.countStepTv);
+        countDisTv = findViewById(R.id.countDisTv);
+        countKcalTv = findViewById(R.id.countKcalTv);
+        stepCurrDateTv = findViewById(R.id.stepCurrDateTv);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        findViewById(R.id.stepCurrDateLeft).setOnClickListener(this);
+        findViewById(R.id.stepCurrDateRight).setOnClickListener(this);
+
     }
 
     private void initViews() {
@@ -259,9 +262,8 @@ public class B30StepDetailActivity extends WatchBaseActivity {
         countDisTv.setText(disValue + disStr);
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg, R.id.stepCurrDateLeft,
-            R.id.stepCurrDateRight})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:
                 finish();

@@ -31,9 +31,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by sunjianhua on 2017/11/6.
  */
@@ -43,14 +40,9 @@ import butterknife.ButterKnife;
  */
 public class RecordHistoryActivity extends WatchBaseActivity {
 
-
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.recordHistoryRecyclerView)
     RecyclerView recordHistoryRecyclerView;
-    @BindView(R.id.startDateTv)
     TextView startDateTv;
 
     private RecordDataAdapter recordDataAdapter;
@@ -61,13 +53,20 @@ public class RecordHistoryActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_history);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
         getRecordData();
 
 
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        recordHistoryRecyclerView = findViewById(R.id.recordHistoryRecyclerView);
+        startDateTv = findViewById(R.id.startDateTv);
     }
 
     private void getRecordData() {

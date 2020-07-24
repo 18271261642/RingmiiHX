@@ -25,10 +25,6 @@ import com.sdk.bluetooth.protocol.command.device.Unit;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 
@@ -40,13 +36,10 @@ import cn.appscomm.bluetooth.interfaces.ResultCallBack;
  * @company: 东莞速成科技有限公司
  */
 
-public class IsUnitActivity extends WatchBaseActivity {
+public class IsUnitActivity extends WatchBaseActivity implements View.OnClickListener{
     private final String TAG = this.getClass().toString() + "----->>>";
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.text_unit)
     TextView textUnit;
-    @BindView(R.id.switch_unit)
     Switch switchUnit;
     private int unit;
 
@@ -54,9 +47,16 @@ public class IsUnitActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h9_isunit_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.unit));
 //        whichDevice();//判断是B18i还是H9
+    }
+
+    private void initViewIds() {
+        barTitles =findViewById(R.id.bar_titles);
+        textUnit =findViewById(R.id.text_unit);
+        switchUnit =findViewById(R.id.switch_unit);
+        findViewById(R.id.image_back).setOnClickListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -169,8 +169,8 @@ public class IsUnitActivity extends WatchBaseActivity {
                 }));
     }
 
-    @OnClick({R.id.image_back})
-    public void Onclick(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

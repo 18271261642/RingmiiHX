@@ -16,31 +16,24 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2017/11/3.
  */
 
 public class SearchExplainActivity extends WatchBaseActivity {
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.search_explainWV)
     WebView searchExplainWV;
     WebSettings webSettings;
     String url = "";
-    @BindView(R.id.moreHelpTv)
     TextView moreHelpTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_explain);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
@@ -64,6 +57,13 @@ public class SearchExplainActivity extends WatchBaseActivity {
         });
         searchExplainWV.loadUrl(url);
 
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        searchExplainWV = findViewById(R.id.search_explainWV);
+        moreHelpTv = findViewById(R.id.moreHelpTv);
     }
 
     private void initViews() {

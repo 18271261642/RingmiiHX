@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Admin
@@ -34,11 +31,8 @@ public class GuiderDeviceActivity extends WatchBaseActivity {
     private static final String TAG = "GuiderDeviceActivity";
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.guiderDeviceRecyclerView)
     RecyclerView guiderDeviceRecyclerView;
 
     private List<Map<String,String>> guiderList ;
@@ -49,7 +43,7 @@ public class GuiderDeviceActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guider_device);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
@@ -57,6 +51,13 @@ public class GuiderDeviceActivity extends WatchBaseActivity {
         intentFilter.addAction("hat.bemo.BlueTooth.blegatt.device");
         registerReceiver(broadcastReceiver,intentFilter);
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30BackImg.setOnClickListener(v -> finish());
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        guiderDeviceRecyclerView = findViewById(R.id.guiderDeviceRecyclerView);
     }
 
     private void initViews() {
@@ -71,17 +72,6 @@ public class GuiderDeviceActivity extends WatchBaseActivity {
 
 
     }
-
-    @OnClick(R.id.commentB30BackImg)
-    public void onClick() {
-        finish();
-    }
-
-
-
-
-
-
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override

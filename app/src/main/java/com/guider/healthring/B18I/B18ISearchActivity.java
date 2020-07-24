@@ -24,8 +24,6 @@
 //import com.exalpme.bozhilun.android.util.ToastUtil;
 //import java.util.ArrayList;
 //import java.util.List;
-//import butterknife.BindView;
-//import butterknife.ButterKnife;
 //import cn.appscomm.bluetooth.app.BluetoothSDK;
 //import cn.appscomm.bluetooth.interfaces.BluetoothScanCallBack;
 //import cn.appscomm.bluetooth.interfaces.ResultCallBack;
@@ -76,7 +74,6 @@
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_l38isearch);
-//        ButterKnife.bind(this);
 //
 //        initViews();
 //        bleName = getIntent().getStringExtra("NAME");

@@ -43,50 +43,37 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
  * Created by Administrator on 2017/7/18.
  */
 
-public class WatchDeviceActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class WatchDeviceActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
     private static final String TAG = "WatchDeviceActivity";
     private static final int REQUEST_REQDPHONE_STATE_CODE = 1001;
     private static final int REQUEST_OPENCAMERA_CODE = 1002;
     private static final int NOTI_OPEN_BACK_CODE = 1003;
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.watch_mynaozhongRel)
     RelativeLayout watchMynaozhongRel;
-    @BindView(R.id.watch_mymsgRel)
     RelativeLayout watchMymsgRel;
 
     String mDevicename, mDeviceAddress;
-    @BindView(R.id.watch_mycaozuoRel)
     RelativeLayout watchMycaozuoRel;
-    @BindView(R.id.watch_takePhotoRel)
     RelativeLayout watchTakePhotoRel;
-    @BindView(R.id.watchDeviceTagShowTv)
     TextView watchDeviceTagShowTv;
 
     //节电模式开关
-    @BindView(R.id.watch_message_jiedianSwitch)
     SwitchCompat watchMessageJiedianSwitch;
     //来电提醒开关
-    @BindView(R.id.watch_message_callphoneSwitch)
     SwitchCompat watchMessageCallphoneSwitch;
     //节电模式开始时间
-    @BindView(R.id.watch_jiedian_starttimeTv)
     TextView watchJiedianStarttimeTv;
     //节电模式结束时间
-    @BindView(R.id.watch_jiedian_endtimeTv)
     TextView watchJiedianEndtimeTv;
 
     private String starHour, starMinute;//开始时间
@@ -108,7 +95,7 @@ public class WatchDeviceActivity extends WatchBaseActivity implements CompoundBu
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_device);
-        ButterKnife.bind(this);
+        initViewIds();
         EventBus.getDefault().register(this);
         //获取节电时间
         EventBus.getDefault().post(new MessageEvent("getjiediantime"));
@@ -120,6 +107,27 @@ public class WatchDeviceActivity extends WatchBaseActivity implements CompoundBu
         bluetoothAdapter = bm.getAdapter();
         initJiedianData();
         initData();
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        watchMynaozhongRel = findViewById(R.id.watch_mynaozhongRel);
+        watchMymsgRel = findViewById(R.id.watch_mymsgRel);
+        watchMycaozuoRel = findViewById(R.id.watch_mycaozuoRel);
+        watchTakePhotoRel = findViewById(R.id.watch_takePhotoRel);
+        watchDeviceTagShowTv = findViewById(R.id.watchDeviceTagShowTv);
+        watchMessageJiedianSwitch = findViewById(R.id.watch_message_jiedianSwitch);
+        watchMessageCallphoneSwitch = findViewById(R.id.watch_message_callphoneSwitch);
+        watchJiedianStarttimeTv = findViewById(R.id.watch_jiedian_starttimeTv);
+        watchJiedianEndtimeTv = findViewById(R.id.watch_jiedian_endtimeTv);
+        findViewById(R.id.watchUnpairRel).setOnClickListener(this);
+        watchMynaozhongRel.setOnClickListener(this);
+        watchMymsgRel.setOnClickListener(this);
+        watchMycaozuoRel.setOnClickListener(this);
+        watchTakePhotoRel.setOnClickListener(this);
+        findViewById(R.id.watch_targetRel).setOnClickListener(this);
+        findViewById(R.id.watch_message_jiedianLin).setOnClickListener(this);
     }
 
     private void initJiedianData() {
@@ -214,10 +222,8 @@ public class WatchDeviceActivity extends WatchBaseActivity implements CompoundBu
 
     }
 
-    @OnClick({R.id.watchUnpairRel, R.id.watch_mynaozhongRel, R.id.watch_mymsgRel,
-            R.id.watch_mycaozuoRel, R.id.watch_takePhotoRel, R.id.watch_targetRel,
-            R.id.watch_message_jiedianLin})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watchUnpairRel:   //解除绑定
                 doUnpairDisconn();  //解除绑定

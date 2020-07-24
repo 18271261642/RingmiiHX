@@ -32,16 +32,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 /**
  * Created by Administrator on 2017/7/22.
  */
 
-public class WatchMessageActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class WatchMessageActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
     private static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
 
@@ -51,39 +48,27 @@ public class WatchMessageActivity extends WatchBaseActivity implements CompoundB
 
     private static final String TAG = "WatchMessageActivity";
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
     //消息提醒间隔时间显示Tv
-    @BindView(R.id.watch_message_jiangeTv)
     TextView watchMessageJiangeTv;
     //消息提醒间隔布局
-    @BindView(R.id.watch_message_jiangeLin)
     LinearLayout watchMessageJiangeLin;
     //微信的开关
-    @BindView(R.id.watchmWechatSwitch)
     SwitchCompat watchmWechatSwitch;
     //短信的开关
-    @BindView(R.id.watchmsgSwitch)
     SwitchCompat watchmsgSwitch;
     //QQ的开关
-    @BindView(R.id.watchmQQSwitch)
     SwitchCompat watchmQQSwitch;
     //Viber的开关
-    @BindView(R.id.watchViberSwitch)
     SwitchCompat watchViberSwitch;
     //twitter的开关
-    @BindView(R.id.watchTwitterSwitch)
     SwitchCompat watchTwitterSwitch;
     //facebook的开关
-    @BindView(R.id.watchFacebookSwitch)
     SwitchCompat watchFacebookSwitch;
     //wathcapp的开关
-    @BindView(R.id.watchWhatsappSwitch)
     SwitchCompat watchWhatsappSwitch;
     //instarg的开关
-    @BindView(R.id.watchInstagramSwitch)
     SwitchCompat watchInstagramSwitch;
 
     private String starHour, starMinute;//开始时间
@@ -107,7 +92,7 @@ public class WatchMessageActivity extends WatchBaseActivity implements CompoundB
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_message);
-        ButterKnife.bind(this);
+        initViewIds();
         EventBus.getDefault().register(this);
         initViews();
 
@@ -117,6 +102,26 @@ public class WatchMessageActivity extends WatchBaseActivity implements CompoundB
 
 
     }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        watchMessageJiangeTv = findViewById(R.id.watch_message_jiangeTv);
+        watchMessageJiangeLin = findViewById(R.id.watch_message_jiangeLin);
+        watchmWechatSwitch = findViewById(R.id.watchmWechatSwitch);
+        watchmsgSwitch = findViewById(R.id.watchmsgSwitch);
+        watchmQQSwitch = findViewById(R.id.watchmQQSwitch);
+        watchViberSwitch = findViewById(R.id.watchViberSwitch);
+        watchTwitterSwitch = findViewById(R.id.watchTwitterSwitch);
+        watchFacebookSwitch = findViewById(R.id.watchFacebookSwitch);
+        watchWhatsappSwitch = findViewById(R.id.watchWhatsappSwitch);
+        watchInstagramSwitch = findViewById(R.id.watchInstagramSwitch);
+        watchMessageJiangeLin.setOnClickListener(this);
+        findViewById(R.id.watch_msgOpenNitBtn).setOnClickListener(this);
+        findViewById(R.id.watch_msgOpenAccessBtn).setOnClickListener(this);
+        findViewById(R.id.watchMsgExplainTv).setOnClickListener(this);
+    }
+
     //查询开关状态
     private void initChecked() {
         //消息提醒间隔设置
@@ -355,8 +360,8 @@ public class WatchMessageActivity extends WatchBaseActivity implements CompoundB
         }
     }
 
-    @OnClick({R.id.watch_message_jiangeLin, R.id.watch_msgOpenNitBtn, R.id.watch_msgOpenAccessBtn,R.id.watchMsgExplainTv})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watch_message_jiangeLin:  //时间间隔
                 ProfessionPick dailyumberofstepsPopWin = new ProfessionPick.Builder(WatchMessageActivity.this, new ProfessionPick.OnProCityPickedListener() {

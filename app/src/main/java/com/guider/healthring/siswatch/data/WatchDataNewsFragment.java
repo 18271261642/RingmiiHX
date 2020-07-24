@@ -38,11 +38,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
@@ -57,63 +52,42 @@ import lecho.lib.hellocharts.view.LineChartView;
  * Created by Administrator on 2017/10/26.
  */
 
-public class WatchDataNewsFragment extends Fragment {
+public class WatchDataNewsFragment extends Fragment implements View.OnClickListener{
 
     private static final String TAG = "新的数据";
 
     //H8拍照
     View newsWatchView;
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
     //显示步数的textView
-    @BindView(R.id.watch_h8_dataStepTv)
     RiseNumberTextView watchH8DataStepTv;
     //显示路程的textView
-    @BindView(R.id.watch_h8_dataDisTv)
     TextView watchH8DataDisTv;
     //显示卡里路的textView
-    @BindView(R.id.watch_h8_dataKcalTv)
     TextView watchH8DataKcalTv;
     //同步数据的卡里路
-    @BindView(R.id.watch_h8_syncdataTv)
     TextView watchH8SyncdataTv;
     //周的textView
-    @BindView(R.id.week_tv1)
     TextView weekTv1;
     //月的TextView
-    @BindView(R.id.month_tv2)
     TextView monthTv2;
     //年的textView
-    @BindView(R.id.year_tv3)
     TextView yearTv3;
     //周的View
-    @BindView(R.id.week_view1)
     View weekView1;
     //月的View
-    @BindView(R.id.month_view2)
     View monthView2;
     //年的View
-    @BindView(R.id.year_view3)
     View yearView3;
     //显示周的折线图
-    @BindView(R.id.watch_newdataweekChar)
     LineChartView watchNewdataweekChar;
-    Unbinder unbinder;
-    @BindView(R.id.xTv1)
     TextView xTv1;
-    @BindView(R.id.xTv2)
     TextView xTv2;
-    @BindView(R.id.xTv3)
     TextView xTv3;
-    @BindView(R.id.xTv4)
     TextView xTv4;
-    @BindView(R.id.xTv5)
     TextView xTv5;
-    @BindView(R.id.xTv6)
     TextView xTv6;
-    @BindView(R.id.xTv7)
     TextView xTv7;
 
     private CommonSubscriber commonSubscriber;
@@ -132,7 +106,7 @@ public class WatchDataNewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         newsWatchView = inflater.inflate(R.layout.fragment_watch_data_layout, container, false);
-        unbinder = ButterKnife.bind(this, newsWatchView);
+        initViewIds();
 
         initData();
         watchDataList = new ArrayList<>();
@@ -241,6 +215,33 @@ public class WatchDataNewsFragment extends Fragment {
         return newsWatchView;
     }
 
+    private void initViewIds() {
+        tvTitle = newsWatchView.findViewById(R.id.tv_title);
+        toolbar = newsWatchView.findViewById(R.id.toolbar);
+        watchH8DataStepTv = newsWatchView.findViewById(R.id.watch_h8_dataStepTv);
+        watchH8DataDisTv = newsWatchView.findViewById(R.id.watch_h8_dataDisTv);
+        watchH8DataKcalTv = newsWatchView.findViewById(R.id.watch_h8_dataKcalTv);
+        watchH8SyncdataTv = newsWatchView.findViewById(R.id.watch_h8_syncdataTv);
+        weekTv1 = newsWatchView.findViewById(R.id.week_tv1);
+        monthTv2 = newsWatchView.findViewById(R.id.month_tv2);
+        yearTv3 = newsWatchView.findViewById(R.id.year_tv3);
+        weekView1 = newsWatchView.findViewById(R.id.week_view1);
+        monthView2 = newsWatchView.findViewById(R.id.month_view2);
+        yearView3 = newsWatchView.findViewById(R.id.year_view3);
+        watchNewdataweekChar = newsWatchView.findViewById(R.id.watch_newdataweekChar);
+        xTv1 = newsWatchView.findViewById(R.id.xTv1);
+        xTv2 = newsWatchView.findViewById(R.id.xTv2);
+        xTv3 = newsWatchView.findViewById(R.id.xTv3);
+        xTv4 = newsWatchView.findViewById(R.id.xTv4);
+        xTv5 = newsWatchView.findViewById(R.id.xTv5);
+        xTv6 = newsWatchView.findViewById(R.id.xTv6);
+        xTv7 = newsWatchView.findViewById(R.id.xTv7);
+        watchH8SyncdataTv.setOnClickListener(this);
+        weekTv1.setOnClickListener(this);
+        monthView2.setOnClickListener(this);
+        yearTv3.setOnClickListener(this);
+    }
+
     private void initData() {
         tvTitle.setText("" + getResources().getString(R.string.data) + "");
         clearViewBack();
@@ -292,15 +293,8 @@ public class WatchDataNewsFragment extends Fragment {
         return watchDataList;
     }
 
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.watch_h8_syncdataTv, R.id.week_tv1, R.id.month_tv2, R.id.year_tv3})
-    public void onViewClicked(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watch_h8_syncdataTv:  //同步数据
                 watchDataList.clear();

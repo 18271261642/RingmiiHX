@@ -50,101 +50,62 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by sunjianhua on 2017/11/6.
  */
 
-public class WatchH8DataFragment extends BaseFragment {
+public class WatchH8DataFragment extends BaseFragment implements View.OnClickListener{
 
     private static final String TAG = "-------WatchH8DataFragment";
 
     View h8View;
-    @BindView(R.id.watch_newh8dataweekChar)
     LineChart watchNewh8dataweekChar;
-    Unbinder unbinder;
     List<WatchDataDatyBean> watchDataList;
     //身高
-    @BindView(R.id.h8UserHeightTv)
     TextView h8UserHeightTv;
     //体重
-    @BindView(R.id.h8UserWeighttTv)
     TextView h8UserWeighttTv;
     //年龄
-    @BindView(R.id.h8UserAgetTv)
     TextView h8UserAgetTv;
     //步数显示
-    @BindView(R.id.watch_newh8_dataStepTv)
     TextView watchNewh8DataStepTv;
     //里程
-    @BindView(R.id.watch_newh8_dataDisTv)
     TextView watchNewh8DataDisTv;
     //卡路里
-    @BindView(R.id.watch_newh8_dataKcalTv)
     TextView watchNewh8DataKcalTv;
     //周
-    @BindView(R.id.week_newtv1)
     TextView weekNewtv1;
     //月
-    @BindView(R.id.month_newtv2)
     TextView monthNewtv2;
     //年
-    @BindView(R.id.year_newtv3)
     TextView yearNewtv3;
-    @BindView(R.id.week_newview1)
     View weekNewview1;
-    @BindView(R.id.month_newview2)
     View monthNewview2;
-    @BindView(R.id.year_newview3)
     View yearNewview3;
-    @BindView(R.id.watch_newh8_datadatelTv)
     TextView watchNewh8DatadatelTv;
-    @BindView(R.id.xTv1)
     TextView xTv1;
-    @BindView(R.id.xTv2)
     TextView xTv2;
-    @BindView(R.id.xTv3)
     TextView xTv3;
-    @BindView(R.id.xTv4)
     TextView xTv4;
-    @BindView(R.id.xTv5)
     TextView xTv5;
-    @BindView(R.id.xTv6)
     TextView xTv6;
-    @BindView(R.id.xTv7)
     TextView xTv7;
-    @BindView(R.id.h8UserSexTv)
     TextView h8UserSexTv;
     //x轴的textView布局
-    @BindView(R.id.h8_x_lin)
     LinearLayout h8XLin;
-    @BindView(R.id.xRb1)
     RadioButton xRb1;
-    @BindView(R.id.xRb2)
     RadioButton xRb2;
-    @BindView(R.id.xRb3)
     RadioButton xRb3;
-    @BindView(R.id.xRb4)
     RadioButton xRb4;
-    @BindView(R.id.xRb5)
     RadioButton xRb5;
-    @BindView(R.id.xRb6)
     RadioButton xRb6;
-    @BindView(R.id.xRb7)
     RadioButton xRb7;
-    @BindView(R.id.h8_teset_radio_lin)
     LinearLayout h8TesetRadioLin;
-    @BindView(R.id.h8xRg)
     RadioGroup h8xRg;
-    @BindView(R.id.newH8XView)
     View newH8XView;
 
     //标题
-    @BindView(R.id.h8_data_titleTv)
     TextView h8DataTitleTv;
 
     private String weekTag = "week";
@@ -160,7 +121,7 @@ public class WatchH8DataFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         h8View = inflater.inflate(R.layout.fragment_new_h8_data, container, false);
-        unbinder = ButterKnife.bind(this, h8View);
+        initViewIds();
 
         initViews();
         //showTodaySportData();   //显示当天的数据
@@ -170,6 +131,52 @@ public class WatchH8DataFragment extends BaseFragment {
         weekNewtv1.setTextColor(ContextCompat.getColor(getActivity(), R.color.new_colorAccent));
         weekNewview1.setBackground(ResourcesCompat.getDrawable(getResources(), R.mipmap.h8_datareportperiodselected, null));
         return h8View;
+    }
+
+    private void initViewIds() {
+        watchNewh8dataweekChar = h8View.findViewById(R.id.watch_newh8dataweekChar);
+        h8UserHeightTv = h8View.findViewById(R.id.h8UserHeightTv);
+        h8UserWeighttTv = h8View.findViewById(R.id.h8UserWeighttTv);
+        h8UserAgetTv = h8View.findViewById(R.id.h8UserAgetTv);
+        h8UserAgetTv = h8View.findViewById(R.id.h8UserAgetTv);
+        watchNewh8DataStepTv = h8View.findViewById(R.id.watch_newh8_dataStepTv);
+        watchNewh8DataDisTv = h8View.findViewById(R.id.watch_newh8_dataDisTv);
+        watchNewh8DataKcalTv = h8View.findViewById(R.id.watch_newh8_dataKcalTv);
+        weekNewtv1 = h8View.findViewById(R.id.week_newtv1);
+        monthNewtv2 = h8View.findViewById(R.id.month_newtv2);
+        yearNewtv3 = h8View.findViewById(R.id.year_newtv3);
+        weekNewview1 = h8View.findViewById(R.id.week_newview1);
+        monthNewview2 = h8View.findViewById(R.id.month_newview2);
+        yearNewview3 = h8View.findViewById(R.id.year_newview3);
+        watchNewh8DatadatelTv = h8View.findViewById(R.id.watch_newh8_datadatelTv);
+        xTv1 = h8View.findViewById(R.id.xTv1);
+        xTv2 = h8View.findViewById(R.id.xTv2);
+        xTv3 = h8View.findViewById(R.id.xTv3);
+        xTv4 = h8View.findViewById(R.id.xTv4);
+        xTv5 = h8View.findViewById(R.id.xTv5);
+        xTv6 = h8View.findViewById(R.id.xTv6);
+        xTv7 = h8View.findViewById(R.id.xTv7);
+        h8UserSexTv = h8View.findViewById(R.id.h8UserSexTv);
+        h8XLin = h8View.findViewById(R.id.h8_x_lin);
+        xRb1 = h8View.findViewById(R.id.xRb1);
+        xRb1 = h8View.findViewById(R.id.xRb1);
+        xRb2 = h8View.findViewById(R.id.xRb2);
+        xRb3 = h8View.findViewById(R.id.xRb3);
+        xRb4 = h8View.findViewById(R.id.xRb4);
+        xRb5 = h8View.findViewById(R.id.xRb5);
+        xRb6 = h8View.findViewById(R.id.xRb6);
+        xRb7 = h8View.findViewById(R.id.xRb7);
+        h8TesetRadioLin = h8View.findViewById(R.id.h8_teset_radio_lin);
+        h8xRg = h8View.findViewById(R.id.h8xRg);
+        newH8XView = h8View.findViewById(R.id.newH8XView);
+        h8DataTitleTv = h8View.findViewById(R.id.h8_data_titleTv);
+        weekNewtv1.setOnClickListener(this);
+        monthNewtv2.setOnClickListener(this);
+        yearNewtv3.setOnClickListener(this);
+        h8View.findViewById(R.id.newh8dataUserLi).setOnClickListener(this);
+        h8View.findViewById(R.id.h8_dataLinChartImg).setOnClickListener(this);
+        h8View.findViewById(R.id.h8_dataShareImg).setOnClickListener(this);
+        h8View.findViewById(R.id.h8_data_titleLinImg).setOnClickListener(this);
     }
 
 
@@ -398,15 +405,7 @@ public class WatchH8DataFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @OnClick({R.id.week_newtv1, R.id.month_newtv2, R.id.year_newtv3,
-            R.id.newh8dataUserLi,
-            R.id.h8_dataLinChartImg, R.id.h8_dataShareImg, R.id.h8_data_titleLinImg})
-    public void onViewClicked(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.week_newtv1:  //周
                 h8XLin.setVisibility(View.GONE);
@@ -513,7 +512,8 @@ public class WatchH8DataFragment extends BaseFragment {
     }
 
 
-    public void LineChart(List<WatchDataDatyBean> wtList,int count,Map<String,Integer> mp){
+    @SuppressLint("LongLogTag")
+    public void LineChart(List<WatchDataDatyBean> wtList, int count, Map<String,Integer> mp){
         Log.e(TAG,"----count="+count);
         //数据解析
         entryList.clear();

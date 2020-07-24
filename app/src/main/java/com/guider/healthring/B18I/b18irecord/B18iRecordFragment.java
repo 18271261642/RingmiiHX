@@ -56,10 +56,6 @@
 //import java.util.Date;
 //import java.util.List;
 //
-//import butterknife.BindView;
-//import butterknife.ButterKnife;
-//import butterknife.OnClick;
-//import butterknife.Unbinder;
 //import cn.appscomm.bluetooth.app.BluetoothSDK;
 //import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 //import cn.appscomm.bluetooth.model.HeartRateData;
@@ -140,7 +136,6 @@
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        b18iRecordView = inflater.inflate(R.layout.fragment_b18i_record, container, false);
-//        unbinder = ButterKnife.bind(this, b18iRecordView);
 //        initViews();
 //        setDatas();
 //        ImageClick();

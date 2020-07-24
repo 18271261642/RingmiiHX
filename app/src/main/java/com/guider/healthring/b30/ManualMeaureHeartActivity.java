@@ -25,9 +25,6 @@ import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IHeartDataListener;
 import com.veepoo.protocol.model.datas.HeartData;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2018/8/6.
@@ -36,25 +33,17 @@ import butterknife.OnClick;
 /**
  * 手动测量心率
  */
-public class ManualMeaureHeartActivity extends WatchBaseActivity {
+public class ManualMeaureHeartActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "ManualMeaureHeartActivi";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-    @BindView(R.id.b30cirImg)
     ImageView b30cirImg;
-    @BindView(R.id.b30ScaleLin)
     LinearLayout b30ScaleLin;
-    @BindView(R.id.b30MeaureHeartValueTv)
     TextView b30MeaureHeartValueTv;
-    @BindView(R.id.b30finishTv)
     TextView b30finishTv;
-    @BindView(R.id.b30MeaureHeartStartBtn)
     ImageView b30MeaureHeartStartBtn;
 
     //是否正常测量
@@ -85,8 +74,23 @@ public class ManualMeaureHeartActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_meaure_heart);
-        ButterKnife.bind(this);
+        initViewIds();
         initViews();
+    }
+
+    private void initViewIds(){
+        commentB30BackImg =findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv =findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg =findViewById(R.id.commentB30ShareImg);
+        b30cirImg =findViewById(R.id.b30cirImg);
+        b30ScaleLin =findViewById(R.id.b30ScaleLin);
+        b30MeaureHeartValueTv =findViewById(R.id.b30MeaureHeartValueTv);
+        b30finishTv =findViewById(R.id.b30finishTv);
+        b30MeaureHeartStartBtn =findViewById(R.id.b30MeaureHeartStartBtn);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        b30MeaureHeartStartBtn.setOnClickListener(this);
+
     }
 
     private void initViews() {
@@ -95,8 +99,8 @@ public class ManualMeaureHeartActivity extends WatchBaseActivity {
         commentB30BackImg.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,R.id.b30MeaureHeartStartBtn})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
                 finish();

@@ -37,11 +37,6 @@ import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * @aboutContent: 联系人界面
  * @author： An
@@ -50,32 +45,22 @@ import butterknife.Unbinder;
  * @company: 东莞速成科技有限公司
  */
 
-public class W30SMineFragment extends BaseFragment {
+public class W30SMineFragment extends BaseFragment implements View.OnClickListener{
 
     private static final String TAG = "W30SMineFragment";
 
-    Unbinder unbinder;
-
     //头像显示ImageView
-    @BindView(R.id.userImageHead)
     ImageView userImageHead;
     //用户名称显示TextView
-    @BindView(R.id.userName)
     TextView userName;
     //总公里数显示TextView
-    @BindView(R.id.totalKilometers)
     TextView totalKilometers;
     //日均步数显示TextView
-    @BindView(R.id.equalStepNumber)
     TextView equalStepNumber;
     //达标天数显示TextView
-    @BindView(R.id.standardDay)
     TextView standardDay;
-    @BindView(R.id.mine_mac_id)
     TextView mineMacId;
-    @BindView(R.id.textView3)
     TextView textView3;
-    @BindView(R.id.privatemode_cardview)
     CardView privatemodeCardview;//排行榜
 
     private CommonSubscriber commonSubscriber, commonSubscriber2;
@@ -86,7 +71,7 @@ public class W30SMineFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_b18i_mine, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        initViewIds(view);
 
         if (MyCommandManager.DEVICENAME != null) {
             String mylanmac = (String) SharedPreferenceUtil.get(getContext(), Commont.BLEMAC, "");
@@ -98,6 +83,23 @@ public class W30SMineFragment extends BaseFragment {
 
 
         return view;
+    }
+
+    private void initViewIds(View view) {
+        userImageHead = view.findViewById(R.id.userImageHead);
+        userName = view.findViewById(R.id.userName);
+        totalKilometers = view.findViewById(R.id.totalKilometers);
+        equalStepNumber = view.findViewById(R.id.equalStepNumber);
+        standardDay = view.findViewById(R.id.standardDay);
+        mineMacId = view.findViewById(R.id.mine_mac_id);
+        textView3 = view.findViewById(R.id.textView3);
+        privatemodeCardview = view.findViewById(R.id.privatemode_cardview);
+        privatemodeCardview.setOnClickListener(this);
+        view.findViewById(R.id.personalData).setOnClickListener(this);
+        view.findViewById(R.id.smartAlert).setOnClickListener(this);
+        view.findViewById(R.id.findFriends).setOnClickListener(this);
+        view.findViewById(R.id.mineSetting).setOnClickListener(this);
+        userImageHead.setOnClickListener(this);
     }
 
 
@@ -280,15 +282,8 @@ public class W30SMineFragment extends BaseFragment {
         OkHttpObservable.getInstance().getData(commonSubscriber2, myInfoUrl, js.toString());
     }
 
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-
-    @OnClick({R.id.privatemode_cardview,
-            R.id.personalData, R.id.smartAlert, R.id.findFriends, R.id.mineSetting, R.id.userImageHead})
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -308,8 +303,8 @@ public class W30SMineFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), W30SSettingActivity.class).putExtra("is18i", "W30S"));
                 } else {
                     try {
-                        if(MyApp.getmW30SBLEManage() != null){
-                            Log.e(TAG,"-----server--!=null----");
+                        if (MyApp.getmW30SBLEManage() != null) {
+                            Log.e(TAG, "-----server--!=null----");
                             MyApp.getmW30SBLEManage().getmW30SBLEServices().disconnectBle();
                             MyApp.getmW30SBLEManage().getmW30SBLEServices().disClearData();
                         }

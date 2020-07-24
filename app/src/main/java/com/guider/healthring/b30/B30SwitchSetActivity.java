@@ -35,12 +35,7 @@ import com.veepoo.protocol.model.settings.CustomSettingData;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
-
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2018/8/13.
@@ -49,35 +44,22 @@ import butterknife.OnClick;
 /**
  * B30的开关设置
  */
-public class B30SwitchSetActivity extends WatchBaseActivity {
+public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B30SwitchSetActivity";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.b30CheckWearToggleBtn)
     ToggleButton b30CheckWearToggleBtn;
-    @BindView(R.id.b30AutoHeartToggleBtn)
     ToggleButton b30AutoHeartToggleBtn;
-    @BindView(R.id.b30AutoBloadToggleBtn)
     ToggleButton b30AutoBloadToggleBtn;
-    @BindView(R.id.b30SwitchFindPhoneToggleBtn)
     ToggleButton b30SwitchFindPhoneToggleBtn;
-    @BindView(R.id.b30SecondToggleBtn)
     ToggleButton b30SecondToggleBtn;
-    @BindView(R.id.b30SwitchDisAlertTogg)
     ToggleButton b30SwitchDisAlertTogg;
-    @BindView(R.id.b30SwitchTimeTypeTogg)
     ToggleButton b30SwitchTimeTypeTogg;
-    @BindView(R.id.b30SwitchHlepSos)
     ToggleButton b30SwitchHlepSos;
-    @BindView(R.id.disconn_alarm)
     RelativeLayout disconn_alarm;
-    @BindView(R.id.secondwatch)
     RelativeLayout secondwatch;
-    @BindView(R.id.help_sos)
     RelativeLayout help_sos;
 
 
@@ -85,7 +67,6 @@ public class B30SwitchSetActivity extends WatchBaseActivity {
     boolean isMetric = true;
     boolean isOpenAutoHeartDetect = false;
     boolean isOpenAutoBpDetect = false;  //血压
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
 
     private Vibrator vibrator;
@@ -95,11 +76,29 @@ public class B30SwitchSetActivity extends WatchBaseActivity {
         super.onCreate(savedInstanceState);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         setContentView(R.layout.activity_b30_switch_set);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
         readSwitchData();
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        b30CheckWearToggleBtn = findViewById(R.id.b30CheckWearToggleBtn);
+        b30AutoHeartToggleBtn = findViewById(R.id.b30AutoHeartToggleBtn);
+        b30AutoBloadToggleBtn = findViewById(R.id.b30AutoBloadToggleBtn);
+        b30SwitchFindPhoneToggleBtn = findViewById(R.id.b30SwitchFindPhoneToggleBtn);
+        b30SecondToggleBtn = findViewById(R.id.b30SecondToggleBtn);
+        b30SwitchDisAlertTogg = findViewById(R.id.b30SwitchDisAlertTogg);
+        b30SwitchTimeTypeTogg = findViewById(R.id.b30SwitchTimeTypeTogg);
+        b30SwitchHlepSos = findViewById(R.id.b30SwitchHlepSos);
+        disconn_alarm = findViewById(R.id.disconn_alarm);
+        secondwatch = findViewById(R.id.secondwatch);
+        help_sos = findViewById(R.id.help_sos);
+        commentB30BackImg.setOnClickListener(this);
+        help_sos.setOnClickListener(this);
     }
 
 
@@ -283,8 +282,8 @@ public class B30SwitchSetActivity extends WatchBaseActivity {
     }
 
 
-    @OnClick({R.id.commentB30BackImg, R.id.help_sos})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:
                 finish();

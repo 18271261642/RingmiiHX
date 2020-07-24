@@ -45,29 +45,20 @@ import com.yanzhenjie.permission.Setting;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * B31的设备页面
  * Created by Admin
  * Date 2018/12/18
  */
-public class B31DeviceActivity extends WatchBaseActivity implements Rationale<List<String>> {
+public class B31DeviceActivity extends WatchBaseActivity
+        implements Rationale<List<String>>,View.OnClickListener {
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.b31DeviceSportGoalTv)
     TextView b31DeviceSportGoalTv;
-    @BindView(R.id.b31DeviceSleepGoalTv)
     TextView b31DeviceSleepGoalTv;
-    @BindView(R.id.b31DeviceUnitTv)
     TextView b31DeviceUnitTv;
-    @BindView(R.id.b31DeviceStyleRel)
     RelativeLayout b31DeviceStyleRel;
 
     private AlertDialog.Builder builder;
@@ -82,11 +73,38 @@ public class B31DeviceActivity extends WatchBaseActivity implements Rationale<Li
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_device_layout);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
         initData();
 
+
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        b31DeviceSportGoalTv = findViewById(R.id.b31DeviceSportGoalTv);
+        b31DeviceSleepGoalTv = findViewById(R.id.b31DeviceSleepGoalTv);
+        b31DeviceUnitTv = findViewById(R.id.b31DeviceUnitTv);
+        b31DeviceStyleRel = findViewById(R.id.b31DeviceStyleRel);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.b31DeviceMsgRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceAlarmRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceLongSitRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceWristRel).setOnClickListener(this);
+        findViewById(R.id.img233).setOnClickListener(this);
+        findViewById(R.id.b31DeviceSportRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceSleepRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceUnitRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceSwitchRel).setOnClickListener(this);
+        findViewById(R.id.b31DevicePtoRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceResetRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceStyleRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceDfuRel).setOnClickListener(this);
+        findViewById(R.id.b31DeviceClearDataRel).setOnClickListener(this);
+        findViewById(R.id.wxSportRel).setOnClickListener(this);
+        findViewById(R.id.b31DisConnBtn).setOnClickListener(this);
+        findViewById(R.id.b31DeviceCounDownRel).setOnClickListener(this);
 
     }
 
@@ -120,15 +138,7 @@ public class B31DeviceActivity extends WatchBaseActivity implements Rationale<Li
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.b31DeviceMsgRel,
-            R.id.b31DeviceAlarmRel, R.id.b31DeviceLongSitRel,
-            R.id.b31DeviceWristRel,
-            R.id.img233, R.id.b31DeviceSportRel,
-            R.id.b31DeviceSleepRel, R.id.b31DeviceUnitRel,
-            R.id.b31DeviceSwitchRel, R.id.b31DevicePtoRel,
-            R.id.b31DeviceResetRel, R.id.b31DeviceStyleRel,
-            R.id.b31DeviceDfuRel, R.id.b31DeviceClearDataRel,
-            R.id.wxSportRel, R.id.b31DisConnBtn, R.id.b31DeviceCounDownRel})
+   @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

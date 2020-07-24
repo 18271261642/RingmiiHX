@@ -39,51 +39,33 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 /**
  * 疲劳度测试页面
  * Created by Admin
  * Date 2018/12/18
  */
-public class B31ManFatigueActivity extends WatchBaseActivity {
+public class B31ManFatigueActivity extends WatchBaseActivity implements  View.OnClickListener{
 
     private static final String TAG = "B31ManFatigueActivity";
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-
-    @BindView(R.id.b31MeaureFaitProgressView)
     CustomCircleProgressBar b31MeaureFaitProgressView;
-    @BindView(R.id.b31FaitImg)
     ImageView b31FaitImg;
-    @BindView(R.id.b31FatigueFab)
     ImageView b31FatigueFab;
     //未开始测量时显示的
-    @BindView(R.id.b31FaitNoManLin)
     LinearLayout b31FaitNoManLin;
     //测试时的布局
-    @BindView(R.id.b31FaitManLin)
     LinearLayout b31FaitManLin;
     //显示测试的进度
-    @BindView(R.id.fatiCurrTv)
     TextView fatiCurrTv;
-    @BindView(R.id.showFaitResultImg)
     ImageView showFaitResultImg;
-    @BindView(R.id.showFaitResultTv)
     TextView showFaitResultTv;
-    @BindView(R.id.manFatigueListView)
     ListView manFatigueListView;
     //疲劳度建议
-    @BindView(R.id.showFaitSuggestTv)
     TextView showFaitSuggestTv;
 
     private List<ManfatiBean> manfatiBeanList;
@@ -125,7 +107,7 @@ public class B31ManFatigueActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_man_fatigue_layout);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
@@ -135,6 +117,25 @@ public class B31ManFatigueActivity extends WatchBaseActivity {
         readLocalDBData();
 
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        b31MeaureFaitProgressView = findViewById(R.id.b31MeaureFaitProgressView);
+        b31FaitImg = findViewById(R.id.b31FaitImg);
+        b31FatigueFab = findViewById(R.id.b31FatigueFab);
+        b31FaitNoManLin = findViewById(R.id.b31FaitNoManLin);
+        b31FaitManLin = findViewById(R.id.b31FaitManLin);
+        fatiCurrTv = findViewById(R.id.fatiCurrTv);
+        showFaitResultImg = findViewById(R.id.showFaitResultImg);
+        showFaitResultTv = findViewById(R.id.showFaitResultTv);
+        manFatigueListView = findViewById(R.id.manFatigueListView);
+        showFaitSuggestTv = findViewById(R.id.showFaitSuggestTv);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        b31FatigueFab.setOnClickListener(this);
     }
 
     private void readLocalDBData() {
@@ -175,8 +176,7 @@ public class B31ManFatigueActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
-            R.id.b31FatigueFab})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

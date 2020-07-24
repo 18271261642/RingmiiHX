@@ -15,8 +15,6 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/8/5.
@@ -27,11 +25,8 @@ import butterknife.ButterKnife;
  */
 public class WatchOperationActivity extends WatchBaseActivity {
 
-    @BindView(R.id.watch_operationWebView)
     WebView watchOperationWebView;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_title)
     TextView tvTitle;
     WebSettings webSettings;
 
@@ -41,8 +36,7 @@ public class WatchOperationActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_operation);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
         Locale locales = getResources().getConfiguration().locale;
         Log.e("YUYAN","--------aaa--"+locales.getCountry());
@@ -89,6 +83,12 @@ public class WatchOperationActivity extends WatchBaseActivity {
         });
         watchOperationWebView.loadUrl(url);
 
+    }
+
+    private void initViewIds() {
+        watchOperationWebView = findViewById(R.id.watch_operationWebView);
+        toolbar = findViewById(R.id.toolbar);
+        tvTitle = findViewById(R.id.tv_title);
     }
 
     private void initWebViews() {

@@ -46,51 +46,30 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * Created by Admin
  * Date 2019/3/14
  */
-public class CommDataFragment extends LazyFragment {
+public class CommDataFragment extends LazyFragment implements  View.OnClickListener{
 
     private static final String TAG = "CommDataFragment";
 
     View commView;
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.b30DataWeekTv)
     TextView b30DataWeekTv;
-    @BindView(R.id.b30DataMonthTv)
     TextView b30DataMonthTv;
-    @BindView(R.id.b30DataYearTv)
     TextView b30DataYearTv;
-    @BindView(R.id.stepDataValueTv)
     TextView stepDataValueTv;
-    @BindView(R.id.stepDataChartView)
     BarChart stepDataChartView;
-    @BindView(R.id.sleepDataValueTv)
     TextView sleepDataValueTv;
-    @BindView(R.id.sleepDataChartView)
     BarChart sleepDataChartView;
-    @BindView(R.id.heartDataValueTv)
     TextView heartDataValueTv;
-    @BindView(R.id.heartDataChartView)
     BarChart heartDataChartView;
-    @BindView(R.id.bloodDataValueTv)
     TextView bloodDataValueTv;
     //血压的图表
-    @BindView(R.id.charBloadView)
     B30BloadDataView charBloadView;
-    Unbinder unbinder;
-
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CANADA);
-    @BindView(R.id.rel_blood)
     RelativeLayout b30BloadChartLin;
 
     private Gson gson = new Gson();
@@ -174,14 +153,33 @@ public class CommDataFragment extends LazyFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         commView = inflater.inflate(R.layout.fragment_b30_data, container, false);
-        unbinder = ButterKnife.bind(this, commView);
-
-
+        initViewIds();
         initViews();
         initData();
 
 
         return commView;
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = commView.findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = commView.findViewById(R.id.commentB30TitleTv);
+        b30DataWeekTv = commView.findViewById(R.id.b30DataWeekTv);
+        b30DataMonthTv = commView.findViewById(R.id.b30DataMonthTv);
+        b30DataYearTv = commView.findViewById(R.id.b30DataYearTv);
+        stepDataValueTv = commView.findViewById(R.id.stepDataValueTv);
+        stepDataChartView = commView.findViewById(R.id.stepDataChartView);
+        sleepDataValueTv = commView.findViewById(R.id.sleepDataValueTv);
+        sleepDataChartView = commView.findViewById(R.id.sleepDataChartView);
+        heartDataValueTv = commView.findViewById(R.id.heartDataValueTv);
+        heartDataChartView = commView.findViewById(R.id.heartDataChartView);
+        bloodDataValueTv = commView.findViewById(R.id.bloodDataValueTv);
+        charBloadView = commView.findViewById(R.id.charBloadView);
+        b30BloadChartLin = commView.findViewById(R.id.rel_blood);
+        commentB30BackImg.setOnClickListener(this);
+        b30DataWeekTv.setOnClickListener(this);
+        b30DataMonthTv.setOnClickListener(this);
+        b30DataYearTv.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -710,14 +708,8 @@ public class CommDataFragment extends LazyFragment {
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
-    @OnClick({R.id.commentB30BackImg, R.id.b30DataWeekTv,
-            R.id.b30DataMonthTv, R.id.b30DataYearTv})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

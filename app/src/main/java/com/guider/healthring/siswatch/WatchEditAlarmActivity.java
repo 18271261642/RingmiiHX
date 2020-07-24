@@ -32,21 +32,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 编辑H8闹钟页面
  */
-public class WatchEditAlarmActivity extends WatchBaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class WatchEditAlarmActivity extends WatchBaseActivity
+        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
 
     private static final String TAG = "WatchEditAlarmActivity";
 
     //时间选择器
-    @BindView(R.id.watch_alarmTimePicker)
     TimePicker watchAlarmTimePicker;
-    @BindView(R.id.watch_chooseDateRel)
     RelativeLayout watchChooseDateRel;
 
     PopupWindow popupWindow;
@@ -59,15 +55,11 @@ public class WatchEditAlarmActivity extends WatchBaseActivity implements Compoun
     int week = 0;
 
     List<Integer> integerList = new ArrayList<>();
-    @BindView(R.id.watch_edit_topCancleImg)
     ImageView watchEditTopCancleImg;
-    @BindView(R.id.watch_edit_topTitleTv)
     TextView watchEditTopTitleTv;
-    @BindView(R.id.watch_edit_topSureImg)
     ImageView watchEditTopSureImg;
 
     Map<String, Integer> maps = new HashMap<>();
-    @BindView(R.id.watch_editRepeatSwit)
     SwitchCompat watchEditRepeatSwit;
 
 
@@ -78,19 +70,12 @@ public class WatchEditAlarmActivity extends WatchBaseActivity implements Compoun
     String alarmRepeat;
     int weekNum;
 
-    @BindView(R.id.watch_CB1)
     AppCompatCheckBox watchCB1;
-    @BindView(R.id.watch_CB2)
     AppCompatCheckBox watchCB2;
-    @BindView(R.id.watch_CB3)
     AppCompatCheckBox watchCB3;
-    @BindView(R.id.watch_CB4)
     AppCompatCheckBox watchCB4;
-    @BindView(R.id.watch_CB5)
     AppCompatCheckBox watchCB5;
-    @BindView(R.id.watch_CB6)
     AppCompatCheckBox watchCB6;
-    @BindView(R.id.watch_CB7)
     AppCompatCheckBox watchCB7;
 
     int checkedState = 0;
@@ -100,7 +85,7 @@ public class WatchEditAlarmActivity extends WatchBaseActivity implements Compoun
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_watchalarm);
-        ButterKnife.bind(this);
+        initViewIds();
         EventBus.getDefault().register(this);
         initViews();
 
@@ -115,6 +100,24 @@ public class WatchEditAlarmActivity extends WatchBaseActivity implements Compoun
             return;
         }
 
+    }
+
+    private void initViewIds() {
+        watchAlarmTimePicker =findViewById(R.id.watch_alarmTimePicker);
+        watchChooseDateRel =findViewById(R.id.watch_chooseDateRel);
+        watchEditTopCancleImg =findViewById(R.id.watch_edit_topCancleImg);
+        watchEditTopTitleTv =findViewById(R.id.watch_edit_topTitleTv);
+        watchEditTopSureImg =findViewById(R.id.watch_edit_topSureImg);
+        watchEditRepeatSwit =findViewById(R.id.watch_editRepeatSwit);
+        watchCB1 =findViewById(R.id.watch_CB1);
+        watchCB2 =findViewById(R.id.watch_CB2);
+        watchCB3 =findViewById(R.id.watch_CB3);
+        watchCB4 =findViewById(R.id.watch_CB4);
+        watchCB5 =findViewById(R.id.watch_CB5);
+        watchCB6 =findViewById(R.id.watch_CB6);
+        watchCB7 =findViewById(R.id.watch_CB7);
+        watchEditTopCancleImg.setOnClickListener(this);
+        watchEditTopSureImg.setOnClickListener(this);
     }
 
     //设置页面信息
@@ -241,8 +244,8 @@ public class WatchEditAlarmActivity extends WatchBaseActivity implements Compoun
     }
 
 
-    @OnClick({R.id.watch_edit_topCancleImg, R.id.watch_edit_topSureImg})
-    public void onViewClicked(View view) {
+   @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.watch_edit_topCancleImg:  //取消
                 finish();

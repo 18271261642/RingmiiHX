@@ -29,10 +29,6 @@ import com.veepoo.protocol.model.settings.Alarm2Setting;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by An on 2018/9/13.
  */
@@ -62,7 +58,6 @@ import butterknife.OnClick;
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_b30_device_alarm);
-//        ButterKnife.bind(this);
 //        commentB30BackImg.setVisibility(View.VISIBLE);
 //        commentB30TitleTv.setText(R.string.string_alarm_reminder);
 //        setListeners();
@@ -191,19 +186,14 @@ import butterknife.OnClick;
 //}
 
 
-public class B30DeviceAlarmActivity extends WatchBaseActivity {
+public class B30DeviceAlarmActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B30DeviceAlarmActivity";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.b30addAlarmBtn)
     Button b30addAlarmBtn;
-    @BindView(R.id.lv_alarm)
     ListView lv_alarm;
-    @BindView(R.id.ll_no_alarm_data)
     LinearLayout ll_no_alarm_data;
 
     /**
@@ -219,7 +209,7 @@ public class B30DeviceAlarmActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_device_alarm);
-        ButterKnife.bind(this);
+        initViewIds();
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(R.string.string_alarm_reminder);
 
@@ -228,6 +218,16 @@ public class B30DeviceAlarmActivity extends WatchBaseActivity {
         setListeners();
         readAlarmFromBleAll();
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        b30addAlarmBtn = findViewById(R.id.b30addAlarmBtn);
+        lv_alarm = findViewById(R.id.lv_alarm);
+        ll_no_alarm_data = findViewById(R.id.ll_no_alarm_data);
+        commentB30BackImg.setOnClickListener(this);
+        b30addAlarmBtn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -323,8 +323,8 @@ public class B30DeviceAlarmActivity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.b30addAlarmBtn})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg://返回
                 finish();

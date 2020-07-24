@@ -57,44 +57,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2018/4/4.
  */
 
-public class W30sNewRunFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {//} ,RequestView{
+public class W30sNewRunFragment extends BaseFragment
+        implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
 
     private static final String TAG = "W30sNewRunFragment";
 
     View w30sRunView;
     //总公里显示
-    @BindView(R.id.w30sTotalKmTv)
     TextView w30sTotalKmTv;
     //月的总公里显示
-    @BindView(R.id.w30sMonthTotalKmTv)
     TextView w30sMonthTotalKmTv;
     //recyclerView
-    @BindView(R.id.commentRunRecyclerView)
     RecyclerView commentRunRecyclerView;
     //
-    @BindView(R.id.today_data_type)
     ImageView todayDataType;
-    @BindView(R.id.watch_runSwipe)
     SwipeRefreshLayout watchRunSwipe;
-    Unbinder unbinder;
     //跑步
-    @BindView(R.id.w30sRunTv)
     TextView w30sRunTv;
     //骑行
-    @BindView(R.id.w30sCycleTv)
     TextView w30sCycleTv;
-    @BindView(R.id.w30sMonthTv)
     TextView w30sMonthTv;
-    @BindView(R.id.text_data_unit)
     TextView textDataUnit;
 
     //    private RequestPressent requestPressent;
@@ -270,7 +257,7 @@ public class W30sNewRunFragment extends BaseFragment implements SwipeRefreshLayo
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         w30sRunView = inflater.inflate(R.layout.fragment_new_run_layout, container, false);
-        unbinder = ButterKnife.bind(this, w30sRunView);
+        initViewIds();
         mLocalTool = new LocalizeTool(getActivity());
 
         try {
@@ -290,6 +277,23 @@ public class W30sNewRunFragment extends BaseFragment implements SwipeRefreshLayo
 
 
         return w30sRunView;
+    }
+
+    private void initViewIds() {
+        w30sTotalKmTv = w30sRunView.findViewById(R.id.w30sTotalKmTv);
+        w30sMonthTotalKmTv = w30sRunView.findViewById(R.id.w30sMonthTotalKmTv);
+        commentRunRecyclerView = w30sRunView.findViewById(R.id.commentRunRecyclerView);
+        todayDataType = w30sRunView.findViewById(R.id.today_data_type);
+        watchRunSwipe = w30sRunView.findViewById(R.id.watch_runSwipe);
+        w30sRunTv = w30sRunView.findViewById(R.id.w30sRunTv);
+        w30sCycleTv = w30sRunView.findViewById(R.id.w30sCycleTv);
+        w30sMonthTv = w30sRunView.findViewById(R.id.w30sMonthTv);
+        textDataUnit = w30sRunView.findViewById(R.id.text_data_unit);
+        w30sRunView.findViewById(R.id.w30sRunImg).setOnClickListener(this);
+        w30sRunView.findViewById(R.id.w30sCycleImg).setOnClickListener(this);
+        w30sRunView.findViewById(R.id.w30sRunTv).setOnClickListener(this);
+        w30sRunView.findViewById(R.id.w30sCycleTv).setOnClickListener(this);
+        w30sRunView.findViewById(R.id.image_history).setOnClickListener(this);
     }
 
     private void initViews() {
@@ -390,13 +394,6 @@ public class W30sNewRunFragment extends BaseFragment implements SwipeRefreshLayo
 //        }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-
     /**
      * 判断网络连接是否已开
      * true 已打开  false 未打开
@@ -477,8 +474,8 @@ public class W30sNewRunFragment extends BaseFragment implements SwipeRefreshLayo
         dialog.show();
     }
 
-    @OnClick({R.id.w30sRunImg, R.id.w30sCycleImg, R.id.w30sRunTv, R.id.w30sCycleTv, R.id.image_history})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.w30sRunImg:   //跑步图片
                 isConn(getContext());

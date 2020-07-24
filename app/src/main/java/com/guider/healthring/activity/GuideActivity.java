@@ -38,15 +38,12 @@ import com.yanzhenjie.permission.AndPermission;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 滑动页
  */
 public class GuideActivity extends BaseActivity {
 
-    @BindView(R.id.viewPager)
     ViewPager viewPager;
     public final static String B_PHONE_STATE = TelephonyManager.ACTION_PHONE_STATE_CHANGED;//启动时就开启来电监听
 
@@ -174,6 +171,15 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewPager = findViewById(R.id.viewPager);
+        viewPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferencesUtils.setParam(GuideActivity.this, "isFirst", "on");
+                startActivity(new Intent(GuideActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
         // 获得activity的Window对象，设置其属性
 //        Window mWindow = getWindow();
 //        mWindow.setGravity(Gravity.LEFT | Gravity.TOP);
@@ -297,13 +303,6 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected int getContentViewId() {
         return R.layout.activity_guide;
-    }
-
-    @OnClick(R.id.viewPager)
-    public void onClick() {
-        SharedPreferencesUtils.setParam(GuideActivity.this, "isFirst", "on");
-        startActivity(new Intent(GuideActivity.this, LoginActivity.class));
-        finish();
     }
 
 }

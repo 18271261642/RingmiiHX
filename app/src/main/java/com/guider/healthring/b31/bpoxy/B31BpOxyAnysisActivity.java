@@ -57,10 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static com.guider.healthring.b31.bpoxy.enums.EnumGlossary.BREATH;
 import static com.guider.healthring.b31.bpoxy.enums.EnumGlossary.BREATHBREAK;
 import static com.guider.healthring.b31.bpoxy.enums.EnumGlossary.HEART;
@@ -81,64 +77,39 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
  * Created by Admin
  * Date 2018/12/20
  */
-public class B31BpOxyAnysisActivity extends WatchBaseActivity {
+public class B31BpOxyAnysisActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B31BpOxyAnysisActivity";
 
     //血氧平均值
-    @BindView(R.id.spo2AveValueTv)
     TextView spo2AveValueTv;
     //血氧最高最低值
-    @BindView(R.id.spo2HighestTv)
     TextView spo2HighestTv;
     //呼吸率的平均值
-    @BindView(R.id.spo2BreathRateAvgTv)
     TextView spo2BreathRateAvgTv;
     //呼吸率的最高值
-    @BindView(R.id.spo2BreathRateHighestTv)
     TextView spo2BreathRateHighestTv;
     //低氧时间的平均值
-    @BindView(R.id.lowO2AveTv)
     TextView lowO2AveTv;
     //低氧时间的最高值
-    @BindView(R.id.lowO2HighestTv)
     TextView lowO2HighestTv;
     //心脏负荷平均值
-    @BindView(R.id.spo2HeartLoadAvgTv)
     TextView spo2HeartLoadAvgTv;
     //心脏负荷的最高最低值
-    @BindView(R.id.spo2HeartLoadHighestTv)
     TextView spo2HeartLoadHighestTv;
     //睡眠活动的平均值
-    @BindView(R.id.spo2SleepAvgTv)
     TextView spo2SleepAvgTv;
     //睡眠活动的最高最低值
-    @BindView(R.id.spo2SleepHighestTv)
     TextView spo2SleepHighestTv;
     //呼吸暂停的时间和次数
-    @BindView(R.id.spo2BreathStopListView)
     CusWrapListView spo2BreathStopListView;
-    @BindView(R.id.osahsStatusTv)
     TextView osahsStatusTv;
-    @BindView(R.id.tmpClierTv)
     TextView tmpClierTv;
-    @BindView(R.id.tmpMuilTv)
     TextView tmpMuilTv;
-    @BindView(R.id.tmpMulmulTv)
     TextView tmpMulmulTv;
-    @BindView(R.id.spo2DetectToggle)
     ToggleButton spo2DetectToggle;
-    @BindView(R.id.glossary_list)
     CusExpandableListView glossaryList;
-    @BindView(R.id.commB31TitleLayout)
     Toolbar commB31TitleLayout;
-
-
-    public static void startAndParams(Context context, String date) {
-        Intent intent = new Intent(context, B31BpOxyAnysisActivity.class);
-        intent.putExtra(Constant.DETAIL_DATE, date);
-        context.startActivity(intent);
-    }
 
 
     LineChart mChartViewSpo2h;
@@ -149,24 +120,16 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
 
 
     VpSpo2hUtil vpSpo2hUtil;
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.spo2AnalyMoreTv)
     TextView spo2AnalyMoreTv;
     //分析结果 更多的布局
-    @BindView(R.id.spo2AnalyMoreLin)
     LinearLayout spo2AnalyMoreLin;
     //分享结果的布局
-    @BindView(R.id.spo2AnalyResultLin)
     LinearLayout spo2AnalyResultLin;
     //图表的布局
-    @BindView(R.id.spo2ChartListLayout)
     ConstraintLayout spo2ChartListLayout;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-    @BindView(R.id.commArrowDate)
     TextView commArrowDate;
 
 
@@ -189,7 +152,11 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
 
     private BreathStopAdapter breathStopAdapter;
 
-
+    public static void startAndParams(Context context, String date) {
+        Intent intent = new Intent(context, B31BpOxyAnysisActivity.class);
+        intent.putExtra(Constant.DETAIL_DATE, date);
+        context.startActivity(intent);
+    }
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -218,7 +185,7 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_bp_oxy_anay_layout);
-        ButterKnife.bind(this);
+        initViewIds();
 
 
         initViews();
@@ -235,6 +202,54 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
         initHeartBreakDesc();
 
 
+    }
+
+    private void initViewIds() {
+        spo2AveValueTv =findViewById(R.id.spo2AveValueTv);
+        spo2HighestTv =findViewById(R.id.spo2HighestTv);
+        spo2BreathRateAvgTv =findViewById(R.id.spo2BreathRateAvgTv);
+        spo2BreathRateHighestTv =findViewById(R.id.spo2BreathRateHighestTv);
+        lowO2AveTv =findViewById(R.id.lowO2AveTv);
+        lowO2HighestTv =findViewById(R.id.lowO2HighestTv);
+        spo2HeartLoadAvgTv =findViewById(R.id.spo2HeartLoadAvgTv);
+        spo2HeartLoadHighestTv =findViewById(R.id.spo2HeartLoadHighestTv);
+        spo2SleepAvgTv =findViewById(R.id.spo2SleepAvgTv);
+        spo2SleepHighestTv =findViewById(R.id.spo2SleepHighestTv);
+        spo2BreathStopListView =findViewById(R.id.spo2BreathStopListView);
+        osahsStatusTv =findViewById(R.id.osahsStatusTv);
+        tmpClierTv =findViewById(R.id.tmpClierTv);
+        tmpMuilTv =findViewById(R.id.tmpMuilTv);
+        tmpMulmulTv =findViewById(R.id.tmpMulmulTv);
+        spo2DetectToggle =findViewById(R.id.spo2DetectToggle);
+        glossaryList =findViewById(R.id.glossary_list);
+        commB31TitleLayout =findViewById(R.id.commB31TitleLayout);
+        commentB30BackImg=findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv=findViewById(R.id.commentB30TitleTv);
+        spo2AnalyMoreTv=findViewById(R.id.spo2AnalyMoreTv);
+        spo2AnalyMoreLin=findViewById(R.id.spo2AnalyMoreLin);
+        spo2AnalyResultLin=findViewById(R.id.spo2AnalyResultLin);
+        spo2ChartListLayout=findViewById(R.id.spo2ChartListLayout);
+        commentB30ShareImg=findViewById(R.id.commentB30ShareImg);
+        commArrowDate=findViewById(R.id.commArrowDate);
+        commentB30ShareImg.setOnClickListener(this);
+        spo2AnalyMoreTv.setOnClickListener(this);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.commArrowLeft).setOnClickListener(this);
+        findViewById(R.id.commArrowRight).setOnClickListener(this);
+        findViewById(R.id.spo2OsahsTv).setOnClickListener(this);
+        findViewById(R.id.spo2BreathStopTv).setOnClickListener(this);
+        findViewById(R.id.spo2Spo2Tv).setOnClickListener(this);
+        findViewById(R.id.spo2BreathRateTv).setOnClickListener(this);
+        findViewById(R.id.spo2LowO2Tv).setOnClickListener(this);
+        findViewById(R.id.spo2HeartLoadTv).setOnClickListener(this);
+        findViewById(R.id.spo2SleepActiTv).setOnClickListener(this);
+        findViewById(R.id.spo2LowO2ActivityTv).setOnClickListener(this);
+        findViewById(R.id.spo2CommTv).setOnClickListener(this);
+        findViewById(R.id.block_spo2h).setOnClickListener(this);
+        findViewById(R.id.block_heart).setOnClickListener(this);
+        findViewById(R.id.block_sleep).setOnClickListener(this);
+        findViewById(R.id.block_breath).setOnClickListener(this);
+        findViewById(R.id.block_lowspo2h).setOnClickListener(this);
     }
 
     //显示呼吸暂停综合征
@@ -393,15 +408,7 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity {
     };
 
 
-    @OnClick({R.id.commentB30ShareImg, R.id.spo2AnalyMoreTv,
-            R.id.commentB30BackImg, R.id.commArrowLeft,
-            R.id.commArrowRight, R.id.spo2OsahsTv,
-            R.id.spo2BreathStopTv,
-            R.id.spo2Spo2Tv, R.id.spo2BreathRateTv,
-            R.id.spo2LowO2Tv, R.id.spo2HeartLoadTv,
-            R.id.spo2SleepActiTv, R.id.spo2LowO2ActivityTv,
-            R.id.spo2CommTv, R.id.block_spo2h, R.id.block_heart,
-            R.id.block_sleep, R.id.block_breath, R.id.block_lowspo2h})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:  //返回

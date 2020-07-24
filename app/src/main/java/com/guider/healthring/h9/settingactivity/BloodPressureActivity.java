@@ -19,10 +19,6 @@ import com.sdk.bluetooth.protocol.command.data.GetBloodData;
 import com.sdk.bluetooth.protocol.command.other.BloodStatus;
 import com.sdk.bluetooth.utils.DateUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent: 血压
  * @author： 安
@@ -31,16 +27,16 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class BloodPressureActivity extends AppCompatActivity {
+public class BloodPressureActivity extends AppCompatActivity implements View.OnClickListener{
     private final String TAG = this.getClass().toString() + "----->>>";
-    @BindView(R.id.bar_titles)
     TextView barTitles;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h9_blood_layout);
-        ButterKnife.bind(this);
+        barTitles =findViewById(R.id.bar_titles);
+        findViewById(R.id.image_back).setOnClickListener(this);
         barTitles.setText("血压");
         getBloodSwitch();
         findViewById(R.id.line_celiang).setOnClickListener(new View.OnClickListener() {
@@ -72,8 +68,8 @@ public class BloodPressureActivity extends AppCompatActivity {
                 .sendCommand(new BloodStatus(commandResultCallback));
     }
 
-    @OnClick({R.id.image_back})
-    public void Onclic(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

@@ -51,10 +51,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIDDLE_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIN_HRV;
@@ -64,53 +60,29 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HRV;
  * Created by Admin
  * Date 2018/12/19
  */
-public class B31HrvDetailActivity extends WatchBaseActivity {
+public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B31HrvDetailActivity";
-    @BindView(R.id.hrvReferMarkviewImg)
     ImageView hrvReferMarkviewImg;
-    @BindView(R.id.lorenz_list_descripe)
     ListView lorenzListDescripe;
     //心脏健康指数
-    @BindView(R.id.hrvDetailHeartSocreTv)
     TextView hrvDetailHeartSocreTv;
-    @BindView(R.id.hrvReferBackImg)
     ImageView hrvReferBackImg;
-    @BindView(R.id.hrvNoLeroDescTv)
     TextView hrvNoLeroDescTv;
 
-
-    public static void startAndParams(Context context, String date) {
-        Intent intent = new Intent(context, B31HrvDetailActivity.class);
-        intent.putExtra(Constant.DETAIL_DATE, date);
-        context.startActivity(intent);
-    }
-
-
-    @BindView(R.id.lorezChartView)
     LorenzChartView lorezChartView;
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
     //折线图
-    @BindView(R.id.b31HrvDetailTopChart)
     LineChart b31HrvDetailTopChart;
     //markview
     SPMarkerView mMarkviewHrv;
-    @BindView(R.id.commArrowDate)
     TextView commArrowDate;
-    @BindView(R.id.hrvDataRrecyclerView)
     RecyclerView hrvDataRrecyclerView;
-    @BindView(R.id.hrvLerozenLin)
     LinearLayout hrvLerozenLin;
-    @BindView(R.id.hrvListDataConLy)
     ConstraintLayout hrvListDataConLy;
-    @BindView(R.id.herLerzeoTv)
     TextView herLerzeoTv;
-    @BindView(R.id.herDataTv)
     TextView herDataTv;
-    @BindView(R.id.commB31TitleLayout)
     Toolbar relaLayoutTitle;
 
     private List<HRVOriginData> list;
@@ -130,6 +102,12 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
     private Spo2SecondDialogView spo2SecondDialogView;
     HRVOriginUtil mHrvOriginUtil;
 
+
+    public static void startAndParams(Context context, String date) {
+        Intent intent = new Intent(context, B31HrvDetailActivity.class);
+        intent.putExtra(Constant.DETAIL_DATE, date);
+        context.startActivity(intent);
+    }
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -164,8 +142,7 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_hrv_detail);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
 
 
@@ -176,6 +153,40 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
         findDataFromDb(currDay);
 
 
+    }
+
+    private void initViewIds() {
+        hrvReferMarkviewImg = findViewById(R.id.hrvReferMarkviewImg);
+        lorenzListDescripe = findViewById(R.id.lorenz_list_descripe);
+        hrvDetailHeartSocreTv = findViewById(R.id.hrvDetailHeartSocreTv);
+        hrvReferBackImg = findViewById(R.id.hrvReferBackImg);
+        hrvNoLeroDescTv = findViewById(R.id.hrvNoLeroDescTv);
+        lorezChartView = findViewById(R.id.lorezChartView);
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        b31HrvDetailTopChart = findViewById(R.id.b31HrvDetailTopChart);
+        commArrowDate = findViewById(R.id.commArrowDate);
+        hrvDataRrecyclerView = findViewById(R.id.hrvDataRrecyclerView);
+        hrvLerozenLin = findViewById(R.id.hrvLerozenLin);
+        hrvListDataConLy = findViewById(R.id.hrvListDataConLy);
+        herLerzeoTv = findViewById(R.id.herLerzeoTv);
+        herDataTv = findViewById(R.id.herDataTv);
+        relaLayoutTitle = findViewById(R.id.commB31TitleLayout);
+
+        findViewById(R.id.commArrowLeft).setOnClickListener(this);
+        findViewById(R.id.commArrowRight).setOnClickListener(this);
+        commentB30BackImg.setOnClickListener(this);
+        herLerzeoTv.setOnClickListener(this);
+        herDataTv.setOnClickListener(this);
+        findViewById(R.id.hrvType1).setOnClickListener(this);
+        findViewById(R.id.hrvType2).setOnClickListener(this);
+        findViewById(R.id.hrvType3).setOnClickListener(this);
+        findViewById(R.id.hrvType4).setOnClickListener(this);
+        findViewById(R.id.hrvType5).setOnClickListener(this);
+        findViewById(R.id.hrvType6).setOnClickListener(this);
+        findViewById(R.id.hrvType7).setOnClickListener(this);
+        findViewById(R.id.hrvType8).setOnClickListener(this);
+        findViewById(R.id.hrvType9).setOnClickListener(this);
     }
 
 
@@ -363,12 +374,7 @@ public class B31HrvDetailActivity extends WatchBaseActivity {
         return moringData;
     }
 
-    @OnClick({R.id.commArrowLeft, R.id.commArrowRight,
-            R.id.commentB30BackImg, R.id.herLerzeoTv,
-            R.id.herDataTv, R.id.hrvType1, R.id.hrvType2,
-            R.id.hrvType3, R.id.hrvType4, R.id.hrvType5,
-            R.id.hrvType6, R.id.hrvType7, R.id.hrvType8,
-            R.id.hrvType9})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

@@ -88,25 +88,20 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by thinkpad on 2017/3/3.
  */
 
-public class LoginActivity extends WatchBaseActivity implements Callback , RequestView, ILineLogin {//}, PlatformActionListener {
+public class LoginActivity extends WatchBaseActivity
+        implements Callback, RequestView, ILineLogin, View.OnClickListener {//}, PlatformActionListener {
 
     /**
      * Line第三方登陆相关
      */
     private final LoginDelegate loginDelegate = LoginDelegate.Factory.create();
 
-    @BindView(R.id.login_visitorTv)
     TextView loginVisitorTv;
     //波浪形曲线
-    @BindView(R.id.login_waveView)
     LoginWaveView loginWaveView;
 
     @Override
@@ -114,25 +109,14 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
         return false;
     }
 
-    @BindView(R.id.ll_bottom_tabaa)
     LinearLayout guolei;//在国内
-
-
-    @BindView(R.id.username)
     EditText username;
-    @BindView(R.id.username_input_logon)
     TextInputLayout usernameInput;
-    @BindView(R.id.password_logon)
     EditText password;
-    @BindView(R.id.textinput_password)
     TextInputLayout textinputPassword;
-    @BindView(R.id.xinlang_iv)
     RelativeLayout weiboIv;
-    @BindView(R.id.qq_iv)
     RelativeLayout qqIv;
-    @BindView(R.id.weixin_iv)
     RelativeLayout weixinIv;
-    @BindView(R.id.line_iv)
     RelativeLayout lineIv;
     private static final String TAG = "LoginActivity";
     private DialogSubscriber dialogSubscriber;
@@ -156,16 +140,16 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     private IWXAPI iwxapi;
 
     private RequestPressent requestPressent;
-    @BindView(R.id.cb_privacy)
     CheckBox mCBPrivacy;
 
     private ThirdLogin mThirdLogin;
     private WXEntryActivityAdapter mWXEntryActivityAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+        initViewIds();
 
         // 定制logo
         int id = CustomMade.getSmallLogo();
@@ -179,6 +163,30 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
         mThirdLogin = new ThirdLogin(this);
 
         initViews();
+    }
+
+    private void initViewIds() {
+        loginVisitorTv = findViewById(R.id.login_visitorTv);
+        loginWaveView = findViewById(R.id.login_waveView);
+        guolei = findViewById(R.id.ll_bottom_tabaa);
+        username = findViewById(R.id.username);
+        usernameInput = findViewById(R.id.username_input_logon);
+        password = findViewById(R.id.password_logon);
+        textinputPassword = findViewById(R.id.textinput_password);
+        weiboIv = findViewById(R.id.xinlang_iv);
+        qqIv = findViewById(R.id.qq_iv);
+        weixinIv = findViewById(R.id.weixin_iv);
+        lineIv = findViewById(R.id.line_iv);
+        mCBPrivacy = findViewById(R.id.cb_privacy);
+        findViewById(R.id.register_btn).setOnClickListener(this);
+        weiboIv.setOnClickListener(this);
+        findViewById(R.id.forget_tv).setOnClickListener(this);
+        findViewById(R.id.login_btn).setOnClickListener(this);
+        qqIv.setOnClickListener(this);
+        weixinIv.setOnClickListener(this);
+        loginVisitorTv.setOnClickListener(this);
+        findViewById(R.id.privacyTv).setOnClickListener(this);
+        lineIv.setOnClickListener(this);
     }
 
 
@@ -210,7 +218,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                         SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", jsonObject.getString("userInfo"));
                         Log.e("LoainActivity", "-----loginresult---" + userInfo.toString());
 //                        WatchUtils.setIsWxLogin("",phone);
-                        WatchUtils.setIsWxLogin("LOGION_PHONE",jsonObject.getString("userInfo"));
+                        WatchUtils.setIsWxLogin("LOGION_PHONE", jsonObject.getString("userInfo"));
 
                         SharedPreferencesUtils.setParam(LoginActivity.this, SharedPreferencesUtils.CUSTOMER_ID, Common.customer_id);
 
@@ -273,10 +281,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
         return mCBPrivacy.isChecked();
     }
 
-    @OnClick({R.id.register_btn, R.id.forget_tv,
-            R.id.login_btn, R.id.xinlang_iv,
-            R.id.qq_iv, R.id.weixin_iv,
-            R.id.login_visitorTv,R.id.privacyTv, R.id.line_iv})
+    @Override
     public void onClick(View view) {
         Context context = view.getContext();
         if (!checkPrivacy()) {
@@ -395,19 +400,19 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
 
     // 注册到手环方平台
     private void registerRingUser(HashMap<String, Object> map) {
-        Map<String,Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         if (map.containsKey("openId"))
             params.put("thirdId", map.get("openId").toString());
-        params.put("thirdType",  "3");
+        params.put("thirdType", "3");
         if (map.containsKey("headUrl"))
             params.put("image", map.get("headUrl").toString());
         if (map.containsKey("gender"))
-            params.put("sex", ((Gender)map.get("Gender")) == Gender.MAN ? "M" : "F");
+            params.put("sex", ((Gender) map.get("Gender")) == Gender.MAN ? "M" : "F");
         if (map.containsKey("nickName"))
             params.put("nickName", map.get("nickName").toString());
-        if (Commont.isDebug)Log.e(TAG, "3333游客注册或者登陆参数：" + params.toString());
+        if (Commont.isDebug) Log.e(TAG, "3333游客注册或者登陆参数：" + params.toString());
         String url = Commont.FRIEND_BASE_URL + URLs.disanfang;
-        if (Commont.isDebug)Log.e(TAG, "====  json  " +  new Gson().toJson(params));
+        if (Commont.isDebug) Log.e(TAG, "====  json  " + new Gson().toJson(params));
         OkHttpTool.getInstance().doRequest(url, new Gson().toJson(params), this, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
@@ -460,15 +465,15 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     private void loginGuider(String uName) {
         //登录到盖德后台
         String loginUrl = BuildConfig.APIURL + "api/v1/login/onlyphone?phone=" + uName; // http://api.guiderhealth.com/
-        Log.e(TAG,"-------手机号登录的url="+loginUrl);
+        Log.e(TAG, "-------手机号登录的url=" + loginUrl);
         OkHttpTool.getInstance().doRequest(loginUrl, null, "1", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
-                Log.e(TAG,"-------手机号录到盖德="+result);
-                if(WatchUtils.isNetRequestSuccess(result,0)){
+                Log.e(TAG, "-------手机号录到盖德=" + result);
+                if (WatchUtils.isNetRequestSuccess(result, 0)) {
                     try {
                         JSONObject jsonObject = new JSONObject(result);
-                        if(jsonObject.has("data")){
+                        if (jsonObject.has("data")) {
                             JSONObject dataJsonObject = jsonObject.getJSONObject("data");
                             long accountId = dataJsonObject.getLong("accountId");
                             SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
@@ -480,6 +485,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                                     startActivity(NewSearchActivity.class);
                                     finish();
                                 }
+
                                 @Override
                                 public void onOk() {
                                     Intent intent = new Intent(LoginActivity.this, WxScanActivity.class);
@@ -490,7 +496,7 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                             });
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -517,7 +523,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
             return;
         }
     }
-
 
 
     @SuppressLint("HandlerLeak")
@@ -636,8 +641,6 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
     }
 
 
-
-
     @Override
     public void showLoadDialog(int what) {
 
@@ -688,8 +691,8 @@ public class LoginActivity extends WatchBaseActivity implements Callback , Reque
                     loginGuider(usernametxt);
                 }
 
-            }else{
-                ToastUtil.showToast(LoginActivity.this,jsonObject.getString("msg") + jsonObject.getString("data"));
+            } else {
+                ToastUtil.showToast(LoginActivity.this, jsonObject.getString("msg") + jsonObject.getString("data"));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,27 +18,29 @@ import com.sdk.bluetooth.protocol.command.base.BaseCommand;
 import com.sdk.bluetooth.protocol.command.base.CommandConstant;
 import com.sdk.bluetooth.protocol.command.device.DateTime;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+public class Device_Time_Activity extends WatchBaseActivity implements View.OnClickListener {
 
-public class Device_Time_Activity extends WatchBaseActivity {
-
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.text_nowtime)
     TextView textNowTime;
-    @BindView(R.id.text_devicetime)
     TextView textDeviceTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.device__time_activity);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.device_times));
         String systemTimer = B18iUtils.getSystemTimers2();
         textNowTime.setText(systemTimer);
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        textNowTime = findViewById(R.id.text_nowtime);
+        textDeviceTime = findViewById(R.id.text_devicetime);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.btn_get_deviceTime).setOnClickListener(this);
+        findViewById(R.id.text_goto_coorectionTime).setOnClickListener(this);
     }
 
     @Override
@@ -63,8 +65,8 @@ public class Device_Time_Activity extends WatchBaseActivity {
         }
     }
 
-    @OnClick({R.id.image_back, R.id.btn_get_deviceTime, R.id.text_goto_coorectionTime})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

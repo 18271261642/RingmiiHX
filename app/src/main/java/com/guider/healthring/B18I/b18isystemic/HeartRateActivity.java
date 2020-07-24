@@ -36,10 +36,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 import rx.Observable;
@@ -53,32 +49,22 @@ import rx.Subscriber;
  * @mailBox: an.****.life@gmail.com
  * @company: 东莞速成科技有限公司
  */
-public class HeartRateActivity extends WatchBaseActivity {
+public class HeartRateActivity extends WatchBaseActivity implements  View.OnClickListener{
 
     private final String TAG = "----->>>" + this.getClass();
-    @BindView(R.id.min_heart)
     TextView minHeart;
-    @BindView(R.id.max_heart)
     TextView maxHeart;
     //    @BindView(R.id.line_heart)
 //    LinearLayout lineHeart;
-    @BindView(R.id.switch_heart_Indicate)
     Switch switchHeartIndicate;
-    @BindView(R.id.line_xl)
     LinearLayout lineXl;
-    @BindView(R.id.view_xl)
     View viewXl;
     private int HEART = 5;
     private int MINHEARTE = 30;
     private int MAXHEARTE = 180;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.switch_heart)
     Switch switchHeart;
-    @BindView(R.id.heart_Auto)
     TextView heartAuto;
-
-    @BindView(R.id.stat_hearts)
     Button statHeart;
     private String is18i;
 
@@ -86,7 +72,7 @@ public class HeartRateActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_heart_rate_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.heartrooate));
         statHeart.setText(getResources().getString(R.string.heart_rate_test));
 
@@ -101,6 +87,23 @@ public class HeartRateActivity extends WatchBaseActivity {
         addHeartDatas();
         switchHeart.setOnCheckedChangeListener(new Listenter());
         switchHeartIndicate.setOnCheckedChangeListener(new Listenter());
+    }
+
+    private void initViewIds() {
+        minHeart = findViewById(R.id.min_heart);
+        maxHeart = findViewById(R.id.max_heart);
+        switchHeartIndicate = findViewById(R.id.switch_heart_Indicate);
+        lineXl = findViewById(R.id.line_xl);
+        viewXl = findViewById(R.id.view_xl);
+        barTitles = findViewById(R.id.bar_titles);
+        switchHeart = findViewById(R.id.switch_heart);
+        heartAuto = findViewById(R.id.heart_Auto);
+        statHeart = findViewById(R.id.stat_hearts);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        heartAuto.setOnClickListener(this);
+        statHeart.setOnClickListener(this);
+        maxHeart.setOnClickListener(this);
+        minHeart.setOnClickListener(this);
     }
 
     @Override
@@ -258,7 +261,7 @@ public class HeartRateActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.image_back, R.id.heart_Auto, R.id.stat_hearts, R.id.max_heart, R.id.min_heart})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:

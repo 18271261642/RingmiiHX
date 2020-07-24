@@ -2,11 +2,10 @@ package com.guider.healthring.activity;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.view.View;
 import android.widget.TextView;
 import com.guider.healthring.base.BaseActivity;
 import com.guider.healthring.R;
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by thinkpad on 2017/3/9.
@@ -14,13 +13,13 @@ import butterknife.OnClick;
  */
 
 public class AboutActivity extends BaseActivity {
-    @BindView(R.id.tv_title)
+
     TextView tvTitle;
-    @BindView(R.id.version_tv)
     TextView versionTv;
 
     @Override
     protected void initViews() {
+        initViewIds();
         tvTitle.setText(R.string.abour);
         try {
             versionTv.setText(getVersionName());
@@ -30,15 +29,24 @@ public class AboutActivity extends BaseActivity {
         checkUpdates();
     }
 
+    private void initViewIds(){
+        tvTitle = findViewById(R.id.tv_title);
+        versionTv = findViewById(R.id.version_tv);
+        findViewById(R.id.app_version_relayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkUpdates();
+            }
+
+
+        });
+    }
+
     @Override
     protected int getContentViewId() {
         return R.layout.activity_about;
     }
 
-    @OnClick(R.id.app_version_relayout)
-    public void onClick() {
-        checkUpdates();
-    }
 
     public void checkUpdates(){
     }

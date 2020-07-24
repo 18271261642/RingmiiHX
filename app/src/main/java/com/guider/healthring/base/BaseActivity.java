@@ -1,5 +1,6 @@
 package com.guider.healthring.base;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,10 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by thinkpad on 2016/10/20.
@@ -21,9 +21,10 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Nullable
-    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
+
     protected abstract void initViews();
+
     protected abstract int getContentViewId();
 
     private MyApp myApp;
@@ -31,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private Dialog dialog; //进度条
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +40,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //应用运行时，保持屏幕高亮，不锁屏
         setContentView(getContentViewId());
         setStatusBarColor();
-        ButterKnife.bind(this);
-       setupToolbar();
+        toolbar = findViewById(R.id.toolbar);
+        setupToolbar();
         initViews();
-        if(myApp == null){
+        if (myApp == null) {
             myApp = (MyApp) getApplication();
         }
         baseActivity = this;
@@ -113,38 +115,40 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 销毁所有activity
+     *
      * @param
      */
-    public void removeAllActivity(){
+    public void removeAllActivity() {
         myApp.removeALLActivity();  //调用Application的方法销毁所有Activity
     }
 
     /**
      * 进度条显示
+     *
      * @param msg
      */
-    public void showLoadingDialog(String msg){
+    public void showLoadingDialog(String msg) {
 
-        if(dialog == null){
-            dialog = new Dialog(BaseActivity.this,R.style.CustomProgressDialog);
+        if (dialog == null) {
+            dialog = new Dialog(BaseActivity.this, R.style.CustomProgressDialog);
             dialog.setContentView(R.layout.pro_dialog_layout_view);
-            TextView tv = (TextView) dialog.getWindow(). findViewById(R.id.progress_tv);
-            tv.setText(msg+"");
+            TextView tv = (TextView) dialog.getWindow().findViewById(R.id.progress_tv);
+            tv.setText(msg + "");
             dialog.setCancelable(true);
             dialog.show();
-        }else {
+        } else {
             dialog.setContentView(R.layout.pro_dialog_layout_view);
             dialog.setCancelable(true);
             TextView tv = (TextView) dialog.getWindow().findViewById(R.id.progress_tv);
-            tv.setText(msg+"");
+            tv.setText(msg + "");
             dialog.show();
         }
 
     }
 
     //关闭进度条
-    public void closeLoadingDialog(){
-        if(dialog != null){
+    public void closeLoadingDialog() {
+        if (dialog != null) {
             dialog.dismiss();
         }
     }

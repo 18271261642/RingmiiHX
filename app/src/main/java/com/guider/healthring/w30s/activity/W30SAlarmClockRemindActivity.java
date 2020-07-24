@@ -38,10 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent: 闹钟设置界面
  * @author： An
@@ -51,21 +47,16 @@ import butterknife.OnClick;
  */
 
 public class W30SAlarmClockRemindActivity extends WatchBaseActivity
-        implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
+        implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,View.OnClickListener {
     private static final String TAG = "W30SAlarmClockRemindAct";
     private final int HANDLER_MES = 201314;
     private final int HANDLER_TIME = 1000;
     private final int REQUEST_ALARM_CLOCK_NEW = 1;// 新建闹钟的requestCode
     private final int REQUEST_ALARM_CLOCK_EDIT = 2;// 修改闹钟的requestCode
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.rela_view)
     RelativeLayout relaView;
-    @BindView(R.id.alarm_list)
     ListView alarmList;
-    @BindView(R.id.image_add_remind)
     ImageView imageAddRemind;
-    @BindView(R.id.text_w30s_alarm_number)
     TextView textW30sAlarmNumber;
     private MyAdapter myAdapter;
     private int[] weekArray = new int[]{1, 2, 4, 8, 16, 32, 64};
@@ -81,10 +72,20 @@ public class W30SAlarmClockRemindActivity extends WatchBaseActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w30s_alarm_clock_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.alarmclock));
         initViews();
         textW30sAlarmNumber.setVisibility(View.GONE);
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        relaView = findViewById(R.id.rela_view);
+        alarmList = findViewById(R.id.alarm_list);
+        imageAddRemind = findViewById(R.id.image_add_remind);
+        textW30sAlarmNumber = findViewById(R.id.text_w30s_alarm_number);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.image_add_remind).setOnClickListener(this);
     }
 
     @Override
@@ -317,8 +318,8 @@ public class W30SAlarmClockRemindActivity extends WatchBaseActivity
 
     }
 
-    @OnClick({R.id.image_back, R.id.image_add_remind})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

@@ -45,10 +45,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2018/8/13.
  */
@@ -56,84 +52,36 @@ import butterknife.OnClick;
 /**
  * B30消息提醒页面
  */
-public class B30MessAlertActivity extends WatchBaseActivity {
+public class B30MessAlertActivity extends WatchBaseActivity implements  View.OnClickListener{
 
     private static final String TAG = "B30MessAlertActivity";
 
-    @BindView(R.id.b30SkypeTogg)
+
     ToggleButton b30SkypeTogg;
-    @BindView(R.id.b30WhatsAppTogg)
     ToggleButton b30WhatsAppTogg;
-    @BindView(R.id.b30FacebookTogg)
     ToggleButton b30FacebookTogg;
-    @BindView(R.id.b30LinkedTogg)
     ToggleButton b30LinkedTogg;
-    @BindView(R.id.b30TwitterTogg)
     ToggleButton b30TwitterTogg;
-    @BindView(R.id.b30LineTogg)
     ToggleButton b30LineTogg;
-    @BindView(R.id.b30WechatTogg)
     ToggleButton b30WechatTogg;
-    @BindView(R.id.b30QQTogg)
     ToggleButton b30QQTogg;
-    @BindView(R.id.b30MessageTogg)
     ToggleButton b30MessageTogg;
-    @BindView(R.id.b30PhoneTogg)
     ToggleButton b30PhoneTogg;
-    @BindView(R.id.newSearchTitleTv)
+
     TextView newSearchTitleTv;
 
-
-    @BindView(R.id.b30InstagramTogg)
     ToggleButton b30InstagramTogg;
-    @BindView(R.id.b30GmailTogg)
     ToggleButton b30GmailTogg;
-    @BindView(R.id.b30SnapchartTogg)
     ToggleButton b30SnapchartTogg;
-    @BindView(R.id.b30OhterTogg)
     ToggleButton b30OhterTogg;
-
-    @BindView(R.id.google_gmail)
     LinearLayout google_gmail;
-    @BindView(R.id.google_gmail_line)
     View google_gmail_line;
-
-//    boolean isOpenPhone = false;
-//    boolean isMsg = false;
-//    //微信
-//    boolean isWeChat = false;
-//    //QQ
-//    boolean isQQ = false;
-//    //facebook
-//    boolean isFaceBook = false;
-//    //twitter
-//    boolean isTwitter = false;
-//
-//    //Linkin
-//    boolean isLinkin = false;
-//    //skype
-//    boolean isSkype = false;
-//    //Whats
-//    boolean isWhats = false;
-//    //Line
-//    boolean isLine = false;
-//
-//    /**
-//     * b30InstagramTogg
-//     * b30GmailTogg
-//     * b30SnapchartTogg
-//     * b30OhterTogg
-//     */
-//    boolean isb30Instagram = false;
-//    boolean isb30Gmail = false;
-//    boolean isb30Snapchart = false;
-//    boolean isb30Ohter = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_msgalert);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
@@ -146,6 +94,29 @@ public class B30MessAlertActivity extends WatchBaseActivity {
         readSocialMsg();
 
         // getDoNotDisturb();
+    }
+
+    private void initViewIds() {
+        b30SkypeTogg = findViewById(R.id.b30SkypeTogg);
+        b30WhatsAppTogg = findViewById(R.id.b30WhatsAppTogg);
+        b30FacebookTogg = findViewById(R.id.b30FacebookTogg);
+        b30LinkedTogg = findViewById(R.id.b30LinkedTogg);
+        b30TwitterTogg = findViewById(R.id.b30TwitterTogg);
+        b30LineTogg = findViewById(R.id.b30LineTogg);
+        b30WechatTogg = findViewById(R.id.b30WechatTogg);
+        b30QQTogg = findViewById(R.id.b30QQTogg);
+        b30MessageTogg = findViewById(R.id.b30MessageTogg);
+        b30PhoneTogg = findViewById(R.id.b30PhoneTogg);
+        newSearchTitleTv = findViewById(R.id.newSearchTitleTv);
+        b30InstagramTogg = findViewById(R.id.b30InstagramTogg);
+        b30GmailTogg = findViewById(R.id.b30GmailTogg);
+        b30SnapchartTogg = findViewById(R.id.b30SnapchartTogg);
+        b30OhterTogg = findViewById(R.id.b30OhterTogg);
+        google_gmail = findViewById(R.id.google_gmail);
+        google_gmail_line = findViewById(R.id.google_gmail_line);
+        findViewById(R.id.newSearchTitleLeft).setOnClickListener(this);
+        findViewById(R.id.newSearchRightImg1).setOnClickListener(this);
+        findViewById(R.id.msgOpenNitBtn).setOnClickListener(this);
     }
 
 
@@ -221,11 +192,6 @@ public class B30MessAlertActivity extends WatchBaseActivity {
                             Manifest.permission.READ_CALL_LOG)//,Manifest.permission.WRITE_CALL_LOG)
                     .start();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
 
@@ -428,8 +394,8 @@ public class B30MessAlertActivity extends WatchBaseActivity {
         b30OhterTogg.setOnCheckedChangeListener(new ToggCheckChanageListener());
     }
 
-    @OnClick({R.id.newSearchTitleLeft, R.id.newSearchRightImg1, R.id.msgOpenNitBtn})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.newSearchTitleLeft:
                 finish();

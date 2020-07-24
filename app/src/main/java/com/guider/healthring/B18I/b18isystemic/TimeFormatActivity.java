@@ -37,9 +37,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * @aboutContent: 显示格式
  * @author： 安
@@ -49,11 +46,8 @@ import butterknife.ButterKnife;
  */
 public class TimeFormatActivity extends WatchBaseActivity {
     public final String TAG = "----->" + this.getClass();
-    @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.time_format_list)
     ListView timeFormatList;
 
     private int[] image = {R.mipmap.time_a, R.mipmap.time_b, R.mipmap.time_c,
@@ -70,7 +64,7 @@ public class TimeFormatActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_time_format_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.time_forma));
 //        whichDevice();//判断是B18i还是H9
         imageBack.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +73,12 @@ public class TimeFormatActivity extends WatchBaseActivity {
                 finish();
             }
         });
+    }
+
+    private void initViewIds() {
+        imageBack = findViewById(R.id.image_back);
+        barTitles = findViewById(R.id.bar_titles);
+        timeFormatList = findViewById(R.id.time_format_list);
     }
 
     @Override

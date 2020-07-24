@@ -33,10 +33,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 
@@ -48,30 +44,38 @@ import cn.appscomm.bluetooth.interfaces.ResultCallBack;
  * @company: 东莞速成科技有限公司
  */
 
-public class SleepGoalActivity extends WatchBaseActivity {
+public class SleepGoalActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "--SleepGoalActivity";
-    @BindView(R.id.sleep_text)
     TextView sleepText;
-    @BindView(R.id.sleep_text2)
     TextView sleepText2;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.auto_Sleep)
     Switch autoSleep;
-    @BindView(R.id.manual_Sleep)
     Switch manualSleep;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_sleep_goal_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.preset_sleep));
         whichDevice();//判断是B18i还是H9
         autoSleep.setOnCheckedChangeListener(new ChangeListenter());
         manualSleep.setOnCheckedChangeListener(new ChangeListenter());
         addDatas();
+    }
+
+    private void initViewIds() {
+        sleepText = findViewById(R.id.sleep_text);
+        sleepText2 = findViewById(R.id.sleep_text2);
+        barTitles = findViewById(R.id.bar_titles);
+        autoSleep = findViewById(R.id.auto_Sleep);
+        manualSleep = findViewById(R.id.manual_Sleep);
+
+        sleepText.setOnClickListener(this);
+        sleepText2.setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.image_right).setOnClickListener(this);
     }
 
     @Override
@@ -302,7 +306,7 @@ public class SleepGoalActivity extends WatchBaseActivity {
         }
     };
 
-    @OnClick({R.id.image_back, R.id.sleep_text, R.id.sleep_text2, R.id.image_right})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:

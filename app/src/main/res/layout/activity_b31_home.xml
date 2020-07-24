@@ -23,15 +23,15 @@
             android:id="@+id/b31BottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:background="#fff" />
         <!--<com.roughike.bottombar.BottomBar-->
-            <!--android:id="@+id/b31BottomBar"-->
-            <!--android:visibility="gone"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="60dp"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--app:bb_tabXmlResource="@xml/b30_bottom_tabs" />-->
+        <!--android:id="@+id/b31BottomBar"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--app:bb_tabXmlResource="@xml/b30_bottom_tabs" />-->
     </android.support.design.widget.CoordinatorLayout>
 </com.flipboard.bottomsheet.BottomSheetLayout>
 

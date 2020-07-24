@@ -36,9 +36,6 @@ import com.sdk.bluetooth.manage.AppsBluetoothManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 
 /**
@@ -50,37 +47,21 @@ import cn.appscomm.bluetooth.app.BluetoothSDK;
  */
 public class B18ISettingActivity extends WatchBaseActivity implements View.OnClickListener {
     private final String TAG = "----->>>" + this.getClass();
-    @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.set_notifi)
     LinearLayout setNotifi;
-    @BindView(R.id.set_heart)
     LinearLayout setHeart;
-    @BindView(R.id.set_shock)
     LinearLayout setShock;
-    @BindView(R.id.set_clock)
     LinearLayout setClock;
-    @BindView(R.id.set_timeType)
     LinearLayout setTimeType;
-    @BindView(R.id.set_settings)
     LinearLayout setSettings;
-    @BindView(R.id.set_blood)
     LinearLayout setBlood;
-    @BindView(R.id.blood_view)
     View bloodView;
-    @BindView(R.id.set_unit)
     LinearLayout setUnit;
-    @BindView(R.id.unit_view)
     View unitView;
-    @BindView(R.id.set_adjust)
     LinearLayout setAdjust;
-    @BindView(R.id.adjust_view)
     View adjustView;
-    @BindView(R.id.targetSetting)
     LinearLayout targetSetting;
-    @BindView(R.id.set_unbind)
     LinearLayout setUnbind;
     String bluName;
 
@@ -108,7 +89,7 @@ public class B18ISettingActivity extends WatchBaseActivity implements View.OnCli
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_setting_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         bluName = (String) SharedPreferencesUtils.readObject(B18ISettingActivity.this, "mylanya");
         imageBack.setOnClickListener(this);
         barTitles.setText(getResources().getString(R.string.function_str));
@@ -124,6 +105,26 @@ public class B18ISettingActivity extends WatchBaseActivity implements View.OnCli
         setAdjust.setOnClickListener(this);
         targetSetting.setOnClickListener(this);
         setUnbind.setOnClickListener(this);
+    }
+
+    private void initViewIds() {
+        imageBack = findViewById(R.id.image_back);
+        barTitles = findViewById(R.id.bar_titles);
+        setNotifi = findViewById(R.id.set_notifi);
+        setHeart = findViewById(R.id.set_heart);
+        setShock = findViewById(R.id.set_shock);
+        setClock = findViewById(R.id.set_clock);
+        setTimeType = findViewById(R.id.set_timeType);
+        setSettings = findViewById(R.id.set_settings);
+        setBlood = findViewById(R.id.set_blood);
+        bloodView = findViewById(R.id.blood_view);
+        setUnit = findViewById(R.id.set_unit);
+        unitView = findViewById(R.id.unit_view);
+        setAdjust = findViewById(R.id.set_adjust);
+        adjustView = findViewById(R.id.adjust_view);
+        targetSetting = findViewById(R.id.targetSetting);
+        setUnbind = findViewById(R.id.set_unbind);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

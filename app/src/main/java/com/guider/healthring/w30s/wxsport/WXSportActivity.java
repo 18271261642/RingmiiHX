@@ -31,10 +31,6 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 微信运动
  */
@@ -49,17 +45,11 @@ public class WXSportActivity extends WatchBaseActivity implements RequestView {
     //B30的Product_id
     private static final String B30_PRODUCT_ID = "49936";
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.wxSportViewPager)
     ViewPager wxSportViewPager;
-    @BindView(R.id.linPointLin)
     LinearLayout linPointLin;
-    @BindView(R.id.wxSportShowStepTv)
     TextView wxSportShowStepTv;
-    @BindView(R.id.wxSportBindBtn)
     Button wxSportBindBtn;
     private WXSportViewPagerAdapter wxSportViewPagerAdapter;
 
@@ -83,7 +73,7 @@ public class WXSportActivity extends WatchBaseActivity implements RequestView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wx_sport);
-        ButterKnife.bind(this);
+        initViewIds();
 
 
         initViews();
@@ -92,6 +82,21 @@ public class WXSportActivity extends WatchBaseActivity implements RequestView {
         bleName = getIntent().getStringExtra("bleName");
         showVisOrInvis();
 
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        wxSportViewPager = findViewById(R.id.wxSportViewPager);
+        linPointLin = findViewById(R.id.linPointLin);
+        wxSportShowStepTv = findViewById(R.id.wxSportShowStepTv);
+        wxSportBindBtn = findViewById(R.id.wxSportBindBtn);
+        wxSportBindBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWxTokenFirst();
+            }
+        });
     }
 
     private void showVisOrInvis() {
@@ -209,12 +214,6 @@ public class WXSportActivity extends WatchBaseActivity implements RequestView {
             linPointLin.addView(imageView);
         }
 
-
-    }
-
-    @OnClick(R.id.wxSportBindBtn)
-    public void onClick() {
-        getWxTokenFirst();
 
     }
 

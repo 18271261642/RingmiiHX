@@ -35,10 +35,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 
@@ -53,11 +49,8 @@ public class WatchStrapActivity extends WatchBaseActivity {
     private static final String TAG = "WatchStrapActivity";
     private static final int REQUEST_UNPAIR_CODE = 1001;
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.watch_jiechu_relayout)
     RelativeLayout watchJiechuRelayout;
 
     private BluetoothAdapter bluetoothAdapter;
@@ -68,13 +61,20 @@ public class WatchStrapActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_stap);
-        ButterKnife.bind(this);
+        initViewIds();
         registerReceiver(broadcastReceiver,new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED));
         initViews();
         BluetoothManager bm = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bm.getAdapter();
         bluName = (String) SharedPreferencesUtils.readObject(WatchStrapActivity.this,"mylanya");
         bleMac = (String) SharedPreferencesUtils.readObject(WatchStrapActivity.this,"mylanmac");
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tvTitle);
+        toolbar = findViewById(R.id.toolbar);
+        watchJiechuRelayout = findViewById(R.id.watch_jiechu_relayout);
+        watchJiechuRelayout.setOnClickListener(v -> onViewClicked());
     }
 
     private void initViews() {
@@ -96,7 +96,7 @@ public class WatchStrapActivity extends WatchBaseActivity {
         AppsBluetoothManager.getInstance(MyApp.getContext()).addBluetoothManagerDeviceConnectListener(bluetoothManagerDeviceConnectListener);
     }
 
-    @OnClick(R.id.watch_jiechu_relayout)
+
     public void onViewClicked() {
         if(bluName.equals("bozlun")){ //H8 手表
             new MaterialDialog.Builder(this)

@@ -39,11 +39,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * 手环运动
  * Created by Admin
@@ -54,13 +49,9 @@ public class ChildDeviceSportFragment extends Fragment {
     private static final String TAG = "ChildDeviceSportFragmen";
 
     View view;
-    @BindView(R.id.list_kcluli)
     ListView listKcluli;
-    @BindView(R.id.kaluli_text)
     TextView kcalTotalTv;
-    @BindView(R.id.devices_run)
     ImageView deviceStatusImg;
-    Unbinder unbinder;
 
     private DeviceSportAdapter deviceSportAdapter;
     private List<B30DevicesSport> sportList;
@@ -116,8 +107,7 @@ public class ChildDeviceSportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.b30_devices_fragment, container, false);
-        unbinder = ButterKnife.bind(this, view);
-
+        initViewIds();
         initViews();
 
 
@@ -126,6 +116,29 @@ public class ChildDeviceSportFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void initViewIds() {
+        listKcluli = view.findViewById(R.id.list_kcluli);
+        kcalTotalTv = view.findViewById(R.id.kaluli_text);
+        deviceStatusImg = view.findViewById(R.id.devices_run);
+        deviceStatusImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MyCommandManager.DEVICENAME == null)
+                    return;
+                if (isDeviceSport) {
+                    isDeviceSport = false;
+                    deviceStatusImg.setImageResource(R.mipmap.ic_play_devices);
+                    endSportModel();
+                } else {
+                    isDeviceSport = true;
+                    if (deviceStatusImg != null)
+                        deviceStatusImg.setImageResource(R.mipmap.ic_stop_devices);
+                    startSportModel();
+                }
+            }
+        });
     }
 
     public Context getmContext() {
@@ -263,29 +276,6 @@ public class ChildDeviceSportFragment extends Fragment {
         }
     };
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e(TAG, "-------onDestroyView-------");
-        unbinder.unbind();
-    }
-
-    @OnClick(R.id.devices_run)
-    public void onClick() {
-        if (MyCommandManager.DEVICENAME == null)
-            return;
-        if (isDeviceSport) {
-            isDeviceSport = false;
-            deviceStatusImg.setImageResource(R.mipmap.ic_play_devices);
-            endSportModel();
-        } else {
-            isDeviceSport = true;
-            if (deviceStatusImg != null)
-                deviceStatusImg.setImageResource(R.mipmap.ic_stop_devices);
-            startSportModel();
-        }
-    }
 
     //开启设备运动模式
     private void startSportModel() {

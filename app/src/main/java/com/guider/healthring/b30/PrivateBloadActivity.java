@@ -21,24 +21,16 @@ import com.veepoo.protocol.model.settings.BpSetting;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 私人血压
  */
-public class PrivateBloadActivity extends WatchBaseActivity implements ScrollPickerView.OnSelectedListener {
+public class PrivateBloadActivity extends WatchBaseActivity
+        implements ScrollPickerView.OnSelectedListener,View.OnClickListener {
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.tv_bload)
     TextView tv_bload;
-    @BindView(R.id.hightBloadView)
     StringScrollPicker hightBloadView;
-    @BindView(R.id.lowBloadView)
     StringScrollPicker lowBloadView;
 
 
@@ -58,10 +50,20 @@ public class PrivateBloadActivity extends WatchBaseActivity implements ScrollPic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_bload_b30);
-        ButterKnife.bind(this);
+        initViewIds();
         initViews();
         initData();
         readBloodState();
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        tv_bload = findViewById(R.id.tv_bload);
+        hightBloadView = findViewById(R.id.hightBloadView);
+        lowBloadView = findViewById(R.id.lowBloadView);
+        commentB30BackImg.setOnClickListener(this);
+        findViewById(R.id.b30SetPrivateBloadBtn).setOnClickListener(this);
     }
 
     //读取私人血压
@@ -109,7 +111,7 @@ public class PrivateBloadActivity extends WatchBaseActivity implements ScrollPic
         commentB30TitleTv.setText(R.string.private_mode_bloodpressure);
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.b30SetPrivateBloadBtn})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

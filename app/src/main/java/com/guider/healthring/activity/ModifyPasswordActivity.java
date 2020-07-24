@@ -24,21 +24,15 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import butterknife.BindView;
-
 /**
  * Created by thinkpad on 2017/3/9.
  * 修改密码
  */
 
 public class ModifyPasswordActivity extends BaseActivity {
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.old_password)
     EditText oldPassword;
-    @BindView(R.id.new_password)
     EditText newPassword;
-    @BindView(R.id.confrim_password)
     EditText confrimPassword;
 
     private DialogSubscriber dialogSubscriber;
@@ -46,6 +40,7 @@ public class ModifyPasswordActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        initViewIds();
         tvTitle.setText(R.string.modify_password);
         subscriberOnNextListener = new SubscriberOnNextListener<String>() {
             @Override
@@ -66,6 +61,13 @@ public class ModifyPasswordActivity extends BaseActivity {
                 }
             }
         };
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        oldPassword = findViewById(R.id.old_password);
+        newPassword = findViewById(R.id.new_password);
+        confrimPassword = findViewById(R.id.confrim_password);
     }
 
     @Override

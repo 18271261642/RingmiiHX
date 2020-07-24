@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
 
 /**
  * Created by thinkpad on 2017/3/9.
@@ -37,21 +36,17 @@ import butterknife.BindView;
  */
 
 public class FeedbackActivity extends BaseActivity {
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.question_detail_tv)
     TextView questionDetailTv;
-    @BindView(R.id.password_feed)
     EditText password;
-    @BindView(R.id.contact_info_tv)
     TextView contactInfoTv;
-    @BindView(R.id.leave_phone_et)
     EditText leavePhoneEt;
     private DialogSubscriber dialogSubscriber;
     private SubscriberOnNextListener<String> subscriberOnNextListener;
 
     @Override
     protected void initViews() {
+        initViewIds();
         tvTitle.setText(R.string.feedback);
         subscriberOnNextListener = new SubscriberOnNextListener<String>() {
             @Override
@@ -72,6 +67,14 @@ public class FeedbackActivity extends BaseActivity {
                 }
             }
         };
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        questionDetailTv = findViewById(R.id.question_detail_tv);
+        password = findViewById(R.id.password_feed);
+        contactInfoTv = findViewById(R.id.contact_info_tv);
+        leavePhoneEt = findViewById(R.id.leave_phone_et);
     }
 
     @Override

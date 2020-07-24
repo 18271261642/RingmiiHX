@@ -13,9 +13,6 @@ import android.view.ViewGroup;
 import com.guider.healthring.R;
 import com.guider.healthring.util.ViewUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 
 /**
  * Created by SilenceDut on 2015/11/28.
@@ -23,7 +20,6 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     @Nullable
-    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
     protected View rootView;
@@ -43,13 +39,17 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(getContentViewId(), container, false);
-        ButterKnife.bind(this, rootView);
+        initViewIds();
         if (getNoStatusBar() == 0) {
             setupToolbar();
             setStatusBarColor();
         }
         initViews();
         return rootView;
+    }
+
+    private void initViewIds() {
+        toolbar = rootView.findViewById(R.id.toolbar);
     }
 
     protected void setupToolbar() {

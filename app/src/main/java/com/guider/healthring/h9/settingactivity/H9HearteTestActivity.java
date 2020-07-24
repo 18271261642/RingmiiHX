@@ -61,10 +61,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -77,26 +73,17 @@ import rx.Subscriber;
  * @company: 东莞速成科技有限公司
  */
 
-public class H9HearteTestActivity extends WatchBaseActivity {
+public class H9HearteTestActivity extends WatchBaseActivity implements  View.OnClickListener{
     public static final String TAG = "H9HearteTestActivity";
 
-    @BindView(R.id.image_back)
     ImageView imageBack;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.xinlv_value)
     TextView xinlvValue;
-    @BindView(R.id.xinlv_celang)
     TextView xinlvCelang;
-    @BindView(R.id.notest_state)
     RelativeLayout notestState;
-    @BindView(R.id.test_state)
     ChartView testState;
-    @BindView(R.id.xinlv_FrameLayout)
     FrameLayout xinlvFrameLayout;
-    @BindView(R.id.hate_test)
     Button hateTest;
-    @BindView(R.id.celiang_xinlv)
     LinearLayout celiangXinlv;
     private String is18i;
     private Timer timer = null;
@@ -109,7 +96,6 @@ public class H9HearteTestActivity extends WatchBaseActivity {
     private DialogSubscriber dialogSubscriber;
     private SubscriberOnNextListener<String> subscriberOnNextListener;
     private CommonSubscriber commonSubscriber;
-    @BindView(R.id.listheartetest)
     ListView listHearteTest;
     private List<HeartDataBean.ManualBean> manual;
     private H9HeathtestAdapter heathtestAdapter;
@@ -119,7 +105,7 @@ public class H9HearteTestActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h9_hearte_test_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.heartcheck));
         whichDevice();//判断是B18i还是H9
         String testDataStr = getHeartRateDataFromAssets();
@@ -143,6 +129,23 @@ public class H9HearteTestActivity extends WatchBaseActivity {
                 }
             }
         };
+    }
+
+    private void initViewIds() {
+        imageBack = findViewById(R.id.image_back);
+        barTitles = findViewById(R.id.bar_titles);
+        xinlvValue = findViewById(R.id.xinlv_value);
+        xinlvCelang = findViewById(R.id.xinlv_celang);
+        notestState = findViewById(R.id.notest_state);
+        testState = findViewById(R.id.test_state);
+        xinlvFrameLayout = findViewById(R.id.xinlv_FrameLayout);
+        hateTest = findViewById(R.id.hate_test);
+        celiangXinlv = findViewById(R.id.celiang_xinlv);
+        listHearteTest = findViewById(R.id.listheartetest);
+        imageBack.setOnClickListener(this);
+        findViewById(R.id.bar_mores).setOnClickListener(this);
+        testState.setOnClickListener(this);
+        hateTest.setOnClickListener(this);
     }
 
     @Override
@@ -345,8 +348,8 @@ public class H9HearteTestActivity extends WatchBaseActivity {
 
     List<Integer> heaterList = new ArrayList<>();
 
-    @OnClick({R.id.image_back, R.id.bar_mores, R.id.test_state, R.id.hate_test})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

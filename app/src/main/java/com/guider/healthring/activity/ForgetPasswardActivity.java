@@ -41,9 +41,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 import cn.smssdk.SMSSDK;
 import rx.Observable;
 import rx.Subscriber;
@@ -55,32 +52,21 @@ import rx.functions.Func1;
  * 忘记密码
  */
 
-public class ForgetPasswardActivity extends BaseActivity implements RequestView {
+public class ForgetPasswardActivity extends BaseActivity
+        implements RequestView,View.OnClickListener {
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
     //区号
-    @BindView(R.id.tv_phone_head)
     TextView tv_phone_head;
-    @BindView(R.id.lv_forget)
     ListView lv_forget;
-    @BindView(R.id.username_forget)
     EditText username;//用户名
-    @BindView(R.id.password_forget)
     EditText password;//密码
-    @BindView(R.id.send_btn_forget)
     Button sendBtn;//发送按钮
-    @BindView(R.id.code_et_forget)
     EditText yuanzhengma;//验证码
-    @BindView(R.id.username_input_forget)
     TextInputLayout textInputLayoutname;
-    @BindView(R.id.forget_pwd_user_text)
     TextView forget_pwd_user_text;
-    @BindView(R.id.forget_pwd_email_text)
     TextView forget_pwd_email_text;
-    @BindView(R.id.forget_pwd_user_line)
     View forget_pwd_user_line;
-    @BindView(R.id.forget_pwd_email_line)
     View forget_pwd_email_line;
 
     private JSONObject jsonObject;
@@ -125,6 +111,7 @@ public class ForgetPasswardActivity extends BaseActivity implements RequestView 
 
     @Override
     protected void initViews() {
+        initViewIds();
         tvTitle.setText(R.string.forget_password);
         initData();
 
@@ -165,15 +152,33 @@ public class ForgetPasswardActivity extends BaseActivity implements RequestView 
         };
     }
 
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        tv_phone_head = findViewById(R.id.tv_phone_head);
+        lv_forget = findViewById(R.id.lv_forget);
+        username = findViewById(R.id.username_forget);
+        password = findViewById(R.id.password_forget);
+        sendBtn = findViewById(R.id.send_btn_forget);
+        yuanzhengma = findViewById(R.id.code_et_forget);
+        textInputLayoutname = findViewById(R.id.username_input_forget);
+        forget_pwd_user_text = findViewById(R.id.forget_pwd_user_text);
+        forget_pwd_email_text = findViewById(R.id.forget_pwd_email_text);
+        forget_pwd_user_line = findViewById(R.id.forget_pwd_user_line);
+        forget_pwd_email_line = findViewById(R.id.forget_pwd_email_line);
+        findViewById(R.id.login_btn__forget).setOnClickListener(this);
+        sendBtn.setOnClickListener(this);
+        findViewById(R.id.forget_pwd_user).setOnClickListener(this);
+        findViewById(R.id.forget_pwd_email).setOnClickListener(this);
+        tv_phone_head.setOnClickListener(this);
+    }
+
     private void initData() {
         colorBlue = ContextCompat.getColor(this, R.color.new_colorAccent);
         colorBlack = ContextCompat.getColor(this, R.color.black_9);
         leftDrawable = getResources().getDrawable(R.mipmap.yonghuming_dianji);
     }
 
-    @OnClick({R.id.login_btn__forget, R.id.send_btn_forget,
-            R.id.forget_pwd_user, R.id.forget_pwd_email
-            , R.id.tv_phone_head})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.send_btn_forget:  //获取验证码

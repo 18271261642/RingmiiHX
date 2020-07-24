@@ -26,68 +26,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Admin
  * Date 2019/10/14
  */
-public class InternalTestActivity extends Activity  {
+public class InternalTestActivity extends Activity implements View.OnClickListener{
 
     private static final String TAG = "InternalTestActivity";
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.internalStartBtn)
     Button internalStartBtn;
-    @BindView(R.id.stopLocalBtn)
     Button stopLocalBtn;
-
-
-
-
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_internal_layout);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        internalStartBtn = findViewById(R.id.internalStartBtn);
+        stopLocalBtn = findViewById(R.id.stopLocalBtn);
+        commentB30BackImg.setOnClickListener(this);
+        internalStartBtn.setOnClickListener(this);
+        stopLocalBtn.setOnClickListener(this);
     }
 
     private void initViews() {
         commentB30BackImg.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.internalStartBtn, R.id.stopLocalBtn})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:
                 finish();
                 break;
             case R.id.internalStartBtn:
-                ToastUtil.showToast(this,"111");
+                ToastUtil.showToast(this, "111");
                 findHeartData();
                 break;
             case R.id.stopLocalBtn:
@@ -101,8 +85,8 @@ public class InternalTestActivity extends Activity  {
     private void findAllUploadData() {
         //先查询下步数数据
         final List<CommStepCountDb> uploadStepList = CommDBManager.getCommDBManager().findCountStepForUpload(MyApp.getApplication().getMacAddress(), "2019-11-17", WatchUtils.getCurrentDate());
-        if (uploadStepList == null || uploadStepList.isEmpty()){
-           // downloadDb();
+        if (uploadStepList == null || uploadStepList.isEmpty()) {
+            // downloadDb();
             return;
         }
 
@@ -142,7 +126,7 @@ public class InternalTestActivity extends Activity  {
         }
 
         String stepUloadUrl = SyncDbUrls.uploadCountStepUrl();
-        String stepParmas =  new Gson().toJson(parmListMap);
+        String stepParmas = new Gson().toJson(parmListMap);
         //Log.e(TAG, "--------步数---参数=" + stepParmas);
 
         OkHttpTool.getInstance().doRequest(stepUloadUrl, stepParmas, "step", new OkHttpTool.HttpResult() {

@@ -43,54 +43,32 @@ import com.yanzhenjie.permission.Setting;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 public class HellpEditActivity  extends WatchBaseActivity
-        implements Rationale<List<String>>, View.OnLongClickListener {
+        implements Rationale<List<String>>, View.OnLongClickListener,View.OnClickListener {
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.text_content)
     TextView textContent;
-    @BindView(R.id.text_user_phone_one)
     TextView textOne;
-    @BindView(R.id.text_user_phone_two)
     TextView textTwo;
-    @BindView(R.id.text_user_phone_three)
     TextView textThee;
-
-    @BindView(R.id.text_user_name_one)
     TextView textNameOne;
-    @BindView(R.id.text_user_name_two)
     TextView textNameTwo;
-    @BindView(R.id.text_user_name_three)
     TextView textNameThee;
-    @BindView(R.id.car_person_one)
     CardView carPersonOne;
-    @BindView(R.id.car_person_two)
     CardView carPersonTwo;
-    @BindView(R.id.car_person_three)
     CardView carPersonThree;
 
 
     //联系人
-    @BindView(R.id.sosContPermissionTv)
     TextView sosContPermissionTv;
     //电话
-    @BindView(R.id.sosPhonePermissionTv)
     TextView sosPhonePermissionTv;
     //通讯录
-    @BindView(R.id.sosCallLogPermissionTv)
     TextView sosCallLogPermissionTv;
     //联系人
-    @BindView(R.id.sosContPermission2Tv)
     TextView sosContPermission2Tv;
     //短信
-    @BindView(R.id.sosSMSPermissionTv)
     TextView sosSMSPermissionTv;
 
     //联系人
@@ -109,9 +87,42 @@ public class HellpEditActivity  extends WatchBaseActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hellp_edit_activity);
-        ButterKnife.bind(this);
+        initViewIds();
 
         init();
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        textContent = findViewById(R.id.text_content);
+        textOne = findViewById(R.id.text_user_phone_one);
+        textTwo = findViewById(R.id.text_user_phone_two);
+        textThee = findViewById(R.id.text_user_phone_three);
+        textNameOne = findViewById(R.id.text_user_name_one);
+        textNameTwo = findViewById(R.id.text_user_name_two);
+        textNameThee = findViewById(R.id.text_user_name_three);
+        carPersonOne = findViewById(R.id.car_person_one);
+        carPersonTwo = findViewById(R.id.car_person_two);
+        sosContPermissionTv = findViewById(R.id.sosContPermissionTv);
+        carPersonThree = findViewById(R.id.car_person_three);
+        sosPhonePermissionTv = findViewById(R.id.sosPhonePermissionTv);
+        sosCallLogPermissionTv = findViewById(R.id.sosCallLogPermissionTv);
+        sosContPermission2Tv = findViewById(R.id.sosContPermission2Tv);
+        sosSMSPermissionTv = findViewById(R.id.sosSMSPermissionTv);
+        textContent.setOnClickListener(this);
+        carPersonOne.setOnClickListener(this);
+        carPersonTwo.setOnClickListener(this);
+        carPersonThree.setOnClickListener(this);
+        findViewById(R.id.btn_helps).setOnClickListener(this);
+        findViewById(R.id.image_one).setOnClickListener(this);
+        findViewById(R.id.image_two).setOnClickListener(this);
+        findViewById(R.id.image_three).setOnClickListener(this);
+        sosContPermissionTv.setOnClickListener(this);
+        sosPhonePermissionTv.setOnClickListener(this);
+        sosCallLogPermissionTv.setOnClickListener(this);
+        sosContPermission2Tv.setOnClickListener(this);
+        sosSMSPermissionTv.setOnClickListener(this);
     }
 
     private void init() {
@@ -459,15 +470,8 @@ public class HellpEditActivity  extends WatchBaseActivity
                 .show();
     }
 
-
-    @OnClick({R.id.text_content,
-            R.id.car_person_one, R.id.car_person_two, R.id.car_person_three,
-            R.id.btn_helps,
-            R.id.image_one, R.id.image_two, R.id.image_three,
-            R.id.sosContPermissionTv, R.id.sosPhonePermissionTv,
-            R.id.sosCallLogPermissionTv, R.id.sosContPermission2Tv,
-            R.id.sosSMSPermissionTv})
-    public void onViewClicked(final View view) {
+    @Override
+    public void onClick(final View view) {
         switch (view.getId()) {
             case R.id.text_content:
 

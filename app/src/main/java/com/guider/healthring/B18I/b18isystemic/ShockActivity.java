@@ -26,12 +26,7 @@ import com.sdk.bluetooth.protocol.command.device.Motor;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.Arrays;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 
@@ -42,19 +37,13 @@ import cn.appscomm.bluetooth.interfaces.ResultCallBack;
  * @mailBox: an.****.life@gmail.com
  * @company: 东莞速成科技有限公司
  */
-public class ShockActivity extends WatchBaseActivity {
+public class ShockActivity extends WatchBaseActivity implements  View.OnClickListener{
     public final String TAG = "----->>>" + this.getClass();
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.shock_image1)
     ImageView shockImage1;
-    @BindView(R.id.shock_image2)
     ImageView shockImage2;
-    @BindView(R.id.shock_image3)
     ImageView shockImage3;
-    @BindView(R.id.shock_image4)
     ImageView shockImage4;
-    @BindView(R.id.shock_close)
     LinearLayout shockClose;
     private int SelectST = 0;
 
@@ -62,9 +51,23 @@ public class ShockActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b18i_shock_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.shock_str));
 //        whichDevice();//判断是B18i还是H9
+    }
+
+    private void initViewIds() {
+        barTitles = findViewById(R.id.bar_titles);
+        shockImage1 = findViewById(R.id.shock_image1);
+        shockImage2 = findViewById(R.id.shock_image2);
+        shockImage3 = findViewById(R.id.shock_image3);
+        shockImage4 = findViewById(R.id.shock_image4);
+        shockClose = findViewById(R.id.shock_close);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        shockClose.setOnClickListener(this);
+        findViewById(R.id.shock_weak).setOnClickListener(this);
+        findViewById(R.id.shock_standard).setOnClickListener(this);
+        findViewById(R.id.shock_strong).setOnClickListener(this);
     }
 
     @Override
@@ -145,8 +148,7 @@ public class ShockActivity extends WatchBaseActivity {
         }
     };
 
-    @OnClick({R.id.image_back, R.id.shock_close,
-            R.id.shock_weak, R.id.shock_standard, R.id.shock_strong})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:

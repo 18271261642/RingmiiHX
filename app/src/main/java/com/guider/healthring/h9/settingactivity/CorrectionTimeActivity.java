@@ -24,12 +24,7 @@ import com.sdk.bluetooth.protocol.command.expands.CorrectionTime;
 import com.sdk.bluetooth.protocol.command.expands.FinishCorroctionTime;
 import com.sdk.bluetooth.protocol.command.expands.ManualTurnPointers;
 import com.sdk.bluetooth.protocol.command.expands.Point2Zero;
-
 import java.util.Calendar;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * @aboutContent: 矫正时间
@@ -39,31 +34,15 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class CorrectionTimeActivity extends WatchBaseActivity {
+public class CorrectionTimeActivity extends WatchBaseActivity implements View.OnClickListener {
     private final String TAG = "----->>>" + this.getClass();
-    @BindView(R.id.bar_titles)
     TextView barTitles;
-    @BindView(R.id.btn_ishour)
     Button btnIshour;//时针
-    @BindView(R.id.btn_ismin)
     Button btnIsmin;//分针
-    @BindView(R.id.btn_reduce)
     Button btnReduce;//减
-    @BindView(R.id.btn_plus)
     Button btnPlus;//加
-    //    @BindView(R.id.btn_reduce)
-//    LongClickButton btnReduce;//减
-//    @BindView(R.id.btn_plus)
-//    LongClickButton btnPlus;//加
-    @BindView(R.id.btn_complete)
     Button btnComplete;//完成
-    //    @BindView(R.id.custom_prog)
-//    CustomProgressBar customProg;//大角度调节进度条
-    @BindView(R.id.textGuide)
     TextView textGuide;
-    //    @BindView(R.id.h9_correction_view)
-//    H9CorrectionTimeView h9CorrectionView;
-    @BindView(R.id.h9_correction_view)
     H9CorrectionTimeView_Change h9CorrectionView;
     private boolean OnClick = false;
     private boolean LongOnClick = true;
@@ -74,7 +53,7 @@ public class CorrectionTimeActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.correction_time_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.jiaozhen));
 
         int width = getWindowManager().getDefaultDisplay().getWidth();
@@ -90,6 +69,24 @@ public class CorrectionTimeActivity extends WatchBaseActivity {
 
         btnReduce.setOnTouchListener(new mOnTouchListenter());
         btnPlus.setOnTouchListener(new mOnTouchListenter());
+    }
+
+    private void initViewIds() {
+        barTitles =findViewById(R.id.bar_titles);
+        btnIshour =findViewById(R.id.btn_ishour);
+        btnIsmin =findViewById(R.id.btn_ismin);
+        btnReduce =findViewById(R.id.btn_reduce);
+        btnPlus =findViewById(R.id.btn_plus);
+        btnComplete =findViewById(R.id.btn_complete);
+        textGuide =findViewById(R.id.textGuide);
+        h9CorrectionView =findViewById(R.id.h9_correction_view);
+        findViewById(R.id.image_back).setOnClickListener(this);
+        findViewById(R.id.return_zero).setOnClickListener(this);
+        btnIshour.setOnClickListener(this);
+        btnIsmin.setOnClickListener(this);
+        btnComplete.setOnClickListener(this);
+        textGuide.setOnClickListener(this);
+
     }
 
 
@@ -169,13 +166,8 @@ public class CorrectionTimeActivity extends WatchBaseActivity {
     private byte CLOCKWISE = 0x01;             // 顺时针 clockwise
     private ManualTurnPointers manual;
 
-
-    @OnClick({R.id.image_back, R.id.return_zero,
-            R.id.btn_ishour, R.id.btn_ismin,
-            //R.id.btn_reduce, R.id.btn_plus,
-            R.id.btn_complete,
-            R.id.textGuide})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
                 finish();

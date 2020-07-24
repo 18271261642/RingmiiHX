@@ -39,7 +39,9 @@ public class GluServiceManager {
 
     public void startMeasure() {
         if (bpScanAndConnectBluetooth == null) {
-            bpScanAndConnectBluetooth = new BleScanAndConnectBluetooth(this);
+            bpScanAndConnectBluetooth = new BleScanAndConnectBluetooth(this,
+                    new ForaGluDeviceUUID(),"FORA GD40"
+                    );
         }
         bpScanAndConnectBluetooth.run();
     }

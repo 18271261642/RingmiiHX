@@ -11,8 +11,6 @@ import com.guider.healthring.R;
 import com.guider.healthring.base.BaseActivity;
 import com.guider.healthring.util.ToastUtil;
 
-import butterknife.BindView;
-
 /**
  * Created by thinkpad on 2017/3/8.
  * 修改昵称
@@ -20,9 +18,7 @@ import butterknife.BindView;
 
 public class ModifyNickNameActivity extends BaseActivity {
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.code_et_nickname)
     EditText codeEt;
 //    private DialogSubscriber dialogSubscriber;
 //    private SubscriberOnNextListener<String> subscriberOnNextListener;
@@ -35,7 +31,7 @@ public class ModifyNickNameActivity extends BaseActivity {
 //    }
     @Override
     protected void initViews() {
-
+        initViewIds();
         tvTitle.setText(R.string.modify_nickname);
 
 
@@ -45,6 +41,11 @@ public class ModifyNickNameActivity extends BaseActivity {
             codeEt.setText(nameStr);
         }
 
+    }
+
+    private void initViewIds() {
+        tvTitle =findViewById(R.id.tv_title);
+        codeEt =findViewById(R.id.code_et_nickname);
     }
 
     @Override

@@ -39,10 +39,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * @aboutContent:
  * @author： 安
@@ -51,31 +47,19 @@ import butterknife.OnClick;
  * @company: 东莞速成科技有限公司
  */
 
-public class SharePosterActivity extends WatchBaseActivity {
+public class SharePosterActivity extends WatchBaseActivity implements View.OnClickListener{
 
-    @BindView(R.id.shape_poster)
     ViewPager shapePoster;
-    @BindView(R.id.poster_liner)
     LinearLayout posterLiner;
-    @BindView(R.id.line_sharpe_poster)
     LinearLayout lineSharpePoster;
-    @BindView(R.id.rec_image_logo)
     RelativeLayout recImageLogo;
-    @BindView(R.id.poster_image)
     ImageView posterImage;
-    @BindView(R.id.poster_name)
     TextView posterName;
-    @BindView(R.id.poster_timer)
     TextView posterTimer;
-    @BindView(R.id.poster_step)
     TextView posterStep;
-    @BindView(R.id.poster_main)
     LinearLayout posterMain;
-    @BindView(R.id.btn_shape_poster)
     Button btnShapePoster;
-    @BindView(R.id.rela_layout_title)
     Toolbar relaLayoutTitle;
-    @BindView(R.id.bar_titles)
     TextView barTitles;
     private List<View> viewList;
     //private CommonSubscriber commonSubscriber;
@@ -86,7 +70,7 @@ public class SharePosterActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.h9_share_poster_layout);
-        ButterKnife.bind(this);
+        initViewIds();
         barTitles.setText(getResources().getString(R.string.weibo_upload_content));
         addShapeData();
 
@@ -107,6 +91,23 @@ public class SharePosterActivity extends WatchBaseActivity {
         posterStep.setText(Number);
         posterTimer.setText(WatchUtils.getCurrentDate());
         syncUserInfoData();
+    }
+
+    private void initViewIds() {
+        shapePoster =findViewById(R.id.shape_poster);
+        posterLiner =findViewById(R.id.poster_liner);
+        lineSharpePoster =findViewById(R.id.line_sharpe_poster);
+        recImageLogo =findViewById(R.id.rec_image_logo);
+        posterImage =findViewById(R.id.poster_image);
+        posterName =findViewById(R.id.poster_name);
+        posterTimer =findViewById(R.id.poster_timer);
+        posterStep =findViewById(R.id.poster_step);
+        posterMain =findViewById(R.id.poster_main);
+        btnShapePoster =findViewById(R.id.btn_shape_poster);
+        relaLayoutTitle =findViewById(R.id.rela_layout_title);
+        barTitles =findViewById(R.id.bar_titles);
+        btnShapePoster.setOnClickListener(this);
+        findViewById(R.id.image_back).setOnClickListener(this);
     }
 
     boolean isok = false;
@@ -347,8 +348,8 @@ public class SharePosterActivity extends WatchBaseActivity {
         }
     });
 
-    @OnClick({R.id.btn_shape_poster, R.id.image_back})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_shape_poster:
                 if (isok) {

@@ -17,20 +17,14 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2018/7/12.
  */
 
 public class PrivacyActivity extends WatchBaseActivity {
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.privacyWb)
     WebView privacyWb;
     private WebView webView;
 
@@ -42,7 +36,7 @@ public class PrivacyActivity extends WatchBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_layout);
-        ButterKnife.bind(this);
+        initViewIds();
 
         initViews();
 
@@ -74,6 +68,12 @@ public class PrivacyActivity extends WatchBaseActivity {
         });
         webView.loadUrl(url);
 
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        toolbar = findViewById(R.id.toolbar);
+        privacyWb = findViewById(R.id.privacyWb);
     }
 
     private void initViews() {

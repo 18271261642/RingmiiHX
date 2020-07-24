@@ -10,79 +10,83 @@ import android.widget.TextView;
 
 import com.guider.healthring.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+public class BottomSelectView extends LinearLayout implements View.OnClickListener {
 
-public class BottomSelectView extends LinearLayout {
-
-    @BindView(R.id.t1_img)
     ImageView t1Img;
-    @BindView(R.id.t1_text)
     TextView t1Text;
-    @BindView(R.id.t1)
     LinearLayout t1;
-    @BindView(R.id.t2_img)
     ImageView t2Img;
-    @BindView(R.id.t2_text)
     TextView t2Text;
-    @BindView(R.id.t2)
     LinearLayout t2;
-    @BindView(R.id.t3_img)
     ImageView t3Img;
-    @BindView(R.id.t3_text)
     TextView t3Text;
-    @BindView(R.id.t3)
     LinearLayout t3;
-    @BindView(R.id.t4_img)
     ImageView t4Img;
-    @BindView(R.id.t4_text)
     TextView t4Text;
-    @BindView(R.id.t4)
     LinearLayout t4;
-    @BindView(R.id.t5)
     LinearLayout t5;
 
     LinearLayout currentSelectView;
 
     int[][] imgRes = {
-            {R.drawable.jilu_nor , R.drawable.jilu_sel},
-            {R.drawable.shuj_nor , R.drawable.shuj_sel},
-            {R.drawable.pabu_nor , R.drawable.paobu_sel},
-            {R.drawable.wode_nor , R.drawable.wode_sel},
+            {R.drawable.jilu_nor, R.drawable.jilu_sel},
+            {R.drawable.shuj_nor, R.drawable.shuj_sel},
+            {R.drawable.pabu_nor, R.drawable.paobu_sel},
+            {R.drawable.wode_nor, R.drawable.wode_sel},
     };
 
     // 未选中 / 选中 字体颜色
-    String[] textColor = {"#000000","#f18937"};
+    String[] textColor = {"#000000", "#f18937"};
 
     public BottomSelectView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_bottom, this);
-        ButterKnife.bind(this);
+        View view = inflate(context, R.layout.view_bottom, this);
+        initViewIds(view);
         selector(t1);
+    }
+
+    private void initViewIds(View view) {
+        t1Img = view.findViewById(R.id.t1_img);
+        t1Text = view.findViewById(R.id.t1_text);
+        t1 = view.findViewById(R.id.t1);
+        t2Img = view.findViewById(R.id.t2_img);
+        t2Text = view.findViewById(R.id.t2_text);
+        t2 = view.findViewById(R.id.t2);
+        t3Img = view.findViewById(R.id.t3_img);
+        t3Text = view.findViewById(R.id.t3_text);
+        t3 = view.findViewById(R.id.t3);
+        t4Img = view.findViewById(R.id.t4_img);
+        t4 = view.findViewById(R.id.t4);
+        t4Text = view.findViewById(R.id.t4_text);
+        t5 = view.findViewById(R.id.t5);
+        t2.setOnClickListener(this);
+        t1.setOnClickListener(this);
+        t3.setOnClickListener(this);
+        t4.setOnClickListener(this);
+        t5.setOnClickListener(this);
     }
 
     private void selector(LinearLayout selectorView) {
         if (currentSelectView != null) {
-            changeStatus(false , currentSelectView);
+            changeStatus(false, currentSelectView);
         }
         currentSelectView = selectorView;
-        changeStatus(true , currentSelectView);
+        changeStatus(true, currentSelectView);
         if (lis != null) {
             lis.onTabSelected(currentSelectView.getId());
         }
     }
 
-    private void changeStatus(boolean isSelector , LinearLayout view) {
-        int tag  = Integer.valueOf((String) view.getTag());
+    private void changeStatus(boolean isSelector, LinearLayout view) {
+        int tag = Integer.valueOf((String) view.getTag());
         ImageView img = (ImageView) view.getChildAt(0);
         TextView text = (TextView) view.getChildAt(1);
         img.setImageResource(imgRes[tag][isSelector ? 1 : 0]);
         text.setTextColor(Color.parseColor(textColor[isSelector ? 1 : 0]));
     }
 
-    @OnClick({R.id.t1, R.id.t2, R.id.t3, R.id.t4 , R.id.t5})
-    public void onViewClicked(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.t1:
                 selector(t1);
@@ -105,9 +109,11 @@ public class BottomSelectView extends LinearLayout {
     }
 
     private OnTabSelectListener lis;
+
     public void setOnTabSelectListener(OnTabSelectListener listener) {
         this.lis = listener;
     }
+
     public interface OnTabSelectListener {
         void onTabSelected(int tabId);
     }

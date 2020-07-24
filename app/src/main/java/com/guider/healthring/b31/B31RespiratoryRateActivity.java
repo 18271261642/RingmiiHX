@@ -21,31 +21,21 @@ import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IBreathDataListener;
 import com.veepoo.protocol.model.datas.BreathData;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * 测量B31的呼吸率
  * Created by Admin
  * Date 2018/12/18
  */
-public class B31RespiratoryRateActivity extends WatchBaseActivity {
+public class B31RespiratoryRateActivity extends WatchBaseActivity implements View.OnClickListener{
 
     private static final String TAG = "B31RespiratoryRateActiv";
 
 
-    @BindView(R.id.commentB30BackImg)
     ImageView commentB30BackImg;
-    @BindView(R.id.commentB30TitleTv)
     TextView commentB30TitleTv;
-    @BindView(R.id.commentB30ShareImg)
     ImageView commentB30ShareImg;
-    @BindView(R.id.b31MeaureRateProgressView)
     CustomCircleProgressBar b31MeaureRateProgressView;
-    @BindView(R.id.showB31RateStateTv)
     TextView showB31RateStateTv;
-    @BindView(R.id.b31MeaureRateStartImg)
     ImageView b31MeaureRateStartImg;
 
     //开始或者停止测量的标识
@@ -76,11 +66,22 @@ public class B31RespiratoryRateActivity extends WatchBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b31_respiratory_rate_layout);
-        ButterKnife.bind(this);
-
+        initViewIds();
         initViews();
 
 
+    }
+
+    private void initViewIds() {
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        b31MeaureRateProgressView = findViewById(R.id.b31MeaureRateProgressView);
+        showB31RateStateTv = findViewById(R.id.showB31RateStateTv);
+        b31MeaureRateStartImg = findViewById(R.id.b31MeaureRateStartImg);
+        commentB30BackImg.setOnClickListener(this);
+        commentB30ShareImg.setOnClickListener(this);
+        b31MeaureRateStartImg.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -93,8 +94,7 @@ public class B31RespiratoryRateActivity extends WatchBaseActivity {
 
     }
 
-    @OnClick({R.id.commentB30BackImg, R.id.commentB30ShareImg,
-            R.id.b31MeaureRateStartImg})
+   @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回

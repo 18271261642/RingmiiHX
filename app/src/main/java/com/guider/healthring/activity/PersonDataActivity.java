@@ -73,10 +73,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.guider.healthring.util.Common.userInfo;
@@ -86,28 +82,20 @@ import static com.guider.healthring.util.Common.userInfo;
  * 完善个人信息,注册账号成功后进入的页面
  */
 
-public class PersonDataActivity extends WatchBaseActivity implements RequestView {
+public class PersonDataActivity extends WatchBaseActivity
+        implements RequestView,View.OnClickListener {
     private static final String TAG = "PersonDataActivity";
 
     private static final int GET_OPENCAMERA_CODE = 100;
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.head_img)
     CircleImageView headImg;
-    @BindView(R.id.code_et)
     EditText codeEt;
-    @BindView(R.id.brithdayval_tv)
     TextView brithdayvalTv;
-    @BindView(R.id.heightval_tv)
     TextView heightvalTv;
-    @BindView(R.id.weightval_tv)
     TextView weightvalTv;
-    @BindView(R.id.man_iconview)
     SwitchIconView manIconview;
-    @BindView(R.id.women_iconview)
     SwitchIconView womenIconview;
-    @BindView(R.id.bottomsheet)
     BottomSheetLayout bottomSheetLayout;
 
     private String height, weight, sexVal, brithdayVal, nickName;
@@ -129,12 +117,30 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_persondata);
-        ButterKnife.bind(this);
-
-
+        initViewIds();
         initViews();
 
         initData();
+    }
+
+    private void initViewIds() {
+        tvTitle = findViewById(R.id.tv_title);
+        headImg = findViewById(R.id.head_img);
+        codeEt = findViewById(R.id.code_et);
+        brithdayvalTv = findViewById(R.id.brithdayval_tv);
+        heightvalTv = findViewById(R.id.heightval_tv);
+        weightvalTv = findViewById(R.id.weightval_tv);
+        weightvalTv = findViewById(R.id.weightval_tv);
+        manIconview = findViewById(R.id.man_iconview);
+        womenIconview = findViewById(R.id.women_iconview);
+        bottomSheetLayout = findViewById(R.id.bottomsheet);
+        headImg.setOnClickListener(this);
+        findViewById(R.id.selectbirthday_relayout).setOnClickListener(this);
+        findViewById(R.id.selectheight_relayout).setOnClickListener(this);
+        findViewById(R.id.selectweight_relayout).setOnClickListener(this);
+        findViewById(R.id.confirmcompelte_btn).setOnClickListener(this);
+        findViewById(R.id.man_iconview).setOnClickListener(this);
+        findViewById(R.id.women_iconview).setOnClickListener(this);
     }
 
     private void initData() {
@@ -239,9 +245,7 @@ public class PersonDataActivity extends WatchBaseActivity implements RequestView
 
     }
 
-    @OnClick({R.id.head_img, R.id.selectbirthday_relayout,
-            R.id.selectheight_relayout, R.id.selectweight_relayout,
-            R.id.confirmcompelte_btn, R.id.man_iconview, R.id.women_iconview})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.head_img: //选择头像
