@@ -1,28 +1,17 @@
 package com.guider.libbase.fragment;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.widget.LinearLayout;
 
-import com.guider.health.common.core.DateUtil;
-import com.guider.health.common.utils.StringUtil;
 import com.guider.libbase.R;
-import com.guider.libbase.activity.PermissionsActivity;
-import com.guider.libbase.activity.PictureSelectActivity;
-import com.guider.libbase.other.BaseAndroidInterface;
 import com.guider.libbase.other.WebviewAgent;
-
-import java.util.List;
 
 
 public class WebviewFragment extends Fragment {

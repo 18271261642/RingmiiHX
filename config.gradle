@@ -3,9 +3,9 @@ ext {
     // true ：集成模式
     isLibrary = true
     android = [
-            compileSdkVersion: 27,
+            compileSdkVersion: 28,
             minSdkVersion    : 19,
-            targetSdkVersion : 22,
+            targetSdkVersion : 28,
             versionCode      : 1,
             versionName      : "1.0"
     ]
@@ -13,13 +13,6 @@ ext {
     appId = [
              "app": "com.guider.health",
              "infocard" : "com.guider.health.infocard" ]
-
-    supportLibrary = "27.1.1"
-//    supportLibrary = "23+"
-    dependencies = [
-            "appcompat-v7"     : "com.android.support:appcompat-v7:${supportLibrary}",
-
-    ]
 }
 
 

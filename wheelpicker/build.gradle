@@ -1,11 +1,10 @@
 apply plugin: 'com.android.library'
-
+def andr = rootProject.ext.android
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion andr.compileSdkVersion
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 28
+        minSdkVersion andr.minSdkVersion
+        targetSdkVersion andr.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }

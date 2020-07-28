@@ -3,7 +3,7 @@ package com.guider.glu.view;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;

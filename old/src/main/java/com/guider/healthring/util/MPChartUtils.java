@@ -2,7 +2,7 @@ package com.guider.healthring.util;
 
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 import com.guider.healthring.R;
 import com.github.mikephil.charting.charts.BarChart;

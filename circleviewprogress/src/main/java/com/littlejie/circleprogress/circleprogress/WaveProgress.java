@@ -2,7 +2,6 @@ package com.littlejie.circleprogress.circleprogress;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,9 +12,8 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.content.ContextCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;

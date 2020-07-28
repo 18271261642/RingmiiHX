@@ -34,7 +34,7 @@
             app:nts_typeface="fonts/moon.otf"
             app:nts_weight="10dp" />
 
-        <android.support.v4.view.ViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/stepitem_viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

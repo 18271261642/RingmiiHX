@@ -2,13 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven'
 //apply plugin: 'com.github.dcendents.android-maven'
 //apply plugin: 'realm-android'
-
+def andr = rootProject.ext.android
 android {
-    compileSdkVersion 28
-    // resourcePrefix 'mpcht'
+    compileSdkVersion andr.compileSdkVersion
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion andr.minSdkVersion
+        targetSdkVersion andr.targetSdkVersion
         versionCode 3
         versionName '3.0.2'
     }
@@ -33,10 +32,6 @@ repositories {
 }
 
 dependencies {
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile 'com.android.support:support-v4:19.+'
-    //provided 'io.realm:realm-android:0.87.5' // "optional" dependency to realm-database API
-    testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:1.9.5"
 }
 

@@ -6,7 +6,7 @@
 
     <include layout="@layout/appbar_toolbar" android:id="@+id/tool_bar"/>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tool_bar"
@@ -136,7 +136,7 @@
 
             </RelativeLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/exit_login"

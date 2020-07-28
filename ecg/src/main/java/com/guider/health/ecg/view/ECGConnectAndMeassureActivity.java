@@ -1,10 +1,9 @@
 package com.guider.health.ecg.view;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.KeyEvent;
+import androidx.annotation.Nullable;
+
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.guider.health.common.core.BaseActivity;
 import com.guider.health.common.core.BaseFragment;

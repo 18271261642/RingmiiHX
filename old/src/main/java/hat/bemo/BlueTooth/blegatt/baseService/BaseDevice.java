@@ -8,7 +8,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 public abstract class BaseDevice {	
 	public static final String CHARACTERISTIC_CD01 = "00001800-0000-1000-8000-00805f9b34fb";

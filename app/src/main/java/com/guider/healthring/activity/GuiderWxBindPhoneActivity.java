@@ -6,7 +6,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
-import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.bean.AreCodeBean;

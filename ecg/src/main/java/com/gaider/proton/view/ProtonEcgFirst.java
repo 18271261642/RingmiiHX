@@ -1,7 +1,7 @@
 package com.gaider.proton.view;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;

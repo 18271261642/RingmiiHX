@@ -2,7 +2,7 @@ package com.guider.health.shenzhen;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.guider.health.common.core.BaseFragment;
 

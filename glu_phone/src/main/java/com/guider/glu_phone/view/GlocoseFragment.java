@@ -3,7 +3,7 @@ package com.guider.glu_phone.view;
 
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.guider.glu.presenter.GLUServiceManager;
 import com.guider.glu.view.GLUViewInterface;

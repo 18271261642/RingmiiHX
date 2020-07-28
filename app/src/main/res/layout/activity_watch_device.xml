@@ -65,7 +65,7 @@
                 </LinearLayout>
 
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/watch_message_jiedianSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                     android:textSize="@dimen/text_size_15" />
 
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/watch_message_callphoneSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

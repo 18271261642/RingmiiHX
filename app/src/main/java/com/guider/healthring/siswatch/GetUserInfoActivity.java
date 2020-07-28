@@ -1,23 +1,16 @@
 package com.guider.healthring.siswatch;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
 import com.guider.healthring.Commont;
-import com.guider.healthring.MyApp;
 import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.URLs;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**

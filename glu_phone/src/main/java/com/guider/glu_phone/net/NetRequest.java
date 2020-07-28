@@ -11,8 +11,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.facebook.stetho.common.ReflectionUtil;
 import com.guider.glu.model.BodyIndex;
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;

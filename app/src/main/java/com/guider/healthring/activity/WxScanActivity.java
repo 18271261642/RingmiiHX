@@ -2,13 +2,17 @@ package com.guider.healthring.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.ApiConsts;
@@ -19,7 +23,6 @@ import com.guider.health.common.utils.StringUtil;
 import com.guider.health.common.views.dialog.DialogProgress;
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.NewSearchActivity;
-import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -82,11 +85,14 @@ public class WxScanActivity extends AppCompatActivity implements View.OnClickLis
                             mNeedReload = 0;
                             return;
                         }
-                        Picasso.with(WxScanActivity.this)
-                                .load(url)
+                        RequestOptions options = new RequestOptions()
                                 .placeholder(R.mipmap.loading_pic)
                                 .error(R.mipmap.reload)
-                                .fit()
+                                .fitCenter();
+
+                        Glide.with(WxScanActivity.this)
+                                .load(url)
+                                .apply(options)
                                 .into(ivSaveScreeShot);
                         mNeedReload = 2;
                     }
@@ -111,7 +117,7 @@ public class WxScanActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.iv_wechat_qr:
                 mDialogProgress = new DialogProgress(this, null);
                 mDialogProgress.showDialog();
-                if (ScreenShotUtils.shotScreen(this, "wx_scan_qr", true , 2592000L * 1000L)) {
+                if (ScreenShotUtils.shotScreen(this, "wx_scan_qr", true, 2592000L * 1000L)) {
                     Toast.makeText(this, getResources().getString(R.string.wx_scan_screen_save_ok), Toast.LENGTH_LONG).show();
                     toNext();
 

@@ -10,8 +10,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.PermissionChecker;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.PermissionChecker;
 import android.util.Log;
 
 import com.guider.healthring.Commont;

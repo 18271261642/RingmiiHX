@@ -1,14 +1,13 @@
 apply plugin: 'com.android.library'
-
+def andr = rootProject.ext.android
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion andr.compileSdkVersion
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion andr.minSdkVersion
+        targetSdkVersion andr.targetSdkVersiondef
         versionCode 10
         versionName "1.0.10"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -33,35 +32,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     implementation project(':common')
     implementation project(':bluetooth')
     implementation project(':glu')
     api 'com.just.agentweb:agentweb:4.1.3'
-//    api 'com.just.agentweb:filechooser:4.0.3-beta'// (可选)
-//    api 'com.just.agentweb:download:4.0.3-beta' // (可选)
-//    api 'com.github.Justson:Downloader:v4.0.3'// (可选)
-
-    // implementation 'com.umeng.sdk:common:1.5.1'
-    // https://mvnrepository.com/artifact/com.umeng.sdk/share-wechat
-    // implementation 'com.umeng.sdk:share-wechat:6.9.2'
-    // https://mvnrepository.com/artifact/com.umeng.sdk/share-core
-    // implementation 'com.umeng.sdk:share-core:6.9.2'
-    // https://mvnrepository.com/artifact/com.umeng.sdk/shareboard-widget
-    // implementation 'com.umeng.sdk:shareboard-widget:6.9.2'
-    // https://mvnrepository.com/artifact/com.umeng.sdk/debug
-    // implementation 'com.umeng.sdk:debug:1.0.0'
-
-    implementation 'pub.devrel:easypermissions:1.3.0'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
-
-    implementation 'com.android.support:multidex:1.0.3'
-
-    implementation 'com.kyleduo.switchbutton:library:2.0.0'
-    implementation project(path: ':apilib')
+    api 'com.just.agentweb:filechooser:4.1.3'// (可选)
+    api 'com.download.library:Downloader:4.1.3'
 }

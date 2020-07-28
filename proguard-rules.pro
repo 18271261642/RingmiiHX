@@ -102,12 +102,12 @@
     public <fields>;
 }
 
-#v4
--dontwarn android.support.v4.**
--keep class android.support.v4.** { *; }
--keep interface android.support.v4.app.** { *; }
--keep public class * extends android.support.v4.**
--keep public class * extends android.app.Fragment
+##v4
+#-dontwarn android.support.v4.**
+#-keep class android.support.v4.** { *; }
+#-keep interface android.support.v4.app.** { *; }
+#-keep public class * extends android.support.v4.**
+#-keep public class * extends android.app.Fragment
 
 #greendao
 #-dontwarn de.greenrobot.dao.**
@@ -116,3 +116,68 @@
     public static java.lang.String TABLENAME;
 }
 -keep class **$Properties
+
+#eventbus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+ #rxjava
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+ long producerIndex;
+ long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+ rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+ rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+#rxandroid
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+#nohttp
+-keepclassmembers class ** {
+    private javax.net.ssl.SSLSocketFactory delegate;
+}
+#agentweb
+-keep class com.just.agentweb.** {
+    *;
+}
+-dontwarn com.just.agentweb.**
+#litepal
+-keep class org.litepal.** {
+    *;
+}
+-keep class * extends org.litepal.crud.DataSupport {
+    *;
+}
+-keep class * extends org.litepal.crud.LitePalSupport {
+    *;
+}
+#Image Cropper
+-keep class androidx.appcompat.widget.** { *; }
+#高德地图
+-keep class com.amap.api.maps.**{*;}
+-keep class com.autonavi.**{*;}
+-keep class com.amap.api.trace.**{*;}
+-keep class com.amap.api.location.**{*;}
+-keep class com.amap.api.fence.**{*;}
+-keep class com.autonavi.aps.amapapi.model.**{*;}
+#urop
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }

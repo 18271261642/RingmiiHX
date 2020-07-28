@@ -3,14 +3,10 @@ package com.guider.health.foraglu;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
-
-import com.guider.health.bluetooth.core.BleBluetooth;
+import androidx.annotation.RequiresApi;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

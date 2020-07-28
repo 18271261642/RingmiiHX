@@ -1,7 +1,7 @@
 package hat.bemo.location;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.telephony.CellIdentityGsm;
 import android.telephony.CellIdentityWcdma;
 import android.telephony.CellInfo;

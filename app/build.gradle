@@ -2,52 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.mob.sdk'
 apply from: '../MobSDK.gradle'
-
-/* 冲突失败策略设置*/
-configurations.all {
-    // transitive = false
-    resolutionStrategy {
-        force 'androidx.annotation:annotation:1.0.0'
-        // force 'com.tencent.bugly:crashreport_upgrade:1.4.5'
-        // force 'com.tencent.bugly:nativecrashreport:3.7.1'
-        force 'androidx.appcompat:appcompat:1.0.0'
-        force 'androidx.recyclerview:recyclerview:1.0.0'
-        force 'com.github.bumptech.glide:glide:4.6.1'
-        force 'androidx.core:core:1.0.0'
-        force 'androidx.legacy:legacy-support-core-utils:1.0.0'
-
-        force 'androidx.versionedparcelable:versionedparcelable:1.0.0'
-        force 'io.reactivex:rxandroid:1.2.1'
-        force 'com.alibaba:fastjson:1.2.49'
-        force 'com.contrarywind:Android-PickerView:4.1.8'
-        force 'com.squareup.retrofit2:retrofit:2.6.0'
-
-        force 'com.squareup.retrofit2:converter-gson:2.6.0'
-        force 'com.squareup.okhttp3:logging-interceptor:4.0.1'
-        force 'joda-time:joda-time:2.10.4'
-        force 'androidx.media:media:1.0.0'
-        force 'io.reactivex:rxjava:1.3.0'
-
-        force 'com.google.code.gson:gson:2.8.5'
-        force 'com.squareup.okhttp3:logging-interceptor:4.0.1'
-        force 'com.squareup.okhttp3:okhttp:4.0.1'
-        force 'com.squareup.okio:okio:2.2.2'
-        force 'org.jetbrains.kotlin:kotlin-stdlib:1.3.40'
-        // force 'androidx.annotation:annotation:1.0.0-alpha1'
-
-        force 'com.squareup:javapoet:1.10.0'
-        force 'com.android.support:multidex:1.0.3'
-
-        force 'com.google.auto:auto-common:0.10'
-        force 'com.google.guava:guava:24.0-jre'
-        force 'com.google.code.findbugs:jsr305:2.0.1'
-
-        force 'com.squareup.picasso:picasso:2.5.2'
-
-        force 'org.apache.httpcomponents:httpcore:4.4.5'
-        failOnVersionConflict()
-    }
-}
+def andr = rootProject.ext.android
 
 android {
     signingConfigs {
@@ -70,19 +25,19 @@ android {
         incremental true
         javaMaxHeapSize "4g"
     }
-    compileSdkVersion 28
+    compileSdkVersion andr.compileSdkVersion
     defaultConfig {
         multiDexEnabled true
         applicationId "com.guider.healthringx"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion andr.minSdkVersion
+        targetSdkVersion andr.targetSdkVersion
         versionCode rootProject.ext.codeVersion
         versionName rootProject.ext.appVersion
         flavorDimensions "versionName"
         manifestPlaceholders = [
                 qq_id: "101357650"
         ]
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
 
 
         ndk {
@@ -244,121 +199,73 @@ dependencies {
         println "Add lib libgoogle"
         implementation project(':libgooglemap')
         implementation project(':libbuglygoogle')
-        implementation project(':libbasegoogle')
     } else {
         println "Add lib libcn"
         implementation project(':libgaodemap')
         implementation project(':libbuglycn')
-        implementation project(':libbasecn')
     }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    // testImplementation'junit:junit:4.12'
-    // androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
     // 以上依赖Android系统
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support:customtabs:28.0.0'
-    implementation 'com.android.support:animated-vector-drawable:28.0.0'
-    implementation 'com.android.support:mediarouter-v7:28.0.0'
-
-    // implementation project(':common')
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.browser:browser:1.2.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
+    implementation 'androidx.mediarouter:mediarouter:1.1.0'
     implementation project(':ecg')
-
-    api project(':apilib')
     implementation project(':common_m500_1000')
     implementation project(':bpm1000')
     implementation project(':simpleble')
     implementation project(':libbase')
     implementation project(':glu_phone')
-
     implementation project(path: ':wheelpicker')
-
-    // implementation project(':cameraLibrary')
-
     implementation project(':circleviewprogress')
-
     implementation files('libs/mframework.jar')
-
     implementation files('libs/open_sdk_r5923_lite.jar')
     implementation files('libs/libammsdk.jar')
     implementation files('libs/date4j.jar')
-
-    // implementation files('libs/MobTools-2019.0505.1729.jar')
-    // implementation files('libs/MobCommons-2019.0423.2029.jar')
-
-    // implementation files('libs/SMSSDK-3.3.1.jar')
-
     // 不显示试图
     implementation files('libs/hellocharts-library-1.5.8.jar')
     implementation files('libs/commons-lang-2.5.jar')
-
     implementation files('libs/BluetoothSDK.jar')
     implementation files('libs/OTA.jar')
     implementation(name: 'bluetooth', ext: 'aar')
-    // implementation project(':dfu')
-    implementation 'io.reactivex:rxjava:1.1.0'
-    implementation 'io.reactivex:rxandroid:1.1.0'
-    implementation 'com.google.code.gson:gson:2.8.0'
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
-    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.greenrobot:greendao:3.3.0'
     implementation 'org.greenrobot:greendao-generator:3.3.0'
-    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
-    implementation 'com.romandanylyk:pageindicatorview:0.1.1'
-
-    implementation 'com.roughike:bottom-bar:2.1.2'
-    implementation 'com.nightonke:boommenu:2.0.7'
-    implementation 'com.github.yalantis:ucrop:2.2.2'
+    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
+    implementation 'com.roughike:bottom-bar:2.3.1'
+    implementation 'com.nightonke:boommenu:2.1.1'
+    implementation 'com.github.yalantis:ucrop:2.2.5'
     implementation 'com.flipboard:bottomsheet-core:1.5.3'
     implementation 'com.flipboard:bottomsheet-commons:1.5.3'
     implementation 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
-    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'org.greenrobot:eventbus:3.2.0'
     implementation 'com.github.markushi:android-ui:1.2'
-
     implementation 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     implementation 'com.jiechic.library:xUtils:2.6.14'
-    implementation 'com.alibaba:fastjson:1.2.30'
-    implementation 'com.squareup.okio:okio:1.6.0'
+    implementation 'com.squareup.okio:okio:2.7.0'
     implementation 'com.squareup:otto:1.3.8'
-    implementation 'jp.wasabeef:recyclerview-animators:2.2.0'
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
     implementation 'com.balysv:material-ripple:1.0.2'
-    implementation 'com.makeramen:roundedimageview:2.2.1'
-    implementation 'me.everything:overscroll-decor-android:1.0.1'
-    // implementation 'com.yanzhenjie:permission:2.0.0-rc11'
     implementation 'com.yanzhenjie:permission:2.0.0-rc12'
     implementation 'com.bm.photoview:library:1.4.1'
     implementation 'com.arialyy.aria:aria-core:3.5'
     annotationProcessor 'com.arialyy.aria:aria-compiler:3.5'
     // 网络请求
-    implementation 'com.yanzhenjie.nohttp:nohttp:1.1.5'
-    implementation 'com.yanzhenjie.nohttp:okhttp:1.1.5'
+    implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
+    implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'
     implementation project(':w30sblelibrary')
-    // implementation files('libs/vpbluetooth_1.0.3.jar')
-    // implementation files('libs/vpprotocol_1.2.6.0.jar')
     implementation files('libs/vpprotocols_2.1.2.15.jar')
     implementation project(':MPChartLib')
-    implementation 'com.contrarywind:Android-PickerView:4.1.6'
     // 网络请求
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
     // 上下拉刷新
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-3'
-    // 上下拉刷新Header,自带经典和贝塞尔雷达,其他样式才加这行
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-3'
-
-    // implementation files('libs/SDKWrapper-2018.0801.1824.jar')
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
     implementation files('libs/jcc-bate-0.7.3.jar')
-
-    implementation 'org.litepal.android:java:3.0.0'
-    implementation 'com.just.agentweb:agentweb:4.1.3'
-    implementation 'com.just.agentweb:filechooser:4.1.3'// (可选)
-    implementation 'com.download.library:Downloader:4.1.3'// (可选)
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'// (可选)
 }
 
 android.applicationVariants.all { variant ->

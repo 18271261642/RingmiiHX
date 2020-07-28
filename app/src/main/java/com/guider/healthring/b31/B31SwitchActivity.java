@@ -1,11 +1,10 @@
 package com.guider.healthring.b31;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -17,7 +16,6 @@ import android.widget.ToggleButton;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
-import com.guider.healthring.b30.HellpEditActivity;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.util.SharedPreferencesUtils;

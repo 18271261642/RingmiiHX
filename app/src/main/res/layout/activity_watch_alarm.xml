@@ -16,7 +16,7 @@
         android:padding="5dp"
         android:layout_height="wrap_content" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/alarmSwipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -90,7 +90,7 @@
                 </LinearLayout>
 
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/watch_alarm_one_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -166,7 +166,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/watch_alarm_two_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
                 </LinearLayout>
 
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/watch_alarm_third_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -259,7 +259,7 @@
         </LinearLayout>
 
     </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <TextView
         android:id="@+id/watch_test_showView"
         android:layout_width="match_parent"

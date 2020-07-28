@@ -35,7 +35,7 @@
                 android:orientation="horizontal" />
         </LinearLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
@@ -263,7 +263,7 @@
 
             </LinearLayout>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="@dimen/dp_254"
                 android:layout_height="@dimen/dp_114"
                 android:layout_marginLeft="@dimen/dp_90"
@@ -326,9 +326,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/ll_avi" />
 
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_sb"
                 android:layout_width="@dimen/dp_254"
                 android:layout_height="@dimen/dp_114"
@@ -382,9 +382,9 @@
                     app:layout_constraintRight_toRightOf="@+id/ll_api"
                     app:layout_constraintTop_toBottomOf="@+id/ll_api" />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/bp_result_next"

@@ -336,7 +336,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -356,7 +356,7 @@
                         app:layout_constraintCircle="@+id/empty_food"
                         app:layout_constraintCircleAngle="30"
                         app:layout_constraintCircleRadius="@dimen/dp_80" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -372,7 +372,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -391,7 +391,7 @@
                         app:layout_constraintCircle="@+id/time1_food"
                         app:layout_constraintCircleAngle="30"
                         app:layout_constraintCircleRadius="@dimen/dp_80" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="wrap_content"

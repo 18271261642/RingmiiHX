@@ -51,11 +51,6 @@ allprojects {
     }
 
     ext {
-        compileSdkVersion = 27
-        //buildToolsVersion = "27.0.2"
-        minSdkVersion = 14
-        targetSdkVersion = compileSdkVersion
-
         codeVersion = 215
         appVersion = "2.5.5"
         isMyOutputFile = true
@@ -65,12 +60,16 @@ allprojects {
 
     subprojects {
         project.configurations.all {
-            resolutionStrategy.eachDependency { details ->
-                if (details.requested.group == 'com.android.support'
-                        && !details.requested.name.contains('multidex')) {
-                    details.useVersion "27.1.1"
-                }
+            configurations {
+                //这里要排除到这个包，这个包会与 com.google.guava 冲突，导致编译不过
+                all*.exclude group: 'com.google.guava', module: 'listenablefuture'
             }
+//            resolutionStrategy.eachDependency { details ->
+//                if (details.requested.group == 'com.android.support'
+//                        && !details.requested.name.contains('multidex')) {
+//                    details.useVersion "27.1.1"
+//                }
+//            }
         }
     }
 }

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.OrientationHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,44 +17,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.guider.health.all.BuildConfig;
+import com.bumptech.glide.Glide;
 import com.guider.health.all.R;
 import com.guider.health.arouter_annotation.Route;
 import com.guider.health.common.cache.MeasureDataUploader;
 import com.guider.health.common.core.BaseFragment;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.Glucose;
-import com.guider.health.common.core.HealthRange;
 import com.guider.health.common.core.HearRate;
 import com.guider.health.common.core.HeartPressBp;
 import com.guider.health.common.core.MyUtils;
-import com.guider.health.common.core.NetIp;
 import com.guider.health.common.core.RouterPathManager;
 import com.guider.health.common.core.UserManager;
 import com.guider.health.common.device.DeviceInit;
-import com.guider.health.common.net.NetStateController;
-import com.guider.health.common.net.net.RestService;
-import com.guider.health.common.net.net.RetrofitLogInterceptor;
 import com.orhanobut.logger.Logger;
-import com.squareup.picasso.Picasso;
-// import com.tencent.bugly.crashreport.CrashReport;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import ble.BleClient;
 import me.yokeyword.fragmentation.ISupportFragment;
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 
 /**
@@ -169,9 +151,9 @@ public class ChooseDeviceFragment extends BaseFragment {
 
         if (recyclerView == null) {
             recyclerView = view.findViewById(R.id.recycler_view);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(_mActivity);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(_mActivity,
+                    LinearLayoutManager.HORIZONTAL,false);
             recyclerView.setLayoutManager(layoutManager);
-            layoutManager.setOrientation(OrientationHelper.HORIZONTAL);
             normalAdapter = new NormalAdapter();
             recyclerView.setAdapter(normalAdapter);
             recyclerView.addItemDecoration(new SimplePaddingDecoration(_mActivity));
@@ -280,14 +262,15 @@ public class ChooseDeviceFragment extends BaseFragment {
             String picURL = Config.DEVICE_OBJ.get(Config.DEVICE_KEYS.get(position)) == null ?
                     "" : Config.DEVICE_OBJ.get(Config.DEVICE_KEYS.get(position)).getImgUrl();
             if (!TextUtils.isEmpty(picURL)) {
-                Picasso.with(_mActivity)
+
+                Glide.with(_mActivity)
                         .load(picURL)
-                        .resize(256, 256)
+//                        .resize(256, 256)
                         .into(holder.pic);
             } else {
-                Picasso.with(_mActivity)
+                Glide.with(_mActivity)
                         .load(deviceInit.pics.get(Config.DEVICE_KEYS.get(position)))
-                        .resize(256, 256)
+//                        .resize(256, 256)
                         .into(holder.pic);
                 // holder.pic.setImageResource(deviceInit.pics.get(Config.DEVICE_KEYS.get(position)));
             }

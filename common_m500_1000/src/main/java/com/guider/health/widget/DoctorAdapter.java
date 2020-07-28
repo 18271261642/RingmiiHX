@@ -9,9 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.guider.health.all.R;
 import com.guider.health.apilib.model.DoctorInfo;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class DoctorAdapter extends BaseAdapter {
         TextView video = inflate.findViewById(R.id.doctor_video);
 
         if (!TextUtils.isEmpty(list.get(position).getHeadUrl())) {
-            Picasso.with(parent.getContext())
+            Glide.with(parent.getContext())
                     .load(list.get(position).getHeadUrl())
                     .into(head);
         }

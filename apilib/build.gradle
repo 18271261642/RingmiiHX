@@ -1,28 +1,13 @@
 apply plugin: 'com.android.library'
-
-configurations.all {
-    resolutionStrategy {
-        force 'com.squareup.okhttp3:logging-interceptor:4.0.1'
-        force 'com.squareup.okhttp3:okhttp:4.0.1'
-        force 'org.jetbrains.kotlin:kotlin-stdlib:1.3.40'
-        force 'androidx.annotation:annotation:1.0.0'
-        force 'org.apache.httpcomponents:httpcore:4.4.5'
-        force 'com.google.guava:guava:23.0'
-        failOnVersionConflict()
-    }
-}
+def andr = rootProject.ext.android
 
 android {
-    compileSdkVersion 27
-
-
+    compileSdkVersion andr.compileSdkVersion
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 26
+        minSdkVersion andr.minSdkVersion
+        targetSdkVersion andr.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -67,15 +52,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
-    api group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.6.0'
+    api 'com.squareup.retrofit2:retrofit:2.7.2'
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
-    api group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.6.0'
+    api group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.7.2'
     api 'com.squareup.okhttp3:logging-interceptor:4.0.1'
     // https://mvnrepository.com/artifact/org.glassfish/javax.annotation
     api group: 'org.glassfish', name: 'javax.annotation', version: '10.0-b28'

@@ -4,12 +4,11 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
 
 import com.guider.health.bluetooth.core.BleBluetooth;
 import com.guider.health.common.core.ForaGlucose;
-import com.guider.health.common.core.HeartPressBp;
 import com.guider.health.common.core.MyUtils;
 
 import java.util.ArrayList;

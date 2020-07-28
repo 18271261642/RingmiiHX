@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 

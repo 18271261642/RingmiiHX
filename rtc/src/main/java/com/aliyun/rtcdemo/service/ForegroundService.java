@@ -10,8 +10,8 @@ import android.os.IBinder;
 import com.aliyun.rtcdemo.R;
 import com.aliyun.rtcdemo.activity.AliRtcChatActivity;
 
-import static android.support.v4.app.NotificationCompat.FLAG_NO_CLEAR;
-import static android.support.v4.app.NotificationCompat.FLAG_ONGOING_EVENT;
+import static androidx.core.app.NotificationCompat.FLAG_NO_CLEAR;
+import static androidx.core.app.NotificationCompat.FLAG_ONGOING_EVENT;
 
 public class ForegroundService extends Service {
     private static final int NOTIFICATION_FLAG = 0x11;

@@ -3,11 +3,10 @@ package com.guider.libbuglycn;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 // import com.guider.health.common.cache.MeasureDataUploader;
 // import com.guider.health.common.device.standard.Constant;
-import com.tencent.bugly.beta.Beta;
 
 import java.util.Timer;
 import java.util.TimerTask;

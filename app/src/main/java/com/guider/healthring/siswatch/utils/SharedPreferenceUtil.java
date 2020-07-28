@@ -5,7 +5,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.lidroid.xutils.util.LogUtils;
+
+import com.guider.libbase.util.Log;
 
 
 
@@ -50,7 +51,7 @@ public class SharedPreferenceUtil {
 		} else {
 			editor.putString(key, object.toString());
 		}
-		LogUtils.i("SP存储      key=" + key + "-----value=" + object);
+		Log.i("SharedPreferenceUtil","SP存储      key=" + key + "-----value=" + object);
 		SharedPreferencesCompat.apply(editor);
 		return key;
 	}
@@ -68,23 +69,23 @@ public class SharedPreferenceUtil {
 				Context.MODE_PRIVATE);
 		if (defaultObject instanceof String) {
 			String stringResult = sp.getString(key, (String) defaultObject);
-			LogUtils.i("SP取出      key=" + key + "-----value=" + stringResult);
+			Log.i("SharedPreferenceUtil","SP取出      key=" + key + "-----value=" + stringResult);
 			return stringResult;
 		} else if (defaultObject instanceof Integer) {
 			Integer integerResult = sp.getInt(key, (Integer) defaultObject);
-			LogUtils.i("SP取出      key=" + key + "-----value="+ integerResult);
+			Log.i("SharedPreferenceUtil","SP取出      key=" + key + "-----value="+ integerResult);
 			return integerResult;
 		} else if (defaultObject instanceof Boolean) {
 			Boolean booleanResult = sp.getBoolean(key, (Boolean) defaultObject);
-			LogUtils.i("SP取出      key=" + key + "-----value="+ booleanResult);
+			Log.i("SharedPreferenceUtil","SP取出      key=" + key + "-----value="+ booleanResult);
 			return booleanResult;
 		} else if (defaultObject instanceof Float) {
 			Float floatResult = sp.getFloat(key, (Float) defaultObject);
-			LogUtils.i("SP取出     key=" + key + "-----value="	+ floatResult);
+			Log.i("SharedPreferenceUtil","SP取出     key=" + key + "-----value="	+ floatResult);
 			return floatResult;
 		} else if (defaultObject instanceof Long) {
 			Long longResult = sp.getLong(key, (Long) defaultObject);
-			LogUtils.i("SP取出      key=" + key + "-----value="+ longResult);
+			Log.i("SharedPreferenceUtil","SP取出      key=" + key + "-----value="+ longResult);
 			return longResult;
 		}
 
@@ -102,7 +103,7 @@ public class SharedPreferenceUtil {
 				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sp.edit();
 		editor.remove(key);
-		LogUtils.i("已移除" + key);
+		Log.i("SharedPreferenceUtil","已移除" + key);
 		SharedPreferencesCompat.apply(editor);
 	}
 
@@ -116,7 +117,7 @@ public class SharedPreferenceUtil {
 				Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sp.edit();
 		editor.clear();
-		LogUtils.i("已清空SP存储");
+		Log.i("SharedPreferenceUtil","已清空SP存储");
 		SharedPreferencesCompat.apply(editor);
 	}
 
@@ -132,9 +133,9 @@ public class SharedPreferenceUtil {
 				Context.MODE_PRIVATE);
 		boolean result = sp.contains(key);
 		if (result)
-			LogUtils.i(key + "的值已经存在");
+			Log.i("SharedPreferenceUtil",key + "的值已经存在");
 		else
-			LogUtils.i(key + "的值不存在");
+			Log.i("SharedPreferenceUtil",key + "的值不存在");
 
 		return result;
 	}

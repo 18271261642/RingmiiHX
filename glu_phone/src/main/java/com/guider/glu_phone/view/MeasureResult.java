@@ -2,8 +2,8 @@ package com.guider.glu_phone.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +23,11 @@ import com.guider.health.common.core.UserManager;
 import com.guider.health.common.device.IUnit;
 import com.guider.health.common.device.standard.StandardCallback;
 import com.guider.health.common.net.net.RestService;
-import com.guider.health.common.net.net.RetrofitLogInterceptor;
 import com.guider.health.common.utils.UnitUtil;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

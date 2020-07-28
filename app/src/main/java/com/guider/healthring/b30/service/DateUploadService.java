@@ -2,7 +2,7 @@ package com.guider.healthring.b30.service;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.guider.healthring.Commont;

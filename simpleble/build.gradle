@@ -1,15 +1,12 @@
 apply plugin: 'com.android.library'
 version="1.4.0"
-
+def andr = rootProject.ext.android
 android {
-    compileSdkVersion 26
-
-
+    compileSdkVersion andr.compileSdkVersion
     resourcePrefix "bluetoothkit_"
-
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 26
+        minSdkVersion andr.minSdkVersion
+        targetSdkVersion andr.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }

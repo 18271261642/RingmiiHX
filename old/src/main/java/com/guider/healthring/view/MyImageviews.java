@@ -20,7 +20,7 @@ import com.lidroid.xutils.bitmap.core.AsyncDrawable;
  * Created by admin on 2016/10/8.
  */
 
-public class MyImageviews extends android.support.v7.widget.AppCompatImageView {
+public class MyImageviews extends androidx.appcompat.widget.AppCompatImageView {
     public MyImageviews(Context context) {
         super(context);
         // TODO Auto-generated constructor stub

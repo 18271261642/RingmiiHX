@@ -1,7 +1,7 @@
 package com.guider.health.ecg.view;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +23,6 @@ import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.NetIp;
 import com.guider.health.common.core.UserManager;
 import com.guider.health.common.net.net.RestService;
-import com.guider.health.common.net.net.RetrofitLogInterceptor;
 import com.guider.health.ecg.R;
 import com.guider.health.ecg.presenter.ECGServiceManager;
 
@@ -32,10 +31,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

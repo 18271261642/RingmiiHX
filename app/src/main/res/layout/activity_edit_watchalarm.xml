@@ -34,7 +34,7 @@
             android:textColor="@color/black_trans70"
             android:textSize="@dimen/size_18" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/watch_editRepeatSwit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:layout_width="wrap_content"
                     android:id="@+id/watch_CB1"
                     android:layout_alignParentRight="true"
@@ -121,7 +121,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/watch_CB2"
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
@@ -145,7 +145,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/watch_CB3"
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
@@ -169,7 +169,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/watch_CB4"
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
@@ -193,7 +193,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/watch_CB5"
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
@@ -217,7 +217,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/watch_CB6"
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
@@ -241,7 +241,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/watch_CB7"
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"

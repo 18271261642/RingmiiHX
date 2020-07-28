@@ -11,13 +11,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
-import android.support.multidex.MultiDex;
-import android.support.v7.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
+import androidx.appcompat.app.AppCompatActivity;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
-
 import com.afa.tourism.greendao.gen.DaoMaster;
 import com.afa.tourism.greendao.gen.DaoSession;
 import com.android.volley.RequestQueue;
@@ -30,19 +29,13 @@ import com.guider.healthring.activity.wylactivity.wyl_util.service.NewSmsBroadCa
 import com.guider.healthring.b30.service.B30DataServer;
 import com.guider.healthring.b30.service.NewB30ConnStateService;
 import com.guider.healthring.bzlmaps.PhoneSosOrDisPhone;
-// import com.guider.healthring.bzlmaps.baidulocal.LocationService;
 import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
-// import com.mob.MobSDK;
 import com.guider.libbase.map.IMapLocation;
-import com.guider.libbase.map.IOnLocation;
-import com.guider.map.MapLocationImpl;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
-
 import org.litepal.LitePalApplication;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

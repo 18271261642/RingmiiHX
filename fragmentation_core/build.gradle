@@ -1,14 +1,11 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'bintray-release'
 
+def andr = rootProject.ext.android
 android {
-    compileSdkVersion 27
-    //buildToolsVersion rootProject.buildToolsVersion
-
+    compileSdkVersion andr.compileSdkVersion
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 22
-
+        minSdkVersion andr.minSdkVersion
+        targetSdkVersion andr.targetSdkVersion
         consumerProguardFiles 'proguard-rules.pro'
     }
 
@@ -19,16 +16,5 @@ android {
 }
 
 dependencies {
-    provided "com.android.support:appcompat-v7:27.1.1"
+    compileOnly 'androidx.appcompat:appcompat:1.1.0'
 }
-
-//publish {
-//    artifactId = 'fragmentation-core'
-//    userOrg = rootProject.userOrg
-//    groupId = rootProject.groupId
-//    uploadName = 'Fragmentation-Core'
-//    publishVersion = rootProject.publishVersion
-//    description = rootProject.desc
-//    website = rootProject.website
-//    licences = rootProject.licences
-//}

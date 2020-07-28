@@ -1,7 +1,6 @@
 package com.guider.health.arouter_core.thread;
 
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadFactory;

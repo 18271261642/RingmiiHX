@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include layout="@layout/b30_home_title_layout" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/white"/>
+        android:background="@color/white" />
 
 
     <TextView
         android:id="@+id/syncStatusTv"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:background="@color/block_backgroud_hrv"
-        android:text="@string/msync"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@color/block_backgroud_hrv"
         android:gravity="center"
-        android:textColor="@color/white"
         android:padding="8dp"
-        android:layout_height="wrap_content" />
+        android:text="@string/msync"
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
 
     <!--4DDDFF-->
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/b31HomeSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,10 +40,10 @@
         <!-- srlEnablePreviewInEditMode 可以开启和关闭下拉预览 -->
 
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:scrollbars="none"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -96,8 +96,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="20dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/white"
@@ -106,10 +106,10 @@
                 </LinearLayout>
 
 
-                <include layout="@layout/home_fast_menu_layout"/>
+                <include layout="@layout/home_fast_menu_layout" />
 
 
-                <include layout="@layout/include_b31_home_item_layout"/>
+                <include layout="@layout/include_b31_home_item_layout" />
 
                 <!--日期-->
                 <LinearLayout
@@ -141,9 +141,9 @@
                             android:id="@+id/b31HomeTodayImg"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
-                            android:visibility="visible"
                             android:layout_gravity="center|bottom"
-                            android:background="@drawable/fgm_home_move" />
+                            android:background="@drawable/fgm_home_move"
+                            android:visibility="visible" />
 
 
                     </LinearLayout>
@@ -210,11 +210,11 @@
 
                 </LinearLayout>
                 <!--HRV-->
-                <include layout="@layout/inclue_b31_home_hrv_layout"/>
+                <include layout="@layout/inclue_b31_home_hrv_layout" />
                 <!--睡眠图表-->
                 <include layout="@layout/new_include_b30_sleep_view_layout" />
                 <!--血氧-->
-                <include layout="@layout/include_b31_home_bpoxy_layout"/>
+                <include layout="@layout/include_b31_home_bpoxy_layout" />
 
                 <!--模块1 血氧/呼吸暂停-->
                 <LinearLayout
@@ -281,7 +281,7 @@
                         style="@style/style_block_bottom_tip" />
                 </LinearLayout>
 
-                <include layout="@layout/include_b31_spo2_charts_layout"/>
+                <include layout="@layout/include_b31_spo2_charts_layout" />
 
                 <!--运动图表-->
                 <include layout="@layout/include_b30_barchart" />
@@ -294,8 +294,8 @@
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

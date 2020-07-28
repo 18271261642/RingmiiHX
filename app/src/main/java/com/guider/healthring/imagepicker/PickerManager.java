@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.guider.healthring.R;
 import com.yalantis.ucrop.UCrop;
@@ -119,9 +119,9 @@ public abstract  class PickerManager {
             UCrop.Options options = new UCrop.Options();
             options.setFreeStyleCropEnabled(true);
             options.withAspectRatio(1,1);
-            options.setToolbarColor(cropActivityColor);
-            options.setStatusBarColor(cropActivityColor);
-            options.setActiveWidgetColor(cropActivityColor);
+            options.setToolbarColor(activity.getResources().getColor(cropActivityColor));
+            options.setStatusBarColor(activity.getResources().getColor(cropActivityColor));
+            options.setActiveControlsWidgetColor(activity.getResources().getColor(cropActivityColor));
             uCrop = uCrop.withOptions(options);
         }
 

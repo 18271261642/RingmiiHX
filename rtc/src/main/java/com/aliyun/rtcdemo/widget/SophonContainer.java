@@ -3,7 +3,7 @@ package com.aliyun.rtcdemo.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 

@@ -3,4 +3,3 @@ include ":apilib",":arouter-core",":bluetooth",":common",":ecg",":fragmentation_
 //project(':litepals').projectDir = new File('litepal')':litepals',':old',
 include ':libbase'
 include ":glu_phone",":glu"
-include ':libbasecn', 'libbasegoogle'

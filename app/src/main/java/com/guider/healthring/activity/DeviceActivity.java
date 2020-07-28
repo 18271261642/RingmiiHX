@@ -3,16 +3,12 @@ package com.guider.healthring.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.guider.glu_phone.view.AttentionInfo;
 import com.guider.health.ChooseDeviceFragment;
-import com.guider.health.apilib.ApiUtil;
 import com.guider.health.bluetooth.core.BleBluetooth;
 import com.guider.health.common.core.BaseActivity;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.UserManager;
-import com.guider.health.common.device.DeviceInit;
 import com.guider.healthring.BuildConfig;
 import com.guider.healthring.R;
 

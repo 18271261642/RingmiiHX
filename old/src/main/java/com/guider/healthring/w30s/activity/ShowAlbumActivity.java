@@ -2,10 +2,10 @@ package com.guider.healthring.w30s.activity;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;

@@ -1,11 +1,10 @@
 package com.guider.healthring.util;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.guider.health.apilib.ApiUtil;
-import com.guider.healthring.BuildConfig;
 
 import org.json.JSONObject;
 
@@ -16,7 +15,6 @@ import java.net.SocketException;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -28,7 +26,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * 通过OkHttp3获取服务端数据工具类

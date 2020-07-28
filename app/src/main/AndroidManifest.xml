@@ -101,7 +101,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:vmSafeMode="true"
-        tools:ignore="HardcodedDebugMode"
+        tools:ignore="HardcodedDebugMode,UnusedAttribute"
         tools:replace="android:label,android:name,android:icon"
         android:usesCleartextTraffic="true">
 
@@ -159,12 +159,6 @@
             </intent-filter>
         </activity>
         -->
-
-        <activity
-            android:name="com.tencent.bugly.beta.ui.BetaActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|locale"
-            android:theme="@android:style/Theme.Translucent" />
-
         <!-- 新的引导页和欢迎页-启动页 -->
         <activity
             android:name="com.guider.healthring.activity.LaunchActivity"
@@ -175,6 +169,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+<!--        <activity-->
+<!--            android:name="com.tencent.bugly.beta.ui.BetaActivity"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize|locale"-->
+<!--            android:theme="@android:style/Theme.Translucent" />-->
+
 
         <activity
             android:name=".activity.WxScanActivity"
@@ -662,7 +662,7 @@
 
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true"
