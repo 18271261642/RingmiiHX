@@ -84,7 +84,8 @@ public class BluetoothManager extends ContextWrapper {
 		mOnBTMeasureListener = onBTMeasureListener;
 		
 		if(!TextUtils.isEmpty(BluetoothService.ConnectedBTAddress)){
-			mOnBTMeasureListener.onConnected(true, _bluetooth.getRemoteDevice(BluetoothService.ConnectedBTAddress));
+			mOnBTMeasureListener.onConnected(true,
+					_bluetooth.getRemoteDevice(BluetoothService.ConnectedBTAddress));
 			startMeasure();
 		} else {
 			setBtDiscoverable();
@@ -353,7 +354,8 @@ public class BluetoothManager extends ContextWrapper {
 	/** 连接蓝牙设备 */
 	private void connectToBT(String addr){
 		Log.v(TAG, "开始连接蓝牙：" + addr);
-		if(FrameUtil.isServiceRunning("com.guider.health.bp.view.mbb2.iknetbluetoothlibrary.BluetoothService", mContext)){
+		if(FrameUtil.isServiceRunning(
+				"com.guider.health.bp.view.mbb2.iknetbluetoothlibrary.BluetoothService", mContext)){
 			Intent intent = new Intent(BluetoothService.ACTION_BT_CONNECT_TO);
 			intent.putExtra("addr", addr);
 			mContext.sendBroadcast(intent);

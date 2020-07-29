@@ -171,23 +171,23 @@ public class DeviceInit {
         pics.put(DEV_FORA_ET, R.mipmap.device_fora_glu_logo);
         // TODO 新设备图片
 
-        fragments.put(DEV_GLU, Config.GLU_FRAGMENT);
-        fragments.put(DEV_ECG_6, Config.ECG_FRAGMENT);
-        fragments.put(DEV_ECG_HD, Config.ECG_HD_FRAGMENT);
-        fragments.put(DEV_BP, Config.BP_FRAGMENT);
-        fragments.put(DEV_BP_CX, Config.BP_CX_FRAGMENT);
-        fragments.put(DEV_BP_YF, Config.BP_YF_FRAGMENT);
-        fragments.put(DEV_BP_AVE, Config.BP_AVE_FRAGMENT);
-        fragments.put(DEV_ECG_12, Config.DAO12_FRAGMENT);
-        fragments.put(DEV_ECG_tzq, Config.ECG_ZANG_YIN);
-        fragments.put(DEV_BP_MBB_88  , Config.BP_MBB88_FRAGMENT);
-        fragments.put(DEV_BP_MBB_9804, Config.BP_MBB9804_FRAGMENT);
-        fragments.put(DEV_FORA_GLU, Config.FORA_GLU_FRAGMENT);
-        fragments.put(DEV_FORA_BO, Config.FORA_BO_FRAGMENT);
-        fragments.put(DEV_FORA_ET, Config.FORA_ET_FRAGMENT);
+        fragments.put(DEV_GLU, Config.GLU_FRAGMENT);// 无创血糖测量
+        fragments.put(DEV_ECG_6, Config.ECG_FRAGMENT);//6导测量仪器
+        fragments.put(DEV_ECG_HD, Config.ECG_HD_FRAGMENT);//红豆心电
+        fragments.put(DEV_BP, Config.BP_FRAGMENT);//福尔臂式血壓測量
+        fragments.put(DEV_BP_CX, Config.BP_CX_FRAGMENT);//连线款的血压仪
+        fragments.put(DEV_BP_YF, Config.BP_YF_FRAGMENT);//四川云峰的动脉硬化款的血压仪
+        fragments.put(DEV_BP_AVE, Config.BP_AVE_FRAGMENT);//四川云峰的VAE-2000的血压仪
+        fragments.put(DEV_ECG_12, Config.DAO12_FRAGMENT);//十二导心电测量
+        fragments.put(DEV_ECG_tzq, Config.ECG_ZANG_YIN);// 脏音听诊器
+        fragments.put(DEV_BP_MBB_88  , Config.BP_MBB88_FRAGMENT);//脉搏波88
+        fragments.put(DEV_BP_MBB_9804, Config.BP_MBB9804_FRAGMENT);// 脉搏波9804
+        fragments.put(DEV_FORA_GLU, Config.FORA_GLU_FRAGMENT);//福尔血糖
+        fragments.put(DEV_FORA_BO, Config.FORA_BO_FRAGMENT);// 福尔血氧
+        fragments.put(DEV_FORA_ET, Config.FORA_ET_FRAGMENT);// 福尔耳温
         // TODO 新设备FRAGMENT
 
-        names.put(DEV_ECG_6, MyUtils.application.getString(R.string.CmateHv100));
+        names.put(DEV_ECG_6, MyUtils.application.getString(R.string.CmateHv100));//6导测量仪器
         names.put(DEV_BP, MyUtils.application.getString(R.string.FORAP30PLUSv100));//福尔臂式血壓測量
         names.put(DEV_GLU, MyUtils.application.getString(R.string.BDE_WEIXIN_TTMv100)); // 无创血糖测量
         names.put(DEV_ECG_HD, MyUtils.application.getString(R.string.device_hdv100)); // 红豆心电
@@ -197,10 +197,10 @@ public class DeviceInit {
         names.put(DEV_ECG_12, MyUtils.application.getString(R.string.WWKECGv100)); // 十二导心电测量
         names.put(DEV_ECG_tzq, MyUtils.application.getString(R.string.device_tzqv100)); // 远程脏音测量
         names.put(DEV_BP_MBB_88  , MyUtils.application.getString(R.string.RBP1810130249v100)); // 脉搏波88
-        names.put(DEV_BP_MBB_9804, MyUtils.application.getString(R.string.BP06D21905750026v100)); // 脉搏波9804"
-        names.put(DEV_FORA_GLU, MyUtils.application.getString(R.string.FORAGD40bv100));
-        names.put(DEV_FORA_BO, MyUtils.application.getString(R.string.FORABO));
-        names.put(DEV_FORA_ET, MyUtils.application.getString(R.string.FORAET));
+        names.put(DEV_BP_MBB_9804, MyUtils.application.getString(R.string.BP06D21905750026v100)); // 脉搏波9804
+        names.put(DEV_FORA_GLU, MyUtils.application.getString(R.string.FORAGD40bv100));//福尔血糖
+        names.put(DEV_FORA_BO, MyUtils.application.getString(R.string.FORABO));// 福尔血氧
+        names.put(DEV_FORA_ET, MyUtils.application.getString(R.string.FORAET));// 福尔耳温
         // TODO 新设备名字
 
         Config.DEVICE_KEYS.add(DEV_GLU);

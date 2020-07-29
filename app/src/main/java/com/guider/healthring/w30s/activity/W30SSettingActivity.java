@@ -322,7 +322,7 @@ public class W30SSettingActivity extends WatchBaseActivity implements  View.OnCl
                             SharePeClear.clearDatas(W30SSettingActivity.this);
                             handler.sendEmptyMessageDelayed(ResetNUMBER, HandlerTime);
                             return null;
-                        }, () -> null
+                        }
                 );
                 break;
             case R.id.set_unbind:   //解绑
@@ -355,7 +355,7 @@ public class W30SSettingActivity extends WatchBaseActivity implements  View.OnCl
                                 e.getMessage();
                             }
                             return null;
-                        }, () -> null
+                        }
                 );
                 break;
 

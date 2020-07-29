@@ -238,7 +238,7 @@ public class B18ISettingActivity extends WatchBaseActivity implements View.OnCli
                                 () -> {
                                     BluetoothSDK.disConnect(B18iResultCallBack.getB18iResultCallBack());
                                     return null;
-                                }, () -> null
+                                }
                         );
                     case "W06X":
                         MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
@@ -260,7 +260,7 @@ public class B18ISettingActivity extends WatchBaseActivity implements View.OnCli
                                     showLoadingDialog(getResources().getString(R.string.dlog));
                                     handler.sendEmptyMessageDelayed(1001, 2000);
                                     return null;
-                                }, () -> null
+                                }
                         );
                         break;
 //                    case "B15P":

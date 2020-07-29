@@ -34,6 +34,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import retrofit2.Call;
 import retrofit2.Response;
 
+/**
+ * 脏音听诊器
+ */
 public class ZangYin extends BaseFragment {
 
     private View view;

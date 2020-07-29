@@ -20,10 +20,13 @@ public class Config {
     public  static String BIND_PHONE = "com.guider.health.shenzhen.RegisterFragment";
     public  static String FOCUS_WECHAT = "com.guider.health.shenzhen.WeixinScanBind";
 
-
+    //6导测量仪器
     public final static String ECG_FRAGMENT = "com.guider.health.ecg.view.ECGDeviceOperate";
+    //红豆心电
     public final static String ECG_HD_FRAGMENT = "com.gaider.proton.view.ProtonEcgFirst";
+    // 无创血糖测量
     public final static String GLU_FRAGMENT = "com.guider.glu.view.GLUChooseTime";
+    //福尔血糖
     public final static String FORA_GLU_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
     // 福尔血氧
     public final static String FORA_BO_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
@@ -34,9 +37,9 @@ public class Config {
     public static String BP_FRAGMENT = "com.guider.health.bp.view.bp.BPFirstOperaterReminder";
     // 四川云峰的VAE-2000的血压仪
     public static String BP_AVE_FRAGMENT = "com.guider.health.bp.view.vaebp.BPFirstOperaterReminder";
-    // 插线版
+    // 连线款的血压仪
     public static String BP_CX_FRAGMENT = "com.guider.health.bp.view.cxbp.BPFirstOperaterReminder";
-    // 云峰
+    // 四川云峰的动脉硬化款的血压仪
     public static String BP_YF_FRAGMENT = "com.guider.health.bp.view.yfbp.BPFirstOperaterReminder";
     // MBB_88
     public static String BP_MBB88_FRAGMENT = "com.guider.health.bp.view.mbb2.BP88B.BPFirstOperaterReminder";
@@ -51,6 +54,7 @@ public class Config {
     public final static String END_FRAGMENT = "com.guider.health.ShowAllDevicesMessureResult";
     public final static String RTC_ACTIVITY = "com.aliyun.rtcdemo.activity.AliRtcChatActivity";
     public final static String PRINT_FRAGMENT = "com.guider.printlib.PrintingResultFragment";
+    //十二导心电测量
     public final static String DAO12_FRAGMENT = "cn.wuweikang.view.VideoShow";
 
     public final static HashMap<String, Boolean> mapX = new HashMap<>();

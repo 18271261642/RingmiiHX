@@ -163,7 +163,7 @@ public class W30SReminderActivity extends WatchBaseActivity
                             intent.setData(uri);
                             startActivity(intent);
                             return null;
-                        }, () -> null
+                        }
                 );
                 break;
         }

@@ -1,6 +1,5 @@
 package com.guider.healthring.util
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
@@ -14,8 +13,7 @@ object MaterialDialogUtil {
 
     fun showDialog(activity: AppCompatActivity, titleId: Int,
                    content: Int, positiveText: Int, negativeText: Int,
-                   positiveClick: () -> Unit,
-                   negativeClick: () -> Unit) {
+                   positiveClick: () -> Unit) {
         MaterialDialog(activity).show {
             title(titleId)
             message(content)
@@ -25,7 +23,6 @@ object MaterialDialogUtil {
             }
             negativeButton(negativeText) {
                 it.dismiss()
-                negativeClick()
             }
             lifecycleOwner(activity)
         }
@@ -33,8 +30,7 @@ object MaterialDialogUtil {
 
     fun showDialog(fragment: Fragment, titleId: Int,
                    content: Int, positiveText: Int, negativeText: Int,
-                   positiveClick: () -> Unit,
-                   negativeClick: () -> Unit) {
+                   positiveClick: () -> Unit) {
         MaterialDialog(fragment.activity!!.baseContext).show {
             title(titleId)
             message(content)
@@ -44,7 +40,6 @@ object MaterialDialogUtil {
             }
             negativeButton(negativeText) {
                 it.dismiss()
-                negativeClick()
             }
             lifecycleOwner(fragment.activity)
         }
@@ -52,8 +47,7 @@ object MaterialDialogUtil {
 
     fun showDialog(activity: AppCompatActivity, titleId: Int,
                    content: String, positiveText: Int, negativeText: Int,
-                   positiveClick: () -> Unit,
-                   negativeClick: () -> Unit) {
+                   positiveClick: () -> Unit) {
         MaterialDialog(activity).show {
             title(titleId)
             message(text = content)
@@ -63,7 +57,6 @@ object MaterialDialogUtil {
             }
             negativeButton(negativeText) {
                 it.dismiss()
-                negativeClick()
             }
             lifecycleOwner(activity)
         }

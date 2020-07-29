@@ -16,6 +16,7 @@ import com.guider.health.common.utils.SkipClick;
 
 /**
  * Created by haix on 2019/6/25.
+ * MBB_88
  */
 
 public class BPFirstOperaterReminder extends BPFragment {

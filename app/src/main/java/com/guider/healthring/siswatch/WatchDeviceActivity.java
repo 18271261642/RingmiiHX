@@ -305,7 +305,7 @@ public class WatchDeviceActivity extends WatchBaseActivity
                     }
 
                     return null;
-                }, () -> null
+                }
         );
     }
 

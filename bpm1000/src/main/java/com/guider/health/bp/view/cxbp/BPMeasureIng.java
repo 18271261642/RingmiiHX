@@ -1,5 +1,6 @@
 package com.guider.health.bp.view.cxbp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -323,7 +324,9 @@ public class BPMeasureIng extends BPFragment {
         }
     }
 
+    @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
+
         @Override
         public void handleMessage(Message msg) {
             if (iavailable > 0) {
@@ -339,8 +342,8 @@ public class BPMeasureIng extends BPFragment {
                     String Serial = ourString;
                     ourString = "";
 
-                    Serial = Serial.substring(Serial.length() - 58, Serial.length());
-                    Log.d(TAG, "Serial" + Serial.substring(Serial.length() - 58, Serial.length()));
+                    Serial = Serial.substring(Serial.length() - 58);
+                    Log.d(TAG, "Serial" + Serial.substring(Serial.length() - 58));
                     Log.d(TAG, "收縮壓" + Serial.substring(Serial.length() - 18, Serial.length() - 15));
                     Log.d(TAG, "舒張壓" + Serial.substring(Serial.length() - 10, Serial.length() - 7));
                     Log.d(TAG, "脈搏" + Serial.substring(Serial.length() - 6, Serial.length() - 3));
@@ -408,7 +411,7 @@ public class BPMeasureIng extends BPFragment {
         public void run() {
             int i;
 
-            while (true == bReadThreadGoing) {
+            while (bReadThreadGoing) {
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {

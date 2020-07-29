@@ -216,10 +216,10 @@ public class B18IAppSettingActivity extends WatchBaseActivity implements View.On
                                         Common.customer_id = null;
                                         mHandler.sendEmptyMessageDelayed(0x88, 500);
                                         return null;
-                                    }, () -> null
+                                    }
                             );
                             return null;
-                        }, () -> null
+                        }
                 );
                 break;
             case R.id.reset_device://重置
@@ -249,7 +249,7 @@ public class B18IAppSettingActivity extends WatchBaseActivity implements View.On
                                                             commandResultCallback));
                                         }
                                         return null;
-                                    }, () -> null
+                                    }
                             );
                             break;
                         case "B15P":
@@ -273,7 +273,7 @@ public class B18IAppSettingActivity extends WatchBaseActivity implements View.On
                                                     500);
                                         }
                                         return null;
-                                    }, () -> null
+                                    }
                             );
                             break;
                     }

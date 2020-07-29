@@ -189,7 +189,7 @@ public class W30SAlarmClockActivity extends WatchBaseActivity implements View.On
                             myAdapter.notifyDataSetChanged();
                             mHandler.sendEmptyMessageDelayed(HANDLER_DELETE, RESULT_TIME);
                             return null;
-                        }, () -> null
+                        }
                 );
             }
         });

@@ -214,7 +214,7 @@ public class B31DeviceActivity extends WatchBaseActivity
                             MyApp.getInstance().getVpOperateManager()
                                     .clearDeviceData(iBleWriteResponse);
                             return null;
-                        }, () -> null
+                        }
                 );
                 break;
             case R.id.wxSportRel:       //微信运动
@@ -413,7 +413,7 @@ public class B31DeviceActivity extends WatchBaseActivity
 
                     SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
                     return null;
-                }, () -> null
+                }
         );
     }
 

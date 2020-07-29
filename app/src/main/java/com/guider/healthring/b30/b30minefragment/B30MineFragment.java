@@ -467,7 +467,7 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
                     new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
                             .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
                     return null;
-                }, () -> null
+                }
         );
     }
 

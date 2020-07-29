@@ -309,7 +309,7 @@ public class B30DeviceActivity extends WatchBaseActivity
                             MyApp.getInstance().getVpOperateManager()
                                     .clearDeviceData(iBleWriteResponse);
                             return null;
-                        }, () -> null
+                        }
                 );
                 break;
             case R.id.b30DisConnBtn:    //断开连接
@@ -387,7 +387,7 @@ public class B30DeviceActivity extends WatchBaseActivity
                     startActivity(NewSearchActivity.class);
                     finish();
                     return null;
-                }, () -> null
+                }l
         );
     }
 

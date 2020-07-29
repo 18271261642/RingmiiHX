@@ -370,7 +370,7 @@ public class W30SAlarmClockRemindActivity extends WatchBaseActivity
                         showLoadingDialog(getResources().getString(R.string.dlog));
                         mHandler.sendEmptyMessageDelayed(HANDLER_MES, HANDLER_TIME);
                         return null;
-                    }, () -> null
+                    }
             );
         }catch (Exception e){
             e.getMessage();

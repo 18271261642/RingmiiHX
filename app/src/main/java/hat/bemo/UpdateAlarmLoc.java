@@ -216,8 +216,6 @@ public class UpdateAlarmLoc {
          * */
             gps.testLocationProvider("0x00");
 
-//            gps.startBaiduLocation();
-
 
     }
 

@@ -339,7 +339,7 @@ public class AlarmClockRemindActivity extends WatchBaseActivity implements View.
                                                             };
                                                             observable.subscribe(observer);
                                                             return null;
-                                                        }, () -> null
+                                                        }
                                                 );
                                         return true;
                                     }

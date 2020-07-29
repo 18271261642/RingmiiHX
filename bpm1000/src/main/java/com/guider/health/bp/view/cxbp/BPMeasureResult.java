@@ -1,5 +1,6 @@
 package com.guider.health.bp.view.cxbp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -42,6 +43,7 @@ public class BPMeasureResult extends BPFragment {
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -65,7 +67,8 @@ public class BPMeasureResult extends BPFragment {
 
         ((TextView) view.findViewById(R.id.bp_press1)).setText(sbp+"");
         ((TextView) view.findViewById(R.id.bp_press2)).setText(dbp+"");
-        ((TextView) view.findViewById(R.id.bp_result)).setText(HeartPressCx.getInstance().getSbp() + "/" + HeartPressCx.getInstance().getDbp());
+        ((TextView) view.findViewById(R.id.bp_result)).setText(HeartPressCx.getInstance().getSbp()
+                + "/" + HeartPressCx.getInstance().getDbp());
 
 
         HeartPressCx.getInstance().startStandardRun(new StandardCallback() {
@@ -92,7 +95,7 @@ public class BPMeasureResult extends BPFragment {
                 HeartPressCx.getInstance().getHeart()
         );
         MeasureDataUploader.getInstance(_mActivity).uploadHeartBpm(
-                Integer.valueOf(HeartPressCx.getInstance().getHeart())
+                Integer.parseInt(HeartPressCx.getInstance().getHeart())
         );
         view.findViewById(R.id.bp_result_next).setOnClickListener(new View.OnClickListener() {
             @Override

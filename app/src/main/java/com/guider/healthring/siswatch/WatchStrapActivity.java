@@ -114,7 +114,7 @@ public class WatchStrapActivity extends WatchBaseActivity {
                             }
                         }
                         return null;
-                    }, () -> null
+                    }
             );
         } else if (bluName.equals("B18I")) {//confirm_unbind_strap
             MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
@@ -122,7 +122,7 @@ public class WatchStrapActivity extends WatchBaseActivity {
                     () -> {
                         BluetoothSDK.disConnect(resultCallBack);
                         return null;
-                    }, () -> null
+                    }
             );
         } else { //H9 手表
             MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
@@ -137,7 +137,7 @@ public class WatchStrapActivity extends WatchBaseActivity {
                                 "mylanyamac", "");
                         showLoadingDialog("断开中..");
                         return null;
-                    }, () -> null
+                    }
             );
         }
 

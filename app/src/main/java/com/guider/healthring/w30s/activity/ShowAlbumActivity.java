@@ -56,7 +56,7 @@ public class ShowAlbumActivity extends WatchBaseActivity {
                             deleteFile(new File(urlList.get(currPosition)));
                             finish();
                             return null;
-                        }, () -> null
+                        }
                 );
             }
         });

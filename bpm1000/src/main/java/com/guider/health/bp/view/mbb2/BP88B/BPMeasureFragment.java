@@ -1,5 +1,6 @@
 package com.guider.health.bp.view.mbb2.BP88B;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ public class BPMeasureFragment extends BPFragment implements Protocol.IView {
         mPresenter.start();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onRunning(String running) {
         //测量过程中的压力值
