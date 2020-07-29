@@ -387,7 +387,7 @@ public class B30DeviceActivity extends WatchBaseActivity
                     startActivity(NewSearchActivity.class);
                     finish();
                     return null;
-                }l
+                }
         );
     }
 
