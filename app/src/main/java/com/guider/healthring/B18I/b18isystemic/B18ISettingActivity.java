@@ -16,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.guider.healthring.B18I.b18imonitor.B18iResultCallBack;
 import com.guider.healthring.B18I.evententity.B18iEventBus;
 import com.guider.healthring.MyApp;
@@ -29,6 +26,7 @@ import com.guider.healthring.h9.settingactivity.CorrectionTimeActivity;
 import com.guider.healthring.h9.settingactivity.IsUnitActivity;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.sdk.bluetooth.config.BluetoothConfig;
 import com.sdk.bluetooth.manage.AppsBluetoothManager;
@@ -235,43 +233,35 @@ public class B18ISettingActivity extends WatchBaseActivity implements View.OnCli
             case R.id.set_unbind://解绑
                 switch (bluName){
                     case "B18i":
-                        new MaterialDialog.Builder(this)
-                                .title(getResources().getString(R.string.prompt))
-                                .content(getResources().getString(R.string.confirm_unbind_strap))
-                                .positiveText(getResources().getString(R.string.confirm))
-                                .negativeText(getResources().getString(R.string.cancle))
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        BluetoothSDK.disConnect(B18iResultCallBack.getB18iResultCallBack());
-                                    }
-                                }).show();
-                        break;
+                        MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                                R.string.confirm_unbind_strap, R.string.confirm, R.string.cancle,
+                                () -> {
+                                    BluetoothSDK.disConnect(B18iResultCallBack.getB18iResultCallBack());
+                                    return null;
+                                }, () -> null
+                        );
                     case "W06X":
-                        new MaterialDialog.Builder(this)
-                                .title(getResources().getString(R.string.prompt))
-                                .content(getResources().getString(R.string.confirm_unbind_strap))
-                                .positiveText(getResources().getString(R.string.confirm))
-                                .negativeText(getResources().getString(R.string.cancle))
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        Log.d("--SDK中的--mac---", BluetoothConfig.getDefaultMac(MyApp.getContext()));
-                                        BluetoothConfig.setDefaultMac(MyApp.getContext(), "");
-                                        String sss = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "mylanyamac");
-                                        Log.d("--SDK中的--mac--111111-", BluetoothConfig.getDefaultMac(MyApp.getContext()));
-                                        AppsBluetoothManager.getInstance(MyApp.getContext()).doUnbindDevice(sss);
-                                        AppsBluetoothManager.getInstance(MyApp.getContext()).clearBluetoothManagerDeviceConnectListeners();
-                                        BluetoothConfig.setDefaultMac(MyApp.getContext(), "");
-                                        showLoadingDialog(getResources().getString(R.string.dlog));
-                                        handler.sendEmptyMessageDelayed(1001, 2000);
-//                                    SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanya","");
-//                                    SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanyamac","");
-//                            startActivity(SearchDeviceActivity.class);
-//                            startActivity(NewSearchActivity.class);
-//                            finish();
-                                    }
-                                }).show();
+                        MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                                R.string.confirm_unbind_strap, R.string.confirm, R.string.cancle,
+                                () -> {
+                                    Log.d("--SDK中的--mac---",
+                                            BluetoothConfig.getDefaultMac(MyApp.getContext()));
+                                    BluetoothConfig.setDefaultMac(MyApp.getContext(), "");
+                                    String sss = (String) SharedPreferencesUtils.
+                                            readObject(MyApp.getContext(), "mylanyamac");
+                                    Log.d("--SDK中的--mac--111111-",
+                                            BluetoothConfig.getDefaultMac(MyApp.getContext()));
+                                    AppsBluetoothManager.getInstance(
+                                            MyApp.getContext()).doUnbindDevice(sss);
+                                    AppsBluetoothManager.getInstance(
+                                            MyApp.getContext()).
+                                            clearBluetoothManagerDeviceConnectListeners();
+                                    BluetoothConfig.setDefaultMac(MyApp.getContext(), "");
+                                    showLoadingDialog(getResources().getString(R.string.dlog));
+                                    handler.sendEmptyMessageDelayed(1001, 2000);
+                                    return null;
+                                }, () -> null
+                        );
                         break;
 //                    case "B15P":
 //                        new MaterialDialog.Builder(this)

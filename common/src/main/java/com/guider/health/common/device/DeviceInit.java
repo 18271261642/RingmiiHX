@@ -90,7 +90,7 @@ public class DeviceInit {
 
     public void setDeviceTag(String text, boolean b) {
         switch (text) {
-            case DEV_BP:   // 移动版
+            case DEV_BP:   // 移动版 福尔臂式血壓測量
                 HeartPressBp.getInstance().setTag(b);
                 break;
             case DEV_BP_MBB_88:   // 脉搏波(小的)
@@ -188,7 +188,7 @@ public class DeviceInit {
         // TODO 新设备FRAGMENT
 
         names.put(DEV_ECG_6, MyUtils.application.getString(R.string.CmateHv100));
-        names.put(DEV_BP, MyUtils.application.getString(R.string.FORAP30PLUSv100));
+        names.put(DEV_BP, MyUtils.application.getString(R.string.FORAP30PLUSv100));//福尔臂式血壓測量
         names.put(DEV_GLU, MyUtils.application.getString(R.string.BDE_WEIXIN_TTMv100)); // 无创血糖测量
         names.put(DEV_ECG_HD, MyUtils.application.getString(R.string.device_hdv100)); // 红豆心电
         names.put(DEV_BP_CX, MyUtils.application.getString(R.string.CXBPv100)); // 臂筒式血压测量

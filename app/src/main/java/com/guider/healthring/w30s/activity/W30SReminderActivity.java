@@ -6,19 +6,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
@@ -35,7 +37,7 @@ import java.util.List;
  */
 
 public class W30SReminderActivity extends WatchBaseActivity
-        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
+        implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private static final int REQD_MSG_CONTENT_CODE = 1001;  //读取短信内容权限code
     private static final int REQUEST_REQDPHONE_STATE_CODE = 1002;
@@ -145,28 +147,24 @@ public class W30SReminderActivity extends WatchBaseActivity
             case R.id.newSearchRightImg1:   //进入权限界面
                 String appPackName = getPackageName();
                 String contentTx = "Please open the required permissions";
-                Log.e("包名","------appName="+appPackName);
-                if(appPackName != null && appPackName.equals(BOZLUN_PACKNAME_EN)){
+                Log.e("包名", "------appName=" + appPackName);
+                if (appPackName != null && appPackName.equals(BOZLUN_PACKNAME_EN)) {
                     contentTx = "Please open the required permissions";
-                }else{
+                } else {
                     contentTx = "请打开所需权限";
                 }
-                new MaterialDialog.Builder(this)
-                        .title(getResources().getString(R.string.prompt))
-                        .content(contentTx)
-                        .positiveText(getResources().getString(R.string.confirm))
-                        .negativeText(getResources().getString(R.string.cancle))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                Intent intent = new Intent();
-                                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                                intent.setData(uri);
-                                startActivity(intent);
-                            }
-                        }).show();
-
+                MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                        contentTx, R.string.confirm, R.string.cancle,
+                        () -> {
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package",
+                                    getPackageName(), null);
+                            intent.setData(uri);
+                            startActivity(intent);
+                            return null;
+                        }, () -> null
+                );
                 break;
         }
     }
@@ -202,27 +200,27 @@ public class W30SReminderActivity extends WatchBaseActivity
                 SharedPreferenceUtil.put(W30SReminderActivity.this, "w30sswitch_QQ", isChecked);
                 break;
             case R.id.switch_Msg:   //短信
-                if(!AndPermission.hasPermissions(W30SReminderActivity.this,new String[] {
+                if (!AndPermission.hasPermissions(W30SReminderActivity.this, new String[]{
 //                        Manifest.permission.READ_SMS,
-                        Manifest.permission.READ_CONTACTS})){
+                        Manifest.permission.READ_CONTACTS})) {
                     AndPermission.with(W30SReminderActivity.this)
                             .runtime()
                             .permission(
 //                                    Manifest.permission.READ_SMS,
-                                    Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_CONTACTS)
+                                    Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CONTACTS)
                             .start();
                 }
                 SharedPreferenceUtil.put(W30SReminderActivity.this, "w30sswitch_Msg", isChecked);
                 break;
             case R.id.switch_Phone:     //来电
-                if(!AndPermission.hasPermissions(W30SReminderActivity.this,new String[]{Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE})){
+                if (!AndPermission.hasPermissions(W30SReminderActivity.this, new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})) {
                     AndPermission.with(W30SReminderActivity.this)
                             .runtime()
-                            .permission(Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_CONTACTS)
+                            .permission(Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CONTACTS)
                             .rationale(new Rationale<List<String>>() {
                                 @Override
                                 public void showRationale(Context context, List<String> data, RequestExecutor executor) {
-                                   executor.execute();
+                                    executor.execute();
                                 }
                             })
                             .start();

@@ -22,6 +22,7 @@ import ble.BleClient;
  * 蓝牙连接
  * -> GLUStartMeasureAndShowResult
  * Created by haix on 2019/6/12.
+ * 无创血糖测量蓝牙连接页
  */
 
 public class GLUDeviceConnect extends GLUFragment {
@@ -135,12 +136,9 @@ public class GLUDeviceConnect extends GLUFragment {
 
     @Override
     public void startConnect() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                GLUServiceManager.getInstance().stopDeviceConnect();
-                GLUServiceManager.getInstance().startDeviceConnect(_mActivity);
-            }
+        handler.postDelayed(() -> {
+            GLUServiceManager.getInstance().stopDeviceConnect();
+            GLUServiceManager.getInstance().startDeviceConnect(_mActivity);
         }, 1000 * 4);
     }
 }

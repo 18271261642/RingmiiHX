@@ -361,8 +361,8 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
                     Log.e(TAG,"---upDataStringUrl--="+upDataStringUrl);
                     Aria.download(this)
                             .load(String.valueOf(upDataStringUrl))     //读取下载地址
-                            .setDownloadPath(FileStringPath) //设置文件保存的完整路径
-                            .start();   //启动下载
+                            .setFilePath(FileStringPath) //设置文件保存的完整路径
+                            .create();//启动下载
                 }else{
                     W30SBleUtils.isOtaConn = false;
                     btnStartUp.setEnabled(false);//默认禁止点击
@@ -700,8 +700,8 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
                                         Log.e(TAG,"----3333----");
                                         Aria.download(this)
                                                 .load(String.valueOf(upDataStringUrl))     //读取下载地址
-                                                .setDownloadPath(FileStringPath) //设置文件保存的完整路径
-                                                .start();   //启动下载
+                                                .setFilePath(FileStringPath) //设置文件保存的完整路径
+                                                .create();   //启动下载
                                     } else {
                                         Log.e(TAG,"----4444----");
                                         //获取网络的版本
@@ -743,8 +743,8 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
                                     getResources().getString(R.string.string_w30s_ota_file), Toast.LENGTH_SHORT).show();//OTA包不存在，正在下载
                             Aria.download(this)
                                     .load(String.valueOf(upDataStringUrl))     //读取下载地址
-                                    .setDownloadPath(FileStringPath) //设置文件保存的完整路径
-                                    .start();   //启动下载
+                                    .setFilePath(FileStringPath) //设置文件保存的完整路径
+                                    .create();   //启动下载
                         } else {
                             getNetWorke();
                         }
@@ -871,7 +871,6 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
             if (isUpDatas) {
                 dis();
                 Toast.makeText(this, "Please restart App", Toast.LENGTH_SHORT).show();
-                MyApp.getApplication().removeALLActivity();
                 return false;
             }
             return super.onKeyDown(keyCode, event);

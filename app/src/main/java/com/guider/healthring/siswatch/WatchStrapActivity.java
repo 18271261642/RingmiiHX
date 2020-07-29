@@ -10,27 +10,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.utils.HidUtil;
 import com.guider.healthring.siswatch.utils.WatchConstants;
 import com.guider.healthring.siswatch.utils.WatchUtils;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.sdk.bluetooth.config.BluetoothConfig;
 import com.sdk.bluetooth.interfaces.BluetoothManagerDeviceConnectListener;
 import com.sdk.bluetooth.manage.AppsBluetoothManager;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -55,19 +51,19 @@ public class WatchStrapActivity extends WatchBaseActivity {
 
     private BluetoothAdapter bluetoothAdapter;
 
-    String bluName,bleMac;
+    String bluName, bleMac;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_stap);
         initViewIds();
-        registerReceiver(broadcastReceiver,new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED));
+        registerReceiver(broadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED));
         initViews();
         BluetoothManager bm = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bm.getAdapter();
-        bluName = (String) SharedPreferencesUtils.readObject(WatchStrapActivity.this,"mylanya");
-        bleMac = (String) SharedPreferencesUtils.readObject(WatchStrapActivity.this,"mylanmac");
+        bluName = (String) SharedPreferencesUtils.readObject(WatchStrapActivity.this, "mylanya");
+        bleMac = (String) SharedPreferencesUtils.readObject(WatchStrapActivity.this, "mylanmac");
     }
 
     private void initViewIds() {
@@ -98,76 +94,51 @@ public class WatchStrapActivity extends WatchBaseActivity {
 
 
     public void onViewClicked() {
-        if(bluName.equals("bozlun")){ //H8 手表
-            new MaterialDialog.Builder(this)
-                    .title(getResources().getString(R.string.prompt))
-                    .content(getResources().getString(R.string.confirm_unbind_strap))
-                    .positiveText(getResources().getString(R.string.confirm))
-                    .negativeText(getResources().getString(R.string.cancle))
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                            if(WatchConstants.customBlueDevice != null){
-                                Log.e(TAG,"---bozlun断开连接---");
-                                BluetoothDevice bluetoothDevice = WatchConstants.customBlueDevice.getBluetoothDevice();
-                                HidUtil.getInstance(WatchStrapActivity.this).disConnect(bluetoothDevice);
-                            }else{
-                                //根据地址获取连接的设备
-                                BluetoothDevice bd = HidUtil.getInstance(WatchStrapActivity.this).getConnectedDevice(bleMac);
-                                if(bd != null){
-                                    HidUtil.getInstance(WatchStrapActivity.this).disConnect(bd);
-                                }
+        if (bluName.equals("bozlun")) { //H8 手表
+            MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                    R.string.confirm_unbind_strap, R.string.confirm, R.string.cancle,
+                    () -> {
+                        if (WatchConstants.customBlueDevice != null) {
+                            Log.e(TAG, "---bozlun断开连接---");
+                            BluetoothDevice bluetoothDevice = WatchConstants
+                                    .customBlueDevice.getBluetoothDevice();
+                            HidUtil.getInstance(WatchStrapActivity.this)
+                                    .disConnect(bluetoothDevice);
+                        } else {
+                            //根据地址获取连接的设备
+                            BluetoothDevice bd = HidUtil
+                                    .getInstance(WatchStrapActivity.this)
+                                    .getConnectedDevice(bleMac);
+                            if (bd != null) {
+                                HidUtil.getInstance(WatchStrapActivity.this).disConnect(bd);
                             }
-
                         }
-                    }).show();
-
-
-
-//            new MaterialDialog.Builder(this)
-//                    .title(getResources().getString(R.string.prompt))
-//                    .content(getResources().getString(R.string.cancle_pair))
-//                    .positiveText(getResources().getString(R.string.confirm))
-//                    .negativeText(getResources().getString(R.string.cancle))
-//                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                        @Override
-//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                            Intent intent1 = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-//                            startActivityForResult(intent1,REQUEST_UNPAIR_CODE);
-//                        }
-//                    }).show();
-        }else if(bluName.equals("B18I")){//confirm_unbind_strap
-            new MaterialDialog.Builder(this)
-                    .title(getResources().getString(R.string.prompt))
-                    .content(getResources().getString(R.string.confirm_unbind_strap))
-                    .positiveText(getResources().getString(R.string.confirm))
-                    .negativeText(getResources().getString(R.string.cancle))
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            BluetoothSDK.disConnect(resultCallBack);
-                        }
-                    }).show();
-        }else { //H9 手表
-            new MaterialDialog.Builder(this)
-                    .title(getResources().getString(R.string.prompt))
-                    .content(getResources().getString(R.string.confirm_unbind_strap))
-                    .positiveText(getResources().getString(R.string.confirm))
-                    .negativeText(getResources().getString(R.string.cancle))
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            AppsBluetoothManager.getInstance(MyApp.getContext()).doUnbindDevice(BluetoothConfig.getDefaultMac(MyApp.getContext()));
-                            BluetoothConfig.setDefaultMac(MyApp.getContext(),"");
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanya","");
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanyamac","");
-                            showLoadingDialog("断开中..");
-//                            startActivity(SearchDeviceActivity.class);
-//                            startActivity(NewSearchActivity.class);
-//                            finish();
-                        }
-                    }).show();
+                        return null;
+                    }, () -> null
+            );
+        } else if (bluName.equals("B18I")) {//confirm_unbind_strap
+            MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                    R.string.confirm_unbind_strap, R.string.confirm, R.string.cancle,
+                    () -> {
+                        BluetoothSDK.disConnect(resultCallBack);
+                        return null;
+                    }, () -> null
+            );
+        } else { //H9 手表
+            MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                    R.string.confirm_unbind_strap, R.string.confirm, R.string.cancle,
+                    () -> {
+                        AppsBluetoothManager.getInstance(MyApp.getContext())
+                                .doUnbindDevice(BluetoothConfig.getDefaultMac(MyApp.getContext()));
+                        BluetoothConfig.setDefaultMac(MyApp.getContext(), "");
+                        SharedPreferencesUtils.saveObject(MyApp.getContext(),
+                                "mylanya", "");
+                        SharedPreferencesUtils.saveObject(MyApp.getContext(),
+                                "mylanyamac", "");
+                        showLoadingDialog("断开中..");
+                        return null;
+                    }, () -> null
+            );
         }
 
     }
@@ -176,7 +147,7 @@ public class WatchStrapActivity extends WatchBaseActivity {
     private ResultCallBack resultCallBack = new ResultCallBack() {
         @Override
         public void onSuccess(int i, Object[] objects) {
-            switch (i){
+            switch (i) {
                 case ResultCallBack.TYPE_DISCONNECT:    //断开成功
                     startActivity(NewSearchActivity.class);
                     SharedPreferencesUtils.saveObject(MyApp.getApplication(), "mylanya", "");//清空标识
@@ -194,40 +165,40 @@ public class WatchStrapActivity extends WatchBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("解绑","---------"+requestCode+"----resultCode---"+resultCode+"--resultok="+RESULT_OK);
-        if(requestCode == REQUEST_UNPAIR_CODE){
-            if(resultCode == 0){
+        Log.e("解绑", "---------" + requestCode + "----resultCode---" + resultCode + "--resultok=" + RESULT_OK);
+        if (requestCode == REQUEST_UNPAIR_CODE) {
+            if (resultCode == 0) {
                 List<String> unpariList = new ArrayList<>();
                 @SuppressLint("MissingPermission") Set<BluetoothDevice> pairDevice = bluetoothAdapter.getBondedDevices();
-                if(pairDevice.size() > 0){
-                    Log.e(TAG,"----onActivityResult----list>0---");
-                    for(Iterator iterator = pairDevice.iterator();iterator.hasNext();){
+                if (pairDevice.size() > 0) {
+                    Log.e(TAG, "----onActivityResult----list>0---");
+                    for (Iterator iterator = pairDevice.iterator(); iterator.hasNext(); ) {
                         BluetoothDevice bd = (BluetoothDevice) iterator.next();
-                        if(bd != null){
+                        if (bd != null) {
                             unpariList.add(bd.getAddress().trim());
                         }
                     }
-                    if(unpariList.contains(SharedPreferencesUtils.readObject(MyApp.getContext(),"mylanmac"))){
+                    if (unpariList.contains(SharedPreferencesUtils.readObject(MyApp.getContext(), "mylanmac"))) {
                         //未取消配对
-                    }else{
+                    } else {
                         //已取消配对
 //                        MyApp.getWatchBluetoothService().disconnect();//断开蓝牙
-                       // MyApp.getInstance().getWatchBluetoothService().disconnect();  //断开蓝牙
+                        // MyApp.getInstance().getWatchBluetoothService().disconnect();  //断开蓝牙
 //                        Intent ints = new Intent(WatchStrapActivity.this, WatchBluetoothService.class);
 //                        MyApp.getWatchBluetoothService().onUnbind(ints);
                         MyCommandManager.deviceDisconnState = true;
                         MyCommandManager.ADDRESS = null;
                         MyCommandManager.DEVICENAME = null;
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanya",null);
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanmac",null);
+                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", null);
+                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanmac", null);
                         MyApp.getInstance().setMacAddress(null);// 清空全局
                         SharedPreferencesUtils.setParam(MyApp.getContext(), "stepsnum", "0");
 //                        startActivity(SearchDeviceActivity.class);
                         startActivity(NewSearchActivity.class);
                         finish();
                     }
-                }else{
-                    Log.e(TAG,"----onActivityResult----list<=0---");
+                } else {
+                    Log.e(TAG, "----onActivityResult----list<=0---");
                     //已取消配对
 //                    MyApp.getWatchBluetoothService().disconnect();//断开蓝牙
                     //MyApp.getInstance().getWatchBluetoothService().disconnect();  //断开蓝牙
@@ -236,8 +207,8 @@ public class WatchStrapActivity extends WatchBaseActivity {
                     MyCommandManager.deviceDisconnState = true;
                     MyCommandManager.ADDRESS = null;
                     MyCommandManager.DEVICENAME = null;
-                    SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanya",null);
-                    SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanmac",null);
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", null);
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanmac", null);
                     MyApp.getInstance().setMacAddress(null);// 清空全局
                     SharedPreferencesUtils.setParam(MyApp.getContext(), "stepsnum", "0");
 //                    startActivity(SearchDeviceActivity.class);
@@ -262,19 +233,19 @@ public class WatchStrapActivity extends WatchBaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.e(TAG,"-------action---"+action);
-            if(!WatchUtils.isEmpty(action)){
-                if(action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)){
-                    int connState = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE,BluetoothAdapter.STATE_DISCONNECTED);
-                    Log.e(TAG,"---connState--"+connState);
-                    if(connState == 0){ //断开连接成功
+            Log.e(TAG, "-------action---" + action);
+            if (!WatchUtils.isEmpty(action)) {
+                if (action.equals(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
+                    int connState = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.STATE_DISCONNECTED);
+                    Log.e(TAG, "---connState--" + connState);
+                    if (connState == 0) { //断开连接成功
                         //已取消配对
 //                        MyApp.getWatchBluetoothService().disconnect();//断开蓝牙
                         MyCommandManager.deviceDisconnState = true;
                         MyCommandManager.ADDRESS = null;
                         MyCommandManager.DEVICENAME = null;
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanya",null);
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanmac",null);
+                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", null);
+                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanmac", null);
                         MyApp.getInstance().setMacAddress(null);// 清空全局
                         SharedPreferencesUtils.setParam(MyApp.getContext(), "stepsnum", "0");
                         startActivity(NewSearchActivity.class);
@@ -291,23 +262,23 @@ public class WatchStrapActivity extends WatchBaseActivity {
     private BluetoothManagerDeviceConnectListener bluetoothManagerDeviceConnectListener = new BluetoothManagerDeviceConnectListener() {
         @Override
         public void onConnected(BluetoothDevice bluetoothDevice) {
-            Log.e(TAG,"------h9--onConnected--");
+            Log.e(TAG, "------h9--onConnected--");
         }
 
         @Override
         public void onConnectFailed() {
-            Log.e(TAG,"------h9--onConnectFailed--");
+            Log.e(TAG, "------h9--onConnectFailed--");
             closeLoadingDialog();
         }
 
         @Override
         public void onEnableToSendComand(BluetoothDevice bluetoothDevice) {
-            Log.e(TAG,"------h9-onEnableToSendComand---");
+            Log.e(TAG, "------h9-onEnableToSendComand---");
         }
 
         @Override
         public void onConnectDeviceTimeOut() {  //连接超时
-            Log.e(TAG,"------h9--onConnectDeviceTimeOut--");
+            Log.e(TAG, "------h9--onConnectDeviceTimeOut--");
         }
     };
 }

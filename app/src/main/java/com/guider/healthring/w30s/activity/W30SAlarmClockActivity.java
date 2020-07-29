@@ -17,12 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.w30s.adapters.CommonRecyclerAdapter;
 import com.guider.healthring.w30s.adapters.MyViewHolder;
 import com.guider.healthring.w30s.bean.W30SAlarmClockBean;
@@ -176,23 +174,23 @@ public class W30SAlarmClockActivity extends WatchBaseActivity implements View.On
 
             @Override
             public void onLongClickListener(View view, final int position) {
-                new MaterialDialog.Builder(W30SAlarmClockActivity.this)
-                        .title(getResources().getString(R.string.prompt))
-                        .content(getResources().getString(R.string.deleda))
-                        .positiveText(getResources().getString(R.string.confirm))
-                        .negativeText(getResources().getString(R.string.cancle))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                showLoadingDialog(getResources().getString(R.string.dlog));
-                                if (Commont.isDebug)Log.d("-----<<<W30>>>", "=====删除闹钟=====onLongClickListener===========" + position + "");
-                                //allDataList.get(position).delete();
-                                //allDataList.remove(position);
-                                LitePal.deleteAll(W30SAlarmClockBean.class, "id=?", allDataList.get(position).getId() + "");
-                                myAdapter.notifyDataSetChanged();
-                                mHandler.sendEmptyMessageDelayed(HANDLER_DELETE, RESULT_TIME);
-                            }
-                        }).show();
+                MaterialDialogUtil.INSTANCE.showDialog(W30SAlarmClockActivity.this,
+                        R.string.prompt,
+                        R.string.deleda, R.string.confirm, R.string.cancle,
+                        () -> {
+                            showLoadingDialog(getResources().getString(R.string.dlog));
+                            if (Commont.isDebug)Log.d("-----<<<W30>>>",
+                                    "=====删除闹钟=====onLongClickListener==========="
+                                            + position + "");
+                            //allDataList.get(position).delete();
+                            //allDataList.remove(position);
+                            LitePal.deleteAll(W30SAlarmClockBean.class,
+                                    "id=?", allDataList.get(position).getId() + "");
+                            myAdapter.notifyDataSetChanged();
+                            mHandler.sendEmptyMessageDelayed(HANDLER_DELETE, RESULT_TIME);
+                            return null;
+                        }, () -> null
+                );
             }
         });
     }
@@ -243,13 +241,15 @@ public class W30SAlarmClockActivity extends WatchBaseActivity implements View.On
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         showLoadingDialog(getResources().getString(R.string.dlog));
         try {
             if (data == null) {
                 closeLoadingDialog();
                 return;
             }
-            if (Commont.isDebug)Log.d("-----<<<W30>>>", "===返回===" + requestCode + "===" + resultCode);
+            if (Commont.isDebug)
+                Log.d("-----<<<W30>>>", "===返回===" + requestCode + "===" + resultCode);
             allDataList = LitePal.findAll(W30SAlarmClockBean.class);
             int h = data.getIntExtra("h", 12);
             int m = data.getIntExtra("m", 12);
@@ -260,10 +260,10 @@ public class W30SAlarmClockActivity extends WatchBaseActivity implements View.On
                 return;
             }
             String stringWeek = StringWeek(week);
-            if (Commont.isDebug)Log.d("-----<<<W30>>>", "===stringWeek===" + stringWeek);
+            if (Commont.isDebug) Log.d("-----<<<W30>>>", "===stringWeek===" + stringWeek);
             //二进制转十进制
             int integerWeek = Integer.parseInt(W30BasicUtils.toD(stringWeek, 2));
-            if (Commont.isDebug)Log.d("-----<<<W30>>>", "===integerWeek===" + integerWeek);
+            if (Commont.isDebug) Log.d("-----<<<W30>>>", "===integerWeek===" + integerWeek);
             switch (requestCode) {
                 case REQUEST_ALARM_CLOCK_NEW:  //=========添加
                     int ID = 1;

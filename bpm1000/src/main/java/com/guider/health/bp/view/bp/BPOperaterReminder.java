@@ -17,6 +17,7 @@ import com.guider.health.common.utils.SkipClick;
 
 /**
  * Created by haix on 2019/6/24.
+ * 福尔臂式血壓測量提示页
  */
 @Route(path = RouterPathManager.BP_PATH)
 public class BPOperaterReminder extends BPFragment {

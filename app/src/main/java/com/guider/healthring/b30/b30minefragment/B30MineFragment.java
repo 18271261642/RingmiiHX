@@ -14,9 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -39,6 +36,7 @@ import com.guider.healthring.siswatch.LazyFragment;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.LocalizeTool;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
@@ -408,46 +406,29 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
 
 
     private void longOutApp() {
-        new MaterialDialog.Builder(getActivity())
-                .title(getResources().getString(R.string.prompt))
-                .content(getResources().getString(R.string.exit_login))
-                .positiveText(getResources().getString(R.string.confirm))
-                .negativeText(getResources().getString(R.string.cancle))
-                .onPositive(new com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        unbindDevices();
-                        if (MyCommandManager.DEVICENAME != null) {
-                            MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                                @Override
-                                public void onResponse(int state) {
-                                    if (state == -1) {
-                                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
-                                        SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
-                                        MyApp.getInstance().setMacAddress(null);// 清空全局的
-                                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
-                                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
-                                        SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
-                                        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                                        getActivity().finish();
-                                    }
+        MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                R.string.exit_login, R.string.confirm, R.string.cancle,
+                () -> {
+                    unbindDevices();
+                    if (MyCommandManager.DEVICENAME != null) {
+                        MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
+                            @Override
+                            public void onResponse(int state) {
+                                if (state == -1) {
+                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
+                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
+                                    MyApp.getInstance().setMacAddress(null);// 清空全局的
+                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
+                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
+                                    SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
+                                    SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                                    getActivity().finish();
                                 }
-                            });
-                        }
-                        else {
-                            MyCommandManager.DEVICENAME = null;
-                            MyCommandManager.ADDRESS = null;
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
-                            MyApp.getInstance().setMacAddress(null);// 清空全局的
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
-                            SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
-                            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
-                        }
-
+                            }
+                        });
+                    }
+                    else {
                         MyCommandManager.DEVICENAME = null;
                         MyCommandManager.ADDRESS = null;
                         SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
@@ -457,27 +438,37 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
                         SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
                         SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
                         SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                      //  startActivity(new Intent(getActivity(), LoginActivity.class));
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                    }
+
+                    MyCommandManager.DEVICENAME = null;
+                    MyCommandManager.ADDRESS = null;
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
+                    MyApp.getInstance().setMacAddress(null);// 清空全局的
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
+                    SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
+                    SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                    //  startActivity(new Intent(getActivity(), LoginActivity.class));
 
 //                        if (BemoServiceConnection.getInstance()!=null){
 //                            getActivity().unbindService(BemoServiceConnection.getInstance());
 //                        }
-                        //SharedPreferences_status.save_IMEI(MyApplication.context, "");
-                        SharedPreferencesUtils.setParam(getContext(), Commont.BATTERNUMBER, 0);//电池
-                        SharedPreferencesUtils.setParam(getContext(), "personContent", "");//SOS 内容
-                        SharedPreferencesUtils.setParam(getContext(), "personOne", "");//SOS 联系人  名字 1
-                        SharedPreferencesUtils.setParam(getContext(), "personTwo", "");//SOS 联系人  名字 2
-                        SharedPreferencesUtils.setParam(getContext(), "personThree", "");//SOS 联系人 名字  3
-                        SharedPreferencesUtils.setParam(getContext(), "NameOne", "");//SOS 联系人 电话  1
-                        SharedPreferencesUtils.setParam(getContext(), "NameTwo", "");//SOS 联系人 电话  2
-                        SharedPreferencesUtils.setParam(getContext(), "NameThree", "");//SOS 联系人 电话  3
-                        new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
-                                .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
-
-                        //getActivity().finish();
-                    }
-                }).show();
-
+                    //SharedPreferences_status.save_IMEI(MyApplication.context, "");
+                    SharedPreferencesUtils.setParam(getContext(), Commont.BATTERNUMBER, 0);//电池
+                    SharedPreferencesUtils.setParam(getContext(), "personContent", "");//SOS 内容
+                    SharedPreferencesUtils.setParam(getContext(), "personOne", "");//SOS 联系人  名字 1
+                    SharedPreferencesUtils.setParam(getContext(), "personTwo", "");//SOS 联系人  名字 2
+                    SharedPreferencesUtils.setParam(getContext(), "personThree", "");//SOS 联系人 名字  3
+                    SharedPreferencesUtils.setParam(getContext(), "NameOne", "");//SOS 联系人 电话  1
+                    SharedPreferencesUtils.setParam(getContext(), "NameTwo", "");//SOS 联系人 电话  2
+                    SharedPreferencesUtils.setParam(getContext(), "NameThree", "");//SOS 联系人 电话  3
+                    new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
+                            .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
+                    return null;
+                }, () -> null
+        );
     }
 
 

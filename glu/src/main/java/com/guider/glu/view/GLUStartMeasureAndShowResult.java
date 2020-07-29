@@ -128,23 +128,15 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
     @Override
     public void startInitTick(final String time) {
         super.startInitTick(time);
-        _mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                loadingText.setText(time);
-            }
-        });
+        _mActivity.runOnUiThread(() -> loadingText.setText(time));
     }
 
     @Override
     public void stopInit() {
         super.stopInit();
-        _mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                view.findViewById(R.id.glu_touch_tip).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.loadingroot).setVisibility(View.GONE);
-            }
+        _mActivity.runOnUiThread(() -> {
+            view.findViewById(R.id.glu_touch_tip).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.loadingroot).setVisibility(View.GONE);
         });
     }
 
@@ -240,7 +232,7 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
             ParamHealthRangeAnlysis paramHealthRangeAnlysis1 = new ParamHealthRangeAnlysis();
             paramHealthRangeAnlysis1.setType(ParamHealthRangeAnlysis.BLOODSUGAR);
             if (Glucose.getInstance().getFoodTime() == 0) {
-                //饭钱
+                //饭前
                 paramHealthRangeAnlysis1.setBsTime(ParamHealthRangeAnlysis.FPG);
             } else {
                 //饭后
@@ -260,7 +252,7 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
             List<String> results = Judgement.healthDataAnlysis(list);
 
 
-            if (results != null && results.size() == 2) {
+            if (results.size() == 2) {
                 Glucose.getInstance().setIndexGlucose(results.get(0));
                 Glucose.getInstance().setIndexOxygen(results.get(1));
             }
@@ -273,21 +265,15 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
         }
 
         // 测量完毕后同步信息
-        Glucose.getInstance().startStandardRun(new StandardCallback() {
-            @Override
-            public void onResult(boolean isFinish) {
+        Glucose.getInstance().startStandardRun(isFinish -> {
 
-                isFinishStandard = 0b10 | isFinishStandard;
-                toNext();
-            }
+            isFinishStandard = 0b10 | isFinishStandard;
+            toNext();
         });
 
-        baseHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isFinishStandard = 0b01 | isFinishStandard;
-                toNext();
-            }
+        baseHandler.postDelayed(() -> {
+            isFinishStandard = 0b01 | isFinishStandard;
+            toNext();
         }, 5000);
 
 

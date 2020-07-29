@@ -2,7 +2,9 @@ package com.guider.health.bp.view.bp;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import ble.BleClient;
 
 /**
  * Created by haix on 2019/6/10.
+ * 福尔臂式血壓測量 连接测量页
  */
 
 public class BPDeviceConnectAndMessure extends BPFragment {
@@ -55,7 +58,7 @@ public class BPDeviceConnectAndMessure extends BPFragment {
         });
 
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_BP));
+        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this, DeviceInit.DEV_BP));
 
         // 开始测量
         BleClient.init(_mActivity);

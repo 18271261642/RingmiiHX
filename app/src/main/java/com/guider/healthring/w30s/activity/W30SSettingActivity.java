@@ -19,15 +19,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.guider.healthring.B18I.b18isystemic.B18ITargetSettingActivity;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.w30s.SharePeClear;
@@ -309,59 +307,56 @@ public class W30SSettingActivity extends WatchBaseActivity implements  View.OnCl
                 break;
             case R.id.set_factory:
                 //恢复出厂
-                new MaterialDialog.Builder(this)
-                        .title(R.string.prompt)
-                        .content(R.string.string_factory_setting)
-                        .positiveText(getResources().getString(R.string.confirm))
-                        .negativeText(getResources().getString(R.string.cancle))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                //重置W30S
-                                showLoadingDialog(getResources().getString(R.string.dlog));
-                                SharedPreferenceUtil.put(MyApp.getContext(), "upSportTime", "2017-11-02 15:00:00");
-                                SharedPreferenceUtil.put(MyApp.getContext(), "upSleepTime", "2015-11-02 15:00:00");
-                                SharedPreferenceUtil.put(MyApp.getContext(), "upHeartTime", "2017-11-02 15:00:00");
-                                MyApp.getmW30SBLEManage().setReboot();
-                                SharePeClear.clearDatas(W30SSettingActivity.this);
-                                handler.sendEmptyMessageDelayed(ResetNUMBER, HandlerTime);
-                            }
-                        }).show();
+                MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                        R.string.string_factory_setting, R.string.confirm, R.string.cancle,
+                        () -> {
+                            //重置W30S
+                            showLoadingDialog(getResources().getString(R.string.dlog));
+                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                    "upSportTime", "2017-11-02 15:00:00");
+                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                    "upSleepTime", "2015-11-02 15:00:00");
+                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                    "upHeartTime", "2017-11-02 15:00:00");
+                            MyApp.getmW30SBLEManage().setReboot();
+                            SharePeClear.clearDatas(W30SSettingActivity.this);
+                            handler.sendEmptyMessageDelayed(ResetNUMBER, HandlerTime);
+                            return null;
+                        }, () -> null
+                );
                 break;
             case R.id.set_unbind:   //解绑
                 //解绑
-                new MaterialDialog.Builder(this)
-                        .title(getResources().getString(R.string.prompt))
-                        .content(getResources().getString(R.string.confirm_unbind_strap))
-                        .positiveText(getResources().getString(R.string.confirm))
-                        .negativeText(getResources().getString(R.string.cancle))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                try {
-                                    showLoadingDialog(getResources().getString(R.string.dlog));
-                                    //断开蓝牙
-                                    W30SBLEManage.mW30SBLEServices.disconnectBle();
-                                    //手动断开清楚mac数据
-                                    W30SBLEManage.mW30SBLEServices.disClearData();
-                                    //SharePeClear.clearDatas(B18IAppSettingActivity.this);
-                                    //W30SBLEManage.mW30SBLEServices.close();
+                MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                        R.string.confirm_unbind_strap, R.string.confirm, R.string.cancle,
+                        () -> {
+                            try {
+                                showLoadingDialog(getResources().getString(R.string.dlog));
+                                //断开蓝牙
+                                W30SBLEManage.mW30SBLEServices.disconnectBle();
+                                //手动断开清楚mac数据
+                                W30SBLEManage.mW30SBLEServices.disClearData();
+                                //SharePeClear.clearDatas(B18IAppSettingActivity.this);
+                                //W30SBLEManage.mW30SBLEServices.close();
 
-                                    SharedPreferenceUtil.put(MyApp.getContext(), "upSportTime", "2017-11-02 15:00:00");
-                                    SharedPreferenceUtil.put(MyApp.getContext(), "upSleepTime", "2015-11-02 15:00:00");
-                                    SharedPreferenceUtil.put(MyApp.getContext(), "upHeartTime", "2017-11-02 15:00:00");
+                                SharedPreferenceUtil.put(MyApp.getContext(),
+                                        "upSportTime", "2017-11-02 15:00:00");
+                                SharedPreferenceUtil.put(MyApp.getContext(),
+                                        "upSleepTime", "2015-11-02 15:00:00");
+                                SharedPreferenceUtil.put(MyApp.getContext(),
+                                        "upHeartTime", "2017-11-02 15:00:00");
 //                                W30SBLEManage.mW30SBLEServices.disconnect();
 //                                MyCommandManager.DEVICENAME = null;
 //                                W30SBLEManage.mW30SBLEServices.disconnect();
 //                                W30SBLEManage.mW30SBLEServices.close();
 //                                SharePeClear.clearDatas(W30SSettingActivity.this);
-                                    handler.sendEmptyMessageDelayed(ResetFactory, HandlerTime);
-                                } catch (Exception e) {
-                                    e.getMessage();
-                                }
-
+                                handler.sendEmptyMessageDelayed(ResetFactory, HandlerTime);
+                            } catch (Exception e) {
+                                e.getMessage();
                             }
-                        }).show();
+                            return null;
+                        }, () -> null
+                );
                 break;
 
         }

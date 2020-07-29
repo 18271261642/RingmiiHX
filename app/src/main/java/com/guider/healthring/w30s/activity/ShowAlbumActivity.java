@@ -2,16 +2,20 @@ package com.guider.healthring.w30s.activity;
 
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.viewpager.widget.ViewPager;
+
 import android.view.View;
 import android.widget.TextView;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.w30s.carema.AlbumPagerAdapter;
 
 import java.io.File;
@@ -45,17 +49,15 @@ public class ShowAlbumActivity extends WatchBaseActivity {
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(ShowAlbumActivity.this).title(R.string.prompt)
-                        .content(getResources().getString(R.string.deleda))
-                        .positiveText(R.string.confirm)
-                        .negativeText(R.string.cancle)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                deleteFile(new File(urlList.get(currPosition)));
-                                finish();
-                            }
-                        }).show();
+                MaterialDialogUtil.INSTANCE.showDialog(ShowAlbumActivity.this,
+                        R.string.prompt,
+                        R.string.deleda, R.string.confirm, R.string.cancle,
+                        () -> {
+                            deleteFile(new File(urlList.get(currPosition)));
+                            finish();
+                            return null;
+                        }, () -> null
+                );
             }
         });
 
@@ -70,12 +72,12 @@ public class ShowAlbumActivity extends WatchBaseActivity {
 
     private void initData() {
         //返回的图片下标
-        int imgPosition = getIntent().getIntExtra("imgPosition",0);
+        int imgPosition = getIntent().getIntExtra("imgPosition", 0);
         //所有的集合
         ArrayList<String> imgList = getIntent().getStringArrayListExtra("imgUrl");
-        if(imgList != null && imgList.size()>0){
+        if (imgList != null && imgList.size() > 0) {
             urlList.addAll(imgList);
-            showCount.setText(imgPosition+1+"/"+urlList.size());
+            showCount.setText(imgPosition + 1 + "/" + urlList.size());
             viewPager.setCurrentItem(imgPosition);
             albumPagerAdapter.notifyDataSetChanged();
         }
@@ -88,11 +90,11 @@ public class ShowAlbumActivity extends WatchBaseActivity {
         viewPager = findViewById(R.id.my_viewPager);
         fb = (FloatingActionButton) findViewById(R.id.albumDeleteFloat);
         urlList = new ArrayList<>();
-        albumPagerAdapter = new AlbumPagerAdapter(urlList,ShowAlbumActivity.this);
+        albumPagerAdapter = new AlbumPagerAdapter(urlList, ShowAlbumActivity.this);
         viewPager.setAdapter(albumPagerAdapter);
 
         //showCount.setText(currPosition+1+"/"+urlList.size());
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -110,7 +112,7 @@ public class ShowAlbumActivity extends WatchBaseActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 currPosition = position;
-                showCount.setText(currPosition+1+"/"+urlList.size());
+                showCount.setText(currPosition + 1 + "/" + urlList.size());
             }
         });
 

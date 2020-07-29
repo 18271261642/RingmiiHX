@@ -333,13 +333,10 @@ public class GLUMeasureModel {
         }
         packagesCount = (value.length / 20) + (value.length % 20 > 0 ? 1 : 0);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Log.i("haix", "向设备发送字符串: " +BleBluetooth.getInstance().bytesToHexString(packages.get(0)) );
-                if (packages.size() >= 1) {
-                    BleBluetooth.getInstance().writeBuffer(packages.get(0));
-                }
+        new Thread(() -> {
+            // Log.i("haix", "向设备发送字符串: " +BleBluetooth.getInstance().bytesToHexString(packages.get(0)) );
+            if (packages.size() >= 1) {
+                BleBluetooth.getInstance().writeBuffer(packages.get(0));
             }
         }).start();
 
@@ -373,19 +370,16 @@ public class GLUMeasureModel {
         }
         final String mReceivedData = dataRecievedSB.toString();
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mReceivedData.contains("$")) {
-                    if (mReceivedData.equals("DDJSOK$")) {
-                        if (inputValueIndex != 0 && inputValueIndex != 2) {
-                            //Log.i("haix", "--------sendDataToDevice--------");
-                            sendDataToDevice();
-                        }
-                    } else {
-                        Log.i("haix", "--------数据-------- "+ mReceivedData);
-                        readData(mReceivedData);
+        handler.post(() -> {
+            if (mReceivedData.contains("$")) {
+                if (mReceivedData.equals("DDJSOK$")) {
+                    if (inputValueIndex != 0 && inputValueIndex != 2) {
+                        //Log.i("haix", "--------sendDataToDevice--------");
+                        sendDataToDevice();
                     }
+                } else {
+                    Log.i("haix", "--------数据-------- "+ mReceivedData);
+                    readData(mReceivedData);
                 }
             }
         });

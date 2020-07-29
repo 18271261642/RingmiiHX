@@ -16,6 +16,7 @@ import com.guider.health.ecg.R;
 
 /**
  * Created by haix on 2019/6/12.
+ * 6导测量仪器
  */
 
 @Route(path = RouterPathManager.ECG_PATH)

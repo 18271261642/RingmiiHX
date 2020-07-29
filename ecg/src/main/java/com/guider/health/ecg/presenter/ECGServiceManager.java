@@ -1,5 +1,6 @@
 package com.guider.health.ecg.presenter;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
@@ -42,6 +43,7 @@ import tw.com.jchang.geniiecgbt.decompNDK;
  */
 
 public class ECGServiceManager {
+    @SuppressLint("HandlerLeak")
     private Handler truehandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

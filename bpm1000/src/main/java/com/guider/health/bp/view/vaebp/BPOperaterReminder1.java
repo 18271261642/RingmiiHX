@@ -1,4 +1,4 @@
-package com.guider.health.bp.view.avebp;
+package com.guider.health.bp.view.vaebp;
 
 import android.bluetooth.BluetoothGatt;
 import android.os.Bundle;
@@ -48,7 +48,7 @@ public class BPOperaterReminder1 extends BPFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.bp_ave_device_connect, container, false);
+        view = inflater.inflate(R.layout.bp_vae_device_connect, container, false);
         return view;
     }
 
@@ -174,7 +174,7 @@ public class BPOperaterReminder1 extends BPFragment {
                 final String[] split = s.split(",");
                 Log.i("aaaaaaa", "OnDataReceiveComplete----" + count);
 
-                mBPxx.GetUserInfo(Integer.valueOf(split[0]));
+                mBPxx.GetUserInfo(Integer.parseInt(split[0]));
                 mBPxx.SetOnActionListener(null);
                 BleClient.instance().disconnect(BleClient.instance().popStagingDevice());
                 toNext(split);

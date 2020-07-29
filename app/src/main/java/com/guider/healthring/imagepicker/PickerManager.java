@@ -1,6 +1,7 @@
 package com.guider.healthring.imagepicker;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -110,6 +111,7 @@ public abstract  class PickerManager {
 
     }
 
+    @SuppressLint("ResourceAsColor")
     public void startCropActivity()
     {
         if(uCrop == null)
@@ -119,9 +121,9 @@ public abstract  class PickerManager {
             UCrop.Options options = new UCrop.Options();
             options.setFreeStyleCropEnabled(true);
             options.withAspectRatio(1,1);
-            options.setToolbarColor(activity.getResources().getColor(cropActivityColor));
-            options.setStatusBarColor(activity.getResources().getColor(cropActivityColor));
-            options.setActiveControlsWidgetColor(activity.getResources().getColor(cropActivityColor));
+            options.setToolbarColor(cropActivityColor);
+            options.setStatusBarColor(cropActivityColor);
+            options.setActiveControlsWidgetColor(cropActivityColor);
             uCrop = uCrop.withOptions(options);
         }
 

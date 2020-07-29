@@ -15,8 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
@@ -30,6 +28,7 @@ import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.LocalizeTool;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.w30s.carema.W30sCameraActivity;
@@ -304,17 +303,14 @@ public class B30DeviceActivity extends WatchBaseActivity
                 startActivity(B30DufActivity.class);
                 break;
             case R.id.b30DeviceClearDataRel:    //清除数据
-                new MaterialDialog.Builder(this)
-                        .title(getResources().getString(R.string.prompt))
-                        .content(getResources().getString(R.string.string_is_clear_data))
-                        .positiveText(getResources().getString(R.string.confirm))
-                        .negativeText(getResources().getString(R.string.cancle))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                MyApp.getInstance().getVpOperateManager().clearDeviceData(iBleWriteResponse);
-                            }
-                        }).show();
+                MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                        R.string.string_is_clear_data, R.string.confirm, R.string.cancle,
+                        () -> {
+                            MyApp.getInstance().getVpOperateManager()
+                                    .clearDeviceData(iBleWriteResponse);
+                            return null;
+                        }, () -> null
+                );
                 break;
             case R.id.b30DisConnBtn:    //断开连接
                 disB30Conn();
@@ -357,93 +353,42 @@ public class B30DeviceActivity extends WatchBaseActivity
 
     //断开连接
     private void disB30Conn() {
-        new MaterialDialog.Builder(this)
-                .title(getResources().getString(R.string.prompt))
-                .content(getResources().getString(R.string.string_devices_is_disconnected))
-                .positiveText(getResources().getString(R.string.confirm))
-                .negativeText(getResources().getString(R.string.cancle))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
-                        unbindDevices();
-
-                        if (MyCommandManager.DEVICENAME != null) {
-//                            MyCommandManager.DEVICENAME = null;
-//                            MyCommandManager.ADDRESS = null;
-//                            MyApp.getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-//                                @Override
-//                                public void onResponse(int state) {
-//                                    if (Commont.isDebug)Log.e(TAG, "----state=" + state);
-//                                    if (state == -1) {
-//                                        SharedPreferencesUtils.saveObject(B30DeviceActivity.this, "mylanya", "");
-//                                        SharedPreferencesUtils.saveObject(B30DeviceActivity.this, Commont.BLEMAC, "");
-//                                        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-//                                        MyApp.getInstance().setMacAddress(null);// 清空全局
-//                                        startActivity(NewSearchActivity.class);
-//                                        finish();
-//                                        return;
-//                                    }
-//                                }
-//                            });
-                            MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                                @Override
-                                public void onResponse(int state) {
-                                    if (Commont.isDebug)Log.e(TAG, "----state=" + state);
-                                }
-                            });
-                        }
-//                        else {
-//                            MyCommandManager.DEVICENAME = null;
-//                            MyCommandManager.ADDRESS = null;
-//                            SharedPreferencesUtils.saveObject(B30DeviceActivity.this, "mylanya", "");
-//                            SharedPreferencesUtils.saveObject(B30DeviceActivity.this, Commont.BLEMAC, "");
-//                            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-//                            MyApp.getInstance().setMacAddress(null);// 清空全局
-//                            startActivity(NewSearchActivity.class);
-//                            finish();
-//                        }
-////                        if (BemoServiceConnection.getInstance()!=null){
-////                           unbindService(BemoServiceConnection.getInstance());
-////                        }
-//                        SharedPreferences_status.save_IMEI(MyApplication.context, "");
-//                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personContent", "");
-//                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personOne", "");
-//                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personTwo", "");
-//                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personThree", "");
-//                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameOne", "");
-//                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameTwo", "");
-//                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameThree", "");
-
-
-                        MyCommandManager.DEVICENAME = null;
-                        MyCommandManager.ADDRESS = null;
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
-                        MyApp.getInstance().setMacAddress(null);// 清空全局的
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
-                        SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
-                        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                        //                        if (BemoServiceConnection.getInstance()!=null){
-//                            B30DeviceActivity.this.unbindService(BemoServiceConnection.getInstance());
-//                        }
-                        //SharedPreferences_status.save_IMEI(MyApplication.context, "");
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, Commont.BATTERNUMBER, 0);//电池
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personContent", "");//SOS 内容
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personOne", "");//SOS 联系人  名字 1
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personTwo", "");//SOS 联系人  名字 2
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personThree", "");//SOS 联系人 名字  3
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameOne", "");//SOS 联系人 电话  1
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameTwo", "");//SOS 联系人 电话  2
-                        SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameThree", "");//SOS 联系人 电话  3
-                        new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
-                                .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
-                        startActivity(NewSearchActivity.class);
-                        finish();
-
+        MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                R.string.string_devices_is_disconnected, R.string.confirm, R.string.cancle,
+                () -> {
+                    unbindDevices();
+                    if (MyCommandManager.DEVICENAME != null) {
+                        MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
+                            @Override
+                            public void onResponse(int state) {
+                                if (Commont.isDebug)Log.e(TAG, "----state=" + state);
+                            }
+                        });
                     }
-                }).show();
+                    MyCommandManager.DEVICENAME = null;
+                    MyCommandManager.ADDRESS = null;
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
+                    MyApp.getInstance().setMacAddress(null);// 清空全局的
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
+                    SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
+                    SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, Commont.BATTERNUMBER, 0);//电池
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personContent", "");//SOS 内容
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personOne", "");//SOS 联系人  名字 1
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personTwo", "");//SOS 联系人  名字 2
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, "personThree", "");//SOS 联系人 名字  3
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameOne", "");//SOS 联系人 电话  1
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameTwo", "");//SOS 联系人 电话  2
+                    SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameThree", "");//SOS 联系人 电话  3
+                    new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
+                            .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
+                    startActivity(NewSearchActivity.class);
+                    finish();
+                    return null;
+                }, () -> null
+        );
     }
 
 

@@ -12,6 +12,7 @@ import com.guider.health.ecg.R;
 
 /**
  * Created by haix on 2019/7/4.
+ * 6导连接测量页
  */
 
 public class ECGConnectAndMeassureActivity extends BaseActivity {

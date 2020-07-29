@@ -226,7 +226,7 @@ public class GLUServiceManager {
 
     public void setNonbsSet(WeakReference<Activity> activityWeakReference){
 
-        if (activityWeakReference.get() != null) {
+        if (activityWeakReference!=null && activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
 
                 Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(R.string.no_network), Toast.LENGTH_SHORT).show();
@@ -297,7 +297,7 @@ public class GLUServiceManager {
     }
 
     public void getNonbsSet(WeakReference<Activity> activityWeakReference, final CallBack operatorCallBack) {
-        if (activityWeakReference.get() != null) {
+        if (activityWeakReference!=null && activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
                 Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;

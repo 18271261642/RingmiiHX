@@ -15,8 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.guider.healthring.B18I.evententity.B18iEventBus;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -29,6 +27,7 @@ import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Common;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.w30s.SharePeClear;
@@ -177,63 +176,51 @@ public class B18IAppSettingActivity extends WatchBaseActivity implements View.On
                 }
                 break;
             case R.id.btn_exit://退出
-                new MaterialDialog.Builder(this)
-                        .title(R.string.exit_login)
-                        .content(R.string.confrim_exit)
-                        .positiveText(getResources().getString(R.string.confirm))
-                        .negativeText(getResources().getString(R.string.cancle))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                                new MaterialDialog.Builder(B18IAppSettingActivity.this)
-                                        .title(getResources().getString(R.string.prompt))
-                                        .content(getResources().getString(R.string.string_disconnected_ok))
-                                        .positiveText(getResources().getString(R.string.confirm))
-                                        .negativeText(getResources().getString(R.string.cancle))
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                MaterialDialogUtil.INSTANCE.showDialog(this, R.string.exit_login,
+                        R.string.confrim_exit, R.string.confirm, R.string.cancle,
+                        () -> {
+                            MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                                    R.string.string_disconnected_ok, R.string.confirm, R.string.cancle,
+                                    () -> {
+                                        if (is18i.equals("W30S")) {
 
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                if (is18i.equals("W30S")) {
-
-                                                    //断开蓝牙
-                                                    if(MyApp.getmW30SBLEManage().getmW30SBLEServices() != null){
-                                                        MyApp.getmW30SBLEManage().getmW30SBLEServices().disconnectBle();
-                                                        //手动断开清楚mac数据
-                                                        MyApp.getmW30SBLEManage().getmW30SBLEServices().disClearData();
-                                                    }
-
-                                                    //SharePeClear.clearDatas(B18IAppSettingActivity.this);
-                                                    //W30SBLEManage.mW30SBLEServices.close();
-                                                }
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upSportTime", "2017-11-02 15:00:00");
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upSleepTime", "2015-11-02 15:00:00");
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upHeartTime", "2017-11-02 15:00:00");
-                                                dialog.dismiss();
-                                                MyCommandManager.deviceDisconnState = true;
-                                                // 删除本地的mac地址
-                                                Log.d("--SDK中的--mac---", BluetoothConfig.getDefaultMac(MyApp.getContext()));
-                                                BluetoothConfig.setDefaultMac(MyApp.getContext(), "");
-                                                String sss = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "mylanyamac");
-                                                Log.d("--SDK中的--mac--111111-", BluetoothConfig.getDefaultMac(MyApp.getContext()));
-                                                AppsBluetoothManager.getInstance(MyApp.getContext()).doUnbindDevice(sss);
-                                                MyApp.getApplication().getDaoSession().getStepBeanDao().deleteAll();//清空数据库
-                                                SharedPreferencesUtils.saveObject(B18IAppSettingActivity.this, "mylanya", null);
-                                                SharedPreferencesUtils.saveObject(B18IAppSettingActivity.this, Commont.BLEMAC, null);
-                                                SharedPreferencesUtils.saveObject(B18IAppSettingActivity.this, "userId", null);
-                                                MyCommandManager.ADDRESS = null;
-                                                MyCommandManager.DEVICENAME = null;
-                                                SharedPreferencesUtils.setParam(B18IAppSettingActivity.this, SharedPreferencesUtils.CUSTOMER_ID, "");
-                                                SharedPreferencesUtils.setParam(B18IAppSettingActivity.this, SharedPreferencesUtils.CUSTOMER_PASSWORD, "");
-                                                Common.userInfo = null;
-                                                Common.customer_id = null;
-                                                mHandler.sendEmptyMessageDelayed(0x88, 500);
+                                            //断开蓝牙
+                                            if(MyApp.getmW30SBLEManage().getmW30SBLEServices() != null){
+                                                MyApp.getmW30SBLEManage().getmW30SBLEServices().disconnectBle();
+                                                //手动断开清楚mac数据
+                                                MyApp.getmW30SBLEManage().getmW30SBLEServices().disClearData();
                                             }
-                                        }).show();
 
-                            }
-                        }).show();
+                                            //SharePeClear.clearDatas(B18IAppSettingActivity.this);
+                                            //W30SBLEManage.mW30SBLEServices.close();
+                                        }
+                                        SharedPreferenceUtil.put(MyApp.getContext(), "upSportTime", "2017-11-02 15:00:00");
+                                        SharedPreferenceUtil.put(MyApp.getContext(), "upSleepTime", "2015-11-02 15:00:00");
+                                        SharedPreferenceUtil.put(MyApp.getContext(), "upHeartTime", "2017-11-02 15:00:00");
+                                        MyCommandManager.deviceDisconnState = true;
+                                        // 删除本地的mac地址
+                                        Log.d("--SDK中的--mac---", BluetoothConfig.getDefaultMac(MyApp.getContext()));
+                                        BluetoothConfig.setDefaultMac(MyApp.getContext(), "");
+                                        String sss = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "mylanyamac");
+                                        Log.d("--SDK中的--mac--111111-", BluetoothConfig.getDefaultMac(MyApp.getContext()));
+                                        AppsBluetoothManager.getInstance(MyApp.getContext()).doUnbindDevice(sss);
+                                        MyApp.getApplication().getDaoSession().getStepBeanDao().deleteAll();//清空数据库
+                                        SharedPreferencesUtils.saveObject(B18IAppSettingActivity.this, "mylanya", null);
+                                        SharedPreferencesUtils.saveObject(B18IAppSettingActivity.this, Commont.BLEMAC, null);
+                                        SharedPreferencesUtils.saveObject(B18IAppSettingActivity.this, "userId", null);
+                                        MyCommandManager.ADDRESS = null;
+                                        MyCommandManager.DEVICENAME = null;
+                                        SharedPreferencesUtils.setParam(B18IAppSettingActivity.this, SharedPreferencesUtils.CUSTOMER_ID, "");
+                                        SharedPreferencesUtils.setParam(B18IAppSettingActivity.this, SharedPreferencesUtils.CUSTOMER_PASSWORD, "");
+                                        Common.userInfo = null;
+                                        Common.customer_id = null;
+                                        mHandler.sendEmptyMessageDelayed(0x88, 500);
+                                        return null;
+                                    }, () -> null
+                            );
+                            return null;
+                        }, () -> null
+                );
                 break;
             case R.id.reset_device://重置
                 if (MyCommandManager.DEVICENAME != null) {    //已连接
@@ -242,52 +229,52 @@ public class B18IAppSettingActivity extends WatchBaseActivity implements View.On
 
                             break;
                         case "H9":
-                            new MaterialDialog.Builder(this)
-                                    .title(R.string.prompt)
-                                    .content(R.string.reset_device + "?")
-                                    .positiveText(getResources().getString(R.string.confirm))
-                                    .negativeText(getResources().getString(R.string.cancle))
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            if (is18i.equals("B18i")) {
-                                                BluetoothSDK.restoreFactory(resultCallBack);
-                                            } else {
-                                                //重置H9
-                                                showLoadingDialog(getResources().getString(R.string.dlog));
-                                                //上传数据时间间隔
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upSportTime", "2017-11-02 15:00:00");
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upSleepTime", "2015-11-02 15:00:00");
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upHeartTime", "2017-11-02 15:00:00");
-                                                AppsBluetoothManager.getInstance(MyApp.getContext())
-                                                        .sendCommand(new RestoreFactory(commandResultCallback));
-                                            }
+                            MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                                    R.string.reset_device + "?", R.string.confirm, R.string.cancle,
+                                    () -> {
+                                        if (is18i.equals("B18i")) {
+                                            BluetoothSDK.restoreFactory(resultCallBack);
+                                        } else {
+                                            //重置H9
+                                            showLoadingDialog(getResources().getString(R.string.dlog));
+                                            //上传数据时间间隔
+                                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                                    "upSportTime", "2017-11-02 15:00:00");
+                                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                                    "upSleepTime", "2015-11-02 15:00:00");
+                                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                                    "upHeartTime", "2017-11-02 15:00:00");
+                                            AppsBluetoothManager.getInstance(MyApp.getContext())
+                                                    .sendCommand(new RestoreFactory(
+                                                            commandResultCallback));
                                         }
-                                    }).show();
+                                        return null;
+                                    }, () -> null
+                            );
                             break;
                         case "B15P":
 
                             break;
                         case "W30S":
-                            new MaterialDialog.Builder(this)
-                                    .title(R.string.prompt)
-                                    .content(R.string.reset_device + "?")
-                                    .positiveText(getResources().getString(R.string.confirm))
-                                    .negativeText(getResources().getString(R.string.cancle))
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            if (is18i.equals("W30S")) {
-                                                //重置W30S
-                                                showLoadingDialog(getResources().getString(R.string.dlog));
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upSportTime", "2017-11-02 15:00:00");
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upSleepTime", "2015-11-02 15:00:00");
-                                                SharedPreferenceUtil.put(MyApp.getContext(), "upHeartTime", "2017-11-02 15:00:00");
-                                                MyApp.getmW30SBLEManage().setReboot();
-                                                mHandler.sendEmptyMessageDelayed(ResetNUMBER, 500);
-                                            }
+                            MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                                    R.string.reset_device + "?", R.string.confirm, R.string.cancle,
+                                    () -> {
+                                        if (is18i.equals("W30S")) {
+                                            //重置W30S
+                                            showLoadingDialog(getResources().getString(R.string.dlog));
+                                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                                    "upSportTime", "2017-11-02 15:00:00");
+                                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                                    "upSleepTime", "2015-11-02 15:00:00");
+                                            SharedPreferenceUtil.put(MyApp.getContext(),
+                                                    "upHeartTime", "2017-11-02 15:00:00");
+                                            MyApp.getmW30SBLEManage().setReboot();
+                                            mHandler.sendEmptyMessageDelayed(ResetNUMBER,
+                                                    500);
                                         }
-                                    }).show();
+                                        return null;
+                                    }, () -> null
+                            );
                             break;
                     }
 

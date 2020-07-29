@@ -30,10 +30,10 @@ public class Config {
     // 福尔耳温
     public final static String FORA_ET_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
     // TODO 添加新设备首页
-    // 移动版
+    // 移动版  福尔臂式血壓測量
     public static String BP_FRAGMENT = "com.guider.health.bp.view.bp.BPFirstOperaterReminder";
-    // AVE
-    public static String BP_AVE_FRAGMENT = "com.guider.health.bp.view.avebp.BPFirstOperaterReminder";
+    // 四川云峰的VAE-2000的血压仪
+    public static String BP_AVE_FRAGMENT = "com.guider.health.bp.view.vaebp.BPFirstOperaterReminder";
     // 插线版
     public static String BP_CX_FRAGMENT = "com.guider.health.bp.view.cxbp.BPFirstOperaterReminder";
     // 云峰

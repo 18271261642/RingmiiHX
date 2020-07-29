@@ -1,4 +1,4 @@
-package com.guider.health.bp.view.avebp;
+package com.guider.health.bp.view.vaebp;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -41,7 +41,7 @@ public class BPOperaterReminderResult extends BPFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.bp_ave_meassure_result, container, false);
+        view = inflater.inflate(R.layout.bp_vae_meassure_result, container, false);
         return view;
     }
 

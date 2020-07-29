@@ -16,6 +16,7 @@ import com.guider.health.common.utils.SkipClick;
 
 /**
  * Created by haix on 2019/6/25.
+ * 福尔臂式血壓測量
  */
 
 public class BPFirstOperaterReminder extends BPFragment {

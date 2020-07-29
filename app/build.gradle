@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'com.mob.sdk'
 apply from: '../MobSDK.gradle'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 def andr = rootProject.ext.android
 
 android {
@@ -205,7 +207,7 @@ dependencies {
         implementation project(':libbuglycn')
     }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // 以上依赖Android系统
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.browser:browser:1.2.0'
@@ -234,7 +236,8 @@ dependencies {
     implementation 'org.greenrobot:greendao-generator:3.3.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:lifecycle:3.3.0'
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
     implementation 'com.roughike:bottom-bar:2.3.1'
     implementation 'com.nightonke:boommenu:2.1.1'
@@ -252,8 +255,8 @@ dependencies {
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.yanzhenjie:permission:2.0.0-rc12'
     implementation 'com.bm.photoview:library:1.4.1'
-    implementation 'com.arialyy.aria:aria-core:3.5'
-    annotationProcessor 'com.arialyy.aria:aria-compiler:3.5'
+    implementation 'com.arialyy.aria:core:3.8.10'
+    annotationProcessor 'com.arialyy.aria:compiler:3.8.10'
     // 网络请求
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'

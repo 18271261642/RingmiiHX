@@ -61,7 +61,7 @@ public class NetRequest {
 
 
     public void getUserInfo(WeakReference<Activity> activity, final NetCallBack callBack) {
-        if (activity.get() != null) {
+        if (activity!=null && activity.get() != null) {
             if (!NetStateController.isNetworkConnected(activity.get())) {
                 Toast.makeText(activity.get(), activity.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
@@ -105,7 +105,7 @@ public class NetRequest {
 
 
     public void eidtSimpleUserInfo(WeakReference<Activity> activity, final NetCallBack callBack) {
-        if (activity.get() != null) {
+        if (activity!=null && activity.get() != null) {
             if (!NetStateController.isNetworkConnected(activity.get())) {
                 Toast.makeText(activity.get(), activity.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();
                 return;
@@ -141,7 +141,7 @@ public class NetRequest {
     }
 
     public void setNonbsSet(WeakReference<Activity> activityWeakReference, final NetCallBack operatorCallBack){
-        if (activityWeakReference.get() != null) {
+        if (activityWeakReference!=null && activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
                 Toast.makeText(activityWeakReference.get(), "没有网络, 请打开网络", Toast.LENGTH_SHORT).show();
                 return;
@@ -174,7 +174,7 @@ public class NetRequest {
     }
 
     public void getNonbsSet(WeakReference<Activity> activityWeakReference, final NetCallBack operatorCallBack) {
-        if (activityWeakReference.get() != null) {
+        if (activityWeakReference!=null && activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
 
                 Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();
@@ -209,7 +209,7 @@ public class NetRequest {
     }
 
     public void getHealthRange(WeakReference<Activity> activityWeakReference) {
-        if (activityWeakReference.get() != null) {
+        if (activityWeakReference!=null && activityWeakReference.get() != null) {
             if (!NetStateController.isNetworkConnected(activityWeakReference.get())) {
 
                 Toast.makeText(activityWeakReference.get(), activityWeakReference.get().getResources().getString(com.guider.glu.R.string.no_network), Toast.LENGTH_SHORT).show();

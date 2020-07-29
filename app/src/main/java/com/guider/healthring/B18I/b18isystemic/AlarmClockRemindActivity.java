@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,8 +28,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+
 import com.guider.healthring.B18I.b18iutils.B18ITimePicker;
 import com.guider.healthring.B18I.b18iutils.B18iUtils;
 import com.guider.healthring.B18I.evententity.B18iEventBus;
@@ -35,6 +36,7 @@ import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.sdk.bluetooth.bean.RemindData;
 import com.sdk.bluetooth.manage.AppsBluetoothManager;
@@ -54,6 +56,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import cn.appscomm.bluetooth.app.BluetoothSDK;
 import cn.appscomm.bluetooth.interfaces.ResultCallBack;
 import cn.appscomm.bluetooth.model.ReminderData;
@@ -69,7 +72,7 @@ import rx.Subscriber;
  * @company: 东莞速成科技有限公司
  */
 
-public class AlarmClockRemindActivity extends WatchBaseActivity implements  View.OnClickListener{
+public class AlarmClockRemindActivity extends WatchBaseActivity implements View.OnClickListener {
 
     private final String TAG = "----->>>" + this.getClass().toString();
     ImageView imageBack;
@@ -113,7 +116,7 @@ public class AlarmClockRemindActivity extends WatchBaseActivity implements  View
         is18i = getIntent().getStringExtra("is18i");
         if (TextUtils.isEmpty(is18i)) finish();
         //在这里分别请求数据
-        switch (is18i){
+        switch (is18i) {
             case "B18i":
                 BluetoothSDK.getReminder(resultCallBack);//获取闹钟
                 break;
@@ -272,70 +275,72 @@ public class AlarmClockRemindActivity extends WatchBaseActivity implements  View
                                 listAlarm.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                                     @Override
                                     public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                                        new MaterialDialog.Builder(AlarmClockRemindActivity.this)
-                                                .title(R.string.edit_alarm_clock)
-                                                .content(R.string.deleda)
-                                                .positiveText(getResources().getString(R.string.confirm))
-                                                .negativeText(getResources().getString(R.string.cancle))
-                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                    @Override
-                                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
-                                                        dialog.dismiss();
-                                                        Log.e(TAG, "--删除---" + list.get(position).remind_time_hours + ":" + list.get(position).remind_time_minutes);
-                                                        final int aaa = Integer.parseInt(B18iUtils.toD(list.get(position).remind_week, 2));
-                                                        int remind_set_ok = list.get(position).remind_set_ok;
-                                                        final byte isopen;
-                                                        if (remind_set_ok == 0) {
-                                                            isopen = 0x00;
-                                                        } else {
-                                                            isopen = 0x01;
-                                                        }
-                                                        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
-                                                            @Override
-                                                            public void call(Subscriber<? super String> subscriber) {
-                                                                AppsBluetoothManager.getInstance(MyApp.getContext())
-                                                                        .sendCommand(new RemindSetting(commandResultCallback,
-                                                                                (byte) 0x02,//删除
-                                                                                (byte) list.get(position).remind_type,//类型：。。。"吃饭", "吃药", "喝水。。。
-                                                                                (byte) list.get(position).remind_time_hours,//时
-                                                                                (byte) list.get(position).remind_time_minutes,//分
-                                                                                (byte) aaa,//周期
-                                                                                (byte) isopen));//0关、1开
-                                                                //读取所以提醒条数
-                                                                AppsBluetoothManager.getInstance(MyApp.getContext())
-                                                                        .sendCommand(new RemindCount(commandResultCallback, 1, 0));
-                                                                showLoadingDialog(getResources().getString(R.string.dlog));
-                                                                h9AlarmAdapter.notifyDataSetChanged();
-                                                                subscriber.onCompleted();
+                                        MaterialDialogUtil.INSTANCE
+                                                .showDialog(AlarmClockRemindActivity.this,
+                                                        R.string.edit_alarm_clock,
+                                                        R.string.deleda,
+                                                        R.string.confirm, R.string.cancle,
+                                                        () -> {
+                                                            Log.e(TAG, "--删除---" +
+                                                                    list.get(position).
+                                                                            remind_time_hours +
+                                                                    ":" + list.get(position).
+                                                                    remind_time_minutes);
+                                                            final int aaa = Integer.
+                                                                    parseInt(B18iUtils.
+                                                                            toD(list.get(position).
+                                                                                            remind_week,
+                                                                                    2));
+                                                            int remind_set_ok =
+                                                                    list.get(position)
+                                                                            .remind_set_ok;
+                                                            final byte isopen;
+                                                            if (remind_set_ok == 0) {
+                                                                isopen = 0x00;
+                                                            } else {
+                                                                isopen = 0x01;
                                                             }
-                                                        });
+                                                            Observable observable =
+                                                                    Observable.create(
+                                                                            (Observable.OnSubscribe<String>) subscriber -> {
+                                                                                AppsBluetoothManager
+                                                                                        .getInstance(
+                                                                                                MyApp.getContext())
+                                                                                        .sendCommand(new RemindSetting(commandResultCallback,
+                                                                                                (byte) 0x02,//删除
+                                                                                                (byte) list.get(position).remind_type,//类型：。。。"吃饭", "吃药", "喝水。。。
+                                                                                                (byte) list.get(position).remind_time_hours,//时
+                                                                                                (byte) list.get(position).remind_time_minutes,//分
+                                                                                                (byte) aaa,//周期
+                                                                                                (byte) isopen));//0关、1开
+                                                                                //读取所以提醒条数
+                                                                                AppsBluetoothManager.getInstance(MyApp.getContext())
+                                                                                        .sendCommand(new RemindCount(commandResultCallback, 1, 0));
+                                                                                showLoadingDialog(getResources().getString(R.string.dlog));
+                                                                                h9AlarmAdapter.notifyDataSetChanged();
+                                                                                subscriber.onCompleted();
+                                                                            });
 
-                                                        Observer<String> observer = new Observer<String>() {
-                                                            @Override
-                                                            public void onNext(String s) {
-                                                                Log.d(TAG, "Item: " + s);
-                                                            }
+                                                            Observer<String> observer = new Observer<String>() {
+                                                                @Override
+                                                                public void onNext(String s) {
+                                                                    Log.d(TAG, "Item: " + s);
+                                                                }
 
-                                                            @Override
-                                                            public void onCompleted() {
-                                                                Log.d(TAG, "Completed!");
-                                                            }
+                                                                @Override
+                                                                public void onCompleted() {
+                                                                    Log.d(TAG, "Completed!");
+                                                                }
 
-                                                            @Override
-                                                            public void onError(Throwable e) {
-                                                                Log.d(TAG, "Error!");
-                                                            }
-                                                        };
-                                                        observable.subscribe(observer);
-
-                                                    }
-                                                }).onNegative(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                dialog.dismiss();
-                                            }
-                                        }).show();
+                                                                @Override
+                                                                public void onError(Throwable e) {
+                                                                    Log.d(TAG, "Error!");
+                                                                }
+                                                            };
+                                                            observable.subscribe(observer);
+                                                            return null;
+                                                        }, () -> null
+                                                );
                                         return true;
                                     }
                                 });

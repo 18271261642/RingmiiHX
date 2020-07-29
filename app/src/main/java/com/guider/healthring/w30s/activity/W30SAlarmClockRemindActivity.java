@@ -20,11 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.w30s.bean.W30SAlarmClockBean;
 import com.guider.healthring.w30s.utils.W30BasicUtils;
 import com.guider.healthring.R;
@@ -337,22 +335,17 @@ public class W30SAlarmClockRemindActivity extends WatchBaseActivity
     public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
         try {
-            new MaterialDialog.Builder(this)
-                    .title(getResources().getString(R.string.prompt))
-                    .content(getResources().getString(R.string.deleda))
-                    .positiveText(getResources().getString(R.string.confirm))
-                    .negativeText(getResources().getString(R.string.cancle))
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Log.d("=======", "删除成功");
-                            mAlarmClock.get(position).delete();
-                            mAlarmClock.remove(position);
-                            List<W30S_AlarmInfo> w30S_alarmInfos = new ArrayList<W30S_AlarmInfo>();
-                            for (int i = 0; i < mAlarmClock.size(); i++) {
-                                W30S_AlarmInfo w30S_alarmInfo = mAlarmClock.get(i).w30AlarmInfoChange();
-                                w30S_alarmInfos.add(w30S_alarmInfo);
-                            }
+            MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                    R.string.deleda, R.string.confirm, R.string.cancle,
+                    () -> {
+                        Log.d("=======", "删除成功");
+                        mAlarmClock.get(position).delete();
+                        mAlarmClock.remove(position);
+                        List<W30S_AlarmInfo> w30S_alarmInfos = new ArrayList<W30S_AlarmInfo>();
+                        for (int i = 0; i < mAlarmClock.size(); i++) {
+                            W30S_AlarmInfo w30S_alarmInfo = mAlarmClock.get(i).w30AlarmInfoChange();
+                            w30S_alarmInfos.add(w30S_alarmInfo);
+                        }
 //
 //                        int alarmtData = mAlarmClock.get(position).getDatas();
 //                        String alarmtDataString = Integer.toBinaryString(alarmtData);
@@ -370,14 +363,15 @@ public class W30SAlarmClockRemindActivity extends WatchBaseActivity
 //                            mAliarmList = getAliarmList();
 //                            mAliarmList.add(alarmInfo);
 //                        }
-                            MyApp.getmW30SBLEManage().setAlarm(w30S_alarmInfos);
+                        MyApp.getmW30SBLEManage().setAlarm(w30S_alarmInfos);
 //                        DataSupport.deleteAll(W30SAlarmClockBean.class, "id=?", mAlarmClock.get(position).getId() + "");
-                            myAdapter.deleteData(position);
-                            mAlarmClock = null;
-                            showLoadingDialog(getResources().getString(R.string.dlog));
-                            mHandler.sendEmptyMessageDelayed(HANDLER_MES, HANDLER_TIME);
-                        }
-                    }).show();
+                        myAdapter.deleteData(position);
+                        mAlarmClock = null;
+                        showLoadingDialog(getResources().getString(R.string.dlog));
+                        mHandler.sendEmptyMessageDelayed(HANDLER_MES, HANDLER_TIME);
+                        return null;
+                    }, () -> null
+            );
         }catch (Exception e){
             e.getMessage();
         }

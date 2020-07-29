@@ -20,8 +20,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.aigestudio.wheelpicker.widgets.ProvincePick;
 import com.guider.healthring.MyApp;
@@ -30,6 +28,7 @@ import com.guider.healthring.bean.MessageEvent;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.bleus.WatchBluetoothService;
 import com.guider.healthring.siswatch.utils.WatchUtils;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -288,30 +287,26 @@ public class WatchDeviceActivity extends WatchBaseActivity
 }
     //解除绑定
     private void doUnpairDisconn() {
-        new MaterialDialog.Builder(this)
-                .title(getResources().getString(R.string.prompt))
-                .content(getResources().getString(R.string.confirm_unbind_strap))
-                .positiveText(getResources().getString(R.string.confirm))
-                .negativeText(getResources().getString(R.string.cancle))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                        boolean isServiceRunn = WatchUtils.isServiceRunning(WatchBluetoothService.class.getName(),WatchDeviceActivity.this);
-                        Log.e(TAG,"--------服务是否在运行-----"+isServiceRunn);
-                        if(!isServiceRunn){
-                            WatchUtils.disCommH8();
-                            startActivity(NewSearchActivity.class);
-                            finish();
-                        }else{
-                            showLoadingDialog("disconn...");
-                            SharedPreferencesUtils.setParam(MyApp.getContext(),"bozlunmac","");
+        MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                R.string.confirm_unbind_strap, R.string.confirm, R.string.cancle,
+                () -> {
+                    boolean isServiceRunn = WatchUtils.isServiceRunning(
+                            WatchBluetoothService.class.getName(),WatchDeviceActivity.this);
+                    Log.e(TAG,"--------服务是否在运行-----"+isServiceRunn);
+                    if(!isServiceRunn){
+                        WatchUtils.disCommH8();
+                        startActivity(NewSearchActivity.class);
+                        finish();
+                    }else{
+                        showLoadingDialog("disconn...");
+                        SharedPreferencesUtils.setParam(MyApp.getContext(),
+                                "bozlunmac","");
 //                            MyApp.getWatchBluetoothService().disconnect();//断开蓝牙
-                        }
-
                     }
-                }).show();
 
+                    return null;
+                }, () -> null
+        );
     }
 
 

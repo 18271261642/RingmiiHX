@@ -1,4 +1,4 @@
-package com.guider.health.bp.view.avebp;
+package com.guider.health.bp.view.vaebp;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -15,7 +15,7 @@ import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.utils.SkipClick;
 
 /**
- * 这是VAE-2000的血压仪
+ * 这是四川云峰的VAE-2000的血压仪
  * Created by haix on 2019/6/25.
  */
 
@@ -28,7 +28,7 @@ public class BPFirstOperaterReminder extends BPFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.bp_ave_reminder_first, container, false);
+        view = inflater.inflate(R.layout.bp_vae_reminder_first, container, false);
         return view;
     }
 

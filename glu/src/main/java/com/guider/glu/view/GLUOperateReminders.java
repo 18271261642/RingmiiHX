@@ -25,6 +25,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * 开机提醒
  *  -> GLUDeviceConnect
  * Created by haix on 2019/6/21.
+ * 无创血糖测量提示页
  */
 
 public class GLUOperateReminders extends GLUFragment {
@@ -108,9 +109,9 @@ public class GLUOperateReminders extends GLUFragment {
             }
             MeasureDataUploader.getInstance(_mActivity).uploadBloodSugar(
                     Glucose.getInstance().getDeviceAddress(),
-                    Float.valueOf(Glucose.getInstance().getSpeed()),
+                    Float.parseFloat(Glucose.getInstance().getSpeed()),
                     (float) Glucose.getInstance().getGlucose(),
-                    Float.valueOf(Glucose.getInstance().getHemoglobin()),
+                    Float.parseFloat(Glucose.getInstance().getHemoglobin()),
                     bsTime
             );
             MeasureDataUploader.getInstance(_mActivity).uploadBloodOxygen(
@@ -119,12 +120,12 @@ public class GLUOperateReminders extends GLUFragment {
                     Integer.parseInt(Glucose.getInstance().getPulse())
             );
             MeasureDataUploader.getInstance(_mActivity).uploadHeartBpm(
-                    Integer.valueOf(Glucose.getInstance().getPulse())
+                    Integer.parseInt(Glucose.getInstance().getPulse())
             );
 
-            if (Config.mapX.get("glu")) {
-
-
+            if (Config.mapX.size()!=0 && Config.mapX.containsKey("glu")
+                    && Config.mapX.get("glu")!=null) {
+                if (!Config.mapX.get("glu")) return;
                 Config.mapX.put("glu", false);
 
                 if (RouterPathManager.Devices.size() > 0) {
@@ -176,7 +177,7 @@ public class GLUOperateReminders extends GLUFragment {
                 popTo(Class.forName(Config.HOME_DEVICE), false);
                 start((ISupportFragment) Class.forName(Config.END_FRAGMENT).newInstance());
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         } else if (resultCode == SkipClick.CODE_SKIP) {
             new SkipClick(this , DeviceInit.DEV_GLU).skip();

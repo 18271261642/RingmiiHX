@@ -12,9 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -31,6 +28,7 @@ import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
+import com.guider.healthring.util.MaterialDialogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.w30s.carema.W30sCameraActivity;
 import com.guider.healthring.w30s.wxsport.WXSportActivity;
@@ -210,18 +208,14 @@ public class B31DeviceActivity extends WatchBaseActivity
                 startActivity(B30DufActivity.class);
                 break;
             case R.id.b31DeviceClearDataRel:    //清除数据
-
-                new MaterialDialog.Builder(this)
-                        .title(getResources().getString(R.string.prompt))
-                        .content(getResources().getString(R.string.string_is_clear_data))
-                        .positiveText(getResources().getString(R.string.confirm))
-                        .negativeText(getResources().getString(R.string.cancle))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                MyApp.getInstance().getVpOperateManager().clearDeviceData(iBleWriteResponse);
-                            }
-                        }).show();
+                MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                        R.string.string_is_clear_data, R.string.confirm, R.string.cancle,
+                        () -> {
+                            MyApp.getInstance().getVpOperateManager()
+                                    .clearDeviceData(iBleWriteResponse);
+                            return null;
+                        }, () -> null
+                );
                 break;
             case R.id.wxSportRel:       //微信运动
                 startActivity(WXSportActivity.class, new String[]{"bleName"}, new String[]{"B31"});
@@ -386,45 +380,41 @@ public class B31DeviceActivity extends WatchBaseActivity
 
     //断开连接
     private void disB30Conn() {
-        new MaterialDialog.Builder(this)
-                .title(getResources().getString(R.string.prompt))
-                .content(getResources().getString(R.string.string_devices_is_disconnected))
-                .positiveText(getResources().getString(R.string.confirm))
-                .negativeText(getResources().getString(R.string.cancle))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (MyCommandManager.DEVICENAME != null) {
-                            MyCommandManager.DEVICENAME = null;
-                            MyCommandManager.ADDRESS = null;
-                            MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                                @Override
-                                public void onResponse(int state) {
-                                    if (state == -1) {
-                                        SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLENAME, null);
-                                        SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
-                                        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                                        MyApp.getInstance().setMacAddress(null);// 清空全局
-                                        startActivity(NewSearchActivity.class);
-                                        finish();
+        MaterialDialogUtil.INSTANCE.showDialog(this, R.string.prompt,
+                R.string.string_devices_is_disconnected, R.string.confirm, R.string.cancle,
+                () -> {
+                    if (MyCommandManager.DEVICENAME != null) {
+                        MyCommandManager.DEVICENAME = null;
+                        MyCommandManager.ADDRESS = null;
+                        MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
+                            @Override
+                            public void onResponse(int state) {
+                                if (state == -1) {
+                                    SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLENAME, null);
+                                    SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
+                                    SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                                    MyApp.getInstance().setMacAddress(null);// 清空全局
+                                    startActivity(NewSearchActivity.class);
+                                    finish();
 
-                                    }
                                 }
-                            });
-                        } else {
-                            MyCommandManager.DEVICENAME = null;
-                            MyCommandManager.ADDRESS = null;
-                            SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLENAME, null);
-                            SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
-                            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                            MyApp.getInstance().setMacAddress(null);// 清空全局
-                            startActivity(NewSearchActivity.class);
-                            finish();
-                        }
-
+                            }
+                        });
+                    } else {
+                        MyCommandManager.DEVICENAME = null;
+                        MyCommandManager.ADDRESS = null;
+                        SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLENAME, null);
                         SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
+                        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                        MyApp.getInstance().setMacAddress(null);// 清空全局
+                        startActivity(NewSearchActivity.class);
+                        finish();
                     }
-                }).show();
+
+                    SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
+                    return null;
+                }, () -> null
+        );
     }
 
 
