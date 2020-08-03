@@ -124,7 +124,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         Log.e(TAG,"-------onPreExecute--mac="+deviceCode);
         if(deviceCode == null)
             return;
-        String userDetailedData = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "UserDetailedData");
+        String userDetailedData = (String) SharedPreferencesUtils.readObject(MyApp.getContext(),
+                "UserDetailedData");
         if (!WatchUtils.isEmpty(userDetailedData)) {
             typeUserDatas = new Gson().fromJson(userDetailedData, TypeUserDatas.class);
             Log.e(TAG,"-------onPreExecute--typeUserDatas="+typeUserDatas);

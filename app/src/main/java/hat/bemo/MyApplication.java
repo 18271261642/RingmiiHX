@@ -43,7 +43,8 @@ public class MyApplication extends MyApp {
         gps_parameters = new GPSParameters();
 
 
-        boolean isBemo = (boolean) SharedPreferencesUtils.getParam(getApplicationContext(),"bemo_switch",false);
+        boolean isBemo = (boolean) SharedPreferencesUtils.getParam(getApplicationContext(),
+                "bemo_switch",false);
         if(isBemo){
             try {
                 Intent mIntent = new Intent(this, BLEScanService.class);

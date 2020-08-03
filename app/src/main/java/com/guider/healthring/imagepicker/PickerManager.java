@@ -97,7 +97,9 @@ public abstract  class PickerManager {
         }
 
         String finalPhotoName = imageName +
-                (withTimeStamp ? "_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date(System.currentTimeMillis())) :  "")
+                (withTimeStamp ? "_" +
+                        new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
+                                .format(new Date(System.currentTimeMillis())) :  "")
                 + ".jpg";
 
        // long currentTimeMillis = System.currentTimeMillis();

@@ -4,8 +4,8 @@
     android:id="@+id/watch_record_titleLin"
     android:layout_width="match_parent"
     android:layout_height="@dimen/size_45"
-    android:gravity="center"
     android:background="@color/new_colorAccent"
+    android:gravity="center"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -18,8 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-             />
+            android:layout_marginLeft="5dp" />
 
 
         <LinearLayout
@@ -91,8 +90,7 @@
         android:layout_gravity="center"
         android:layout_marginRight="@dimen/size_10"
         android:layout_weight="1.5"
-        tools:ignore="RtlHardcoded"
-        >
+        tools:ignore="RtlHardcoded">
 
         <ImageView
             android:id="@+id/battery_watchRecordShareImg"
@@ -101,8 +99,8 @@
             android:layout_gravity="center_vertical|end"
             android:padding="2dp"
             android:src="@mipmap/fenxiang"
-            tools:ignore="ContentDescription"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 

@@ -25,7 +25,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -53,7 +52,6 @@ import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.Setting;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,8 +124,6 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
         //注册广播接收者的对象
         this.registerReceiver(sendSMSBroadCast, mIntentFilter);
         MyApp.getInstance().getVpOperateManager().settingDeviceControlPhone(MyApp.phoneSosOrDisPhone);
-
-
     }
 
     private void initViewIds() {
@@ -347,7 +343,8 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
     //获取Do not disturb权限,才可进行音量操作
     private void getDoNotDisturb(){
         NotificationManager notificationManager =
-                (NotificationManager) MyApp.getInstance().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) MyApp.getInstance().
+                        getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         if(notificationManager == null)
             return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
@@ -386,19 +383,17 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                 )
                 .rationale(this)
                 .rationale(this)//添加拒绝权限回调
-                .onGranted(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
-                        //Toast.makeText(B30HomeActivity.this,"SOS 执行了 拨打电话 "+tel,Toast.LENGTH_SHORT).show();
-                        //直接拨打
+                .onGranted(data -> {
+                    //Toast.makeText(B30HomeActivity.this,"SOS 执行了 拨打电话 "+tel,Toast.LENGTH_SHORT).show();
+                    //直接拨打
 //                        Log.d("GPS", "call:" + tel);
-                        Uri uri = Uri.parse("tel:" + tel);
-                        Intent intent = new Intent(Intent.ACTION_CALL, uri);
-                        if (ActivityCompat.checkSelfPermission(B31HomeActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        startActivity(intent);
+                    Uri uri = Uri.parse("tel:" + tel);
+                    Intent intent = new Intent(Intent.ACTION_CALL, uri);
+                    if (ActivityCompat.checkSelfPermission(B31HomeActivity.this,
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
                     }
+                    startActivity(intent);
                 })
                 .onDenied(new Action<List<String>>() {
                     @Override

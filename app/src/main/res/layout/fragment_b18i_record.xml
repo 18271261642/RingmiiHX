@@ -8,10 +8,10 @@
 
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@mipmap/icon_record_bg_picture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <include layout="@layout/battery_top_layout" />
@@ -68,7 +68,7 @@
                     android:id="@+id/nextImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:src="@mipmap/chart" />
 
 
@@ -100,7 +100,6 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="30dp" />
 
 </LinearLayout>

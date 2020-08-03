@@ -1,5 +1,6 @@
 package com.guider.healthring.h9.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +9,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,12 +75,14 @@ import com.sdk.bluetooth.protocol.command.setting.GoalsSetting;
 import com.sdk.bluetooth.utils.DateUtil;
 
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -90,11 +95,11 @@ import rx.Subscriber;
  * @company: 东莞速成科技有限公司
  */
 
-public class H9RecordFragment extends Fragment implements View.OnClickListener{
+public class H9RecordFragment extends Fragment implements View.OnClickListener {
 
     private final String TAG = "H9RecordFragment";
     public static final String H9CONNECT_STATE_ACTION = "com.example.bozhilun.android.h9.connstate";
-//    @BindView(R.id.previousImage)
+    //    @BindView(R.id.previousImage)
 //    ImageView previousImage;
 //    @BindView(R.id.nextImage)
 //    ImageView nextImage;
@@ -169,10 +174,10 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
         String homeTime = (String) SharedPreferencesUtils.getParam(context, "homeTime", "");
         if (!TextUtils.isEmpty(homeTime)) {
             String timeDifference = H9TimeUtil.getTimeDifferencesec(homeTime, B18iUtils.getSystemDataStart());
-            int number = Integer.valueOf(timeDifference.trim());
+            int number = Integer.parseInt(timeDifference.trim());
             int number2 = Integer.parseInt(timeDifference.trim());
             if (number >= 2 || number2 >= 2) {
-                int nuber = Integer.valueOf(timeDifference.trim());
+                int nuber = Integer.parseInt(timeDifference.trim());
                 if (!timeDifference.trim().equals("1")) {
                     getDatas();
                     SharedPreferencesUtils.setParam(context, "homeTime", B18iUtils.getSystemDataStart());
@@ -372,47 +377,54 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
     public void getDatas() {
         if (MyCommandManager.DEVICENAME != null) {
 
-            Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
-                @Override
-                public void call(Subscriber<? super String> subscriber) {
-                    AppsBluetoothManager.getInstance(MyApp.context).sendCommand(new BatteryPower(commandResultCallback));
-                    subscriber.onNext("获取电量ok");
-                    //获取目标
-                    AppsBluetoothManager.getInstance(context)
-                            .sendCommand(new GoalsSetting(new BaseCommand.CommandResultCallback() {
-                                @Override
-                                public void onSuccess(BaseCommand command) {
-                                    Log.d(TAG, "步数目标:" + GlobalVarManager.getInstance().getStepGoalsValue() + "\n" +
-                                            "卡路里目标:" + GlobalVarManager.getInstance().getCalorieGoalsValue() + "\n" +
-                                            "距离目标:" + GlobalVarManager.getInstance().getDistanceGoalsValue() + "\n" +
-                                            "睡眠时间目标:" + GlobalVarManager.getInstance().getSleepGoalsValue());
-                                    GOAL = GlobalVarManager.getInstance().getStepGoalsValue();
-                                    recordwaveProgressBar.setMaxValue(GOAL);
-                                    watchRecordTagstepTv.setText(context.getResources().getString(R.string.settarget_steps) + GOAL + "");
+            Observable observable = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+                AppsBluetoothManager.getInstance(MyApp.context).sendCommand(
+                        new BatteryPower(commandResultCallback));
+                subscriber.onNext("获取电量ok");
+                //获取目标
+                AppsBluetoothManager.getInstance(context)
+                        .sendCommand(new GoalsSetting(new BaseCommand.CommandResultCallback() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onSuccess(BaseCommand command) {
+                                Log.d(TAG, "步数目标:" +
+                                        GlobalVarManager.getInstance().getStepGoalsValue()
+                                        + "\n" + "卡路里目标:" +
+                                        GlobalVarManager.getInstance().getCalorieGoalsValue()
+                                        + "\n" + "距离目标:" +
+                                        GlobalVarManager.getInstance().getDistanceGoalsValue()
+                                        + "\n" + "睡眠时间目标:" +
+                                        GlobalVarManager.getInstance().getSleepGoalsValue());
+                                GOAL = GlobalVarManager.getInstance().getStepGoalsValue();
+                                recordwaveProgressBar.setMaxValue(GOAL);
+                                watchRecordTagstepTv.setText(
+                                        context.getResources().getString(
+                                                R.string.settarget_steps) + GOAL + "");
 //                        circleprogress.reset();
 //                        circleprogress.setMaxValue(GOAL);
 //                        circleprogress.postInvalidate();
-                                }
+                            }
 
-                                @Override
-                                public void onFail(BaseCommand command) {
-                                    Log.d(TAG, "目标设置获取失败");
-                                }
-                            }));
-                    subscriber.onNext("获取目标ok");
-                    AppsBluetoothManager.getInstance(context)
-                            .sendCommand(new DeviceDisplaySportSleep(commandResultCallback));//获取当天运动汇总
-                    subscriber.onNext("获取目标ok");
-                    //获取心率数据
-                    initLineChart();
-                    initLineCharts(heartDatas);
-                    subscriber.onNext("获取心率数据ok");
-                    //获取睡眠数据
-                    setPieChart();
-                    setH9PieCharts();
-                    subscriber.onNext("获取睡眠数据ok");
-                    subscriber.onCompleted();
-                }
+                            @Override
+                            public void onFail(BaseCommand command) {
+                                Log.d(TAG,
+                                        "目标设置获取失败");
+                            }
+                        }));
+                subscriber.onNext("获取目标ok");
+                AppsBluetoothManager.getInstance(context)
+                        .sendCommand(new DeviceDisplaySportSleep(
+                                commandResultCallback));//获取当天运动汇总
+                subscriber.onNext("获取目标ok");
+                //获取心率数据
+                initLineChart();
+                initLineCharts(heartDatas);
+                subscriber.onNext("获取心率数据ok");
+                //获取睡眠数据
+                setPieChart();
+                setH9PieCharts();
+                subscriber.onNext("获取睡眠数据ok");
+                subscriber.onCompleted();
             });
 
             Observer<String> observer = new Observer<String>() {
@@ -449,7 +461,8 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
                 case 0:
                     //获取运动数据
                     AppsBluetoothManager.getInstance(context)
-                            .sendCommand(new DeviceDisplaySportSleep(commandResultCallback));//获取当天运动汇总
+                            .sendCommand(new DeviceDisplaySportSleep(
+                                    commandResultCallback));//获取当天运动汇总
                     break;
                 case 1:
                     //获取心率数据
@@ -476,13 +489,17 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
         axisX.setAxisLineColor(Color.parseColor("#43FFFFFF"));
         axisX.setAxisLineWidth(0.5f);
         axisX.setTextColor(Color.WHITE);
-        axisX.setAxisColor(Color.parseColor("#FFFFFF")).setTextColor(Color.parseColor("#FFFFFF")).setHasLines(true).setShowText(true);
+        axisX.setAxisColor(Color.parseColor("#FFFFFF")).
+                setTextColor(Color.parseColor("#FFFFFF")).
+                setHasLines(true).setShowText(true);
         Axis axisY = new Axis(getAxisValuesY());
         axisY.setShowText(false);
         axisY.setTextColor(Color.WHITE);
         axisY.setAxisLineWidth(0f);
         axisY.setShowLines(false);
-        axisY.setAxisColor(Color.parseColor("#FFFFFF")).setTextColor(Color.parseColor("#FFFFFF")).setHasLines(false).setShowText(true);
+        axisY.setAxisColor(Color.parseColor("#FFFFFF")).
+                setTextColor(Color.parseColor("#FFFFFF")).
+                setHasLines(false).setShowText(true);
         leafLineChart.setAxisX(axisX);
         leafLineChart.setAxisY(axisY);
         List<Line> lines = new ArrayList<>();
@@ -568,26 +585,30 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
 
         if (heartDatas != null) {
             for (int i = 0; i < heartDatas.size(); i++) {
-                String strTimes = B18iUtils.getStrTimes(String.valueOf(heartDatas.get(i).time_stamp));//yyyy/MM/dd HH:mm:ss
+                String strTimes = B18iUtils.getStrTimes(
+                        String.valueOf(heartDatas.get(i).time_stamp));//yyyy/MM/dd HH:mm:ss
                 if (s.equals(B18iUtils.interceptString(strTimes, 0, 10))) {
 //                    Log.d(TAG, heartDatas.get(i).toString());
                     if (heartDatas.get(i) != null) {
                         int avg = heartDatas.get(i).heartRate_value;
                         String sysTim = B18iUtils.interceptString(
-                                B18iUtils.getStrTimes(String.valueOf(heartDatas.get(i).time_stamp).trim()), 11, 13);
+                                B18iUtils.getStrTimes(
+                                        String.valueOf(heartDatas.get(i).time_stamp).trim()),
+                                11, 13);
                         if (!timeString.contains(sysTim)) {
                             timeString.add(sysTim);
                             heartString.add(avg);
                         }
                         Collections.sort(timeString);
                     } else {
-                        if (heartString != null) {
+                        if (heartString.size()!=0) {
                             heartString.clear();
                         }
-                        if (timeString != null) {
+                        if (timeString.size()!=0) {
                             timeString.clear();
                         }
-                        for (int j = 0; j < (int) Integer.valueOf(B18iUtils.interceptString(systemTimer, 11, 13)); j++) {
+                        for (int j = 0; j < Integer.parseInt(B18iUtils.interceptString(
+                                systemTimer, 11, 13)); j++) {
                             heartString.add(0);
                             timeString.add(j + "");
                         }
@@ -595,14 +616,15 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
                 }
             }
         } else {
-            for (int j = 0; j < (int) Integer.valueOf(B18iUtils.interceptString(systemTimer, 11, 13)); j++) {
+            for (int j = 0; j <Integer.parseInt(B18iUtils.interceptString(
+                    systemTimer, 11, 13)); j++) {
                 heartString.add(0);
                 timeString.add(j + "");
             }
         }
         for (int i = 0; i < timeString.size(); i++) {
             PointValue value = new PointValue();
-            value.setX(Integer.valueOf(timeString.get(i)) / 23f);
+            value.setX(Integer.parseInt(timeString.get(i)) / 23f);
             value.setY(Integer.valueOf(heartString.get(i)) / 150f);
             pointValues.add(value);
         }
@@ -656,12 +678,14 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
                 String timeDay = B18iUtils.interceptString(strTimes, 0, 10);//2017/10/20
                 String timeH = B18iUtils.interceptString(strTimes, 11, 13);//8
                 if (currentDay.equals(timeDay) || nextDay.equals(timeDay)) {
-                    if (Integer.valueOf(timeH) >= 20 || Integer.valueOf(timeH) <= 8) {
+                    if (Integer.parseInt(timeH) >= 20 || Integer.parseInt(timeH) <= 8) {
                         String timeDifference = "0";
                         if (0 < i) {
                             timeDifference = H9TimeUtil.getTimeDifference
-                                    (DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i - 1).sleep_time_stamp * 1000))
-                                            , DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
+                                    (DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i - 1).sleep_time_stamp * 1000))
+                                            , DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                                    sleepDatas.get(i).sleep_time_stamp * 1000)));
                         } else {
                             timeDifference = "0";
                         }
@@ -672,54 +696,82 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
                         // 17：退出睡眠模式（本次睡眠非预设睡眠）
                         // 18：退出睡眠模式（本次睡眠为预设睡眠）
                         if (sleep_type == 0) {//--------》睡着
-                            Log.e(TAG, "睡着时间：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
-                            AllSleep += Integer.valueOf(timeDifference);
-                            DEEP += Integer.valueOf(timeDifference);//睡着的分钟数
+                            Log.e(TAG, "睡着时间：" + Integer.valueOf(timeDifference) +
+                                    "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            AllSleep += Integer.parseInt(timeDifference);
+                            DEEP += Integer.parseInt(timeDifference);//睡着的分钟数
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         } else if (sleep_type == 1) {//--------》浅睡
-                            Log.e(TAG, "浅睡时间：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
-                            AllSleep += Integer.valueOf(timeDifference);
-                            SHALLOW += Integer.valueOf(timeDifference);//浅睡的分钟数
+                            Log.e(TAG, "浅睡时间：" + Integer.valueOf(timeDifference) +
+                                    "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            AllSleep += Integer.parseInt(timeDifference);
+                            SHALLOW += Integer.parseInt(timeDifference);//浅睡的分钟数
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         } else if (sleep_type == 2) {//--------》醒着
-                            Log.e(TAG, "醒着时间：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            Log.e(TAG, "醒着时间：" + Integer.valueOf(timeDifference) +
+                                    "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i).sleep_time_stamp * 1000)));
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         } else if (sleep_type == 3) {//--------》准备入睡着
-                            Log.e(TAG, "准备入睡时间：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            Log.e(TAG, "准备入睡时间：" + Integer.valueOf(timeDifference) +
+                                    "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i).sleep_time_stamp * 1000)));
                             if (!isIntoSleeped) {
                                 isIntoSleeped = true;
                                 isSleeped = true;
-                                textSleepInto.setText(DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16));
+                                textSleepInto.setText(DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                        sleepDatas.get(i).sleep_time_stamp * 1000))
+                                        .substring(11, 16));
                             }
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         } else if (sleep_type == 4) {//--------》退出睡眠
-                            Log.e(TAG, "退出睡眠：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            Log.e(TAG, "退出睡眠：" + Integer.valueOf(timeDifference) +
+                                    "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i).sleep_time_stamp * 1000)));
                             SLEEPWAKE++;
-                            soberLenTime = DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16);
+                            soberLenTime = DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                    sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16);
                             textSleepTime.setText(soberLenTime);
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         } else if (sleep_type == 16) {//--------》进入睡眠模式
-                            Log.e(TAG, "进入睡眠模式：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            Log.e(TAG, "进入睡眠模式：" + Integer.valueOf(
+                                    timeDifference) + "===" + DateUtil.dateToSec(
+                                            DateUtil.timeStampToDate(
+                                                    sleepDatas.get(i).sleep_time_stamp * 1000)));
                             if (!isSleeped) {
                                 isSleeped = true;
                                 isIntoSleeped = true;
-                                textSleepInto.setText(DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16));
+                                textSleepInto.setText(DateUtil.dateToSec(
+                                        DateUtil.timeStampToDate(
+                                                sleepDatas.get(i).sleep_time_stamp * 1000))
+                                        .substring(11, 16));
                             }
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         } else if (sleep_type == 17) {//--------》退出睡眠模式（本次睡眠非预设睡眠）
-                            Log.e(TAG, "退出睡眠模式==0=：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            Log.e(TAG, "退出睡眠模式==0=：" +
+                                    Integer.valueOf(timeDifference) + "===" +
+                                    DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i).sleep_time_stamp * 1000)));
                             SLEEPWAKE++;
-                            soberLenTime = DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16);
+                            soberLenTime = DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                    sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16);
                             textSleepTime.setText(soberLenTime);
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         } else if (sleep_type == 18) {//--------》退出睡眠模式（本次睡眠为预设睡眠）
-                            Log.e(TAG, "退出睡眠模式==1=：" + Integer.valueOf(timeDifference) + "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)));
+                            Log.e(TAG, "退出睡眠模式==1=：" +
+                                    Integer.valueOf(timeDifference) +
+                                    "===" + DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                            sleepDatas.get(i).sleep_time_stamp * 1000)));
                             SLEEPWAKE++;
-                            soberLenTime = DateUtil.dateToSec(DateUtil.timeStampToDate(sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16);
+                            soberLenTime = DateUtil.dateToSec(DateUtil.timeStampToDate(
+                                    sleepDatas.get(i).sleep_time_stamp * 1000)).substring(11, 16);
                             textSleepTime.setText(soberLenTime);
                             Log.d(TAG, "===========" + SLEEPWAKE);
                         }
-                        Log.d(TAG, DEEP + "----------222--------" + SHALLOW + "==============" + AllSleep + "===" + SLEEPWAKE);
+                        Log.d(TAG, DEEP + "----------222--------" +
+                                SHALLOW + "==============" + AllSleep + "===" + SLEEPWAKE);
                         //---------入睡时间-----苏醒次数--------苏醒时间
 //                        TextView textSleepInto, textSleepWake, textSleepTime;
                         textSleepWake.setText(String.valueOf(SLEEPWAKE));//苏醒次数
@@ -941,14 +993,14 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
                 if (!TextUtils.isEmpty(upSleepTime)) {
                     String timeDifference = H9TimeUtil.getTimeDifference(upSleepTime, B18iUtils.getSystemDataStart());
                     if (!TextUtils.isEmpty(timeDifference)) {
-                        int number = Integer.valueOf(timeDifference.trim());
+                        int number = Integer.parseInt(timeDifference.trim());
                         int number2 = Integer.parseInt(timeDifference.trim());
 //                        Log.e(TAG, "睡眠上传---------" + number + "--" + number2 + "==" + timeDifference.compareTo("5"));
                         if (number >= 5 || number2 >= 5) {
 
                             Log.d(TAG, "----清醒时间" + soberLenTime);
 //                            Log.e(TAG, "睡眠上传-----in----" + number + "===前几天时间" + H9TimeUtil.getDateBefore(new Date(), 7) + "前一天时间" + B18iUtils.getNextDay());
-                            UpDatasBase.upDataSleep(String.valueOf(DEEP), String.valueOf(SHALLOW),"");//上传睡眠数据
+                            UpDatasBase.upDataSleep(String.valueOf(DEEP), String.valueOf(SHALLOW), "");//上传睡眠数据
                             SharedPreferencesUtils.setParam(context, "upSleepTime", B18iUtils.getSystemDataStart());
 //                            SharedPreferences sp = MyApp.getContext().getSharedPreferences("sleepdatas", Context.MODE_PRIVATE);
 //                            SharedPreferences.Editor editor = sp.edit();
@@ -956,7 +1008,7 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
                         }
                     }
                 } else {
-                    UpDatasBase.upDataSleep(String.valueOf(DEEP), String.valueOf(SHALLOW),"");//上传睡眠数据
+                    UpDatasBase.upDataSleep(String.valueOf(DEEP), String.valueOf(SHALLOW), "");//上传睡眠数据
                     SharedPreferencesUtils.setParam(context, "upSleepTime", B18iUtils.getSystemDataStart());
 //                    SharedPreferences sp = MyApp.getContext().getSharedPreferences("sleepdatas", Context.MODE_PRIVATE);
 //                    SharedPreferences.Editor editor = sp.edit();
@@ -1057,6 +1109,7 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void setDatas() {
 
         View mView = LayoutInflater.from(context).inflate(R.layout.fragment_watch_record_change, null, false);
@@ -1182,10 +1235,10 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
     /**
      * 内部Adapter
      */
-    public class MyHomePagerAdapter extends PagerAdapter {
+    public static class MyHomePagerAdapter extends PagerAdapter {
         List<View> stringList;
 
-        public MyHomePagerAdapter(List<View> stringList) {
+        MyHomePagerAdapter(List<View> stringList) {
             this.stringList = stringList;
         }
 
@@ -1194,17 +1247,20 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
             return stringList.size();
         }
 
+        @NotNull
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
 
+        @NotNull
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             container.addView(stringList.get(position));
             return stringList.get(position);
         }
 
+        @NotNull
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView(stringList.get(position));
@@ -1299,7 +1355,11 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
 //                                .sendCommand(new GetSleepData(commandResultCallback, 0, new Date().getTime() / 1000, (int) GlobalVarManager.getInstance().getSleepCount()));
                         //获取睡眠数据
                         AppsBluetoothManager.getInstance(context)
-                                .sendCommand(new GetSleepData(commandResultCallback, 0, 0, (int) GlobalVarManager.getInstance().getSleepCount()));
+                                .sendCommand(
+                                        new GetSleepData(commandResultCallback,
+                                                0, 0,
+                                                (int) GlobalVarManager.getInstance()
+                                                        .getSleepCount()));
                     }
 
                     @Override
@@ -1485,13 +1545,13 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
                         if (number >= 5 && number2 >= 5) {
 //                            Log.e(TAG, "步数上传----in-----" + number);
                             //上传运动数据到后台
-                            UpDatasBase.updateLoadSportToServer(GOAL, STEP, CALORIES, DISTANCE,"");
+                            UpDatasBase.updateLoadSportToServer(GOAL, STEP, CALORIES, DISTANCE, "");
                             SharedPreferencesUtils.setParam(context, "upStepTime", B18iUtils.getSystemDataStart());
                         }
                     }
                 } else {
                     //上传运动数据到后台
-                    UpDatasBase.updateLoadSportToServer(GOAL, STEP, CALORIES, DISTANCE,"");
+                    UpDatasBase.updateLoadSportToServer(GOAL, STEP, CALORIES, DISTANCE, "");
                     SharedPreferencesUtils.setParam(context, "upStepTime", B18iUtils.getSystemDataStart());
                 }
 
@@ -2076,17 +2136,21 @@ public class H9RecordFragment extends Fragment implements View.OnClickListener{
         try {
             if (battery <= 100 && battery > 80) {
                 watchTopBatteryImgView.setBackground(getResources().getDrawable(R.mipmap.image_battery_five));
-            }if (battery <= 80 && battery > 60) {
+            }
+            if (battery <= 80 && battery > 60) {
                 watchTopBatteryImgView.setBackground(getResources().getDrawable(R.mipmap.image_battery_four));
-            }if (battery <= 60 && battery > 40) {
+            }
+            if (battery <= 60 && battery > 40) {
                 watchTopBatteryImgView.setBackground(getResources().getDrawable(R.mipmap.image_battery_three));
-            }if (battery <= 40 && battery > 20) {
+            }
+            if (battery <= 40 && battery > 20) {
                 watchTopBatteryImgView.setBackground(getResources().getDrawable(R.mipmap.image_battery_two));
-            }if (battery <= 20 && battery > 0) {
+            }
+            if (battery <= 20 && battery > 0) {
                 watchTopBatteryImgView.setBackground(getResources().getDrawable(R.mipmap.image_battery_one));
             }
             batteryPowerTv.setText(battery + "%");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

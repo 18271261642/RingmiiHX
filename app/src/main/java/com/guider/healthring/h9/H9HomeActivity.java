@@ -10,11 +10,13 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -120,9 +122,12 @@ public class H9HomeActivity extends WatchBaseActivity {
                     sendBroadcast(intent);  //发送连接成功的广播
                     BluetoothDevice bluetoothDevice = (BluetoothDevice) msg.obj;
                     MyCommandManager.DEVICENAME = "W06X";
-                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylany", "W06X");
-                    AppsBluetoothManager.getInstance(H9HomeActivity.this).clearBluetoothManagerDeviceConnectListeners();
-                    BluetoothConfig.setDefaultMac(H9HomeActivity.this, bluetoothDevice.getAddress());
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(),
+                            "mylany", "W06X");
+                    AppsBluetoothManager.getInstance(H9HomeActivity.this).
+                            clearBluetoothManagerDeviceConnectListeners();
+                    BluetoothConfig.setDefaultMac(H9HomeActivity.this,
+                            bluetoothDevice.getAddress());
                     break;
             }
         }
@@ -130,25 +135,22 @@ public class H9HomeActivity extends WatchBaseActivity {
 
     public void getDatas() {
 
-        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
+        Observable observable = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
 //                AppsBluetoothManager.getInstance(MyApp.getContext())
 //                        .sendCommand(new SwitchSetting(commandResultCallback, 3, (byte) 1, (byte) 0x01, (byte) 1));//自动同步开关打开
 //                subscriber.onNext("自动同步开关打开ok");
-                AppsBluetoothManager.getInstance(MyApp.getContext())
-                        .sendCommand(new SwitchSetting(commandResultCallback));//读取通知开关状态
-                subscriber.onNext("读取通知开关状态ok");
-                setH9WatchLanguage();   //设置手表的语言
-                subscriber.onNext("设置手表的语言ok");
-                syncUserInfoData(); //同步用户信息
-                subscriber.onNext("同步用户信息ok");
-                //获取设备时间
-                AppsBluetoothManager.getInstance(MyApp.getContext())
-                        .sendCommand(new DateTime(commandResultCallback));
-                subscriber.onNext("获取设备时间ok");
-                subscriber.onCompleted();
-            }
+            AppsBluetoothManager.getInstance(MyApp.getContext())
+                    .sendCommand(new SwitchSetting(commandResultCallback));//读取通知开关状态
+            subscriber.onNext("读取通知开关状态ok");
+            setH9WatchLanguage();   //设置手表的语言
+            subscriber.onNext("设置手表的语言ok");
+            syncUserInfoData(); //同步用户信息
+            subscriber.onNext("同步用户信息ok");
+            //获取设备时间
+            AppsBluetoothManager.getInstance(MyApp.getContext())
+                    .sendCommand(new DateTime(commandResultCallback));
+            subscriber.onNext("获取设备时间ok");
+            subscriber.onCompleted();
         });
 
         Observer<String> observer = new Observer<String>() {
@@ -205,26 +207,24 @@ public class H9HomeActivity extends WatchBaseActivity {
             sendBroadcast(intent);  //发送连接成功的广播
 
 //                Log.e(TAG, "----时间差---分-----" + aaa + "===" + bbb + "===" + ccc);
-            Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
-                @Override
-                public void call(Subscriber<? super String> subscriber) {
+            Observable observable = Observable.create(
+                    (Observable.OnSubscribe<String>) subscriber -> {
 //                    AppsBluetoothManager.getInstance(MyApp.getContext())
 //                            .sendCommand(new SwitchSetting(commandResultCallback, 3, (byte) 1, (byte) 0x01, (byte) 1));//自动同步开关打开
 //                    subscriber.onNext("自动同步开关打开ok");
-                    AppsBluetoothManager.getInstance(MyApp.getContext())
-                            .sendCommand(new SwitchSetting(commandResultCallback));//读取通知开关状态
-                    subscriber.onNext("读取通知开关状态ok");
-                    syncUserInfoData(); //同步用户信息
-                    subscriber.onNext("同步用户信息ok");
-                    setH9WatchLanguage();   //设置手表的语言
-                    subscriber.onNext("设置手表的语言ok");
-                    //获取设备时间
-                    AppsBluetoothManager.getInstance(MyApp.getContext())
-                            .sendCommand(new DateTime(commandResultCallback));
-                    subscriber.onNext("获取设备时间ok");
-                    subscriber.onCompleted();
-                }
-            });
+                        AppsBluetoothManager.getInstance(MyApp.getContext())
+                                .sendCommand(new SwitchSetting(commandResultCallback));//读取通知开关状态
+                        subscriber.onNext("读取通知开关状态ok");
+                        syncUserInfoData(); //同步用户信息
+                        subscriber.onNext("同步用户信息ok");
+                        setH9WatchLanguage();   //设置手表的语言
+                        subscriber.onNext("设置手表的语言ok");
+                        //获取设备时间
+                        AppsBluetoothManager.getInstance(MyApp.getContext())
+                                .sendCommand(new DateTime(commandResultCallback));
+                        subscriber.onNext("获取设备时间ok");
+                        subscriber.onCompleted();
+                    });
 
             Observer<String> observer = new Observer<String>() {
                 @Override
@@ -255,11 +255,16 @@ public class H9HomeActivity extends WatchBaseActivity {
 //                    sendBroadcast(intent);  //发送连接成功的广播
 
         } else {  //未连接
-            AppsBluetoothManager.getInstance(H9HomeActivity.this).addBluetoothManagerDeviceConnectListener(bluetoothManagerDeviceConnectListener);
-            String h9Mac = (String) SharedPreferencesUtils.readObject(H9HomeActivity.this, Commont.BLEMAC);
+            AppsBluetoothManager.getInstance(H9HomeActivity.this)
+                    .addBluetoothManagerDeviceConnectListener(
+                            bluetoothManagerDeviceConnectListener);
+            String h9Mac = (String) SharedPreferencesUtils
+                    .readObject(H9HomeActivity.this, Commont.BLEMAC);
 //            Log.e("H9", "---h9mac--" + h9Mac);
             if (!WatchUtils.isEmpty(h9Mac)) {
-                AppsBluetoothManager.getInstance(H9HomeActivity.this).addBluetoothManagerDeviceConnectListener(bluetoothManagerDeviceConnectListener);
+                AppsBluetoothManager.getInstance(H9HomeActivity.this)
+                        .addBluetoothManagerDeviceConnectListener(
+                                bluetoothManagerDeviceConnectListener);
                 AppsBluetoothManager.getInstance(H9HomeActivity.this).connectDevice(h9Mac);
             }
         }
@@ -280,7 +285,8 @@ public class H9HomeActivity extends WatchBaseActivity {
 
     //同步用户信息
     private void syncUserInfoData() {
-        String userData = (String) SharedPreferencesUtils.readObject(H9HomeActivity.this, "saveuserinfodata");
+        String userData = (String) SharedPreferencesUtils.readObject(
+                H9HomeActivity.this, "saveuserinfodata");
         if (!WatchUtils.isEmpty(userData)) {
             try {
                 int weight;
@@ -290,11 +296,13 @@ public class H9HomeActivity extends WatchBaseActivity {
                 String userWeight = jsonO.getString("weight");  //体重
                 String tempWeight = StringUtils.substringBefore(userWeight, "kg").trim();
                 if (tempWeight.contains(".")) {
-                    weight = Integer.valueOf(StringUtils.substringBefore(tempWeight, ".").trim() + "0");
+                    weight = Integer.parseInt(StringUtils.substringBefore(
+                            tempWeight, ".").trim() + "0");
                 } else {
-                    weight = Integer.valueOf(tempWeight + "0");
+                    weight = Integer.parseInt(tempWeight + "0");
                 }
-                String userHeight = ((String) SharedPreferencesUtils.getParam(H9HomeActivity.this, "userheight", "")).trim();
+                String userHeight = ((String) SharedPreferencesUtils.getParam(
+                        H9HomeActivity.this, "userheight", "")).trim();
                 int sex;
                 if (userSex.equals("M")) {    //男
                     sex = 0;
@@ -302,10 +310,12 @@ public class H9HomeActivity extends WatchBaseActivity {
                     sex = 1;
                 }
                 int age = WatchUtils.getAgeFromBirthTime(userAge);  //年龄
-                int height = Integer.valueOf(userHeight);
+                int height = Integer.parseInt(userHeight);
 
                 //同步用户信息
-                AppsBluetoothManager.getInstance(MyApp.getContext()).sendCommand(new UserInfo(commandResultCallback, 5, sex, age, height, weight));
+                AppsBluetoothManager.getInstance(MyApp.getContext())
+                        .sendCommand(new UserInfo(commandResultCallback,
+                                5, sex, age, height, weight));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -348,31 +358,31 @@ public class H9HomeActivity extends WatchBaseActivity {
         String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
         String minute = String.valueOf(calendar.get(Calendar.MINUTE));
         String secon = String.valueOf(calendar.get(Calendar.SECOND));
-        if (Integer.valueOf(month) <= 9) {
+        if (Integer.parseInt(month) <= 9) {
             month = "0" + month;
         } else {
             month = "" + month;
         }
 
-        if (Integer.valueOf(day) <= 9) {
+        if (Integer.parseInt(day) <= 9) {
             day = "0" + day;
         } else {
             day = "" + day;
         }
 
-        if (Integer.valueOf(hour) <= 9) {
+        if (Integer.parseInt(hour) <= 9) {
             hour = "0" + hour;
         } else {
             hour = "" + hour;
         }
 
-        if (Integer.valueOf(minute) <= 9) {
+        if (Integer.parseInt(minute) <= 9) {
             minute = "0" + minute;
         } else {
             minute = "" + minute;
         }
 
-        if (Integer.valueOf(secon) <= 9) {
+        if (Integer.parseInt(secon) <= 9) {
             secon = "0" + secon;
         } else {
             secon = "" + secon;
@@ -382,13 +392,14 @@ public class H9HomeActivity extends WatchBaseActivity {
         AppsBluetoothManager.getInstance(MyApp.getContext())
                 .sendCommand(new FinishCorroctionTime(commandResultCallback,
                         bytes,
-                        (byte) (int) Integer.valueOf(month),
-                        (byte) (int) Integer.valueOf(day),
-                        (byte) (int) Integer.valueOf(hour),
-                        (byte) (int) Integer.valueOf(minute),
-                        (byte) (int) Integer.valueOf(secon)));
+                        (byte) (int) Integer.parseInt(month),
+                        (byte) (int) Integer.parseInt(day),
+                        (byte) (int) Integer.parseInt(hour),
+                        (byte) (int) Integer.parseInt(minute),
+                        (byte) (int) Integer.parseInt(secon)));
 
-//        Log.e("==============", year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + secon);
+//        Log.e("==============", year + "-" + month + "-" + day + "-" +
+//        hour + "-" + minute + "-" + secon);
 //        AppsBluetoothManager.getInstance(MyApp.getContext())
 //                .sendCommand(new DateTime(commandResultCallback,
 //                        7,
@@ -453,25 +464,23 @@ public class H9HomeActivity extends WatchBaseActivity {
         // h18iFragmentList.add(new RunningFragment());    //跑步
         h18iFragmentList.add(new WatchRunFragment());   //跑步
         h18iFragmentList.add(new H9MineFragment());   //我的
-        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentAdapter(getSupportFragmentManager(), h18iFragmentList);
+        FragmentStatePagerAdapter fragmentPagerAdapter = new FragmentAdapter(
+                getSupportFragmentManager(), h18iFragmentList);
         h18iViewPager.setAdapter(fragmentPagerAdapter);
-        h18iBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                switch (tabId) {
-                    case R.id.b30_tab_home: //记录
-                        h18iViewPager.setCurrentItem(0);
-                        break;
-                    case R.id.b30_tab_set:  //开跑
-                        h18iViewPager.setCurrentItem(2);
-                        break;
-                    case R.id.b30_tab_data:     //数据
-                        h18iViewPager.setCurrentItem(1);
-                        break;
-                    case R.id.b30_tab_my:   //我的
-                        h18iViewPager.setCurrentItem(3);
-                        break;
-                }
+        h18iBottomBar.setOnTabSelectListener(tabId -> {
+            switch (tabId) {
+                case R.id.b30_tab_home: //记录
+                    h18iViewPager.setCurrentItem(0);
+                    break;
+                case R.id.b30_tab_set:  //开跑
+                    h18iViewPager.setCurrentItem(2);
+                    break;
+                case R.id.b30_tab_data:     //数据
+                    h18iViewPager.setCurrentItem(1);
+                    break;
+                case R.id.b30_tab_my:   //我的
+                    h18iViewPager.setCurrentItem(3);
+                    break;
             }
         });
     }
@@ -501,16 +510,20 @@ public class H9HomeActivity extends WatchBaseActivity {
     /**
      * 处理蓝牙命令回调
      */
-    private BaseCommand.CommandResultCallback commandResultCallback = new BaseCommand.CommandResultCallback() {
-        @Override
-        public void onSuccess(BaseCommand baseCommand) {
-            if ((baseCommand instanceof WatchID)) {//获取设备ＩＤ
-                String isClearDB = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "isClearDB");
-                SharedPreferencesUtils.saveObject(MyApp.getApplication(), "conntWatchID", isClearDB);
-                if (isDis) {
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "disWatchID", isClearDB);//保存一个标识
-                }
-            }
+    private BaseCommand.CommandResultCallback commandResultCallback = new
+            BaseCommand.CommandResultCallback() {
+                @Override
+                public void onSuccess(BaseCommand baseCommand) {
+                    if ((baseCommand instanceof WatchID)) {//获取设备ＩＤ
+                        String isClearDB = (String) SharedPreferencesUtils.readObject(
+                                MyApp.getContext(), "isClearDB");
+                        SharedPreferencesUtils.saveObject(MyApp.getApplication(),
+                                "conntWatchID", isClearDB);
+                        if (isDis) {
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(),
+                                    "disWatchID", isClearDB);//保存一个标识
+                        }
+                    }
 //            else if (baseCommand instanceof GetSportData) {
 //                int step = 0;
 //                int calorie = 0;
@@ -554,118 +567,118 @@ public class H9HomeActivity extends WatchBaseActivity {
 //                Log.d(TAG, heartDatas);
 //            } else
 
-            if (baseCommand instanceof SwitchSetting) {//获取通知开关
-                if (baseCommand.getAction() == CommandConstant.ACTION_CHECK) {
-                    // 防丢开关
-                    // 自动同步开关
-                    // 睡眠开关
-                    // 自动睡眠监测开关
-                    // 来电提醒开关
-                    // 未接来电提醒开关
-                    // 短信提醒开关
-                    // 社交提醒开关
-                    // 邮件提醒开关
-                    // 日历开关
-                    // 久坐提醒开关
-                    // 超低功耗功能开关
-                    // 二次提醒开关
+                    if (baseCommand instanceof SwitchSetting) {//获取通知开关
+                        if (baseCommand.getAction() == CommandConstant.ACTION_CHECK) {
+                            // 防丢开关
+                            // 自动同步开关
+                            // 睡眠开关
+                            // 自动睡眠监测开关
+                            // 来电提醒开关
+                            // 未接来电提醒开关
+                            // 短信提醒开关
+                            // 社交提醒开关
+                            // 邮件提醒开关
+                            // 日历开关
+                            // 久坐提醒开关
+                            // 超低功耗功能开关
+                            // 二次提醒开关
 
-                    // 运动心率模式开关
-                    // FACEBOOK开关
-                    // TWITTER开关
-                    // INSTAGRAM开关
-                    // QQ开关
-                    // WECHAT开关
-                    // WHATSAPP开关
-                    // LINE开关
+                            // 运动心率模式开关
+                            // FACEBOOK开关
+                            // TWITTER开关
+                            // INSTAGRAM开关
+                            // QQ开关
+                            // WECHAT开关
+                            // WHATSAPP开关
+                            // LINE开关
 
-                    Log.d(TAG, "isAntiLostSwitch:" + GlobalVarManager.getInstance().isAntiLostSwitch()
-                            + "\n isAutoSyncSwitch:" + GlobalVarManager.getInstance().isAutoSyncSwitch()
-                            + "\n isSleepSwitch:" + GlobalVarManager.getInstance().isSleepSwitch()
-                            + "\n isSleepStateSwitch:" + GlobalVarManager.getInstance().isSleepStateSwitch()
-                            + "\n isIncomePhoneSwitch:" + GlobalVarManager.getInstance().isIncomePhoneSwitch()
-                            + "\n isMissPhoneSwitch:" + GlobalVarManager.getInstance().isMissPhoneSwitch()
-                            + "\n isSmsSwitch:" + GlobalVarManager.getInstance().isSmsSwitch()
-                            + "\n isSocialSwitch:" + GlobalVarManager.getInstance().isSocialSwitch()
-                            + "\n isMailSwitch:" + GlobalVarManager.getInstance().isMailSwitch()
-                            + "\n isCalendarSwitch:" + GlobalVarManager.getInstance().isCalendarSwitch()
-                            + "\n isSedentarySwitch:" + GlobalVarManager.getInstance().isSedentarySwitch()
-                            + "\n isLowPowerSwitch:" + GlobalVarManager.getInstance().isLowPowerSwitch()
-                            + "\n isSecondRemindSwitch:" + GlobalVarManager.getInstance().isSecondRemindSwitch()
-                            + "\n isSportHRSwitch:" + GlobalVarManager.getInstance().isSportHRSwitch()
-                            + "\n isFacebookSwitch:" + GlobalVarManager.getInstance().isFacebookSwitch()
-                            + "\n isTwitterSwitch:" + GlobalVarManager.getInstance().isTwitterSwitch()
-                            + "\n isInstagamSwitch:" + GlobalVarManager.getInstance().isInstagamSwitch()
-                            + "\n isQqSwitch:" + GlobalVarManager.getInstance().isQqSwitch()
-                            + "\n isWechatSwitch:" + GlobalVarManager.getInstance().isWechatSwitch()
-                            + "\n isWhatsappSwitch:" + GlobalVarManager.getInstance().isWhatsappSwitch()
-                            + "\n isLineSwitch:" + GlobalVarManager.getInstance().isLineSwitch());
+                            Log.d(TAG, "isAntiLostSwitch:" + GlobalVarManager.getInstance().isAntiLostSwitch()
+                                    + "\n isAutoSyncSwitch:" + GlobalVarManager.getInstance().isAutoSyncSwitch()
+                                    + "\n isSleepSwitch:" + GlobalVarManager.getInstance().isSleepSwitch()
+                                    + "\n isSleepStateSwitch:" + GlobalVarManager.getInstance().isSleepStateSwitch()
+                                    + "\n isIncomePhoneSwitch:" + GlobalVarManager.getInstance().isIncomePhoneSwitch()
+                                    + "\n isMissPhoneSwitch:" + GlobalVarManager.getInstance().isMissPhoneSwitch()
+                                    + "\n isSmsSwitch:" + GlobalVarManager.getInstance().isSmsSwitch()
+                                    + "\n isSocialSwitch:" + GlobalVarManager.getInstance().isSocialSwitch()
+                                    + "\n isMailSwitch:" + GlobalVarManager.getInstance().isMailSwitch()
+                                    + "\n isCalendarSwitch:" + GlobalVarManager.getInstance().isCalendarSwitch()
+                                    + "\n isSedentarySwitch:" + GlobalVarManager.getInstance().isSedentarySwitch()
+                                    + "\n isLowPowerSwitch:" + GlobalVarManager.getInstance().isLowPowerSwitch()
+                                    + "\n isSecondRemindSwitch:" + GlobalVarManager.getInstance().isSecondRemindSwitch()
+                                    + "\n isSportHRSwitch:" + GlobalVarManager.getInstance().isSportHRSwitch()
+                                    + "\n isFacebookSwitch:" + GlobalVarManager.getInstance().isFacebookSwitch()
+                                    + "\n isTwitterSwitch:" + GlobalVarManager.getInstance().isTwitterSwitch()
+                                    + "\n isInstagamSwitch:" + GlobalVarManager.getInstance().isInstagamSwitch()
+                                    + "\n isQqSwitch:" + GlobalVarManager.getInstance().isQqSwitch()
+                                    + "\n isWechatSwitch:" + GlobalVarManager.getInstance().isWechatSwitch()
+                                    + "\n isWhatsappSwitch:" + GlobalVarManager.getInstance().isWhatsappSwitch()
+                                    + "\n isLineSwitch:" + GlobalVarManager.getInstance().isLineSwitch());
 
-                    ANTI_LOST = GlobalVarManager.getInstance().isAntiLostSwitch();
-                    INCOME_CALL = GlobalVarManager.getInstance().isIncomePhoneSwitch();
-                    MISS_CALL = GlobalVarManager.getInstance().isMissPhoneSwitch();
-                    SMS = GlobalVarManager.getInstance().isSmsSwitch();
-                    MAIL = GlobalVarManager.getInstance().isMailSwitch();
-                    SOCIAL = GlobalVarManager.getInstance().isSocialSwitch();
-                    CALENDAR = GlobalVarManager.getInstance().isCalendarSwitch();
-                    SEDENTARY = GlobalVarManager.getInstance().isSedentarySwitch();
-                    QQ = GlobalVarManager.getInstance().isQqSwitch();
-                    WECTH = GlobalVarManager.getInstance().isWechatSwitch();
-                    FACEBOOK = GlobalVarManager.getInstance().isFacebookSwitch();
-                    TWTTER = GlobalVarManager.getInstance().isTwitterSwitch();
-                    LIN = GlobalVarManager.getInstance().isLineSwitch();
+                            ANTI_LOST = GlobalVarManager.getInstance().isAntiLostSwitch();
+                            INCOME_CALL = GlobalVarManager.getInstance().isIncomePhoneSwitch();
+                            MISS_CALL = GlobalVarManager.getInstance().isMissPhoneSwitch();
+                            SMS = GlobalVarManager.getInstance().isSmsSwitch();
+                            MAIL = GlobalVarManager.getInstance().isMailSwitch();
+                            SOCIAL = GlobalVarManager.getInstance().isSocialSwitch();
+                            CALENDAR = GlobalVarManager.getInstance().isCalendarSwitch();
+                            SEDENTARY = GlobalVarManager.getInstance().isSedentarySwitch();
+                            QQ = GlobalVarManager.getInstance().isQqSwitch();
+                            WECTH = GlobalVarManager.getInstance().isWechatSwitch();
+                            FACEBOOK = GlobalVarManager.getInstance().isFacebookSwitch();
+                            TWTTER = GlobalVarManager.getInstance().isTwitterSwitch();
+                            LIN = GlobalVarManager.getInstance().isLineSwitch();
 
 
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "ANTI_LOST", ANTI_LOST);//同步
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "INCOME_CALL", INCOME_CALL);//来电
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "MISS_CALL", MISS_CALL);//未接
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "SMS", SMS);//短信
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "MAIL", MAIL);//邮件
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "SOCIAL", SOCIAL);//社交
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "CALENDAR", CALENDAR);//日历
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "SEDENTARY", SEDENTARY);//久坐提醒
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "ANTI_LOST", ANTI_LOST);//同步
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "INCOME_CALL", INCOME_CALL);//来电
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "MISS_CALL", MISS_CALL);//未接
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "SMS", SMS);//短信
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "MAIL", MAIL);//邮件
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "SOCIAL", SOCIAL);//社交
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "CALENDAR", CALENDAR);//日历
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "SEDENTARY", SEDENTARY);//久坐提醒
 
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "QQ", QQ);
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "WECTH", WECTH);
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "FACEBOOK", FACEBOOK);
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "TWTTER", TWTTER);
-                    SharedPreferencesUtils.saveObject(MyApp.getApplication(), "LIN", LIN);
-                }
-                if (baseCommand.getAction() == CommandConstant.ACTION_SET) {
-                    Log.d(TAG, "成功");
-                }
-            } else if (baseCommand instanceof DateTime) {
-                if (baseCommand.getAction() == CommandConstant.ACTION_CHECK) {
-                    Log.e(TAG, "----设备时间-----" + GlobalVarManager.getInstance().getDeviceDateTime()
-                            + "\n----本地时间-----" + B18iUtils.getSystemDataStart());
-                    String deviceDateTime = GlobalVarManager.getInstance().getDeviceDateTime();
-                    String[] splitTime = deviceDateTime.split("\\s+");
-                    String s1 = splitTime[0];
-                    String[] split = s1.split("-");
-                    String deviceTimes = split[0].trim();
-                    for (int i = 1; i < split.length; i++) {
-                        String s = split[i].trim();
-                        int integer = Integer.valueOf(s);
-                        Log.d(TAG, "------时间值:" + split[i].trim());
-                        if (integer > 9) {
-                            deviceTimes += "-" + integer;
-                        } else if (integer <= 9 && integer >= 0) {
-                            deviceTimes += "-0" + integer;
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "QQ", QQ);
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "WECTH", WECTH);
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "FACEBOOK", FACEBOOK);
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "TWTTER", TWTTER);
+                            SharedPreferencesUtils.saveObject(MyApp.getApplication(), "LIN", LIN);
                         }
-                    }
-                    Log.e(TAG, "----设备时间2-----" + deviceTimes
-                            + "\n----本地时间-2----" + B18iUtils.getSystemDataStart());
-                    //此处设置时间是根据手表的日期设置，判断是否属于当前的日期   如：2017-12-04
-                    if (!deviceTimes.equals(B18iUtils.getSystemDataStart().substring(0, 10))) {
-                        setDevTimes();
-                    }
-                }
-                if (baseCommand.getAction() == CommandConstant.ACTION_SET) {
+                        if (baseCommand.getAction() == CommandConstant.ACTION_SET) {
+                            Log.d(TAG, "成功");
+                        }
+                    } else if (baseCommand instanceof DateTime) {
+                        if (baseCommand.getAction() == CommandConstant.ACTION_CHECK) {
+                            Log.e(TAG, "----设备时间-----" + GlobalVarManager.getInstance().getDeviceDateTime()
+                                    + "\n----本地时间-----" + B18iUtils.getSystemDataStart());
+                            String deviceDateTime = GlobalVarManager.getInstance().getDeviceDateTime();
+                            String[] splitTime = deviceDateTime.split("\\s+");
+                            String s1 = splitTime[0];
+                            String[] split = s1.split("-");
+                            String deviceTimes = split[0].trim();
+                            for (int i = 1; i < split.length; i++) {
+                                String s = split[i].trim();
+                                int integer = Integer.parseInt(s);
+                                Log.d(TAG, "------时间值:" + split[i].trim());
+                                if (integer > 9) {
+                                    deviceTimes += "-" + integer;
+                                } else if (integer >= 0) {
+                                    deviceTimes += "-0" + integer;
+                                }
+                            }
+                            Log.e(TAG, "----设备时间2-----" + deviceTimes
+                                    + "\n----本地时间-2----" + B18iUtils.getSystemDataStart());
+                            //此处设置时间是根据手表的日期设置，判断是否属于当前的日期   如：2017-12-04
+                            if (!deviceTimes.equals(B18iUtils.getSystemDataStart().substring(0, 10))) {
+                                setDevTimes();
+                            }
+                        }
+                        if (baseCommand.getAction() == CommandConstant.ACTION_SET) {
 
-                }
-            } else if (baseCommand instanceof UserInfo) {  //同步用户信息
+                        }
+                    } else if (baseCommand instanceof UserInfo) {  //同步用户信息
 
-            }
+                    }
 //            else if (baseCommand instanceof DeviceDisplaySportSleep) {//获取运动数据
 //                Log.d(TAG, "Step:" + GlobalVarManager.getInstance().getDeviceDisplayStep() + "step" +
 //                        "\n Calorie:" + GlobalVarManager.getInstance().getDeviceDisplayCalorie() + "cal" +
@@ -680,56 +693,59 @@ public class H9HomeActivity extends WatchBaseActivity {
 //                }
 //            }else
 
-        }
+                }
 
-        @Override
-        public void onFail(BaseCommand baseCommand) {
+                @Override
+                public void onFail(BaseCommand baseCommand) {
 
 
-        }
-    };
+                }
+            };
 
 
     /**
      * H9 手表的连接监听
      */
-    private BluetoothManagerDeviceConnectListener bluetoothManagerDeviceConnectListener = new BluetoothManagerDeviceConnectListener() {
-        @Override
-        public void onConnected(BluetoothDevice bluetoothDevice) {
-            Log.d(TAG, "链接成功");
-        }
+    private BluetoothManagerDeviceConnectListener bluetoothManagerDeviceConnectListener =
+            new BluetoothManagerDeviceConnectListener() {
+                @Override
+                public void onConnected(BluetoothDevice bluetoothDevice) {
+                    Log.d(TAG, "链接成功");
+                }
 
-        @Override
-        public void onConnectFailed() {
-            Log.e(TAG, "-------onConnectFailed------");
-            Intent intent = new Intent();
-            intent.setAction(H9CONNECT_STATE_ACTION);
-            intent.putExtra("h9constate", "disconn");
-            sendBroadcast(intent);  //发送连接失败的广播
-            MyCommandManager.DEVICENAME = null;
-        }
+                @Override
+                public void onConnectFailed() {
+                    Log.e(TAG, "-------onConnectFailed------");
+                    Intent intent = new Intent();
+                    intent.setAction(H9CONNECT_STATE_ACTION);
+                    intent.putExtra("h9constate", "disconn");
+                    sendBroadcast(intent);  //发送连接失败的广播
+                    MyCommandManager.DEVICENAME = null;
+                }
 
-        @Override
-        public void onEnableToSendComand(BluetoothDevice bluetoothDevice) { //绑定成功
-            Log.e(TAG, "-------onEnableToSendComand------");
-            Message message = new Message();
-            message.what = CONNECT_STATE_CODE;
-            message.obj = bluetoothDevice;
-            handler.sendMessage(message);
-        }
+                @Override
+                public void onEnableToSendComand(BluetoothDevice bluetoothDevice) { //绑定成功
+                    Log.e(TAG, "-------onEnableToSendComand------");
+                    Message message = new Message();
+                    message.what = CONNECT_STATE_CODE;
+                    message.obj = bluetoothDevice;
+                    handler.sendMessage(message);
+                }
 
-        @Override
-        public void onConnectDeviceTimeOut() {
-            Log.e(TAG, "-------onConnectDeviceTimeOut------");
-            Intent intent = new Intent();
-            intent.setAction(H9CONNECT_STATE_ACTION);
-            intent.putExtra("h9constate", "disconn");
-            sendBroadcast(intent);  //发送连接失败的广播
-            MyCommandManager.DEVICENAME = null;
-            //连接超时重新连接
-            AppsBluetoothManager.getInstance(H9HomeActivity.this).connectDevice((String) SharedPreferencesUtils.readObject(H9HomeActivity.this, Commont.BLEMAC));
-        }
-    };
+                @Override
+                public void onConnectDeviceTimeOut() {
+                    Log.e(TAG, "-------onConnectDeviceTimeOut------");
+                    Intent intent = new Intent();
+                    intent.setAction(H9CONNECT_STATE_ACTION);
+                    intent.putExtra("h9constate", "disconn");
+                    sendBroadcast(intent);  //发送连接失败的广播
+                    MyCommandManager.DEVICENAME = null;
+                    //连接超时重新连接
+                    AppsBluetoothManager.getInstance(H9HomeActivity.this)
+                            .connectDevice((String) SharedPreferencesUtils
+                                    .readObject(H9HomeActivity.this, Commont.BLEMAC));
+                }
+            };
 
     /**
      * 监听手表连接状态的广播

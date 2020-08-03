@@ -2,18 +2,11 @@ package com.guider.healthring.bzlmaps;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,7 +15,11 @@ import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import com.afa.tourism.greendao.gen.SportMapsDao;
 import com.google.gson.Gson;
 import com.guider.healthring.Commont;
@@ -37,7 +34,6 @@ import com.guider.healthring.util.ToastUtil;
 import com.guider.libbase.map.IMapRun;
 import com.guider.libbase.map.ISpportMapView;
 import com.guider.map.MapRunImpl;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -47,7 +43,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SportsMapActivity extends FragmentActivity implements ISpportMapView, ActivityCompat.OnRequestPermissionsResultCallback,
+public class SportsMapActivity extends FragmentActivity implements
+        ISpportMapView, ActivityCompat.OnRequestPermissionsResultCallback,
         Chronometer.OnChronometerTickListener, BzlDragView.BzlDragViewListenter {
     private final String TAG = "-------GPS>>>";
 
@@ -81,6 +78,7 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
     protected int getLayoutRcId() {
         return 0;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,10 +114,14 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
         timr_frame = findViewById(R.id.timr_frame);
         sport_distance_unti = findViewById(R.id.sport_distance_unti);
         util_shisu = findViewById(R.id.util_shisu);
-        boolean w30sunit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSystem, true);//是否为公制
-        int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "H9_UTIT", 0);
-        if ((!TextUtils.isEmpty(MyCommandManager.DEVICENAME) && MyCommandManager.DEVICENAME.equals("H9")) ||
-                !TextUtils.isEmpty(MyCommandManager.DEVICENAME) && MyCommandManager.DEVICENAME.equals("W06X")) {
+        boolean w30sunit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                Commont.ISSystem, true);//是否为公制
+        int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                "H9_UTIT", 0);
+        if ((!TextUtils.isEmpty(MyCommandManager.DEVICENAME) &&
+                MyCommandManager.DEVICENAME.equals("H9")) ||
+                !TextUtils.isEmpty(MyCommandManager.DEVICENAME) &&
+                        MyCommandManager.DEVICENAME.equals("W06X")) {
             // 0位公制 1为英制
             if (h9_step_util == 0) {
                 util_shisu.setText("km/h");
@@ -171,17 +173,21 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
      */
     private void checkPermissionAllGranted(String[] permissions) {
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, permission) !=
+                    PackageManager.PERMISSION_GRANTED) {
                 // 只要有一个权限没有被授予, 则直接返回 false
                 isPermit = false;
                 //进入到这里代表没有权限.
-                ActivityCompat.requestPermissions(this, new String[]{permission}, MY_PERMISSION_REQUEST_CODE);
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission}, MY_PERMISSION_REQUEST_CODE);
             }
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case MY_PERMISSION_REQUEST_CODE:
@@ -189,10 +195,12 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
                     for (int grantResult :
                             grantResults) {
                         if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                            ToastUtil.showShort(SportsMapActivity.this, getResources().getString(R.string.shouquanshib));
+                            ToastUtil.showShort(SportsMapActivity.this,
+                                    getResources().getString(R.string.shouquanshib));
                             isPermit = false;
                         } else {
-                            ToastUtil.showShort(SportsMapActivity.this, getResources().getString(R.string.shouquancg));
+                            ToastUtil.showShort(SportsMapActivity.this,
+                                    getResources().getString(R.string.shouquancg));
                             isPermit = true;
                         }
                         return;
@@ -214,8 +222,10 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
         /**查询当前的运动类型*/
         try {
             int type = 1;
-            if (!TextUtils.isEmpty((String) SharedPreferencesUtils.readObject(SportsMapActivity.this, "type"))) {
-                if ("0".equals(SharedPreferencesUtils.readObject(SportsMapActivity.this, "type"))) {
+            if (!TextUtils.isEmpty((String) SharedPreferencesUtils.readObject(
+                    SportsMapActivity.this, "type"))) {
+                if ("0".equals(SharedPreferencesUtils.readObject(
+                        SportsMapActivity.this, "type"))) {
                     type = 0;
                 }
                 gpsJSon.put("type", type);
@@ -333,32 +343,40 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             DecimalFormat decimalFormat = new DecimalFormat("######0.00");
 
-            /****  保存数据库  ***/
+            // 保存数据库
             @SuppressLint("SimpleDateFormat")
             DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             sportMaps.setRtc(df.format(new Date()));
             sportMaps.setSaveTime(df1.format(new Date()));
-            sportMaps.setSpeed(speedSStr.equals("00'00") || TextUtils.isEmpty(speedSStr) ? "0.0" : "" + Double.valueOf(speedSStr));
+            sportMaps.setSpeed(speedSStr.equals("00'00") ||
+                    TextUtils.isEmpty(speedSStr) ? "0.0" : "" + Double.valueOf(speedSStr));
             if (sportDistance != null) {
-                sportMaps.setDistance(discanceStr.equals("0.00") ? "0.00" : "" + Double.valueOf(Double.parseDouble(sportDistance.getText().toString())));
+                sportMaps.setDistance(discanceStr.equals("0.00") ? "0.00" : ""
+                        + Double.parseDouble(sportDistance.getText().toString()));
             } else {
                 sportMaps.setDistance("0.00");
             }
 
-            String bleMac = (String) SharedPreferencesUtils.readObject(SportsMapActivity.this, Commont.BLEMAC);
-            String userId = (String) SharedPreferencesUtils.readObject(SportsMapActivity.this, "userId");
+            String bleMac = (String) SharedPreferencesUtils.readObject(
+                    SportsMapActivity.this, Commont.BLEMAC);
+            String userId = (String) SharedPreferencesUtils.readObject(
+                    SportsMapActivity.this, "userId");
             if (WatchUtils.isEmpty(bleMac)) return;
             sportMaps.setUserId(WatchUtils.isEmpty(userId) ? "null" : userId);
-            sportMaps.setCalories(Double.valueOf(decimalFormat.format(mIMapRun.getDistance() * 65.4)) + "");
+            sportMaps.setCalories(Double.valueOf(decimalFormat.format(
+                    mIMapRun.getDistance() * 65.4)) + "");
             sportMaps.setMac(bleMac);
             sportMaps.setLatLons(new Gson().toJson(gpsMaps));
 
-            List<SportMaps> sportMapsList = MyApp.getDBManager().getDaoSession().getSportMapsDao().loadAll();
+            List<SportMaps> sportMapsList = MyApp.getDBManager().getDaoSession().
+                    getSportMapsDao().loadAll();
             if (sportMapsList == null || sportMapsList.size() <= 0) {
                 MyApp.getDBManager().getDaoSession().getSportMapsDao().insert(sportMaps);
             } else {
-                SportMaps timedata = MyApp.getDBManager().getDaoSession().getSportMapsDao().queryBuilder()
-                        .where(SportMapsDao.Properties.SaveTime.eq(df1.format(new Date()))).unique();
+                SportMaps timedata = MyApp.getDBManager().getDaoSession().
+                        getSportMapsDao().queryBuilder()
+                        .where(SportMapsDao.Properties.SaveTime.eq(
+                                df1.format(new Date()))).unique();
                 if (timedata == null) {
                     MyApp.getDBManager().getDaoSession().getSportMapsDao().insert(sportMaps);
                 }
@@ -387,10 +405,13 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
         else if (cnt >= 2) {
             if (sportDistance != null) {
                 String discanceStr = sportDistance.getText().toString().trim();
-                if (TextUtils.isEmpty(discanceStr) || discanceStr.equals("0.0") || discanceStr.equals("0.00") || discanceStr.equals("0.000")) {
+                if (TextUtils.isEmpty(discanceStr) || discanceStr.equals("0.0") ||
+                        discanceStr.equals("0.00") || discanceStr.equals("0.000")) {
                     // 显示Toast
                     if (mToast == null) {
-                        mToast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.string_no_sport), Toast.LENGTH_SHORT);
+                        mToast = Toast.makeText(getApplicationContext(),
+                                getResources().getString(R.string.string_no_sport),
+                                Toast.LENGTH_SHORT);
                     } else {
                         mToast.setText(getResources().getString(R.string.string_no_sport));
                         mToast.setDuration(Toast.LENGTH_SHORT);
@@ -401,42 +422,43 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
                 }
             }
 
-            new CommomDialog(SportsMapActivity.this, R.style.dialog, getResources().getString(R.string.save_record) + "?", new CommomDialog.OnCloseListener() {
-                @Override
-                public void onClick(Dialog dialog, boolean confirm) {
-                    if (confirm) {
-                        mIMapRun.handleLastPoint();
-                        /*
-                        if (mLocationList.get(mLocationList.size() - 1).longitude != 0 && mLocationList.get(mLocationList.size() - 1).latitude != 0) {
-                            addPointLins(mLocationList.get(mLocationList.size() - 2), mLocationList.get(mLocationList.size() - 1));
-                            endDisplayPerth(mLocationList.get(mLocationList.size() - 1));//添加结束点
+            new CommomDialog(SportsMapActivity.this, R.style.dialog,
+                    getResources().getString(R.string.save_record) + "?",
+                    (dialog, confirm) -> {
+                        if (confirm) {
+                            mIMapRun.handleLastPoint();
+                            /*
+                            if (mLocationList.get(mLocationList.size() - 1).longitude != 0 && mLocationList.get(mLocationList.size() - 1).latitude != 0) {
+                                addPointLins(mLocationList.get(mLocationList.size() - 2), mLocationList.get(mLocationList.size() - 1));
+                                endDisplayPerth(mLocationList.get(mLocationList.size() - 1));//添加结束点
+                            }
+                            */
+
+                            if (mHandler != null) {
+                                mHandler.removeCallbacks(mRunnable);
+                                mRunnable = null;
+                            }
+
+                            //停止定位后，本地定位服务并不会被销毁
+                            mIMapRun.stop();
+                            // mLocationClient.stopLocation();
+                            isStart = false;
+                            isEnd = true;
+
+                            // 上传数据
+                            upDataGPS();
+
+                            bzlDragView.hideDragCallView();
                         }
-                        */
-
-                        if (mHandler != null) {
-                            mHandler.removeCallbacks(mRunnable);
-                            mRunnable = null;
-                        }
-
-                        //停止定位后，本地定位服务并不会被销毁
-                        mIMapRun.stop();
-                        // mLocationClient.stopLocation();
-                        isStart = false;
-                        isEnd = true;
-
-                        // 上传数据
-                        upDataGPS();
-
-                        bzlDragView.hideDragCallView();
-                    }
-                    dialog.dismiss();
-                    bzlDragView.setDraging(false);
-                }
-            }).setTitle(getResources().getString(R.string.prompt)).show();
+                        dialog.dismiss();
+                        bzlDragView.setDraging(false);
+                    }).setTitle(getResources().getString(R.string.prompt)).show();
         } else {
             // 显示Toast
             if (mToast == null) {
-                mToast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.string_no_sport), Toast.LENGTH_SHORT);
+                mToast = Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.string_no_sport),
+                        Toast.LENGTH_SHORT);
             } else {
                 mToast.setText(getResources().getString(R.string.string_no_sport));
                 mToast.setDuration(Toast.LENGTH_SHORT);
@@ -468,13 +490,15 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
 
             // 三秒倒计时
             if (myCountTimer == null) {
-                myCountTimer = new MyCountTimer(4000, 1000, timeDowln, getResources().getString(R.string.string_sport_run));
+                myCountTimer = new MyCountTimer(4000,
+                        1000, timeDowln, getResources().getString(R.string.string_sport_run));
                 //倒计时监听
                 myCountTimer.setmCompletionTime(completionTime);
             }
             myCountTimer.start();
         } else {
-            ToastUtil.showShort(SportsMapActivity.this, getResources().getString(R.string.string_stop_run_dowln));
+            ToastUtil.showShort(SportsMapActivity.this,
+                    getResources().getString(R.string.string_stop_run_dowln));
         }
     }
 
@@ -518,25 +542,22 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             if (isStart) {
                 new CommomDialog(SportsMapActivity.this, R.style.dialog,
-                        getResources().getString(R.string.string_out_gps), new CommomDialog.OnCloseListener() {
-                    @Override
-                    public void onClick(Dialog dialog, boolean confirm) {
-                        if (confirm && mIMapRun.isStart()) {
-                            isEnd = true;
-                            if (mHandler != null) mHandler.removeCallbacks(mRunnable);
-                            mRunnable = null;
+                        getResources().getString(R.string.string_out_gps), (dialog, confirm) -> {
+                    if (confirm && mIMapRun.isStart()) {
+                        isEnd = true;
+                        if (mHandler != null) mHandler.removeCallbacks(mRunnable);
+                        mRunnable = null;
 
-                            //停止定位更新
-                            mIMapRun.stop();
-                            // mLocationClient.stopLocation();
-                            isStart = false;
-                            bzlDragView.hideDragCallView();
-                            bzlDragView.setDraging(false);
-                            Intent intent = new Intent();
-                            setResult(1001, intent);
-                        }
-                        dialog.dismiss();
+                        //停止定位更新
+                        mIMapRun.stop();
+                        // mLocationClient.stopLocation();
+                        isStart = false;
+                        bzlDragView.hideDragCallView();
+                        bzlDragView.setDraging(false);
+                        Intent intent = new Intent();
+                        setResult(1001, intent);
                     }
+                    dialog.dismiss();
                 }).setTitle(getResources().getString(R.string.prompt)).show();
                 return true;
             }
@@ -564,17 +585,22 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
     public void setDistance(double distance) {
         if (sportDistance == null) return;
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
-        boolean w30sunit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSystem, true);//是否为公制
-        int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "H9_UTIT", 0);
-        if ((!TextUtils.isEmpty(MyCommandManager.DEVICENAME) && MyCommandManager.DEVICENAME.equals("H9")) ||
-                !TextUtils.isEmpty(MyCommandManager.DEVICENAME) && MyCommandManager.DEVICENAME.equals("W06X")) {
+        boolean w30sunit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                Commont.ISSystem, true);//是否为公制
+        int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                "H9_UTIT", 0);
+        if ((!TextUtils.isEmpty(MyCommandManager.DEVICENAME) &&
+                MyCommandManager.DEVICENAME.equals("H9")) ||
+                !TextUtils.isEmpty(MyCommandManager.DEVICENAME) &&
+                        MyCommandManager.DEVICENAME.equals("W06X")) {
             // 0位公制 1为英制
             if (h9_step_util == 0) {
                 sportDistance.setText(String.valueOf(decimalFormat.format(distance)));
                 sport_distance_unti.setText("KM");
             } else {
                 //总运动距离
-                sportDistance.setText(String.valueOf(decimalFormat.format(distance * 0.0006214)));
+                sportDistance.setText(String.valueOf(decimalFormat.format(
+                        distance * 0.0006214)));
                 sport_distance_unti.setText("MI");
             }
         } else {
@@ -584,7 +610,8 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
                 sport_distance_unti.setText("KM");
             } else {
                 //总运动距离
-                sportDistance.setText(String.valueOf(decimalFormat.format(distance * 3.28)));
+                sportDistance.setText(String.valueOf(decimalFormat.format(
+                        distance * 3.28)));
                 sport_distance_unti.setText("FT");
             }
         }
@@ -602,15 +629,17 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
     }
 
     // 卡路里
+    @SuppressLint("SetTextI18n")
     @Override
     public void setCal(double distance) {
         if (sportKcal != null) {
             DecimalFormat decimalFormat = new DecimalFormat("######0.00");
-            sportKcal.setText(String.valueOf(decimalFormat.format(distance * 65.4)) + "kcal");
+            sportKcal.setText(decimalFormat.format(distance * 65.4) + "kcal");
         }
     }
 
     // 速度
+    @SuppressLint("SetTextI18n")
     @Override
     public void setSpeed(double distance) {
         if (sportShisu == null) return;
@@ -623,16 +652,24 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
             Calendar c = Calendar.getInstance();
             c.setTime(dates);
 
-            boolean w30sunit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISSystem, true);//是否为公制
-            int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "H9_UTIT", 0);
-            if ((!TextUtils.isEmpty(MyCommandManager.DEVICENAME) && MyCommandManager.DEVICENAME.equals("H9")) ||
-                    !TextUtils.isEmpty(MyCommandManager.DEVICENAME) && MyCommandManager.DEVICENAME.equals("W06X")) {
+            boolean w30sunit = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                    Commont.ISSystem, true);//是否为公制
+            int h9_step_util = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                    "H9_UTIT", 0);
+            if ((!TextUtils.isEmpty(MyCommandManager.DEVICENAME) &&
+                    MyCommandManager.DEVICENAME.equals("H9")) ||
+                    !TextUtils.isEmpty(MyCommandManager.DEVICENAME) &&
+                            MyCommandManager.DEVICENAME.equals("W06X")) {
                 // 0位公制 1为英制
                 if (h9_step_util == 0) {
                     if (distance <= 0.0) {
                         sportShisu.setText("0.0");
                     } else {
-                        sportShisu.setText("" + String.valueOf(decimalFormat.format(Double.valueOf(decimalFormat.format(distance)) / (c.get(Calendar.HOUR) * 360 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND)) * 60)));
+                        sportShisu.setText("" + decimalFormat.format(
+                                Double.parseDouble(decimalFormat.format(distance))
+                                        / (c.get(Calendar.HOUR) * 360 +
+                                        c.get(Calendar.MINUTE) * 60 +
+                                        c.get(Calendar.SECOND)) * 60));
                     }
                     util_shisu.setText("km/h");
                 } else {
@@ -640,7 +677,12 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
                     if (distance <= 0.0) {
                         sportShisu.setText("0.0");
                     } else {
-                        sportShisu.setText("" + String.valueOf(decimalFormat.format(Double.valueOf(decimalFormat.format(distance * 0.0006214)) / (c.get(Calendar.HOUR) * 360 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND)) * 60)));
+                        sportShisu.setText("" + decimalFormat.format(
+                                Double.parseDouble(
+                                        decimalFormat.format(distance * 0.0006214))
+                                        / (c.get(Calendar.HOUR) * 360 +
+                                        c.get(Calendar.MINUTE) * 60 +
+                                        c.get(Calendar.SECOND)) * 60));
                     }
                     util_shisu.setText("mi/h");
                 }
@@ -649,7 +691,11 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
                     if (distance <= 0.0) {
                         sportShisu.setText("0.0");
                     } else {
-                        sportShisu.setText("" + String.valueOf(decimalFormat.format(Double.valueOf(decimalFormat.format(distance)) / (c.get(Calendar.HOUR) * 360 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND)) * 60)));
+                        sportShisu.setText("" + decimalFormat.format(
+                                Double.parseDouble(decimalFormat.format(distance))
+                                        / (c.get(Calendar.HOUR) * 360 +
+                                        c.get(Calendar.MINUTE) * 60 +
+                                        c.get(Calendar.SECOND)) * 60));
                     }
                     util_shisu.setText("km/h");
                 } else {
@@ -657,7 +703,12 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
                     if (distance <= 0.0) {
                         sportShisu.setText("0.0");
                     } else {
-                        sportShisu.setText("" + String.valueOf(decimalFormat.format(Double.valueOf(decimalFormat.format(distance * 3.28)) / (c.get(Calendar.HOUR) * 360 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND)) * 60)));
+                        sportShisu.setText("" + decimalFormat.format(
+                                Double.parseDouble(
+                                        decimalFormat.format(distance * 3.28)) /
+                                        (c.get(Calendar.HOUR) * 360 +
+                                                c.get(Calendar.MINUTE) * 60 +
+                                                c.get(Calendar.SECOND)) * 60));
                     }
                     util_shisu.setText("ft/h");
                 }
@@ -706,8 +757,10 @@ public class SportsMapActivity extends FragmentActivity implements ISpportMapVie
 
     @Override
     public boolean requestPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Toast.makeText(BzlGoogleMapsActivity.this, "没定位权限", Toast.LENGTH_SHORT).show();
             return false;
         }

@@ -182,7 +182,8 @@ public class B30HomeFragment extends LazyFragment
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (getActivity() != null && !getActivity().isFinishing() && b30HomeSwipeRefreshLayout != null) {
+            if (getActivity() != null && !getActivity().isFinishing() &&
+                    b30HomeSwipeRefreshLayout != null) {
                 b30HomeSwipeRefreshLayout.finishRefresh();// 停止下拉刷新
             }
             switch (msg.what) {
@@ -250,16 +251,21 @@ public class B30HomeFragment extends LazyFragment
 
         connBleHelpService.setConnBleMsgDataListener(this);
         //目标步数
-        goalStep = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "b30Goal", 0);
-        String saveDate = (String) SharedPreferencesUtils.getParam(mContext, "saveDate", "");
+        goalStep = (int) SharedPreferencesUtils.getParam(
+                MyApp.getContext(), "b30Goal", 0);
+        String saveDate = (String) SharedPreferencesUtils.getParam(
+                mContext, "saveDate", "");
         if (WatchUtils.isEmpty(saveDate)) {
-            SharedPreferencesUtils.setParam(mContext, "saveDate", System.currentTimeMillis() / 1000 + "");
+            SharedPreferencesUtils.setParam(mContext, "saveDate",
+                    System.currentTimeMillis() / 1000 + "");
         }
 
         //保存的时间 用于防止切换过快
-        String tmpSaveTime = (String) SharedPreferencesUtils.getParam(getmContext(), "save_curr_time", "");
+        String tmpSaveTime = (String) SharedPreferencesUtils.getParam(getmContext(),
+                "save_curr_time", "");
         if (WatchUtils.isEmpty(tmpSaveTime))
-            SharedPreferencesUtils.setParam(getmContext(), "save_curr_time", System.currentTimeMillis() / 1000 + "");
+            SharedPreferencesUtils.setParam(getmContext(), "save_curr_time",
+                    System.currentTimeMillis() / 1000 + "");
 //        MyLogUtil.e("---------------记录---onCreate");
 
         //setGuiderBemo();
@@ -298,8 +304,10 @@ public class B30HomeFragment extends LazyFragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        b30HomeFragment = inflater.inflate(R.layout.fragment_b30_home_layout, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        b30HomeFragment = inflater.inflate(R.layout.fragment_b30_home_layout,
+                container, false);
         initViewIds();
 
         initViews();
@@ -407,14 +415,19 @@ public class B30HomeFragment extends LazyFragment
         if (isVisible) {  //判断是否读取数据
             if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(MyApp.getContext())))
                 return;
-            int currCode = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "code_status", 0);
+            int currCode = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                    "code_status", 0);
             clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
             //updatePageData();
             if (connBleHelpService != null && MyCommandManager.DEVICENAME != null) {
                 long currentTime = System.currentTimeMillis() / 1000;
                 //保存的时间
-                String tmpSaveTime = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), "saveDate", currentTime + "");
-                long diffTime = (currentTime - Long.valueOf(tmpSaveTime)) / 60;
+                String tmpSaveTime = (String) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                        "saveDate", currentTime + "");
+                long diffTime = 0;
+                if (tmpSaveTime != null) {
+                    diffTime = (currentTime - Long.parseLong(tmpSaveTime)) / 60;
+                }
                 if (WatchConstants.isScanConn) {  //是搜索进来的
                     WatchConstants.isScanConn = false;
                     //getBleMsgData();
@@ -453,7 +466,8 @@ public class B30HomeFragment extends LazyFragment
             if (b30ConnectStateTv != null)
                 b30ConnectStateTv.setText(getResources().getString(R.string.connted));
             homeFastStatusTv.setText(getResources().getString(R.string.more_opera));
-            int param = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.BATTERNUMBER, 0);
+            int param = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                    Commont.BATTERNUMBER, 0);
             if (param > 0) {
                 showBatterStute(param);
 //                int currCode = (int) SharedPreferencesUtils.getParam(getmContext(),"code_status",0);
@@ -497,6 +511,7 @@ public class B30HomeFragment extends LazyFragment
      *
      * @param batteryLevel
      */
+    @SuppressLint("SetTextI18n")
     void showBatterStute(int batteryLevel) {
         try {
             if (batteryTopImg == null) return;

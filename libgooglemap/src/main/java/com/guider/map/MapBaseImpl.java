@@ -19,15 +19,12 @@ public class MapBaseImpl implements IMapBase {
         mContext = context;
         mMapView = (MapView) view;
         mMapView.onCreate(null);
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mGoogleMap = googleMap;
-                UiSettings uiSettings = mGoogleMap.getUiSettings();
-                // uiSettings.l(-70);// 隐藏logo
-                uiSettings.setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-                onMapRead();
-            }
+        mMapView.getMapAsync(googleMap -> {
+            mGoogleMap = googleMap;
+            UiSettings uiSettings = mGoogleMap.getUiSettings();
+            // uiSettings.l(-70);// 隐藏logo
+            uiSettings.setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+            onMapRead();
         });
     }
 

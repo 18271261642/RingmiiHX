@@ -53,7 +53,8 @@ public class AlbumPagerAdapter extends PagerAdapter {
         String url = imageUrls.get(position);
         PhotoView photoView = new PhotoView(mContext);
         photoView.enable();     //设置开启缩放
-        photoView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        photoView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         photoView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         container.addView(photoView);
         //Glide加载本地的图片

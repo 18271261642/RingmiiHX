@@ -69,12 +69,8 @@ public class PrivateBloadActivity extends WatchBaseActivity
     //读取私人血压
     private void readBloodState() {
         if (MyCommandManager.DEVICENAME != null) {
-            MyApp.getInstance().getVpOperateManager().readDetectBP(iBleWriteResponse, new IBPSettingDataListener() {
-                @Override
-                public void onDataChange(BpSettingData bpSettingData) {
-                    handlerBloodState(bpSettingData);
-                }
-            });
+            MyApp.getInstance().getVpOperateManager().readDetectBP(iBleWriteResponse,
+                    this::handlerBloodState);
         }
     }
 
@@ -121,14 +117,13 @@ public class PrivateBloadActivity extends WatchBaseActivity
                 if (MyCommandManager.DEVICENAME != null) {
 //                    BpSetting bpSetting = new BpSetting(isOpenPrivateModel, highBload, lowBload);
                     BpSetting bpSetting = new BpSetting(true, highBload, lowBload);
-                    MyApp.getInstance().getVpOperateManager().settingDetectBP(iBleWriteResponse, new IBPSettingDataListener() {
-                        @Override
-                        public void onDataChange(BpSettingData bpSettingData) {
-                            handlerBloodState(bpSettingData);
-                            ToastUtil.showShort(PrivateBloadActivity.this, getResources().getString(R.string.settings_success));
-                            finish();
-                        }
-                    }, bpSetting);
+                    MyApp.getInstance().getVpOperateManager().settingDetectBP(iBleWriteResponse,
+                            bpSettingData -> {
+                                handlerBloodState(bpSettingData);
+                                ToastUtil.showShort(PrivateBloadActivity.this,
+                                        getResources().getString(R.string.settings_success));
+                                finish();
+                            }, bpSetting);
                 }
                 break;
         }

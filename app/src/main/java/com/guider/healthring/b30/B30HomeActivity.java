@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import android.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -116,7 +118,6 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
 
-
         //过滤器
         IntentFilter mIntentFilter = new IntentFilter("com.guider.ringmiihx.bzlmaps.sos.SENDSMS");
         mIntentFilter.addAction("com.example.bozhilun.android.b30.service.UploadServiceGD");
@@ -124,7 +125,6 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
         sendSMSBroadCast = new SendSMSBroadCast();
         //注册广播接收者的对象
         this.registerReceiver(sendSMSBroadCast, mIntentFilter);
-
 
 
 //        String isimei = (String) SharedPreferencesUtils.getParam(B30HomeActivity.this, "ISIMEI", "");
@@ -145,7 +145,6 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
     private void initViewIds() {
         b30ViewPager = findViewById(R.id.b30View_pager);
         b30BottomBar = findViewById(R.id.b30BottomBar);
-
     }
 
 
@@ -195,18 +194,20 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
                         break;
                     case R.id.b30_tab_set:  //开跑
                         switch (BuildConfig.HEALTH) {
-                            case 0 : // 运动
-                                b30ViewPager.setCurrentItem(2, false);
-                                break;
                             case 1: // 横板健康
-                                long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                long accountId = (long) SharedPreferencesUtils
+                                        .getParam(MyApp.getContext(), "accountIdGD",
+                                                0L);
                                 DeviceActivity.start(B30HomeActivity.this, (int) accountId);
                                 break;
                             case 2: // 竖版无创
-                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
-                                DeviceActivityGlu.startGlu(B30HomeActivity.this, (int) accountIdV);
+                                long accountIdV = (long) SharedPreferencesUtils
+                                        .getParam(MyApp.getContext(), "accountIdGD",
+                                                0L);
+                                DeviceActivityGlu.startGlu(B30HomeActivity.this,
+                                        (int) accountIdV);
                                 break;
-                            default:
+                            default:// 运动
                                 b30ViewPager.setCurrentItem(2, false);
                                 break;
                         }
@@ -225,7 +226,8 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
     public void reconnectDevice() {
         if (MyCommandManager.ADDRESS == null) {    //未连接
             if (MyApp.getInstance().getB30ConnStateService() != null) {
-                String bm = (String) SharedPreferencesUtils.readObject(B30HomeActivity.this, Commont.BLEMAC);//设备mac
+                String bm = (String) SharedPreferencesUtils.readObject(
+                        B30HomeActivity.this, Commont.BLEMAC);//设备mac
 //                if (Commont.isDebug)Log.d("----去自动链接-", "go go go3" + bm);
                 if (!WatchUtils.isEmpty(bm)) {
 //                    if (Commont.isDebug)Log.d("----去自动链接-", "go go go4" + bm);
@@ -265,12 +267,13 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
         boolean uploading = MyApp.getInstance().isUploadDate();
         // 判断一下是否正在上传数据
         if (!uploading) {
-           // startService(new Intent(this, DateUploadService.class));
+            // startService(new Intent(this, DateUploadService.class));
         }
 
-        if (!MyApp.getInstance().isUploadDateGDNew()){
+        if (!MyApp.getInstance().isUploadDateGDNew()) {
             //上传到新的额服务器
-            if (upDataToGDServicesNew != null && upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
+            if (upDataToGDServicesNew != null &&
+                    upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
                 upDataToGDServicesNew.cancel(true); // 如果Task还在运行，则先取消它
                 upDataToGDServicesNew = null;
                 upDataToGDServicesNew = new UpDataToGDServicesNew();
@@ -279,9 +282,10 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
             }
             upDataToGDServicesNew.execute();
         }
-        if (!MyApp.getInstance().isUploadDateGDHrv()){
+        if (!MyApp.getInstance().isUploadDateGDHrv()) {
             //上传到新的服务器---hrv
-            if (upHrvDataToGDServices != null && upHrvDataToGDServices.getStatus() == AsyncTask.Status.RUNNING) {
+            if (upHrvDataToGDServices != null &&
+                    upHrvDataToGDServices.getStatus() == AsyncTask.Status.RUNNING) {
                 upHrvDataToGDServices.cancel(true); // 如果Task还在运行，则先取消它
                 upHrvDataToGDServices = null;
                 upHrvDataToGDServices = new UpHrvDataToGDServices();
@@ -293,7 +297,7 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
 
 
         boolean uploadingGD = MyApp.getInstance().isUploadDateGD();
-        if (Commont.isDebug)Log.d("========", "数据同步中  " + uploadingGD);
+        if (Commont.isDebug) Log.d("========", "数据同步中  " + uploadingGD);
         if (!uploadingGD) {
 //            UpdataThree downloadTask = new UpdataThree();
 //            downloadTask.execute("");
@@ -327,7 +331,6 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
     UpHrvDataToGDServices upHrvDataToGDServices = null;
 
 
-
     // GPSGoogleUtils instance;
 /*
     void getGpsGoogle() {
@@ -342,6 +345,7 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
         }, 3000);
     }
 */
+
     /**
      * 打电话
      *
@@ -350,13 +354,13 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
     //点击事件调用的类
     protected void call(final String tel) {
         try {
-            if(AndPermission.hasPermissions(B30HomeActivity.this,Manifest.permission.CALL_PHONE)){
+            if (AndPermission.hasPermissions(B30HomeActivity.this, Manifest.permission.CALL_PHONE)) {
                 Uri uri = Uri.parse("tel:" + tel);
                 Intent intent = new Intent(Intent.ACTION_CALL, uri);
                 startActivity(intent);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -399,7 +403,8 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
     public void showSettingDialog(Context context, final List<String> permissions) {
         List<String> permissionNames = Permission.transformText(context, permissions);
         String message = getResources().getString(R.string.string_get_permission) + "\n" + permissionNames;
-//                context.getString("Please give us permission in the settings:\\n\\n%1$s", TextUtils.join("\n", permissionNames));
+//                context.getString("Please give us permission in the settings:\\n\\n%1$s",
+//                TextUtils.join("\n", permissionNames));
 
         new AlertDialog.Builder(context)
                 .setCancelable(false)
@@ -429,7 +434,8 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
                 .onComeback(new Setting.Action() {
                     @Override
                     public void onAction() {
-                        //Toast.makeText(MyApp.getContext(),"用户从设置页面返回。", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MyApp.getContext(),"用户从设置页面返回。",
+                        // Toast.LENGTH_SHORT).show();
                     }
                 })
                 .start();

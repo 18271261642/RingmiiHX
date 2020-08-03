@@ -38,11 +38,13 @@ public class Bluetooth {
 
     }
 
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
 
         switch (requestCode) {
             case Params.MY_PERMISSION_REQUEST_CONSTANT: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0]
+                        == PackageManager.PERMISSION_GRANTED) {
                     // 运行时权限已授权
                     Log.i("Bluetooth", "运行时权限已授权");
                 }
@@ -70,10 +72,11 @@ public class Bluetooth {
     }
 
     private MyBtReceiver myBtReceiver;
+
     public void initBluetooth(Context context) {
         checkSupportBlueTooth();
 
-        if (myBtReceiver == null){
+        if (myBtReceiver == null) {
             myBtReceiver = new MyBtReceiver();
             checkBlueToothAndTurnOn();
             IntentFilter intentFilter = new IntentFilter();
@@ -83,11 +86,11 @@ public class Bluetooth {
             intentFilter.addAction(ACTIONFILTER);
             intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
             context.registerReceiver(myBtReceiver, intentFilter);
-       }
+        }
 
     }
 
-    public void unReceiver(Context context){
+    public void unReceiver(Context context) {
 //        try {
 //            if (context != null && myBtReceiver != null){
         //会报没有注册错误, 捕获不到
@@ -122,7 +125,7 @@ public class Bluetooth {
         ((Activity) context).startActivityForResult(enableIntent, Params.REQUEST_ENABLE_VISIBILITY);
     }
 
-    public void stopDiscoveringBluetooth(){
+    public void stopDiscoveringBluetooth() {
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
         }
@@ -131,6 +134,7 @@ public class Bluetooth {
 
 
     private static final String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
     public void searchBluetoothDevices(Context context) {
 
         checkSupportBlueTooth();
@@ -141,7 +145,9 @@ public class Bluetooth {
 
             int i = context.checkSelfPermission(permissions[0]);
             if (i != PackageManager.PERMISSION_GRANTED) {
-                ((Activity) context).requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Params.MY_PERMISSION_REQUEST_CONSTANT);
+                ((Activity) context).requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        Params.MY_PERMISSION_REQUEST_CONSTANT);
             }
         }
 
@@ -167,7 +173,7 @@ public class Bluetooth {
         checkBlueToothAndTurnOn();
 
         deviceList.clear();
-        if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()){
+        if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
             Set<BluetoothDevice> tmp = bluetoothAdapter.getBondedDevices();
             for (BluetoothDevice d : tmp) {
                 deviceList.add(d);
@@ -175,7 +181,7 @@ public class Bluetooth {
         }
     }
 
-    public BluetoothAdapter getBluetoothAdapter(){
+    public BluetoothAdapter getBluetoothAdapter() {
         return bluetoothAdapter;
     }
 
@@ -235,7 +241,8 @@ public class Bluetooth {
             } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-                if (btDevice != null && btDevice.getName() != null && btDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
+                if (btDevice != null && btDevice.getName() != null &&
+                        btDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
 
                     //Log.i(TAG, "发现设备: " + btDevice.getName());
                     makePairBlueToothListener.foundDevice(btDevice);
@@ -245,12 +252,13 @@ public class Bluetooth {
             } else if (ACTIONFILTER.equals(action)) {
                 Log.e("action2=", action);
                 Log.e("here", "btDevice.getName()");
-                Log.i("haix", "配对请求: "+ action + " ---------------");
+                Log.i("haix", "配对请求: " + action + " ---------------");
                 try {
                     //1.确认配对
                     ClsUtils.setPairingConfirmation(btDevice.getClass(), btDevice, true);
                     //2.终止有序广播
-                    Log.i("order...", "终止有序广播:" + isOrderedBroadcast() + ",isInitialStickyBroadcast:" + isInitialStickyBroadcast());
+                    Log.i("order...", "终止有序广播:" + isOrderedBroadcast() +
+                            ",isInitialStickyBroadcast:" + isInitialStickyBroadcast());
                     abortBroadcast();//如果没有将广播终止，则会出现一个一闪而过的配对框。
                     //3.调用setPin方法进行配对...
                     boolean ret = ClsUtils.setPin(btDevice.getClass(), btDevice, pin);

@@ -108,7 +108,8 @@ public class BLEScanService extends Service {
         if(action == null)
           return;
         if ("android.bluetooth.device.action.FOUND".equals(action)) {
-          BluetoothDevice device = (BluetoothDevice)intent.getParcelableExtra("android.bluetooth.device.extra.DEVICE");
+          BluetoothDevice device = (BluetoothDevice)intent.getParcelableExtra(
+                  "android.bluetooth.device.extra.DEVICE");
           BLEScanService.this.deviceFound(device);
         }
         else {

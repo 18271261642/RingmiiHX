@@ -4,14 +4,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -49,7 +52,7 @@ import java.util.List;
  * Date 2018/12/18
  */
 public class B31DeviceActivity extends WatchBaseActivity
-        implements Rationale<List<String>>,View.OnClickListener {
+        implements Rationale<List<String>>, View.OnClickListener {
 
 
     ImageView commentB30BackImg;
@@ -136,7 +139,7 @@ public class B31DeviceActivity extends WatchBaseActivity
 
     }
 
-   @Override
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.commentB30BackImg:    //返回
@@ -283,17 +286,16 @@ public class B31DeviceActivity extends WatchBaseActivity
 
     //设置运动目标
     private void setSportGoal() {
-        ProfessionPick dailyumberofstepsPopWin = new ProfessionPick.Builder(B31DeviceActivity.this,
-                new ProfessionPick.OnProCityPickedListener() {
-                    @Override
-                    public void onProCityPickCompleted(String profession) {
-                        b31DeviceSportGoalTv.setText(profession);
-                        SharedPreferencesUtils.setParam(B31DeviceActivity.this, "b30Goal", Integer.valueOf(profession.trim()));
+        ProfessionPick dailyumberofstepsPopWin = new ProfessionPick.Builder(
+                B31DeviceActivity.this,
+                profession -> {
+                    b31DeviceSportGoalTv.setText(profession);
+                    SharedPreferencesUtils.setParam(B31DeviceActivity.this,
+                            "b30Goal", Integer.valueOf(profession.trim()));
 
-                        setDeviceSportGoal();
+                    setDeviceSportGoal();
 
 
-                    }
                 }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                 .textCancel(getResources().getString(R.string.cancle)) //text of cancel button
                 .btnTextSize(18) // button text size

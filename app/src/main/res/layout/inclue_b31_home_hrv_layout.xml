@@ -9,30 +9,26 @@
     android:orientation="vertical">
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/size__15">
 
 
-
         <LinearLayout
             android:layout_width="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:padding="5dp">
 
 
             <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/string_today_boday_test"
-                android:textSize="17sp"
                 android:textColor="#6074BF"
-                android:layout_height="wrap_content" />
-
-
+                android:textSize="17sp" />
 
 
             <TextView
@@ -47,18 +43,13 @@
         </LinearLayout>
 
 
-
-
-
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/size_5"
             android:gravity="center"
-            android:layout_alignParentRight="true"
             android:orientation="horizontal">
 
             <ImageView
@@ -77,8 +68,6 @@
                 android:textColor="#6074BF" />
 
         </LinearLayout>
-
-
 
 
     </RelativeLayout>

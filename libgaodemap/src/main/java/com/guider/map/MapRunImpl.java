@@ -111,7 +111,7 @@ public class MapRunImpl extends MapBaseImpl implements IMapRun, AMapLocationList
 
     @Override
     public boolean isStart() {
-        return mLocationClient == null ? false : mLocationClient.isStarted();
+        return mLocationClient != null && mLocationClient.isStarted();
     }
 
     @Override

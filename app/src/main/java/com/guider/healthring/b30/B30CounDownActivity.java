@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +40,7 @@ import java.util.Date;
  * 倒计时界面
  */
 public class B30CounDownActivity extends WatchBaseActivity
-        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
+        implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     private static final String TAG = "B30CounDownActivity";
 
     ImageView commentB30BackImg;
@@ -69,7 +71,7 @@ public class B30CounDownActivity extends WatchBaseActivity
             super.handleMessage(msg);
             if (msg.what == 1001) {
                 CountDownData countDownData = (CountDownData) msg.obj;
-                Log.e(TAG,"------hand="+countDownData.toString());
+                Log.e(TAG, "------hand=" + countDownData.toString());
                 if (countDownData.getStatus() == ECountDownStatus.COUNT_ING) {    //正在倒计时
                     startCounDownBtn.setVisibility(View.GONE);
                     int countSecond = countDownData.getCountDownSecondApp();
@@ -115,27 +117,25 @@ public class B30CounDownActivity extends WatchBaseActivity
     //读取设备的倒计时信息
     private void readCoundDown() {
         if (MyCommandManager.DEVICENAME != null) {
-            MyApp.getInstance().getVpOperateManager().readCountDown(iBleWriteResponse, new ICountDownListener() {
-                @Override
-                public void OnCountDownDataChange(CountDownData countDownData) {
-                    Log.e(TAG, "----countDownData=" + countDownData.toString());
-                    isCountDown = countDownData.getStatus() == ECountDownStatus.COUNT_ING;
-                    Log.e(TAG,"-----------isCountDown="+isCountDown);
-                    if (isCountDown) {    //正在进行倒计时
-                        //startCounDownBtn.setVisibility(View.GONE);
-                        Message message = handler.obtainMessage();
-                        message.what = 1001;
-                        message.obj = countDownData;
-                        handler.sendMessage(message);
-                    }
-                    isShowUI = countDownData.isOpenWatchUI();
-                    showScreentViewTogg.setChecked(isShowUI);
-                    oftenDateRel.setVisibility(isShowUI?View.VISIBLE:View.GONE);
-                    //常用时间
-                    oftenSecond = countDownData.getCountDownSecondWatch();
-                    oftenDateTv.setText(secToTime(oftenSecond));
-                }
-            });
+            MyApp.getInstance().getVpOperateManager().readCountDown(iBleWriteResponse,
+                    countDownData -> {
+                        Log.e(TAG, "----countDownData=" + countDownData.toString());
+                        isCountDown = countDownData.getStatus() == ECountDownStatus.COUNT_ING;
+                        Log.e(TAG, "-----------isCountDown=" + isCountDown);
+                        if (isCountDown) {    //正在进行倒计时
+                            //startCounDownBtn.setVisibility(View.GONE);
+                            Message message = handler.obtainMessage();
+                            message.what = 1001;
+                            message.obj = countDownData;
+                            handler.sendMessage(message);
+                        }
+                        isShowUI = countDownData.isOpenWatchUI();
+                        showScreentViewTogg.setChecked(isShowUI);
+                        oftenDateRel.setVisibility(isShowUI ? View.VISIBLE : View.GONE);
+                        //常用时间
+                        oftenSecond = countDownData.getCountDownSecondWatch();
+                        oftenDateTv.setText(secToTime(oftenSecond));
+                    });
         }
     }
 
@@ -148,7 +148,7 @@ public class B30CounDownActivity extends WatchBaseActivity
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.count_down));
         showScreentViewTogg.setOnCheckedChangeListener(this);
-        startCounDownBtn.setText(getResources().getString(R.string.star)+getResources().getString(R.string.count_down));
+        startCounDownBtn.setText(getResources().getString(R.string.star) + getResources().getString(R.string.count_down));
 
     }
 
@@ -181,7 +181,7 @@ public class B30CounDownActivity extends WatchBaseActivity
                     showCounDownTv.setText(secToTime(dataSecond) + "");
                     startCounDown(dataSecond, false);
                 } else {
-                    oftenDateTv.setText(secToTime(dataSecond)+"");
+                    oftenDateTv.setText(secToTime(dataSecond) + "");
                     startCounDown(dataSecond, true);
                 }
 
@@ -203,13 +203,13 @@ public class B30CounDownActivity extends WatchBaseActivity
     private void startCounDown(int startSecond, boolean isTestByWatch) {
         if (MyCommandManager.DEVICENAME != null) {
             CountDownSetting countDownSetting;
-            if(MyCommandManager.DEVICENAME.equals("B31")){
-                countDownSetting = new CountDownSetting(0,startSecond, isShowUI, isTestByWatch);
-            }else{
+            if (MyCommandManager.DEVICENAME.equals("B31")) {
+                countDownSetting = new CountDownSetting(0, startSecond, isShowUI, isTestByWatch);
+            } else {
                 countDownSetting = new CountDownSetting(startSecond, isShowUI, isTestByWatch);
             }
             //countDownSetting = new CountDownSetting(startSecond, isShowUI, isTestByWatch);
-            Log.e(TAG,"-------countDownSetting="+countDownSetting.toString());
+            Log.e(TAG, "-------countDownSetting=" + countDownSetting.toString());
             MyApp.getInstance().getVpOperateManager().settingCountDown(iBleWriteResponse, countDownSetting,
                     new ICountDownListener() {
                         @Override
@@ -229,14 +229,14 @@ public class B30CounDownActivity extends WatchBaseActivity
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(!buttonView.isPressed())
+        if (!buttonView.isPressed())
             return;
         switch (buttonView.getId()) {
             case R.id.showScreentViewTogg:
                 isShowUI = isChecked;
-                if (!isChecked){
+                if (!isChecked) {
                     oftenDateRel.setVisibility(View.GONE);
-                }else{
+                } else {
                     oftenDateRel.setVisibility(View.VISIBLE);
                 }
                 startCounDown(oftenSecond, true);

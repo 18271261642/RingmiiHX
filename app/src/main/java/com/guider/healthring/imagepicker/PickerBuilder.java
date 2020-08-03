@@ -17,10 +17,11 @@ public class PickerBuilder {
     private onPermissionRefusedListener permissionRefusedListener;
     protected onImageReceivedListener imageReceivedListener;
     private PickerManager pickerManager;
-    public PickerBuilder(Activity activity, int type)
-    {
+
+    public PickerBuilder(Activity activity, int type) {
         this.activity = activity;
-        pickerManager = (type == PickerBuilder.SELECT_FROM_GALLERY) ? new ImagePickerManager(activity) : new CameraPickerManager(activity);
+        pickerManager = (type == PickerBuilder.SELECT_FROM_GALLERY)
+                ? new ImagePickerManager(activity) : new CameraPickerManager(activity);
 
     }
 
@@ -28,14 +29,12 @@ public class PickerBuilder {
         void onPermissionRefused();
     }
 
-    public interface onImageReceivedListener
-    {
+    public interface onImageReceivedListener {
         void onImageReceived(Uri imageUri);
     }
 
 
-    public void start()
-    {
+    public void start() {
         Intent intent = new Intent(activity, TempActivity.class);
         activity.startActivity(intent);
 

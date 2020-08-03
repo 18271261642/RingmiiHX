@@ -43,12 +43,7 @@ public class BemoSwitchActivity extends WatchBaseActivity implements CompoundBut
         commentB30BackImg = findViewById(R.id.commentB30BackImg);
         commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
         bemoSwitchToggleButton = findViewById(R.id.bemoSwitchToggleButton);
-        commentB30BackImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        commentB30BackImg.setOnClickListener(v -> finish());
     }
 
     private void initViews() {

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +29,7 @@ import com.veepoo.protocol.model.enums.EBPDetectModel;
 /**
  * 测量血压界面
  */
-public class ManualMeaureBloadActivity extends WatchBaseActivity implements  View.OnClickListener{
+public class ManualMeaureBloadActivity extends WatchBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "ManualMeaureBloadActivi";
 
@@ -59,7 +61,8 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity implements  Vie
             if (meaureBpData != null) {
                 if (meaureBpData.getProgress() == 100) {  //测量结束
                     stopMeaureBoload();
-                    if (Commont.isDebug)Log.e(TAG, "----测量结果=" + meaureBpData.getHighPressure() + "/" + meaureBpData.getLowPressure());
+                    if (Commont.isDebug)
+                        Log.e(TAG, "----测量结果=" + meaureBpData.getHighPressure() + "/" + meaureBpData.getLowPressure());
                     if (b30MeaureBloadProgressView != null) {
                         if (meaureBpData.getHighPressure() < 60 || meaureBpData.getLowPressure() < 30) {
                             b30MeaureBloadProgressView.setTmpTxt("0/0");
@@ -88,16 +91,16 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity implements  Vie
     }
 
     private void initViewIds() {
-        commentB30BackImg =findViewById(R.id.commentB30BackImg);
-        commentB30TitleTv =findViewById(R.id.commentB30TitleTv);
-        commentB30ShareImg =findViewById(R.id.commentB30ShareImg);
-        b30MeaureBloadProgressView =findViewById(R.id.b30MeaureBloadProgressView);
-        b30MeaureStartImg =findViewById(R.id.b30MeaureStartImg);
-        b30MeaurePlaceHolderImg =findViewById(R.id.b30MeaurePlaceHolderImg);
-        showStateTv =findViewById(R.id.showStateTv);
-        manual_blood_public_line =findViewById(R.id.manual_blood_public_line);
-        manual_blood_private_line =findViewById(R.id.manual_blood_private_line);
-        private_mode_setting =findViewById(R.id.private_mode_setting);
+        commentB30BackImg = findViewById(R.id.commentB30BackImg);
+        commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+        b30MeaureBloadProgressView = findViewById(R.id.b30MeaureBloadProgressView);
+        b30MeaureStartImg = findViewById(R.id.b30MeaureStartImg);
+        b30MeaurePlaceHolderImg = findViewById(R.id.b30MeaurePlaceHolderImg);
+        showStateTv = findViewById(R.id.showStateTv);
+        manual_blood_public_line = findViewById(R.id.manual_blood_public_line);
+        manual_blood_private_line = findViewById(R.id.manual_blood_private_line);
+        private_mode_setting = findViewById(R.id.private_mode_setting);
         commentB30BackImg.setOnClickListener(this);
         commentB30ShareImg.setOnClickListener(this);
         b30MeaureStartImg.setOnClickListener(this);
@@ -153,17 +156,17 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity implements  Vie
                         b30MeaureBloadProgressView.setTmpTxt(null);
                         b30MeaureBloadProgressView.setScheduleDuring(50 * 1000);
                         b30MeaureBloadProgressView.setProgress(100);
-                        MyApp.getInstance().getVpOperateManager().startDetectBP(bleWriteResponse, new IBPDetectDataListener() {
-                            @Override
-                            public void onDataChange(BpData bpData) {
-                                if (Commont.isDebug)Log.e(TAG, "----bpData=" + bpData.toString());
-                                Message message = handler.obtainMessage();
-                                message.what = 1001;
-                                message.obj = bpData;
-                                handler.sendMessage(message);
-                            }
-                        }, privateMode ? EBPDetectModel.DETECT_MODEL_PRIVATE : EBPDetectModel
-                                .DETECT_MODEL_PUBLIC);
+                        MyApp.getInstance().getVpOperateManager().startDetectBP(bleWriteResponse,
+                                bpData -> {
+                                    if (Commont.isDebug)
+                                        Log.e(TAG, "----bpData=" + bpData.toString());
+                                    Message message = handler.obtainMessage();
+                                    message.what = 1001;
+                                    message.obj = bpData;
+                                    handler.sendMessage(message);
+                                },
+                                privateMode ? EBPDetectModel.DETECT_MODEL_PRIVATE : EBPDetectModel
+                                        .DETECT_MODEL_PUBLIC);
                     } else {
                         stopMeaureBoload();
                     }
@@ -187,7 +190,7 @@ public class ManualMeaureBloadActivity extends WatchBaseActivity implements  Vie
     private IBleWriteResponse bleWriteResponse = new IBleWriteResponse() {
         @Override
         public void onResponse(int i) {
-            if (Commont.isDebug)Log.e(TAG, "------bleWriteResponse=" + i);
+            if (Commont.isDebug) Log.e(TAG, "------bleWriteResponse=" + i);
         }
     };
 

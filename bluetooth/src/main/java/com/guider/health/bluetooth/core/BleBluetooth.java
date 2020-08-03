@@ -37,14 +37,19 @@ public class BleBluetooth {
     public BluetoothGatt mBluetoothGatt;
     Context mContext;
     private boolean isConnected = false;
-
     private final static BleBluetooth bleBluetooth = new BleBluetooth();
-
 
     public static BleBluetooth getInstance() {
         return bleBluetooth;
     }
 
+    private static final String[] permissions = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION};
+    //所有的蓝牙操作使用 Handler 固定在一条线程操作
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    //默认扫描时间：5s
+    private static final int SCAN_TIME = 5000;
+    private ScanCallback mScanCallBack;
 
     /**
      * 用户打开蓝牙后，显示已绑定的设备列表
@@ -65,14 +70,11 @@ public class BleBluetooth {
         }
     }
 
-    public void closeBluetooth(){
+    public void closeBluetooth() {
         if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
             bluetoothAdapter.disable();
         }
     }
-
-
-    private static final String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
     /**
      * 进行初始化
@@ -89,11 +91,14 @@ public class BleBluetooth {
 
                 int i = context.checkSelfPermission(permissions[0]);
                 if (i != PackageManager.PERMISSION_GRANTED) {
-                    context.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Params.MY_PERMISSION_REQUEST_CONSTANT);
+                    context.requestPermissions(
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            Params.MY_PERMISSION_REQUEST_CONSTANT);
                 }
             }
 
-            BluetoothManager mBluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+            BluetoothManager mBluetoothManager = (BluetoothManager) mContext.
+                    getSystemService(Context.BLUETOOTH_SERVICE);
 
             bluetoothAdapter = mBluetoothManager.getAdapter();
             if (null == bluetoothAdapter) {
@@ -105,13 +110,6 @@ public class BleBluetooth {
         return this;
 
     }
-
-
-    //所有的蓝牙操作使用 Handler 固定在一条线程操作
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
-    //默认扫描时间：5s
-    private static final int SCAN_TIME = 5000;
-    private ScanCallback mScanCallBack;
 
     /**
      * 扫描设备   放在子线程中执行
@@ -145,20 +143,22 @@ public class BleBluetooth {
         mHandler.postDelayed(runnable, time == 0 ? SCAN_TIME : time);
 
 //        startLeScan(uuid[] ,mLeScanCallback);
-        //目前这种方式是最稳定的, 就是耗电,  新api bluetoothAdapter.getBluetoothLeScanncer().startLeScan不是很稳定
+        //目前这种方式是最稳定的, 就是耗电,
+        // 新api bluetoothAdapter.getBluetoothLeScanncer().startLeScan不是很稳定
         bluetoothAdapter.startLeScan(leScanCallback);
 
     }
 
-    private final BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+    private final BluetoothAdapter.LeScanCallback leScanCallback =
+            new BluetoothAdapter.LeScanCallback() {
+                @Override
+                public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
 
-            if (mScanCallBack != null) {
-                mScanCallBack.scanBle(device, rssi, scanRecord);
-            }
-        }
-    };
+                    if (mScanCallBack != null) {
+                        mScanCallBack.scanBle(device, rssi, scanRecord);
+                    }
+                }
+            };
 
     private final Runnable runnable = new Runnable() {
         @Override
@@ -167,7 +167,7 @@ public class BleBluetooth {
         }
     };
 
-    public void scanFailed(){
+    public void scanFailed() {
         if (mScanCallBack != null) {
             bluetoothAdapter.stopLeScan(leScanCallback);
             mScanCallBack.scanBleStop();
@@ -195,7 +195,8 @@ public class BleBluetooth {
 
     private DeviceUUID deviceUUID;
 
-    public void connectBle(DeviceUUID deviceUUID, final BluetoothDevice device, final BluetoothGattStateListener bgl) {
+    public void connectBle(DeviceUUID deviceUUID,
+                           final BluetoothDevice device, final BluetoothGattStateListener bgl) {
 
         if (deviceUUID == null) {
             return;
@@ -225,7 +226,8 @@ public class BleBluetooth {
                 }
 
                 Log.i("haix", "开始连接: " + device.getName());
-                mBluetoothGatt = device.connectGatt(mContext, false, bluetoothGattCallback);
+                mBluetoothGatt = device.connectGatt(mContext,
+                        false, bluetoothGattCallback);
                 //delayConnectResponse(0);
 
             }
@@ -290,7 +292,8 @@ public class BleBluetooth {
     }
 
 
-    private HashMap<String, HashMap<String, BluetoothGattCharacteristic>> servicesMap = new HashMap<>();
+    private HashMap<String, HashMap<String, BluetoothGattCharacteristic>> servicesMap
+            = new HashMap<>();
 
 
     private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -355,15 +358,18 @@ public class BleBluetooth {
 //                    return;
 //                }
 
-                if (deviceUUID.getSERVICE_UUID() != null && deviceUUID.getCHARACTER_UUID() != null && gatt != null) {
+                if (deviceUUID.getSERVICE_UUID() != null
+                        && deviceUUID.getCHARACTER_UUID() != null && gatt != null) {
                     BluetoothGattService service = gatt.getService(deviceUUID.getSERVICE_UUID());
-                    if (service == null){
+                    if (service == null) {
                         return;
                     }
-                    BluetoothGattCharacteristic characteristic = service.getCharacteristic(deviceUUID.getCHARACTER_UUID());
+                    BluetoothGattCharacteristic characteristic =
+                            service.getCharacteristic(deviceUUID.getCHARACTER_UUID());
                     gatt.setCharacteristicNotification(characteristic, true);
                     //拿到服务特征
-                    BluetoothGattDescriptor descriptor = characteristic.getDescriptor(deviceUUID.getUUID_FINAL());
+                    BluetoothGattDescriptor descriptor =
+                            characteristic.getDescriptor(deviceUUID.getUUID_FINAL());
                     //设置特征为ENABLE_NOTIFICATION_VALUE
                     //设置成功后可以在该特征值上发送数据到ble设备和接收ble设备的数据
                     descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
@@ -373,18 +379,23 @@ public class BleBluetooth {
                 }
 
 
-                if (deviceUUID.getSERVICE_UUID() != null && deviceUUID.getDATA_LINE_UUID() != null) {
+                if (deviceUUID.getSERVICE_UUID() != null &&
+                        deviceUUID.getDATA_LINE_UUID() != null) {
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (mBluetoothGatt == null){
+                            if (mBluetoothGatt == null) {
                                 return;
                             }
-                            BluetoothGattService service1 = mBluetoothGatt.getService(deviceUUID.getSERVICE_UUID());
-                            BluetoothGattCharacteristic characteristic1 = service1.getCharacteristic(deviceUUID.getDATA_LINE_UUID());
-                            mBluetoothGatt.setCharacteristicNotification(characteristic1, true);
+                            BluetoothGattService service1 =
+                                    mBluetoothGatt.getService(deviceUUID.getSERVICE_UUID());
+                            BluetoothGattCharacteristic characteristic1 =
+                                    service1.getCharacteristic(deviceUUID.getDATA_LINE_UUID());
+                            mBluetoothGatt.setCharacteristicNotification(
+                                    characteristic1, true);
                             //拿到服务特征
-                            BluetoothGattDescriptor descriptor1 = characteristic1.getDescriptor(deviceUUID.getUUID_FINAL());
+                            BluetoothGattDescriptor descriptor1 =
+                                    characteristic1.getDescriptor(deviceUUID.getUUID_FINAL());
                             //设置特征为ENABLE_NOTIFICATION_VALUE
                             //设置成功后可以在该特征值上发送数据到ble设备和接收ble设备的数据
                             descriptor1.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
@@ -568,19 +579,19 @@ public class BleBluetooth {
 //        }
 
 
-        if(mBluetoothGatt == null){
+        if (mBluetoothGatt == null) {
             return;
         }
         BluetoothGattService service = mBluetoothGatt.getService(deviceUUID.getSERVICE_UUID());
         BluetoothGattCharacteristic characteristic = null;
         if (deviceUUID.getDATA_LINE_UUID() == null) {
-            if (service == null){
+            if (service == null) {
                 return;
             }
             characteristic = service.getCharacteristic(deviceUUID.getCHARACTER_UUID());
         } else {
 
-            if (service == null){
+            if (service == null) {
                 return;
             }
             characteristic = service.getCharacteristic(deviceUUID.getDATA_LINE_UUID());
@@ -593,12 +604,12 @@ public class BleBluetooth {
         //设置数组进去
         characteristic.setValue(buf);
         //发送  通知系统异步写数据
-        if(mBluetoothGatt == null){
+        if (mBluetoothGatt == null) {
             return;
         }
         boolean b = mBluetoothGatt.writeCharacteristic(characteristic);
 
-        Log.i("haix", "发送数据的结果: "+b);
+        Log.i("haix", "发送数据的结果: " + b);
 
     }
 
@@ -606,9 +617,7 @@ public class BleBluetooth {
         if (isMainThread()) {
             runnable.run();
         } else {
-            if (mHandler != null) {
-                mHandler.post(runnable);
-            }
+            mHandler.post(runnable);
         }
     }
 

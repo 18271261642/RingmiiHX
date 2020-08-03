@@ -145,53 +145,47 @@ public class NewB30ConnStateService extends Service {
 
     // TODO 连接
     public void connB30ConnBle(final String mac, final String nameStr) {
-        MyApp.getInstance().getVpOperateManager().registerConnectStatusListener(mac, iaBleConnectStatusListener);
-        MyApp.getInstance().getVpOperateManager().connectDevice(mac, new IConnectResponse() {
-            @Override
-            public void connectState(int i, BleGattProfile bleGattProfile, boolean b) {
-                Log.e(TAG, "----connectState=" + i);
-                if (i == Code.REQUEST_SUCCESS) {  //连接成功过
-                    Log.d("----去自动链接-", "go go go7" + b+"----"+i);
-                    if (bluetoothClient != null) {
-                        bluetoothClient.stopSearch();
-                    }
+        MyApp.getInstance().getVpOperateManager().registerConnectStatusListener(mac,
+                iaBleConnectStatusListener);
+        MyApp.getInstance().getVpOperateManager().connectDevice(mac, (i, bleGattProfile, b) -> {
+            Log.e(TAG, "----connectState=" + i);
+            if (i == Code.REQUEST_SUCCESS) {  //连接成功过
+                Log.d("----去自动链接-", "go go go7" + b+"----"+i);
+                if (bluetoothClient != null) {
+                    bluetoothClient.stopSearch();
                 }
             }
-        }, new INotifyResponse() {
-            @Override
-            public void notifyState(int i) {
-                Log.e(TAG, "----notifyState=" + i);
-                Log.d("----去自动链接-", "go go go8"+"----"+i);
-                if (i == Code.REQUEST_SUCCESS) {
-                    if (connBleHelpService == null) {
-                        connBleHelpService = NewConnBleHelpService.getConnBleHelpService();
+        }, i -> {
+            Log.e(TAG, "----notifyState=" + i);
+            Log.d("----去自动链接-", "go go go8"+"----"+i);
+            if (i == Code.REQUEST_SUCCESS) {
+                if (connBleHelpService == null) {
+                    connBleHelpService = NewConnBleHelpService.getConnBleHelpService();
+                }
+                // connBleHelpService = connBleHelpService.getConnBleHelpService();
+                connBleHelpService.setConnBleHelpListener(() -> {
+                    MyCommandManager.DEVICENAME = nameStr;
+                    MyCommandManager.ADDRESS = mac;
+                    MyApp.getInstance().setMacAddress(mac);
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLENAME, nameStr);
+                    SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, mac);
+                    Intent intent = new Intent();
+                    if (nameStr.equals("500S") || nameStr.equals("B31") || nameStr.equals("B31S")) {
+                        //B31的连接
+                        intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
+                    } else {
+                        //B30、B36、盖德
+                        intent.setAction(WatchUtils.B30_CONNECTED_ACTION);
                     }
-                    // connBleHelpService = connBleHelpService.getConnBleHelpService();
-                    connBleHelpService.setConnBleHelpListener(new NewConnBleHelpService.ConnBleHelpListener() {
-                        @Override
-                        public void connSuccState() {
-                            MyCommandManager.DEVICENAME = nameStr;
-                            MyCommandManager.ADDRESS = mac;
-                            MyApp.getInstance().setMacAddress(mac);
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLENAME, nameStr);
-                            SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, mac);
-                            Intent intent = new Intent();
-                            if (nameStr.equals("500S") || nameStr.equals("B31") || nameStr.equals("B31S")) {  //B31的连接
-                                intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
-                            } else {  //B30、B36、盖德
-                                intent.setAction(WatchUtils.B30_CONNECTED_ACTION);
-                            }
 
-                            sendBroadcast(intent);
+                    sendBroadcast(intent);
 
 
 //                            if(b30ConnStateListener != null){
 //                                b30ConnStateListener.onB30Connect();
 //                            }
-                        }
-                    });
-                    NewConnBleHelpService.getConnBleHelpService().doConnOperater(mac);
-                }
+                });
+                NewConnBleHelpService.getConnBleHelpService().doConnOperater(mac);
             }
         });
     }
@@ -239,7 +233,8 @@ public class NewB30ConnStateService extends Service {
                     @Override
                     public void onDeviceFounded(SearchResult searchResult) {
                         if (searchResult != null) {
-                            Log.e(TAG, "----onDeviceFound=" + searchResult.getName() + "-mac=" + searchResult.getAddress());
+                            Log.e(TAG, "----onDeviceFound=" + searchResult.getName()
+                                    + "-mac=" + searchResult.getAddress());
                             Message message = handler.obtainMessage();
                             message.what = SEARCH_REQUEST_CODE;
                             message.obj = searchResult;
@@ -430,16 +425,14 @@ public class NewB30ConnStateService extends Service {
 
                 startForeground(101, notification);
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-                    //Notification.Builder builder = new Notification.Builder(this,11);
-                    builder.setLargeIcon(appIcon);
-                    builder.setContentText(appName);
-                    builder.setContentTitle(appName);
-                    // 设置通知的点击行为：自动取消/跳转等
-                    builder.setAutoCancel(false);
-                    startForeground(12, builder.build());
-                }
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                //Notification.Builder builder = new Notification.Builder(this,11);
+                builder.setLargeIcon(appIcon);
+                builder.setContentText(appName);
+                builder.setContentTitle(appName);
+                // 设置通知的点击行为：自动取消/跳转等
+                builder.setAutoCancel(false);
+                startForeground(12, builder.build());
 
             }
         } catch (Exception e) {

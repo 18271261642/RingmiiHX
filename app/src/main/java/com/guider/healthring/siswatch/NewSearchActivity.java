@@ -11,11 +11,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -67,7 +69,7 @@ import static com.guider.healthring.siswatch.utils.WatchUtils.B31_NAME;
  */
 public class NewSearchActivity extends GetUserInfoActivity implements
         CustomBlueAdapter.OnSearchOnBindClickListener
-        , SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
+        , SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 //        BluetoothManagerScanListener
 //        BluetoothManagerDeviceConnectListener {
 
@@ -303,7 +305,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     private void getPhonePairDevice() {
         //获取已配对设备
         @SuppressLint("MissingPermission") Object[] lstDevice = bluetoothAdapter.getBondedDevices().toArray();
-        if(lstDevice == null)
+        if (lstDevice == null)
             return;
         for (Object o : lstDevice) {
             BluetoothDevice bluetoothDevice = (BluetoothDevice) o;
@@ -323,9 +325,9 @@ public class NewSearchActivity extends GetUserInfoActivity implements
 
     /**
      * 蓝牙扫描回调
-     *
-     *  bleName.contains("Ringmii") || bleName.length() == 3 && bleName.equals(WatchUtils.B30_NAME) || (bleName.length() == 3 && bleName.equals(B31_NAME)) || (bleName.length() == 7 && bleName.equals(WatchUtils.RINGMII_NAME))
-     *                         || (bleName.length() == 4 && bleName.equals(WatchUtils.S500_NAME))
+     * <p>
+     * bleName.contains("Ringmii") || bleName.length() == 3 && bleName.equals(WatchUtils.B30_NAME) || (bleName.length() == 3 && bleName.equals(B31_NAME)) || (bleName.length() == 7 && bleName.equals(WatchUtils.RINGMII_NAME))
+     * || (bleName.length() == 4 && bleName.equals(WatchUtils.S500_NAME))
      */
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
@@ -333,38 +335,35 @@ public class NewSearchActivity extends GetUserInfoActivity implements
             @SuppressLint("MissingPermission") String bleName = bluetoothDevice.getName();
             String bleMac = bluetoothDevice.getAddress(); //bozlun
             if (!WatchUtils.isEmpty(bleName)) {
-                    if (!repeatList.contains(bleMac)) {
-                        if (customDeviceList.size() <= 50) {
-                            repeatList.add(bleMac);
-                            customDeviceList.add(new CustomBlueDevice(bluetoothDevice, Math.abs(rssi) + "", ((scanRecord[7] + scanRecord[8]))));
-                            Comparator comparator = new Comparator<CustomBlueDevice>() {
-                                @Override
-                                public int compare(CustomBlueDevice o1, CustomBlueDevice o2) {
-                                    return o1.getRssi().compareTo(o2.getRssi());
-                                }
-                            };
-                            Collections.sort(customDeviceList, comparator);
-                            customBlueAdapter.notifyDataSetChanged();
-                        } else {
-                            scanBlueDevice(false);
-                        }
+                if (!repeatList.contains(bleMac)) {
+                    if (customDeviceList.size() <= 50) {
+                        repeatList.add(bleMac);
+                        customDeviceList.add(new CustomBlueDevice(bluetoothDevice, Math.abs(rssi) + "", ((scanRecord[7] + scanRecord[8]))));
+                        Comparator comparator = (Comparator<CustomBlueDevice>) (
+                                o1, o2) -> o1.getRssi().compareTo(o2.getRssi());
+                        Collections.sort(customDeviceList, comparator);
+                        customBlueAdapter.notifyDataSetChanged();
+                    } else {
+                        scanBlueDevice(false);
                     }
                 }
             }
+        }
     };
 
     private void initViews() {
         //注册扫描蓝牙设备的广播
-        registerReceiver(broadcastReceiver, BlueAdapterUtils.getBlueAdapterUtils(NewSearchActivity.this).scanIntFilter()); //注册广播
+        registerReceiver(broadcastReceiver, BlueAdapterUtils.getBlueAdapterUtils(
+                NewSearchActivity.this).scanIntFilter()); //注册广播
         //H8BleManagerInstance.getH8BleManagerInstance();
         //跑马灯效果
         searchAlertTv.setSelected(true);
         newSearchTitleTv.setText(getResources().getString(R.string.search_device));
         //设置RecyclerView相关
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         searchRecycler.setLayoutManager(linearLayoutManager);
-        searchRecycler.addItemDecoration(new DividerItemDecoration(NewSearchActivity.this, DividerItemDecoration.VERTICAL));
+        searchRecycler.addItemDecoration(new DividerItemDecoration(
+                NewSearchActivity.this, DividerItemDecoration.VERTICAL));
         customDeviceList = new ArrayList<>();
         customBlueAdapter = new CustomBlueAdapter(customDeviceList, NewSearchActivity.this);
         searchRecycler.setAdapter(customBlueAdapter);
@@ -429,21 +428,23 @@ public class NewSearchActivity extends GetUserInfoActivity implements
             if (customDeviceList != null) {
                 customBlueDevice = customDeviceList.get(position);
             }
-            @SuppressLint("MissingPermission") String bleName = customBlueDevice.getBluetoothDevice().getName();
+            @SuppressLint("MissingPermission") String bleName = customBlueDevice.
+                    getBluetoothDevice().getName();
             if (customBlueDevice == null || WatchUtils.isEmpty(bleName))
                 return;
-            /**
-             * B30，B36，Ringmiihx手表
-             */
+            //B30，B36，Ringmiihx手表
             if (bleName.equals(WatchUtils.B30_NAME)
                     || bleName.equals(WatchUtils.RINGMII_NAME)
                     || bleName.equals(B31_NAME)
                     || bleName.equals(WatchUtils.S500_NAME) || bleName.contains("Ringmii")) {
                 //connectB30(customBlueDevice.getBluetoothDevice().getAddress().trim(), bleName);
                 //B30 B31 500S Ringmii
-                if (customBlueDevice != null && !WatchUtils.isEmpty(customBlueDevice.getBluetoothDevice().getAddress())) {
+                if (customBlueDevice != null &&
+                        !WatchUtils.isEmpty(customBlueDevice.getBluetoothDevice().getAddress())) {
                     showLoadingDialog("connect...");
-                    MyApp.getInstance().getB30ConnStateService().connB30ConnBle(customBlueDevice.getBluetoothDevice().getAddress(), bleName);
+                    MyApp.getInstance().getB30ConnStateService()
+                            .connB30ConnBle(customBlueDevice.getBluetoothDevice()
+                                    .getAddress(), bleName);
                 }
             }
 
@@ -639,7 +640,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     }
 
     @SuppressLint("MissingPermission")
-   @Override
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.newSearchTitleLeft:   //返回
