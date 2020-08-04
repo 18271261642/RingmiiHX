@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.guider.health.common.core.ForaBO;
+import com.guider.health.common.core.ForaET;
 import com.guider.health.common.core.ForaGlucose;
 import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.HearRate;
@@ -110,6 +112,18 @@ public class ResultListView extends LinearLayout {
                     return;
                 }
                 resultViewHolder = new ViewHolderOfForaGlu(this);
+                break;
+            case DeviceInit.DEV_FORA_BO:            // 福尔血氧
+                if (ForaBO.getForaBOInstance().getValue() <= 0) {
+                    return;
+                }
+                resultViewHolder = new ViewHolderOfForaBO(this);
+                break;
+            case DeviceInit.DEV_FORA_ET:            // 福尔耳温
+                if (ForaET.getForaETInstance().getValue() <= 0) {
+                    return;
+                }
+                resultViewHolder = new ViewHolderOfForaET(this);
                 break;
             default:
                 resultViewHolder = new ViewHolderOfNull(this);

@@ -38,6 +38,32 @@
     <string name="fora_glu_reult_format">您的血糖值為：\n%.2f </string>
     <string name="fora_glu_redult_title">福爾血糖測量結果</string>
 
+    <string name="fora_bo_reminder_title">福爾血氧測量提示</string>
+    <string name="fora_bo_reult_format">您的血氧值為：\n%d</string>
+    <string name="fora_bo_tips">1. 請按右側電源鍵開機\n\n2. 請將手指伸入血氧夾\n\n3. 待屏幕出現數值請點擊下方\"開始測量\"按鈕</string>
+    <string name="fora_bo_redult_title">福爾血氧測量結果</string>
+
+    <string name="fora_et_reminder_title">福爾耳溫測量提示</string>
+    <string name="fora_et_reult_format">您的耳溫值為：\n%.2f°C</string>
+    <string name="fora_et_tips">1. 請按屏幕下方按鈕開機\n\n2. 請按耳溫儀背部按鈕確定溫度\n\n3. 待聽到響聲點擊下方\"開始測量\"按鈕</string>
+    <string name="fora_et_redult_title">福爾耳溫測量結果</string>
+
+    <string name="common_temp_suggest_36">請多運動，註意保暖，加強營養</string>
+    <string name="common_temp_suggest_36_37_2">體溫正常，請繼續保持</string>
+    <string name="common_temp_suggest_37_3_38">請做好物理降溫，多喝水，多吃蔬菜水果，或遵醫囑服用退燒藥</string>
+    <string name="common_temp_suggest_38_1_39">請做好物理降溫，多喝水，註意體溫變化，根據情況及時就醫檢查治療</string>
+    <string name="common_temp_suggest_39_1_41">請及時就醫檢查治療</string>
+    <string name="common_temp_suggest_41">可能有生命危險，請盡快就醫檢查治療</string>
+
+    <string name="common_bo_suggest_90">血氧飽和度正常，請註意保持</string>
+    <string name="common_bo_suggest_80_89">請減少活動、適當休息</string>
+    <string name="common_bo_suggest_70_79">請適量吸氧,遵照醫囑服用抗缺氧藥物</string>
+    <string name="common_bo_suggest_60_69">請停止壹切活動,立刻及時就醫</string>
+    <string name="common_bo_suggest_59">可能有生命危險，請盡快就醫檢查治療</string>
+
+    <string name="ear_temp">耳溫</string>
+
+    <string name="ecg_ecg_suggest1">控制三高（高血脂、高血壓、高血糖），保持良好習慣並控制體重，有助於維持血管的健康減少心臟多餘的做工。 </string>
     <string name="zangyin">臟音檢測</string>
 
     <string name="dmyh">動脈硬化測量</string>

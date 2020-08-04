@@ -3,6 +3,7 @@ package com.guider.health.apilib;
 import com.guider.health.apilib.model.BloodPressure;
 import com.guider.health.apilib.model.BloodSugar;
 import com.guider.health.apilib.model.Stethoscope;
+import com.guider.health.apilib.model.TempMeasure;
 import com.guider.health.apilib.model.hd.ArtMeasure;
 import com.guider.health.apilib.model.hd.BloodoxygenMeasure;
 import com.guider.health.apilib.model.hd.BloodsugarMeasure;
@@ -77,6 +78,12 @@ public interface IUserHDApi {
      */
     @POST("api/v1/bloodoxygen")
     Call<String> sendBloodOxygen(@Body List<BloodoxygenMeasure> body);
+
+    /**
+     * 体温
+     */
+    @POST("api/v1/bodytemp")
+    Call<String> sendTemp(@Body List<TempMeasure> body);
 
     /**
      * 心电

@@ -23,10 +23,10 @@ public class BleScanAndConnectBluetooth {
     private BluetoothDevice device;
     private static String BT_NAME = "FORA GD40";
 
-    private GluServiceManager measure;
+    private IBleServiceManager measure;
     private DeviceUUID deviceUUID;
 
-    public BleScanAndConnectBluetooth(GluServiceManager m, DeviceUUID deviceUUID, String btName){
+    public BleScanAndConnectBluetooth(IBleServiceManager m, DeviceUUID deviceUUID, String btName){
         this.measure = m;
         this.deviceUUID = deviceUUID;
         this.BT_NAME = btName;

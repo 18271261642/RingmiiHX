@@ -10,6 +10,7 @@ import com.google.gson.internal.bind.DateTypeAdapter;
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.IUserHDApi;
+import com.guider.health.apilib.model.TempMeasure;
 import com.guider.health.apilib.model.hd.ArtMeasure;
 import com.guider.health.apilib.model.hd.BloodoxygenMeasure;
 import com.guider.health.apilib.model.hd.BloodsugarMeasure;
@@ -194,6 +195,23 @@ public class MeasureDataUploader {
             public void onFailure(Call<String> call, Throwable t) {
                 super.onFailure(call, t);
                 addCache(bloodoxygenMeasure, call.request().url().toString());
+            }
+        });
+    }
+
+    /**
+     * 上传体温
+     */
+    public void uploadTemp(String deviceMac , float temp) {
+        final TempMeasure hd = new TempMeasure();
+        hd.setAccountId(UserManager.getInstance().getAccountId());
+        hd.setDeviceCode(deviceMac);
+        hd.setTemp(temp);
+        ApiUtil.createHDApi(IUserHDApi.class).sendTemp(Arrays.asList(hd)).enqueue(new ApiCallBack<String>() {
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                super.onFailure(call, t);
+                addCache(hd, call.request().url().toString());
             }
         });
     }

@@ -27,16 +27,43 @@
 
     <string name="measurement_results">測量結果</string>
 
-
     <string name="glu">血糖</string>
-    <string name="test_result">測量結果</string>
-    <string name="fora_glu_reminder_title">福爾血糖測量提示</string>
-    <string name="fora_glu_tips">1. 請按長M鍵打開機器\n\n2. 請將試紙吸血後插入插槽\n\n3. 請下滑左側按鍵打開藍牙，此時左上角藍燈亮起</string>
-    <string name="start_test">開始測量</string>
-    <string name="fora_glu_start_tips">測量開始</string>
-    <string name="restart_test">重新開始測量</string>
-    <string name="fora_glu_reult_format">您的血糖值為：\n%.2f </string>
-    <string name="fora_glu_redult_title">福爾血糖測量結果</string>
+    <string name="test_result">测量结果</string>
+    <string name="fora_glu_reminder_title">福尔血糖测量提示</string>
+    <string name="fora_glu_tips">1. 请按长M键打开机器\n\n2. 请将试纸吸血后插入插槽\n\n3. 请下滑左侧按键打开蓝牙，此时左上角蓝灯亮起</string>
+    <string name="fora_glu_start_tips">测量开始</string>
+    <string name="restart_test">重新开始测量</string>
+    <string name="fora_glu_reult_format">您的血糖值为：\n%.2f </string>
+    <string name="fora_glu_redult_title">福尔血糖测量结果</string>
+    <string name="start_test">开始测量</string>
+
+    <string name="fora_bo_reminder_title">福尔血氧测量提示</string>
+    <string name="fora_bo_reult_format">您的血氧值为：\n%d</string>
+    <string name="fora_bo_tips">1. 请按右侧电源键开机\n\n2. 请将手指伸入血氧夹\n\n3. 待屏幕出现数值请点击下方\"开始测量\"按钮</string>
+    <string name="fora_bo_redult_title">福尔血氧测量结果</string>
+
+    <string name="fora_et_reminder_title">福尔耳温测量提示</string>
+    <string name="fora_et_reult_format">您的耳温值为：\n%.2f°C</string>
+    <string name="fora_et_tips">1. 请按屏幕下方按钮开机\n\n2. 请按耳温仪背部按钮确定温度\n\n3. 待听到响声点击下方\"开始测量\"按钮</string>
+    <string name="fora_et_redult_title">福尔耳温测量结果</string>
+
+    <string name="ear_temp">耳温</string>
+
+    <string name = "ecg_ecg_suggest1">控制三高（高血脂、高血压、高血糖），保持良好习惯并控制体重，有助于维持血管的健康减少心脏多余的做工。</string>
+
+    <string name="common_temp_suggest_36">请多运动，注意保暖，加强营养</string>
+    <string name="common_temp_suggest_36_37_2">体温正常，请继续保持</string>
+    <string name="common_temp_suggest_37_3_38">请做好物理降温，多喝水，多吃蔬菜水果，或遵医嘱服用退烧药</string>
+    <string name="common_temp_suggest_38_1_39">请做好物理降温，多喝水，注意体温变化，根据情况及时就医检查治疗</string>
+    <string name="common_temp_suggest_39_1_41">请及时就医检查治疗</string>
+    <string name="common_temp_suggest_41">可能有生命危险，请尽快就医检查治疗</string>
+
+    <string name="common_bo_suggest_90">血氧饱和度正常，请注意保持</string>
+    <string name="common_bo_suggest_80_89">请减少活动、适当休息</string>
+    <string name="common_bo_suggest_70_79">请适量吸氧,遵照医嘱服用抗缺氧药物</string>
+    <string name="common_bo_suggest_60_69">请停止一切活动,立刻及时就医</string>
+    <string name="common_bo_suggest_59">可能有生命危险，请尽快就医检查治疗</string>
+
 
     <string name="zangyin">臟音檢測</string>
 

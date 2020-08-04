@@ -29,9 +29,9 @@ public class Config {
     //福尔血糖
     public final static String FORA_GLU_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
     // 福尔血氧
-    public final static String FORA_BO_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
+    public final static String FORA_BO_FRAGMENT = "com.guider.health.forabo.ForaBOReminderFragment";
     // 福尔耳温
-    public final static String FORA_ET_FRAGMENT = "com.guider.health.foraglu.ForaGluReminderFragment";
+    public final static String FORA_ET_FRAGMENT = "com.guider.health.foraet.ForaETReminderFragment";
     // TODO 添加新设备首页
     // 移动版  福尔臂式血壓測量
     public static String BP_FRAGMENT = "com.guider.health.bp.view.bp.BPFirstOperaterReminder";

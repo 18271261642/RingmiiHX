@@ -1,6 +1,8 @@
 package com.guider.health.common.device;
 
 import com.guider.health.common.core.Config;
+import com.guider.health.common.core.ForaBO;
+import com.guider.health.common.core.ForaET;
 import com.guider.health.common.core.ForaGlucose;
 import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.HearRate;
@@ -77,8 +79,18 @@ public class MeasureDeviceManager {
                         needShowList.add(devase);
                     }
                     break;
-                case DeviceInit.DEV_FORA_GLU:  // 福尔血糖 TODO
+                case DeviceInit.DEV_FORA_GLU:  // 福尔血糖
                     if(ForaGlucose.getForaGluInstance().isTag()) {
+                        needShowList.add(devase);
+                    }
+                    break;
+                case DeviceInit.DEV_FORA_ET:  // 福尔耳温
+                    if (ForaET.getForaETInstance().isTag()) {
+                        needShowList.add(devase);
+                    }
+                    break;
+                case DeviceInit.DEV_FORA_BO:  // 福尔血氧 TODO
+                    if (ForaBO.getForaBOInstance().isTag()) {
                         needShowList.add(devase);
                     }
                     break;
@@ -122,9 +134,14 @@ public class MeasureDeviceManager {
             case DeviceInit.DEV_GLU:  // 血糖
                 Glucose.getInstance().setTag(false);
                 break;
-            case DeviceInit.DEV_FORA_GLU:  // 福尔血糖 TODO
+            case DeviceInit.DEV_FORA_GLU:  // 福尔血糖
                 ForaGlucose.getForaGluInstance().setTag(false);
                 break;
+            case DeviceInit.DEV_FORA_ET:  // 福尔耳温
+                ForaET.getForaETInstance().setTag(false);
+                break;
+            case DeviceInit.DEV_FORA_BO:  // 福尔血氧 TODO
+                ForaBO.getForaBOInstance().setTag(false);
         }
     }
 }

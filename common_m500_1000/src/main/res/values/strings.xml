@@ -38,6 +38,34 @@
     <string name="fora_glu_reult_format">Your blood sugar value：\n%.2f </string>
     <string name="fora_glu_redult_title">Measurement results</string>
 
+    <string name="fora_bo_reminder_title">Measurement tips</string>
+    <string name="fora_bo_reult_format">Your blood oxygen value：\n%d </string>
+    <string name="fora_bo_tips">1. Press the power button on the right to turn on\n\n2. Please put your finger into the blood oxygen clip\n\n3. When the value appears on the screen, please click the \"Start Measurement\" button below</string>
+    <string name="fora_bo_redult_title">Measurement results</string>
+
+    <string name="fora_et_reminder_title">Measurement tips</string>
+    <string name="fora_et_reult_format">Your body temp value：\n%.2f°C</string>
+    <string name="fora_et_tips">1. Press the button at the bottom of the screen to power on\n\n2. Press the button on the back of the ear thermometer to determine the temperature\n\n3. When you hear the sound, click the \"Start Measurement\" button below</string>
+    <string name="fora_et_redult_title">Measurement results</string>
+
+    <string name="ear_temp">ear temp</string>
+
+    <string name="ecg_ecg_suggest1">Control the three highs (high blood fat, high blood pressure, high blood sugar), maintain good habits and control weight, help maintain the health of blood vessels and reduce excess work in the heart.</string>
+
+    <string name="common_temp_suggest_36">Please exercise more, pay attention to keep warm and strengthen nutrition</string>
+    <string name="common_temp_suggest_36_37_2">The body temperature is normal, please continue to maintain it</string>
+    <string name="common_temp_suggest_37_3_38">Please cool down physically, drink plenty of water, eat more fruits and vegetables, or take antipyretics as directed by your doctor</string>
+    <string name="common_temp_suggest_38_1_39">Please cool down physically, drink plenty of water, pay attention to changes in body temperature, and seek medical treatment in a timely manner according to the situation</string>
+    <string name="common_temp_suggest_39_1_41">Please consult a doctor in time for treatment</string>
+    <string name="common_temp_suggest_41">May be life-threatening, please seek medical treatment as soon as possible</string>
+
+    <string name="common_bo_suggest_90">Oxygen saturation is normal, please pay attention to keep it</string>
+    <string name="common_bo_suggest_80_89">Please reduce activities and take appropriate breaks</string>
+    <string name="common_bo_suggest_70_79">Please take appropriate amount of oxygen and take anti-hypoxic drugs as directed by your doctor</string>
+    <string name="common_bo_suggest_60_69">Please stop all activities and seek medical attention immediately</string>
+    <string name="common_bo_suggest_59">May be life-threatening, please seek medical treatment as soon as possible</string>
+
+
     <string name="zangyin">Visceral sound detection</string>
 
     <string name="dmyh">Arteriosclerosis measurement</string>

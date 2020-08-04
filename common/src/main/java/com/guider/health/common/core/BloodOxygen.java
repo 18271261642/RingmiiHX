@@ -17,6 +17,15 @@ import java.util.List;
 public class BloodOxygen extends BaseDataSave implements Parcelable {
     private int value; // 血氧
     private String deviceAddress;
+    private int heartBeat;
+
+    public int getHeartBeat() {
+        return heartBeat;
+    }
+
+    public void setHeartBeat(int heartBeat) {
+        this.heartBeat = heartBeat;
+    }
 
     private int _value;
 
