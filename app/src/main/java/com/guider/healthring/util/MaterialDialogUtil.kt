@@ -31,7 +31,7 @@ object MaterialDialogUtil {
     fun showDialog(fragment: Fragment, titleId: Int,
                    content: Int, positiveText: Int, negativeText: Int,
                    positiveClick: () -> Unit) {
-        MaterialDialog(fragment.activity!!.baseContext).show {
+        MaterialDialog(fragment.activity!!).show {
             title(titleId)
             message(content)
             positiveButton(positiveText) {

@@ -15,8 +15,6 @@ android {
             }
         }
 
-        multiDexEnabled true
-
         ndk{
             abiFilters "armeabi-v7a","armeabi"
             // 还可以添加
@@ -50,6 +48,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation fileTree(include: ['*.aar'], dir: 'libs')
-    api project(':common')
+    implementation project(':common')
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.7.2'
 }

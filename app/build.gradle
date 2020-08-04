@@ -62,12 +62,14 @@ android {
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
                 buildConfigField("String", "WEBDOMAIN", '"http://app.guidertech.com/"')
+                buildConfigField("boolean", "SOSISOPENTAG", "false")
             } else { // 大陆版
                 buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
                 buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
                 buildConfigField("String", "WEBDOMAIN", '"https://app.guiderhealth.com/"')
                 // buildConfigField("String", "APIURL", '"http://192.168.1.180:8082/"')
                 // buildConfigField("String", "APIHDURL", '"http://192.168.1.180:8083/"')
+                buildConfigField("boolean", "SOSISOPENTAG", "true")
             }
         }
         release {
@@ -85,13 +87,13 @@ android {
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
                 buildConfigField("String", "WEBDOMAIN", '"http://app.guidertech.com/"')
-
+                buildConfigField("boolean", "SOSISOPENTAG", "false")
                 println "app -- Package Google Play Bundle Release . . ."
             } else { // 大陆版
                 buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
                 buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
                 buildConfigField("String", "WEBDOMAIN", '"https://app.guiderhealth.com/"')
-
+                buildConfigField("boolean", "SOSISOPENTAG", "false")
                 println "app -- Package CN Bundle Release . . ."
             }
         }
@@ -105,10 +107,6 @@ android {
         flatDir {
             dirs 'libs',"../bpm1000/libs"
         }
-    }
-
-    configurations {
-        all*.exclude group: 'com.android.support', module: 'support-v13'
     }
 
     lintOptions {
@@ -219,7 +217,7 @@ dependencies {
     implementation project(':simpleble')
     implementation project(':libbase')
     implementation project(':glu_phone')
-//    implementation project(':wuweikang')
+    implementation project(':wuweikang')
     implementation project(path: ':wheelpicker')
     implementation project(':circleviewprogress')
     implementation files('libs/mframework.jar')
@@ -264,12 +262,11 @@ dependencies {
     implementation project(':w30sblelibrary')
     implementation files('libs/vpprotocols_2.1.2.15.jar')
     implementation project(':MPChartLib')
-    // 网络请求
-    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
     // 上下拉刷新
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
     implementation files('libs/jcc-bate-0.7.3.jar')
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'// (可选)
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation project(path: ':wheelpicker')// (可选)
 }
 
 android.applicationVariants.all { variant ->

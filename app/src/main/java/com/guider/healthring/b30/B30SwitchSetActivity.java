@@ -3,11 +3,14 @@ package com.guider.healthring.b30;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -34,6 +38,7 @@ import com.veepoo.protocol.model.settings.CustomSettingData;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
+
 import java.util.List;
 
 /**
@@ -43,7 +48,7 @@ import java.util.List;
 /**
  * B30的开关设置
  */
-public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnClickListener{
+public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "B30SwitchSetActivity";
 
@@ -186,7 +191,7 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
             }, new ICustomSettingDataListener() {
                 @Override
                 public void OnSettingDataChange(CustomSettingData customSettingData) {
-                    if (Commont.isDebug)Log.e(TAG, "---自定义设置--=" + customSettingData.toString());
+                    if (Commont.isDebug) Log.e(TAG, "---自定义设置--=" + customSettingData.toString());
 
                     if (customSettingData.getFindPhoneUi() == EFunctionStatus.SUPPORT_OPEN) {//查找手机
                         b30SwitchFindPhoneToggleBtn.setChecked(true);
@@ -289,10 +294,10 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
                 break;
             case R.id.help_sos:
                 boolean isSos = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISHelpe, false);//sos
-                if (isSos) {
-                    // startActivity(new Intent(B30SwitchSetActivity.this,HellpEditActivity.class)
-                    //        .putExtra("type","b30"));
-                    // startActivity(HellpEditActivity.class);
+                if (isSos && BuildConfig.SOSISOPENTAG) {
+                    startActivity(new Intent(B30SwitchSetActivity.this,
+                            HellpEditActivity.class)
+                            .putExtra("type", "b30"));
                 }
                 break;
         }
@@ -304,7 +309,7 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
         public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
             if (buttonView.isPressed()) {
                 if (MyCommandManager.DEVICENAME != null) {
-                    if (Commont.isDebug)Log.d("TAG", "------点击啦");
+                    if (Commont.isDebug) Log.d("TAG", "------点击啦");
                     switch (buttonView.getId()) {
                         case R.id.b30CheckWearToggleBtn:    //佩戴检测
 
@@ -320,7 +325,8 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
                             }, new ICheckWearDataListener() {
                                 @Override
                                 public void onCheckWearDataChange(CheckWearData checkWearData) {
-                                    if (Commont.isDebug)Log.e(TAG, "----佩戴检测=" + checkWearData.toString());
+                                    if (Commont.isDebug)
+                                        Log.e(TAG, "----佩戴检测=" + checkWearData.toString());
                                 }
                             }, checkWearSetting);
 
@@ -457,7 +463,7 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
                              * 秒表和查找手机还没修改完成
                              */
                             b30SecondToggleBtn.setChecked(isChecked);
-                            if (Commont.isDebug)Log.d("TAG", "------秒表状态" + isChecked);
+                            if (Commont.isDebug) Log.d("TAG", "------秒表状态" + isChecked);
                             SharedPreferencesUtils.setParam(B30SwitchSetActivity.this, Commont.ISSecondwatch, isChecked);
 
 
@@ -554,10 +560,6 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
     };
 
 
-
-
-
-
     //运动过量提醒 B31不支持
     EFunctionStatus isOpenSportRemain = EFunctionStatus.UNSUPPORT;
     //血压/心率播报 B31不支持
@@ -624,7 +626,7 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
             isOpenDisconnectRemind = EFunctionStatus.SUPPORT_CLOSE;
         }
 
-        if (Commont.isDebug)Log.e(TAG, "----- SOSa啊 " + isSos);
+        if (Commont.isDebug) Log.e(TAG, "----- SOSa啊 " + isSos);
         //SOS
         if (isSos) {
             isOpenSOS = EFunctionStatus.SUPPORT_OPEN;
@@ -632,36 +634,33 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
             isOpenSOS = EFunctionStatus.SUPPORT_CLOSE;
         }
 
-        Log.i("bbbbbbbbo" , "B30SwitchSetActivity");
+        Log.i("bbbbbbbbo", "B30SwitchSetActivity");
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 isAutomaticBoold, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);
-        if (Commont.isDebug)Log.e(TAG, "-----新设置的值啊---customSetting=" + customSetting.toString());
+        if (Commont.isDebug) Log.e(TAG, "-----新设置的值啊---customSetting=" + customSetting.toString());
 
         MyApp.getInstance().getVpOperateManager().changeCustomSetting(new IBleWriteResponse() {
             @Override
             public void onResponse(int i) {
 
             }
-        }, new ICustomSettingDataListener() {
-            @Override
-            public void OnSettingDataChange(CustomSettingData customSettingData) {
-                if (Commont.isDebug)Log.e(TAG, "--新设置的值结果--customSettingData=" + customSettingData.toString());
+        }, customSettingData -> {
+            if (Commont.isDebug)
+                Log.e(TAG, "--新设置的值结果--customSettingData=" + customSettingData.toString());
 
-                if (isOnclickSOS) {
-                    isOnclickSOS = false;
-                    EFunctionStatus sos = customSettingData.getSOS();
-                    if (sos == EFunctionStatus.SUPPORT_OPEN) {
-//                        startActivity(HellpEditActivity.class);
-                        // startActivity(new Intent(B30SwitchSetActivity.this,HellpEditActivity.class)
-                        //        .putExtra("type","b30"));
-                    }
+            if (isOnclickSOS) {
+                isOnclickSOS = false;
+                EFunctionStatus sos = customSettingData.getSOS();
+                if (sos == EFunctionStatus.SUPPORT_OPEN && BuildConfig.SOSISOPENTAG) {
+                    startActivity(new Intent(B30SwitchSetActivity.this,
+                            HellpEditActivity.class)
+                            .putExtra("type", "b30"));
                 }
-
             }
+
         }, customSetting);
     }
-
 
 
     //检查是否有震动的权限

@@ -59,7 +59,7 @@ allprojects {
         appVersion = "2.5.5"
         isMyOutputFile = true
 
-        googlePlay = true
+        googlePlay = false
     }
 
     subprojects {

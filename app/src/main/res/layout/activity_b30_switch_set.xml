@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/comment_b30_title_layout"/>
+    <include layout="@layout/comment_b30_title_layout" />
 
-    <RelativeLayout
-        style="@style/B30DeviceRelStyle">
+    <RelativeLayout style="@style/B30DeviceRelStyle">
 
         <ImageView
             android:id="@+id/img1"
@@ -27,13 +26,13 @@
         <ToggleButton
             android:id="@+id/b30CheckWearToggleBtn"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
+            android:textOn="@null" />
 
     </RelativeLayout>
 
@@ -42,8 +41,7 @@
         android:layout_height="1dp"
         android:background="@color/chang_white" />
 
-    <RelativeLayout
-        style="@style/B30DeviceRelStyle">
+    <RelativeLayout style="@style/B30DeviceRelStyle">
 
         <ImageView
             android:id="@+id/img2"
@@ -63,13 +61,13 @@
         <ToggleButton
             android:id="@+id/b30AutoHeartToggleBtn"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
+            android:textOn="@null" />
 
 
     </RelativeLayout>
@@ -78,8 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/chang_white" />
-    <RelativeLayout
-        style="@style/B30DeviceRelStyle">
+
+    <RelativeLayout style="@style/B30DeviceRelStyle">
 
         <ImageView
             android:id="@+id/img3"
@@ -99,13 +97,13 @@
         <ToggleButton
             android:id="@+id/b30AutoBloadToggleBtn"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
+            android:textOn="@null" />
 
 
     </RelativeLayout>
@@ -114,8 +112,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/chang_white" />
-    <RelativeLayout
-        style="@style/B30DeviceRelStyle">
+
+    <RelativeLayout style="@style/B30DeviceRelStyle">
 
         <ImageView
             android:id="@+id/img4"
@@ -123,8 +121,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/pwsetting_findphoneui"
-            />
+            android:background="@drawable/pwsetting_findphoneui" />
         <!--android:background="@drawable/pwsetting_findphonebywatch"-->
 
 
@@ -137,15 +134,13 @@
         <ToggleButton
             android:id="@+id/b30SwitchFindPhoneToggleBtn"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
-
-
+            android:textOn="@null" />
 
 
     </RelativeLayout>
@@ -154,6 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/chang_white" />
+
     <RelativeLayout
         android:id="@+id/secondwatch"
         style="@style/B30DeviceRelStyle">
@@ -176,15 +172,13 @@
         <ToggleButton
             android:id="@+id/b30SecondToggleBtn"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
-
-
+            android:textOn="@null" />
 
 
     </RelativeLayout>
@@ -193,6 +187,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/chang_white" />
+
     <RelativeLayout
         android:id="@+id/disconn_alarm"
         style="@style/B30DeviceRelStyle">
@@ -215,13 +210,13 @@
         <ToggleButton
             android:id="@+id/b30SwitchDisAlertTogg"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
+            android:textOn="@null" />
 
 
     </RelativeLayout>
@@ -242,8 +237,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/pwsetting_hour24"
-           />
+            android:background="@drawable/pwsetting_hour24" />
         <!--android:background="@drawable/ic_shijian_zhi"-->
 
         <TextView
@@ -255,13 +249,13 @@
         <ToggleButton
             android:id="@+id/b30SwitchTimeTypeTogg"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
+            android:textOn="@null" />
 
 
     </RelativeLayout>
@@ -281,8 +275,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/pwsetting_oversport"
-             />
+            android:background="@drawable/pwsetting_oversport" />
         <!--android:background="@drawable/ic_sos"-->
 
         <TextView
@@ -294,13 +287,13 @@
         <ToggleButton
             android:id="@+id/b30SwitchHlepSos"
             android:layout_width="70dp"
-            android:background="@drawable/toggle_select"
-            android:textOn="@null"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:background="@drawable/toggle_select"
             android:textOff="@null"
-            android:layout_height="40dp" />
+            android:textOn="@null" />
 
 
     </RelativeLayout>

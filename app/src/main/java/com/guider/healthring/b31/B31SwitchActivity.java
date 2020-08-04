@@ -1,10 +1,13 @@
 package com.guider.healthring.b31;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -13,9 +16,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
+import com.guider.healthring.b30.HellpEditActivity;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -38,7 +43,7 @@ import com.veepoo.protocol.model.settings.CustomSettingData;
  * Date 2018/12/19
  */
 public class B31SwitchActivity extends WatchBaseActivity
-        implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
+        implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
 
     private static final String TAG = "B31SwitchActivity";
@@ -126,26 +131,23 @@ public class B31SwitchActivity extends WatchBaseActivity
             return;
         boolean isWearCheck = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISCheckWear, false);//佩戴
         b31CheckWearToggleBtn.setChecked(isWearCheck);
-        MyApp.getInstance().getVpOperateManager().readCustomSetting(iBleWriteResponse, new ICustomSettingDataListener() {
-            @Override
-            public void OnSettingDataChange(CustomSettingData customSettingData) {
-                Log.e(TAG, "----------customSettingData=" + customSettingData.toString() + "\n" + customSettingData.getAutoHeartDetect());
-                updateBtnStatus(customSettingData);
-            }
-        });
+        MyApp.getInstance().getVpOperateManager().readCustomSetting(iBleWriteResponse,
+                customSettingData -> {
+                    Log.e(TAG, "----------customSettingData=" + customSettingData.toString()
+                            + "\n" + customSettingData.getAutoHeartDetect());
+                    updateBtnStatus(customSettingData);
+                });
 
         //读取血氧自动检测的状态
-        MyApp.getInstance().getVpOperateManager().readSpo2hAutoDetect(iBleWriteResponse, new IAllSetDataListener() {
-            @Override
-            public void onAllSetDataChangeListener(AllSetData allSetData) {
-                //Log.e(TAG, "---------allSetData=" + allSetData.toString());
-                if (allSetData.getOprate() == 1 && allSetData.getIsOpen() == 1) {
-                    b31AutoBPOxyToggbleBtn.setChecked(true);
-                } else {
-                    b31AutoBPOxyToggbleBtn.setChecked(false);
-                }
-            }
-        });
+        MyApp.getInstance().getVpOperateManager().readSpo2hAutoDetect(iBleWriteResponse,
+                allSetData -> {
+                    //Log.e(TAG, "---------allSetData=" + allSetData.toString());
+                    if (allSetData.getOprate() == 1 && allSetData.getIsOpen() == 1) {
+                        b31AutoBPOxyToggbleBtn.setChecked(true);
+                    } else {
+                        b31AutoBPOxyToggbleBtn.setChecked(false);
+                    }
+                });
     }
 
     private void updateBtnStatus(CustomSettingData customSettingData) {
@@ -211,12 +213,19 @@ public class B31SwitchActivity extends WatchBaseActivity
         isOpenSOS = customSettingData.getSOS();
         if (customSettingData.getSOS() == EFunctionStatus.SUPPORT_OPEN) {
             b30SwitchHlepSos.setChecked(true);
+            if (isOnclickSOS && BuildConfig.SOSISOPENTAG) {
+                isOnclickSOS = false;
+                startActivity(new Intent(B31SwitchActivity.this,
+                        HellpEditActivity.class)
+                        .putExtra("type", "b31"));
+            }
         } else if (customSettingData.getSOS() == EFunctionStatus.UNSUPPORT) {
             help_sos.setVisibility(View.GONE);
         } else {
             b30SwitchHlepSos.setChecked(false);
         }
     }
+
     private void initViews() {
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.string_switch_setting));
@@ -239,11 +248,12 @@ public class B31SwitchActivity extends WatchBaseActivity
                 finish();
                 break;
             case R.id.help_sos:
-                boolean isSos = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.ISHelpe, false);//sos
-                if (isSos) {
-//                    startActivity(HellpEditActivity.class);
-                    // startActivity(new Intent(B31SwitchActivity.this,HellpEditActivity.class)
-                    //        .putExtra("type","b31"));
+                boolean isSos = (boolean) SharedPreferencesUtils
+                        .getParam(MyApp.getContext(), Commont.ISHelpe, false);//sos
+                if (isSos && BuildConfig.SOSISOPENTAG) {
+                    startActivity(new Intent(B31SwitchActivity.this,
+                            HellpEditActivity.class)
+                            .putExtra("type", "b31"));
                 }
                 break;
         }
@@ -405,18 +415,16 @@ public class B31SwitchActivity extends WatchBaseActivity
             isOpenSOS = EFunctionStatus.SUPPORT_CLOSE;
         }
 
-        Log.i("bbbbbbbbo" , "B31SwitchActivity");
+        Log.i("bbbbbbbbo", "B31SwitchActivity");
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 isAutomaticBoold, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);
         //Log.e(TAG, "-----新设置的值啊---customSetting=" + customSetting.toString());
 
-        MyApp.getInstance().getVpOperateManager().changeCustomSetting(iBleWriteResponse, new ICustomSettingDataListener() {
-            @Override
-            public void OnSettingDataChange(CustomSettingData customSettingData) {
-                B31SwitchActivity.this.hideLoadingDialog();
-                updateBtnStatus(customSettingData);
-            }
-        }, customSetting);
+        MyApp.getInstance().getVpOperateManager().changeCustomSetting(iBleWriteResponse,
+                customSettingData -> {
+                    B31SwitchActivity.this.hideLoadingDialog();
+                    updateBtnStatus(customSettingData);
+                }, customSetting);
     }
 }

@@ -25,10 +25,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.DeviceActivity;
+import com.guider.healthring.activity.DeviceActivityGlu;
 import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.b30.b30minefragment.B30MineFragment;
 import com.guider.healthring.b30.b30run.B36RunFragment;
@@ -157,10 +160,10 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
             b31ViewPager.setOffscreenPageLimit(0);
         }
 
-//        if (BuildConfig.HEALTH != 0) {
+        if (BuildConfig.HEALTH != 0) {
             TextView tv = findViewById(R.id.t3_text);
             tv.setText(R.string.btn_health);
-//        }
+        }
 
         b31BottomBar.setOnTabSelectListener(new BottomSelectView.OnTabSelectListener() {
             @Override
@@ -173,25 +176,22 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                         b31ViewPager.setCurrentItem(1, false);
                         break;
                     case R.id.t3:  //开跑
-//                        switch (BuildConfig.HEALTH) {
-//                            case 0 : // 运动
-//                                b31ViewPager.setCurrentItem(2, false);
-//                                break;
-//                            case 1: // 横板健康
-//                                long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
-//                                DeviceActivity.start(B31HomeActivity.this, (int) accountId);
-//                                break;
-//                            case 2: // 竖版无创
-//                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
-//                                DeviceActivityGlu.startGlu(B31HomeActivity.this, (int) accountIdV);
-//                                break;
-//                            default:
-//                                b31ViewPager.setCurrentItem(2, false);
-//                                break;
-//                        }
-                        long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
-                        DeviceActivity.start(B31HomeActivity.this, (int) accountId);
-                        break;
+                        switch (BuildConfig.HEALTH) {
+                            case 0 : // 运动
+                                b31ViewPager.setCurrentItem(2, false);
+                                break;
+                            case 1: // 横板健康
+                                long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                DeviceActivity.start(B31HomeActivity.this, (int) accountId);
+                                break;
+                            case 2: // 竖版无创
+                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                DeviceActivityGlu.startGlu(B31HomeActivity.this, (int) accountIdV);
+                                break;
+                            default:
+                                b31ViewPager.setCurrentItem(2, false);
+                                break;
+                        }
                     case R.id.t4:   //我的
                         b31ViewPager.setCurrentItem(3, false);
                         break;
