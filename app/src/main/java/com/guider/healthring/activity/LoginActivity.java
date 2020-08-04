@@ -377,10 +377,9 @@ public class LoginActivity extends WatchBaseActivity
                 startActivity(intent);
                 break;
             case R.id.line_iv: // LINE 登陆
-                mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line), "1653887386", null, hashMap -> {
-                    // 用户信息可以做自己的操作
-                    registerRingUser(hashMap);
-                }, () -> {
+                // 用户信息可以做自己的操作
+                mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line),
+                        "1653887386", null, this::registerRingUser, () -> {
                     startActivity(NewSearchActivity.class);
                     finish();
                 });
@@ -403,32 +402,29 @@ public class LoginActivity extends WatchBaseActivity
         if (Commont.isDebug) Log.e(TAG, "3333游客注册或者登陆参数：" + params.toString());
         String url = Commont.FRIEND_BASE_URL + URLs.disanfang;
         if (Commont.isDebug) Log.e(TAG, "====  json  " + new Gson().toJson(params));
-        OkHttpTool.getInstance().doRequest(url, new Gson().toJson(params), this, new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG, "-------微信登录到bl=" + result);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    if (!jsonObject.has("code"))
-                        return;
-                    if (jsonObject.getInt("code") == 200) {
-                        String userStr = jsonObject.getString("data");
-                        if (userStr != null) {
-                            UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
-                            Common.customer_id = userInfoBean.getUserid();
-                            //保存userid
-                            SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
-                            SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
-                            SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
+        OkHttpTool.getInstance().doRequest(url, new Gson().toJson(params), this, result -> {
+            Log.e(TAG, "-------微信登录到bl=" + result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (!jsonObject.has("code"))
+                    return;
+                if (jsonObject.getInt("code") == 200) {
+                    String userStr = jsonObject.getString("data");
+                    if (userStr != null) {
+                        UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
+                        Common.customer_id = userInfoBean.getUserid();
+                        //保存userid
+                        SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
+                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
+                        SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
 
-                            // startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                            // finish();
-                        }
-
+                        // startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
+                        // finish();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

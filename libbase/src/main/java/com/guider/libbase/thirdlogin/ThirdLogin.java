@@ -3,11 +3,14 @@ package com.guider.libbase.thirdlogin;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.widget.Toast;
+
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.IGuiderApi;
@@ -49,6 +52,7 @@ public class ThirdLogin {
     };
 
     public static ThirdLoginCallback mIThirdLoginCallback;
+
     public ThirdLogin(Context context) {
         mContext = context;
         MobSDK.submitPolicyGrantResult(true, new OperationCallback<Void>() {
@@ -75,7 +79,6 @@ public class ThirdLogin {
     }
 
 
-
     public void lineLogin(final String appId, final ThirdLoginCallback thirdLoginCallback, Runnable action) {
         if (action != null)
             mCompelet = action;
@@ -87,8 +90,10 @@ public class ThirdLogin {
         });
     }
 
-    public synchronized void lineOfficeLogin(Context context, final LoginButton loginButton, final String appId, Fragment fragment,
-                                             final ThirdLoginCallback thirdLoginCallback, Runnable action) {
+    public synchronized void lineOfficeLogin(Context context, final LoginButton loginButton,
+                                             final String appId, Fragment fragment,
+                                             final ThirdLoginCallback thirdLoginCallback,
+                                             Runnable action) {
         if (action != null)
             mCompelet = action;
         // final LoginButton loginButton = new LoginButton(context);
@@ -103,18 +108,20 @@ public class ThirdLogin {
         loginButton.enableLineAppAuthentication(true);
 
         // set up required scopes.
+        // aggressive 模式相当于关注微信公众号
+        //normal是正常登陆模式
         loginButton.setAuthenticationParams(new LineAuthenticationParams.Builder()
                 .scopes(Arrays.asList(Scope.PROFILE, Scope.OPENID_CONNECT))
-                .botPrompt(LineAuthenticationParams.BotPrompt.normal)
+                .botPrompt(LineAuthenticationParams.BotPrompt.aggressive)
                 .build()
         );
 
         // A delegate for delegating the login result to the internal login handler.
         // LoginDelegate loginDelegate = LoginDelegate.Factory.create();
-        if (fragment != null && fragment instanceof  ILineLogin) {
-            loginButton.setLoginDelegate(((ILineLogin)fragment).getLoginDelegate());
+        if (fragment != null && fragment instanceof ILineLogin) {
+            loginButton.setLoginDelegate(((ILineLogin) fragment).getLoginDelegate());
         } else if (context instanceof ILineLogin) {
-            loginButton.setLoginDelegate(((ILineLogin)context).getLoginDelegate());
+            loginButton.setLoginDelegate(((ILineLogin) context).getLoginDelegate());
         }
 
         loginButton.addLoginListener(new LoginListener() {
@@ -134,7 +141,10 @@ public class ThirdLogin {
                     onUserInfo(appId, ret, thirdLoginCallback, new HandleOriginUserInfo() {
                         @Override
                         public HashMap<String, Object> handle(HashMap<String, Object> hashMap) {
-                            return handleFields(hashMap, appId, "userId", "displayName", "pictureUrl");
+                            return handleFields(hashMap, appId,
+                                    "userId",
+                                    "displayName",
+                                    "pictureUrl");
                         }
                     });
                 }
@@ -151,7 +161,7 @@ public class ThirdLogin {
             }
         });
 
-        ((Activity)mContext).runOnUiThread(new Runnable() {
+        ((Activity) mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 loginButton.performClick();
@@ -160,7 +170,7 @@ public class ThirdLogin {
     }
 
     private void showToast(final String text) {
-        ((Activity)mContext).runOnUiThread(new Runnable() {
+        ((Activity) mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
@@ -220,36 +230,41 @@ public class ThirdLogin {
     private void onUserInfo(final String appId, final HashMap<String, Object> hashMap,
                             final ThirdLoginCallback thirdLoginCallback,
                             final HandleOriginUserInfo handleOriginUserInfo) {
-        final HashMap<String, Object> map = handleOriginUserInfo == null ? hashMap : handleOriginUserInfo.handle(hashMap);
+        final HashMap<String, Object> map = handleOriginUserInfo ==
+                null ? hashMap : handleOriginUserInfo.handle(hashMap);
         final String openId = map.get("openId").toString();
-        mIGuiderApi.verifyThirdAccount(appId, openId, 0, 0).enqueue(new ApiCallBack<BeanOfWecaht>() {
-            @Override
-            public void onResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
-                BeanOfWecaht info = response.body();
+        mIGuiderApi.verifyThirdAccount(appId, openId, 0, 0)
+                .enqueue(new ApiCallBack<BeanOfWecaht>() {
+                    @Override
+                    public void onResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
+                        BeanOfWecaht info = response.body();
 
-                if (info.getTokenInfo() == null) { // 需要跳转到手机号绑定页面
-                    Intent intent = new Intent(mContext, BindPhoneV2Activity.class);
-                    String nickName = map.get("nickName").toString();
-                    String headUrl = map.get("headUrl").toString();
-                    intent.putExtra("appId", appId);
-                    intent.putExtra("openId", openId);
-                    intent.putExtra("nickName", nickName);
-                    intent.putExtra("headUrl", headUrl);
+                        if (info.getTokenInfo() == null) { // 需要跳转到手机号绑定页面
+                            Intent intent = new Intent(mContext, BindPhoneV2Activity.class);
+                            String nickName = map.get("nickName").toString();
+                            String headUrl = map.get("headUrl").toString();
+                            intent.putExtra("appId", appId);
+                            intent.putExtra("openId", openId);
+                            intent.putExtra("nickName", nickName);
+                            intent.putExtra("headUrl", headUrl);
 
-                    mIThirdLoginCallback = thirdLoginCallback;
-                    mContext.startActivity(intent);
-                } else { // 直接跳转，注意这里需要第三方操作，特别是对于类似手环
-                    if (thirdLoginCallback != null)
-                        thirdLoginCallback.onUserInfo(map);
-                    SharedPreferencesUtils.setParam(mContext, "accountIdGD", (long)info.getTokenInfo().getAccountId());
-                    SharedPreferencesUtils.setParam(mContext, "tokenGD", info.getTokenInfo().getToken());
-                    mCompelet.run();
-                }
-            }
-        });
+                            mIThirdLoginCallback = thirdLoginCallback;
+                            mContext.startActivity(intent);
+                        } else { // 直接跳转，注意这里需要第三方操作，特别是对于类似手环
+                            if (thirdLoginCallback != null)
+                                thirdLoginCallback.onUserInfo(map);
+                            SharedPreferencesUtils.setParam(mContext,
+                                    "accountIdGD", (long) info.getTokenInfo().getAccountId());
+                            SharedPreferencesUtils.setParam(mContext,
+                                    "tokenGD", info.getTokenInfo().getToken());
+                            mCompelet.run();
+                        }
+                    }
+                });
     }
 
-    private HashMap<String, Object> handleFields(HashMap<String, Object> hashMap, String appId, String openIdNameField,
+    private HashMap<String, Object> handleFields(HashMap<String, Object> hashMap,
+                                                 String appId, String openIdNameField,
                                                  String nickNameField, String headUrlField) {
         final HashMap<String, Object> map = new HashMap<>();
         map.put("appId", appId);
@@ -261,6 +276,7 @@ public class ThirdLogin {
         map.put("headUrl", headUrl);
         return map;
     }
+
     public interface ThirdLoginCallback {
         void onUserInfo(HashMap<String, Object> hashMap);
     }
