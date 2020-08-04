@@ -1106,7 +1106,7 @@
     <string name="take_Album">相册</string>
     <string name="cancle">取消</string>
     <string name="confirm">确定</string>
-
+    <string name="bind_phone">绑定手机号</string>
 
     <string name="goalfinish">达标天数</string>
     <string name="totaldistance">总公里数</string>

@@ -281,7 +281,7 @@ public class LoginActivity extends WatchBaseActivity
         switch (view.getId()) {
 
             case R.id.register_btn://注册
-                startActivity(new Intent(LoginActivity.this, RegisterActivity2.class));
+                startActivity(new Intent(LoginActivity.this, GuiderWxBindPhoneActivity.class));
                 break;
             case R.id.forget_tv://忘记密码
                 startActivity(new Intent(LoginActivity.this, ForgetPasswardActivity.class));

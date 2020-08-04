@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.bean.AreCodeBean;
@@ -213,11 +214,16 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity
                             //手机号
                             String phoeCodes = wxBindPhoneCodeEdit.getText().toString();
 
-                            String bindUrl = BuildConfig.APIURL + "api/v2/wechat/bind/phone/token?phone=" + phoeCodes + "&code=" ; // http://api.guiderhealth.com/
-                            WxBindStr wxBindStr = new Gson().fromJson(wxStr, WxBindStr.class);
-                            //Log.e(TAG, "--------wx=" + wxBindStr.toString());
-                            requestPressent.getRequestJSONObject(1002, bindUrl, GuiderWxBindPhoneActivity.this, new Gson().toJson(wxBindStr), 2);
-
+                            String bindUrl = BuildConfig.APIURL +
+                                    "api/v2/wechat/bind/phone/token?phone=" + phoeCodes + "&code=" ;
+                            // http://api.guiderhealth.com/
+                            if (!StringUtil.isEmpty(wxStr)){
+                                WxBindStr wxBindStr = new Gson().fromJson(wxStr, WxBindStr.class);
+                                //Log.e(TAG, "--------wx=" + wxBindStr.toString());
+                                requestPressent.getRequestJSONObject(1002, bindUrl,
+                                        GuiderWxBindPhoneActivity.this,
+                                        new Gson().toJson(wxBindStr), 2);
+                            }
                         } else {
                             if (!WatchUtils.isEmpty(data.toString()) && data.toString().contains("java.lang.Throwable:")) {
                                 String res = data.toString().replace("java.lang.Throwable:", "").trim();

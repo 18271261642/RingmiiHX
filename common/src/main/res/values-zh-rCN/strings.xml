@@ -52,4 +52,157 @@
     <string name="FORAET">福尔耳温</string>
 
     <string name="zy_download_tips">正在下载中 , 请耐心等待...</string>
+
+    <!-- wuweikang -->
+    <string name = "wwk_op_guide_">操作指南:</string>
+    <string name = "wwk_bt_connectting">蓝牙连接中</string>
+    <string name = "wwk_bt_connect_fail">蓝牙连接失败 重新连接</string>
+
+    <string name = "wwk_ecg">十二导心电</string>
+    <string name = "wwk_tips1">请确保电极滑臂已拉出. \n\n请确保上方指示灯常亮.</string>
+    <string name = "wwk_next">确认已开机 下一步</string>
+
+    <string name = "wwk_not_found_device">未发现测量仪</string>
+    <string name = "wwk_confirm_device_open">连接失败, 请确认设备是否开机</string>
+    <string name = "wwk_battery_tips">请检查设备电量是否充足.\n或重启测量仪后重新连接.</string>
+    <string name = "wwk_bt_conectting_">正在连接蓝牙...</string>
+
+    <string name = "wwk_keeep_hoding">收到干扰 , 请保持平稳</string>
+
+
+    <string name = "wwk_ecg_conclusion1">** 正常心电图 **</string>
+    <string name = "wwk_ecg_conclusion2">** 非典型心电图 **</string>
+    <string name = "wwk_ecg_conclusion3">** 可疑心电图 **</string>
+    <string name = "wwk_ecg_conclusion4">** 异常心电图 **</string>
+
+    <string name = "wwk_ecg_subconclusion1">正常心电图</string>
+    <string name = "wwk_ecg_subconclusion2">窦性心律</string>
+    <string name = "wwk_ecg_subconclusion3">心动过速</string>
+    <string name = "wwk_ecg_subconclusion4">窦性心动过速</string>
+    <string name = "wwk_ecg_subconclusion5">室上性心动过速</string>
+    <string name = "wwk_ecg_subconclusion6">阵发性室上性心动过速</string>
+    <string name = "wwk_ecg_subconclusion7">室性心动过速</string>
+    <string name = "wwk_ecg_subconclusion8">短阵室性心动过速</string>
+    <string name = "wwk_ecg_subconclusion9">心动过缓</string>
+    <string name = "wwk_ecg_subconclusion10">窦性心动过缓</string>
+    <string name = "wwk_ecg_subconclusion11">窦性心动过缓伴不齐</string>
+    <string name = "wwk_ecg_subconclusion12">窦性心律不齐</string>
+    <string name = "wwk_ecg_subconclusion13">室性早搏</string>
+    <string name = "wwk_ecg_subconclusion14">成对室性早搏</string>
+    <string name = "wwk_ecg_subconclusion15">多形性室性早搏</string>
+    <string name = "wwk_ecg_subconclusion16">多源性室性早搏</string>
+    <string name = "wwk_ecg_subconclusion17">频发室性早搏</string>
+    <string name = "wwk_ecg_subconclusion18">室性早搏二联律</string>
+    <string name = "wwk_ecg_subconclusion19">室性早搏三联律</string>
+    <string name = "wwk_ecg_subconclusion20">室上性早搏</string>
+    <string name = "wwk_ecg_subconclusion21">偶发室上性早搏</string>
+    <string name = "wwk_ecg_subconclusion22">成对室上性早搏</string>
+    <string name = "wwk_ecg_subconclusion23">频发室上性早搏</string>
+    <string name = "wwk_ecg_subconclusion24">室上性早搏二联律</string>
+    <string name = "wwk_ecg_subconclusion25">室上性早搏三联律</string>
+    <string name = "wwk_ecg_subconclusion26">心房颤动 </string>
+    <string name = "wwk_ecg_subconclusion27">心房扑动</string>
+    <string name = "wwk_ecg_subconclusion28">心室颤动</string>
+    <string name = "wwk_ecg_subconclusion29">心室扑动</string>
+    <string name = "wwk_ecg_subconclusion30">阵发性心房颤动</string>
+    <string name = "wwk_ecg_subconclusion31">全心停搏</string>
+    <string name = "wwk_ecg_subconclusion32">I度房室传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion33">II度I型房室传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion34">II度II型房室传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion35">III度房室传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion36">不完全右束支传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion37">完全右束支传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion38">不完全左束支传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion39">完全左束支传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion40">室内传导阻滞</string>
+    <string name = "wwk_ecg_subconclusion41">左前分支阻滞</string>
+    <string name = "wwk_ecg_subconclusion42">左后分支阻滞</string>
+    <string name = "wwk_ecg_subconclusion43">预激综合症</string>
+    <string name = "wwk_ecg_subconclusion44">左心房肥大</string>
+    <string name = "wwk_ecg_subconclusion45">怀疑左心房肥大</string>
+    <string name = "wwk_ecg_subconclusion46">右心房肥大</string>
+    <string name = "wwk_ecg_subconclusion47">怀疑右心房肥大</string>
+    <string name = "wwk_ecg_subconclusion48">双心房肥大</string>
+    <string name = "wwk_ecg_subconclusion49">怀疑双心房肥大</string>
+    <string name = "wwk_ecg_subconclusion50">左心室肥大</string>
+    <string name = "wwk_ecg_subconclusion51">怀疑左心室肥大</string>
+    <string name = "wwk_ecg_subconclusion52">左心室肥大伴ST-T改变</string>
+    <string name = "wwk_ecg_subconclusion53">左室高电压</string>
+    <string name = "wwk_ecg_subconclusion54">右心室肥大</string>
+    <string name = "wwk_ecg_subconclusion55">怀疑右心室肥大</string>
+    <string name = "wwk_ecg_subconclusion56">右室肥大伴ST-T改变</string>
+    <string name = "wwk_ecg_subconclusion57">急性前壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion58">亚急性前壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion59">陈旧性前壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion60">急性前间壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion61">亚急性前间壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion62">陈旧性前间壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion63">急性广泛前壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion64">亚急性广泛前壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion65">陈旧性广泛前壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion66">急性侧壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion67">亚急性侧壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion68">陈旧性侧壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion69">急性高侧壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion70">亚急性高侧壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion71">陈旧性高侧壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion72">急性下壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion73">亚急性下壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion74">陈旧性下壁心肌梗死</string>
+    <string name = "wwk_ecg_subconclusion75">不确定心电轴</string>
+    <string name = "wwk_ecg_subconclusion76">轻度电轴左偏</string>
+    <string name = "wwk_ecg_subconclusion77">电轴左偏</string>
+    <string name = "wwk_ecg_subconclusion78">轻度电轴右偏</string>
+    <string name = "wwk_ecg_subconclusion79">电轴右偏</string>
+    <string name = "wwk_ecg_subconclusion80">ST-T改变</string>
+    <string name = "wwk_ecg_subconclusion81">ST段抬高</string>
+    <string name = "wwk_ecg_subconclusion82">ST段下降</string>
+    <string name = "wwk_ecg_subconclusion83">T波高耸</string>
+    <string name = "wwk_ecg_subconclusion84">T波低平</string>
+    <string name = "wwk_ecg_subconclusion85">T波倒置</string>
+    <string name = "wwk_ecg_subconclusion86">PR间期缩短</string>
+    <string name = "wwk_ecg_subconclusion87">QT间期缩短</string>
+    <string name = "wwk_ecg_subconclusion88">QT间期延长</string>
+    <string name = "wwk_ecg_subconclusion89">异常Q波</string>
+    <string name = "wwk_ecg_subconclusion90">肢体导联低电压</string>
+    <string name = "wwk_ecg_subconclusion91">胸导联低电压</string>
+    <string name = "wwk_ecg_subconclusion92">全导联低电压</string>
+    <string name = "wwk_ecg_subconclusion93">右位心</string>
+    <string name = "wwk_ecg_subconclusion94">心房起搏心电图</string>
+    <string name = "wwk_ecg_subconclusion95">心室起搏心电图</string>
+    <string name = "wwk_ecg_subconclusion96">双腔起搏心电图</string>
+    <string name = "wwk_ecg_subconclusion97">早期复极综合征</string>
+    <string name = "wwk_ecg_subconclusion98">窦性停搏</string>
+    <string name = "wwk_ecg_subconclusion99">顺钟向转位</string>
+    <string name = "wwk_ecg_subconclusion100">逆钟向转位</string>
+    <string name = "wwk_ecg_subconclusion101">S1S2S3 综合征</string>
+
+    <string name = "wwk_paper_speed_">纸速：</string>
+    <string name = "wwk_low_speed">低速</string>
+    <string name = "wwk_gain_">增益：</string>
+    <string name = "wwk_gain">增益</string>
+    <string name = "wwk_frequency_filtering">工频滤波</string>
+    <string name = "wwk_baseline_filtering">基线滤波</string>
+    <string name = "wwk_emg_filtering">肌电滤波</string>
+    <string name = "wwk_low_pass_filtering">低通滤波</string>
+
+    <string name = "wwk_test_left_time">测量剩余时间</string>
+    <string name = "wwk_second">秒</string>
+
+    <string name = "wwk_hr">心率/分</string>
+    <string name = "wwk_times">次</string>
+    <string name = "wwk_result_tips_">测量结果提示：</string>
+    <string name = "wwk_ecg_image_abnormal">*可疑心电图*</string>
+    <string name = "wwk_ask_doctor">本测量结果非医疗诊断，疾病诊断请咨询专业医生</string>
+    <string name = "wwk_next1">下一步</string>
+
+    <string name = "wwk_device_connect_error">连接设备失败，请确认电池电量是否充足或者重新打开设备</string>
+    <string name = "wwk_bt_device_conn_fail">设备蓝牙没有连接成功</string>
+
+    <string name = "wwk_guider_cgm">无创血糖仪</string>
+
+    <string name = "wwk_title1">开机操作</string>
+    <string name = "wwk_title2">蓝牙连接</string>
+    <string name = "wwk_title3">设备测量</string>
+    <string name = "wwk_title4">测量结果</string>
 </resources>

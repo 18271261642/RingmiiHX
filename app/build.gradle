@@ -219,7 +219,7 @@ dependencies {
     implementation project(':simpleble')
     implementation project(':libbase')
     implementation project(':glu_phone')
-    implementation project(':wuweikang')
+//    implementation project(':wuweikang')
     implementation project(path: ':wheelpicker')
     implementation project(':circleviewprogress')
     implementation files('libs/mframework.jar')

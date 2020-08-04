@@ -52,4 +52,233 @@
     <string name="FORAET">福爾耳溫</string>
 
     <string name="zy_download_tips">正在下載中 , 請耐心等待...</string>
+        <!-- wuweikang -->
+        
+    <string name="wwk_op_guide_">操作指南:</string>
+        
+    <string name="wwk_bt_connectting">藍牙連接中</string>
+        
+    <string name="wwk_bt_connect_fail">藍牙連接失敗 重新連接</string>
+
+        
+    <string name="wwk_ecg">十二導心電</string>
+        
+    <string name="wwk_tips1">請確保電極滑臂已拉出. \n\n請確保上方指示燈常亮.</string>
+        
+    <string name="wwk_next">確認已開機 下一步</string>
+
+        
+    <string name="wwk_not_found_device">未發現測量儀</string>
+        
+    <string name="wwk_confirm_device_open">連接失敗, 請確認設備是否開機</string>
+        
+    <string name="wwk_battery_tips">請檢查設備電量是否充足.\n或重啟測量儀後重新連接.</string>
+        
+    <string name="wwk_bt_conectting_">正在連接藍牙...</string>
+
+        
+    <string name="wwk_keeep_hoding">收到干擾 , 請保持平穩</string>
+
+
+        
+    <string name="wwk_ecg_conclusion1">** 正常心電圖 **</string>
+        
+    <string name="wwk_ecg_conclusion2">** 非典型心電圖 **</string>
+        
+    <string name="wwk_ecg_conclusion3">** 可疑心電圖 **</string>
+        
+    <string name="wwk_ecg_conclusion4">** 異常心電圖 **</string>
+
+        
+    <string name="wwk_ecg_subconclusion1">正常心電圖</string>
+        
+    <string name="wwk_ecg_subconclusion2">竇性心律</string>
+        
+    <string name="wwk_ecg_subconclusion3">心動過速</string>
+        
+    <string name="wwk_ecg_subconclusion4">竇性心動過速</string>
+        
+    <string name="wwk_ecg_subconclusion5">室上性心動過速</string>
+        
+    <string name="wwk_ecg_subconclusion6">陣發性室上性心動過速</string>
+        
+    <string name="wwk_ecg_subconclusion7">室性心動過速</string>
+        
+    <string name="wwk_ecg_subconclusion8">短陣室性心動過速</string>
+        
+    <string name="wwk_ecg_subconclusion9">心動過緩</string>
+        
+    <string name="wwk_ecg_subconclusion10">竇性心動過緩</string>
+        
+    <string name="wwk_ecg_subconclusion11">竇性心動過緩伴不齊</string>
+        
+    <string name="wwk_ecg_subconclusion12">竇性心律不齊</string>
+        
+    <string name="wwk_ecg_subconclusion13">室性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion14">成對室性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion15">多形性室性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion16">多源性室性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion17">頻發室性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion18">室性早搏二聯律</string>
+        
+    <string name="wwk_ecg_subconclusion19">室性早搏三聯律</string>
+        
+    <string name="wwk_ecg_subconclusion20">室上性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion21">偶發室上性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion22">成對室上性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion23">頻發室上性早搏</string>
+        
+    <string name="wwk_ecg_subconclusion24">室上性早搏二聯律</string>
+        
+    <string name="wwk_ecg_subconclusion25">室上性早搏三聯律</string>
+        
+    <string name="wwk_ecg_subconclusion26">心房顫動 </string>
+        
+    <string name="wwk_ecg_subconclusion27">心房撲動</string>
+        
+    <string name="wwk_ecg_subconclusion28">心室顫動</string>
+        
+    <string name="wwk_ecg_subconclusion29">心室撲動</string>
+        
+    <string name="wwk_ecg_subconclusion30">陣發性心房顫動</string>
+        
+    <string name="wwk_ecg_subconclusion31">全心停搏</string>
+        
+    <string name="wwk_ecg_subconclusion32">I度房室傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion33">II度I型房室傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion34">II度II型房室傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion35">III度房室傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion36">不完全右束支傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion37">完全右束支傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion38">不完全左束支傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion39">完全左束支傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion40">室內傳導阻滯</string>
+        
+    <string name="wwk_ecg_subconclusion41">左前分支阻滯</string>
+    <string name="wwk_ecg_subconclusion42">左後分支阻滯</string>
+    <string name="wwk_ecg_subconclusion43">預激綜合癥</string>
+    <string name="wwk_ecg_subconclusion44">左心房肥大</string>
+    <string name="wwk_ecg_subconclusion45">懷疑左心房肥大</string>
+    <string name="wwk_ecg_subconclusion46">右心房肥大</string>
+    <string name="wwk_ecg_subconclusion47">懷疑右心房肥大</string>
+    <string name="wwk_ecg_subconclusion48">雙心房肥大</string>
+    <string name="wwk_ecg_subconclusion49">懷疑雙心房肥大</string>
+    <string name="wwk_ecg_subconclusion50">左心室肥大</string>
+    <string name="wwk_ecg_subconclusion51">懷疑左心室肥大</string>
+    <string name="wwk_ecg_subconclusion52">左心室肥大伴ST-T改變</string>
+    <string name="wwk_ecg_subconclusion53">左室高電壓</string>
+    <string name="wwk_ecg_subconclusion54">右心室肥大</string>
+    <string name="wwk_ecg_subconclusion55">懷疑右心室肥大</string>
+    <string name="wwk_ecg_subconclusion56">右室肥大伴ST-T改變</string>
+    <string name="wwk_ecg_subconclusion57">急性前壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion58">亞急性前壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion59">陳舊性前壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion60">急性前間壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion61">亞急性前間壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion62">陳舊性前間壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion63">急性廣泛前壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion64">亞急性廣泛前壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion65">陳舊性廣泛前壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion66">急性側壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion67">亞急性側壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion68">陳舊性側壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion69">急性高側壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion70">亞急性高側壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion71">陳舊性高側壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion72">急性下壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion73">亞急性下壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion74">陳舊性下壁心肌梗死</string>
+    <string name="wwk_ecg_subconclusion75">不確定心電軸</string>
+    <string name="wwk_ecg_subconclusion76">輕度電軸左偏</string>
+    <string name="wwk_ecg_subconclusion77">電軸左偏</string>
+    <string name="wwk_ecg_subconclusion78">輕度電軸右偏</string>
+    <string name="wwk_ecg_subconclusion79">電軸右偏</string>
+    <string name="wwk_ecg_subconclusion80">ST-T改變</string>
+    <string name="wwk_ecg_subconclusion81">ST段擡高</string>
+    <string name="wwk_ecg_subconclusion82">ST段下降</string>
+    <string name="wwk_ecg_subconclusion83">T波高聳</string>
+    <string name="wwk_ecg_subconclusion84">T波低平</string>
+    <string name="wwk_ecg_subconclusion85">T波倒置</string>
+    <string name="wwk_ecg_subconclusion86">PR間期縮短</string>
+    <string name="wwk_ecg_subconclusion87">QT間期縮短</string>
+    <string name="wwk_ecg_subconclusion88">QT間期延長</string>
+    <string name="wwk_ecg_subconclusion89">異常Q波</string>
+    <string name="wwk_ecg_subconclusion90">肢體導聯低電壓</string>
+    <string name="wwk_ecg_subconclusion91">胸導聯低電壓</string>
+    <string name="wwk_ecg_subconclusion92">全導聯低電壓</string>
+    <string name="wwk_ecg_subconclusion93">右位心</string>
+    <string name="wwk_ecg_subconclusion94">心房起搏心電圖</string>
+    <string name="wwk_ecg_subconclusion95">心室起搏心電圖</string>
+    <string name="wwk_ecg_subconclusion96">雙腔起搏心電圖</string>
+    <string name="wwk_ecg_subconclusion97">早期復極綜合征</string>
+    <string name="wwk_ecg_subconclusion98">竇性停搏</string>
+    <string name="wwk_ecg_subconclusion99">順鐘向轉位</string>
+    <string name="wwk_ecg_subconclusion100">逆鐘向轉位</string>
+    <string name="wwk_ecg_subconclusion101">S1S2S3 綜合征</string>
+    <string name="wwk_paper_speed_">紙速：</string>
+        
+    <string name="wwk_low_speed">低速</string>
+        
+    <string name="wwk_gain_">增益：</string>
+        
+    <string name="wwk_gain">增益</string>
+        
+    <string name="wwk_frequency_filtering">工頻濾波</string>
+        
+    <string name="wwk_baseline_filtering">基線濾波</string>
+        
+    <string name="wwk_emg_filtering">肌電濾波</string>
+        
+    <string name="wwk_low_pass_filtering">低通濾波</string>
+
+        
+    <string name="wwk_test_left_time">測量剩餘時間</string>
+        
+    <string name="wwk_second">秒</string>
+
+        
+    <string name="wwk_hr">心率/分</string>
+        
+    <string name="wwk_times">次</string>
+        
+    <string name="wwk_result_tips_">測量結果提示：</string>
+        
+    <string name="wwk_ecg_image_abnormal">*可疑心電圖*</string>
+        
+    <string name="wwk_ask_doctor">本測量結果非醫療診斷，疾病診斷請諮詢專業醫师</string>
+        
+    <string name="wwk_next1">下一步</string>
+
+        
+    <string name="wwk_device_connect_error">連接設備失敗，請確認電池電量是否充足或者重新打開設備</string>
+        
+    <string name="wwk_bt_device_conn_fail">設備藍牙沒有連接成功</string>
+
+        
+    <string name="wwk_guider_cgm">無創血糖儀</string>
+
+        
+    <string name="wwk_title1">開機操作</string>
+        
+    <string name="wwk_title2">藍牙連接</string>
+        
+    <string name="wwk_title3">設備測量</string>
+        
+    <string name="wwk_title4">測量結果</string>
 </resources>
