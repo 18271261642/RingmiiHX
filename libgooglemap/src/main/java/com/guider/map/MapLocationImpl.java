@@ -72,7 +72,7 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
         }
         if (mGeoApicontext == null) {
             mGeoApicontext = new GeoApiContext.Builder()
-                    .apiKey(mContext.getResources().getString(R.string.google_maps_key))
+                    .apiKey("AIzaSyBn2pd95dFYdnPTR3ks5poGlnsC-t27JTc")
                     .build();
         }
 

@@ -21,13 +21,14 @@ import android.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.DeviceActivity;
-import com.guider.healthring.activity.DeviceActivityGlu;
+import com.guider.healthring.activity.HealthResultShowActivity;
 import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.b30.b30homefragment.B30HomeFragment;
 import com.guider.healthring.b30.b30minefragment.B30MineFragment;
@@ -47,11 +48,9 @@ import com.guider.healthring.widget.NoScrollViewPager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.runtime.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
-import com.yanzhenjie.permission.Setting;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,11 +200,9 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
                                 DeviceActivity.start(B30HomeActivity.this, (int) accountId);
                                 break;
                             case 2: // 竖版无创
-                                long accountIdV = (long) SharedPreferencesUtils
-                                        .getParam(MyApp.getContext(), "accountIdGD",
-                                                0L);
-                                DeviceActivityGlu.startGlu(B30HomeActivity.this,
-                                        (int) accountIdV);
+                                Intent intent = new Intent(B30HomeActivity.this,
+                                        HealthResultShowActivity.class);
+                                startActivity(intent);
                                 break;
                             default:// 运动
                                 b30ViewPager.setCurrentItem(2, false);
@@ -410,16 +407,8 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
                 .setCancelable(false)
                 .setTitle(getResources().getString(R.string.prompt))
                 .setMessage(message)
-                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setPermission();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancle), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+                .setPositiveButton(getResources().getString(R.string.confirm), (dialog, which) -> setPermission())
+                .setNegativeButton(getResources().getString(R.string.cancle), (dialog, which) -> {
                 })
                 .show();
     }
@@ -428,17 +417,15 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
      * Set permissions.
      */
     private void setPermission() {
-        AndPermission.with(this)
-                .runtime()
-                .setting()
-                .onComeback(new Setting.Action() {
-                    @Override
-                    public void onAction() {
-                        //Toast.makeText(MyApp.getContext(),"用户从设置页面返回。",
-                        // Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .start();
+        AndPermission.with(this).runtime().setting().start(1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {//                Toast.makeText(B30HomeActivity.this,"用户从设置页面返回。",
+//                        Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

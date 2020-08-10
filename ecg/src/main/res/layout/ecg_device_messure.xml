@@ -107,17 +107,17 @@
             android:layout_marginTop="@dimen/dp_25">
 
             <LinearLayout
-                android:visibility="invisible"
                 android:id="@+id/wave_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="invisible">
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/wave"
                     android:layout_width="@dimen/dp_450"
                     android:layout_height="@dimen/dp_130"
-                    android:background="#F18937"></com.github.mikephil.charting.charts.LineChart>
+                    android:background="#F18937" />
 
                 <com.guider.health.ecg.view.ECGCompletedView
                     android:id="@+id/time_measure"
@@ -137,19 +137,19 @@
             <ImageView
                 android:layout_width="@dimen/dp_77"
                 android:layout_height="@dimen/dp_251"
-                android:background="@mipmap/people"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_80"
                 android:layout_marginLeft="@dimen/dp_80"
-                android:layout_marginStart="@dimen/dp_80"/>
+                android:background="@mipmap/people" />
 
             <TextView
                 android:id="@+id/ecg_reminder"
-                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/connecting"
                 android:textSize="@dimen/sp_25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:visibility="visible" />
 
 
             <Button

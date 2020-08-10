@@ -102,18 +102,14 @@ public class UpdateAlarmLoc {
     private void getGSM(){
 
         gsm = new GSM_CellLocation();
-        gsm.setOnGSMListeners(new GSM_CellLocation.OnGSMListeners() {
+        gsm.setOnGSMListeners((mcc, mnc, lac, cell_id, rssi) -> {
+            MCC = mcc;
+            MNC = mnc;
+            LAC = lac;
+            CELL_ID = cell_id;
+            RSSI = rssi;
 
-            @Override
-            public void onGsmParam(String mcc, String mnc, String lac, String cell_id, String rssi) {
-                MCC = mcc;
-                MNC = mnc;
-                LAC = lac;
-                CELL_ID = cell_id;
-                RSSI = rssi;
-
-                System.out.println("Mark MCC = " + MCC + ", MNC = " + MNC + ", LAC = " + LAC + ", CELL_ID = " + CELL_ID + ", RSSI = " + RSSI);
-            }
+            System.out.println("Mark MCC = " + MCC + ", MNC = " + MNC + ", LAC = " + LAC + ", CELL_ID = " + CELL_ID + ", RSSI = " + RSSI);
         });
         gsm.GsmLocation();
 

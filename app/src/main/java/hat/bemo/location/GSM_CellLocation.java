@@ -1,5 +1,6 @@
 package hat.bemo.location;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import android.telephony.CellIdentityGsm;
@@ -46,6 +47,7 @@ public class GSM_CellLocation {
         mListener = ongsmListener;
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @SuppressWarnings("static-access")
     public GSM_CellLocation(){
@@ -53,6 +55,7 @@ public class GSM_CellLocation {
         cellInfos = (List<CellInfo>) telephonyManager.getAllCellInfo();
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void GsmLocation(){
         MCC_list = new StringBuffer();
@@ -181,41 +184,41 @@ public class GSM_CellLocation {
         MCCS = MCC;
         MNCS = MNC;
         // 獲取鄰區基站信息
-        List<NeighboringCellInfo> infos = telephonyManager.getNeighboringCellInfo();
-        StringBuffer sb = new StringBuffer("總數 : " + infos.size() + "\n");
-
-        for (NeighboringCellInfo info1 : infos) {  // 根據鄰區總數進行循環
-            sb.append(" LAC : " + info1.getLac()); // 取出當前鄰區的LAC
-            sb.append(" CID : " + info1.getCid()); // 取出當前鄰區的CID
-            sb.append(" Psc : " + info1.getPsc());
-            sb.append(" Rssi : " + (-113 + 2 * info1.getRssi()) + "\n"); // 獲取鄰區基站信號強度
-
-            String LACS = "0";
-            String CELL_IDS = "0";
-            String RSSIS = "0";
-
-            LACS = String.valueOf(info1.getLac());
-            CELL_IDS = String.valueOf(info1.getCid());
-            RSSIS = String.valueOf((-113 + 2 * info1.getRssi()));
-
-            if(LACS.equals("-1") | CELL_IDS.equals("-1")){
-                LACS = "0";
-                CELL_IDS = "0";
-            }
-
-            if(LACS == null || LACS.equals("") && CELL_IDS == null || CELL_IDS.equals("") && RSSIS == null || RSSIS.equals("")){
-                LACS = "0";
-                CELL_IDS = "0";
-                RSSIS = "0";
-            }
-
-            MCC = MCC_list.append(MCCS).append(";").toString();
-            MNC = MNC_list.append(MNCS).append(";").toString();
-            LAC  = LAC_list.append(LACS).append(";").toString();
-            CELL_ID  = CELL_ID_list.append(CELL_IDS).append(";").toString();
-            RSSI  = RSSI_list.append(RSSIS).append(";").toString();
-//        	Log.e("MCC_List", "花惹發花惹發花惹發花惹發花惹發花惹發花惹發花惹發");
-        }
+//        List<NeighboringCellInfo> infos = telephonyManager.getNeighboringCellInfo();
+//        StringBuffer sb = new StringBuffer("總數 : " + infos.size() + "\n");
+//
+//        for (NeighboringCellInfo info1 : infos) {  // 根據鄰區總數進行循環
+//            sb.append(" LAC : " + info1.getLac()); // 取出當前鄰區的LAC
+//            sb.append(" CID : " + info1.getCid()); // 取出當前鄰區的CID
+//            sb.append(" Psc : " + info1.getPsc());
+//            sb.append(" Rssi : " + (-113 + 2 * info1.getRssi()) + "\n"); // 獲取鄰區基站信號強度
+//
+//            String LACS = "0";
+//            String CELL_IDS = "0";
+//            String RSSIS = "0";
+//
+//            LACS = String.valueOf(info1.getLac());
+//            CELL_IDS = String.valueOf(info1.getCid());
+//            RSSIS = String.valueOf((-113 + 2 * info1.getRssi()));
+//
+//            if(LACS.equals("-1") | CELL_IDS.equals("-1")){
+//                LACS = "0";
+//                CELL_IDS = "0";
+//            }
+//
+//            if(LACS == null || LACS.equals("") && CELL_IDS == null || CELL_IDS.equals("") && RSSIS == null || RSSIS.equals("")){
+//                LACS = "0";
+//                CELL_IDS = "0";
+//                RSSIS = "0";
+//            }
+//
+//            MCC = MCC_list.append(MCCS).append(";").toString();
+//            MNC = MNC_list.append(MNCS).append(";").toString();
+//            LAC  = LAC_list.append(LACS).append(";").toString();
+//            CELL_ID  = CELL_ID_list.append(CELL_IDS).append(";").toString();
+//            RSSI  = RSSI_list.append(RSSIS).append(";").toString();
+////        	Log.e("MCC_List", "花惹發花惹發花惹發花惹發花惹發花惹發花惹發花惹發");
+//        }
 
         if(MCC == null || MCC.equals("") && MNC == null || MNC.equals("") && LAC == null || LAC.equals("") &&
                 CELL_ID == null || CELL_ID.equals("") && RSSI == null || RSSI.equals(""))

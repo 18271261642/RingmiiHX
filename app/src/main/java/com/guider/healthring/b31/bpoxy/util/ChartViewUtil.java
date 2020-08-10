@@ -3,10 +3,7 @@ package com.guider.healthring.b31.bpoxy.util;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 
-import com.guider.healthring.b31.bpoxy.enums.Constants;
-import com.guider.healthring.b31.bpoxy.markview.SPMarkerView;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -14,8 +11,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.guider.healthring.b31.bpoxy.enums.Constants;
+import com.guider.healthring.b31.bpoxy.markview.SPMarkerView;
 import com.veepoo.protocol.model.enums.ESpo2hDataType;
 
 import java.util.List;
@@ -135,10 +134,10 @@ public class ChartViewUtil {
         xAxis.setAvoidFirstLastClipping(false);
         xAxis.setCenterAxisLabels(false);
         xAxis.setTextColor(xColor);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
+        xAxis.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getFormattedValue(float xPosition, AxisBase axis) {
-                int valueInt = (int) xPosition;
+            public String getFormattedValue(float value) {
+                int valueInt = (int) value;
                 return getXTimeByPosition(valueInt);
             }
         });
@@ -204,9 +203,9 @@ public class ChartViewUtil {
             LimitLine limmitLine = getLimmitLine(lines[i]);
             leftAxis.addLimitLine(limmitLine);
         }
-        leftAxis.setValueFormatter(new IAxisValueFormatter() {
+        leftAxis.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value) {
                 return getLeftYText(tag, (int) value);
             }
         });

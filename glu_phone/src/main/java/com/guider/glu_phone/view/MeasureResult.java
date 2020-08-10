@@ -80,70 +80,67 @@ public class MeasureResult extends GlocoseFragment{
         }
 
 
-        Glucose.getInstance().startStandardRun(new StandardCallback() {
-            @Override
-            public void onResult(boolean isFinish) {
+        Glucose.getInstance().startStandardRun(isFinish -> {
 
-                if (MeasureResult.this.isDetached()) {
-                    return;
-                }
-
-                if (!isFinish){
-                    return;
-                }
-
-                if (Glucose.getInstance().get_glucose() == 0){
-                    view.findViewById(R.id.glu_result_arrow).setVisibility(View.GONE);
-                    ((TextView) view.findViewById(R.id.glu_result)).setTextColor(Color.parseColor("#FFFFFF"));
-                    ((TextView) view.findViewById(R.id.glu_result_danwei)).setTextColor(Color.parseColor("#FFFFFF"));
-                }else if (Glucose.getInstance().get_glucose() > 0){
-                    ((TextView) view.findViewById(R.id.glu_result)).setTextColor(Color.parseColor("#FF0000"));
-                    view.findViewById(R.id.glu_result_arrow).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.glu_result_arrow).setBackgroundResource(R.mipmap.up);
-                    ((TextView) view.findViewById(R.id.glu_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
-                }else if (Glucose.getInstance().get_glucose() < 0){
-                    ((TextView) view.findViewById(R.id.glu_result)).setTextColor(Color.parseColor("#FF0000"));
-                    view.findViewById(R.id.glu_result_arrow).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.glu_result_arrow).setBackgroundResource(R.mipmap.down);
-                    ((TextView) view.findViewById(R.id.glu_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
-                }
-
-
-                if (Glucose.getInstance().get_pulse() == 0){
-                    view.findViewById(R.id.pulse_result_arrow).setVisibility(View.INVISIBLE);
-                    ((TextView) view.findViewById(R.id.pulse_result)).setTextColor(Color.parseColor("#FFFFFF"));
-                    ((TextView) view.findViewById(R.id.pulse_result_danwei)).setTextColor(Color.parseColor("#FFFFFF"));
-                }else if (Glucose.getInstance().get_glucose() > 0){
-                    ((TextView) view.findViewById(R.id.pulse_result)).setTextColor(Color.parseColor("#FF0000"));
-                    view.findViewById(R.id.pulse_result_arrow).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.pulse_result_arrow).setBackgroundResource(R.mipmap.up);
-                    ((TextView) view.findViewById(R.id.pulse_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
-                }else if (Glucose.getInstance().get_glucose() < 0){
-                    ((TextView) view.findViewById(R.id.pulse_result)).setTextColor(Color.parseColor("#FF0000"));
-                    view.findViewById(R.id.pulse_result_arrow).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.pulse_result_arrow).setBackgroundResource(R.mipmap.down);
-                    ((TextView) view.findViewById(R.id.pulse_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
-                }
-
-
-                if (Glucose.getInstance().get_speed() == 0){
-                    view.findViewById(R.id.speed_result_arrow).setVisibility(View.INVISIBLE);
-                    ((TextView) view.findViewById(R.id.speed_result)).setTextColor(Color.parseColor("#FFFFFF"));
-                    ((TextView) view.findViewById(R.id.speed_result_danwei)).setTextColor(Color.parseColor("#FFFFFF"));
-                }else if (Glucose.getInstance().get_glucose() > 0){
-                    ((TextView) view.findViewById(R.id.speed_result)).setTextColor(Color.parseColor("#FF0000"));
-                    view.findViewById(R.id.speed_result_arrow).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.speed_result_arrow).setBackgroundResource(R.mipmap.up);
-                    ((TextView) view.findViewById(R.id.speed_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
-                }else if (Glucose.getInstance().get_glucose() < 0){
-                    ((TextView) view.findViewById(R.id.speed_result)).setTextColor(Color.parseColor("#FF0000"));
-                    view.findViewById(R.id.speed_result_arrow).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.speed_result_arrow).setBackgroundResource(R.mipmap.down);
-                    ((TextView) view.findViewById(R.id.speed_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
-                }
-
-
+            if (MeasureResult.this.isDetached()) {
+                return;
             }
+
+            if (!isFinish){
+                return;
+            }
+
+            if (Glucose.getInstance().get_glucose() == 0){
+                view.findViewById(R.id.glu_result_arrow).setVisibility(View.GONE);
+                ((TextView) view.findViewById(R.id.glu_result)).setTextColor(Color.parseColor("#FFFFFF"));
+                ((TextView) view.findViewById(R.id.glu_result_danwei)).setTextColor(Color.parseColor("#FFFFFF"));
+            }else if (Glucose.getInstance().get_glucose() > 0){
+                ((TextView) view.findViewById(R.id.glu_result)).setTextColor(Color.parseColor("#FF0000"));
+                view.findViewById(R.id.glu_result_arrow).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.glu_result_arrow).setBackgroundResource(R.mipmap.up);
+                ((TextView) view.findViewById(R.id.glu_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
+            }else if (Glucose.getInstance().get_glucose() < 0){
+                ((TextView) view.findViewById(R.id.glu_result)).setTextColor(Color.parseColor("#FF0000"));
+                view.findViewById(R.id.glu_result_arrow).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.glu_result_arrow).setBackgroundResource(R.mipmap.down);
+                ((TextView) view.findViewById(R.id.glu_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
+            }
+
+
+            if (Glucose.getInstance().get_pulse() == 0){
+                view.findViewById(R.id.pulse_result_arrow).setVisibility(View.INVISIBLE);
+                ((TextView) view.findViewById(R.id.pulse_result)).setTextColor(Color.parseColor("#FFFFFF"));
+                ((TextView) view.findViewById(R.id.pulse_result_danwei)).setTextColor(Color.parseColor("#FFFFFF"));
+            }else if (Glucose.getInstance().get_glucose() > 0){
+                ((TextView) view.findViewById(R.id.pulse_result)).setTextColor(Color.parseColor("#FF0000"));
+                view.findViewById(R.id.pulse_result_arrow).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.pulse_result_arrow).setBackgroundResource(R.mipmap.up);
+                ((TextView) view.findViewById(R.id.pulse_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
+            }else if (Glucose.getInstance().get_glucose() < 0){
+                ((TextView) view.findViewById(R.id.pulse_result)).setTextColor(Color.parseColor("#FF0000"));
+                view.findViewById(R.id.pulse_result_arrow).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.pulse_result_arrow).setBackgroundResource(R.mipmap.down);
+                ((TextView) view.findViewById(R.id.pulse_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
+            }
+
+
+            if (Glucose.getInstance().get_speed() == 0){
+                view.findViewById(R.id.speed_result_arrow).setVisibility(View.INVISIBLE);
+                ((TextView) view.findViewById(R.id.speed_result)).setTextColor(Color.parseColor("#FFFFFF"));
+                ((TextView) view.findViewById(R.id.speed_result_danwei)).setTextColor(Color.parseColor("#FFFFFF"));
+            }else if (Glucose.getInstance().get_glucose() > 0){
+                ((TextView) view.findViewById(R.id.speed_result)).setTextColor(Color.parseColor("#FF0000"));
+                view.findViewById(R.id.speed_result_arrow).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.speed_result_arrow).setBackgroundResource(R.mipmap.up);
+                ((TextView) view.findViewById(R.id.speed_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
+            }else if (Glucose.getInstance().get_glucose() < 0){
+                ((TextView) view.findViewById(R.id.speed_result)).setTextColor(Color.parseColor("#FF0000"));
+                view.findViewById(R.id.speed_result_arrow).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.speed_result_arrow).setBackgroundResource(R.mipmap.down);
+                ((TextView) view.findViewById(R.id.speed_result_danwei)).setTextColor(Color.parseColor("#FF0000"));
+            }
+
+
         });
 
         try {

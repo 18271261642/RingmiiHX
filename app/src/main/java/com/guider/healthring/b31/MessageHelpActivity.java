@@ -15,7 +15,6 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
-import com.yanzhenjie.permission.Setting;
 import java.util.List;
 
 /**
@@ -208,17 +207,22 @@ public class MessageHelpActivity extends WatchBaseActivity implements View.OnCli
         }).start();
     }
 
+    /**
+     * Set permissions.
+     */
+    private void openPermission() {
 
-    //打开权限设置页面
-    private void openPermission(){
-        AndPermission.with(MessageHelpActivity.this)
-                .runtime().setting().onComeback(new Setting.Action() {
-            @Override
-            public void onAction() {
-
-            }
-        }).start();
+        AndPermission.with(this).runtime().setting().start(1);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {//                Toast.makeText(B30HomeActivity.this,"用户从设置页面返回。",
+//                        Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
 }

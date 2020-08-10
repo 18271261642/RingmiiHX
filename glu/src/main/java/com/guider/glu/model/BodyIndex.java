@@ -141,12 +141,12 @@ public class BodyIndex implements Parcelable {
     private String height;
     private String glucose;
     private String diabetesType = "Normal";
-    private String sulphonylureasState = "0";//磺酰脲
+    private String sulphonylureasState = "0";//璜脲类
     private String biguanidesState = "0";//双胍类
-    private String glucosedesesSate = "0";//甘梅抑制剂
+    private String glucosedesesSate = "0";//肝酶抑制剂
     private String createTime;
     private String updateTime;
-    private float value;
+    private float value;//血糖值
     private int id;
     private boolean isEatmedicine;
 

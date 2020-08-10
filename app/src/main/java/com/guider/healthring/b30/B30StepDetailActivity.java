@@ -196,7 +196,7 @@ public class B30StepDetailActivity extends WatchBaseActivity implements View.OnC
         barDataSet.setColor(Color.WHITE);//设置第一组数据颜色
 
         Legend mLegend = b30BarChart.getLegend();
-        mLegend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        mLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);//设置注解的位置在右
         mLegend.setForm(Legend.LegendForm.CIRCLE);// 样式
         mLegend.setFormSize(15.0f);// 字体
         mLegend.setTextColor(Color.WHITE);// 颜色
@@ -210,7 +210,9 @@ public class B30StepDetailActivity extends WatchBaseActivity implements View.OnC
 
         b30BarChart.setData(bardata);
         b30BarChart.setDoubleTapToZoomEnabled(false);   //双击缩放
-        b30BarChart.getLegend().setPosition(Legend.LegendPosition.ABOVE_CHART_LEFT);//设置注解的位置在左上方
+        b30BarChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        b30BarChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        //设置注解的位置在左上方
         b30BarChart.getLegend().setForm(Legend.LegendForm.CIRCLE);//这是左边显示小图标的形状
 
         b30BarChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);//设置X轴的位置

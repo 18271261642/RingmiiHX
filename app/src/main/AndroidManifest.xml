@@ -20,6 +20,7 @@
 
     <!--读写SD卡-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
@@ -101,16 +102,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:vmSafeMode="true"
-        tools:ignore="HardcodedDebugMode,UnusedAttribute"
+        tools:ignore="AllowBackup,HardcodedDebugMode,UnusedAttribute"
         tools:replace="android:label,android:name,android:icon"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
 
-
+        <!--支持高宽高比屏幕-->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+        <!--适配华为（huawei）刘海屏-->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+        <!--支持小米刘海屏-->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
-
 
         <!-- 高德地图
         <meta-data
@@ -1155,10 +1166,9 @@
 
 
         <activity android:name=".activity.DeviceActivity"
-            android:screenOrientation="landscape">
-        </activity>
-        <activity android:name=".activity.DeviceActivityGlu">
-        </activity>
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.DeviceActivityGlu"/>
+        <activity android:name=".activity.HealthResultShowActivity" />
     </application>
 
 </manifest>

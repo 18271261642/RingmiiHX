@@ -2,6 +2,7 @@ package com.guider.health.apilib;
 
 import com.guider.health.apilib.model.BloodPressure;
 import com.guider.health.apilib.model.BloodSugar;
+import com.guider.health.apilib.model.HeartMeasureResultListBean;
 import com.guider.health.apilib.model.Stethoscope;
 import com.guider.health.apilib.model.TempMeasure;
 import com.guider.health.apilib.model.hd.ArtMeasure;
@@ -101,6 +102,7 @@ public interface IUserHDApi {
 
     /**
      * 获取标准化
+     *
      * @param body
      * @return
      */
@@ -110,6 +112,7 @@ public interface IUserHDApi {
 
     /**
      * 获取六导心电的测量历史数据
+     *
      * @param accountId
      * @param page
      * @param row
@@ -124,6 +127,7 @@ public interface IUserHDApi {
 
     /**
      * 设置血糖状态
+     *
      * @param body
      * @return
      */
@@ -132,6 +136,7 @@ public interface IUserHDApi {
 
     /**
      * 获取血糖状态
+     *
      * @return
      */
     @GET("api/v1/nonbs/set")
@@ -139,9 +144,51 @@ public interface IUserHDApi {
 
     /**
      * 获取个人设置的个人预警
+     *
      * @return
      */
     @GET("api/v1/healthrange")
     Call<Healthrange> getHealthrange(@Query("accountId") int accountId);
 
+    /**
+     * 查询用户某段时间每天最新一次的血糖测量记录
+     *
+     * @param accountId 用户ID
+     * @param sTime     开始时间
+     * @param eTime     结束时间
+     * @return
+     */
+    @GET("api/v2/bs/newest")
+    Call<List<HeartMeasureResultListBean>> getBsDayLatestMeasureListByTime(
+            @Query("accountId") int accountId,
+            @Query("sTime") String sTime,
+            @Query("eTime") String eTime);
+
+    /**
+     * 查询用户某段时间每天最新一次的血氧测量记录
+     *
+     * @param accountId 用户ID
+     * @param sTime     开始时间
+     * @param eTime     结束时间
+     * @return
+     */
+    @GET("api/v2/bo/newest")
+    Call<List<HeartMeasureResultListBean>> getBoDayLatestMeasureListByTime(
+            @Query("accountId") int accountId,
+            @Query("sTime") String sTime,
+            @Query("eTime") String eTime);
+
+    /**
+     * 查询用户某段时间每天最新一次的心率测量记录
+     *
+     * @param accountId 用户ID
+     * @param sTime     开始时间
+     * @param eTime     结束时间
+     * @return
+     */
+    @GET("api/v2/hb/newest")
+    Call<List<HeartMeasureResultListBean>> getHbDayLatestMeasureListByTime(
+            @Query("accountId") int accountId,
+            @Query("sTime") String sTime,
+            @Query("eTime") String eTime);
 }

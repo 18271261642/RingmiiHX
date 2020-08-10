@@ -7,7 +7,7 @@
     <string name="measure_1_tip4">Please follow the calibration instructions on the calibration page.</string>
     <string name="measure_1_tip5">Don’t use when charging.</string>
     <string name="measure_1_tip6">Please calibrate device and update your profile once every week at least. </string>
-    <string name="next">Next</string>
+    <string name="glu_next">Next</string>
     <string name="measure_2_tip1">Bluetooth Connecting ......</string>
     <string name="measure_2_tip2">Please wait for the prompt to insert your finger.</string>
     <string name="measure_2_tip3">Recommended Ambient Temperature:27℃ -30℃</string>
@@ -50,4 +50,5 @@
     <string name="op_error">Operation failed</string>
     <string name="invalid_param">Illegal parameter</string>
     <string name="tips_setting">Please click on the upper right corner to set the height/weight parameter</string>
+    <string name="glu_unit_food_2">mmol/L</string>
 </resources>

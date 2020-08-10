@@ -7,7 +7,7 @@
     <string name="measure_1_tip4">請按照儀器校正頁說明校正</string>
     <string name="measure_1_tip5">請勿於充電時使用</string>
     <string name="measure_1_tip6">請每周校正儀器及個人資料 (至少壹次)</string>
-    <string name="next">下壹步</string>
+    <string name="glu_next">下壹步</string>
     <string name="measure_2_tip1">藍牙連接中......</string>
     <string name="measure_2_tip2">請等待提示再伸入手指</string>
     <string name="measure_2_tip3">建議環境溫度：30℃-27℃</string>
@@ -51,4 +51,5 @@
 
     <string name="invalid_param">非法參數</string>
     <string name="tips_setting">請先點擊右上角設置身高/體重參數</string>
+    <string name="glu_unit_food_2">mg/dL</string>
 </resources>

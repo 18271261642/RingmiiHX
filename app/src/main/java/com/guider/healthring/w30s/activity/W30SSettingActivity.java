@@ -19,6 +19,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.guider.healthring.B18I.b18isystemic.B18ITargetSettingActivity;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -503,9 +505,17 @@ public class W30SSettingActivity extends WatchBaseActivity implements  View.OnCl
     private Rationale rationale = new Rationale() {
         @Override
         public void showRationale(Context context, Object data, RequestExecutor executor) {
-            AndPermission.with(W30SSettingActivity.this).runtime().setting().start();
+            AndPermission.with(W30SSettingActivity.this).runtime().setting().start(1);
             executor.execute();
         }
     };
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1){
+//            Toast.makeText(W30SSettingActivity.this,"用户从设置页面返回。",
+//                        Toast.LENGTH_SHORT).show();
+        }
+    }
 }

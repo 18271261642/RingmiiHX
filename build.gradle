@@ -23,7 +23,7 @@ buildscript {
         //
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:4.1.0-beta05'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
@@ -55,11 +55,11 @@ allprojects {
     }
 
     ext {
-        codeVersion = 215
-        appVersion = "2.5.5"
+        codeVersion = 217
+        appVersion = "2.5.7"
         isMyOutputFile = true
 
-        googlePlay = false
+        googlePlay = true
     }
 
     subprojects {

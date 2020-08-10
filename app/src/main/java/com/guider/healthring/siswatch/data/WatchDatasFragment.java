@@ -191,7 +191,7 @@ public class WatchDatasFragment extends Fragment {
                             }
                             //卡路里折线图X,y轴坐标值
                             for (int i = 0; i < watchDataList.size(); i++) {
-                                String rct = watchDataList.get(i).getRtc().substring(5, watchDataList.get(i).getRtc().length());
+                                String rct = watchDataList.get(i).getRtc().substring(5);
                                 mAxisValues.add(new AxisValue(i).setLabel(rct));    //X轴值
                                 //y轴值
                                 mPointValues.add(new PointValue(i, Float.valueOf(watchDataList.get(i).getCalories())));

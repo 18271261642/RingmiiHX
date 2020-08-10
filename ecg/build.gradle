@@ -45,7 +45,7 @@ dependencies {
     implementation project(':common')
     implementation project(':tckeyboard')
     implementation project(':bluetooth')
-    implementation project(':MPChartLib')
+    api 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     api project(':fragmentation_core')
     // 红豆心电
     implementation 'com.proton.ecg.card:connector:1.0.3'

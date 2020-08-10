@@ -49,5 +49,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation project(':common')
-    implementation 'com.squareup.retrofit2:adapter-rxjava:2.7.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.9.0'
 }

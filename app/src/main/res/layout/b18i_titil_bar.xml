@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
             android:paddingRight="@dimen/size_20"
             android:src="@mipmap/back2x" />
 

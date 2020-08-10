@@ -132,6 +132,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     // 3.0Gradle开始必须添加纬度
     flavorDimensions "default"
     // 多渠道打包配置
@@ -218,23 +222,14 @@ dependencies {
     implementation project(':libbase')
     implementation project(':glu_phone')
     implementation project(':wuweikang')
-    implementation project(path: ':wheelpicker')
+    implementation project(':wheelpicker')
     implementation project(':circleviewprogress')
-    implementation files('libs/mframework.jar')
-    implementation files('libs/open_sdk_r5923_lite.jar')
-    implementation files('libs/libammsdk.jar')
-    implementation files('libs/date4j.jar')
-    // 不显示试图
-    implementation files('libs/hellocharts-library-1.5.8.jar')
-    implementation files('libs/commons-lang-2.5.jar')
-    implementation files('libs/BluetoothSDK.jar')
-    implementation files('libs/OTA.jar')
     implementation(name: 'bluetooth', ext: 'aar')
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.greenrobot:greendao:3.3.0'
     implementation 'org.greenrobot:greendao-generator:3.3.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    implementation 'com.readystatesoftware.systembartint:systembartint:1.0.4'
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
     implementation 'com.afollestad.material-dialogs:lifecycle:3.3.0'
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
@@ -252,7 +247,7 @@ dependencies {
     implementation 'com.squareup:otto:1.3.8'
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
     implementation 'com.balysv:material-ripple:1.0.2'
-    implementation 'com.yanzhenjie:permission:2.0.0-rc12'
+    implementation 'com.yanzhenjie:permission:2.0.3'
     implementation 'com.bm.photoview:library:1.4.1'
     implementation 'com.arialyy.aria:core:3.8.10'
     annotationProcessor 'com.arialyy.aria:compiler:3.8.10'
@@ -260,13 +255,9 @@ dependencies {
     implementation 'com.yanzhenjie.nohttp:nohttp:1.1.11'
     implementation 'com.yanzhenjie.nohttp:okhttp:1.1.11'
     implementation project(':w30sblelibrary')
-    implementation files('libs/vpprotocols_2.1.2.15.jar')
-    implementation project(':MPChartLib')
     // 上下拉刷新
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
-    implementation files('libs/jcc-bate-0.7.3.jar')
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation project(path: ':wheelpicker')// (可选)
 }
 
 android.applicationVariants.all { variant ->

@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.MyPersonalActivity;
 import com.guider.healthring.net.OkHttpObservable;
@@ -547,13 +549,18 @@ public class WatchH8DataFragment extends BaseFragment implements View.OnClickLis
         YAxis leftY = watchNewh8dataweekChar.getAxisLeft();
         leftY.setEnabled(false);
 
-        IAxisValueFormatter iAxisValueFormatter = new BarXFormartValue(watchNewh8dataweekChar,dtLis);
+//        IAxisValueFormatter iAxisValueFormatter = new BarXFormartValue(watchNewh8dataweekChar,dtLis);
 
         //x轴
         XAxis xAxis = watchNewh8dataweekChar.getXAxis();  //设置X轴
         xAxis.setDrawGridLines(false);  //不显示网格线
 
-        xAxis.setValueFormatter(iAxisValueFormatter);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return dtLis.get((int)value);
+            }
+        });
         if(count == 7){ //周
             xAxis.setEnabled(false);
         }else{
@@ -562,7 +569,7 @@ public class WatchH8DataFragment extends BaseFragment implements View.OnClickLis
         }
 
         Legend mLegend = watchNewh8dataweekChar.getLegend();
-        mLegend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        mLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);//设置注解的位置在右
         mLegend.setForm(Legend.LegendForm.CIRCLE);// 样式
         mLegend.setFormSize(15.0f);// 字体
         mLegend.setTextColor(Color.BLUE);// 颜色

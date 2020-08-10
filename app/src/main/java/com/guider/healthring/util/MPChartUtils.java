@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import androidx.annotation.ColorInt;
 
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.guider.healthring.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
@@ -102,21 +103,30 @@ public class MPChartUtils {
         xAxis.setYOffset(5);
         final List<String> labels = mLabels;
         // 显示x轴标签
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-
+//        IAxisValueFormatter formatter = new IAxisValueFormatter() {
+//
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                int index = (int) value;
+//                if (index < 0 || index >= labels.size()) {
+//                    return "";
+//                }
+//                return labels.get(index);
+//                // return labels.get(Math.min(Math.max((int) value, 0), labels.size() - 1));
+//            }
+//
+//        };
+        // 引用标签
+        xAxis.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value) {
                 int index = (int) value;
                 if (index < 0 || index >= labels.size()) {
                     return "";
                 }
                 return labels.get(index);
-                // return labels.get(Math.min(Math.max((int) value, 0), labels.size() - 1));
             }
-
-        };
-        // 引用标签
-        xAxis.setValueFormatter(formatter);
+        });
         // 设置x轴文字颜色
         xAxis.setTextColor(mChart.getResources().getColor(R.color.colorPrimary));
         // 设置x轴每最小刻度 interval
@@ -261,15 +271,20 @@ public class MPChartUtils {
         xAxis.setDrawGridLines(false);//不绘制格网线
         xAxis.setGranularity(1f);//设置最小间隔，防止当放大时，出现重复标签。
         // 显示x轴标签
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-
+//        IAxisValueFormatter formatter = new IAxisValueFormatter() {
+//
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                return xLabels.get(Math.min(Math.max((int) value, 0), xLabels.size() - 1));
+//            }
+//
+//        };
+        xAxis.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value) {
                 return xLabels.get(Math.min(Math.max((int) value, 0), xLabels.size() - 1));
             }
-
-        };
-        xAxis.setValueFormatter(formatter);
+        });
         xAxis.setTextSize(10);//设置标签字体大小
         xAxis.setTextColor(barChart.getResources().getColor(R.color.colorPrimary));
         xAxis.setAxisLineColor(Color.parseColor("#4cffffff"));
@@ -284,9 +299,9 @@ public class MPChartUtils {
         leftAxis.setDrawAxisLine(false);//禁止绘制y轴
         leftAxis.setAxisLineColor(Color.parseColor("#4cffffff"));
         leftAxis.setTextColor(barChart.getResources().getColor(R.color.colorPrimary));
-        leftAxis.setValueFormatter(new IAxisValueFormatter() {
+        leftAxis.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, AxisBase axis) {
+            public String getFormattedValue(float value) {
                 return ((int) (value * 100)) + "%";
             }
         });
@@ -347,9 +362,9 @@ public class MPChartUtils {
         // 设置value值 颜色
         data.setValueTextColor(Color.WHITE);
         //设置y轴显示的标签
-        data.setValueFormatter(new IValueFormatter() {
+        data.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            public String getFormattedValue(float value) {
                 return ((int) (value * 100)) + "%";
             }
         });

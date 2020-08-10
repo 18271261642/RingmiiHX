@@ -193,3 +193,7 @@
     @Upload.* <methods>;
     @DownloadGroup.* <methods>;
 }
+#android pickers
+-keepattributes InnerClasses,Signature
+-keepattributes *Annotation*
+-keep class cn.addapp.pickers.entity.** { *;}

@@ -40,43 +40,36 @@ public class AttentionInfo extends GlocoseFragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        NetRequest.getInstance().getNonbsSet(new WeakReference<Activity>(_mActivity), new NetRequest.NetCallBack() {
-            @Override
-            public void result(int code, String result) {
-                if (code == 0){
-                    //成功
-                    mGluSetFragment.setFlagSetting(true);
-                }
+        NetRequest.getInstance().getNonbsSet(new WeakReference<>(_mActivity),
+                (code, result) -> {
+            if (code == 0){
+                //成功
+                mGluSetFragment.setFlagSetting(true);
             }
         });
 
-        NetRequest.getInstance().getUserInfo(new WeakReference<Activity>(_mActivity), new NetRequest.NetCallBack() {
-            @Override
-            public void result(int code, String result) {
-                if (code == 0){
-                    // 成功
-                    mGluSetFragment.setFlagInfo(true);
+        NetRequest.getInstance().getUserInfo(new WeakReference<>(_mActivity),
+                (code, result) -> {
+            if (code == 0){
+                // 成功
+                mGluSetFragment.setFlagInfo(true);
 
-                    // 身高体重非法直接跳转到
-                    if (UserManager.getInstance().getHeight() <= 0 ||
-                        UserManager.getInstance().getWeight() <= 0) {
-                        start(mGluSetFragment);
-                    }
+                // 身高体重非法直接跳转到
+                if (UserManager.getInstance().getHeight() <= 0 ||
+                    UserManager.getInstance().getWeight() <= 0) {
+                    start(mGluSetFragment);
                 }
             }
         });
 
         ((TextView)view.findViewById(R.id.head_title)).setText(R.string.measure_1_zhuyishixiang);
-        view.findViewById(R.id.head_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fm = AttentionInfo.this.getFragmentManager();
-                List<Fragment> fs = fm.getFragments();
-                if (fs == null || fs.size() <= 1)
-                    _mActivity.finish();
-                else
-                    pop();
-            }
+        view.findViewById(R.id.head_back).setOnClickListener(view -> {
+            FragmentManager fm = AttentionInfo.this.getFragmentManager();
+            List<Fragment> fs = fm.getFragments();
+            if (fs == null || fs.size() <= 1)
+                _mActivity.finish();
+            else
+                pop();
         });
 
         view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {

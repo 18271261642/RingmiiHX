@@ -10,16 +10,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.guider.healthring.Commont;
 import com.guider.healthring.R;
@@ -31,15 +34,14 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.runtime.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
-import com.yanzhenjie.permission.Setting;
 
 import java.util.List;
 
-public class HellpEditActivity  extends WatchBaseActivity
-        implements Rationale<List<String>>, View.OnLongClickListener,View.OnClickListener {
+public class HellpEditActivity extends WatchBaseActivity
+        implements Rationale<List<String>>, View.OnLongClickListener, View.OnClickListener {
 
     TextView tvTitle;
     Toolbar toolbar;
@@ -308,6 +310,10 @@ public class HellpEditActivity  extends WatchBaseActivity
 //                            }
 //                        }).start();
                 break;
+            case 4: {
+//                Toast.makeText(HellpEditActivity.this, "用户从设置页面返回。",
+//                        Toast.LENGTH_SHORT).show();
+            }
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
@@ -428,16 +434,7 @@ public class HellpEditActivity  extends WatchBaseActivity
      * Set permissions.
      */
     private void setPermission() {
-        AndPermission.with(this)
-                .runtime()
-                .setting()
-                .onComeback(new Setting.Action() {
-                    @Override
-                    public void onAction() {
-                        //Toast.makeText(MyApp.getContext(),"用户从设置页面返回。", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .start();
+        AndPermission.with(this).runtime().setting().start(4);
     }
 
 
@@ -618,79 +615,58 @@ public class HellpEditActivity  extends WatchBaseActivity
     }
 
 
-
-
-
-
-
     //获取相关权限
-    private void getContactsPermission(String...permission){
+    private void getContactsPermission(String... permission) {
         AndPermission.with(this)
                 .runtime()
                 .permission(permission)
-                .rationale(new Rationale<List<String>>() {
-                    @Override
-                    public void showRationale(Context context, List<String> data, RequestExecutor executor) {
-                        executor.execute();
-                    }
-
-                }).onGranted(new Action<List<String>>() {
-            @Override
-            public void onAction(List<String> data) {
-                //readPermissStatus();
-            }
+                .rationale((context, data, executor) -> executor.execute()).onGranted(data -> {
+            //readPermissStatus();
         }).start();
     }
 
     //打开权限设置页面
-    private void openPermission(){
-        AndPermission.with(HellpEditActivity.this)
-                .runtime().setting().onComeback(new Setting.Action() {
-            @Override
-            public void onAction() {
-
-            }
-        }).start();
+    private void openPermission() {
+        AndPermission.with(this).runtime().setting().start(4);
     }
 
 
-
     //读取是否获取权限
-    private void readPermissStatus(){
+    private void readPermissStatus() {
         //判断是否有联系人的权限
-        if(AndPermission.hasPermissions(HellpEditActivity.this,Manifest.permission.READ_CONTACTS)){
+        if (AndPermission.hasPermissions(HellpEditActivity.this, Manifest.permission.READ_CONTACTS)) {
             sosContPermissionTv.setText(getResources().getString(R.string.string_enable));
             sosContPermission2Tv.setText(getResources().getString(R.string.string_enable));
             contactsFlag = true;
-        }else{
+        } else {
             contactsFlag = false;
             sosContPermissionTv.setText(getResources().getString(R.string.string_disable));
             sosContPermission2Tv.setText(getResources().getString(R.string.string_disable));
         }
 
         //拨打电话
-        if(AndPermission.hasPermissions(HellpEditActivity.this,Manifest.permission.CALL_PHONE)){
+        if (AndPermission.hasPermissions(HellpEditActivity.this, Manifest.permission.CALL_PHONE)) {
             callPhoneFlag = true;
             sosPhonePermissionTv.setText(getResources().getString(R.string.string_enable));
-        }else{
+        } else {
             callPhoneFlag = false;
             sosPhonePermissionTv.setText(getResources().getString(R.string.string_disable));
         }
 
         //通话记录
-        if(AndPermission.hasPermissions(HellpEditActivity.this,Manifest.permission.READ_CALL_LOG)){
+        if (AndPermission.hasPermissions(HellpEditActivity.this, Manifest.permission.READ_CALL_LOG)) {
             callLogFlag = true;
             sosCallLogPermissionTv.setText(getResources().getString(R.string.string_enable));
-        }else {
+        } else {
             callLogFlag = false;
             sosCallLogPermissionTv.setText(getResources().getString(R.string.string_disable));
         }
 
         //短信
-        if(AndPermission.hasPermissions(HellpEditActivity.this,Manifest.permission.READ_SMS)){
+        if (AndPermission.hasPermissions(HellpEditActivity.this, Manifest.permission.READ_SMS)) {
             smsFlag = true;
             sosSMSPermissionTv.setText(getResources().getString(R.string.string_enable));
-        }else{
+        } else {
             smsFlag = false;
             sosSMSPermissionTv.setText(getResources().getString(R.string.string_disable));
         }

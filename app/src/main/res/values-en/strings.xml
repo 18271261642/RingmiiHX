@@ -1345,4 +1345,10 @@
     <string name="sos_history">SOS recording</string>
 
     <string name="not_checked_privacy">Please click to agree to the user privacy policy</string>
+    <string name="app_start_test">start measure</string>
+    <string name="latest_health_result">Latest measurement results</string>
+    <string name="trend_analysis">Trend analysis</string>
+    <string name="record_history">The historical record</string>
+    <string name="blood_flow_velocity">Blood flow velocity</string>
+    <string name="measure_hemoglobin">hemoglobin</string>
 </resources>

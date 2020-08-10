@@ -2,13 +2,18 @@ package com.guider.glu_phone.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,10 +22,14 @@ import com.guider.glu_phone.R;
 import com.guider.glu_phone.net.NetRequest;
 import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.UserManager;
+import com.guider.health.common.device.IUnit;
+import com.guider.health.common.utils.ToastUtil;
+import com.guider.health.common.utils.UnitUtil;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import java.lang.ref.WeakReference;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.guider.glu_phone.view.ChooseTime.Ti.EMPTY_FOOD;
 import static com.guider.glu_phone.view.ChooseTime.Ti.ONETIME_FOOD;
 import static com.guider.glu_phone.view.ChooseTime.Ti.THREETIME_FOOD;
@@ -42,6 +51,12 @@ public class ChooseTime extends GlocoseFragment {
     private SwitchButton toogle_2;
     private SwitchButton toogle_3;
     private SwitchButton toogle_4;
+    private ConstraintLayout statusLayout;
+    private TextView normal;
+    private TextView abnormal;
+    private TextView gluReminder;
+    private TextView unitTv;
+    private EditText gluEdit;
 
     class Ti {
         public final static String EMPTY_FOOD = "0";
@@ -73,9 +88,12 @@ public class ChooseTime extends GlocoseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
-
+        statusLayout = view.findViewById(R.id.statusLayout);
+        normal = view.findViewById(R.id.normal);
+        abnormal = view.findViewById(R.id.abnormal);
+        gluReminder = view.findViewById(R.id.gluReminder);
+        unitTv = view.findViewById(R.id.unitTv);
+        gluEdit = view.findViewById(R.id.gluEdit);
         ((TextView) view.findViewById(R.id.head_title)).setText(R.string.measure_2_kaijicaozuo);
         view.findViewById(R.id.head_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +121,21 @@ public class ChooseTime extends GlocoseFragment {
 //                    BodyIndex.getInstance().setBiguanidesState(toogle_3.isChecked() == false ? "0" : "1");
 //                    BodyIndex.getInstance().setGlucosedesesSate(toogle_4.isChecked() == false ? "0" : "1");
 //                }
+
+                //如果是选择了异常记录填写的空腹血糖值
+                if (abnormal.isSelected()) {
+                    String input_glu = gluEdit.getText().toString().trim();
+                    if (!TextUtils.isEmpty(input_glu)) {
+                        // 单位处理
+                        IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+                        double value = iUnit.getGluRealValue(Double.parseDouble(input_glu),
+                                2);
+                        BodyIndex.getInstance().setValue((float) value);
+                    } else {
+                        ToastUtil.showShort(_mActivity, "请填写空腹血糖值");
+                        return;
+                    }
+                }
 
                 NetRequest.getInstance().setNonbsSet(new WeakReference<Activity>(_mActivity), new NetRequest.NetCallBack() {
                     @Override
@@ -181,13 +214,13 @@ public class ChooseTime extends GlocoseFragment {
         toogle_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+                if (b) {
                     toogle_2.setBackColorRes(R.color.color_F18937);//背景
                     toogle_1.setChecked(false);
                     BodyIndex.getInstance().setEatmedicine(true);
                     toogle_2.setChecked(true);
                     BodyIndex.getInstance().setSulphonylureasState("1");
-                }else{
+                } else {
                     toogle_2.setChecked(false);
                     BodyIndex.getInstance().setSulphonylureasState("0");
                     toogle_2.setBackColorRes(R.color.color_E0E0E0);//背景
@@ -198,13 +231,13 @@ public class ChooseTime extends GlocoseFragment {
         toogle_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+                if (b) {
                     toogle_3.setBackColorRes(R.color.color_F18937);//背景
                     toogle_1.setChecked(false);
                     BodyIndex.getInstance().setEatmedicine(true);
                     toogle_3.setChecked(true);
                     BodyIndex.getInstance().setBiguanidesState("1");
-                }else{
+                } else {
                     toogle_3.setChecked(false);
                     BodyIndex.getInstance().setBiguanidesState("0");
                     toogle_3.setBackColorRes(R.color.color_E0E0E0);//背景
@@ -215,13 +248,13 @@ public class ChooseTime extends GlocoseFragment {
         toogle_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+                if (b) {
                     toogle_4.setBackColorRes(R.color.color_F18937);//背景
                     toogle_1.setChecked(false);
                     BodyIndex.getInstance().setEatmedicine(true);
                     toogle_4.setChecked(true);
                     BodyIndex.getInstance().setGlucosedesesSate("1");
-                }else{
+                } else {
                     toogle_4.setChecked(false);
                     BodyIndex.getInstance().setGlucosedesesSate("0");
                     toogle_4.setBackColorRes(R.color.color_E0E0E0);//背景
@@ -337,6 +370,18 @@ public class ChooseTime extends GlocoseFragment {
 
     }
 
+    private void hideSoftKeyBoard() {
+        try {
+            gluEdit.clearFocus();
+            ((InputMethodManager) _mActivity.getSystemService(INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(gluEdit.getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void setEatDropViewGone() {
         if (drop_time1 == null) {
             return;
@@ -352,7 +397,39 @@ public class ChooseTime extends GlocoseFragment {
     }
 
 
-    private void statusInit(){
+    private void statusInit() {
+        BodyIndex.getInstance().setDiabetesType(BodyIndex.Normal);
+        statusLayout.setVisibility(View.VISIBLE);
+        normal.setSelected(true);
+        abnormal.setSelected(false);
+        //正常
+        normal.setOnClickListener(v -> {
+            hideSoftKeyBoard();
+            normal.setSelected(true);
+            abnormal.setSelected(false);
+            gluReminder.setVisibility(View.GONE);
+            unitTv.setVisibility(View.GONE);
+            gluEdit.setVisibility(View.GONE);
+            setEatDropViewGone();
+            toogle_1.setChecked(false);
+            toogle_2.setChecked(false);
+            toogle_3.setChecked(false);
+            toogle_4.setChecked(false);
+        });
+        //>=7的异常状态
+        abnormal.setOnClickListener(v -> {
+            normal.setSelected(false);
+            abnormal.setSelected(true);
+            gluReminder.setVisibility(View.VISIBLE);
+            unitTv.setVisibility(View.VISIBLE);
+            gluEdit.setVisibility(View.VISIBLE);
+            showEatMedicineView(1);
+            //b为true 选中未敷药
+            toogle_1.setChecked(true);
+            toogle_2.setChecked(false);
+            toogle_3.setChecked(false);
+            toogle_4.setChecked(false);
+        });
         try {
             if (BodyIndex.Normal.equals(BodyIndex.getInstance().getDiabetesType())) {
 

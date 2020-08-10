@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.b30view.B30BloadDataView;
@@ -442,7 +443,8 @@ public class B30DataFragment extends LazyFragment
 //        barDataSet.setHighLightColor(Color.GREEN);
         Legend mLegend = stepDataChartView.getLegend();
         if (mLegend!=null){
-            mLegend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+            mLegend.setHorizontalAlignment(
+                    Legend.LegendHorizontalAlignment.RIGHT);//设置注解的位置在右
             mLegend.setForm(Legend.LegendForm.CIRCLE);// 样式
             mLegend.setFormSize(1.0f);// 字体
             mLegend.setTextColor(Color.BLUE);// 颜色
@@ -462,20 +464,27 @@ public class B30DataFragment extends LazyFragment
             stepDataChartView.setData(bardata);
 
             stepDataChartView.setDoubleTapToZoomEnabled(false);   //双击缩放
-            stepDataChartView.getLegend().setPosition(Legend.LegendPosition.ABOVE_CHART_LEFT);//设置注解的位置在左上方
+            stepDataChartView.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+            stepDataChartView.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+            //设置注解的位置在左上方
             stepDataChartView.getLegend().setForm(Legend.LegendForm.CIRCLE);//这是左边显示小图标的形状
             stepDataChartView.setPinchZoom(false);
             stepDataChartView.setTouchEnabled(true);
             stepDataChartView.setScaleEnabled(false);
 
-            BarXFormartValue xFormartValue = new BarXFormartValue(stepDataChartView, xList);
+//            BarXFormartValue xFormartValue = new BarXFormartValue(stepDataChartView, xList);
             XAxis xAxis = stepDataChartView.getXAxis();
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置X轴的位置
             xAxis.setDrawGridLines(false);//不显示网格
             xAxis.setAxisLineColor(Color.WHITE);
             xAxis.setAxisLineWidth(2f);
             xAxis.setTextColor(Color.WHITE);
-            xAxis.setValueFormatter(xFormartValue);
+            xAxis.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    return xList.get((int) value);
+                }
+            });
             xAxis.setEnabled(true);
             stepDataChartView.getDescription().setEnabled(false);
             DataMarkView dataMarkView = new DataMarkView(getActivity(), R.layout.mark_view_layout, 1);
@@ -602,7 +611,7 @@ public class B30DataFragment extends LazyFragment
 //        barDataSet.setHighLightColor(Color.GREEN);
 
         Legend mLegend = stepDataChartView.getLegend();
-        mLegend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        mLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);//设置注解的位置在右
         mLegend.setForm(Legend.LegendForm.CIRCLE);// 样式
         mLegend.setFormSize(1.0f);// 字体
         mLegend.setTextColor(Color.BLUE);// 颜色
@@ -623,21 +632,28 @@ public class B30DataFragment extends LazyFragment
 
         heartDataChartView.setData(bardata);
         heartDataChartView.setDoubleTapToZoomEnabled(false);   //双击缩放
-        heartDataChartView.getLegend().setPosition(Legend.LegendPosition.ABOVE_CHART_LEFT);//设置注解的位置在左上方
+        heartDataChartView.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        heartDataChartView.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        //设置注解的位置在左上方
         heartDataChartView.getLegend().setForm(Legend.LegendForm.CIRCLE);//这是左边显示小图标的形状
         heartDataChartView.getLegend().setEnabled(false);
         heartDataChartView.setTouchEnabled(true);
         heartDataChartView.setPinchZoom(false);
         heartDataChartView.setScaleEnabled(false);
 
-        BarXFormartValue xFormartValue = new BarXFormartValue(heartDataChartView, xlt);
+//        BarXFormartValue xFormartValue = new BarXFormartValue(heartDataChartView, xlt);
         XAxis xAxis = heartDataChartView.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置X轴的位置
         xAxis.setDrawGridLines(false);//不显示网格
         xAxis.setAxisLineColor(Color.WHITE);
         xAxis.setAxisLineWidth(2f);//设置X轴的高度
         xAxis.setTextColor(Color.WHITE);
-        xAxis.setValueFormatter(xFormartValue);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return xlt.get((int) value);
+            }
+        });
         xAxis.setEnabled(true);
 
 
@@ -776,7 +792,7 @@ public class B30DataFragment extends LazyFragment
 //        barDataSet.setHighLightColor(Color.GREEN);
 
         Legend mLegend = sleepDataChartView.getLegend();
-        mLegend.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        mLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);//设置注解的位置在右
         mLegend.setForm(Legend.LegendForm.CIRCLE);// 样式
         mLegend.setFormSize(1.0f);// 字体
         mLegend.setTextColor(Color.BLUE);// 颜色
@@ -797,20 +813,27 @@ public class B30DataFragment extends LazyFragment
 
         sleepDataChartView.setData(bardata);
         sleepDataChartView.setDoubleTapToZoomEnabled(false);   //双击缩放
-        sleepDataChartView.getLegend().setPosition(Legend.LegendPosition.ABOVE_CHART_LEFT);//设置注解的位置在左上方
+        sleepDataChartView.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        sleepDataChartView.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        //设置注解的位置在左上方
         sleepDataChartView.getLegend().setForm(Legend.LegendForm.CIRCLE);//这是左边显示小图标的形状
         sleepDataChartView.setTouchEnabled(true);
         sleepDataChartView.setPinchZoom(false);
         sleepDataChartView.setScaleEnabled(false);
 
-        BarXFormartValue xFormartValue = new BarXFormartValue(sleepDataChartView, sleepXList);
+//        BarXFormartValue xFormartValue = new BarXFormartValue(sleepDataChartView, sleepXList);
         XAxis xAxis = sleepDataChartView.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置X轴的位置
         xAxis.setDrawGridLines(false);//不显示网格
         xAxis.setAxisLineColor(Color.WHITE);
         xAxis.setAxisLineWidth(2f);
         xAxis.setTextColor(Color.WHITE);
-        xAxis.setValueFormatter(xFormartValue);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return sleepXList.get((int) value);
+            }
+        });
         xAxis.setEnabled(true);
         sleepDataChartView.getDescription().setEnabled(false);
 

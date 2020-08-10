@@ -3,6 +3,7 @@ package com.guider.healthring.b30;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,10 +45,9 @@ import com.veepoo.protocol.model.settings.BpSetting;
 import com.veepoo.protocol.model.settings.LongSeatSetting;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.runtime.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
-import com.yanzhenjie.permission.Setting;
 import java.util.List;
 
 
@@ -422,17 +422,17 @@ public class B30DeviceActivity extends WatchBaseActivity
      * Set permissions.
      */
     private void setPermission() {
-        AndPermission.with(this)
-                .runtime()
-                .setting()
-                .onComeback(new Setting.Action() {
-                    @Override
-                    public void onAction() {
-                        //Toast.makeText(MyApp.getContext(),"用户从设置页面返回。", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .start();
+        AndPermission.with(this).runtime().setting().start(1);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {//                Toast.makeText(B30HomeActivity.this,"用户从设置页面返回。",
+//                        Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
     @Override

@@ -282,14 +282,11 @@ public class B30SettingAlarmActiivty extends WatchBaseActivity implements View.O
      * 闹钟时间选择
      */
     private void chooseDate() {
-        ProvincePick starPopWin = new ProvincePick.Builder(this, new ProvincePick.OnProCityPickedListener() {
-            @Override
-            public void onProCityPickCompleted(String province, String city, String dateDesc) {
-                String showTime = province + ":" + city;
-                tv_alarm_time.setText(showTime);
-                mAlarm2Setting.setAlarmHour(Integer.valueOf(province));
-                mAlarm2Setting.setAlarmMinute(Integer.valueOf(city));
-            }
+        ProvincePick starPopWin = new ProvincePick.Builder(this, (province, city, dateDesc) -> {
+            String showTime = province + ":" + city;
+            tv_alarm_time.setText(showTime);
+            mAlarm2Setting.setAlarmHour(Integer.valueOf(province));
+            mAlarm2Setting.setAlarmMinute(Integer.valueOf(city));
         }).textConfirm(getResources().getString(R.string.confirm)) //text of obtainRepeat button
                 .textCancel(getResources().getString(R.string.cancle)) //text of cancel button
                 .btnTextSize(16) // button text size

@@ -6,16 +6,19 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,7 +28,7 @@ import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.activity.DeviceActivity;
-import com.guider.healthring.activity.DeviceActivityGlu;
+import com.guider.healthring.activity.HealthResultShowActivity;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.utils.BlueAdapterUtils;
 import com.guider.healthring.siswatch.utils.PhoneStateListenerInterface;
@@ -45,6 +48,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEServices;
 import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +60,7 @@ import java.util.List;
  * @company: 东莞速成科技有限公司
  */
 
-public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateListenerInterface{
+public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateListenerInterface {
     private final String TAG = "W30SHomeActivity";
     private List<Fragment> h18iFragmentList = new ArrayList<>();
     NoScrollViewPager h18iViewPager;
@@ -67,10 +71,9 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
     private String phoneNumber;
 
     //已经连接过到蓝牙mac
-    String mylanmac ;
+    String mylanmac;
 
     DisPhoneCallBack disPhoneCallBack = null;
-
 
 
     @Override
@@ -99,8 +102,8 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
     private void initBuleAdapter() {
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
-        if(!bluetoothAdapter.enable()){
-            BlueAdapterUtils.getBlueAdapterUtils(W30SHomeActivity.this).turnOnBlue(W30SHomeActivity.this,10000,1000);
+        if (!bluetoothAdapter.enable()) {
+            BlueAdapterUtils.getBlueAdapterUtils(W30SHomeActivity.this).turnOnBlue(W30SHomeActivity.this, 10000, 1000);
         }
     }
 
@@ -156,11 +159,11 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
     @Override
     protected void onResume() {
         super.onResume();
-        if(MyCommandManager.DEVICENAME == null && !WatchUtils.isEmpty(mylanmac)){
-            if(W30SBLEManage.mW30SBLEServices != null){
+        if (MyCommandManager.DEVICENAME == null && !WatchUtils.isEmpty(mylanmac)) {
+            if (W30SBLEManage.mW30SBLEServices != null) {
                 W30SBLEManage.mW30SBLEServices.connectBle(mylanmac);
-            }else{
-                Log.e(TAG,"------server=null-了---");
+            } else {
+                Log.e(TAG, "------server=null-了---");
                 W30SBLEManage instance = W30SBLEManage.getInstance(MyApp.getContext());
                 MyApp.setmW30SBLEManage(instance);
                 MyApp.getmW30SBLEManage().openW30SBLEServices();
@@ -171,13 +174,14 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
                     }
                 }, 3 * 1000);
             }
-        }else{
+        } else {
             MyApp.getmW30SBLEManage().SendAnddroidLanguage(0x01);
             MyApp.getmW30SBLEManage().disPhoneCallData(disPhoneCallBack);
         }
 
 
     }
+
     /**
      * 初始化，添加Fragment界面
      */
@@ -206,16 +210,19 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
                         break;
                     case R.id.b30_tab_set:  //开跑
                         switch (BuildConfig.HEALTH) {
-                            case 0 : // 运动
+                            case 0: // 运动
                                 h18iViewPager.setCurrentItem(2);
                                 break;
                             case 1: // 横板健康
-                                long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                                long accountId = (long) SharedPreferencesUtils
+                                        .getParam(MyApp.getContext(),
+                                                "accountIdGD", 0L);
                                 DeviceActivity.start(W30SHomeActivity.this, (int) accountId);
                                 break;
                             case 2: // 竖版无创
-                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
-                                DeviceActivityGlu.startGlu(W30SHomeActivity.this, (int) accountIdV);
+                                Intent intent = new Intent(W30SHomeActivity.this,
+                                        HealthResultShowActivity.class);
+                                startActivity(intent);
                                 break;
                             default:
                                 h18iViewPager.setCurrentItem(2);
@@ -258,7 +265,7 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
 
     @Override
     public void callPhoneData(int flag, String phoneNumber) {
-        Log.e(TAG,"----falgCallPhone="+flag+"--num="+phoneNumber+"--=w30SBleName="+w30SBleName);
+        Log.e(TAG, "----falgCallPhone=" + flag + "--num=" + phoneNumber + "--=w30SBleName=" + w30SBleName);
         try {
             this.phoneNumber = phoneNumber;
             if (!W30SHomeActivity.this.isFinishing() && W30SBLEManage.mW30SBLEServices != null) {
@@ -277,11 +284,11 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
                         }
                         break;
                     case 1: //来电
-                       // Log.e(TAG,"---case1来电--="+phoneNumber);
+                        // Log.e(TAG,"---case1来电--="+phoneNumber);
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                              //  handler.sendEmptyMessage(555);
+                                //  handler.sendEmptyMessage(555);
                             }
                         }, 1000);
                         break;
@@ -310,7 +317,7 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
                     handler.removeMessages(0x06);
                     bluetoothAdapter = W30SBLEManage.getmBluetoothAdapter();
                     if (bluetoothAdapter != null) {
-                       // bluetoothAdapter.startLeScan(leScanCallback);
+                        // bluetoothAdapter.startLeScan(leScanCallback);
                     } else {
                         W30SBLEManage instance = W30SBLEManage.getInstance(MyApp.getContext());
                         MyApp.setmW30SBLEManage(instance);
@@ -318,8 +325,8 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
                     }
                     break;
                 case 111:
-                    if(MyCommandManager.DEVICENAME == null && !WatchUtils.isEmpty(mylanmac)){
-                        if(W30SBLEManage.mW30SBLEServices != null){
+                    if (MyCommandManager.DEVICENAME == null && !WatchUtils.isEmpty(mylanmac)) {
+                        if (W30SBLEManage.mW30SBLEServices != null) {
                             W30SBLEManage.mW30SBLEServices.connectBle(mylanmac);
                         }
                     }
@@ -330,9 +337,9 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
                     //Log.e(TAG,"---hand122="+pNum);
                     MyApp.getmW30SBLEManage().SendAnddroidLanguage(0x01);
                     MyApp.getmW30SBLEManage().disPhoneCallData(disPhoneCallBack);
-                    if(!WatchUtils.isEmpty(pNum)){
+                    if (!WatchUtils.isEmpty(pNum)) {
                         boolean isW30Phone = (boolean) SharedPreferenceUtil.get(MyApp.context, "w30sswitch_Phone", true);
-                        if(isW30Phone){
+                        if (isW30Phone) {
                             getNameByPhone(pNum);
                         }
                     }
@@ -364,51 +371,49 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
     }
 
 
-    private class DisPhoneCallBack implements W30SBLEServices.DisPhoneCallListener{
+    private class DisPhoneCallBack implements W30SBLEServices.DisPhoneCallListener {
         @Override
         public void disCallPhone(int disV) {
-            Log.e(TAG,"---11--dev---"+disV);
+            Log.e(TAG, "---11--dev---" + disV);
             TelephonyManager tm = (TelephonyManager) W30SHomeActivity.this
                     .getSystemService(Service.TELEPHONY_SERVICE);
-            PhoneUtils.endPhone(W30SHomeActivity.this,tm);
+            PhoneUtils.endPhone(W30SHomeActivity.this, tm);
             PhoneUtils.dPhone();
             PhoneUtils.endCall(MyApp.getContext());
             PhoneUtils.endcall();
         }
     }
 
-    private void getNameByPhone(String phNumber){
+    private void getNameByPhone(String phNumber) {
         //Log.e(TAG,"---getNameByPhone-=="+phNumber);
         boolean isPhoneNum = true; //判断通讯录中是否保存了联系人
         //得到ContentResolver对象
         ContentResolver cr = getContentResolver();
         //取得电话本中开始一项的光标
         Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-        if(cursor != null ){
+        if (cursor != null) {
             //向下移动光标
-            while(cursor.moveToNext())
-            {
+            while (cursor.moveToNext()) {
                 //取得联系人名字
                 int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
                 String contact = cursor.getString(nameFieldColumnIndex);
                 //Log.e(TAG,"---contact="+contact);
                 //取得电话号码
                 String ContactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                Cursor phone = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
-                if(phone != null ){
-                    while(phone.moveToNext())
-                    {
+                Cursor phone = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactId, null, null);
+                if (phone != null) {
+                    while (phone.moveToNext()) {
                         String PhoneNumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        if(!WatchUtils.isEmpty(PhoneNumber)){
+                        if (!WatchUtils.isEmpty(PhoneNumber)) {
                             //格式化手机号
-                            PhoneNumber = PhoneNumber.replace("-","");
-                            PhoneNumber = PhoneNumber.replace(" ","");
+                            PhoneNumber = PhoneNumber.replace("-", "");
+                            PhoneNumber = PhoneNumber.replace(" ", "");
                             // Log.e(TAG,"---PhoneNumber="+PhoneNumber);
-                            if(phNumber.equals(PhoneNumber)){
+                            if (phNumber.equals(PhoneNumber)) {
                                 isPhoneNum = false;
                                 int nameFieldColumnIndexs = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-                                String contacts = cursor.getString(nameFieldColumnIndexs)+"";
-                                MyApp.getmW30SBLEManage().notifacePhone(contacts+PhoneNumber,0x01);
+                                String contacts = cursor.getString(nameFieldColumnIndexs) + "";
+                                MyApp.getmW30SBLEManage().notifacePhone(contacts + PhoneNumber, 0x01);
 
                             }
                         }
@@ -423,8 +428,8 @@ public class W30SHomeActivity extends WatchBaseActivity implements PhoneStateLis
             }
         }
         //通讯录为空时直接发送电话号码
-        if(isPhoneNum){
-            MyApp.getmW30SBLEManage().notifacePhone(phNumber,0x01);
+        if (isPhoneNum) {
+            MyApp.getmW30SBLEManage().notifacePhone(phNumber, 0x01);
         }
     }
 

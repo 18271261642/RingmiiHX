@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,6 +33,7 @@ public class WatchBaseActivity extends AppCompatActivity {
 
     private MyApp myApp;
     private WatchBaseActivity watchBaseActivity;
+    public Context mContext;
     private Dialog dialog;
 
     @Override
@@ -41,6 +44,7 @@ public class WatchBaseActivity extends AppCompatActivity {
             myApp = (MyApp) getApplication();
         }
         watchBaseActivity = this;
+        mContext = this;
         addActivity();
 
     }
@@ -98,6 +102,7 @@ public class WatchBaseActivity extends AppCompatActivity {
      */
     private static int MSG_DISMISS_DIALOG = 101;
 
+    @SuppressLint("SetTextI18n")
     public void showLoadingDialog(String msg) {
 
         if (dialog == null) {
@@ -222,9 +227,9 @@ public class WatchBaseActivity extends AppCompatActivity {
         return onTouchEvent(ev);
     }
 
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
+    public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
-            int[] leftTop = { 0, 0 };
+            int[] leftTop = {0, 0};
             //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
             int left = leftTop[0];

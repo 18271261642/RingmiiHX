@@ -97,6 +97,7 @@
     <color name="base_yellow_dark10">#e5cd00</color>
     <color name="dark50">#000000</color>
     <color name="black">#ff000000</color>
+    <color name="colorF88B5E">#F88B5E</color>
     <color name="white">#ffffffff</color>
     <color name="dim_foreground_light_disabled">#80323232</color>
     <color name="head_text">#0e5986</color>
@@ -415,5 +416,7 @@
     <!-- 数据色域 -->
 
     <!-- 基色调 -->
-
+    <color name="line_graycd">#CDCDCD</color>
+    <color name="btn_orange">#e9853a</color>
+    <color name="material_gray">#999999</color>
 </resources>

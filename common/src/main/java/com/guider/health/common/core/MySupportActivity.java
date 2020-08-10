@@ -144,7 +144,7 @@ public class MySupportActivity extends FragmentActivity implements ISupportActiv
     }
 
     /**
-     * It is recommended to use {@link SupportFragment#startWithPopTo(ISupportFragment, Class, boolean)}.
+     * It is recommended to use {@link (ISupportFragment, Class, boolean)}.
      *
      * @see #popTo(Class, boolean)
      * +

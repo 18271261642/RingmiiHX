@@ -1,8 +1,8 @@
 project.ext {
     android = [
-            compileSdkVersion: 28,
+            compileSdkVersion: 29,
             minSdkVersion    : 19,
-            targetSdkVersion : 28,
+            targetSdkVersion : 29,
             versionCode      : 1,
             versionName      : "1.0"
     ]

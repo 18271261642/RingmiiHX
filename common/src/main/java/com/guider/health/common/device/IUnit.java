@@ -14,7 +14,7 @@ public interface IUnit {
      */
     double getGluShowValue(double value, int scale);
     /**
-     * 返回真正的值，即单位未mmol/L的值
+     * 返回真正的值，即单位为mmol/L的值
      * @param value     测量值
      * @param scale    小数点后几位
      * @return

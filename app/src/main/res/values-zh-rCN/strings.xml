@@ -1370,4 +1370,10 @@
     <string name="sos_history">SOS记录</string>
 
     <string name="not_checked_privacy">请先点击同意用户隐私政策</string>
+    <string name="app_start_test">开始测量</string>
+    <string name="latest_health_result">最新测量结果</string>
+    <string name="trend_analysis">趋势分析</string>
+    <string name="record_history">历史记录</string>
+    <string name="blood_flow_velocity">血流速度</string>
+    <string name="measure_hemoglobin">血红蛋白</string>
 </resources>

@@ -31,7 +31,7 @@ import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.DeviceActivity;
-import com.guider.healthring.activity.DeviceActivityGlu;
+import com.guider.healthring.activity.HealthResultShowActivity;
 import com.guider.healthring.adpter.FragmentAdapter;
 import com.guider.healthring.b30.b30minefragment.B30MineFragment;
 import com.guider.healthring.b30.b30run.B36RunFragment;
@@ -49,12 +49,10 @@ import com.guider.healthring.view.CusInputDialogView;
 import com.guider.healthring.widget.BottomSelectView;
 import com.guider.healthring.widget.NoScrollViewPager;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
-import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.runtime.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
-import com.yanzhenjie.permission.Setting;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,8 +183,11 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                                 DeviceActivity.start(B31HomeActivity.this, (int) accountId);
                                 break;
                             case 2: // 竖版无创
-                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
-                                DeviceActivityGlu.startGlu(B31HomeActivity.this, (int) accountIdV);
+//                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+//                                DeviceActivityGlu.startGlu(B31HomeActivity.this, (int) accountIdV);
+                                Intent intent = new Intent(B31HomeActivity.this,
+                                        HealthResultShowActivity.class);
+                                startActivity(intent);
                                 break;
                             default:
                                 b31ViewPager.setCurrentItem(2, false);
@@ -370,6 +371,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
      * @param tel
      */
     //点击事件调用的类
+    @SuppressLint("MissingPermission")
     protected void call(final String tel) {
 
         AndPermission.with(B31HomeActivity.this)
@@ -381,7 +383,6 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                         Manifest.permission.READ_CALL_LOG,
                         Manifest.permission.USE_SIP
                 )
-                .rationale(this)
                 .rationale(this)//添加拒绝权限回调
                 .onGranted(data -> {
                     //Toast.makeText(B30HomeActivity.this,"SOS 执行了 拨打电话 "+tel,Toast.LENGTH_SHORT).show();
@@ -395,20 +396,19 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                     }
                     startActivity(intent);
                 })
-                .onDenied(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
-                        /**
-                         * 当用户没有允许该权限时，回调该方法
-                         */
-                        Toast.makeText(MyApp.getContext(), getString(R.string.string_no_permission), Toast.LENGTH_SHORT).show();
-                        /**
-                         * 判断用户是否点击了禁止后不再询问，AndPermission.hasAlwaysDeniedPermission(MainActivity.this, data)
-                         */
-                        if (AndPermission.hasAlwaysDeniedPermission(MyApp.getContext(), data)) {
-                            //true，弹窗再次向用户索取权限
-                            //showSettingDialog(B31HomeActivity.this, data);
-                        }
+                .onDenied(data -> {
+                    /**
+                     * 当用户没有允许该权限时，回调该方法
+                     */
+                    Toast.makeText(MyApp.getContext(),
+                            getString(R.string.string_no_permission),
+                            Toast.LENGTH_SHORT).show();
+                    /**
+                     * 判断用户是否点击了禁止后不再询问，AndPermission.hasAlwaysDeniedPermission(MainActivity.this, data)
+                     */
+                    if (AndPermission.hasAlwaysDeniedPermission(MyApp.getContext(), data)) {
+                        //true，弹窗再次向用户索取权限
+                        //showSettingDialog(B31HomeActivity.this, data);
                     }
                 }).start();
     }
@@ -417,42 +417,26 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
      * Display setting dialog.
      */
     public void showSettingDialog(Context context, final List<String> permissions) {
-        List<String> permissionNames = Permission.transformText(context, permissions);
-        String message = getResources().getString(R.string.string_get_permission) + "\n" + permissionNames;
-//                context.getString("Please give us permission in the settings:\\n\\n%1$s", TextUtils.join("\n", permissionNames));
-
-        new AlertDialog.Builder(context)
-                .setCancelable(false)
-                .setTitle(getResources().getString(R.string.prompt))
-                .setMessage(message)
-                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setPermission();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancle), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-    }
-
-    /**
-     * Set permissions.
-     */
-    private void setPermission() {
-        AndPermission.with(this)
-                .runtime()
-                .setting()
-                .onComeback(new Setting.Action() {
-                    @Override
-                    public void onAction() {
-                        //Toast.makeText(MyApp.getContext(),"用户从设置页面返回。", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .start();
+//        List<String> permissionNames = Permission.transformText(context, permissions);
+//        String message = getResources().getString(R.string.string_get_permission) + "\n" + permissionNames;
+////                context.getString("Please give us permission in the settings:\\n\\n%1$s", TextUtils.join("\n", permissionNames));
+//
+//        new AlertDialog.Builder(context)
+//                .setCancelable(false)
+//                .setTitle(getResources().getString(R.string.prompt))
+//                .setMessage(message)
+//                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        setPermission();
+//                    }
+//                })
+//                .setNegativeButton(getResources().getString(R.string.cancle), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                    }
+//                })
+//                .show();
     }
 
     @Override
@@ -464,18 +448,8 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                 .setCancelable(false)
                 .setTitle(getResources().getString(R.string.prompt))
                 .setMessage(message)
-                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        executor.execute();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancle), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                executor.cancel();
-                    }
-                })
+                .setPositiveButton(getResources().getString(R.string.confirm), (dialog, which) -> executor.execute())
+                .setNegativeButton(getResources().getString(R.string.cancle), (dialog, which) -> executor.cancel())
                 .show();
     }
 
