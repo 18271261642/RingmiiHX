@@ -21,7 +21,7 @@ import com.guider.health.foraglu.BleVIewInterface;
 import ble.BleClient;
 
 /**
- * 福尔血糖测量提示界面
+ * 福尔耳温测量提示界面
  */
 public class ForaETReminderFragment extends BaseFragment implements BleVIewInterface {
     private View view;

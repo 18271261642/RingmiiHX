@@ -1,23 +1,23 @@
 package com.guider.health.foraglu;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.guider.health.all.R;
 import com.guider.health.common.core.BaseFragment;
 import com.guider.health.common.core.Config;
+import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.utils.SkipClick;
 import com.guider.health.common.views.dialog.DialogProgressCountdown;
-
 import ble.BleClient;
 
 /**
@@ -26,6 +26,10 @@ import ble.BleClient;
 public class ForaGluReminderFragment extends BaseFragment implements BleVIewInterface {
     private View view;
     private DialogProgressCountdown mDialogProgressCountdown;
+    private TextView time1_food_selected;
+    private TextView empty_food_selected;
+    private int isEmptyFood = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,8 +108,14 @@ public class ForaGluReminderFragment extends BaseFragment implements BleVIewInte
     }
 
     private void initBodyView() {
+        LinearLayout gluFoodTimeLayout = view.findViewById(R.id.gluFoodTimeLayout);
+        gluFoodTimeLayout.setVisibility(View.VISIBLE);
         GluServiceManager.getInstance().setViewObject(ForaGluReminderFragment.this);
-
+        ImageView empty_food = view.findViewById(R.id.empty_food);
+        ImageView time1_food = view.findViewById(R.id.time1_food);
+        time1_food_selected = view.findViewById(R.id.time1_food_selected);
+        empty_food_selected = view.findViewById(R.id.empty_food_selected);
+        Glucose.getInstance().setFoodTime(isEmptyFood);
         // 开始测量
         final Button btnTest = view.findViewById(R.id.btn_fora_glu_test);
         btnTest.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +129,24 @@ public class ForaGluReminderFragment extends BaseFragment implements BleVIewInte
                 BleClient.init(_mActivity);
 
                 startMeasure();
+            }
+        });
+        empty_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isEmptyFood = 0;
+                Glucose.getInstance().setFoodTime(isEmptyFood);
+                time1_food_selected.setVisibility(View.GONE);
+                empty_food_selected.setVisibility(View.VISIBLE);
+            }
+        });
+        time1_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isEmptyFood = 2;
+                Glucose.getInstance().setFoodTime(isEmptyFood);
+                time1_food_selected.setVisibility(View.VISIBLE);
+                empty_food_selected.setVisibility(View.GONE);
             }
         });
     }

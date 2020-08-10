@@ -3,9 +3,11 @@ package com.guider.health.forabo;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.util.Log;
+
 import com.guider.health.foraglu.BleScanAndConnectBluetooth;
 import com.guider.health.foraglu.BleVIewInterface;
 import com.guider.health.foraglu.IBleServiceManager;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -22,8 +24,7 @@ public class ForaBOServiceManager implements IBleServiceManager {
     private WeakReference<BleVIewInterface> bpViewData;
     private ExecutorService executor = Executors.newFixedThreadPool(10);
 
-    private ForaBOServiceManager() {
-    }
+    private ForaBOServiceManager() { }
 
     private static ForaBOServiceManager serviceManager = new ForaBOServiceManager();
 
@@ -32,7 +33,7 @@ public class ForaBOServiceManager implements IBleServiceManager {
     }
 
     public void setViewObject(BleVIewInterface bpView) {
-        bpViewData = new WeakReference<BleVIewInterface>(bpView);
+        bpViewData = new WeakReference<>(bpView);
     }
 
     public void startMeasure() {
@@ -62,10 +63,10 @@ public class ForaBOServiceManager implements IBleServiceManager {
             }
             ArrayList<Byte> characteristicValues = new ArrayList<Byte>();
             // Mark 裡面是量測值
-            for (int i = 0; i < characteristic.getValue().length; i++) {
-                if (characteristic.getValue()[i] != 0) {
+            for(int i = 0 ; i < characteristic.getValue().length ; i++){
+                if (characteristic.getValue()[i] != 0){
                     characteristicValues.add(characteristic.getValue()[i]);
-                    // System.out.println("Mark " + intParse(characteristic, i));
+                     System.out.println("血氧结果Mark " + characteristic.getValue()[i]);
                 }
             }
 
@@ -85,7 +86,9 @@ public class ForaBOServiceManager implements IBleServiceManager {
                     break;
                 case 38:
                     foraBOModel.measureDataFormat(characteristicValues, characteristic, gatt);
-                    foraBOModel.trunOffDevice(characteristicValues, characteristic, gatt);
+                    //目前发现血氧仪只支持写入一次指令，再次写入系统报蓝牙写入数据失败，
+                    // 所以获得数据后直接回调成功
+                    Log.i(TAG, "关闭链接");
                     if (bpViewData.get() != null) {
                         // bpViewData.get().startUploadData();
                         bpViewData.get().connectAndMessureIsOK();
@@ -93,11 +96,6 @@ public class ForaBOServiceManager implements IBleServiceManager {
                     break;
                 case 80:
                     foraBOModel.trunOffDevice(characteristicValues, characteristic, gatt);
-                    Log.i(TAG, "关闭链接");
-                    if (bpViewData.get() != null) {
-                        // bpViewData.get().startUploadData();
-                        bpViewData.get().connectAndMessureIsOK();
-                    }
                     break;
                 default:
                     break;

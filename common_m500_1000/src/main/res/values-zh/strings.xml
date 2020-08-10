@@ -47,6 +47,26 @@
     <string name="fora_et_tips">1. 请按屏幕下方按钮开机\n\n2. 请按耳温仪背部按钮确定温度\n\n3. 待听到响声点击下方\"开始测量\"按钮</string>
     <string name="fora_et_redult_title">福尔耳温测量结果</string>
 
+    <string name="medcheck_glu_reminder_title">MEDCHECK血糖测量提示</string>
+    <string name="medcheck_glu_reult_format">您的血糖值为：\n%.2f</string>
+    <string name="medcheck_glu_tips">1、按照箭头指示方向插入试纸，自动开机。\n2、确认屏幕显示的试纸编码卡号与试纸盒相符。\n3、使用采血笔取得指尖血液样本。\n4、试纸吸取血样。\n5、屏幕倒计时结束后出现测量数据。\n6、点击“保存数据”，测量数据会存储到系统平台中。\n7、退出试纸，并弃至生化污染物容器中。</string>
+    <string name="medcheck_glu_redult_title">MEDCHECK血糖测量结果</string>
+
+    <string name="medcheck_pre_reminder_title">MEDCHECK血压测量提示</string>
+    <string name="medcheck_pre_reult_format">您的血压值为：\n%.2f</string>
+    <string name="medcheck_pre_tips">1. 请按屏幕下方按钮开机\n\n2. 请按耳温仪背部按钮确定温度\n\n3. 待听到响声点击下方\"开始测量\"按钮</string>
+    <string name="medcheck_pre_redult_title">MEDCHECK血压测量结果</string>
+    <string name = "blood_pressure">血压</string>
+    <string name="sbp_with_">收缩压(mmHg) :</string>
+    <string name="dbp_with_">舒张压(mmHg) :</string>
+
+    <string name="bmp1000_dy">低压</string>
+    <string name="bmp1000_gy">高压</string>
+
+    <string name="bmp1000_range">参考范围:  普通人群: 收缩压 &lt; 120（mmHg），舒张压 &lt; 80（mmHg)\n                    慢病、老年人群: 收缩压 &lt; 140（mmHg），舒张压 &lt; 90（mmHg) </string>
+    <string name="food_time2">餐后2小时</string>
+    <string name="food_time1">清晨空腹:</string>
+    <string name="save_data">保存数据</string>
     <string name="ear_temp">耳温</string>
 
     <string name = "ecg_ecg_suggest1">控制三高（高血脂、高血压、高血糖），保持良好习惯并控制体重，有助于维持血管的健康减少心脏多余的做工。</string>

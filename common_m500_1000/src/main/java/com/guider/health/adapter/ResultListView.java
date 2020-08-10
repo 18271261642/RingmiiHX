@@ -19,6 +19,8 @@ import com.guider.health.common.core.HeartPressCx;
 import com.guider.health.common.core.HeartPressMbb_88;
 import com.guider.health.common.core.HeartPressMbb_9804;
 import com.guider.health.common.core.HeartPressYf;
+import com.guider.health.common.core.MEDCHECKGlucose;
+import com.guider.health.common.core.MEDCHECKPressure;
 import com.guider.health.common.device.DeviceInit;
 
 import java.util.ArrayList;
@@ -124,6 +126,18 @@ public class ResultListView extends LinearLayout {
                     return;
                 }
                 resultViewHolder = new ViewHolderOfForaET(this);
+                break;
+            case DeviceInit.DEV_MEDCHECK_GLU:            // MEDCheck血糖
+                if (MEDCHECKGlucose.getMEDCHECKGluInstance().getGlucose() <= 0) {
+                    return;
+                }
+                resultViewHolder = new ViewHolderOfMEDCheckGlu(this);
+                break;
+            case DeviceInit.DEV_MEDCHECK_PRE:            // MEDCheck血压
+                if (MEDCHECKPressure.getMEDCHECKPressureInstance().get_sbp() <= 0) {
+                    return;
+                }
+                resultViewHolder = new ViewHolderOfMEDCheckPressure(this);
                 break;
             default:
                 resultViewHolder = new ViewHolderOfNull(this);

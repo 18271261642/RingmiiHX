@@ -50,7 +50,8 @@
     <string name="FORAGD40bv100">福尔血糖</string>
     <string name="FORABO">福尔血氧</string>
     <string name="FORAET">福尔耳温</string>
-
+    <string name="MEDCHECKBLU">MEDCHECK血糖</string>
+    <string name="MEDCHECKPRE">MEDCHECK血压</string>
     <string name="zy_download_tips">正在下载中 , 请耐心等待...</string>
 
     <!-- wuweikang -->

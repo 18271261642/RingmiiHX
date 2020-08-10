@@ -56,6 +56,12 @@ public class Config {
     public final static String PRINT_FRAGMENT = "com.guider.printlib.PrintingResultFragment";
     //十二导心电测量
     public final static String DAO12_FRAGMENT = "cn.wuweikang.view.VideoShow";
+    // MEDCHECK 血糖
+    public final static String MEDCHECK_GLU_FRAGMENT =
+            "com.guider.health.medcheckglu.MEDCHECKGluReminderFragment";
+    // MEDCHECK 血压
+    public final static String MEDCHECK_PRE_FRAGMENT
+            = "com.guider.health.medcheckpre.MEDCheckPressureReminderFragment";
 
     public final static HashMap<String, Boolean> mapX = new HashMap<>();
 

@@ -163,45 +163,42 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
             tv.setText(R.string.btn_health);
         }
 
-        b31BottomBar.setOnTabSelectListener(new BottomSelectView.OnTabSelectListener() {
-            @Override
-            public void onTabSelected(int tabId) {
-                switch (tabId) {
-                    case R.id.t1: //首页
-                        b31ViewPager.setCurrentItem(0, false);
-                        break;
-                    case R.id.t2: //数据
-                        b31ViewPager.setCurrentItem(1, false);
-                        break;
-                    case R.id.t3:  //开跑
-                        switch (BuildConfig.HEALTH) {
-                            case 0 : // 运动
-                                b31ViewPager.setCurrentItem(2, false);
-                                break;
-                            case 1: // 横板健康
-                                long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
-                                DeviceActivity.start(B31HomeActivity.this, (int) accountId);
-                                break;
-                            case 2: // 竖版无创
+        b31BottomBar.setOnTabSelectListener(tabId -> {
+            switch (tabId) {
+                case R.id.t1: //首页
+                    b31ViewPager.setCurrentItem(0, false);
+                    break;
+                case R.id.t2: //数据
+                    b31ViewPager.setCurrentItem(1, false);
+                    break;
+                case R.id.t3:  //开跑
+                    switch (BuildConfig.HEALTH) {
+                        case 0 : // 运动
+                            b31ViewPager.setCurrentItem(2, false);
+                            break;
+                        case 1: // 横板健康
+                            long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                            DeviceActivity.start(B31HomeActivity.this, (int) accountId);
+                            break;
+                        case 2: // 竖版无创
 //                                long accountIdV = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
 //                                DeviceActivityGlu.startGlu(B31HomeActivity.this, (int) accountIdV);
-                                Intent intent = new Intent(B31HomeActivity.this,
-                                        HealthResultShowActivity.class);
-                                startActivity(intent);
-                                break;
-                            default:
-                                b31ViewPager.setCurrentItem(2, false);
-                                break;
-                        }
-                    case R.id.t4:   //我的
-                        b31ViewPager.setCurrentItem(3, false);
-                        break;
-                    case R.id.t5:   //开始测试
-                        // TODO 跳转到设备选择列表
+                            Intent intent = new Intent(B31HomeActivity.this,
+                                    HealthResultShowActivity.class);
+                            startActivity(intent);
+                            break;
+                        default:
+                            b31ViewPager.setCurrentItem(2, false);
+                            break;
+                    }
+                case R.id.t4:   //我的
+                    b31ViewPager.setCurrentItem(3, false);
+                    break;
+                case R.id.t5:   //开始测试
+                    // TODO 跳转到设备选择列表
 //                        long accountId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
 //                        DeviceActivity.start(B31HomeActivity.this , (int) accountId);
-                        break;
-                }
+                    break;
             }
         });
     }
@@ -371,7 +368,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
      * @param tel
      */
     //点击事件调用的类
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "WrongConstant"})
     protected void call(final String tel) {
 
         AndPermission.with(B31HomeActivity.this)

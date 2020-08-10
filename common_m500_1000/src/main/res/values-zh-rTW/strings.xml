@@ -48,6 +48,29 @@
     <string name="fora_et_tips">1. 請按屏幕下方按鈕開機\n\n2. 請按耳溫儀背部按鈕確定溫度\n\n3. 待聽到響聲點擊下方\"開始測量\"按鈕</string>
     <string name="fora_et_redult_title">福爾耳溫測量結果</string>
 
+    <string name="medcheck_glu_reminder_title">MEDCHECK血糖測量提示</string>
+    <string name="medcheck_glu_reult_format">您的血糖值為：\n%.2f</string>
+    <string name="medcheck_glu_tips">1、按照箭頭指示方向插入試紙，自動開機。\n2、確認屏幕顯示的試紙編碼卡號與試紙盒相符。\n3、使用採血筆取得指尖血液樣本。\n4、試紙吸取血樣。\n5、屏幕倒計時結束後出現測量數據。\n6、點擊“保存數據”，測量數據會存儲到系統平台中。\n7、退出試紙，並棄至生化污染物容器中。</string>
+    <string name="medcheck_glu_redult_title">MEDCHECK血糖測量結果</string>
+
+    <string name="medcheck_pre_reminder_title">MEDCHECK血壓測量提示</string>
+    <string name="medcheck_pre_reult_format">您的血壓值為：\n%.2f</string>
+    <string name="medcheck_pre_tips">1. 請按長M鍵打開機器\n\n2. 請將試紙吸血後插入插槽\n\n3. 請下滑左側按鍵打開藍牙，此時左上角藍燈亮起</string>
+    <string name="medcheck_pre_redult_title">MEDCHECK血壓測量結果</string>
+
+    <string name="sbp_with_">收縮壓(mmHg) :</string>
+        
+    <string name="dbp_with_">舒張壓(mmHg) :</string>
+
+    <string name="bmp1000_range">參考範圍:  普通人群: 收縮壓 &lt; 120（mmHg），舒張壓 &lt; 80（mmHg)\n                    慢病、老年人群: 收縮壓 &lt; 140（mmHg），舒張壓 &lt; 90（mmHg) </string>
+
+    <string name="food_time2">餐後2小時</string>
+        
+    <string name="food_time1">清晨空腹:</string>
+    <string name="save_data">保存數據</string>
+    <string name="bmp1000_dy">低壓</string>
+    <string name="bmp1000_gy">高壓</string>
+    <string name="blood_pressure">血壓</string>
     <string name="common_temp_suggest_36">請多運動，註意保暖，加強營養</string>
     <string name="common_temp_suggest_36_37_2">體溫正常，請繼續保持</string>
     <string name="common_temp_suggest_37_3_38">請做好物理降溫，多喝水，多吃蔬菜水果，或遵醫囑服用退燒藥</string>

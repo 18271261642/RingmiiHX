@@ -21,6 +21,8 @@ import com.guider.health.common.core.HeartPressCx;
 import com.guider.health.common.core.HeartPressMbb_88;
 import com.guider.health.common.core.HeartPressMbb_9804;
 import com.guider.health.common.core.HeartPressYf;
+import com.guider.health.common.core.MEDCHECKGlucose;
+import com.guider.health.common.core.MEDCHECKPressure;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.standard.Constant;
 
@@ -49,6 +51,8 @@ public class DeviceInit {
     public static final String DEV_FORA_GLU = "FORA GD40v1.0.0";
     public static final String DEV_FORA_BO = "FORA BOv1.0.0"; // 福尔血氧
     public static final String DEV_FORA_ET = "FORA ETv1.0.0"; // 福尔耳温
+    public static final String DEV_MEDCHECK_GLU = "MEDCHECK GLUv1.0.0"; // MEDCHECK 血糖
+    public static final String DEV_MEDCHECK_PRE = "MEDCHECK PRE1.0.0"; // MEDCHECK 血压
     // TODO 添加新的蓝牙设备
 
     protected DeviceInit() {}
@@ -129,7 +133,12 @@ public class DeviceInit {
             case DEV_FORA_ET:          // 福尔耳温标志设置
                 ForaET.getForaETInstance().setTag(b);
                 break;
-
+            case DEV_MEDCHECK_GLU:     // MEDCHECK 血糖标志设置
+                MEDCHECKGlucose.getMEDCHECKGluInstance().setTag(b);
+                break;
+            case DEV_MEDCHECK_PRE:     // MEDCHECK 血压标志设置
+                MEDCHECKPressure.getMEDCHECKPressureInstance().setTag(b);
+                break;
             // TODO 添加新设备标志设置
         }
     }
@@ -147,6 +156,8 @@ public class DeviceInit {
         ForaGlucose.getForaGluInstance().setTag(false);
         ForaBO.getForaBOInstance().setTag(false);
         ForaET.getForaETInstance().setTag(false);
+        MEDCHECKGlucose.getInstance().setTag(false);//MEDCHECK血糖初始化
+        MEDCHECKPressure.getMEDCHECKPressureInstance().setTag(false);//MEDCHECK血糖初始化
         // TODO 新设备标志
     }
 
@@ -169,6 +180,8 @@ public class DeviceInit {
         pics.put(DEV_FORA_GLU, R.mipmap.device_fora_glu_logo);
         pics.put(DEV_FORA_BO, R.mipmap.device_fora_glu_logo);
         pics.put(DEV_FORA_ET, R.mipmap.device_fora_glu_logo);
+        pics.put(DEV_MEDCHECK_GLU,R.mipmap.device_medcheck_glu_logo);
+        pics.put(DEV_MEDCHECK_PRE,R.mipmap.device_medcheck_pressure_logo);
         // TODO 新设备图片
 
         fragments.put(DEV_GLU, Config.GLU_FRAGMENT);// 无创血糖测量
@@ -185,6 +198,8 @@ public class DeviceInit {
         fragments.put(DEV_FORA_GLU, Config.FORA_GLU_FRAGMENT);//福尔血糖
         fragments.put(DEV_FORA_BO, Config.FORA_BO_FRAGMENT);// 福尔血氧
         fragments.put(DEV_FORA_ET, Config.FORA_ET_FRAGMENT);// 福尔耳温
+        fragments.put(DEV_MEDCHECK_GLU, Config.MEDCHECK_GLU_FRAGMENT);//medcheck 血糖仪
+        fragments.put(DEV_MEDCHECK_PRE, Config.MEDCHECK_PRE_FRAGMENT);//medcheck 血压仪
         // TODO 新设备FRAGMENT
 
         names.put(DEV_ECG_6, MyUtils.application.getString(R.string.CmateHv100));//6导测量仪器
@@ -201,12 +216,16 @@ public class DeviceInit {
         names.put(DEV_FORA_GLU, MyUtils.application.getString(R.string.FORAGD40bv100));//福尔血糖
         names.put(DEV_FORA_BO, MyUtils.application.getString(R.string.FORABO));// 福尔血氧
         names.put(DEV_FORA_ET, MyUtils.application.getString(R.string.FORAET));// 福尔耳温
+        names.put(DEV_MEDCHECK_GLU, MyUtils.application.getString(R.string.MEDCHECKBLU));//MEDCHECK血糖
+        names.put(DEV_MEDCHECK_PRE, MyUtils.application.getString(R.string.MEDCHECKPRE));//MEDCHECK血压
         // TODO 新设备名字
 
         Config.DEVICE_KEYS.add(DEV_GLU);
         Config.DEVICE_KEYS.add(DEV_ECG_6);
         Config.DEVICE_KEYS.add(DEV_BP);
         Config.DEVICE_KEYS.add(DEV_FORA_GLU);
+        Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血糖
+        Config.DEVICE_KEYS.add(DEV_MEDCHECK_PRE);//MEDCHECK 血压
 
         ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
                 new ApiCallBack<List<Devices>>(){
