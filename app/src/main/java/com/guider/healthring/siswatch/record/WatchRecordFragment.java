@@ -36,7 +36,7 @@ import com.guider.healthring.siswatch.WatchDeviceActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.AnimationUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
-import com.littlejie.circleprogress.circleprogress.WaveProgress;
+import com.guider.healthring.widget.WaveProgress;
 
 import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;

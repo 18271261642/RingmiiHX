@@ -167,7 +167,8 @@ public class WXEntryActivityAdapter {
 
 
         Log.e(TAG,"------ltMap="+new Gson().toJson(maps));
-        requestPressent.getRequestJSONObject(1003,GUIDER_WX_LOGIN_URL, mContext,new Gson().toJson(maps),3);
+        requestPressent.getRequestJSONObject(1003,GUIDER_WX_LOGIN_URL,
+                mContext,new Gson().toJson(maps),3);
     }
 
     //解析登录到盖德返回信息，判断是否需要绑定手机号

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import android.util.Log;
@@ -180,7 +181,7 @@ public class LoginActivity extends WatchBaseActivity
     }
 
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "WrongConstant"})
     private void initViews() {
         loginWaveView.startMove();  //波浪线贝塞尔曲线
 
@@ -188,46 +189,53 @@ public class LoginActivity extends WatchBaseActivity
         requestPressent.attach(this);
         mWXEntryActivityAdapter = new WXEntryActivityAdapter(this, requestPressent);
 
-        subscriberOnNextListener = new SubscriberOnNextListener<String>() {
-            @Override
-            public void onNext(String result) {
-                //Loaddialog.getInstance().dissLoading();
-                Log.e("LoainActivity", "-----loginresult---" + result);
-                Gson gson = new Gson();
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    String loginResult = jsonObject.getString("resultCode");
-                    if ("001".equals(loginResult)) {
-                        BlueUser userInfo = gson.fromJson(jsonObject.getString("userInfo"), BlueUser.class);
+        subscriberOnNextListener = result -> {
+            //Loaddialog.getInstance().dissLoading();
+            Log.e("LoainActivity", "-----loginresult---" + result);
+            Gson gson = new Gson();
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String loginResult = jsonObject.getString("resultCode");
+                if ("001".equals(loginResult)) {
+                    BlueUser userInfo = gson.fromJson(jsonObject.getString("userInfo"),
+                            BlueUser.class);
 //                        MyLogUtil.i("msg", "-userInfo-" + userInfo.toString());
-                        Common.userInfo = userInfo;
-                        Common.customer_id = userInfo.getUserId();
+                    Common.userInfo = userInfo;
+                    Common.customer_id = userInfo.getUserId();
 
-                        //保存userid
-                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userId", userInfo.getUserId());
-                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", jsonObject.getString("userInfo"));
-                        Log.e("LoainActivity", "-----loginresult---" + userInfo.toString());
+                    //保存userid
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            "userId", userInfo.getUserId());
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            "userInfo", jsonObject.getString("userInfo"));
+                    Log.e("LoainActivity", "-----loginresult---" + userInfo.toString());
 //                        WatchUtils.setIsWxLogin("",phone);
-                        WatchUtils.setIsWxLogin("LOGION_PHONE", jsonObject.getString("userInfo"));
+                    WatchUtils.setIsWxLogin("LOGION_PHONE",
+                            jsonObject.getString("userInfo"));
 
-                        SharedPreferencesUtils.setParam(LoginActivity.this, SharedPreferencesUtils.CUSTOMER_ID, Common.customer_id);
+                    SharedPreferencesUtils.setParam(LoginActivity.this,
+                            SharedPreferencesUtils.CUSTOMER_ID, Common.customer_id);
 
-                        //SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
+                    //SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
 
-                        startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                        finish();
-                    } else if (loginResult.equals("003")) {
-                        ToastUtil.showShort(LoginActivity.this, getString(R.string.yonghuzhej));
-                    } else if (loginResult.equals("004")) {
-                        ToastUtil.showShort(LoginActivity.this, getString(R.string.string_user_pass_error));
-                    } else if (loginResult.equals("006")) {
-                        ToastUtil.showShort(LoginActivity.this, getString(R.string.miamacuo));
-                    } else {
-                        ToastUtil.showShort(LoginActivity.this, getString(R.string.miamacuo));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    startActivity(new Intent(LoginActivity.this,
+                            NewSearchActivity.class));
+                    finish();
+                } else if (loginResult.equals("003")) {
+                    ToastUtil.showShort(LoginActivity.this,
+                            getString(R.string.yonghuzhej));
+                } else if (loginResult.equals("004")) {
+                    ToastUtil.showShort(LoginActivity.this,
+                            getString(R.string.string_user_pass_error));
+                } else if (loginResult.equals("006")) {
+                    ToastUtil.showShort(LoginActivity.this,
+                            getString(R.string.miamacuo));
+                } else {
+                    ToastUtil.showShort(LoginActivity.this,
+                            getString(R.string.miamacuo));
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         };
 
@@ -238,7 +246,8 @@ public class LoginActivity extends WatchBaseActivity
         //请求读写SD卡的权限
         AndPermission.with(LoginActivity.this)
                 .runtime()
-                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION)
+                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
                 .start();
 
         //判断蓝牙是否开启
@@ -271,6 +280,7 @@ public class LoginActivity extends WatchBaseActivity
         return mCBPrivacy.isChecked();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         Context context = view.getContext();
@@ -281,10 +291,12 @@ public class LoginActivity extends WatchBaseActivity
         switch (view.getId()) {
 
             case R.id.register_btn://注册
-                startActivity(new Intent(LoginActivity.this, GuiderWxBindPhoneActivity.class));
+                startActivity(new Intent(LoginActivity.this,
+                        RegisterActivity2.class));
                 break;
             case R.id.forget_tv://忘记密码
-                startActivity(new Intent(LoginActivity.this, ForgetPasswardActivity.class));
+                startActivity(new Intent(LoginActivity.this,
+                        ForgetPasswardActivity.class));
                 break;
             case R.id.login_btn:
                 boolean lauage = VerifyUtil.isZh(LoginActivity.this);
@@ -359,14 +371,16 @@ public class LoginActivity extends WatchBaseActivity
                         map.put("pwd", Md5Util.Md532("e10adc3949ba59abbe56e057f20f883e"));
                         String mapjson = gson.toJson(map);
 //                        Log.e("msg", "-mapjson-" + mapjson);
-                        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, LoginActivity.this);
-                        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.logon, mapjson);
+                        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener,
+                                LoginActivity.this);
+                        OkHttpObservable.getInstance().getData(dialogSubscriber,
+                                URLs.HTTPs + URLs.logon, mapjson);
 
-                        SharedPreferences userSettings = getSharedPreferences("Login_id", 0);
+                        SharedPreferences userSettings = getSharedPreferences(
+                                "Login_id", 0);
                         SharedPreferences.Editor editor = userSettings.edit();
                         editor.putInt("id", 0);
-                        editor.commit();
-
+                        editor.apply();
                     }
                 });
                 break;
@@ -380,9 +394,9 @@ public class LoginActivity extends WatchBaseActivity
                 // 用户信息可以做自己的操作
                 mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line),
                         "1653887386", null, this::registerRingUser, () -> {
-                    startActivity(NewSearchActivity.class);
-                    finish();
-                });
+                            startActivity(NewSearchActivity.class);
+                            finish();
+                        });
                 break;
         }
     }
@@ -414,9 +428,12 @@ public class LoginActivity extends WatchBaseActivity
                         UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
                         Common.customer_id = userInfoBean.getUserid();
                         //保存userid
-                        SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
-                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
-                        SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
+                        SharedPreferencesUtils.saveObject(LoginActivity.this,
+                                Commont.USER_ID_DATA, userInfoBean.getUserid());
+                        SharedPreferencesUtils.saveObject(LoginActivity.this,
+                                "userInfo", userStr);
+                        SharedPreferencesUtils.saveObject(LoginActivity.this,
+                                Commont.USER_INFO_DATA, userStr);
 
                         // startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
                         // finish();
@@ -444,47 +461,47 @@ public class LoginActivity extends WatchBaseActivity
         String mapjson = gson.toJson(map);
         Log.e("msg", "-mapjson-" + mapjson);
         if (requestPressent != null) {
-            requestPressent.getRequestJSONObject(0x01, Commont.FRIEND_BASE_URL + URLs.logon, LoginActivity.this, mapjson, 1);
+            requestPressent.getRequestJSONObject(0x01,
+                    Commont.FRIEND_BASE_URL + URLs.logon,
+                    LoginActivity.this, mapjson, 1);
         }
     }
 
     private void loginGuider(String uName) {
         //登录到盖德后台
-        String loginUrl = BuildConfig.APIURL + "api/v1/login/onlyphone?phone=" + uName; // http://api.guiderhealth.com/
+        String loginUrl = BuildConfig.APIURL +
+                "api/v1/login/onlyphone?phone=" + uName; // http://api.guiderhealth.com/
         Log.e(TAG, "-------手机号登录的url=" + loginUrl);
-        OkHttpTool.getInstance().doRequest(loginUrl, null, "1", new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG, "-------手机号录到盖德=" + result);
-                if (WatchUtils.isNetRequestSuccess(result, 0)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (jsonObject.has("data")) {
-                            JSONObject dataJsonObject = jsonObject.getJSONObject("data");
-                            long accountId = dataJsonObject.getLong("accountId");
-                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
-                            String token = dataJsonObject.getString("token");
-                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", token);
-                            WxScanUtil.handle(LoginActivity.this, accountId, new WxScanUtil.IWxScan() {
-                                @Override
-                                public void onError() {
-                                    startActivity(NewSearchActivity.class);
-                                    finish();
-                                }
+        OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {
+            Log.e(TAG, "-------手机号录到盖德=" + result);
+            if (WatchUtils.isNetRequestSuccess(result, 0)) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.has("data")) {
+                        JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+                        long accountId = dataJsonObject.getLong("accountId");
+                        SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
+                        String token = dataJsonObject.getString("token");
+                        SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", token);
+                        WxScanUtil.handle(LoginActivity.this, accountId, new WxScanUtil.IWxScan() {
+                            @Override
+                            public void onError() {
+                                startActivity(NewSearchActivity.class);
+                                finish();
+                            }
 
-                                @Override
-                                public void onOk() {
-                                    Intent intent = new Intent(LoginActivity.this, WxScanActivity.class);
-                                    intent.putExtra("accountId", accountId);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                            @Override
+                            public void onOk() {
+                                Intent intent = new Intent(LoginActivity.this, WxScanActivity.class);
+                                intent.putExtra("accountId", accountId);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }, false);
@@ -669,16 +686,20 @@ public class LoginActivity extends WatchBaseActivity
                     Common.customer_id = userInfoBean.getUserid();
 
                     // 保存userid
-                    SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_ID_DATA, userInfoBean.getUserid());
-                    SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userStr);
-                    SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            Commont.USER_ID_DATA, userInfoBean.getUserid());
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            "userInfo", userStr);
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            Commont.USER_INFO_DATA, userStr);
 
                     String usernametxt = username.getText().toString();
                     loginGuider(usernametxt);
                 }
 
             } else {
-                ToastUtil.showToast(LoginActivity.this, jsonObject.getString("msg") + jsonObject.getString("data"));
+                ToastUtil.showToast(LoginActivity.this,
+                        jsonObject.getString("msg") + jsonObject.getString("data"));
             }
         } catch (Exception e) {
             e.printStackTrace();

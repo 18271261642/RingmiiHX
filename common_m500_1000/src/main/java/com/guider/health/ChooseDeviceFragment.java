@@ -58,7 +58,8 @@ public class ChooseDeviceFragment extends BaseFragment {
     //当增加设备时, 需要 resetTag setDeviceTag两个方法
 
     @Nullable
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.choose_device_fragment, container, false);
         return view;
     }
@@ -74,6 +75,7 @@ public class ChooseDeviceFragment extends BaseFragment {
                 public void needLoad() {
                     showDialog();
                 }
+
                 @Override
                 public void onHaveList() {
                     hideDialog();
@@ -152,7 +154,7 @@ public class ChooseDeviceFragment extends BaseFragment {
         if (recyclerView == null) {
             recyclerView = view.findViewById(R.id.recycler_view);
             LinearLayoutManager layoutManager = new LinearLayoutManager(_mActivity,
-                    LinearLayoutManager.HORIZONTAL,false);
+                    LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
             normalAdapter = new NormalAdapter();
             recyclerView.setAdapter(normalAdapter);
@@ -307,20 +309,22 @@ public class ChooseDeviceFragment extends BaseFragment {
         @Override
         public VH onCreateViewHolder(ViewGroup parent, int viewType) {
             // LayoutInflater.from指定写法
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_view, parent, false);
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.device_view, parent, false);
             return new VH(v);
         }
     }
 
-    public class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
-        private int dividerHeight;
+    static class SimplePaddingDecoration extends RecyclerView.ItemDecoration {
+        private final int dividerHeight;
 
         public SimplePaddingDecoration(Context context) {
             dividerHeight = context.getResources().getDimensionPixelSize(R.dimen.dp_15);
         }
 
         @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
             int position = parent.getChildLayoutPosition(view);
             if (position != 0) {

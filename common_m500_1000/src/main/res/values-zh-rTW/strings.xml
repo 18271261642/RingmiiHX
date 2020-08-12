@@ -54,7 +54,6 @@
     <string name="medcheck_glu_redult_title">MEDCHECK血糖測量結果</string>
 
     <string name="medcheck_pre_reminder_title">MEDCHECK血壓測量提示</string>
-    <string name="medcheck_pre_reult_format">您的血壓值為：\n%.2f</string>
     <string name="medcheck_pre_tips">1. 請按長M鍵打開機器\n\n2. 請將試紙吸血後插入插槽\n\n3. 請下滑左側按鍵打開藍牙，此時左上角藍燈亮起</string>
     <string name="medcheck_pre_redult_title">MEDCHECK血壓測量結果</string>
 

@@ -52,7 +52,7 @@ import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.AnimationUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
-import com.littlejie.circleprogress.circleprogress.WaveProgress;
+import com.guider.healthring.widget.WaveProgress;
 import com.sdk.bluetooth.bean.HeartData;
 import com.sdk.bluetooth.bean.SleepData;
 import com.sdk.bluetooth.bean.SportsData;

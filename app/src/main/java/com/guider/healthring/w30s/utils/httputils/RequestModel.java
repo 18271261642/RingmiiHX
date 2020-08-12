@@ -12,13 +12,16 @@ import com.guider.healthring.rxandroid.SubscriberOnNextListener;
 
 public class RequestModel{
 
-    public void getJSONObjectModelData(String url, Context mContext, String jsonObject, final SubscriberOnNextListener<String> subscriberOnNextListener,CustumListener custumListener){
+    public void getJSONObjectModelData(String url, Context mContext, String jsonObject,
+                                       final SubscriberOnNextListener<String> subscriberOnNextListener,
+                                       CustumListener custumListener){
         CommonSubscriber subscriber = new CommonSubscriber(subscriberOnNextListener,mContext);
         subscriber.setCustumListener(custumListener);
         OkHttpObservable.getInstance().getData(subscriber,url,jsonObject);
     }
 
-    public void getPutJSONObjectModelData(String url, Context mContext, String jsonObject, final SubscriberOnNextListener<String> subscriberOnNextListener,CustumListener custumListener){
+    public void getPutJSONObjectModelData(String url, Context mContext, String jsonObject,
+                                          final SubscriberOnNextListener<String> subscriberOnNextListener,CustumListener custumListener){
         CommonSubscriber subscriber = new CommonSubscriber(subscriberOnNextListener,mContext);
         subscriber.setCustumListener(custumListener);
         OkHttpObservable.getInstance().getPutData(subscriber,url,jsonObject);

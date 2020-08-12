@@ -275,9 +275,11 @@ public abstract class MedCheckFragment extends BaseFragment {
     }
 
     private void enableBluetooth() {
-        PermissionHelper.showDialog(getContext(), getString(com.getmedcheck.lib.R.string.bluetooth_enable_dialog_label),
+        PermissionHelper.showDialog(getContext(),
+                getString(com.getmedcheck.lib.R.string.bluetooth_enable_dialog_label),
                 getString(com.getmedcheck.lib.R.string.bluetooth_enable_dialog_message),
-                getString(com.getmedcheck.lib.R.string.dialog_label_enable), new OnDialogClickListener() {
+                getString(com.getmedcheck.lib.R.string.dialog_label_enable),
+                new OnDialogClickListener() {
                     @Override
                     public void onDialogClick(DialogInterface dialog, int buttonType) {
                         if (mBluetoothAdapter != null) {

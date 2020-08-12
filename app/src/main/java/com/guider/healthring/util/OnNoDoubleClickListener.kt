@@ -12,7 +12,7 @@ interface OnNoDoubleClickListener : View.OnClickListener {
     override fun onClick(v: View) {
         //两次点击重复时间，300ms为宜
         val MIN_CLICK_DELAY_TIME = 300
-        var lastClickTime: Long = 0L
+        var lastClickTime = 0L
         var id: Int = -1
         val currentTime = Calendar.getInstance().timeInMillis
         val mId = v.id

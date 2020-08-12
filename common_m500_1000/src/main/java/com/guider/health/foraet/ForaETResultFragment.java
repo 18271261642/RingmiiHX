@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
- * 福尔血糖测量提示界面
+ * 福尔耳温结果界面
  */
 public class ForaETResultFragment extends BaseFragment {
     private View view;

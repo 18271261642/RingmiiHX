@@ -14,6 +14,8 @@ import com.guider.health.common.core.HeartPressCx;
 import com.guider.health.common.core.HeartPressMbb_88;
 import com.guider.health.common.core.HeartPressMbb_9804;
 import com.guider.health.common.core.HeartPressYf;
+import com.guider.health.common.core.MEDCHECKGlucose;
+import com.guider.health.common.core.MEDCHECKPressure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class MeasureDeviceManager {
 
     /**
      * 获取所有参与测量的设备
+     *
      * @return List<设备蓝牙名>
      */
     public List<String> getMeasureDevices() {
@@ -80,7 +83,7 @@ public class MeasureDeviceManager {
                     }
                     break;
                 case DeviceInit.DEV_FORA_GLU:  // 福尔血糖
-                    if(ForaGlucose.getForaGluInstance().isTag()) {
+                    if (ForaGlucose.getForaGluInstance().isTag()) {
                         needShowList.add(devase);
                     }
                     break;
@@ -89,8 +92,18 @@ public class MeasureDeviceManager {
                         needShowList.add(devase);
                     }
                     break;
-                case DeviceInit.DEV_FORA_BO:  // 福尔血氧 TODO
+                case DeviceInit.DEV_FORA_BO:  // 福尔血氧
                     if (ForaBO.getForaBOInstance().isTag()) {
+                        needShowList.add(devase);
+                    }
+                    break;
+                case DeviceInit.DEV_MEDCHECK_GLU:  // medcheck血糖仪
+                    if (MEDCHECKGlucose.getMEDCHECKGluInstance().isTag()) {
+                        needShowList.add(devase);
+                    }
+                    break;
+                case DeviceInit.DEV_MEDCHECK_PRE:  // medcheck血压仪 TODO
+                    if (MEDCHECKPressure.getMEDCHECKPressureInstance().isTag()) {
                         needShowList.add(devase);
                     }
                     break;
@@ -140,8 +153,14 @@ public class MeasureDeviceManager {
             case DeviceInit.DEV_FORA_ET:  // 福尔耳温
                 ForaET.getForaETInstance().setTag(false);
                 break;
-            case DeviceInit.DEV_FORA_BO:  // 福尔血氧 TODO
+            case DeviceInit.DEV_FORA_BO:  // 福尔血氧
                 ForaBO.getForaBOInstance().setTag(false);
+            case DeviceInit.DEV_MEDCHECK_GLU:  // medcheck血糖仪
+                MEDCHECKGlucose.getMEDCHECKGluInstance().setTag(false);
+                break;
+            case DeviceInit.DEV_MEDCHECK_PRE:  // medcheck血压仪 TODO
+                MEDCHECKPressure.getMEDCHECKPressureInstance().setTag(false);
+                break;
         }
     }
 }

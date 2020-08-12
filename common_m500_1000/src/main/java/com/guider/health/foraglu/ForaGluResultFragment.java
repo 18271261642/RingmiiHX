@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.guider.health.common.cache.MeasureDataUploader;
 import com.guider.health.common.core.BaseFragment;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.ForaGlucose;
+import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.RouterPathManager;
 import com.guider.health.common.device.DeviceInit;
@@ -52,7 +54,7 @@ public class ForaGluResultFragment extends BaseFragment {
 
         // 是否能跳过
         view.findViewById(R.id.skip).setVisibility(View.GONE);
-        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_FORA_GLU));
+        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this, DeviceInit.DEV_FORA_GLU));
 
         // 返回上一页
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
@@ -69,19 +71,27 @@ public class ForaGluResultFragment extends BaseFragment {
         IUnit iUnit = UnitUtil.getIUnit(_mActivity);
         double value = iUnit.getGluShowValue(ForaGlucose.getForaGluInstance().getGlucose(), 2);
         tvResult.setText(String.format(getResources().getString(R.string.fora_glu_reult_format), value) + iUnit.getGluUnit());
-
+        // 默认随机
+        String bsTime = "RANDOM";
+        if (Glucose.getInstance().getFoodTime() == 0) {
+            //空腹
+            bsTime = "FPG";
+        }
+        if (Glucose.getInstance().getFoodTime() >= 1) {
+            bsTime = "TWOHPPG";
+        }
         MeasureDataUploader.getInstance(_mActivity).uploadBloodSugar(
                 MyUtils.getMacAddress(),
                 0,
                 (float) ForaGlucose.getForaGluInstance().getGlucose(),
                 0,
-                "RANDOM" // 默认随机
+                bsTime // 默认随机
         );
         // 开始测量
         view.findViewById(R.id.btn_fora_glu_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!MyUtils.isNormalClickTime()){
+                if (!MyUtils.isNormalClickTime()) {
                     return;
                 }
                 if (RouterPathManager.Devices.size() > 0) {

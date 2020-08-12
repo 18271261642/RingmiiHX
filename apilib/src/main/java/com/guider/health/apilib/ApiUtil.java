@@ -32,10 +32,12 @@ public class ApiUtil {
     public static OkHttpClient getOkHttpClient() {
         return mOkHttpClient;
     }
+
     public static Map<String, String> getHeaders() {
         return mHeaders;
     }
-    public static void init(Context context , String mac) {
+
+    public static void init(Context context, String mac) {
         ApiConsts.API_HOST = BuildConfig.APIURL;
         ApiConsts.API_HOST_HD = BuildConfig.APIHDURL;
 
@@ -68,12 +70,12 @@ public class ApiUtil {
             builder.addInterceptor(loggingInterceptor);
         }
         builder.readTimeout(5, TimeUnit.MINUTES)
-            .connectTimeout(5, TimeUnit.MINUTES)
-            .writeTimeout(5, TimeUnit.MINUTES);
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES);
         if (needFormat)
             builder.addInterceptor(new RequestHead(context));
         if (!needFormat) {
-             return new Retrofit.Builder()
+            return new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(builder.build())
@@ -95,14 +97,19 @@ public class ApiUtil {
         } else {
             return new Retrofit.Builder()
                     .baseUrl(url)
-                    .addConverterFactory(ResultConverterFactory.create(new Gson().newBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").registerTypeAdapter(Date.class, new DateTypeAdapterNormal()).create()))
+                    .addConverterFactory(ResultConverterFactory.create(
+                            new Gson().newBuilder()
+                                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                                    .registerTypeAdapter(Date.class, new DateTypeAdapterNormal())
+                                    .create()))
                     .client(builder.build())
                     .build()
                     .create(clz);
         }
     }
 
-    private static <I> I createApi(String url, Class<I> clz, boolean needTimeZone, boolean needFormat, int timmeout) {
+    private static <I> I createApi(String url, Class<I> clz, boolean needTimeZone,
+                                   boolean needFormat, int timmeout) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -139,7 +146,8 @@ public class ApiUtil {
                     .baseUrl(url)
                     .addConverterFactory(ResultConverterFactory.create(
                             new Gson().newBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-                                    .registerTypeAdapter(Date.class, new DateTypeAdapterNormal()).create()))
+                                    .registerTypeAdapter(Date.class,
+                                            new DateTypeAdapterNormal()).create()))
                     .client(builder.build())
                     .build()
                     .create(clz);
@@ -157,6 +165,7 @@ public class ApiUtil {
     public static <I> I createHDApi(Class<I> clz, boolean needTimeZone) {
         return createApi(ApiConsts.API_HOST_HD, clz, needTimeZone);
     }
+
     public static <I> I createApi(Class<I> clz, boolean needTimeZone) {
         return createApi(ApiConsts.API_HOST, clz, needTimeZone);
     }
@@ -174,8 +183,10 @@ public class ApiUtil {
      */
     public static void uploadFile(Context context, String filePath, ApiCallBack<String> callBack) {
         File file = new File(filePath);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"),
+                file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData(
+                "file", file.getName(), requestFile);
         createApi(IGuiderApi.class).uploadFile(body).enqueue(callBack);
     }
 }

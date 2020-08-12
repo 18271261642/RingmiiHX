@@ -65,7 +65,7 @@
             android:layout_height="wrap_content">
 
 
-            <com.littlejie.circleprogress.circleprogress.WaveProgress
+            <com.guider.healthring.widget.WaveProgress
                 android:id="@+id/recordwave_progress_bar"
                 android:layout_width="230dp"
                 android:layout_height="230dp"

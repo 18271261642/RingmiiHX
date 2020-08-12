@@ -20,8 +20,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 
 import com.guider.healthring.Commont;
@@ -86,13 +88,16 @@ public class NewB30ConnStateService extends Service {
                     break;
                 case SEARCH_REQUEST_CODE:  //搜索返回
                     handler.removeMessages(SEARCH_REQUEST_CODE);
-                    String bleMacss = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), Commont.BLEMAC);
+                    String bleMacss = (String) SharedPreferencesUtils.readObject(
+                            MyApp.getContext(), Commont.BLEMAC);
                     if (!WatchUtils.isEmpty(bleMacss)) {
                         SearchResult searchResult = (SearchResult) msg.obj;
                         if (searchResult != null) {
-                            if (!WatchUtils.isEmpty(searchResult.getAddress()) && searchResult.getName() != null) {
+                            if (!WatchUtils.isEmpty(searchResult.getAddress()) &&
+                                    searchResult.getName() != null) {
                                 //Log.e(TAG, "----hand-msg=" + searchResult.getAddress() + (searchResult.getAddress().equals(bleMacss.trim())));
-                                if (!WatchUtils.isEmpty(searchResult.getAddress()) && searchResult.getAddress().equals(bleMacss.trim())) {
+                                if (!WatchUtils.isEmpty(searchResult.getAddress()) &&
+                                        searchResult.getAddress().equals(bleMacss.trim())) {
                                     Log.e(TAG, "----相等了----");
                                     if (bluetoothClient != null) {
                                         bluetoothClient.stopSearch();
@@ -150,14 +155,14 @@ public class NewB30ConnStateService extends Service {
         MyApp.getInstance().getVpOperateManager().connectDevice(mac, (i, bleGattProfile, b) -> {
             Log.e(TAG, "----connectState=" + i);
             if (i == Code.REQUEST_SUCCESS) {  //连接成功过
-                Log.d("----去自动链接-", "go go go7" + b+"----"+i);
+                Log.d("----去自动链接-", "go go go7" + b + "----" + i);
                 if (bluetoothClient != null) {
                     bluetoothClient.stopSearch();
                 }
             }
         }, i -> {
             Log.e(TAG, "----notifyState=" + i);
-            Log.d("----去自动链接-", "go go go8"+"----"+i);
+            Log.d("----去自动链接-", "go go go8" + "----" + i);
             if (i == Code.REQUEST_SUCCESS) {
                 if (connBleHelpService == null) {
                     connBleHelpService = NewConnBleHelpService.getConnBleHelpService();
@@ -179,8 +184,6 @@ public class NewB30ConnStateService extends Service {
                     }
 
                     sendBroadcast(intent);
-
-
 //                            if(b30ConnStateListener != null){
 //                                b30ConnStateListener.onB30Connect();
 //                            }
@@ -191,8 +194,8 @@ public class NewB30ConnStateService extends Service {
     }
 
     //停止自动搜索
-    public void stopAutoConn(){
-        if(bluetoothClient != null)
+    public void stopAutoConn() {
+        if (bluetoothClient != null)
             bluetoothClient.stopSearch();
     }
 

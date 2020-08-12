@@ -55,7 +55,7 @@ public class MEDCheckPressureResultFragment extends BaseFragment {
         view.findViewById(R.id.bp_result_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!MyUtils.isNormalClickTime()){
+                if (!MyUtils.isNormalClickTime()) {
                     return;
                 }
                 if (RouterPathManager.Devices.size() > 0) {
@@ -96,12 +96,12 @@ public class MEDCheckPressureResultFragment extends BaseFragment {
         paramHealthRangeAnlysis1.setYear(Integer.parseInt(stringBuilder.toString()));
         list.add(paramHealthRangeAnlysis1);
         List<String> results = Judgement.healthDataAnlysis(list);
-        if (results != null) {
+        if (results.size() != 0) {
             MEDCHECKPressure.getMEDCHECKPressureInstance().setCardShowStr(results.get(0));
         }
-        ((TextView) view.findViewById(R.id.bp_press1)).setText(sbp+"");
-        ((TextView) view.findViewById(R.id.bp_press2)).setText(dbp+"");
-        ((TextView) view.findViewById(R.id.bp_result)).setText(sbp + "/" +dbp);
+        ((TextView) view.findViewById(R.id.bp_press1)).setText(sbp + "");
+        ((TextView) view.findViewById(R.id.bp_press2)).setText(dbp + "");
+        ((TextView) view.findViewById(R.id.bp_result)).setText(sbp + "/" + dbp);
         MEDCHECKPressure.getMEDCHECKPressureInstance().startStandardRun(new StandardCallback() {
             @Override
             public void onResult(boolean isFinish) {
@@ -110,9 +110,9 @@ public class MEDCheckPressureResultFragment extends BaseFragment {
                 }
                 if (isFinish) {
                     if ("理想血压".equals(
-                            MEDCHECKPressure.getMEDCHECKPressureInstance().getCardShowStr())){
+                            MEDCHECKPressure.getMEDCHECKPressureInstance().getCardShowStr())) {
                         view.findViewById(R.id.bp_heart5).setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         view.findViewById(R.id.bp_heart6).setVisibility(View.VISIBLE);
                     }
                 } else {
@@ -143,12 +143,12 @@ public class MEDCheckPressureResultFragment extends BaseFragment {
         paramHealthRangeAnlysis1.setYear(Integer.parseInt(stringBuilder.toString()));
         list.add(paramHealthRangeAnlysis1);
         List<String> results = Judgement.healthDataAnlysis(list);
-        if (results != null){
+        if (results != null) {
             MEDCHECKPressure.getMEDCHECKPressureInstance().setCardShowStr(results.get(0));
         }
-        if ("理想血压".equals(MEDCHECKPressure.getMEDCHECKPressureInstance().getCardShowStr())){
+        if ("理想血压".equals(MEDCHECKPressure.getMEDCHECKPressureInstance().getCardShowStr())) {
             view.findViewById(R.id.bp_heart5).setVisibility(View.VISIBLE);
-        }else{
+        } else {
             view.findViewById(R.id.bp_heart6).setVisibility(View.VISIBLE);
         }
 

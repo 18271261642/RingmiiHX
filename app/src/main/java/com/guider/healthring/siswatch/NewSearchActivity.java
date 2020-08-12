@@ -116,7 +116,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                     break;
                 case H9_REQUEST_CONNECT_CODE:  //H 9手表连接
                     closeLoadingDialog();
-                    startActivity(new Intent(NewSearchActivity.this, H9HomeActivity.class));
+                    startActivity(new Intent(NewSearchActivity.this,
+                            H9HomeActivity.class));
                     finish();
                     break;
                 case 777:   //连接失败后更新目录
@@ -205,6 +206,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
 
     }
 
+    @SuppressLint("WrongConstant")
     private void verticalPermission() {
         AndPermission.with(NewSearchActivity.this)
                 .runtime()
@@ -218,7 +220,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                 }).onDenied(new Action<List<String>>() {
             @Override
             public void onAction(List<String> data) {
-                ToastUtil.showToast(NewSearchActivity.this, "已拒绝权限,可能无法搜索到蓝牙设备！");
+                ToastUtil.showToast(NewSearchActivity.this,
+                        "已拒绝权限,可能无法搜索到蓝牙设备！");
             }
         }).start();
 
@@ -228,6 +231,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
 
     //当权限被拒绝时提醒用户再次授权
     private Rationale rational = new Rationale() {
+        @SuppressLint("WrongConstant")
         @Override
         public void showRationale(Context context, Object data, RequestExecutor executor) {
             executor.execute();
@@ -255,8 +259,9 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     private void operScan() {
         if (bluetoothAdapter != null) {
             if (!bluetoothAdapter.isEnabled()) {  //未打开蓝牙
-                BlueAdapterUtils.getBlueAdapterUtils(NewSearchActivity.this).turnOnBlue(NewSearchActivity.this,
-                        BLUE_VISIABLE_TIME_CODE, REQUEST_TURNON_BLUE_CODE);
+                BlueAdapterUtils.getBlueAdapterUtils(NewSearchActivity.this)
+                        .turnOnBlue(NewSearchActivity.this,
+                                BLUE_VISIABLE_TIME_CODE, REQUEST_TURNON_BLUE_CODE);
             } else {
                 scanBlueDevice(true);   //扫描设备
             }
@@ -270,7 +275,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     //扫描和停止扫描设备
     @SuppressLint("MissingPermission")
     private void scanBlueDevice(boolean b) {
-        if (!AndPermission.hasPermissions(NewSearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION))
+        if (!AndPermission.hasPermissions(NewSearchActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION))
             verticalPermission();
         if (b) {
 
@@ -304,7 +310,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     @SuppressLint("MissingPermission")
     private void getPhonePairDevice() {
         //获取已配对设备
-        @SuppressLint("MissingPermission") Object[] lstDevice = bluetoothAdapter.getBondedDevices().toArray();
+        @SuppressLint("MissingPermission") Object[] lstDevice =
+                bluetoothAdapter.getBondedDevices().toArray();
         if (lstDevice == null)
             return;
         for (Object o : lstDevice) {
@@ -338,7 +345,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                 if (!repeatList.contains(bleMac)) {
                     if (customDeviceList.size() <= 50) {
                         repeatList.add(bleMac);
-                        customDeviceList.add(new CustomBlueDevice(bluetoothDevice, Math.abs(rssi) + "", ((scanRecord[7] + scanRecord[8]))));
+                        customDeviceList.add(new CustomBlueDevice(bluetoothDevice,
+                                Math.abs(rssi) + "", ((scanRecord[7] + scanRecord[8]))));
                         Comparator comparator = (Comparator<CustomBlueDevice>) (
                                 o1, o2) -> o1.getRssi().compareTo(o2.getRssi());
                         Collections.sort(customDeviceList, comparator);
@@ -370,12 +378,9 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         customBlueAdapter.setOnBindClickListener(this);
         swipeRefresh.setOnRefreshListener(this);
 
-        newSearchTitleTv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startActivity(GuiderDeviceActivity.class);
-                return true;
-            }
+        newSearchTitleTv.setOnLongClickListener(v -> {
+            startActivity(GuiderDeviceActivity.class);
+            return true;
         });
 
     }
@@ -428,7 +433,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
             if (customDeviceList != null) {
                 customBlueDevice = customDeviceList.get(position);
             }
-            @SuppressLint("MissingPermission") String bleName = customBlueDevice.
+            String bleName = customBlueDevice.
                     getBluetoothDevice().getName();
             if (customBlueDevice == null || WatchUtils.isEmpty(bleName))
                 return;
@@ -469,7 +474,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     }
 
     //广播接收者接收H8手表配对连接的状态
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @SuppressLint("MissingPermission")
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -502,8 +507,10 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                             break;
                     }
                 }
-                if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {   //绑定状态的广播，配对
-                    int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_NONE);
+                if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+                    //绑定状态的广播，配对
+                    int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,
+                            BluetoothDevice.BOND_NONE);
                     BluetoothDevice bd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     if (bd == null)
                         return;
@@ -513,7 +520,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                         case BluetoothDevice.BOND_BONDED:   //已绑定 12
 //                            Log.e(TAG, "-----111-----");
                             if (customBlueDevice != null) {
-                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice().getName())) {
+                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
+                                        .getName())) {
 //                                    Log.e(TAG, "-----22-----");
                                     showLoadingDialog("connect...");
                                     HidUtil.getInstance(MyApp.getContext()).connect(bd);
@@ -522,17 +530,21 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                             break;
                         case BluetoothDevice.BOND_BONDING:  //绑定中   11
                             if (customBlueDevice != null) {
-                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice().getName())) {
+                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
+                                        .getName())) {
 //                                    Log.e(TAG, "-----22-----");
                                     showLoadingDialog(verLanguage());
                                 }
                             }
                             break;
                         case BluetoothDevice.BOND_NONE: //绑定失败  10
-                            if (customBlueDevice != null && customBlueDevice.getBluetoothDevice().getName() != null) {
-                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice().getName())) {
+                            if (customBlueDevice != null &&
+                                    customBlueDevice.getBluetoothDevice().getName() != null) {
+                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
+                                        .getName())) {
                                     closeLoadingDialog();
-                                    ToastUtil.showToast(NewSearchActivity.this, getResources().getString(R.string.string_conn_fail));
+                                    ToastUtil.showToast(NewSearchActivity.this,
+                                            getResources().getString(R.string.string_conn_fail));
                                     refresh();
                                 }
                             }
@@ -563,7 +575,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                 //B30，B31 连接失败
                 if (action.equals(WatchUtils.B30_DISCONNECTED_ACTION)) {
                     closeLoadingDialog();
-                    ToastUtil.showShort(NewSearchActivity.this, getResources().getString(R.string.string_conn_fail));
+                    ToastUtil.showShort(NewSearchActivity.this,
+                            getResources().getString(R.string.string_conn_fail));
                     MyCommandManager.ADDRESS = null;// 断开连接了就设置为null
                 }
 
@@ -604,7 +617,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
 
             @Override
             public void cusDialogSureData(String data) {
-                MyApp.getInstance().getB30ConnStateService().continuteConn(data, new VerB30PwdListener() {
+                MyApp.getInstance().getB30ConnStateService().continuteConn(data,
+                        new VerB30PwdListener() {
                     @Override
                     public void verPwdFailed() {
 //                        runOnUiThread(new Runnable() {
@@ -613,7 +627,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
 //                                ToastUtil.showCusToast(NewSearchActivity.this,getResources().getString(R.string.miamacuo));
 //                            }
 //                        });
-                        ToastUtil.showShort(NewSearchActivity.this, getResources().getString(R.string.miamacuo));
+                        ToastUtil.showShort(NewSearchActivity.this,
+                                getResources().getString(R.string.miamacuo));
                         // ToastUtil.showLong(NewSearchActivity.this, getResources().getString(R.string.miamacuo));
                     }
 
@@ -631,7 +646,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     //返回按键
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK &&
+                event.getAction() == KeyEvent.ACTION_DOWN) {
             startActivity(B31HomeActivity.class);
             finish();
             return true;
@@ -639,7 +655,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         return super.dispatchKeyEvent(event);
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "NonConstantResourceId"})
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

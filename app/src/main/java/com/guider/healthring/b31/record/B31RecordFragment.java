@@ -79,7 +79,7 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Constant;
 import com.guider.healthring.util.LocalizeTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
-import com.littlejie.circleprogress.circleprogress.WaveProgress;
+import com.guider.healthring.widget.WaveProgress;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;

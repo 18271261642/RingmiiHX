@@ -53,7 +53,6 @@
     <string name="medcheck_glu_redult_title">MEDCHECK血糖测量结果</string>
 
     <string name="medcheck_pre_reminder_title">MEDCHECK血压测量提示</string>
-    <string name="medcheck_pre_reult_format">您的血压值为：\n%.2f</string>
     <string name="medcheck_pre_tips">1. 请按屏幕下方按钮开机\n\n2. 请按耳温仪背部按钮确定温度\n\n3. 待听到响声点击下方\"开始测量\"按钮</string>
     <string name="medcheck_pre_redult_title">MEDCHECK血压测量结果</string>
     <string name = "blood_pressure">血压</string>

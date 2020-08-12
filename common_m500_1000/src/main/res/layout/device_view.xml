@@ -31,13 +31,13 @@
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/dp_50"
             android:layout_marginBottom="@dimen/dp_15"
+            android:gravity="center"
             android:text="@string/zangyin"
             android:textColor="#7D7D7D"
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:gravity="center"/>
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.guider.health.CheckableLinearLayout>
 

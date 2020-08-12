@@ -50,7 +50,7 @@ import com.guider.healthring.w30s.utils.W30BasicUtils;
 import com.guider.healthring.w30s.bean.W30SHeartDataS;
 import com.guider.healthring.w30s.views.W30S_SleepChart;
 import com.guider.healthring.R;
-import com.littlejie.circleprogress.circleprogress.WaveProgress;
+import com.guider.healthring.widget.WaveProgress;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEServices;
 import com.suchengkeji.android.w30sblelibrary.bean.servicebean.W30SDeviceData;
 import com.suchengkeji.android.w30sblelibrary.bean.servicebean.W30SHeartData;

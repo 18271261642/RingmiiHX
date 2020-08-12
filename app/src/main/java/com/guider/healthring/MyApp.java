@@ -32,6 +32,7 @@ import com.guider.healthring.bzlmaps.PhoneSosOrDisPhone;
 import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.libbase.map.IMapLocation;
+import com.mob.MobSDK;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
@@ -145,6 +146,8 @@ public class MyApp extends LitePalApplication {
         // locationService = new LocationService(application);
 
         Bugly.init(this, "ff6d0ec595", true);
+
+        MobSDK.init(this, "2dc65dc4724aa", "5c4cd9ab545da0ccebd0d4b6d46c73fd");
 
         // 启动B30的服务
         startB30Server();

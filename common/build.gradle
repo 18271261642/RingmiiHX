@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'kotlin-android'
 def andr = rootProject.ext.android
 
 android {
@@ -44,6 +44,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api 'androidx.constraintlayout:constraintlayout:1.1.3'
     api 'androidx.appcompat:appcompat:1.2.0'
     // okhttp3

@@ -54,7 +54,6 @@
     <string name="medcheck_glu_redult_title">Measurement results</string>
 
     <string name="medcheck_pre_reminder_title">Measurement tips</string>
-    <string name="medcheck_pre_reult_format">Your blood pressure value：\n%.2f</string>
     <string name="medcheck_pre_tips">1. Press the power button on the right to turn on\n\n2. Please put your finger into the blood oxygen clip\n\n3. When the value appears on the screen, please click the \"Start Measurement\" button below</string>
     <string name="medcheck_pre_redult_title">Measurement results</string>
 

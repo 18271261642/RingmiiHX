@@ -1,4 +1,5 @@
 #不压缩输入的类文件
+#不压缩输入的类文件
 -dontshrink
 #指定代码的压缩级别
 -optimizationpasses 5
@@ -197,3 +198,7 @@
 -keepattributes InnerClasses,Signature
 -keepattributes *Annotation*
 -keep class cn.addapp.pickers.entity.** { *;}
+#sms sdk
+-keep class com.mob.**{*;}
+-keep class cn.smssdk.**{*;}
+-dontwarn com.mob.**

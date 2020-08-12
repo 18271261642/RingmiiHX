@@ -286,7 +286,7 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
             Intent i = new Intent();
             i.putExtra("result", Glucose.getInstance());
 
-            _mActivity.setResult(111, i);
+            _mActivity.setResult(TONEXT, i);
 
             _mActivity.finish();
             System.exit(0);

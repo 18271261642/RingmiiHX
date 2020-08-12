@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.getmedcheck.lib.MedCheck;
 import com.getmedcheck.lib.constant.Constants;
 import com.getmedcheck.lib.events.EventReadingProgress;
@@ -26,13 +24,10 @@ import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.utils.SkipClick;
 import com.guider.health.common.views.dialog.DialogProgressCountdown;
 import com.guider.health.medcheckglu.MedCheckFragment;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-
 import no.nordicsemi.android.support.v18.scanner.ScanResult;
-
 import static com.getmedcheck.lib.constant.Constants.BLOOD_PRESSURE_DEVICE_ID_NEW;
 
 //MEDCheck血压提示页面
@@ -40,7 +35,6 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
     private View view;
     private DialogProgressCountdown mDialogProgressCountdown;
     private Button nextButton;
-    private TextView tv_test_reminder;
     private BleDevice mBleDevice = null;
     private boolean mAllPermissionsReady = false;
 
@@ -74,7 +68,7 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
                         1000, new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("medcheckglu", "60s连接失败");
+                        Log.e("medcheckpre", "60s连接失败");
                         MedCheck.getInstance().stopScan(_mActivity);
                         nextButton.setEnabled(true);
                     }
@@ -98,7 +92,7 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
             mBleDevice = new BleDevice(scanResult.getDevice());
             // if device name start with med check device name then
             if (scanResult.getDevice().getName().startsWith(BLOOD_PRESSURE_DEVICE_ID_NEW)) {
-                Log.e("medcheckglu", "设备在扫描,并且扫描到了指定的设备");
+                Log.e("medcheckpre", "设备在扫描,并且扫描到了指定的设备");
                 //匹配到了medcheck的血压仪，进行连接，连接之后进行数据的读取，最后进入下一页
                 if (!mAllPermissionsReady || TextUtils.isEmpty(mBleDevice.getMacAddress())) {
                     return;
@@ -107,7 +101,7 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
                         @Override
                         public void run() {
                             //找到了指定的设备就停止扫描进行连接
-                            Log.e("medcheckglu", "停止扫描");
+                            Log.e("medcheckpre", "停止扫描");
                             MedCheck.getInstance().stopScan(_mActivity);
                             MedCheck.getInstance().connect(_mActivity, mBleDevice.getMacAddress());
                         }
@@ -141,7 +135,7 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
         super.onDeviceDataReadingStateChange(state, message);
         if (state == EventReadingProgress.COMPLETED) {
             //是否读取数据完成
-            Log.e("medcheckglu", "读取数据完成");
+            Log.e("medcheckpre", "读取数据完成");
         }
     }
 
@@ -152,10 +146,10 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
         if (deviceData == null) {
             return;
         }
-        Log.e("medcheckglu", "读取数据的json为" + json);
+        Log.e("medcheckpre", "读取数据的json为" + json);
         if (deviceData.size() == 0) {
             //先暂时存放在提示处
-            Log.e("medcheckglu", "读取数据为空或者读取失败");
+            Log.e("medcheckpre", "读取数据为空或者读取失败");
             return;
         }
         StringBuilder stringBuilder = new StringBuilder();
@@ -180,10 +174,10 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
             stringBuilder.append("DATE: ").append(sdf.format(bloodPressureData.getDateTime()));
             if (System.currentTimeMillis() - bloodPressureData.getDateTime() >= 10) {
                 //时间超过10s说明不是最新的数据
-                Log.e("medcheckglu", "不是最新的数据");
+                Log.e("medcheckpre", "不是最新的数据");
 //                return;
             }
-            Log.e("medcheckglu", "读取到的数据按需要格式为" + stringBuilder.toString());
+            Log.e("medcheckpre", "读取到的数据按需要格式为" + stringBuilder.toString());
             _mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -203,7 +197,7 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
         ((TextView) view.findViewById(R.id.title))
                 .setText(getResources().getString(R.string.medcheck_pre_reminder_title));
         ((TextView) view.findViewById(R.id.tv_test_type)).setText(R.string.blood_pressure);
-        tv_test_reminder = ((TextView) view.findViewById(R.id.tv_test_reminder));
+        TextView tv_test_reminder = view.findViewById(R.id.tv_test_reminder);
         tv_test_reminder.setText(R.string.medcheck_pre_tips);
 
         // 是否能跳过

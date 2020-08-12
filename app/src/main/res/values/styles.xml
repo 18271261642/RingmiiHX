@@ -201,7 +201,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:padding">@dimen/size_5</item>
         <item name="android:textColor">#1C1C1C</item>
-        <item name="android:textSize">@dimen/text_size_18</item>
+        <item name="android:textSize">@dimen/sp_18</item>
     </style>
 
 

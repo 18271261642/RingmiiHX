@@ -27,6 +27,7 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -59,28 +60,41 @@ public class MeasureDataUploader {
                     switch (name) {
                         case "sendHeartBpm":
                             // 心率
-                            HeartBpmMeasure heartBpm = fromGson(cacheData.getGson(), HeartBpmMeasure.class);
-                            ApiUtil.createHDApi(IUserHDApi.class).sendHeartBpm(Arrays.asList(heartBpm)).enqueue(new CacheCallback(cacheData));
+                            HeartBpmMeasure heartBpm = fromGson(cacheData.getGson(),
+                                    HeartBpmMeasure.class);
+                            ApiUtil.createHDApi(IUserHDApi.class)
+                                    .sendHeartBpm(Collections.singletonList(heartBpm))
+                                    .enqueue(new CacheCallback(cacheData));
                             return null;
                         case "sendBp":
                             // 血压
                             BpMeasure bpMeasure = fromGson(cacheData.getGson(), BpMeasure.class);
-                            ApiUtil.createHDApi(IUserHDApi.class).sendBp(Arrays.asList(bpMeasure)).enqueue(new CacheCallback(cacheData));
+                            ApiUtil.createHDApi(IUserHDApi.class)
+                                    .sendBp(Collections.singletonList(bpMeasure))
+                                    .enqueue(new CacheCallback(cacheData));
                             return null;
                         case "sendArt":
                             // 动脉硬化
                             ArtMeasure artMeasure = fromGson(cacheData.getGson(), ArtMeasure.class);
-                            ApiUtil.createHDApi(IUserHDApi.class).sendArt(Arrays.asList(artMeasure)).enqueue(new CacheCallback(cacheData));
+                            ApiUtil.createHDApi(IUserHDApi.class)
+                                    .sendArt(Collections.singletonList(artMeasure))
+                                    .enqueue(new CacheCallback(cacheData));
                             return null;
                         case "sendBloodSugar":
                             // 血糖
-                            BloodsugarMeasure bloodsugarMeasure = fromGson(cacheData.getGson(), BloodsugarMeasure.class);
-                            ApiUtil.createHDApi(IUserHDApi.class).sendBloodSugar(Arrays.asList(bloodsugarMeasure)).enqueue(new CacheCallback(cacheData));
+                            BloodsugarMeasure bloodsugarMeasure = fromGson(cacheData.getGson(),
+                                    BloodsugarMeasure.class);
+                            ApiUtil.createHDApi(IUserHDApi.class)
+                                    .sendBloodSugar(Collections.singletonList(bloodsugarMeasure))
+                                    .enqueue(new CacheCallback(cacheData));
                             return null;
                         case "sendBloodOxygen":
                             // 血氧
-                            BloodoxygenMeasure bloodoxygenMeasure = fromGson(cacheData.getGson(), BloodoxygenMeasure.class);
-                            ApiUtil.createHDApi(IUserHDApi.class).sendBloodOxygen(Arrays.asList(bloodoxygenMeasure)).enqueue(new CacheCallback(cacheData));
+                            BloodoxygenMeasure bloodoxygenMeasure = fromGson(cacheData.getGson(),
+                                    BloodoxygenMeasure.class);
+                            ApiUtil.createHDApi(IUserHDApi.class)
+                                    .sendBloodOxygen(Collections.singletonList(bloodoxygenMeasure))
+                                    .enqueue(new CacheCallback(cacheData));
                             return null;
                         case "sendHeartState":
                             // 心脏状态
@@ -88,8 +102,11 @@ public class MeasureDataUploader {
                             return null;
                         case "sendEcg12":
                             // 心脏状态
-                            Heart12Measure ecg12 = fromGson(cacheData.getGson(), Heart12Measure.class);
-                            ApiUtil.createHDApi(IUserHDApi.class).sendEcg12(Arrays.asList(ecg12)).enqueue(new CacheCallback(cacheData));
+                            Heart12Measure ecg12 = fromGson(cacheData.getGson(),
+                                    Heart12Measure.class);
+                            ApiUtil.createHDApi(IUserHDApi.class)
+                                    .sendEcg12(Collections.singletonList(ecg12))
+                                    .enqueue(new CacheCallback(cacheData));
                             return null;
                     }
                 }
@@ -121,7 +138,7 @@ public class MeasureDataUploader {
     /**
      * 上传血压
      */
-    public void uploadBP(String deviceMac , String dbp, String sbp, String heart) {
+    public void uploadBP(String deviceMac, String dbp, String sbp, String heart) {
         final BpMeasure bpMeasure = new BpMeasure();
         bpMeasure.setAccountId(UserManager.getInstance().getAccountId());
         bpMeasure.setDeviceCode(deviceMac);
@@ -140,7 +157,7 @@ public class MeasureDataUploader {
     /**
      * 上传动脉硬化
      */
-    public void uploadArt(String deviceMac , int avi, int api, int asi, int dbp, int sbp, int hr) {
+    public void uploadArt(String deviceMac, int avi, int api, int asi, int dbp, int sbp, int hr) {
         final ArtMeasure artMeasure = new ArtMeasure();
         final BpMeasure bpMeasure = new BpMeasure();
         artMeasure.setAccountId(UserManager.getInstance().getAccountId());
@@ -164,7 +181,7 @@ public class MeasureDataUploader {
     /**
      * 上传血糖
      */
-    public void uploadBloodSugar(String deviceMac , float speed, float bs, float hemoglobin, String bsTime) {
+    public void uploadBloodSugar(String deviceMac, float speed, float bs, float hemoglobin, String bsTime) {
         final BloodsugarMeasure bloodsugarMeasure = new BloodsugarMeasure();
         bloodsugarMeasure.setAccountId(UserManager.getInstance().getAccountId());
         bloodsugarMeasure.setDeviceCode(deviceMac);
@@ -184,7 +201,7 @@ public class MeasureDataUploader {
     /**
      * 上传血氧
      */
-    public void uploadBloodOxygen(String deviceMac , int bo, int heartBeat) {
+    public void uploadBloodOxygen(String deviceMac, int bo, int heartBeat) {
         final BloodoxygenMeasure bloodoxygenMeasure = new BloodoxygenMeasure();
         bloodoxygenMeasure.setAccountId(UserManager.getInstance().getAccountId());
         bloodoxygenMeasure.setDeviceCode(deviceMac);
@@ -202,7 +219,7 @@ public class MeasureDataUploader {
     /**
      * 上传体温
      */
-    public void uploadTemp(String deviceMac , float temp) {
+    public void uploadTemp(String deviceMac, float temp) {
         final TempMeasure hd = new TempMeasure();
         hd.setAccountId(UserManager.getInstance().getAccountId());
         hd.setDeviceCode(deviceMac);
@@ -236,10 +253,12 @@ public class MeasureDataUploader {
     /**
      * 上传心脏状态
      */
-    public void uploadHeartState(String deviceMac , String diaDescribes, final String healthLight, String healthLightOriginal,
+    public void uploadHeartState(String deviceMac, String diaDescribes,
+                                 final String healthLight, String healthLightOriginal,
                                  String heartRate, String heartRateLight, String lfhf,
                                  String nervous, String pervous, String pnn50,
-                                 String sdnn, String nn50, String predicted, String stressLight , final String filePath) {
+                                 String sdnn, String nn50, String predicted,
+                                 String stressLight, final String filePath) {
         final HeartStateMeasure heartStateMeasure = new HeartStateMeasure();
         heartStateMeasure.setAccountId(UserManager.getInstance().getAccountId());
         heartStateMeasure.setDeviceCode(deviceMac);
@@ -269,22 +288,25 @@ public class MeasureDataUploader {
                 String imgUrl = response.body();
                 heartStateMeasure.setEcgImageUrl(imgUrl);
                 Log.i("eeeecdgdddata", "上传图片成功");
-                ApiUtil.createHDApi(IUserHDApi.class).sendHeartState(Arrays.asList(heartStateMeasure)).enqueue(new ApiCallBack<String>() {
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        super.onFailure(call, t);
-                        // 数据上传失败 , 将心电数据加入缓存
-                        addCache(heartStateMeasure, call.request().url().toString());
-                    }
-                });
+                ApiUtil.createHDApi(IUserHDApi.class)
+                        .sendHeartState(Collections.singletonList(heartStateMeasure))
+                        .enqueue(new ApiCallBack<String>() {
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                super.onFailure(call, t);
+                                // 数据上传失败 , 将心电数据加入缓存
+                                addCache(heartStateMeasure, call.request().url().toString());
+                            }
+                        });
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 super.onFailure(call, t);
                 Log.i("eeeecdgdddata", "上传图片失败");
-                // 图片上传失败 , 将心电数据加入缓存 , EcgImageUrl字段为本地文件的路径 , URL存心电数据的URL
-                addCache(heartStateMeasure ,  "api/v1/heartstate");
+                // 图片上传失败 , 将心电数据加入缓存 ,
+                // EcgImageUrl字段为本地文件的路径 , URL存心电数据的URL
+                addCache(heartStateMeasure, "api/v1/heartstate");
             }
         });
     }
@@ -292,21 +314,23 @@ public class MeasureDataUploader {
     /**
      * 上传心电缓存数据的方法
      * 上传心电比较特殊 , 需要先上传图片 , 再上传数据
-     *
      */
     public void uploadHeartState(final CacheData cacheData) {
         // 读取缓存数据
-        final HeartStateMeasure heartStateMeasure = fromGson(cacheData.getGson(), HeartStateMeasure.class);
+        final HeartStateMeasure heartStateMeasure = fromGson(cacheData.getGson(),
+                HeartStateMeasure.class);
         // 判断是图片上传失败还是数据上传失败
         final String ecgImageUrl = heartStateMeasure.getEcgImageUrl();
         if (!TextUtils.isEmpty(ecgImageUrl)) {
             if (ecgImageUrl.contains("http")) {
                 // 如果ectUrl字段存的是一个网络地址 , 说明是图片上传成功了, 直接重新提交数据即可
-                ApiUtil.createHDApi(IUserHDApi.class).sendHeartState(Arrays.asList(heartStateMeasure)).enqueue(new CacheCallback(cacheData));
+                ApiUtil.createHDApi(IUserHDApi.class)
+                        .sendHeartState(Arrays.asList(heartStateMeasure))
+                        .enqueue(new CacheCallback(cacheData));
             } else {
                 // 如果是本地文件路径 , 则先上传图片
                 // 这里的Callback依旧使用CacheCallback , 只重写onApiResponse方法即可
-                ApiUtil.uploadFile(null, ecgImageUrl, new CacheCallback(cacheData){
+                ApiUtil.uploadFile(null, ecgImageUrl, new CacheCallback(cacheData) {
                     @Override
                     public void onApiResponse(Call<String> call, Response<String> response) {
                         // 图片上传成功
@@ -315,7 +339,9 @@ public class MeasureDataUploader {
                         // 补全心电数据, 上传心电数据
                         String imgUrl = response.body();
                         heartStateMeasure.setEcgImageUrl(imgUrl);
-                        ApiUtil.createHDApi(IUserHDApi.class).sendHeartState(Arrays.asList(heartStateMeasure)).enqueue(new CacheCallback(cacheData));
+                        ApiUtil.createHDApi(IUserHDApi.class)
+                                .sendHeartState(Collections.singletonList(heartStateMeasure))
+                                .enqueue(new CacheCallback(cacheData));
                     }
                 });
             }
@@ -325,7 +351,7 @@ public class MeasureDataUploader {
         }
     }
 
-    public void uploadEcd12(String deviceMac , HearRate12 instance) {
+    public void uploadEcd12(String deviceMac, HearRate12 instance) {
         final Heart12Measure measure = new Heart12Measure();
         measure.setAccountId(UserManager.getInstance().getAccountId());
         measure.setDeviceCode(deviceMac);
@@ -354,9 +380,10 @@ public class MeasureDataUploader {
 
     /**
      * 这里是上传红豆心电用的
+     *
      * @param heartRate
      */
-    public void uploadEcd12(String deviceMac , HeartStateMeasure_Hd measure_hd , String heartRate) {
+    public void uploadEcd12(String deviceMac, HeartStateMeasure_Hd measure_hd, String heartRate) {
         final Heart12Measure measure = new Heart12Measure();
         measure.setHeartRate(heartRate);
         measure.setCustomAnalysis(new Gson().toJson(measure_hd));

@@ -25,6 +25,7 @@ import com.guider.health.common.core.UserManager;
 import com.guider.health.common.device.IUnit;
 import com.guider.health.common.utils.ToastUtil;
 import com.guider.health.common.utils.UnitUtil;
+import com.guider.health.common.views.DecimalInputTextWatcher;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import java.lang.ref.WeakReference;
@@ -80,7 +81,8 @@ public class ChooseTime extends GlocoseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.choose_time, container, false);
         return view;
     }
@@ -94,21 +96,15 @@ public class ChooseTime extends GlocoseFragment {
         gluReminder = view.findViewById(R.id.gluReminder);
         unitTv = view.findViewById(R.id.unitTv);
         gluEdit = view.findViewById(R.id.gluEdit);
+        gluEdit.addTextChangedListener(new DecimalInputTextWatcher(gluEdit));
         ((TextView) view.findViewById(R.id.head_title)).setText(R.string.measure_2_kaijicaozuo);
-        view.findViewById(R.id.head_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pop();
-            }
-        });
+        view.findViewById(R.id.head_back).setOnClickListener(view -> pop());
 
 
 //        private String sulphonylureasState = "0";//磺酰脲
 //        private String biguanidesState = "0";//双胍类
 //        private String glucosedesesSate = "0";//甘梅抑制剂
-        view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        view.findViewById(R.id.next).setOnClickListener(view -> {
 
 
 //                if (toogle_1.isChecked()) {
@@ -122,31 +118,28 @@ public class ChooseTime extends GlocoseFragment {
 //                    BodyIndex.getInstance().setGlucosedesesSate(toogle_4.isChecked() == false ? "0" : "1");
 //                }
 
-                //如果是选择了异常记录填写的空腹血糖值
-                if (abnormal.isSelected()) {
-                    String input_glu = gluEdit.getText().toString().trim();
-                    if (!TextUtils.isEmpty(input_glu)) {
-                        // 单位处理
-                        IUnit iUnit = UnitUtil.getIUnit(_mActivity);
-                        double value = iUnit.getGluRealValue(Double.parseDouble(input_glu),
-                                2);
-                        BodyIndex.getInstance().setValue((float) value);
-                    } else {
-                        ToastUtil.showShort(_mActivity, "请填写空腹血糖值");
-                        return;
-                    }
+            //如果是选择了异常记录填写的空腹血糖值
+            if (abnormal.isSelected()) {
+                String input_glu = gluEdit.getText().toString().trim();
+                if (!TextUtils.isEmpty(input_glu)) {
+                    // 单位处理
+                    IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+                    double value = iUnit.getGluRealValue(Double.parseDouble(input_glu),
+                            2);
+                    BodyIndex.getInstance().setValue((float) value);
+                } else {
+                    ToastUtil.showShort(_mActivity, "请填写空腹血糖值");
+                    return;
                 }
-
-                NetRequest.getInstance().setNonbsSet(new WeakReference<Activity>(_mActivity), new NetRequest.NetCallBack() {
-                    @Override
-                    public void result(int code, String result) {
-
-                    }
-                });
-
-
-                start(new TurnOnOperation());
             }
+
+            NetRequest.getInstance().setNonbsSet(new WeakReference<>(_mActivity),
+                    (code, result) -> {
+
+                    });
+
+
+            start(new TurnOnOperation());
         });
 
         final ImageView select_time_empty = view.findViewById(R.id.select_time_empty);
@@ -168,105 +161,94 @@ public class ChooseTime extends GlocoseFragment {
         toogle_4.setThumbColorRes(R.color.color_ffffff);
 
 
-        toogle_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toogle_1.setOnCheckedChangeListener((compoundButton, b) -> {
 
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if (b) {
 
-                if (b) {
+                toogle_1.setBackColorRes(R.color.color_F18937);//背景
+                //b为true 选中未敷药
+                toogle_1.setChecked(true);
+                toogle_2.setChecked(false);
+                toogle_3.setChecked(false);
+                toogle_4.setChecked(false);
+                BodyIndex.getInstance().setEatmedicine(false);
 
-                    toogle_1.setBackColorRes(R.color.color_F18937);//背景
-                    //b为true 选中未敷药
-                    toogle_1.setChecked(true);
+            } else {
+                toogle_1.setBackColorRes(R.color.color_E0E0E0);//背景
+
+                BodyIndex.getInstance().setEatmedicine(true);
+
+                if ("0".equals(BodyIndex.getInstance().getSulphonylureasState())) {
                     toogle_2.setChecked(false);
-                    toogle_3.setChecked(false);
-                    toogle_4.setChecked(false);
-                    BodyIndex.getInstance().setEatmedicine(false);
-
                 } else {
-                    toogle_1.setBackColorRes(R.color.color_E0E0E0);//背景
-
-                    BodyIndex.getInstance().setEatmedicine(true);
-
-                    if ("0".equals(BodyIndex.getInstance().getSulphonylureasState())) {
-                        toogle_2.setChecked(false);
-                    } else {
-                        toogle_2.setChecked(true);
-                    }
-
-                    if ("0".equals(BodyIndex.getInstance().getBiguanidesState())) {
-                        toogle_3.setChecked(false);
-                    } else {
-                        toogle_3.setChecked(true);
-                    }
-
-                    if ("0".equals(BodyIndex.getInstance().getGlucosedesesSate())) {
-                        toogle_4.setChecked(false);
-                    } else {
-                        toogle_4.setChecked(true);
-                    }
-
-                }
-            }
-        });
-
-
-        toogle_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    toogle_2.setBackColorRes(R.color.color_F18937);//背景
-                    toogle_1.setChecked(false);
-                    BodyIndex.getInstance().setEatmedicine(true);
                     toogle_2.setChecked(true);
-                    BodyIndex.getInstance().setSulphonylureasState("1");
-                } else {
-                    toogle_2.setChecked(false);
-                    BodyIndex.getInstance().setSulphonylureasState("0");
-                    toogle_2.setBackColorRes(R.color.color_E0E0E0);//背景
                 }
-            }
-        });
 
-        toogle_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    toogle_3.setBackColorRes(R.color.color_F18937);//背景
-                    toogle_1.setChecked(false);
-                    BodyIndex.getInstance().setEatmedicine(true);
-                    toogle_3.setChecked(true);
-                    BodyIndex.getInstance().setBiguanidesState("1");
-                } else {
+                if ("0".equals(BodyIndex.getInstance().getBiguanidesState())) {
                     toogle_3.setChecked(false);
-                    BodyIndex.getInstance().setBiguanidesState("0");
-                    toogle_3.setBackColorRes(R.color.color_E0E0E0);//背景
+                } else {
+                    toogle_3.setChecked(true);
                 }
+
+                if ("0".equals(BodyIndex.getInstance().getGlucosedesesSate())) {
+                    toogle_4.setChecked(false);
+                } else {
+                    toogle_4.setChecked(true);
+                }
+
             }
         });
 
-        toogle_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    toogle_4.setBackColorRes(R.color.color_F18937);//背景
-                    toogle_1.setChecked(false);
-                    BodyIndex.getInstance().setEatmedicine(true);
-                    toogle_4.setChecked(true);
-                    BodyIndex.getInstance().setGlucosedesesSate("1");
-                } else {
-                    toogle_4.setChecked(false);
-                    BodyIndex.getInstance().setGlucosedesesSate("0");
-                    toogle_4.setBackColorRes(R.color.color_E0E0E0);//背景
-                }
+
+        toogle_2.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                toogle_2.setBackColorRes(R.color.color_F18937);//背景
+                toogle_1.setChecked(false);
+                BodyIndex.getInstance().setEatmedicine(true);
+                toogle_2.setChecked(true);
+                BodyIndex.getInstance().setSulphonylureasState("1");
+            } else {
+                toogle_2.setChecked(false);
+                BodyIndex.getInstance().setSulphonylureasState("0");
+                toogle_2.setBackColorRes(R.color.color_E0E0E0);//背景
+            }
+        });
+
+        toogle_3.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                toogle_3.setBackColorRes(R.color.color_F18937);//背景
+                toogle_1.setChecked(false);
+                BodyIndex.getInstance().setEatmedicine(true);
+                toogle_3.setChecked(true);
+                BodyIndex.getInstance().setBiguanidesState("1");
+            } else {
+                toogle_3.setChecked(false);
+                BodyIndex.getInstance().setBiguanidesState("0");
+                toogle_3.setBackColorRes(R.color.color_E0E0E0);//背景
+            }
+        });
+
+        toogle_4.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                toogle_4.setBackColorRes(R.color.color_F18937);//背景
+                toogle_1.setChecked(false);
+                BodyIndex.getInstance().setEatmedicine(true);
+                toogle_4.setChecked(true);
+                BodyIndex.getInstance().setGlucosedesesSate("1");
+            } else {
+                toogle_4.setChecked(false);
+                BodyIndex.getInstance().setGlucosedesesSate("0");
+                toogle_4.setBackColorRes(R.color.color_E0E0E0);//背景
             }
         });
 
 
         statusInit();
 
-        BodyIndex.getInstance().setWeigh(UserManager.getInstance().getWeight() == 0 ? "" : UserManager.getInstance().getWeight() + "");
-        BodyIndex.getInstance().setHeight(UserManager.getInstance().getHeight() == 0 ? "" : UserManager.getInstance().getHeight() + "");
+        BodyIndex.getInstance().setWeigh(UserManager.getInstance().getWeight() ==
+                0 ? "" : UserManager.getInstance().getWeight() + "");
+        BodyIndex.getInstance().setHeight(UserManager.getInstance().getHeight() ==
+                0 ? "" : UserManager.getInstance().getHeight() + "");
 
         //默认设置
         Glucose.getInstance().setFoodTime(0);
@@ -275,71 +257,59 @@ public class ChooseTime extends GlocoseFragment {
 //            showEatMedicineView(0);
 //        }
 
-        view.findViewById(R.id.time_empty).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GLU_TIME = EMPTY_FOOD;
-                select_time_empty.setVisibility(View.VISIBLE);
-                select_time_1.setVisibility(View.INVISIBLE);
-                select_time_2.setVisibility(View.INVISIBLE);
-                select_time_3.setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.time_empty).setOnClickListener(view -> {
+            GLU_TIME = EMPTY_FOOD;
+            select_time_empty.setVisibility(View.VISIBLE);
+            select_time_1.setVisibility(View.INVISIBLE);
+            select_time_2.setVisibility(View.INVISIBLE);
+            select_time_3.setVisibility(View.INVISIBLE);
 
-                Glucose.getInstance().setFoodTime(0);
-                BodyIndex.getInstance().setTimeMeal("0");
+            Glucose.getInstance().setFoodTime(0);
+            BodyIndex.getInstance().setTimeMeal("0");
 //                if (BodyIndex.getInstance().isEatmedicine()){
 //                    showEatMedicineView(0);
 //                }
-            }
         });
 
-        view.findViewById(R.id.time_1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GLU_TIME = ONETIME_FOOD;
-                select_time_empty.setVisibility(View.INVISIBLE);
-                select_time_1.setVisibility(View.VISIBLE);
-                select_time_2.setVisibility(View.INVISIBLE);
-                select_time_3.setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.time_1).setOnClickListener(view -> {
+            GLU_TIME = ONETIME_FOOD;
+            select_time_empty.setVisibility(View.INVISIBLE);
+            select_time_1.setVisibility(View.VISIBLE);
+            select_time_2.setVisibility(View.INVISIBLE);
+            select_time_3.setVisibility(View.INVISIBLE);
 
-                Glucose.getInstance().setFoodTime(2);
-                BodyIndex.getInstance().setTimeMeal("2");
+            Glucose.getInstance().setFoodTime(2);
+            BodyIndex.getInstance().setTimeMeal("2");
 
-            }
         });
 
 
-        view.findViewById(R.id.time_2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GLU_TIME = TWOTIME_FOOD;
-                select_time_empty.setVisibility(View.INVISIBLE);
-                select_time_1.setVisibility(View.INVISIBLE);
-                select_time_2.setVisibility(View.VISIBLE);
-                select_time_3.setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.time_2).setOnClickListener(view -> {
+            GLU_TIME = TWOTIME_FOOD;
+            select_time_empty.setVisibility(View.INVISIBLE);
+            select_time_1.setVisibility(View.INVISIBLE);
+            select_time_2.setVisibility(View.VISIBLE);
+            select_time_3.setVisibility(View.INVISIBLE);
 
-                Glucose.getInstance().setFoodTime(2);
-                BodyIndex.getInstance().setTimeMeal("2");
+            Glucose.getInstance().setFoodTime(2);
+            BodyIndex.getInstance().setTimeMeal("2");
 //                if (BodyIndex.getInstance().isEatmedicine()) {
 //                    showEatMedicineView(2);
 //                }
-            }
         });
 
-        view.findViewById(R.id.time_3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GLU_TIME = THREETIME_FOOD;
-                select_time_empty.setVisibility(View.INVISIBLE);
-                select_time_1.setVisibility(View.INVISIBLE);
-                select_time_2.setVisibility(View.INVISIBLE);
-                select_time_3.setVisibility(View.VISIBLE);
+        view.findViewById(R.id.time_3).setOnClickListener(view -> {
+            GLU_TIME = THREETIME_FOOD;
+            select_time_empty.setVisibility(View.INVISIBLE);
+            select_time_1.setVisibility(View.INVISIBLE);
+            select_time_2.setVisibility(View.INVISIBLE);
+            select_time_3.setVisibility(View.VISIBLE);
 
-                Glucose.getInstance().setFoodTime(2);
-                BodyIndex.getInstance().setTimeMeal("2");
+            Glucose.getInstance().setFoodTime(2);
+            BodyIndex.getInstance().setTimeMeal("2");
 //                if (BodyIndex.getInstance().isEatmedicine()) {
 //                    showEatMedicineView(3);
 //                }
-            }
         });
 
 

@@ -1,8 +1,6 @@
 package com.guider.healthring.w30s.utils.httputils;
 
 import android.content.Context;
-
-import com.guider.healthring.rxandroid.SubscriberOnNextListener;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 
 
@@ -20,16 +18,14 @@ public class RequestPressent {
         requestModel = new RequestModel();
     }
 
-    public void getRequestJSONObject(final int what, String url, Context mContext, String jsonMap, final int days) {
+    public void getRequestJSONObject(final int what, String url, Context mContext,
+                                     String jsonMap, final int days) {
         if (requestView != null) {
-            if (requestView != null) requestView.showLoadDialog(what);
+            requestView.showLoadDialog(what);
             if (requestModel != null)
-                requestModel.getJSONObjectModelData(url, mContext, jsonMap, new SubscriberOnNextListener<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        if (!WatchUtils.isEmpty(s)) {
-                            if (requestView != null) requestView.successData(what, s, days);
-                        }
+                requestModel.getJSONObjectModelData(url, mContext, jsonMap, s -> {
+                    if (!WatchUtils.isEmpty(s)) {
+                        if (requestView != null) requestView.successData(what, s, days);
                     }
                 }, new CustumListener() {
                     @Override
@@ -48,18 +44,15 @@ public class RequestPressent {
     }
 
 
-
     //Put
-    public void getRequestPutJsonObject(final int what,String url,Context context,String jsonMap, final int days){
-        if(requestView != null){
+    public void getRequestPutJsonObject(final int what, String url, Context context,
+                                        String jsonMap, final int days) {
+        if (requestView != null) {
             requestView.showLoadDialog(what);
-            if(requestModel != null){
-                requestModel.getPutJSONObjectModelData(url, context, jsonMap, new SubscriberOnNextListener<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        if (!WatchUtils.isEmpty(s)) {
-                            if (requestView != null) requestView.successData(what, s, days);
-                        }
+            if (requestModel != null) {
+                requestModel.getPutJSONObjectModelData(url, context, jsonMap, s -> {
+                    if (!WatchUtils.isEmpty(s)) {
+                        if (requestView != null) requestView.successData(what, s, days);
                     }
                 }, new CustumListener() {
                     @Override
@@ -79,48 +72,14 @@ public class RequestPressent {
     }
 
 
-
-
-    public void getRequestJSONObjectGet(final int what, String url, Context mContext, final int days) {
-        if (requestView != null) {
-            if (requestView != null) requestView.showLoadDialog(what);
-            if (requestModel != null)
-                requestModel.getJSONObjectModelDataGet(url, mContext, new SubscriberOnNextListener<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        if (!WatchUtils.isEmpty(s)) {
-                            if (requestView != null) requestView.successData(what, s, days);
-                        }
-                    }
-                }, new CustumListener() {
-                    @Override
-                    public void onCompleted() {
-                        if (requestView != null) {
-                            requestView.closeLoadDialog(what);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (requestView != null) requestView.failedData(what, e);
-                    }
-                });
-        }
-    }
-
-
-    public void getRequestJSONObject(final int what, String url, Context mContext ,final int days) {
+    public void getRequestJSONObjectGet(final int what, String url,
+                                        Context mContext, final int days) {
         if (requestView != null) {
             requestView.showLoadDialog(what);
             if (requestModel != null)
-                requestModel.getJSONObjectModelData(url, mContext, new SubscriberOnNextListener<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        if (!WatchUtils.isEmpty(s)) {
-                            if (requestView != null) {
-                                requestView.successData(what, s, days);
-                            }
-                        }
+                requestModel.getJSONObjectModelDataGet(url, mContext, s -> {
+                    if (!WatchUtils.isEmpty(s)) {
+                        if (requestView != null) requestView.successData(what, s, days);
                     }
                 }, new CustumListener() {
                     @Override
@@ -138,6 +97,32 @@ public class RequestPressent {
         }
     }
 
+
+    public void getRequestJSONObject(final int what, String url, Context mContext, final int days) {
+        if (requestView != null) {
+            requestView.showLoadDialog(what);
+            if (requestModel != null)
+                requestModel.getJSONObjectModelData(url, mContext, s -> {
+                    if (!WatchUtils.isEmpty(s)) {
+                        if (requestView != null) {
+                            requestView.successData(what, s, days);
+                        }
+                    }
+                }, new CustumListener() {
+                    @Override
+                    public void onCompleted() {
+                        if (requestView != null) {
+                            requestView.closeLoadDialog(what);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (requestView != null) requestView.failedData(what, e);
+                    }
+                });
+        }
+    }
 
 
     //绑定

@@ -1,5 +1,6 @@
 package com.guider.libbase.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -32,11 +33,13 @@ public class WebviewActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_PHOTO = 1001;
 
     private String mSelectPhotoCallback;
-
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-            mWebviewAgent = new WebviewAgent(WebviewActivity.this, WebviewActivity.this.getIntent().getStringExtra("url"), mRootView, null);
+        public void handleMessage( Message msg) {
+            mWebviewAgent = new WebviewAgent(WebviewActivity.this,
+                    WebviewActivity.this.getIntent().getStringExtra("url"),
+                    mRootView, null);
         }
     };
 

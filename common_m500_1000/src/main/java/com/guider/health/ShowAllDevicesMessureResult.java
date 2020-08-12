@@ -1,7 +1,9 @@
 package com.guider.health;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,8 @@ public class ShowAllDevicesMessureResult extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.view_result_show, container, false);
         return view;
     }
@@ -100,7 +103,7 @@ public class ShowAllDevicesMessureResult extends BaseFragment {
         });
 
 
-        if ("M100".equals(DeviceInit.getInstance().getType())){
+        if ("M100".equals(DeviceInit.getInstance().getType())) {
             view.findViewById(R.id.app_printing).setVisibility(View.GONE);
         }
 
@@ -112,13 +115,7 @@ public class ShowAllDevicesMessureResult extends BaseFragment {
                     System.out.println("ddd");
                     start((ISupportFragment) Class.forName(Config.PRINT_FRAGMENT).newInstance());
 
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (java.lang.InstantiationException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -144,7 +141,8 @@ public class ShowAllDevicesMessureResult extends BaseFragment {
 
     private void request() {
         if (!NetStateController.isNetworkConnected(_mActivity)) {
-            Toast.makeText(_mActivity, getResources().getString(R.string.no_network_tips), Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity,
+                    getResources().getString(R.string.no_network_tips), Toast.LENGTH_SHORT).show();
             return;
         }
         requestNum = resultListView.getNeedRequestNum();
