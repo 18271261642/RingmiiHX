@@ -1,5 +1,4 @@
 #不压缩输入的类文件
-#不压缩输入的类文件
 -dontshrink
 #指定代码的压缩级别
 -optimizationpasses 5
