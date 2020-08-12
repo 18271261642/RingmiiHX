@@ -54,7 +54,7 @@
     <string name="medcheck_glu_redult_title">Measurement results</string>
 
     <string name="medcheck_pre_reminder_title">Measurement tips</string>
-    <string name="medcheck_pre_tips">1. Press the power button on the right to turn on\n\n2. Please put your finger into the blood oxygen clip\n\n3. When the value appears on the screen, please click the \"Start Measurement\" button below</string>
+    <string name="medcheck_pre_tips">1. Connect the cuff to the blood pressure meter correctly, expose your arms, palm up, and straighten your elbows, and put on the cuff.\n2. The cuff trachea points to the lower arm, and the lower edge of the cuff is 2–3cm away from the elbow socket.\n3. Place the cuff hose at the pulse point of the brachial artery.\n4. Sit still for 3 minutes before the measurement, keeping the center of the cuff at the same height as the heart.\n5. Press the [Power] button to start measurement.\n6. Please do not speak or move your body during the measurement.\n7. After the measurement is completed, when the value appears on the screen, please click the [Save Data] button below.</string>
     <string name="medcheck_pre_redult_title">Measurement results</string>
 
     <string name="sbp_with_">Systolic pressure(mmHg) :</string>

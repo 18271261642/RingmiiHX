@@ -54,7 +54,7 @@
     <string name="medcheck_glu_redult_title">MEDCHECK血糖测量结果</string>
 
     <string name="medcheck_pre_reminder_title">MEDCHECK血压测量提示</string>
-    <string name="medcheck_pre_tips">1. 请按屏幕下方按钮开机\n\n2. 请按耳温仪背部按钮确定温度\n\n3. 待听到响声点击下方\"开始测量\"按钮</string>
+    <string name="medcheck_pre_tips">1、将袖带和血压仪正确连接，露臂、手掌向上、肘部伸直，套袖带。\n2、袖带气管指向下手臂，袖带下缘距肘窝2–3CM。\n3、袖带胶管放在肱动脉搏动点。\n4、测量前静坐3分钟，袖带中心与心脏保持同一高度。\n5、按下【开关】按钮开始测量。\n6、测量中请不要说话和移动身体。\n7、测量完毕待屏幕出现数值，请点击下方【保存数据】按钮。</string>
     <string name="medcheck_pre_redult_title">MEDCHECK血压测量结果</string>
 
     <string name="sbp_with_">收缩压(mmHg) :</string>

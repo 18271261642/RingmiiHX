@@ -54,7 +54,7 @@
     <string name="medcheck_glu_redult_title">MEDCHECK血糖測量結果</string>
 
     <string name="medcheck_pre_reminder_title">MEDCHECK血壓測量提示</string>
-    <string name="medcheck_pre_tips">1. 請按長M鍵打開機器\n\n2. 請將試紙吸血後插入插槽\n\n3. 請下滑左側按鍵打開藍牙，此時左上角藍燈亮起</string>
+    <string name="medcheck_pre_tips">1、將袖帶和血壓儀正確連接，露臂、手掌向上、肘部伸直，套袖帶。\n2、袖帶氣管指向下手臂，袖帶下緣距肘窩2–3CM。\n3、袖帶膠管放在肱動脈搏動點。\n4、測量前靜坐3分鐘，袖帶中心與心臟保持同一高度。\n5、按下【開關】按鈕開始測量。\n6、測量中請不要說話和移動身體。\n7、測量完畢待屏幕出現數值，請點擊下方【保存數據】按鈕。</string>
     <string name="medcheck_pre_redult_title">MEDCHECK血壓測量結果</string>
 
     <string name="sbp_with_">收縮壓(mmHg) :</string>
