@@ -1,0 +1,71 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+def rootGradle = rootProject.ext.android
+android {
+    compileSdkVersion rootGradle.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootGradle.minSdkVersion
+        targetSdkVersion rootGradle.targetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    def dependencies = rootProject.ext.dependencies
+    api dependencies.ktx
+    api dependencies.constraintlayout
+    api dependencies.okhttp
+    api dependencies.multidex
+    api dependencies.glide
+    kapt dependencies.glide_compiler
+    api dependencies.glide_transformations
+    api dependencies.material
+    api dependencies.recyclerview
+    api project(':apilib')
+    annotationProcessor dependencies.dbflow_processor
+    api dependencies.dbflow_core
+    api dependencies.dbflow
+    api dependencies.autosize
+    //上下拉刷新
+    api dependencies.SmartRefreshLayout
+    //事件传递
+    api dependencies.eventbus
+    //状态栏适配
+    api dependencies.immersionBar
+    //greenDao 数据库存储
+    api dependencies.greendao
+    //配置内存存储
+    api dependencies.mmkv
+    //switchButton
+    api dependencies.switch_button
+    // ViewModel and LiveData
+    api dependencies.lifecycle
+    api dependencies.rxlifecycle_components
+    api dependencies.rxjava
+    api dependencies.rxandroid
+    if (rootGradle.googlePlay) {
+        println "Add lib libbuglygoogle"
+        api project(':libbuglygoogle')
+    } else {
+        println "Add lib libbuglycn"
+        api project(':libbuglycn')
+    }
+}

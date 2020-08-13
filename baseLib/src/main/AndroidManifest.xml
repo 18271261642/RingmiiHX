@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.guider.baselib">
+    <!--9.0 必须开启的权限申请，使用定位服务时需启用-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:resizeableActivity="false"
+        android:requestLegacyExternalStorage="true"
+        tools:targetApi="n"
+        >
+        <!--支持高宽高比屏幕-->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+        <!-- 如果您项目中的所有页面都只需要以高或宽中的一个作为基准进行适配的话,
+        那就只需要填写高或宽中的一个设计图尺寸即可 -->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
+        <!--适配华为（huawei）刘海屏-->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+        <!--支持小米刘海屏-->
+        <!-- 图片缓存配置 -->
+        <meta-data
+            android:name="com.guider.baselib.utils.GuiderGlideAppModule"
+            android:value="GlideModule"/>
+    </application>
+</manifest>

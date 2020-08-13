@@ -1,9 +1,76 @@
-project.ext {
+ext {
     android = [
             compileSdkVersion: 29,
             minSdkVersion    : 19,
             targetSdkVersion : 29,
-            versionCode      : 1,
-            versionName      : "1.0"
+            codeVersion      : 217,
+            appVersion       : "2.5.7",
+            googlePlay       : true
+    ]
+
+    supportLibVersion = '1.1.0'
+    retrofitVersion = "2.9.0"
+    rxlifecycle = "3.1.0"
+    glide = "4.11.0"
+    gson = "2.8.6"
+    glide_transformations = "4.1.0"
+    logging_interceptor = "4.8.1"
+    okhttp = "4.8.1"
+    glassfish_annotation = "10.0-b28"
+    SmartRefreshLayout = "1.1.2"
+    eventbus = "3.2.0"
+    greendao = "3.3.0"
+    multidex = "2.0.1"
+    immersionBar = "3.0.0"
+    autosize = "1.2.1"
+    mmkv = "1.2.2"
+    appcompat = '1.2.0'
+    switch_button = '2.0.2'
+    recyclerview = '1.1.0'
+    logger_version = '2.2.0'
+    ktx = '1.3.1'
+    constraintlayout = '1.1.3'
+    material = "1.2.0"
+    dbflow = "4.2.1"
+    lifecycle = "2.2.0"
+    rxlifecycle = "3.1.0"
+    rxjava = "2.2.12"
+    rxandroid = "2.1.1"
+    joda_time = "2.10.6"
+    dependencies = [
+            appcompat             : "androidx.appcompat:appcompat:$appcompat",
+            material              : "com.google.android.material:material:$material",
+            ktx                   : "androidx.core:core-ktx:$ktx",
+            constraintlayout      : "androidx.constraintlayout:constraintlayout:$constraintlayout",
+            multidex              : "androidx.multidex:multidex:$multidex",
+            // Retrofit
+            retrofit2             : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            converter_gson        : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            gson                  : "com.google.code.gson:gson:$gson",
+            //glide
+            glide                 : "com.github.bumptech.glide:glide:$glide",
+            glide_compiler        : "com.github.bumptech.glide:compiler:$glide",
+            glide_transformations : "jp.wasabeef:glide-transformations:$glide_transformations",
+            okhttp                : "com.squareup.okhttp3:okhttp:$okhttp",
+            logging_interceptor   : "com.squareup.okhttp3:logging-interceptor:$logging_interceptor",
+            glassfish_annotation  : "org.glassfish:javax.annotation:$glassfish_annotation",
+            SmartRefreshLayout    : "com.scwang.smartrefresh:SmartRefreshLayout:$SmartRefreshLayout",
+            eventbus              : "org.greenrobot:eventbus:$eventbus",
+            immersionBar          : "com.gyf.immersionbar:immersionbar:$immersionBar",
+            //greenDao
+            greendao              : "org.greenrobot:greendao:$greendao",
+            autosize              : "me.jessyan:autosize:$autosize",
+            mmkv                  : "com.tencent:mmkv-static:$mmkv",
+            switch_button         : "com.kyleduo.switchbutton:library:$switch_button",
+            recyclerview          : "androidx.recyclerview:recyclerview:$recyclerview",
+            logger                : "com.orhanobut:logger:$logger_version",
+            dbflow_processor      : "com.github.Raizlabs.DBFlow:dbflow-processor:$dbflow",
+            dbflow_core           : "com.github.Raizlabs.DBFlow:dbflow-core:$dbflow",
+            dbflow                : "com.github.Raizlabs.DBFlow:dbflow:$dbflow",
+            lifecycle             : "androidx.lifecycle:lifecycle-extensions:$lifecycle",
+            rxlifecycle_components: "com.trello.rxlifecycle3:rxlifecycle-components:$rxlifecycle",
+            rxjava                : "io.reactivex.rxjava2:rxjava:$rxjava",
+            rxandroid             : "io.reactivex.rxjava2:rxandroid:$rxandroid",
+            joda_time             : "joda-time:joda-time:2.10.6"
     ]
 }

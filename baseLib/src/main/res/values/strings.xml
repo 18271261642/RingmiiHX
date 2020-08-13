@@ -1,0 +1,1408 @@
+<resources>    
+    <string name="guider">Guider</string>
+    <string name="guider_health">Guider health</string>
+    <string name="guider_company">Guider Health Industry Co., Ltd.</string>
+        
+    <string name="select_time">Please select the time</string>
+    <string name="heart_with_">Heart rate(bpm) :</string>
+    <string name="sbp_with_">Systolic pressure(mmHg) :</string>
+    <string name="dbp_with_">Diastolic pressure(mmHg) :</string>
+
+    <string name="test_time_">Measure time:</string>
+
+    <string name="guolao">Overwork</string>
+    <string name="qingsong">Easy</string>
+    <string name="bujia">Poor</string>
+    <string name="shangke">Yes</string>
+    <string name="zhengchang">normal</string>
+    <string name="zhuyi">Note</string>
+        
+    <string name="lianghao">Good</string>
+        
+    <string name="hr_low">Low heart rate</string>
+        
+    <string name="hr_high">High heart rate</string>
+
+        
+    <string name="net_error">The current network is not available</string>
+        
+    <string name="net_not_good">The current network status is not good</string>
+
+        
+    <string name="normal">normal</string>
+        
+    <string name="abnormal">abnormal</string>
+        
+    <string name="yes">Yes</string>
+        
+    <string name="no">No</string>
+        
+    <string name="success">Success</string>
+        
+    <string name="fail">Failed</string>
+
+        
+    <string name="cancle">Cancel</string>
+        
+    <string name="commit">OK</string>
+        
+    <string name="confirm">OK</string>
+        
+    <string name="confirm_delete">OK to delete</string>
+        
+    <string name="delete_error">Deletion failed</string>
+        
+    <string name="bind_phone">Bind phone number</string>
+        
+    <string name="bind_phone_error">Failed to bind phone number</string>
+        
+    <string name="check_bind_error">Failed to check the binding relationship</string>
+        
+    <string name="bind">Binding</string>
+        
+    <string name="complete_info">Perfect information</string>
+        
+    <string name="complete_user_info_error">Failed to complete personal information</string>
+        
+    <string name="reload">Reacquire</string>
+        
+    <string name="search">Search</string>
+        
+    <string name="title">Title</string>
+    <string name="start_test">Start measurement</string>
+        
+    <string name="save_data">Save Data</string>
+    <string name="photo_album">Album</string>
+        
+    <string name="take_picture">Take a picture</string>
+
+        
+    <string name="year">year</string>    
+    <string name="month">month</string>    
+    <string name="day">Day</string>    
+    <string name="hour">hour</string>    
+    <string name="minute">minute</string>
+    <string name="second">second</string>
+       
+    <string name="score">points</string>
+     
+    <string name="blood_pressure">blood pressure</string>
+        
+    <string name="sbp">Systolic pressure</string>
+        
+    <string name="dbp">Diastolic pressure</string>
+        
+    <string name="heart_rate">Heart rate</string>
+        
+    <string name="heart_rate_">Heart rate:</string>
+        
+    <string name="arteriosclerosis_index">Arteriosclerosis index</string>
+        
+    <string name="central_arteriosclerosis_index">Central Arteriosclerosis Index</string>
+        
+    <string name="upper_arm_arteriosclerosis_index">Upper arm arteriosclerosis index</string>
+        
+    <string name="fatigue_index">Fatigue index</string>
+        
+    <string name="stress_index">Stress index</string>
+        
+    <string name="heart_rate_ealth">Heart rate health</string>
+        
+    <string name="drinking_risk">drinking risk</string>
+        
+    <string name="mental_stress">mental stress</string>
+        
+    <string name="mood_changes">mood changes</string>
+        
+    <string name="body_fat_percentage">body fat rate</string>
+        
+    <string name="blood_oxygen">blood oxygen</string>
+    <string name="ear_temp">ear temp</string>
+    <string name="hemoglobin">hemoglobin</string>
+        
+    <string name="blood_flow_velocity">blood flow velocity</string>
+        
+    <string name="blood_sugar">blood sugar</string>
+        
+    <string name="ecg">Blood electricity</string>
+        
+    <string name="conclusion">Conclusion</string>
+        
+    <string name="food_time1">fasting in the morning</string>
+        
+    <string name="food_time2">2 hours after meal</string>
+        
+    <string name="food_time1_">fasting in the morning:</string>
+        
+    <string name="food_time2_">2 hours after meal:</string>
+        
+    <string name="ecg_image_6">Six-lead ECG</string>
+
+        
+    <string name="height">Height</string>
+        
+    <string name="weight">Weight</string>
+        
+    <string name="age">age</string>
+        
+    <string name="name">Name</string>
+        
+    <string name="birthday">birthday</string>
+        
+    <string name="gender">gender</string>
+        
+    <string name="nation">Nation</string>
+        
+    <string name="addr">Address</string>
+        
+    <string name="card_id">ID number</string>
+        
+    <string name="card_no">ID number</string>
+        
+    <string name="head_url">Avatar</string>
+        
+    <string name="phone">phone number</string>
+        
+    <string name="verify_code">Verification code</string>
+    <string name="area_code">area code</string>
+    <string name="email">mailbox</string>
+        
+    <string name="addr_detail">Detailed address</string>
+        
+    <string name="not_required">not required</string>
+        
+    <string name="not_required_">(optional)</string>
+
+        
+    <string name="user">user</string>
+        
+    <string name="user_info">User information</string>
+        
+    <string name="edit_info">Edit information</string>
+        
+
+        
+    <string name="input_name">Please enter a name</string>
+        
+    <string name="input_phone">Please enter the phone number</string>
+        
+    <string name="input_phone_and_verify_code">Please enter the mobile phone number and verification code</string>
+        
+    <string name="input_birthday">Please enter a birthday</string>
+        
+    <string name="input_crect_birthday">Please enter a valid birthday</string>
+        
+    <string name="input_crect_phone">Please enter the correct phone number</string>
+        
+    <string name="input_verify_code">Please enter the verification code</string>
+        
+    <string name="input_password">Please enter a password</string>
+        
+    <string name="input_age">Please enter age</string>
+        
+    <string name="input_weight">Please enter weight</string>
+
+    <string name="input_height">Please enter height</string>
+        
+    <string name="input_gender">Please select gender</string>
+
+        
+    <string name="logging_in">Logging in</string>
+        
+    <string name="login_error">Login failed</string>
+        
+    <string name="login_ok">Login successful</string>
+
+        
+    <string name="get_verify_code">Get verification code</string>
+        
+    <string name="get_verify_code_ok">Verification code sent successfully</string>
+        
+    <string name="get_verify_code_error">Failed to send verification code</string>
+        
+    <string name="get_verify_code_timeout">Verification code sending timed out, please check the network</string>
+        
+    <string name="reget_verify_code">Reacquire verification code</string>
+
+        
+    <string name="next">Next</string>
+        
+    <string name="skip">Skip</string>
+    <string name="back">return</string>
+        
+    <string name="register">Register</string>
+        
+    <string name="login">Login</string>
+        
+    <string name="login_phone">Mobile login</string>
+        
+    <string name="login_wehat">WeChat login</string>
+    <string name="login_wehat_qr">WeChat scan code login</string>
+    <string name="loading_qr_">Loading QR code ...</string>
+        
+    <string name="login_wehat_tips">WeChat scan code to detect immediately</string>
+        
+    <string name="logout">Logout</string>
+        
+    <string name="password">password</string>
+        
+    <string name="account">account</string>
+        
+    <string name="save">Save</string>
+        
+    <string name="edit">Edit</string>
+        
+    <string name="add">Add</string>
+        
+    <string name="exit">Exit</string>
+
+        
+    <string name="dowload_app">There is a new version, please confirm the download</string>
+        
+    <string name="dowloading_">Downloading, please be patient ...</string>
+        
+    <string name="quit_app">Press again to exit the program</string>
+
+        
+    <string name="need_per">Please agree to the relevant permissions, otherwise the function cannot be used</string>
+
+    <!-- common -->
+        
+    <string name="common_home">Home</string>
+        
+    <string name="common_skip_test">Skip measurement</string>
+
+        
+    <string name="common_handle_per">Permission is disabled, please grant manually</string>
+
+    <string name="CmateHv100">Six-lead ECG measurement</string>
+    <string name="BDE_WEIXIN_TTMv100">Non-invasive blood glucose measurement</string>
+    <string name="FORAP30PLUSv100">Arm blood pressure measurement</string>
+    <string name="CXBPv100">Boom tube blood pressure measurement</string>
+    <string name="YFKJv100">Arteriosclerosis measurement</string>
+    <string name="AVE2000v100">Arteriosclerosis measurement</string>
+    <string name="RBP1810130249v100">Pulse wave88</string>
+    <string name="BP06D21905750026v100">Pulse wave804</string>
+    <string name="WWKECGv100">12-lead ECG measurement</string>
+    <string name="device_tzqv100">Remote visceral measurement</string>
+    <string name="device_hdv100">Red bean ECG</string>
+    <string name="FORAGD40bv100">Fora blood sugar</string>
+    <string name="FORABO">Fora blood oxygen</string>
+    <string name="FORAET">Fora temp</string>
+    <string name="MEDCHECKBLU">MEDCHECK Glucose</string>
+    <string name="MEDCHECKPRE">MEDCHECK Pressure</string>
+
+    <string name="glu">Blood sugar</string>
+    <string name="test_result">Results</string>
+    <string name="fora_glu_reminder_title">Measurement tips</string>
+    <string name="fora_glu_tips">1. Press the long M key to turn on the machine \n \n2. Please insert the test paper into the slot after sucking blood \n \n3. Please slide the left button to turn on the Bluetooth, and the blue light on the upper left corner is on</string>
+    <string name="fora_glu_start_tips">Measurement starts</string>
+    <string name="restart_test">Restart measurement</string>
+    <string name="fora_glu_reult_format">Your blood sugar value：\n%.2f </string>
+    <string name="fora_glu_redult_title">Measurement results</string>
+
+    <string name="fora_bo_reminder_title">Measurement tips</string>
+    <string name="fora_bo_reult_format">Your blood oxygen value：\n%d </string>
+    <string name="fora_bo_tips">1. Press the power button on the right to turn on\n\n2. Please put your finger into the blood oxygen clip\n\n3. When the value appears on the screen, please click the \"Start Measurement\" button below</string>
+    <string name="fora_bo_redult_title">Measurement results</string>
+
+    <string name="fora_et_reminder_title">Measurement tips</string>
+    <string name="fora_et_reult_format">Your body temp value：\n%.2f°C</string>
+    <string name="fora_et_tips">1. Press the button at the bottom of the screen to power on\n\n2. Press the button on the back of the ear thermometer to determine the temperature\n\n3. When you hear the sound, click the \"Start Measurement\" button below</string>
+    <string name="fora_et_redult_title">Measurement results</string>
+    <string name="medcheck_glu_reminder_title">Measurement tips</string>
+    <string name="medcheck_glu_reult_format">Your blood glucose value：\n%.2f</string>
+    <string name="medcheck_glu_tips">1. Insert the test strip in the direction indicated by the arrow and turn it on automatically.\n2. Confirm that the code number of the test paper on the screen matches the test paper box.\n3. Use a blood collection pen to obtain a fingertip blood sample.\n4. The test strips draw blood samples.\n5. Measurement data appears after the screen countdown ends.\n\n6. Click "Save Data" and the measurement data will be stored in the system platform.\n7. Withdraw the test paper and discard into the biochemical pollutant container.</string>
+    <string name="medcheck_glu_redult_title">Measurement results</string>
+
+    <string name="medcheck_pre_reminder_title">Measurement tips</string>
+    <string name="medcheck_pre_reult_format">Your blood pressure value：\n%.2f</string>
+    <string name="medcheck_pre_tips">1. Connect the cuff to the blood pressure meter correctly, expose your arms, palm up, and straighten your elbows, and put on the cuff.\n2. The cuff trachea points to the lower arm, and the lower edge of the cuff is 2–3cm away from the elbow socket.\n3. Place the cuff hose at the pulse point of the brachial artery.\n4. Sit still for 3 minutes before the measurement, keeping the center of the cuff at the same height as the heart.\n5. Press the [Power] button to start measurement.\n6. Please do not speak or move your body during the measurement.\n7. After the measurement is completed, when the value appears on the screen, please click the [Save Data] button below.</string>
+    <string name="medcheck_pre_redult_title">Measurement results</string>
+    <!--wuweikang-->
+        
+    <string name="wwk_op_guide_">Operation guide:</string>
+        
+    <string name="wwk_bt_connectting">Bluetooth connecting</string>
+        
+    <string name="wwk_bt_connect_fail">Bluetooth connection failed to reconnect</string>
+
+        
+    <string name="wwk_ecg">12-lead ECG</string>
+        
+    <string name="wwk_tips1">Please make sure that the electrode slide arm is pulled out. \n\nPlease make sure that the upper indicator light is always on.</string>
+        
+    <string name="wwk_next">Confirm that it is turned on Next step</string>
+
+        
+    <string name="wwk_not_found_device">Meter not found</string>
+        
+    <string name="wwk_confirm_device_open">Connection failed, please confirm whether the device is turned on</string>
+        
+    <string name="wwk_battery_tips">Please check whether the power of the device is sufficient. \nOr restart the meter and reconnect.</string>
+        
+    <string name="wwk_bt_conectting_">Connecting to Bluetooth ...</string>
+
+        
+    <string name="wwk_keeep_hoding">Receive interference, please keep it stable</string>
+        
+    <string name="wwk_ecg_conclusion1">** Normal ECG **</string>
+        
+    <string name="wwk_ecg_conclusion2">** Atypical ECG **</string>
+        
+    <string name="wwk_ecg_conclusion3">** Suspicious ECG **</string>
+        
+    <string name="wwk_ecg_conclusion4">** Abnormal ECG **</string>
+
+        
+    <string name="wwk_ecg_subconclusion1">normal ECG</string>
+        
+    <string name="wwk_ecg_subconclusion2">Sinus rhythm</string>
+        
+    <string name="wwk_ecg_subconclusion3">Tachycardia</string>
+        
+    <string name="wwk_ecg_subconclusion4">Sinus tachycardia</string>
+        
+    <string name="wwk_ecg_subconclusion5">Supraventricular tachycardia</string>
+        
+    <string name="wwk_ecg_subconclusion6">Paroxysmal supraventricular tachycardia</string>
+        
+    <string name="wwk_ecg_subconclusion7">Ventricular tachycardia</string>
+        
+    <string name="wwk_ecg_subconclusion8">short-ventricular tachycardia</string>
+        
+    <string name="wwk_ecg_subconclusion9">bradycardia</string>
+        
+    <string name="wwk_ecg_subconclusion10">Sinus bradycardia</string>
+        
+    <string name="wwk_ecg_subconclusion11">Sinus bradycardia with irregularities</string>
+        
+    <string name="wwk_ecg_subconclusion12">Sinus arrhythmia</string>
+        
+    <string name="wwk_ecg_subconclusion13">ventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion14">Pair of ventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion15">Various premature ventricular contractions</string>
+        
+    <string name="wwk_ecg_subconclusion16">Multi-source ventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion17">Frequent ventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion18">Differential premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion19">Triple of ventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion20">Supraventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion21">occasional supraventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion22">Paired supraventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion23">Frequent supraventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion24">Supraventricular premature beats couplet</string>
+        
+    <string name="wwk_ecg_subconclusion25">Triple of supraventricular premature beats</string>
+        
+    <string name="wwk_ecg_subconclusion26">Atrial fibrillation</string>
+        
+    <string name="wwk_ecg_subconclusion27">Atrial flutter</string>
+        
+    <string name="wwk_ecg_subconclusion28">Ventricular fibrillation</string>
+        
+    <string name="wwk_ecg_subconclusion29">ventricular flutter</string>
+        
+    <string name="wwk_ecg_subconclusion30">Paroxysmal atrial fibrillation</string>
+        
+    <string name="wwk_ecg_subconclusion31">Cardioplegia</string>
+        
+    <string name="wwk_ecg_subconclusion32">I degree atrioventricular block</string>
+        
+    <string name="wwk_ecg_subconclusion33">Type II atrioventricular block</string>
+        
+    <string name="wwk_ecg_subconclusion34">Type II atrioventricular block</string>
+        
+    <string name="wwk_ecg_subconclusion35">III degree atrioventricular block</string>
+        
+    <string name="wwk_ecg_subconclusion36">Incomplete right bundle branch block</string>
+        
+    <string name="wwk_ecg_subconclusion37">Complete right bundle branch block</string>
+        
+    <string name="wwk_ecg_subconclusion38">Incomplete left bundle branch block</string>
+        
+    <string name="wwk_ecg_subconclusion39">Complete left bundle branch block</string>
+        
+    <string name="wwk_ecg_subconclusion40">Indoor conduction block</string>
+    <string name="wwk_ecg_subconclusion41">Left front branch block</string>
+        
+    <string name="wwk_ecg_subconclusion42">Left rear branch block</string>
+        
+    <string name="wwk_ecg_subconclusion43">Pre-excitation syndrome</string>
+        
+    <string name="wwk_ecg_subconclusion44">Left atrial hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion45">Suspect left atrium hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion46">Right atrium hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion47">Suspected right atrium hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion48">Double atrium hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion49">Suspected double atrial hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion50">Left ventricular hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion51">Suspect left ventricular hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion52">Left ventricular hypertrophy with ST-T changes</string>
+        
+    <string name="wwk_ecg_subconclusion53">Left ventricular high voltage</string>
+        
+    <string name="wwk_ecg_subconclusion54">Right ventricular hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion55">Suspected right ventricular hypertrophy</string>
+        
+    <string name="wwk_ecg_subconclusion56">Right ventricular hypertrophy with ST-T changes</string>
+        
+    <string name="wwk_ecg_subconclusion57">Acute anterior wall myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion58">Subacute anterior wall myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion59">Old anterior wall myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion60">Acute anterior septal myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion61">Subacute anterior septal myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion62">Old myocardial infarction of anterior partition</string>
+        
+    <string name="wwk_ecg_subconclusion63">Acute extensive anterior myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion64">Subacute extensive anterior myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion65">Old extensive anterior myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion66">Acute lateral myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion67">Subacute lateral myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion68">Old sidewall myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion69">Acute high-sided myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion70">Subacute high-sided myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion71">Old high-sided myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion72">Acute inferior myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion73">Subacute inferior myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion74">Old inferior myocardial infarction</string>
+        
+    <string name="wwk_ecg_subconclusion75">Uncertain ECG axis</string>
+        
+    <string name="wwk_ecg_subconclusion76">Slight electric axis left deviation</string>
+        
+    <string name="wwk_ecg_subconclusion77">Left axis deviation</string>
+        
+    <string name="wwk_ecg_subconclusion78">Light electric axis right deviation</string>
+        
+    <string name="wwk_ecg_subconclusion79">Electric axis right deviation</string>
+        
+    <string name="wwk_ecg_subconclusion80">ST-T change</string>
+        
+    <string name="wwk_ecg_subconclusion81">ST segment elevation</string>
+        
+    <string name="wwk_ecg_subconclusion82">ST segment down</string>
+        
+    <string name="wwk_ecg_subconclusion83">T wave towering</string>
+        
+    <string name="wwk_ecg_subconclusion84">T wave low level</string>
+        
+    <string name="wwk_ecg_subconclusion85">T wave inversion</string>
+        
+    <string name="wwk_ecg_subconclusion86">PR interval shortened</string>
+        
+    <string name="wwk_ecg_subconclusion87">QT interval shortened</string>
+        
+    <string name="wwk_ecg_subconclusion88">QT interval extension</string>
+        
+    <string name="wwk_ecg_subconclusion89">abnormal Q wave</string>
+        
+    <string name="wwk_ecg_subconclusion90">Limb lead low voltage</string>
+        
+    <string name="wwk_ecg_subconclusion91">Chest lead low voltage</string>
+        
+    <string name="wwk_ecg_subconclusion92">All-lead low voltage</string>
+        
+    <string name="wwk_ecg_subconclusion93">Right position heart</string>
+        
+    <string name="wwk_ecg_subconclusion94">Atrial pacing electrocardiogram</string>
+        
+    <string name="wwk_ecg_subconclusion95">ventricular pacing electrocardiogram</string>
+        
+    <string name="wwk_ecg_subconclusion96">Double-chamber pacing ECG</string>
+        
+    <string name="wwk_ecg_subconclusion97">Early repolarization syndrome</string>
+        
+    <string name="wwk_ecg_subconclusion98">Sinus arrest</string>
+        
+    <string name="wwk_ecg_subconclusion99">turn clockwise</string>
+        
+    <string name="wwk_ecg_subconclusion100">counterclockwise transposition</string>
+        
+    <string name="wwk_ecg_subconclusion101">S1S2S3 syndrome</string>
+
+        
+    <string name="wwk_paper_speed_">paper speed:</string>
+        
+    <string name="wwk_low_speed">low speed</string>
+        
+    <string name="wwk_gain_">Gain:</string>
+      
+    <string name="wwk_gain">gain</string>  
+    <string name="wwk_frequency_filtering">power frequency filtering</string>   
+    <string name="wwk_baseline_filtering">baseline filtering</string>    
+    <string name="wwk_emg_filtering">myoelectric filtering</string>    
+    <string name="wwk_low_pass_filtering">low-pass filtering</string>
+
+        
+    <string name="wwk_test_left_time">Measure remaining time</string>    
+    <string name="wwk_second">seconds</string>
+
+        
+    <string name="wwk_hr">Heart rate / min</string>
+        
+    <string name="wwk_times">times</string>
+        
+    <string name="wwk_result_tips_">Measurement result tips:</string>
+        
+    <string name="wwk_ecg_image_abnormal">* suspicious ECG *</string>
+        
+    <string name="wwk_ask_doctor">This measurement is not a medical diagnosis, please consult a professional doctor for disease diagnosis</string>
+        
+    <string name="wwk_next1">Next</string>
+
+        
+    <string name="wwk_device_connect_error">Failed to connect to the device, please confirm whether the battery has enough power or reopen the device</string>
+        
+    <string name="wwk_bt_device_conn_fail">Device Bluetooth is not successfully connected</string>
+
+        
+    <string name="wwk_guider_cgm">noninvasive blood glucose meter</string>
+
+        
+    <string name="wwk_title1">boot operation</string>
+        
+    <string name="wwk_title2">Bluetooth connection</string>
+        
+    <string name="wwk_title3">equipment measurement</string>
+        
+    <string name="wwk_title4">Measurement result</string>
+
+    <!--weixinlogin-->
+        
+    <string name="wxlogin_op_guider_and_tips">Operating steps and tips:</string>
+        
+    <string name="wxlogin_scan">WeChat scan code to detect immediately</string>
+        
+    <string name="wxlogin_reload">Reacquire</string>
+
+        
+    <string name="gender_man">Male</string>
+        
+    <string name="gender_woman">Female</string>
+
+        
+    <string name="wxlogin_get_qr_failed">Failed to obtain WeChat QR code</string>
+        
+    <string name="wxlogin_qr_expired">The QR code has expired</string>
+        
+    <string name="wxlogin_device_not_in">The device is not in storage</string>
+
+        
+    <string name="wxlogin_qr_scan">Scan WeChat</string>
+        
+    <string name="wxlogin_sub_p">Follow the public account and know your health</string>
+        
+    <string name="wxlogin_failed">WeChat login failed</string>
+
+        
+    <string name="wxlogin_binded">WeChat has been bound</string>
+
+        
+    <string name="wxlogin_login">WeChat login</string>
+
+        
+    <string name="wxlogin_qr_loading_">Loading QR code ...</string>
+
+    <!--userlib-->
+        
+    <string name="userlib_trend_analysis">Trend analysis</string>
+        
+    <string name="userlib_his_data">historical data</string>
+
+        
+    <string name="userlib_test_time">Measure time</string>
+        
+    <string name="userlib_sbp">systolic blood pressure</string>
+        
+    <string name="userlib_dbp">Diastolic pressure</string>
+        
+    <string name="userlib_hr">Heart rate</string>
+        
+    <string name="userlib_status">status</string>
+
+        
+    <string name="userlib_glu">blood sugar</string>
+        
+    <string name="userlib_hemoglobin">hemoglobin</string>
+        
+    <string name="userlib_blood_flow">blood velocity</string>
+
+        
+    <string name="userlib_input_param">Please enter the correct parameters!</string>
+
+        
+    <string name="userlib_no_data">No data yet</string>
+
+    <!--tckeyboard-->
+        
+    <string name="tckeyboard_up">previous step</string>
+        
+    <string name="tckeyboard_ok">OK</string>
+
+    <!--simpleble-->
+        
+    <string name="simpleble_bt_conn_error">Bluetooth connection failed</string>
+        
+    <string name="simpleble_bt_connectting">Bluetooth is connecting or existing connection</string>
+
+    <!--rtc-->
+        
+    <string name="rtc_title">RTC</string>
+    <string name="rtc_waiting_pick_up">Waiting for the other party to answer ...</string>
+        
+    <string name="rtc_ok">OK</string>
+        
+    <string name="rtc_join_channel">Hang up</string>
+        
+    <string name="rtc_attention">Channel ID cannot be empty!</string>
+        
+    <string name="rtc_out">exit</string>
+        
+    <string name="rtc_mode">video call</string>
+        
+    <string name="rtc_permission">Please give permission first</string>
+        
+    <string name="rtc_enter">OK</string>
+        
+    <string name="rtc_channel_hint">Please enter the channel number (3-12 digits)</string>
+        
+    <string name="rtc_channel_error">The channel number length cannot be less than 3 digits or greater than 12 digits</string>
+
+        
+    <string name="rtc_click">click</string>
+
+        
+    <string name="rtc_talking">In audio and video call</string>
+        
+    <string name="rtc_talking_now">Audio and video calls are in progress</string>
+
+        
+    <string name="rtc_loging_">Login ...</string>
+
+        
+    <string name="rtc_request_per">Request permission must be opened, otherwise it cannot be used normally!</string>
+
+        
+    <string name="rtc_need_per">Require permission to view</string>
+        
+    <string name="rtc_disconn">the other party has hung up</string>
+
+        
+    <string name="rtc_quit_room">Network timeout, please exit the room</string>
+        
+    <string name="rtc_ok_soon_">Video will be connected soon ...</string>
+
+    <!--printlib-->
+        
+    <string name="printlib_print_ok">Confirm printing</string>
+        
+    <string name="printlib_open">Please turn on the Bluetooth printer first</string>
+
+        
+    <string name="printlib_title">Please select the time</string>
+
+        
+    <string name="printlib_error">Birth date cannot be after today ’s date!</string>
+
+        
+    <string name="printlib_search_printer_">Searching for printer ...</string>
+        
+    <string name="printlib_printing_">Printing ...</string>
+        
+    <string name="printlib_print_report">Print report</string>
+        
+    <string name="printlib_input_name">Please enter a name</string>
+        
+    <string name="printlib_input_date">Please enter the correct date</string>
+        
+    <string name="printlib_input_height_and_weight">Please enter height, weight</string>
+
+        
+    <string name="printlib_health_report">health test report</string>
+        
+    <string name="printlib_check_item">check items</string>
+        
+    <string name="printlib_check_value">check value</string>
+        
+    <string name="printlib_suugest1">Statement: The conclusions and recommendations of this report cannot be used as a basis for diagnosis or treatment, any</string>
+        
+    <string name="printlib_suugest2">Medical behavior please follow the doctors advice!</string>
+        
+    <string name="printlib_suugest3">Please follow the QR code below to learn more about health services and consultation.</string>
+
+        
+    <string name="printlib_error1">Do not print repeatedly</string>
+        
+    <string name="printlib_error2">The printer is busy, please try to restart the printer.</string>
+        
+    <string name="printlib_error3">Abnormal printing</string>
+        
+    <string name="printlib_error4">Cannot start search</string>
+        
+    <string name="printlib_error5">Bluetooth printer connected successfully</string>
+        
+    <string name="printlib_error6">Bluetooth printer connection failed</string>
+        
+    <string name="printlib_error7">Bluetooth printer closes the connection</string>
+    <!--infocard-->
+        
+    <string name="infocard_op_guide_and_tip_">Operating steps and tips:</string>
+        
+    <string name="infocard_put_card">Please attach the second generation ID card to the induction area below</string>
+        
+    <string name="infocard_invisible">Do not show it now</string>
+
+        
+    <string name="infocard_card_copy">ID card swiping</string>
+
+        
+    <string name="infocard_error1">Please keep your ID card close to the credit card area</string>
+        
+    <string name="infocard_error2">No card reader connected</string>
+
+        
+    <string name="infocard_upload_error">Failed to upload ID card information</string>
+        
+    <string name="infocard_card_get_info">Automatic identification of credit card information</string>
+
+    <!--gluphone-->
+        
+    <string name="gluphone_bo_upload_error">blood oxygen data was not uploaded successfully</string>
+
+        
+    <string name="gluphone_not_get_data">No valid data was obtained</string>
+        
+    <string name="gluphone_fail">Failed</string>
+
+        
+    <string name="gluphone_have_per">Related permissions have been applied</string>
+        
+    <string name="gluphone_need_phone_per">Need to obtain permission to use your photo album and camera</string>
+
+        
+    <string name="gluphone_quit_app">Press again to exit the program</string>
+
+        
+    <string name="gluphone_need_per">Please agree to the relevant permissions, otherwise the function cannot be used</string>
+
+    <!--glu-->
+        
+    <string name="gluphone_eat_medicine1">Not taking medicine</string>
+        
+    <string name="gluphone_eat_medicine2">Huanurea</string>
+        
+    <string name="gluphone_eat_medicine3">Biguanides</string>
+        
+    <string name="gluphone_eat_medicine4">Liver enzyme inhibitor</string>
+
+        
+    <string name="glu_title">CGM</string>
+    <string name="glu_title1">Parameter</string>
+    <string name="glu_title2">Startup</string>    
+    <string name="glu_title3">Bluetooth connection</string>    
+    <string name="glu_title4">Measurement</string>    
+    <string name="glu_title5">Result</string>
+        
+    <string name="glu_op_guide">Operation guide</string>
+        
+    <string name="glu_op_tips">operation tips</string>
+        
+    <string name="glu_input_test_param">Measurement parameter input</string>
+
+        
+    <string name="glu_level_">Glucose level:</string>
+
+        
+    <string name="glu_abnormal">Abnormality ≥7mmol/L</string>
+
+        
+    <string name="glu_food_time2_and_big">2 hours after meal \nFood intake: moderate</string>
+        
+    <string name="glu_food_time2_and_mid">2 hours after meal \nFood intake: large</string>
+
+        
+    <string name="glu_op_guide_">Operation guide:</string>
+        
+    <string name="glu_bt_connecting">Bluetooth connecting ...</string>
+        
+    <string name="glu_fixed_and_reconn">Already resolved Reconnect</string>
+
+        
+    <string name="glu_insert_finger">Please reach into your finger</string>
+        
+    <string name="glu_complete_in_time">Please complete the operation within the specified time</string>
+        
+    <string name="glu_suggest_temp">Suggested ambient temperature 20 ℃ —27 ℃ Suitable finger temperature 29 ℃ —35 ℃</string>
+        
+    <string name="glu_init_device">Initializing the device, please do not reach into your fingers!</string>
+        
+    <string name="glu_reboot_and_retry">The device has been restarted, try again</string>
+
+        
+    <string name="glu_device_name">Noninvasive blood glucose meter</string>
+        
+    <string name="glu_op_guide_detail">Please press and hold the devices power button for 2 seconds, the blue light on the right \nlights up, which means normal boot.</string>
+        
+    <string name="glu_confirm_and_next">Confirm that it is turned on Next step</string>
+
+        
+    <string name="glu_title_conn">Device connection</string>
+        
+    <string name="glu_op_guide_retry_detail">1. Please confirm that the device is turned on normally \n2. Please confirm that the system [Bluetooth] is turned on or restart the system Bluetooth \n3. Please confirm that the system [Location Information] function is turned on</string>
+
+        
+    <string name="glu_conn_error_and_confirm_open">Connection failed, please make sure the device switch is turned on</string>
+        
+    <string name="glu_init_error">Initialization failed, please restart the device</string>
+        
+    <string name="glu_retry">Please restart the device and re-measure.</string>
+        
+    <string name="glu_test_error">Measurement error, please click Cancel to re-measure</string>
+
+        
+    <string name="glu_input_bs">Please enter the blood glucose value</string>
+        
+    <string name="glu_height_weight_not_empty">Height and weight cannot be empty</string>
+
+    <string name="measure_3_qingyongshouzhi">Please put your finger into the sensor.</string>
+    <string name="measure_3_lianjieshibai">Device connection failed, Please make sure the power is turned on.</string>
+    <string name="measure_3_fuhehuanjing">Meet Environmental Conditions </string>
+    <string name="glu_shebeidianliangdi">Low battery! Please charging before measure.</string>
+    <string name="glu_huanjingwendudi">The finger temperature is too low, which may affect the measure results.</string>
+    <string name="glu_huanjingwendugao">The ambient temperature is too high, which may affect the measure results.</string>
+    <string name="glu_huanjingtaigan">The ambient is too dry, which may affect the measure results.</string>
+    <string name="glu_shouzhiwendutaidi">The finger temperature is too low, which may affect the measure results.</string>
+    <string name="shouzhiwendugao">The finger temperature is too high, which may affect the measure results.</string>
+    <string name="glu_shouzhiweizhengque">Finger is not placed correctly!</string>
+    <string name="glu_shujushoujicuowu">Data collection error! Please reinsert your finger.</string>
+    <string name="glu_shouzhiganceyouhu">Finger sensing error may result in incorrect data collection.</string>
+    <string name="glu_shouzhiyiyikai">Finger Removed!</string>
+    <string name="glu_shouzhiweishenru">No finger inside!</string>
+    <string name="glu_chucuodeceshi">Error, Please measure again.</string>
+    <string name="glu_dingqijiankangjiancha">Regular Health Examination</string>
+    <string name="meitianyundong30fenzhong">Exercise 30 minutes a day</string>
+    <string name="congshishuyahuodong">Engage in stress-relieving activities to relax.</string>
+    <string name="glu_zhengqueyinshi">Health Diet, According to the following order and amount, 2 high fiber vegetables, 2 protein, 1 carbohydrate </string>
+    <string name="glu_weichichongzudeshuimian">Keep enough sleep</string>
+    <string name="glu_buchongshuifen">Rehydrate</string>
+    <!--appm500PLUS-->
+        
+    <string name="appm500plus_login_error">Login failed, no doctor information was found</string>
+        
+    <string name="appm500plus_get_admin_info_error">Failed to obtain administrator information</string>
+
+    <!--baseview-->
+        
+    <string name="baseview_crop">crop</string>
+        
+    <string name="baseview_crop_error">Image compression failed!</string>
+
+    <!--common_500plus & common_m500_1000-->
+        
+    <string name="common_500plus_user_list">user list</string>
+        
+    <string name="common_500plus_add">Add</string>
+        
+    <string name="common_500plus_op">Operation</string>
+
+        
+    <string name="common_500plus_glu_test">Noninvasive blood glucose test</string>
+
+        
+    <string name="common_m_bp_suugest">It is recommended that you pay attention to adjust your diet, control weight, maintain regular exercise, regularly measure blood pressure and maintain a happy mood.</string>
+        
+    <string name="common_m_bs_suugest">Remind you to maintain good eating habits, maintain regular exercise, and regularly measure blood sugar.</string>
+
+        
+    <string name="common_m_end_test">End measurement</string>
+        
+    <string name="common_m_retest">Remeasure</string>
+        
+    <string name="common_m_talk_to_doctor">Talk to the doctor</string>
+        
+    <string name="common_m_print_report">print report</string>
+
+        
+    <string name="common_m_login_with_card">Log in by swiping ID card</string>
+        
+    <string name="common_m_login_with_phone">log in with your mobile phone number</string>
+        
+    <string name="common_m_wx">WeChat</string>
+        
+    <string name="common_m_login_with_wx">WeChat scan code login</string>
+      
+    <string name="common_m_login_line">Line</string>
+    <string name="common_m_login_line_comment">Line scan code login</string>
+    <string name="common_m_login_phonecode">Mobile phone</string>  
+    <string name="common_m_login_phonecode_comment">Mobile phone verification code login</string>
+
+    <string name="common_m_vedio_advisory">Video consultation</string>
+        
+    <string name="common_m_test_dmyh">Arteriosclerosis measurement</string>
+
+        
+    <string name="common_m_not_found_phone">Mobile phone number does not exist</string>
+
+        
+    <string name="common_m_guider_health_system">Gade Health Intelligent Health Management System</string>
+
+        
+    <string name="common_m_start_test">Start measurement</string>
+
+        
+    <string name="common_m_quit_verify">Quit verification</string>
+        
+    <string name="common_m_input_admin">Please enter the administrator account</string>
+
+        
+    <string name="common_m_admin_login">admin login</string>
+
+        
+    <string name="common_m_scan_qr">Scan to focus on personal health</string>
+        
+    <string name="common_m_device_test">device measurement</string>
+        
+    <string name="common_m_input_handle">Manual entry</string>
+        
+    <string name="common_m_his">History</string>
+    <string name="common_m_health_talk">health consultation</string>
+        
+    <string name="common_m_health_advise">Health advice</string>
+
+        
+    <string name="common_m_test_time_">Measuring time:</string>
+        
+    <string name="common_m_test_timespan_">Measurement period:</string>
+        
+    <string name="common_m_bs_">Glucose concentration (mmol/L):</string>
+        
+    <string name="common_m_hr_">Heart rate (BPM):</string>
+        
+    <string name="common_m_dbp_">Diastolic blood pressure (mmHg):</string>
+        
+    <string name="common_m_sbp_">systolic blood pressure (mmHg):</string>
+
+        
+    <string name="common_m_menu">function menu</string>
+        
+    <string name="common_m_user_manage">User management</string>
+        
+    <string name="common_m_data_cl">Data collection</string>
+
+        
+    <string name="common_m_into">Enter</string>
+
+        
+    <string name="common_m_input_name_or_age">Please enter name or age</string>
+        
+    <string name="common_m_userinfo_change_ok">User information modified successfully</string>
+        
+    <string name="common_m_per_ok">Related permissions have been applied</string>
+        
+    <string name="common_m_per_need_photo">Need to obtain permission to use your photo album and camera</string>
+
+        
+    <string name="common_m_getting_doctor_info">Getting doctor information</string>
+        
+    <string name="common_m_select_doctor">choose to consult a doctor</string>
+
+        
+    <string name="common_m_select_device">You have selected% d devices for the following measurements!</string>
+        
+    <string name="common_m_select_test_device">select measurement equipment</string>
+
+        
+    <string name="common_m_test_result">Measurement result</string>
+        
+    <string name="common_m_bp_input_ok">Successful blood pressure entry</string>
+        
+    <string name="common_m_bs_upload_ok">Successful blood sugar upload</string>
+        
+    <string name="common_m_bs_need_info">please fill in the blood glucose information</string>
+
+        
+    <string name="common_m_login_no_doctor">Login failed, no doctor information was found</string>
+        
+    <string name="common_m_admin_info_get_error">Failed to obtain administrator information</string>
+
+    <string name="common_temp_suggest_36">Please exercise more, pay attention to keep warm and strengthen nutrition</string>
+    <string name="common_temp_suggest_36_37_2">The body temperature is normal, please continue to maintain it</string>
+    <string name="common_temp_suggest_37_3_38">Please cool down physically, drink plenty of water, eat more fruits and vegetables, or take antipyretics as directed by your doctor</string>
+    <string name="common_temp_suggest_38_1_39">Please cool down physically, drink plenty of water, pay attention to changes in body temperature, and seek medical treatment in a timely manner according to the situation</string>
+    <string name="common_temp_suggest_39_1_41">Please consult a doctor in time for treatment</string>
+    <string name="common_temp_suggest_41">May be life-threatening, please seek medical treatment as soon as possible</string>
+
+    <string name="common_bo_suggest_90">Oxygen saturation is normal, please pay attention to keep it</string>
+    <string name="common_bo_suggest_80_89">Please reduce activities and take appropriate breaks</string>
+    <string name="common_bo_suggest_70_79">Please take appropriate amount of oxygen and take anti-hypoxic drugs as directed by your doctor</string>
+    <string name="common_bo_suggest_60_69">Please stop all activities and seek medical attention immediately</string>
+    <string name="common_bo_suggest_59">May be life-threatening, please seek medical treatment as soon as possible</string>
+
+    <!--doctor-->
+        
+    <string name="doctor_compnay_belong">Affiliated Organization</string>
+        
+    <string name="doctor_emergency_contact">emergency contact</string>
+        
+    <string name="doctor_emergency_contact_phone">emergency contact phone</string>
+        
+    <string name="doctor_area_in">area</string>
+        
+    <string name="doctor_advisory">Consultation</string>
+        
+    <string name="doctor_personal">Personal</string>
+        
+    <string name="doctor_agree_agreement">Click to log in to agree to the "User Service Agreement" and "Privacy Policy Terms"</string>
+
+        
+    <string name="doctor_health_report">health report</string>
+        
+    <string name="doctor_health_advice">Health advice</string>
+        
+    <string name="doctor_health_report_">Health Report</string>
+        
+    <string name="doctor_add_group">Add group</string>
+
+    <!--ecg-->
+        
+    <string name="ecg_tips1">It is detected that both hands leave the electrode pad</string>
+        
+    <string name="ecg_tips2">Finger and electrode pads may be in poor contact \n\nPlease hold your hands and hold the metal piece</string>
+
+        
+    <string name="ecg_ecg_6">Six-lead ECG</string>
+       
+    <string name="ecg_op_guide">Guide</string>
+    <string name="ecg_op_test">Operation</string>
+    <string name="ecg_device_test">Device measurement</string>
+    <string name="ecg_test_redult">Result</string>
+        
+    <string name="ecg_op_guide_">Operation guide:</string>
+
+        
+    <string name="ecg_hr_avg_">Average heartbeat:</string>
+        
+    <string name="ecg_ecg_suggest1">Control the three highs (high blood fat, high blood pressure, high blood sugar), maintain good habits and control weight, help maintain the health of blood vessels and reduce excess work in the heart.</string>
+
+        
+    <string name="ecg_hr_health_">Heart rate health:</string>
+        
+    <string name="ecg_ecg_suggest2">When you are under stress or tension, your heart rate will speed up, and it can also cause irregular phenomena. It is recommended to maintain a calm mood and find an appropriate way to relieve stress \nMethods can help maintain health.</string>
+
+        
+    <string name="ecg_stree_index_">Stress index:</string>
+        
+    <string name="ecg_ecg_suggest3">You can also refer to the chronic fatigue index. If the chronic fatigue index shows a yellow light or a red light, it means that the pressure has accumulated for a long time, you must pay attention.</string>
+
+        
+    <string name="ecg_tired_index_">Fatigue index:</string>
+        
+    <string name="ecg_ecg_suggest4">Avoid long hours of staying up and being overworked, and rest properly. If the body is unwell for a long time and the rest cannot be improved, it is recommended to go to the hospital immediately.</string>
+
+        
+    <string name="ecg_look_image">View ECG</string>
+
+        
+    <string name="ecg_connectting">Connecting \nplease wait ...</string>
+        
+    <string name="ecg_fixed_and_reconnect">Already resolved Reconnect</string>
+
+        
+    <string name="ecg_device_title">Six-lead smart ECG test</string>
+        
+    <string name="ecg_op_guide_detail">1. Press and hold the power switch for about 2 seconds \n2. The power indicator lights up \n3. Complete the preparation for booting</string>
+        
+    <string name="ecg_open_and_next">Confirm that it is turned on Next step</string>
+
+        
+    <string name="ecg_op_test_detail">1. Lightly press the device in front of the chest \n2. The four electrodes need to be in stable contact with the skin \n3. Do not shake during measurement</string>
+
+        
+    <string name="ecg_ask_analyze">Ask whether to analyze ECG</string>
+        
+    <string name="ecg_later">later</string>
+        
+    <string name="ecg_yes">OK</string>
+
+        
+    <string name="ecg_smoking">Whether to smoke</string>
+
+        
+    <string name="ecg_link_error">Link failed</string>
+        
+    <string name="ecg_test_guide">Place your thumbs on the patch and you can start measuring directly</string>
+        
+    <string name="ecg_electricity_">Electricity:</string>
+        
+    <string name="ecg_signal_strength_">Signal strength:</string>
+        
+    <string name="ecg_dont_move">There is a disturbance in the electrocardiogram, do n’t move your fingers</string>
+
+        
+    <string name="ecg_mid_low">medium low</string>
+        
+    <string name="ecg_mid">Medium</string>
+        
+    <string name="ecg_mid_high">Medium high</string>
+        
+    <string name="ecg_high">High</string>
+        
+    <string name="ecg_extremely_high">Extremely high</string>
+
+        
+    <string name="ecg_depression">depression</string>
+        
+    <string name="ecg_frustrated">frustrated</string>
+        
+    <string name="ecg_nervous">Nervous</string>
+        
+    <string name="ecg_anxiety">anxiety</string>
+
+        
+    <string name="ecg_mild">Mild</string>
+        
+    <string name="ecg_moderate">moderate</string>
+        
+    <string name="ecg_severe">Severe</string>
+
+        
+    <string name="ecg_thin">Slightly thin</string>
+        
+    <string name="ecg_fatty">fatty</string>
+        
+    <string name="ecg_overweight">Overweight</string>
+
+        
+    <string name="ecg_algorithm">Intelligent algorithm analysis display</string>
+    <string name="ecg_arrhythmia">You may have arrhythmia, which is a common heart disease. If you feel chest discomfort, panic and other discomforts, please consult a doctor in time</string>
+
+        
+    <string name="ecg_testing_">Measuring ...</string>
+
+        
+    <string name="ecg_test_op">ECG measurement operation</string>
+        
+    <string name="ecg_test_error">Measurement failed, please measure again</string>
+
+        
+    <string name="ecg_ecg_test">ECG measurement</string>
+        
+    <string name="ecg_input_param">input parameters</string>
+        
+    <string name="ecg_start_test">Start measurement</string>
+        
+    <string name="ecg_show_result">Result display</string>
+
+        
+    <string name="ecg_input_smoking">Please choose whether to smoke</string>
+
+        
+    <string name="ecg_not_found_device">Device not found \nPlease make sure the device is turned on</string>
+        
+    <string name="ecg_conn_device_error">Connection failed \nPlease confirm that the device is turned on</string>
+        
+    <string name="ecg_data_uploading_">Do not operate the device, data uploading ...</string>
+        
+    <string name="ecg_recommit">Resubmit</string>
+        
+    <string name="ecg_retest">Remeasure</string>
+        
+    <string name="ecg_low_ele">Low battery, please charge in time</string>
+
+        
+    <string name="ecg_file_open_error">ECG file failed to open</string>
+        
+    <string name="ecg_image_error">ECG analysis failed</string>
+
+        
+    <string name="ecg_searching_device_">Searching for devices ...</string>
+        
+    <string name="ecg_research">Research</string>
+        
+    <string name="ecg_reconnect">Reconnect</string>
+        
+    <string name="ecg_real_not_found_device">Device not found</string>
+        
+    <string name="ecg_data_saving">Saving data</string>
+
+        
+    <string name="ecg_bt_error_connect_timeout">Connection timed out</string>
+    <string name="ecg_bt_error1">Abnormal ECG, please measure again</string>
+    <string name="ecg_bt_error2">Failed to verify the input data</string>
+    <string name="ecg_bt_error3">Signal is not good, please measure again</string>
+    <string name="ecg_bt_error4">Token expired (identity verification failed)</string>
+    <string name="ecg_bt_error5">Other errors</string>
+    <string name="ecg_bt_error6">The extension is not Lp4</string>
+    <string name="ecg_bt_error7">Please upload ECG first.</string>
+        
+    <string name="ecg_signal_high">Strong</string>
+        
+    <string name="ecg_signal_low">weak</string>
+        
+    <string name="ecg_signal_ex_low">Extremely weak</string>
+
+        
+    <string name="ecg_bt_no_pair">not paired yet, try pairing</string>
+        
+    <string name="ecg_bt_found_device">Found the device, trying to pair ...</string>
+        
+    <string name="ecg_bt_pair_ok">Paired successfully</string>
+
+        
+    <string name="ecg_zy_test">Dirty sound stethoscope measurement</string>
+        
+    <string name="ecg_not_found_app">App not installed</string>
+        
+    <string name="ecg_bt_conn">Bluetooth connection</string>
+        
+    <string name="ecg_commiting_data">committing data ...</string>
+
+        
+    <string name="ecg_cmate_test">Xinmeite measurement</string>
+
+    <!-- bpm1000 -->
+    <string name="shebeiceliang">Measurement</string>
+    <string name="lianjieshibai">Connection failed</string>
+    <string name="celiangzhong">Under measurement\nPlease wait ...</string>  
+    <string name="celiangcaozuo">Operation</string>   
+    <string name="celiangjieguo">Results</string>
+    <string name="caozuotixing">Reminder</string>
+
+    <string name="bmp1000_waiting_test">Wait for measurement ... \n\nAfter the measurement is completed, you can get the result.</string>
+    <string name="bmp1000_zxdmydzb">Central artery stiffness index</string>
+    <string name="bmp1000_sbdmyhzb">upper arm arteriosclerosis indicators</string>
+
+    <string name="bmp1000_wssdsb">No device found</string>
+    <string name="bmp1000_clzsh">Under measurement \nPlease wait ...</string>
+
+    <string name="bmp1000_tips1">1. Extend your arm into the arm barrel, \nput your elbow in the depression.</string>
+    <string name="bmp1000_tips2">2. Maintain a correct sitting posture, \nPress the [Start / Stop] button, \nStart measuring blood pressure.</string>
+    <string name="bmp1000_range">Reference range: the general population:  systolic blood pressure&lt;120(mmHg), diastolic blood pressure&lt;80 mmHg)\n                    Chronic disease, the elderly: systolic blood pressure&lt;140 (mmHg), diastolic pressure&lt;90(mmHg)</string>
+    <string name="bmp1000_btbp">Arm sphygmomanometer</string>
+
+        
+    <string name="bmp1000_dy">Low voltage</string>
+        
+    <string name="bmp1000_gy">High voltage</string>
+
+        
+    <string name="bmp1000_kjtx">Boot reminder</string>
+
+        
+    <string name="bmp1000_test_ok">Measurement success</string>
+        
+    <string name="bmp1000_xxlr">Information entry</string>
+
+        
+    <string name="bmp1000_mbb88_tips1">1. Sit for 5 minutes before the measurement, the center of the device and the heart remain at the same height; \n2. press the [switch] button on the front of the device to start the measurement; \n3. stay relaxed during the measurement, do not speak And move the body.</string>
+        
+    <string name="bmp1000_mbb88_tips2">1. bare arms, palms up, elbows straight, sleeve cuffs according to the arrow direction of the cuff logo; \n2. the main interface of the device host is placed above the brachial artery, and the distance between the cuff lower edge Elbow fossa 1-2CM.</string>
+        
+    <string name="bmp1000_yf_tips1">1. The center of the arm barrel and the heart are kept at the same height during the measurement. \n2. Confirm that the device is turned on. \n3. Please do not speak and move your body during the measurement.</string>
+
+        
+    <string name="bmp1000_op_tips1">1. connect the device, open arm, palm up, elbow straight, sleeve cuff \n2. cuff trachea points to the lower arm, the lower edge of the cuff is 2-3cm from the elbow fossa \n3. The cuff hose is placed on the pulsating point of brachial artery</string>
+
+        
+    <string name="bmp1000_op_tips2">1. Sit for 5 minutes before the measurement, keeping the center of the cuff and the heart at the same height. \n2. Press the [Switch] button to start the measurement. \n3. Please do not speak and move your body during the measurement.</string>
+
+    <string name="bmp1000_mbb_tips1">1. Sit for 5 minutes before measurement, keep the center of the cuff and the heart at the same height; \n2. Turn the power switch on the right side of the device to [ON] to turn on the power; \n3. Press the [switch] button on the front of the device to start the measurement; \n4. Keep relaxed during the measurement, do not speak and move your body.</string>
+
+    <string name="bmp1000_data_error">The measurement data is abnormal\nPlease retest</string>
+        
+    <string name="bmp1000_clz">is measuring</string>
+        
+    <string name="bmp1000_sbdk">The device has been disconnected\nPlease confirm and test again after booting</string>
+        
+    <string name="bmp1000_open_bt">Please turn on Bluetooth</string>
+        
+    <string name="bmp1000_qrsbkj">Please confirm that the device is turned on.</string>
+        
+    <string name="bmp1000_wfxsb">The device was not found.\n1. Please make sure that the Bluetooth of the device is turned on.\n2. You can try to manually turn on the Bluetooth by long pressing the "Time" button of the device.</string>
+        
+    <string name="bmp1000_wfxclsj">No new measurement data found. \nPlease try to measure again.</string>
+        
+    <string name="bmp1000_ljsb">The connection failed. \n1. Please confirm that the device Bluetooth is turned on.\n2. You can try to turn on the Bluetooth manually by long pressing the device "Time" key.</string>
+        
+    <string name="bmp1000_stop_test">stop measurement</string>
+        
+    <string name="bmp1000_wait_test_complete">Wait for measurement completion</string>
+
+    <!-- libbase -->
+    <string name="guider_band">Guider band</string>
+    <string name="guider_band_desc">Guider band, Call for a new life</string>
+
+    <string name="phone_code_send_success">Verification code sent successfully</string>
+
+    <string name="bind_phone_success">Bind Success</string>
+    <string name="libbase_phone_error">Phone number error</string>
+    <string name="libbase_verify_code_error">Verify code error</string>
+    <string name="libbase_phone_format_error">Phone number format error</string>
+    <string name="libbase_prompt">Tips</string>
+    <string name="libbase_need_location_per">location permission is required</string>
+    <string name="libbase_need_location_service">Need to access location service</string>
+
+    <!--m100-->
+    <string name="m100_glu_test">Noninvasive blood glucose test</string>
+
+    <string name="m100_family_member">Family members</string>
+    <string name="m100_op">Operation</string>
+
+    <string name="m100_health_manage">Smart health management system</string>
+    <string name="m100_choose_login_type">Please select the system login method</string>
+    <string name="m100_scan_health">Scan to focus on personal health</string>
+
+    <string name="m100_device_test">Device measurement</string>
+    <string name="m100_input_handle">Manual entry</string>
+
+    <string name="m100_data_empty">Data is empty</string>
+    <string name="m100_add_data">Completion information</string>
+    <string name="m100_code_low">code not>= 0</string>
+    <string name="m100_input_handle_ok">Manual input is successful</string>
+    <string name="m100_input_bp">Please complete blood pressure information</string>
+    <string name="m100_edit_member">Member Edit</string>
+    <string name="m100_confirm_delete">Confirm deletion</string>
+
+    <string name="m100_choose_register_type">Please select the registration method</string>
+    <string name="m100_register_phone">Mobile registration</string>
+    <string name="m100_register_wechat">WeChat registration</string>
+    <string name="m100_register_line">Line registration</string>
+
+    <string name="download_ecg_tips">Visceral sound application component download？</string>
+</resources>

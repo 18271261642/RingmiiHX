@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">guiderhealth</string>
-    <string name="repair">111</string>
-    <string name="repaired">1111</string>
-    <string name="repairing">1111</string>
-    <string name="serchdevice">111</string>
-    <string name="disconnect">111</string>
-    <string name="setvisiable">11111</string>
-</resources>

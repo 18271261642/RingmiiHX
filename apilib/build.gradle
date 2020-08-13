@@ -21,7 +21,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (rootProject.googlePlay) { // 国际版
+            if (andr.googlePlay) { // 国际版
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
 
@@ -36,7 +36,7 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (rootProject.googlePlay) { // 国际版
+            if (andr.googlePlay) { // 国际版
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
             } else { // 大陆版
@@ -53,19 +53,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-
-    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
-    api group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
-    api 'com.squareup.okhttp3:logging-interceptor:4.8.1'
-    // https://mvnrepository.com/artifact/org.glassfish/javax.annotation
-    api group: 'org.glassfish', name: 'javax.annotation', version: '10.0-b28'
-    // Logger
-    api 'com.orhanobut:logger:2.2.0'
-
-    // https://mvnrepository.com/artifact/joda-time/joda-time
-    api group: 'joda-time', name: 'joda-time', version: '2.10.6'
+    def dependencies = rootProject.ext.dependencies
+    api dependencies.appcompat
+    api dependencies.retrofit2
+    api dependencies.converter_gson
+    api dependencies.logging_interceptor
+    api dependencies.glassfish_annotation
+    api dependencies.logger
+    api dependencies.joda_time
 
 }

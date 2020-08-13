@@ -1,0 +1,111 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+def rootGradle = rootProject.ext.android
+android {
+    compileSdkVersion rootGradle.compileSdkVersion
+    dexOptions {
+        javaMaxHeapSize "8g"
+        preDexLibraries = false
+    }
+    defaultConfig {
+        minSdkVersion rootGradle.minSdkVersion
+        targetSdkVersion rootGradle.targetSdkVersion
+        applicationId "com.guider.ring"
+        versionCode rootGradle.codeVersion
+        versionName rootGradle.appVersion
+        multiDexEnabled true
+    }
+    signingConfigs {
+        // 生产签名
+        relealse {
+            storePassword "GuiderHealth.com"
+            keyAlias "guider"
+            keyPassword "GuiderHealth.com"
+            storeFile file("guider.jks")
+            v1SigningEnabled true
+
+            v2SigningEnabled true
+        }
+    }
+    buildTypes {
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            pseudoLocalesEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.relealse
+        }
+
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            pseudoLocalesEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.relealse
+//            versionNameSuffix "_debug_${getTime()}"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api project(':baseLib')
+}
+
+android.applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+        def outputFile = output.outputFile
+        if (outputFile != null
+                && (outputFile.name.endsWith('.apk') || outputFile.name.endsWith('.aab'))) {
+            def fileName = outputFile.name;
+            def tail
+            if (fileName.endsWith('.apk')) {
+                tail = ".apk"
+            } else {
+                tail = ".aab"
+            }
+
+            fileName = "GuiderRing" + tail
+
+            if (android.defaultConfig.versionName != null) {
+                fileName = fileName.replace(tail, "-${android.defaultConfig.versionName}${tail}")
+            }
+
+            if (variant.buildType.name.equals('release')) {
+                def today = new Date().format('yyyyMMddHHmm');
+                fileName = fileName.replace(tail, "-${today}${tail}")
+            }
+
+            if (rootGradle.googlePlay) {
+                fileName = fileName.replace(tail, "-GooglePlay${tail}")
+            } else {
+                fileName = fileName.replace(tail, "-CN${tail}")
+            }
+            outputFileName = fileName
+        }
+    }
+}
