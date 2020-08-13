@@ -2,6 +2,7 @@ package com.guider.baselib.base
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,11 +24,15 @@ import com.trello.rxlifecycle3.components.support.RxFragment
 abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
 
     protected var rootView: View? = null
+
+    protected var TAG = javaClass.simpleName
     /**
      * 获取布局文件
      */
     protected abstract val layoutRes: Int
     lateinit var mActivity: BaseActivity
+
+    private var isLoaded = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,14 +43,22 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
         if (rootView == null) {
             rootView = inflater.inflate(layoutRes, container, false)
         }
-        initView(rootView!!)
-        initLogic()
         return rootView
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mActivity = context as BaseActivity
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isLoaded && !isHidden) {
+            initView(rootView!!)
+            initLogic()
+            Log.d(TAG, "lazyInit:!!!!!!!")
+            isLoaded = true
+        }
     }
 
     /**
@@ -69,6 +82,7 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
         if (openEventBus()) {
             EventBusUtils.unregister(this)
         }
+        isLoaded = false
         super.onDestroyView()
     }
 
