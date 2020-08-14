@@ -55,7 +55,7 @@ allprojects {
     }
 
     ext {
-        codeVersion = 217
+        codeVersion = 218
         appVersion = "2.5.7"
         googlePlay = true
     }
