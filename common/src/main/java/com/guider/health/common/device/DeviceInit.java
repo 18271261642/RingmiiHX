@@ -1,6 +1,7 @@
 package com.guider.health.common.device;
 
 import android.util.ArrayMap;
+import android.util.Log;
 
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
@@ -25,6 +26,8 @@ import com.guider.health.common.core.MEDCHECKGlucose;
 import com.guider.health.common.core.MEDCHECKPressure;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.device.standard.Constant;
+import com.guider.health.common.utils.SharedPreferencesUtils;
+import com.guider.health.common.utils.StringUtil;
 
 import java.util.List;
 
@@ -52,11 +55,14 @@ public class DeviceInit {
     public static final String DEV_FORA_BO = "FORA BOv1.0.0"; // 福尔血氧
     public static final String DEV_FORA_ET = "FORA ETv1.0.0"; // 福尔耳温
     public static final String DEV_MEDCHECK_GLU = "MEDCHECK GLUv1.0.0"; // MEDCHECK 血糖
-    public static final String DEV_MEDCHECK_PRE = "MEDCHECK PRE1.0.0"; // MEDCHECK 血压
+    public static final String DEV_MEDCHECK_PRE = "MEDCHECK PREv1.0.0"; // MEDCHECK 血压
     // TODO 添加新的蓝牙设备
 
-    protected DeviceInit() {}
+    protected DeviceInit() {
+    }
+
     private volatile static DeviceInit instance;
+
     public static DeviceInit getInstance() {
         if (instance != null) {
             return instance;
@@ -88,7 +94,7 @@ public class DeviceInit {
         this.type = type;
     }
 
-    public String getType(){
+    public String getType() {
         return type;
     }
 
@@ -162,10 +168,11 @@ public class DeviceInit {
     }
 
     public void init(final OnHasDeviceList callback) {
-        if (Config.DEVICE_KEYS.size() > 0) {
-            callback.onHaveList();
-            return;
-        }
+        //之前的逻辑是有设备列表就不重新拉取了，现在逻辑改为每次都重新拉取
+//        if (Config.DEVICE_KEYS.size() > 0) {
+//            callback.onHaveList();
+//            return;
+//        }
         pics.put(DEV_GLU, R.mipmap.device_wcxt);
         pics.put(DEV_ECG_6, R.mipmap.device_ldxd);
         pics.put(DEV_ECG_HD, R.mipmap.device_ldxd);
@@ -175,13 +182,13 @@ public class DeviceInit {
         pics.put(DEV_BP_AVE, R.mipmap.device_ave);
         pics.put(DEV_ECG_12, R.mipmap.dao12_device_choose);
         pics.put(DEV_ECG_tzq, R.mipmap.device_tzq);
-        pics.put(DEV_BP_MBB_88  , R.mipmap.device_mbb_88);
+        pics.put(DEV_BP_MBB_88, R.mipmap.device_mbb_88);
         pics.put(DEV_BP_MBB_9804, R.mipmap.device_mbb_98);
         pics.put(DEV_FORA_GLU, R.mipmap.device_fora_glu_logo);
         pics.put(DEV_FORA_BO, R.mipmap.device_fora_glu_logo);
         pics.put(DEV_FORA_ET, R.mipmap.device_fora_glu_logo);
-        pics.put(DEV_MEDCHECK_GLU,R.mipmap.device_medcheck_glu_logo);
-        pics.put(DEV_MEDCHECK_PRE,R.mipmap.device_medcheck_pressure_logo);
+        pics.put(DEV_MEDCHECK_GLU, R.mipmap.device_medcheck_glu_logo);
+        pics.put(DEV_MEDCHECK_PRE, R.mipmap.device_medcheck_pressure_logo);
         // TODO 新设备图片
 
         fragments.put(DEV_GLU, Config.GLU_FRAGMENT);// 无创血糖测量
@@ -193,7 +200,7 @@ public class DeviceInit {
         fragments.put(DEV_BP_AVE, Config.BP_AVE_FRAGMENT);//四川云峰的VAE-2000的血压仪
         fragments.put(DEV_ECG_12, Config.DAO12_FRAGMENT);//十二导心电测量
         fragments.put(DEV_ECG_tzq, Config.ECG_ZANG_YIN);// 脏音听诊器
-        fragments.put(DEV_BP_MBB_88  , Config.BP_MBB88_FRAGMENT);//脉搏波88
+        fragments.put(DEV_BP_MBB_88, Config.BP_MBB88_FRAGMENT);//脉搏波88
         fragments.put(DEV_BP_MBB_9804, Config.BP_MBB9804_FRAGMENT);// 脉搏波9804
         fragments.put(DEV_FORA_GLU, Config.FORA_GLU_FRAGMENT);//福尔血糖
         fragments.put(DEV_FORA_BO, Config.FORA_BO_FRAGMENT);// 福尔血氧
@@ -211,7 +218,7 @@ public class DeviceInit {
         names.put(DEV_BP_AVE, MyUtils.application.getString(R.string.AVE2000v100)); // 动脉硬化测量
         names.put(DEV_ECG_12, MyUtils.application.getString(R.string.WWKECGv100)); // 十二导心电测量
         names.put(DEV_ECG_tzq, MyUtils.application.getString(R.string.device_tzqv100)); // 远程脏音测量
-        names.put(DEV_BP_MBB_88  , MyUtils.application.getString(R.string.RBP1810130249v100)); // 脉搏波88
+        names.put(DEV_BP_MBB_88, MyUtils.application.getString(R.string.RBP1810130249v100)); // 脉搏波88
         names.put(DEV_BP_MBB_9804, MyUtils.application.getString(R.string.BP06D21905750026v100)); // 脉搏波9804
         names.put(DEV_FORA_GLU, MyUtils.application.getString(R.string.FORAGD40bv100));//福尔血糖
         names.put(DEV_FORA_BO, MyUtils.application.getString(R.string.FORABO));// 福尔血氧
@@ -226,9 +233,14 @@ public class DeviceInit {
         Config.DEVICE_KEYS.add(DEV_FORA_GLU);
         Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血糖
         Config.DEVICE_KEYS.add(DEV_MEDCHECK_PRE);//MEDCHECK 血压
-
-        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
-                new ApiCallBack<List<Devices>>(){
+        String macAddress = (String) SharedPreferencesUtils.readObject(
+                ApiUtil.getContext(), "mylanmac");
+        if (StringUtil.isEmpty(macAddress)) {
+            macAddress = MyUtils.getMacAddress();
+        }
+        Log.e("MineMac",macAddress);
+        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(macAddress).enqueue(
+                new ApiCallBack<List<Devices>>() {
                     @Override
                     public void onApiResponse(Call<List<Devices>> call, Response<List<Devices>> response) {
                         super.onApiResponse(call, response);
@@ -255,6 +267,7 @@ public class DeviceInit {
 
     public interface OnHasDeviceList {
         void needLoad();
+
         void onHaveList();
     }
 }

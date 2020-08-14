@@ -374,16 +374,21 @@ public class B31RecordFragment extends LazyFragment
         connBleHelpService.setConnBleMsgDataListener(this);
         mLocalTool = new LocalizeTool(getmContext());
         //目标步数
-        goalStep = (int) SharedPreferencesUtils.getParam(getmContext(), "b30Goal", 0);
-        String saveDate = (String) SharedPreferencesUtils.getParam(getmContext(), "saveDate", "");
+        goalStep = (int) SharedPreferencesUtils.getParam(getmContext(),
+                "b30Goal", 0);
+        String saveDate = (String) SharedPreferencesUtils.getParam(getmContext(),
+                "saveDate", "");
         if (WatchUtils.isEmpty(saveDate)) {
-            SharedPreferencesUtils.setParam(getmContext(), "saveDate", System.currentTimeMillis() / 1000 + "");
+            SharedPreferencesUtils.setParam(getmContext(),
+                    "saveDate", System.currentTimeMillis() / 1000 + "");
         }
 
         //保存的时间
-        String tmpSaveTime = (String) SharedPreferencesUtils.getParam(getmContext(), "save_curr_time", "");
+        String tmpSaveTime = (String) SharedPreferencesUtils.getParam(getmContext(),
+                "save_curr_time", "");
         if (WatchUtils.isEmpty(tmpSaveTime))
-            SharedPreferencesUtils.setParam(getmContext(), "save_curr_time", System.currentTimeMillis() / 1000 + "");
+            SharedPreferencesUtils.setParam(getmContext(),
+                    "save_curr_time", System.currentTimeMillis() / 1000 + "");
 
         //setGuiderBemo();
     }
@@ -393,13 +398,15 @@ public class B31RecordFragment extends LazyFragment
         if (MyCommandManager.DEVICENAME != null && MyCommandManager.ADDRESS != null && getActivity() != null) {
             if (!WatchUtils.isEmpty(MyCommandManager.ADDRESS)) {
                 try {
-                    boolean bleServices = isServiceWork(getActivity(), "hat.bemo.BlueTooth.blegatt.baseService.BLEScanService");
+                    boolean bleServices = isServiceWork(getActivity(),
+                            "hat.bemo.BlueTooth.blegatt.baseService.BLEScanService");
                     if (!bleServices) {
                         if (serviceConnection != null) {
                             // getActivity().bindService(new Intent(getActivity(), BLEScanService.class), serviceConnection, Service.BIND_AUTO_CREATE);
                         }
                     }
-                    boolean myServices = isServiceWork(getActivity(), "hat.bemo.MyService");
+                    boolean myServices = isServiceWork(getActivity(),
+                            "hat.bemo.MyService");
                     if (!myServices) {
                         if (serviceConnection != null) {
                             // getActivity().bindService(new Intent(getActivity(), MyService.class), serviceConnection, Service.BIND_AUTO_CREATE);
@@ -1122,30 +1129,27 @@ public class B31RecordFragment extends LazyFragment
         }
         tmpHRVlist.clear();
         try {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {//bleMac = ? and
+            Thread thread = new Thread(() -> {//bleMac = ? and
 
-                    String where = "bleMac = ? and dateStr = ?";
-                    List<B31HRVBean> reList = LitePal.where(where, mac, day).find(B31HRVBean.class);
-                    if (reList == null || reList.isEmpty()) {
-                        Message message = handler.obtainMessage();
-                        message.what = 1113;
-                        message.obj = tmpHRVlist;
-                        handler.sendMessage(message);
-                        return;
-                    }
-                    for (B31HRVBean hrvBean : reList) {
-//                        Log.e(TAG,"----------hrvBean="+hrvBean.toString());
-                        tmpHRVlist.add(gson.fromJson(hrvBean.getHrvDataStr(), HRVOriginData.class));
-                    }
-
+                String where = "bleMac = ? and dateStr = ?";
+                List<B31HRVBean> reList = LitePal.where(where, mac, day).find(B31HRVBean.class);
+                if (reList == null || reList.isEmpty()) {
                     Message message = handler.obtainMessage();
                     message.what = 1113;
                     message.obj = tmpHRVlist;
                     handler.sendMessage(message);
-
+                    return;
                 }
+                for (B31HRVBean hrvBean : reList) {
+//                        Log.e(TAG,"----------hrvBean="+hrvBean.toString());
+                    tmpHRVlist.add(gson.fromJson(hrvBean.getHrvDataStr(), HRVOriginData.class));
+                }
+
+                Message message = handler.obtainMessage();
+                message.what = 1113;
+                message.obj = tmpHRVlist;
+                handler.sendMessage(message);
+
             });
             thread.start();
 
@@ -1262,7 +1266,8 @@ public class B31RecordFragment extends LazyFragment
         if (sleepData != null) {
             iSNllSleep = false;
             if (b30StartEndTimeTv != null)
-                b30StartEndTimeTv.setText(sleepData.getSleepDown().getColck() + "-" + sleepData.getSleepUp().getColck());
+                b30StartEndTimeTv.setText(sleepData.getSleepDown().getColck() +
+                        "-" + sleepData.getSleepUp().getColck());
             String sleepLin = sleepData.getSleepLine();
 //            Log.e(TAG, "-----睡眠的长度=" + sleepLin + "---=length=" + sleepLin.length());
             if (!WatchUtils.isEmpty(sleepLin) || sleepLin.length() > 2) {

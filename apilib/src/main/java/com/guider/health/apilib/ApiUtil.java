@@ -174,6 +174,10 @@ public class ApiUtil {
         return createApi(ApiConsts.API_RING, clz, false, false);
     }
 
+    public static Context getContext(){
+        return context;
+    }
+
     /**
      * 上传文件
      *
