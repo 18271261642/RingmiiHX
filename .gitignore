@@ -59,3 +59,4 @@ fastlane/readme.md
 .idea/
 release/
 /tmpmob/ShareSDK/assets/ShareSDK.xml
+/.idea/
