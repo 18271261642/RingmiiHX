@@ -3,7 +3,7 @@
     <string name="kaishiceliang">开始测量</string>
 
     <string name="next">下一步</string>
-
+    <string name="custom_next">下一步</string>
     <string name="end_measurement">结束测量</string>
     <string name="remeasure">重新测量</string>
     <string name="print_report">打印报告</string>

@@ -90,7 +90,7 @@ public class ForaETReminderFragment extends BaseFragment implements BleVIewInter
 
         // title显式
         ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.fora_et_reminder_title));
-
+        ((TextView) view.findViewById(R.id.tv_test_type)).setText(R.string.ear_temp);
         // 是否能跳过
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_FORA_GLU));

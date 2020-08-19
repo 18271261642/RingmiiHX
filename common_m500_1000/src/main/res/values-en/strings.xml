@@ -3,7 +3,7 @@
     <string name="kaishiceliang">Start measuring</string>
 
     <string name="next">Next</string>
-
+    <string name="custom_next">Next</string>
     <string name="end_measurement">End measurement</string>
     <string name="remeasure">Remeasure</string>
     <string name="print_report">Print report</string>

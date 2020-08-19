@@ -162,7 +162,7 @@ public class DeviceInit {
         ForaGlucose.getForaGluInstance().setTag(false);
         ForaBO.getForaBOInstance().setTag(false);
         ForaET.getForaETInstance().setTag(false);
-        MEDCHECKGlucose.getInstance().setTag(false);//MEDCHECK血糖初始化
+        MEDCHECKGlucose.getMEDCHECKGluInstance().setTag(false);//MEDCHECK血糖初始化
         MEDCHECKPressure.getMEDCHECKPressureInstance().setTag(false);//MEDCHECK血糖初始化
         // TODO 新设备标志
     }

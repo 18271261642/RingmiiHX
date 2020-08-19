@@ -22,6 +22,7 @@ import com.guider.health.common.core.Config;
 import com.guider.health.common.core.MEDCHECKPressure;
 import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.utils.SkipClick;
+import com.guider.health.common.utils.ToastUtil;
 import com.guider.health.common.views.dialog.DialogProgressCountdown;
 import com.guider.health.medcheckglu.MedCheckFragment;
 import java.text.SimpleDateFormat;
@@ -70,6 +71,7 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
                     public void run() {
                         Log.e("medcheckpre", "60s连接失败");
                         MedCheck.getInstance().stopScan(_mActivity);
+                        ToastUtil.showShort(_mActivity,"连接失败");
                         nextButton.setEnabled(true);
                     }
                 });
@@ -199,7 +201,6 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
         ((TextView) view.findViewById(R.id.tv_test_type)).setText(R.string.blood_pressure);
         TextView tv_test_reminder = view.findViewById(R.id.tv_test_reminder);
         tv_test_reminder.setText(R.string.medcheck_pre_tips);
-
         // 是否能跳过
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this,

@@ -15,7 +15,6 @@
 
         <LinearLayout
             style="@style/myBodyLayout"
-            android:background="@drawable/normal_back_body"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -28,15 +27,16 @@
                     android:id="@+id/recycler_view"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:layout_marginRight="@dimen/dp_20" />
+                    android:layout_marginLeft="@dimen/dp_70"
+                    android:layout_marginRight="@dimen/dp_70" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/next"
                 android:layout_width="@dimen/dp_394"
                 android:layout_height="@dimen/dp_44"
-                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_10"
                 android:background="@drawable/button_cancel"
                 android:stateListAnimator="@null"
                 android:text="@string/kaishiceliang"

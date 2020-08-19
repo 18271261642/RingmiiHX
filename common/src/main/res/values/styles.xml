@@ -36,7 +36,6 @@
         <item name="android:paddingTop">@dimen/dp_10</item>
         <item name="android:paddingBottom">@dimen/dp_10</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">@drawable/normal_back_body</item>
     </style>
 
     <style name="time_dialog" parent="android:style/Theme.Dialog">

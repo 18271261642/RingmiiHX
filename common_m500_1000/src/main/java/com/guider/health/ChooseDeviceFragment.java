@@ -143,7 +143,8 @@ public class ChooseDeviceFragment extends BaseFragment {
 
         view.findViewById(R.id.middle_line).setVisibility(View.GONE);
         view.findViewById(R.id.home).setVisibility(View.GONE);
-        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.choose_device));
+        ((TextView) view.findViewById(R.id.title)).setText(
+                getResources().getString(R.string.choose_device));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -21,6 +21,10 @@ import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.device.MeasureDeviceManager;
 import com.guider.health.common.net.NetStateController;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -123,7 +127,14 @@ public class ShowAllDevicesMessureResult extends BaseFragment {
 
 
         resultListView = view.findViewById(R.id.result_list);
-        resultListView.setDeviceList(new MeasureDeviceManager().getMeasureDevices());
+        List<String> measureDevices = new MeasureDeviceManager().getMeasureDevices();
+        List<String> listTemp = new ArrayList<String>();
+        for (int i = 0; i < measureDevices.size(); i++) {
+            if (!listTemp.contains(measureDevices.get(i))) {
+                listTemp.add(measureDevices.get(i));
+            }
+        }
+        resultListView.setDeviceList(listTemp);
         if (resultListView.getChildCount() <= 0) {
             try {
                 popTo(Class.forName(Config.HOME_DEVICE), false);

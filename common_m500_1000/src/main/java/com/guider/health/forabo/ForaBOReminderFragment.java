@@ -89,7 +89,7 @@ public class ForaBOReminderFragment extends BaseFragment implements BleVIewInter
 
         // title显式
         ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.fora_bo_reminder_title));
-
+        ((TextView) view.findViewById(R.id.tv_test_type)).setText(R.string.blood_oxygen);
         // 是否能跳过
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_FORA_GLU));
@@ -140,7 +140,8 @@ public class ForaBOReminderFragment extends BaseFragment implements BleVIewInter
 
     private void startMeasure() {
         ForaBOServiceManager.getInstance().startMeasure();
-        mDialogProgressCountdown.showDialog(1000 * 30, 1000, new Runnable() {
+        mDialogProgressCountdown.showDialog(1000 * 30, 1000,
+                new Runnable() {
             @Override
             public void run() {
                 changeUi2Fail();

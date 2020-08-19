@@ -25,6 +25,7 @@ import com.guider.health.common.core.Glucose;
 import com.guider.health.common.core.MEDCHECKGlucose;
 import com.guider.health.common.device.DeviceInit;
 import com.guider.health.common.utils.SkipClick;
+import com.guider.health.common.utils.ToastUtil;
 import com.guider.health.common.views.dialog.DialogProgressCountdown;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -85,6 +86,7 @@ public class MEDCHECKGluReminderFragment extends MedCheckFragment {
                                 Log.e("medcheckglu", "60s连接失败");
                                 MedCheck.getInstance().stopScan(_mActivity);
                                 nextButton.setEnabled(true);
+                                ToastUtil.showShort(_mActivity,"连接失败");
                             }
                         });
                 checkAllConditions();
