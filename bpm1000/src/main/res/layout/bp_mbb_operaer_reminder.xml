@@ -7,148 +7,155 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/device_head"/>
+    <include layout="@layout/device_head" />
 
-
-    <LinearLayout
-        style="@style/myBodyLayout"
-        android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
-            android:orientation="horizontal">
+            android:layout_marginStart="@dimen/dp_80"
+            android:layout_marginEnd="@dimen/dp_80"
+            android:layout_marginTop="@dimen/dp_15"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_13"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/logon_guider" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="血压"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_15" />
+                android:layout_marginStart="@dimen/dp_20"
+                android:orientation="horizontal">
 
-            <TextView
+                <ImageView
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_13"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/logon_guider" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="血压"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="测量操作"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="操作提醒"
+                    android:textColor="#F18937"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="设备测量"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="测量结果"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_20">
 
+                <TextView
+                    android:id="@+id/off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:lineSpacingExtra="@dimen/dp_20"
+                    android:text="1. 测量前静坐5分钟，袖带中心与心脏保持同一高度；\n2. 将设备右侧边部的电源开关拨动至【ON】接通电源；\n3. 按下设备正面的【开关】按钮开始测量；\n4. 测量过程中保持放松，不要说话和移动身体。"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_18" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量操作"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_15" />
+                <ImageView
+                    android:id="@+id/pic"
+                    android:layout_width="@dimen/dp_284"
+                    android:layout_height="@dimen/dp_179"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@mipmap/bp_mbb98" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
+                <Button
+                    android:id="@+id/bp_button_n"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_44"
+                    android:layout_below="@id/pic"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dp_27"
+                    android:layout_marginEnd="@dimen/dp_50"
+                    android:background="@drawable/button_cancel"
+                    android:paddingLeft="@dimen/dp_30"
+                    android:paddingRight="@dimen/dp_30"
+                    android:stateListAnimator="@null"
+                    android:text="@string/querenkaiji"
+                    android:textColor="#FAFCFF"
+                    android:textSize="@dimen/sp_19" />
 
+            </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="操作提醒"
-                android:textColor="#F18937"
-                android:textSize="@dimen/sp_16" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="设备测量"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="测量结果"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
         </LinearLayout>
+    </ScrollView>
 
-
-        <RelativeLayout
-            android:layout_marginLeft="@dimen/dp_47"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_61">
-
-            <TextView
-                android:id="@+id/off"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_7"
-                android:lineSpacingExtra="@dimen/dp_20"
-                android:text="1. 测量前静坐5分钟，袖带中心与心脏保持同一高度；\n2. 将设备右侧边部的电源开关拨动至【ON】接通电源；\n3. 按下设备正面的【开关】按钮开始测量；\n4. 测量过程中保持放松，不要说话和移动身体。"
-                android:textColor="#171717"
-                android:textSize="@dimen/sp_18" />
-
-            <ImageView
-
-                android:id="@+id/pic"
-                android:layout_marginRight="@dimen/dp_30"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/bp_mbb98"
-                android:layout_width="@dimen/dp_284"
-                android:layout_height="@dimen/dp_179" />
-
-            <Button
-                android:id="@+id/bp_button_n"
-                android:layout_below="@id/pic"
-                android:layout_alignParentRight="true"
-                android:text="确认已开机 下一步"
-                android:textSize="@dimen/dp_19"
-                android:textColor="#FAFCFF"
-                android:stateListAnimator="@null"
-                android:layout_marginRight="@dimen/dp_103"
-                android:layout_marginTop="@dimen/dp_27"
-                android:paddingLeft="@dimen/dp_30"
-                android:paddingRight="@dimen/dp_30"
-                android:background="@drawable/button_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_44" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
 
 </LinearLayout>
 

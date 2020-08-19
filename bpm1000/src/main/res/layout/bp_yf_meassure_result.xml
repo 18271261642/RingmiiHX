@@ -9,534 +9,544 @@
 
     <include layout="@layout/device_head" />
 
-
-    <LinearLayout
-        style="@style/myBodyLayout"
-        android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_13"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/logon_guider" />
-
-            <com.guider.health.bp.view.TipTitleView
-                android:id="@+id/tips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/dp_80"
-            android:layout_marginTop="@dimen/dp_28"
-            android:layout_marginRight="@dimen/dp_80"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_80"
+            android:layout_marginEnd="@dimen/dp_80"
+            android:layout_marginTop="@dimen/dp_15"
+            android:orientation="vertical">
+
 
             <LinearLayout
-                android:id="@+id/ll_dongmaiyinghua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_13"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/logon_guider" />
+
+                <com.guider.health.bp.view.TipTitleView
+                    android:id="@+id/tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp_80"
+                android:layout_marginTop="@dimen/dp_28"
+                android:layout_marginRight="@dimen/dp_80"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/ll_dongmaiyinghua"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:gravity="center_vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="动脉硬化指数："
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_16" />
+
+                    <TextView
+                        android:id="@+id/tv_dongmaiyinghua"
+                        android:layout_width="@dimen/dp_133"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_marginLeft="@dimen/dp_46"
+                        android:background="@drawable/text_box"
+                        android:gravity="center"
+                        android:text="正常"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/level_dongmaiyinghua"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="@+id/ll_dongmaiyinghua"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_dongmaiyinghua">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_59"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_59"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_59"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_59"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_59"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_shousuoya"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_13"
+                    app:layout_constraintLeft_toLeftOf="@id/ll_dongmaiyinghua"
+                    app:layout_constraintTop_toBottomOf="@+id/level_dongmaiyinghua">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sbp"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_16" />
+
+                    <TextView
+                        android:id="@+id/tv_shousuoya"
+                        android:layout_width="@dimen/dp_133"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_marginLeft="@dimen/dp_40"
+                        android:background="@drawable/text_box"
+                        android:gravity="center"
+                        android:text="正常"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_shuzhangya"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_13"
+                    app:layout_constraintLeft_toLeftOf="@id/ll_dongmaiyinghua"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_shousuoya">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dbp"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_16" />
+
+                    <TextView
+                        android:id="@+id/tv_shuzhangya"
+                        android:layout_width="@dimen/dp_133"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_marginLeft="@dimen/dp_40"
+                        android:background="@drawable/text_box"
+                        android:gravity="center"
+                        android:text="正常"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/level_xueya"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="@+id/ll_dongmaiyinghua"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_shuzhangya">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_BMI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_65"
+                    android:layout_marginTop="@dimen/dp_13"
+                    app:layout_constraintLeft_toRightOf="@+id/ll_dongmaiyinghua"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BMI ："
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_16" />
+
+                    <TextView
+                        android:id="@+id/tv_bmi"
+                        android:layout_width="@dimen/dp_133"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_marginLeft="@dimen/dp_110"
+                        android:background="@drawable/text_box"
+                        android:gravity="center"
+                        android:text="正常"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/level_bmi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="@+id/ll_BMI"
+                    app:layout_constraintTop_toTopOf="@+id/level_dongmaiyinghua">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_maibo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_65"
+                    app:layout_constraintLeft_toRightOf="@+id/ll_dongmaiyinghua"
+                    app:layout_constraintTop_toTopOf="@id/ll_shuzhangya">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/heart"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_16" />
+
+                    <TextView
+                        android:id="@+id/tv_maibo"
+                        android:layout_width="@dimen/dp_133"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_marginLeft="@dimen/dp_74"
+                        android:background="@drawable/text_box"
+                        android:gravity="center"
+                        android:text="正常"
+                        android:textColor="#171717"
+                        android:textSize="@dimen/sp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/level_maibo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="@+id/ll_maibo"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_maibo">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_11"
+                            android:layout_height="@dimen/dp_10"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:background="@mipmap/heart"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="@dimen/dp_98"
+                            android:layout_height="@dimen/dp_25"
+                            android:background="#7ABC5B"
+                            android:gravity="center"
+                            android:text="正常"
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/bp_result_next"
+                android:layout_width="@dimen/dp_394"
+                android:layout_height="@dimen/dp_44"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_13"
-                android:gravity="center_vertical"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginBottom="@dimen/dp_15"
+                android:background="@drawable/button_cancel"
+                android:text="@string/next"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/sp_19"
+                android:visibility="visible" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="动脉硬化指数："
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_16" />
+        </LinearLayout>
+    </ScrollView>
 
-                <TextView
-                    android:id="@+id/tv_dongmaiyinghua"
-                    android:layout_width="@dimen/dp_133"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginLeft="@dimen/dp_46"
-                    android:background="@drawable/text_box"
-                    android:gravity="center"
-                    android:text="正常"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/level_dongmaiyinghua"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@+id/ll_dongmaiyinghua"
-                app:layout_constraintTop_toBottomOf="@+id/ll_dongmaiyinghua">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_59"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_59"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_59"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_59"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_59"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_shousuoya"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_13"
-                app:layout_constraintLeft_toLeftOf="@id/ll_dongmaiyinghua"
-                app:layout_constraintTop_toBottomOf="@+id/level_dongmaiyinghua">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sbp"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/tv_shousuoya"
-                    android:layout_width="@dimen/dp_133"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:background="@drawable/text_box"
-                    android:gravity="center"
-                    android:text="正常"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_shuzhangya"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_13"
-                app:layout_constraintLeft_toLeftOf="@id/ll_dongmaiyinghua"
-                app:layout_constraintTop_toBottomOf="@+id/ll_shousuoya">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dbp"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/tv_shuzhangya"
-                    android:layout_width="@dimen/dp_133"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:background="@drawable/text_box"
-                    android:gravity="center"
-                    android:text="正常"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/level_xueya"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@+id/ll_dongmaiyinghua"
-                app:layout_constraintTop_toBottomOf="@+id/ll_shuzhangya">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_BMI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_13"
-                android:layout_marginLeft="@dimen/dp_65"
-                app:layout_constraintLeft_toRightOf="@+id/ll_dongmaiyinghua"
-                app:layout_constraintTop_toTopOf="parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BMI ："
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/tv_bmi"
-                    android:layout_width="@dimen/dp_133"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginLeft="@dimen/dp_110"
-                    android:background="@drawable/text_box"
-                    android:gravity="center"
-                    android:text="正常"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/level_bmi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@+id/ll_BMI"
-                app:layout_constraintTop_toTopOf="@+id/level_dongmaiyinghua">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_maibo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_65"
-                app:layout_constraintLeft_toRightOf="@+id/ll_dongmaiyinghua"
-                app:layout_constraintTop_toTopOf="@id/ll_shuzhangya">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/heart"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_16" />
-
-                <TextView
-                    android:id="@+id/tv_maibo"
-                    android:layout_width="@dimen/dp_133"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginLeft="@dimen/dp_74"
-                    android:background="@drawable/text_box"
-                    android:gravity="center"
-                    android:text="正常"
-                    android:textColor="#171717"
-                    android:textSize="@dimen/sp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/level_maibo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal"
-                app:layout_constraintLeft_toLeftOf="@+id/ll_maibo"
-                app:layout_constraintTop_toBottomOf="@+id/ll_maibo">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_11"
-                        android:layout_height="@dimen/dp_10"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:background="@mipmap/heart"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="@dimen/dp_98"
-                        android:layout_height="@dimen/dp_25"
-                        android:background="#7ABC5B"
-                        android:gravity="center"
-                        android:text="正常"
-                        android:textColor="#FFFFFF"
-                        android:textSize="@dimen/sp_12" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Button
-            android:id="@+id/bp_result_next"
-            android:layout_width="@dimen/dp_394"
-            android:layout_height="@dimen/dp_44"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_13"
-            android:layout_marginBottom="@dimen/dp_15"
-            android:background="@drawable/button_cancel"
-            android:text="下一步"
-            android:textColor="#ffffff"
-            android:textSize="@dimen/dp_19"
-            android:visibility="visible" />
-
-    </LinearLayout>
 
 </LinearLayout>
 

@@ -3,7 +3,9 @@ package com.gaider.proton.view;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +29,8 @@ import com.proton.view.EcgRealTimeView;
 public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureView {
 
     private EcgRealTimeView ecgView;
-    private View tipView , llStart , vWarning , llMeasure;
-    private TextView tvHeart , tvPower , tvSignal , tvTimeStr;
+    private View tipView, llStart, vWarning, llMeasure;
+    private TextView tvHeart, tvPower, tvSignal, tvTimeStr;
     private TextView tip;
     private Button btn;
     private View view;
@@ -50,7 +52,7 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
         super.onActivityCreated(savedInstanceState);
         setHomeEvent(view.findViewById(R.id.home), Config.HOME_DEVICE);
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_ECG_HD));
+        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this, DeviceInit.DEV_ECG_HD));
         ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.operation_guide));
         TipTitleView tips = view.findViewById(R.id.tip_title);
         tips.setTips(getResources().getString(R.string.ecg_measurement),
@@ -62,6 +64,7 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
             @Override
             public void onClick(View v) {
                 mPresenter.finish();
+                pop();
             }
         });
 
@@ -90,7 +93,7 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
         }, 2500);
     }
 
-    private Button showTipView(String msg , String btnStr) {
+    private Button showTipView(String msg, String btnStr) {
         if (llStart.getVisibility() == View.VISIBLE) {
             llStart.setVisibility(View.GONE);
         }
@@ -115,13 +118,13 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
     @Override
     public void onStartSearch() {
         if (llStart.getVisibility() != View.VISIBLE) {
-            showTipView(getResources().getString(R.string.searching) , null);
+            showTipView(getResources().getString(R.string.searching), null);
         }
     }
 
     @Override
     public void notFindDevice() {
-        showTipView(getResources().getString(R.string.no_devices_found) , getResources().getString(R.string.search_again)).setOnClickListener(new View.OnClickListener() {
+        showTipView(getResources().getString(R.string.no_devices_found), getResources().getString(R.string.search_again)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.start();
@@ -131,7 +134,7 @@ public class ProtonEcgMeasure extends ECGFragment implements Protocol.IMeasureVi
 
     @Override
     public void onConnectFail() {
-        showTipView(getResources().getString(R.string.connection_failed) , getResources().getString(R.string.reconnect)).setOnClickListener(new View.OnClickListener() {
+        showTipView(getResources().getString(R.string.connection_failed), getResources().getString(R.string.reconnect)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.start();

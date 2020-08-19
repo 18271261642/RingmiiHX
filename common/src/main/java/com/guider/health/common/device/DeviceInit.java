@@ -7,6 +7,7 @@ import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.apilib.model.Devices;
+import com.guider.health.common.BuildConfig;
 import com.guider.health.common.R;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.ForaBO;
@@ -227,18 +228,24 @@ public class DeviceInit {
         names.put(DEV_MEDCHECK_PRE, MyUtils.application.getString(R.string.MEDCHECKPRE));//MEDCHECK血压
         // TODO 新设备名字
 
-        Config.DEVICE_KEYS.add(DEV_GLU);
-        Config.DEVICE_KEYS.add(DEV_ECG_6);
-        Config.DEVICE_KEYS.add(DEV_BP);
-        Config.DEVICE_KEYS.add(DEV_FORA_GLU);
-        Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血糖
-        Config.DEVICE_KEYS.add(DEV_MEDCHECK_PRE);//MEDCHECK 血压
+        if (BuildConfig.DEBUG) {
+            Config.DEVICE_KEYS.clear();
+            Config.DEVICE_KEYS.add(DEV_ECG_12);//MEDCHECK 血压
+            if (callback != null) {
+                callback.onHaveList();
+            }
+        } else {
+            getDeviceList(callback);
+        }
+    }
+
+    private void getDeviceList(OnHasDeviceList callback) {
         String macAddress = (String) SharedPreferencesUtils.readObject(
                 ApiUtil.getContext(), "mylanmac");
         if (StringUtil.isEmpty(macAddress)) {
             macAddress = MyUtils.getMacAddress();
         }
-        Log.e("MineMac",macAddress);
+        Log.e("MineMac", macAddress);
         ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(macAddress).enqueue(
                 new ApiCallBack<List<Devices>>() {
                     @Override

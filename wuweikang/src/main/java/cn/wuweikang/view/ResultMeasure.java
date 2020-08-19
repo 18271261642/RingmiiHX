@@ -1,7 +1,10 @@
 package cn.wuweikang.view;
 
+import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +25,7 @@ import cn.wuweikang.WuweikangData;
  * Created by haix on 2019/7/29.
  */
 
-public class ResultMeasure extends Dao12Interface{
+public class ResultMeasure extends Dao12Interface {
 
     @Nullable
     @Override
@@ -38,22 +41,24 @@ public class ResultMeasure extends Dao12Interface{
         WuweikangData.getInstance().disconnect();
         //下一步
         view.findViewById(R.id.connect_next).setOnClickListener(new FinishClick(this));
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.findViewById(R.id.reminderScrollview).setNestedScrollingEnabled(true);
+        }
         setHeart(HearRate12.getInstance().getHeartRate());
         setResult(HearRate12.getInstance().getAnalysisList());
         setOther(HearRate12.getInstance().getAnalysisResults());
 
-        MeasureDataUploader.getInstance(_mActivity).uploadEcd12(HearRate12.getInstance().getDeviceAddress() , HearRate12.getInstance());
+        MeasureDataUploader.getInstance(_mActivity).uploadEcd12(HearRate12.getInstance().getDeviceAddress(), HearRate12.getInstance());
     }
 
 
-    public void setHeart(String heart){
+    public void setHeart(String heart) {
         if (!TextUtils.isEmpty(heart)) {
             ((TextView) view.findViewById(R.id.result)).setText(heart);
         }
     }
 
-    public void setResult(Set<String> list){
+    public void setResult(Set<String> list) {
         if (list == null || list.size() <= 0) {
             return;
         }
@@ -71,8 +76,7 @@ public class ResultMeasure extends Dao12Interface{
     }
 
 
-
-    public void setOther(String ohter){
+    public void setOther(String ohter) {
         if (!TextUtils.isEmpty(ohter)) {
             ((TextView) view.findViewById(R.id.text2)).setText("* " + ohter + " *");
         }

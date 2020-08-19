@@ -8,160 +8,171 @@
 
     <include layout="@layout/device_head" />
 
-
-    <LinearLayout
-        style="@style/myBodyLayout"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_13"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/logon_guider" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="@string/xueya"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_15" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="@string/celiangcaozuo"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_15" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="@string/caozuotixing"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="@string/shebeiceliang"
-                android:textColor="#F18937"
-                android:textSize="@dimen/sp_16" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text=">"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:text="@string/celiangjieguo"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_14" />
-        </LinearLayout>
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_80"
+            android:layout_marginEnd="@dimen/dp_80"
+            android:layout_marginTop="@dimen/dp_15"
+            android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_marginStart="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_13"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/logon_guider" />
 
                 <TextView
-                    android:id="@+id/bp_reminder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/celiangzhong"
-                    android:textColor="#7D7D7D"
-                    android:textSize="@dimen/sp_28" />
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/xueya"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
 
 
-                <Button
-                    android:id="@+id/bp_cancel"
-                    android:layout_width="@dimen/dp_229"
-                    android:layout_height="@dimen/dp_44"
-                    android:layout_marginTop="@dimen/dp_30"
-                    android:background="@drawable/button_cancel"
-                    android:text="@string/quxiao"
-                    android:textColor="#ffffff"
-                    android:textSize="@dimen/dp_19"
-                    android:visibility="gone" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/celiangcaozuo"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_15" />
 
-                <Button
-                    android:id="@+id/bp_re"
-                    android:layout_width="@dimen/dp_229"
-                    android:layout_height="@dimen/dp_44"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/caozuotixing"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/shebeiceliang"
+                    android:textColor="#F18937"
+                    android:textSize="@dimen/sp_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text=">"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="@string/celiangjieguo"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_20"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/bp_reminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/celiangzhong"
+                        android:textColor="#7D7D7D"
+                        android:textSize="@dimen/sp_28" />
+
+
+                    <Button
+                        android:id="@+id/bp_cancel"
+                        android:layout_width="@dimen/dp_229"
+                        android:layout_height="@dimen/dp_44"
+                        android:layout_marginTop="@dimen/dp_30"
+                        android:background="@drawable/button_cancel"
+                        android:text="@string/quxiao"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/dp_19"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/bp_re"
+                        android:layout_width="@dimen/dp_229"
+                        android:layout_height="@dimen/dp_44"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:background="@drawable/button_cancel"
+                        android:text="@string/lianjieshibai_chongxin"
+                        android:textColor="#ffffff"
+                        android:textSize="@dimen/dp_19"
+                        android:visibility="invisible" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/operat_reminders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:background="@drawable/button_cancel"
-                    android:text="@string/lianjieshibai_chongxin"
-                    android:textColor="#ffffff"
-                    android:textSize="@dimen/dp_19"
-                    android:visibility="invisible" />
-
+                    android:text="@string/xueyashuoming"
+                    android:textColor="#ACACAC"
+                    android:textSize="@dimen/sp_15" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/operat_reminders"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                android:text="@string/xueyashuoming"
-                android:textColor="#ACACAC"
-                android:textSize="@dimen/sp_15" />
-
         </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
 
 </LinearLayout>

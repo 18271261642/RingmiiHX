@@ -8,7 +8,7 @@
     <string name="day">日</string>
     <string name="hour">時</string>
     <string name="minute">分</string>
-
+    <string name="custom_next">下壹步</string>
     <string name="excise_finish">已完成今日所有鍛煉</string>
 
     <string name="sbp" translatable="false">收縮壓(mmHg) :</string>

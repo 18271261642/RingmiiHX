@@ -10,6 +10,7 @@ import com.gaider.proton.PermissionUtils;
 import com.gaider.proton.Protocol;
 import com.guider.health.common.core.MyUtils;
 import com.guider.health.common.core.UserManager;
+import com.guider.health.common.utils.StringUtil;
 import com.orhanobut.logger.Logger;
 import com.proton.ecgcard.algorithm.bean.AlgorithmResult;
 import com.proton.ecgcard.algorithm.bean.RealECGData;
@@ -234,14 +235,16 @@ public class MeasurePresnter implements Protocol.IMeasurePresenter {
 
     @Override
     public void restart() {
-        manager.disConnect(currentDeviceMac);
+        if (!StringUtil.isEmpty(currentDeviceMac))
+            manager.disConnect(currentDeviceMac);
         start();
     }
 
     @Override
     public void finish() {
         view = new NullView();
-        manager.disConnect(currentDeviceMac);
+        if (!StringUtil.isEmpty(currentDeviceMac))
+            manager.disConnect(currentDeviceMac);
     }
 
 

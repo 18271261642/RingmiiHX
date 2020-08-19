@@ -68,7 +68,7 @@
     <string name="wwk_tips1">Please make sure that the electrode slide arm is pulled out. \n\nPlease make sure that the upper indicator light is always on.</string>
         
     <string name="wwk_next">Confirm that it is turned on Next step</string>
-
+    <string name="custom_next">Next</string>
         
     <string name="wwk_not_found_device">Meter not found</string>
         

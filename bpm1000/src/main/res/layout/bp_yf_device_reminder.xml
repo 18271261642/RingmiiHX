@@ -7,79 +7,86 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/device_head"/>
+    <include layout="@layout/device_head" />
 
-
-    <LinearLayout
-        style="@style/myBodyLayout"
-        android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_49"
-            android:layout_marginTop="@dimen/dp_23"
-            android:orientation="horizontal">
+            android:layout_marginStart="@dimen/dp_80"
+            android:layout_marginEnd="@dimen/dp_80"
+            android:layout_marginTop="@dimen/dp_15"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_13"
-                android:layout_gravity="center_vertical"
-                android:background="@mipmap/logon_guider" />
 
-            <com.guider.health.bp.view.TipTitleView
-                android:id="@+id/tips"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"/>
+                android:layout_marginStart="@dimen/dp_20"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_40"
+                    android:layout_height="@dimen/dp_13"
+                    android:layout_gravity="center_vertical"
+                    android:background="@mipmap/logon_guider" />
+
+                <com.guider.health.bp.view.TipTitleView
+                    android:id="@+id/tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_47"
+                android:layout_marginTop="@dimen/dp_20">
+
+                <TextView
+                    android:id="@+id/off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:lineSpacingExtra="@dimen/dp_20"
+                    android:text="1. 测量时臂桶中心与心脏保持同一高度。\n2. 确认设备已开机。\n3. 测量中请不要说话和移动身体。"
+                    android:textColor="#171717"
+                    android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:id="@+id/pic"
+                    android:layout_width="@dimen/dp_234"
+                    android:layout_height="@dimen/dp_179"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:background="@mipmap/device_yf" />
+
+                <Button
+                    android:id="@+id/bp_button_n"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_44"
+                    android:layout_below="@id/pic"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dp_27"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@drawable/button_cancel"
+                    android:paddingLeft="@dimen/dp_30"
+                    android:paddingRight="@dimen/dp_30"
+                    android:stateListAnimator="@null"
+                    android:text="@string/querenkaiji"
+                    android:textColor="#FAFCFF"
+                    android:textSize="@dimen/sp_19" />
+
+            </RelativeLayout>
+
         </LinearLayout>
+    </ScrollView>
 
-
-        <RelativeLayout
-            android:layout_marginLeft="@dimen/dp_47"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_61">
-
-            <TextView
-                android:id="@+id/off"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                android:lineSpacingExtra="@dimen/dp_20"
-                android:text="1. 测量时臂桶中心与心脏保持同一高度。\n2. 确认设备已开机。\n3. 测量中请不要说话和移动身体。"
-                android:textColor="#171717"
-                android:textSize="@dimen/sp_21" />
-
-            <ImageView
-
-                android:id="@+id/pic"
-                android:layout_marginRight="@dimen/dp_80"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/device_yf"
-                android:layout_width="@dimen/dp_234"
-                android:layout_height="@dimen/dp_179" />
-
-            <Button
-                android:id="@+id/bp_button_n"
-                android:layout_below="@id/pic"
-                android:layout_alignParentRight="true"
-                android:text="确认已开机 下一步"
-                android:textSize="@dimen/dp_19"
-                android:textColor="#FAFCFF"
-                android:stateListAnimator="@null"
-                android:layout_marginRight="@dimen/dp_103"
-                android:layout_marginTop="@dimen/dp_27"
-                android:paddingLeft="@dimen/dp_30"
-                android:paddingRight="@dimen/dp_30"
-                android:background="@drawable/button_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_44" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
 
 </LinearLayout>
 

@@ -62,7 +62,7 @@
     <string name = "wwk_ecg">十二导心电</string>
     <string name = "wwk_tips1">请确保电极滑臂已拉出. \n\n请确保上方指示灯常亮.</string>
     <string name = "wwk_next">确认已开机 下一步</string>
-
+    <string name="custom_next">下一步</string>
     <string name = "wwk_not_found_device">未发现测量仪</string>
     <string name = "wwk_confirm_device_open">连接失败, 请确认设备是否开机</string>
     <string name = "wwk_battery_tips">请检查设备电量是否充足.\n或重启测量仪后重新连接.</string>

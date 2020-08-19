@@ -157,6 +157,7 @@ public class ChooseDeviceFragment extends BaseFragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(_mActivity,
                     LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setNestedScrollingEnabled(true);
             normalAdapter = new NormalAdapter();
             recyclerView.setAdapter(normalAdapter);
             recyclerView.addItemDecoration(new SimplePaddingDecoration(_mActivity));
