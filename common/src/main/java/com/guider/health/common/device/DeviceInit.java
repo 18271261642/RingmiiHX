@@ -231,6 +231,10 @@ public class DeviceInit {
         if (BuildConfig.DEBUG) {
             Config.DEVICE_KEYS.clear();
             Config.DEVICE_KEYS.add(DEV_ECG_12);//MEDCHECK 血压
+            Config.DEVICE_KEYS.add(DEV_GLU);//MEDCHECK 血压
+            Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血压
+            Config.DEVICE_KEYS.add(DEV_MEDCHECK_PRE);//MEDCHECK 血压
+            Config.DEVICE_KEYS.add(DEV_FORA_GLU);//MEDCHECK 血压
             if (callback != null) {
                 callback.onHaveList();
             }
