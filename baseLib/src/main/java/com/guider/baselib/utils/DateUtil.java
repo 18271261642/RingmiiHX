@@ -223,6 +223,15 @@ public class DateUtil
 	}
 
 	/**
+	 * 获取当前本地时间的字符串 按年月日格式
+	 * @return
+	 */
+	public static String localNowStringByPattern(String pattern)
+	{
+		return dateToString(localNow(),pattern);
+	}
+
+	/**
 	 * 把时间对象以默认格式转换成字符串
 	 * @param date
 	 * @return

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/timeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:text="11:05"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/timeTv">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="5dp"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="3dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/msgTypeIv"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="13dp"
+                    android:src="@drawable/icon_home_blood"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/msgTypeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color333333"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintBottom_toBottomOf="@id/msgTypeIv"
+                    app:layout_constraintStart_toEndOf="@id/msgTypeIv"
+                    app:layout_constraintTop_toTopOf="@id/msgTypeIv" />
+
+                <TextView
+                    android:id="@+id/msgContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="您好，您的家人【老刘】通过【500S】量测了血压"
+                    android:textColor="#ff999999"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/msgTypeIv"
+                    app:layout_constraintTop_toBottomOf="@id/msgTypeIv" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/msgDataDetailRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="18dp"
+                    app:layout_constraintTop_toBottomOf="@id/msgContent" />
+
+                <TextView
+                    android:id="@+id/testTimeHintTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/app_msg_item_measure_time"
+                    android:textColor="@color/color999999"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintStart_toStartOf="@id/msgTypeIv"
+                    app:layout_constraintTop_toBottomOf="@id/msgDataDetailRv" />
+
+                <TextView
+                    android:id="@+id/testTimeTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="2020-08-12 08:36"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/testTimeHintTv"
+                    app:layout_constraintTop_toTopOf="@id/testTimeHintTv" />
+
+                <TextView
+                    android:id="@+id/suggestHintTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/app_msg_item_suggest"
+                    android:textColor="@color/color999999"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintStart_toStartOf="@id/msgTypeIv"
+                    app:layout_constraintTop_toBottomOf="@id/testTimeHintTv" />
+
+                <TextView
+                    android:id="@+id/suggestTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:paddingBottom="21dp"
+                    android:text="建议继续保持！加强运动锻炼，保持良好的生活习惯，保持日常愉快心情。"
+                    android:textColor="#ff333333"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/suggestHintTv"
+                    app:layout_constraintTop_toTopOf="@id/suggestHintTv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

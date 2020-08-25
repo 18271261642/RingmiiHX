@@ -24,5 +24,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     api 'com.tencent.bugly:crashreport:3.1.8'
-    api 'com.tencent.bugly:nativecrashreport:3.7.3'
+    api 'com.tencent.bugly:nativecrashreport:3.7.471'
 }

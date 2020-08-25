@@ -1,3 +1,4 @@
+include ':hellocharts-library'
 include ':baseLib'
 include ':ring'
 include ":apilib",':libbuglygoogle', ':libbuglycn'

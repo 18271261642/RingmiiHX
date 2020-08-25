@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "98222274067",
+    "firebase_url": "https://guider-ring-new.firebaseio.com",
+    "project_id": "guider-ring-new",
+    "storage_bucket": "guider-ring-new.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98222274067:android:f58b0724d9e5f06f17b1e6",
+        "android_client_info": {
+          "package_name": "com.guider.ring"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98222274067-ug7epr453sp6filnjru1rdooqnklohfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiybjjywbtuW1hBH9IVMIqaFCSidYplPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98222274067-ug7epr453sp6filnjru1rdooqnklohfm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

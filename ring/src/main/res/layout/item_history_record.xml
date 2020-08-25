@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/timeIv"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_marginStart="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_14"
+        android:src="@drawable/icon_map_time_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="2020-08-15 15:07"
+        android:textColor="@color/color666666"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBottom_toBottomOf="@id/timeIv"
+        app:layout_constraintStart_toEndOf="@id/timeIv"
+        app:layout_constraintTop_toTopOf="@id/timeIv" />
+
+    <ImageView
+        android:id="@+id/locationMethodIv"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="@dimen/dp_47"
+        android:src="@drawable/icon_map_location_oval"
+        app:layout_constraintStart_toEndOf="@id/timeTv"
+        app:layout_constraintTop_toTopOf="@id/timeIv" />
+
+    <TextView
+        android:id="@+id/locationMethodTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_4"
+        android:text="WI-FI定位"
+        android:textColor="@color/color666666"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBaseline_toBaselineOf="@id/timeTv"
+        app:layout_constraintStart_toEndOf="@id/locationMethodIv" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/detailLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_14"
+        android:background="@drawable/rounded_f28a38_14_bg"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/detailIv"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_17"
+            android:layout_marginStart="@dimen/dp_12"
+            android:src="@drawable/icon_map_location_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_2"
+            android:paddingEnd="@dimen/dp_11"
+            android:text="详情"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/detailIv"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:id="@+id/historyLocation"
+        android:layout_marginEnd="9dp"
+        android:text="广东省深圳市宝安区福永街道立新南路50号怀德翠岗工业园5区"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toStartOf="@id/detailLayout"
+        app:layout_constraintStart_toStartOf="@id/timeIv"
+        app:layout_constraintTop_toBottomOf="@id/timeIv" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        app:layout_constraintTop_toBottomOf="@id/historyLocation"
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@color/line_grey"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

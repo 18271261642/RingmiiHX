@@ -255,6 +255,7 @@
     <dimen name="dp_248">248dp</dimen>
     <dimen name="dp_249">249dp</dimen>
     <dimen name="dp_250">250dp</dimen>
+    <dimen name="dp_278">278dp</dimen>
     <dimen name="dp_310">310dp</dimen>
     <!-- 文字大小 -->
     <dimen name="sp_6">6sp</dimen>
@@ -286,4 +287,5 @@
     <dimen name="sp_33">33sp</dimen>
     <dimen name="sp_34">34sp</dimen>
     <dimen name="sp_35">35sp</dimen>
+    <dimen name="sp_38">38sp</dimen>
 </resources>

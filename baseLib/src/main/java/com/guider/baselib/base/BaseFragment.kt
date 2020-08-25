@@ -43,6 +43,7 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
         if (rootView == null) {
             rootView = inflater.inflate(layoutRes, container, false)
         }
+        initView(rootView!!)
         return rootView
     }
 
@@ -54,7 +55,6 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
     override fun onResume() {
         super.onResume()
         if (!isLoaded && !isHidden) {
-            initView(rootView!!)
             initLogic()
             Log.d(TAG, "lazyInit:!!!!!!!")
             isLoaded = true

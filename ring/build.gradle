@@ -1,7 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id 'kotlin-android-extensions'
 }
+
 def rootGradle = rootProject.ext.android
 android {
     compileSdkVersion rootGradle.compileSdkVersion
@@ -74,6 +77,9 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api project(':baseLib')
+    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    // Add the SDK for Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
 }
 
 android.applicationVariants.all { variant ->
@@ -89,7 +95,7 @@ android.applicationVariants.all { variant ->
                 tail = ".aab"
             }
 
-            fileName = "GuiderRing" + tail
+            fileName = "GuiderGPS" + tail
 
             if (android.defaultConfig.versionName != null) {
                 fileName = fileName.replace(tail, "-${android.defaultConfig.versionName}${tail}")

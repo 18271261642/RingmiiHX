@@ -2,8 +2,12 @@ package com.guider.feifeia3.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
 import androidx.annotation.StringRes
 import android.widget.Toast
+import com.guider.baselib.R
 
 /**
  * description:
@@ -51,5 +55,19 @@ object ToastUtil {
         }
         longToast!!.setText(textRes)
         longToast!!.show()
+    }
+
+    fun showCustomToast(view : View?, context: Context, isShort:Boolean, hintText :String?){
+        val toast = Toast(context)
+        var contentView = view
+        if (contentView == null ){
+            contentView = View.inflate(context, R.layout.toast_layout,null)
+            contentView!!.findViewById<TextView>(R.id.hintText).text = hintText
+        }
+        toast.setGravity(Gravity.CENTER,0,0)
+        if (isShort) toast.duration = Toast.LENGTH_SHORT
+        else toast.duration = Toast.LENGTH_LONG
+        toast.view = contentView
+        toast.show()
     }
 }

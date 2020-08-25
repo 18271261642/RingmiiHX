@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="240dp"
+    android:layout_height="67dp">
+
+    <ImageView
+        android:id="@+id/msgSelectIv"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="11dp"
+        android:src="@drawable/ic_home_draw_msg_select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.guider.baselib.widget.CircleImageView
+        android:id="@+id/msgHeadIv"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/msgSelectIv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/msgPersonName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:singleLine="true"
+        android:text="@string/app_main_left_msg_device_name1"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/msgHeadIv"
+        app:layout_constraintTop_toTopOf="@id/msgHeadIv" />
+
+    <ImageView
+        android:id="@+id/msgRingStatusIv"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/oval_green_59d15f"
+        app:layout_constraintStart_toStartOf="@id/msgPersonName"
+        app:layout_constraintTop_toBottomOf="@id/msgPersonName" />
+
+    <TextView
+        android:id="@+id/msgRingStatusTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="@string/app_main_left_msg_device_status_online"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBottom_toBottomOf="@id/msgRingStatusIv"
+        app:layout_constraintStart_toEndOf="@id/msgRingStatusIv"
+        app:layout_constraintTop_toTopOf="@id/msgRingStatusIv" />
+
+    <com.guider.baselib.widget.BatteryView
+        android:id="@+id/batteryLayout"
+        android:layout_width="24dp"
+        android:layout_height="12dp"
+        android:layout_marginEnd="15dp"
+        android:visibility="gone"
+        app:batteryColor="@color/color59d15f"
+        app:batteryOrientation="horizontal"
+        app:batteryPower="70"
+        app:layout_constraintBottom_toBottomOf="@id/msgRingStatusIv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/msgRingStatusIv" />
+
+    <TextView
+        android:id="@+id/batteryStatusTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:text="100%"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_10"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/batteryLayout"
+        app:layout_constraintEnd_toStartOf="@id/batteryLayout"
+        app:layout_constraintTop_toTopOf="@id/batteryLayout" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_2"
+        android:background="@color/line_grey"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

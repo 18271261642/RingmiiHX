@@ -3,8 +3,8 @@ ext {
             compileSdkVersion: 29,
             minSdkVersion    : 19,
             targetSdkVersion : 29,
-            codeVersion      : 217,
-            appVersion       : "2.5.7",
+            codeVersion      : 1,
+            appVersion       : "1.0.0",
             googlePlay       : true
     ]
 
@@ -37,6 +37,8 @@ ext {
     rxjava = "2.2.12"
     rxandroid = "2.1.1"
     joda_time = "2.10.6"
+    pickers = "2.0.0"
+    hellocharts = "1.5.8"
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
             material              : "com.google.android.material:material:$material",
@@ -71,6 +73,8 @@ ext {
             rxlifecycle_components: "com.trello.rxlifecycle3:rxlifecycle-components:$rxlifecycle",
             rxjava                : "io.reactivex.rxjava2:rxjava:$rxjava",
             rxandroid             : "io.reactivex.rxjava2:rxandroid:$rxandroid",
-            joda_time             : "joda-time:joda-time:2.10.6"
+            joda_time             : "joda-time:joda-time:2.10.6",
+            pickers               : "com.github.addappcn:android-pickers:$pickers",
+            hellocharts           : "com.github.lecho:hellocharts-android:v$hellocharts"
     ]
 }

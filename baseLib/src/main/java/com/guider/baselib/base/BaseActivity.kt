@@ -12,10 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewStub
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.guider.baselib.R
 import com.guider.baselib.utils.OnNoDoubleClickListener
 import com.guider.baselib.utils.AppManager
@@ -24,6 +21,7 @@ import com.guider.baselib.utils.EventBusUtils
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.gyf.immersionbar.ImmersionBar
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
+import me.jessyan.autosize.utils.ScreenUtils
 
 abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
 
@@ -48,6 +46,9 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
     var tv_title: TextView? = null
     var iv_left: ImageView? = null
     var tv_leftTitle: TextView? = null
+    var iv_toolbar_right: ImageView? = null
+    var rightRedPoint: View? = null
+    var iv_toolbar_right2: ImageView? = null
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +57,7 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
         if (openEventBus()) {
             EventBusUtils.register(this)
         }
+        beforeContentViewSet()
         setContentView(contentViewResId)
         if (mImmersionBar == null) {
             mImmersionBar = ImmersionBar.with(this)
@@ -70,7 +72,6 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
                 initTitle()
             }
         }
-        setToolBarColor(Color.WHITE)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         mContext = this
         initImmersion()
@@ -78,15 +79,23 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
         initLogic()
     }
 
-    private fun openEventBus(): Boolean {
-        return false
-    }
+    open fun beforeContentViewSet() {}
+
+    abstract fun openEventBus(): Boolean
 
     //状态栏白底黑字
     fun whiteStatusBarBlackFont() {
         //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，
         // 如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
         mImmersionBar!!.statusBarDarkFont(true, 0.2f).init()
+    }
+
+    /**
+     * 给状态设置颜色
+     * @param resId 颜色的id
+     */
+    fun setStatusBarColor(resId: Int) {
+        mImmersionBar?.statusBarColor(resId)?.init()
     }
 
     //设置toolbar颜色
@@ -136,6 +145,9 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
         iv_left = mToolbar!!.findViewById(R.id.iv_left)
         tv_leftTitle = mToolbar!!.findViewById(R.id.toolbar_title_left)
         tv_title = mToolbar!!.findViewById(R.id.toolbar_title)
+        iv_toolbar_right = mToolbar!!.findViewById(R.id.iv_toolbar_right)
+        iv_toolbar_right2 = mToolbar!!.findViewById(R.id.iv_toolbar_right2)
+        rightRedPoint = mToolbar!!.findViewById(R.id.rightRedPoint)
     }
 
     override fun setContentView(layoutResID: Int) {
@@ -170,12 +182,23 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
         mForegroundActivity = this
     }
 
+    fun setStatusBarBackground(resId: Int) {
+        commonToolBarId?.setBackgroundResource(resId)
+        mToolbar?.setBackgroundResource(resId)
+    }
+
     //设置标题
     open fun setTitle(string: String) {
         if (null != tv_title) {
             tv_title!!.text = string
             tv_title!!.visibility = View.VISIBLE
         }
+    }
+
+    fun setShowRightPoint(isShow: Boolean) {
+        if (isShow) {
+            rightRedPoint?.visibility = View.VISIBLE
+        } else rightRedPoint?.visibility = View.GONE
     }
 
     //设置标题
@@ -207,6 +230,24 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
             tv_leftTitle!!.text = string
             tv_leftTitle!!.visibility = View.VISIBLE
             tv_leftTitle!!.setOnClickListener(listener)
+        }
+    }
+
+    //设置右边顶部图标
+    fun setRightImage(resId: Int, listener: View.OnClickListener) {
+        if (null != iv_toolbar_right) {
+            iv_toolbar_right!!.setImageResource(resId)
+            iv_toolbar_right!!.visibility = View.VISIBLE
+            iv_toolbar_right!!.setOnClickListener(listener)
+        }
+    }
+
+    //设置右边顶部图标
+    fun setRightImage2(resId: Int, listener: View.OnClickListener) {
+        if (null != iv_toolbar_right2) {
+            iv_toolbar_right2!!.setImageResource(resId)
+            iv_toolbar_right2!!.visibility = View.VISIBLE
+            iv_toolbar_right2!!.setOnClickListener(listener)
         }
     }
 
@@ -258,9 +299,9 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
     override fun onDestroy() {
         super.onDestroy()
         baseView = null
-        if (mLoadingDialog != null){
+        if (mLoadingDialog != null) {
             mLoadingDialog?.hideDialog()
-            mLoadingDialog =null
+            mLoadingDialog = null
         }
         if (openEventBus()) {
             EventBusUtils.unregister(this)

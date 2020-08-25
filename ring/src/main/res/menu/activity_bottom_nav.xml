@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_health"
+        android:icon="@drawable/select_home_bottom_health"
+        android:title="@string/app_main_bottom_health" />
+
+    <item
+        android:id="@+id/menu_item_location"
+        android:icon="@drawable/select_home_bottom_location"
+        android:title="@string/app_main_bottom_location" />
+
+    <item
+        android:id="@+id/menu_item_medicine"
+        android:icon="@drawable/select_home_bottom_medcine"
+        android:title="@string/app_main_bottom_medicine" />
+
+    <item
+        android:id="@+id/menu_item_mine"
+        android:icon="@drawable/select_home_bottom_mine"
+        android:title="@string/app_main_bottom_mine" />
+</menu>

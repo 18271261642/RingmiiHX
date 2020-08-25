@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_marker_bg">
+
+    <ImageView
+        android:id="@+id/timeIv"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_marginStart="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_10"
+        android:src="@drawable/icon_map_time_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/locationLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:background="@drawable/circle_f18937_21_bg"
+        android:paddingBottom="@dimen/dp_8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/markLocationIv"
+            android:layout_width="12dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="@dimen/dp_11"
+            android:layout_marginTop="@dimen/dp_7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/icon_orange_mark_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_1"
+            android:paddingEnd="@dimen/dp_12"
+            android:text="@string/app_navigation"
+            android:textColor="#fff18937"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/markLocationIv"
+            app:layout_constraintStart_toEndOf="@id/markLocationIv"
+            app:layout_constraintTop_toTopOf="@id/markLocationIv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_5"
+        android:text="2020-08-15 15:07"
+        android:textColor="@color/color666666"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBottom_toBottomOf="@id/timeIv"
+        app:layout_constraintStart_toEndOf="@id/timeIv"
+        app:layout_constraintEnd_toStartOf="@id/locationLayout"
+        android:layout_marginEnd="@dimen/dp_27"
+        app:layout_constraintTop_toTopOf="@id/timeIv" />
+    <ImageView
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        app:layout_constraintTop_toBottomOf="@id/timeIv"
+        app:layout_constraintStart_toStartOf="@id/timeIv"
+        android:layout_marginTop="@dimen/dp_5"
+        android:src="@drawable/icon_map_location_oval"
+        android:id="@+id/locationMethodIv"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/locationMethodIv"
+        app:layout_constraintTop_toTopOf="@id/locationMethodIv"
+        app:layout_constraintBottom_toBottomOf="@id/locationMethodIv"
+        android:id="@+id/locationMethodTv"
+        android:textColor="@color/color666666"
+        android:layout_marginStart="@dimen/dp_5"
+        android:textSize="@dimen/sp_12"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/dp_17"
+        android:layout_marginEnd="@dimen/dp_17"
+        app:layout_constraintTop_toBottomOf="@id/locationMethodIv"
+        android:paddingBottom="@dimen/dp_17"
+        android:layout_marginTop="@dimen/dp_13"
+        android:text="广东省深圳市宝安区福永街道立新南路50号怀德翠岗工业园5区"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_13"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

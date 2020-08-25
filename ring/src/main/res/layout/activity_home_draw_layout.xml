@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/homeMsgLayout"
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/white"
+    android:visibility="visible">
+
+    <TextView
+        android:id="@+id/msgTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:gravity="center"
+        android:text="@string/app_main_left_device_list"
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_14" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        app:layout_constraintTop_toBottomOf="@id/msgTitle"
+        android:background="@color/line_grey"
+        android:id="@+id/msgLine"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/msgListRv"
+        app:layout_constraintBottom_toTopOf="@id/addDeviceLayout"
+        app:layout_constraintTop_toBottomOf="@id/msgLine"
+        app:layout_constraintVertical_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="10dp"
+        android:overScrollMode="never" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addDeviceLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/bg_round_home_msg_21">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/addDeviceIv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="15dp"
+                android:layout_height="13dp"
+                android:src="@drawable/icon_home_device" />
+
+            <TextView
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/addDeviceIv"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_left_add_device"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

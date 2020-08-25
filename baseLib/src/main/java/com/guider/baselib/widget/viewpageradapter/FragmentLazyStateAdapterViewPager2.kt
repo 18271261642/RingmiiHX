@@ -12,8 +12,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
  */
 
 class FragmentLazyStateAdapterViewPager2(
-    fragmentActivity: FragmentActivity,
-    private val fragments: MutableList<Fragment>
+        fragmentActivity: FragmentActivity,
+        private val fragments: MutableList<Fragment>
 ) :
     FragmentStateAdapter(fragmentActivity) {
 

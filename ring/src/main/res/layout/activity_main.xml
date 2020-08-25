@@ -4,15 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.activity.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/homeLine"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1">
+
+        <com.guider.baselib.widget.MyDrawerLayout
+            android:id="@+id/homeDrawLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/homeViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/homeLine"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_weight="1" />
+            <!--左侧抽屉页面-->
+            <include layout="@layout/activity_home_draw_layout" />
+        </com.guider.baselib.widget.MyDrawerLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <View
+        android:id="@+id/homeLine"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorDDDDDD"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/white"
+        app:elevation="10dp"
+        app:itemIconTint="@color/selector_nav_text_item"
+        app:itemTextColor="@color/selector_nav_text_item"
+        app:labelVisibilityMode="labeled"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/activity_bottom_nav" />
 </androidx.constraintlayout.widget.ConstraintLayout>
