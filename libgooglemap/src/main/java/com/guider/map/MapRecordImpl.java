@@ -82,7 +82,8 @@ public class MapRecordImpl extends MapBaseImpl implements IMapRecord {
         mo.zIndex(5f);
         // mo.perspective(true);
         // mo.period(1);
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), id == 1 ? R.drawable.ic_start_pistion : R.drawable.ic_end_pistion);
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+                id == 1 ? R.drawable.ic_start_pistion : R.drawable.ic_end_pistion);
         mo.icon(BitmapDescriptorFactory.fromBitmap(setImgSize(bitmap, 50, 60)));
         mGoogleMap.addMarker(mo);
     }

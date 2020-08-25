@@ -1,7 +1,5 @@
 package com.guider.libbase.map;
 
-import android.graphics.Bitmap;
-import android.view.View;
 import android.widget.ImageView;
 
 /**

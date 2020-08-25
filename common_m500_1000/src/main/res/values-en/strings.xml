@@ -61,7 +61,7 @@
 
     <string name="bmp1000_range">Reference range: the general population:  systolic blood pressure&lt;120(mmHg), diastolic blood pressure&lt;80 mmHg)\n                    Chronic disease, the elderly: systolic blood pressure&lt;140 (mmHg), diastolic pressure&lt;90(mmHg)</string>
 
-    <string name="food_time1">fasting in the morning:</string>
+    <string name="food_time1">fasting in the morning</string>
     <string name="save_data">Save Data</string>
     <string name="blood_pressure">blood pressure</string>
         

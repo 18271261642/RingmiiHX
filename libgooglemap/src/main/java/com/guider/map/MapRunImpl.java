@@ -374,6 +374,7 @@ public class MapRunImpl extends MapBaseImpl implements IMapRun, OnMapReadyCallba
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (!mISpportMapView.requestPermission())
@@ -422,6 +423,7 @@ public class MapRunImpl extends MapBaseImpl implements IMapRun, OnMapReadyCallba
     /**
      * 启用定位更新
      */
+    @SuppressLint("MissingPermission")
     protected void startLocationUpdates() {
         if (!mISpportMapView.requestPermission())
             return;
@@ -457,12 +459,7 @@ public class MapRunImpl extends MapBaseImpl implements IMapRun, OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        mGoogleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-            @Override
-            public void onMapLoaded() {
-                Log.i(TAG, "GoogleMap loadesd");
-            }
-        });
+        mGoogleMap.setOnMapLoadedCallback(() -> Log.i(TAG, "GoogleMap loadesd"));
         mGoogleMap.setOnMarkerDragListener(this);
         UiSettings uiSettings = mGoogleMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(false);//不显示定位按钮
@@ -481,6 +478,7 @@ public class MapRunImpl extends MapBaseImpl implements IMapRun, OnMapReadyCallba
     /**
      * 如果取得了权限,显示地图定位层
      */
+    @SuppressLint("MissingPermission")
     private void enableMyLocation() {
         if (!mISpportMapView.requestPermission())
             return;

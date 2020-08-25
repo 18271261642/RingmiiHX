@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_80"
-            android:layout_marginEnd="@dimen/dp_80"
             android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginEnd="@dimen/dp_70"
             android:orientation="vertical">
 
             <LinearLayout
@@ -53,35 +53,38 @@
                     android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_test_reminder"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/dp_20"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintEnd_toStartOf="@id/morningLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/reminderIv"
                     android:layout_width="@dimen/dp_120"
                     android:layout_height="@dimen/dp_120"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:src="@mipmap/ic_medcheck_todo" />
+                    android:src="@mipmap/ic_medcheck_todo"
+                    app:layout_constraintEnd_toEndOf="@id/foodLayout"
+                    app:layout_constraintStart_toStartOf="@id/morningLayout"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/foodLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/reminderIv"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/reminderIv">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -120,12 +123,14 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/morningLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/reminderIv"
                     android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_toStartOf="@id/foodLayout"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@id/foodLayout"
+                    app:layout_constraintTop_toBottomOf="@id/reminderIv">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -137,6 +142,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@mipmap/time0"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -156,9 +162,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
                         android:text="@string/food_time1"
                         android:textColor="#7D7D7D"
-                        android:layout_marginTop="5dp"
                         android:textSize="@dimen/sp_15" />
                 </LinearLayout>
 
@@ -166,18 +172,16 @@
                     android:id="@+id/btn_fora_glu_test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="@dimen/dimen_10"
                     android:background="@drawable/button_cancel"
                     android:paddingLeft="@dimen/dp_30"
-                    android:layout_marginTop="@dimen/dp_10"
                     android:paddingRight="@dimen/dp_30"
                     android:text="@string/save_data"
                     android:textColor="#FAFCFF"
-                    android:textSize="@dimen/sp_25" />
-            </RelativeLayout>
+                    android:textSize="@dimen/sp_25"
+                    app:layout_constraintTop_toBottomOf="@id/morningLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 
