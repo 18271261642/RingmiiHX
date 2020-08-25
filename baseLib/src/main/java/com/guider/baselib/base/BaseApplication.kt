@@ -56,7 +56,7 @@ abstract class BaseApplication : Application() {
         val strategy = CrashReport.UserStrategy(context)
         strategy.isUploadProcess = processName == null || processName == packageName
         // 初始化bugly 建议在测试阶段建议设置成true，发布时设置为false
-        CrashReport.initCrashReport(applicationContext, "9cf3caf806", true, strategy)
+        CrashReport.initCrashReport(applicationContext, "78e0c0fa77", true, strategy)
     }
 
     private fun initAutoSize() {

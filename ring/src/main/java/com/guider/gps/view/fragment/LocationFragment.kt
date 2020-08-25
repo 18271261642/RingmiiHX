@@ -19,10 +19,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseFragment
@@ -103,6 +100,8 @@ class LocationFragment : BaseFragment(),
     private var line: PolylineOptions? = null
 
     private var polygon: PolygonOptions? = null
+
+    private var isShowGpsMode = false
 
 
     override fun initView(rootView: View) {
@@ -286,7 +285,12 @@ class LocationFragment : BaseFragment(),
                 initSelectDateDialogShow()
             }
             mapLocationIv -> {
-                locationMyAddress()
+                if (isShowGpsMode) {
+                    mGoogleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL//设置为正常地图模式
+                } else {
+                    mGoogleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE//设置为卫星模式
+                }
+                isShowGpsMode = !isShowGpsMode
             }
         }
     }
@@ -340,8 +344,9 @@ class LocationFragment : BaseFragment(),
     override fun onMapReady(it: GoogleMap?) {
         mGoogleMap = it
         val uiSettings = mGoogleMap!!.uiSettings
-        uiSettings.isMyLocationButtonEnabled = false //不显示定位按钮
+        uiSettings.isMyLocationButtonEnabled = false //显示定位按钮
         uiSettings.isCompassEnabled = false //设置是否显示指南针
+        uiSettings.isZoomControlsEnabled = true//缩放控件
         mGoogleMap!!.isTrafficEnabled = true
         mGoogleMap!!.setInfoWindowAdapter(CustomInfoWindowAdapter())
         mGoogleMap!!.setOnMarkerClickListener(this)

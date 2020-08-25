@@ -14,10 +14,10 @@
         android:id="@+id/locationTabLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_42"
-        app:tabTextAppearance="@style/CustomTabLayoutTextSizeStyle"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorHeight="@dimen/dp_2" />
+        app:tabIndicatorHeight="@dimen/dp_2"
+        app:tabTextAppearance="@style/CustomTabLayoutTextSizeStyle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/locationInfoLayout"
@@ -65,8 +65,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_13"
-                    android:paddingBottom="@dimen/dp_13"
                     android:gravity="center"
+                    android:paddingBottom="@dimen/dp_13"
                     android:text="@string/app_main_map_positioning_frequency_setting"
                     android:textColor="@color/color333333"
                     android:textSize="@dimen/sp_13"
@@ -103,66 +103,19 @@
         android:id="@+id/bottomLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:layout_marginBottom="@dimen/dp_110"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/mapAddLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_12"
-            android:layout_marginBottom="@dimen/dp_14"
-            android:background="@color/white"
-            android:src="@drawable/icon_below_arrow_location"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageView
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:src="@drawable/icon_map_add"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/mapReduceLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_12"
-            android:layout_marginBottom="@dimen/dp_9"
-            android:background="@color/white"
-            android:src="@drawable/icon_below_arrow_location"
-            app:layout_constraintBottom_toTopOf="@id/mapAddLayout"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageView
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:src="@drawable/icon_map_reduce"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/changeLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_12"
-            android:layout_marginBottom="@dimen/dp_9"
-            android:background="@color/white"
-            android:src="@drawable/icon_below_arrow_location"
-            app:layout_constraintBottom_toTopOf="@id/mapReduceLayout"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageView
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:id="@+id/mapLocationIv"
-                android:src="@drawable/icon_map_change"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/mapLocationIv"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/icon_map_change"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -350,8 +303,8 @@
         android:id="@+id/electronicFenceLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -399,8 +352,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_electronic_fence_1"
-                />
+                android:src="@drawable/icon_electronic_fence_1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
