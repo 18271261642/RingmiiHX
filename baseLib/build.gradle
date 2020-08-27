@@ -41,7 +41,6 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    api project(path: ':hellocharts-library')
     api fileTree(include: ['*.jar'], dir: 'libs')
     def dependencies = rootProject.ext.dependencies
     api dependencies.ktx
@@ -53,7 +52,6 @@ dependencies {
     api dependencies.glide_transformations
     api dependencies.material
     api dependencies.recyclerview
-    api project(':apilib')
     annotationProcessor dependencies.dbflow_processor
     api dependencies.dbflow_core
     api dependencies.dbflow
@@ -79,12 +77,17 @@ dependencies {
     //微信登录分享支付
     api dependencies.wechat
     //google地图
-    api 'com.google.android.gms:play-services-maps:17.0.0'
-    api 'com.google.android.gms:play-services-places:17.0.0'
-    api 'com.google.android.gms:play-services-location:17.0.0'
-    api 'com.google.maps:google-maps-services:0.14.0'
-    api 'com.google.maps.android:android-maps-utils:2.0.3'
-    api 'cat.ereza:customactivityoncrash:2.3.0'
+    api dependencies.play_services_maps
+    api dependencies.play_services_places
+    api dependencies.play_services_location
+    api dependencies.google_maps_services
+    api dependencies.android_maps_utils
+    api dependencies.customactivityoncrash
+    api dependencies.linesdk
+
+    //集成的module
+    api project(':apilib')
+    api project(path: ':hellocharts-library')
     if (rootGradle.googlePlay) {
         println "Add lib libbuglygoogle"
         api project(':libbuglygoogle')

@@ -40,6 +40,14 @@ ext {
     joda_time = "2.10.6"
     pickers = "2.0.0"
     hellocharts = "1.5.8"
+    crashreport_upgrade ="1.4.5"
+    crashreport ="3.1.8"
+    nativecrashreport = "3.7.471"
+    play_services_maps = "17.0.0"
+    google_maps_services ="0.14.0"
+    android_maps_utils ="2.0.3"
+    customactivityoncrash ="2.3.0"
+    linesdk ="5.5.1"
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
             material              : "com.google.android.material:material:$material",
@@ -77,6 +85,16 @@ ext {
             rxandroid             : "io.reactivex.rxjava2:rxandroid:$rxandroid",
             joda_time             : "joda-time:joda-time:2.10.6",
             pickers               : "com.github.addappcn:android-pickers:$pickers",
-            hellocharts           : "com.github.lecho:hellocharts-android:v$hellocharts"
+            hellocharts           : "com.github.lecho:hellocharts-android:v$hellocharts",
+            crashreport_upgrade   : "com.tencent.bugly:crashreport_upgrade:$crashreport_upgrade",
+            nativecrashreport     : "com.tencent.bugly:nativecrashreport:$nativecrashreport",
+            crashreport           : "com.tencent.bugly:crashreport:3.1.8",
+            play_services_maps    : "com.google.android.gms:play-services-maps:$play_services_maps",
+            play_services_places  : "com.google.android.gms:play-services-places:$play_services_maps",
+            play_services_location: "com.google.android.gms:play-services-location:$play_services_maps",
+            google_maps_services  : "com.google.maps:google-maps-services:0.14.0",
+            android_maps_utils    : "com.google.maps.android:android-maps-utils:$android_maps_utils",
+            customactivityoncrash : "cat.ereza:customactivityoncrash:$customactivityoncrash",
+            linesdk               : "com.linecorp.linesdk:linesdk:$linesdk"
     ]
 }

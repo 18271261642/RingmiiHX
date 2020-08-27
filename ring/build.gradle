@@ -82,7 +82,6 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api project(':baseLib')
-    api 'com.linecorp.linesdk:linesdk:5.5.1'
 }
 
 android.applicationVariants.all { variant ->
