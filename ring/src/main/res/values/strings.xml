@@ -110,5 +110,19 @@
     <string name="app_cancel">Cancel</string>
     <string name="app_select_date">Select Date</string>
     <string name="app_map_location_method_content">%s Positioning</string>
-    <string name="app_map_track_time_hour">nearly %d h</string>
+    <string name="app_map_track_time_hour">nearly%dh</string>
+    <string name="app_register">Register</string>
+    <string name="app_login_phone_edit_hint">Please enter your cell phone number</string>
+    <string name="app_login_password_edit_hint">Please enter your password</string>
+    <string name="app_register_again_password_edit_hint">Please enter your password again</string>
+    <string name="app_login">Login</string>
+    <string name="app_login_register_now">Register now</string>
+    <string name="app_login_no_account">No account yet?</string>
+    <string name="app_login_to_sing_agree">To sign in is to agree</string>
+    <string name="app_login_user_service_agreement">User Service Agreement</string>
+    <string name="app_login_privacy_policy_clause">Privacy Policy clause</string>
+    <string name="app_login_and">and</string>
+    <string name="app_login_phone_empty">The cell phone number is empty</string>
+    <string name="app_login_password_empty">The cell phone number is empty</string>
+    <string name="app_register_password_different">The two passwords are different</string>
 </resources>

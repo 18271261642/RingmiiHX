@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.os.Process
-import androidx.multidex.MultiDex
 import android.text.TextUtils
 import android.util.Log
+import androidx.multidex.MultiDex
+import cat.ereza.customactivityoncrash.CustomActivityOnCrash
+import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.guider.baselib.utils.MMKV_ROOT
 import com.guider.baselib.utils.MyUtils
 import com.guider.health.apilib.ApiUtil
+import com.guider.health.apilib.BuildConfig
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
 import me.jessyan.autosize.AutoSize
@@ -20,6 +23,9 @@ import java.io.IOException
 
 abstract class BaseApplication : Application() {
 
+    val TAG = BaseApplication.javaClass.simpleName
+
+    @SuppressLint("RestrictedApi")
     override fun onCreate() {
         super.onCreate()
         guiderHealthContext = applicationContext
@@ -38,7 +44,9 @@ abstract class BaseApplication : Application() {
         initAutoSize()
         MyUtils.application = this
         init()
-        initBugly()
+        if (BuildConfig.DEBUG){
+            CustomActivityOnCrash.install(this)
+        }else initBugly()
     }
 
     /**

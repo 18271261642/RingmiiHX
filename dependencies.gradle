@@ -19,6 +19,7 @@ ext {
     glassfish_annotation = "10.0-b28"
     SmartRefreshLayout = "1.1.2"
     eventbus = "3.2.0"
+    wechat = "wechat-sdk-android-with-mta:+"
     greendao = "3.3.0"
     multidex = "2.0.1"
     immersionBar = "3.0.0"
@@ -54,6 +55,7 @@ ext {
             glide_compiler        : "com.github.bumptech.glide:compiler:$glide",
             glide_transformations : "jp.wasabeef:glide-transformations:$glide_transformations",
             okhttp                : "com.squareup.okhttp3:okhttp:$okhttp",
+            wechat                : "com.tencent.mm.opensdk:$wechat",
             logging_interceptor   : "com.squareup.okhttp3:logging-interceptor:$logging_interceptor",
             glassfish_annotation  : "org.glassfish:javax.annotation:$glassfish_annotation",
             SmartRefreshLayout    : "com.scwang.smartrefresh:SmartRefreshLayout:$SmartRefreshLayout",

@@ -109,5 +109,19 @@
     <string name="app_cancel">取消</string>
     <string name="app_select_date">選擇日期</string>
     <string name="app_map_location_method_content">%s 定位</string>
-    <string name="app_map_track_time_hour">近 %d h</string>
+    <string name="app_map_track_time_hour">近%dh</string>
+    <string name="app_register">註冊</string>
+    <string name="app_login_phone_edit_hint">請輸入手機號</string>
+    <string name="app_login_password_edit_hint">請輸入密碼</string>
+    <string name="app_register_again_password_edit_hint">請再次輸入密碼</string>
+    <string name="app_login">登錄</string>
+    <string name="app_login_register_now">立即註冊</string>
+    <string name="app_login_no_account">還沒有賬號？</string>
+    <string name="app_login_to_sing_agree">點擊登錄即表示同意</string>
+    <string name="app_login_user_service_agreement">用戶服務協議</string>
+    <string name="app_login_privacy_policy_clause">隱私政策條款</string>
+    <string name="app_login_and">和</string>
+    <string name="app_login_phone_empty">手機號爲空</string>
+    <string name="app_login_password_empty">密碼爲空</string>
+    <string name="app_register_password_different">兩次輸入的密碼不同</string>
 </resources>

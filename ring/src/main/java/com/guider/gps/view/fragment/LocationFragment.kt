@@ -427,7 +427,8 @@ class LocationFragment : BaseFragment(),
             if (tabPosition == 1) {
                 bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_mark_start_bg)
             }
-            starPerth = mGoogleMap!!.addMarker(MarkerOptions()
+            if (mGoogleMap == null) return
+            starPerth = mGoogleMap?.addMarker(MarkerOptions()
                     .draggable(false).icon(bitmap).position(
                             LatLng(firstLocationLat, firstLocationLng)))
             if (tabPosition == 0) {

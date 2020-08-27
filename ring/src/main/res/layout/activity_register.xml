@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <EditText
+        android:id="@+id/phoneEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:inputType="phone"
+        android:layout_marginTop="@dimen/dp_26"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/white"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:hint="@string/app_login_phone_edit_hint"
+        android:minHeight="@dimen/dp_30"
+        android:paddingStart="@dimen/dp_11"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        android:textColor="@color/color333333"
+        android:textColorHint="@color/color999999"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/phoneLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginStart="@dimen/dp_26"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/colorEEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/phoneEdit" />
+
+    <EditText
+        android:id="@+id/passwordEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="@dimen/dp_26"
+        android:inputType="textPassword"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/white"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:hint="@string/app_login_password_edit_hint"
+        android:minHeight="@dimen/dp_30"
+        android:paddingStart="@dimen/dp_11"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        android:textColor="@color/color333333"
+        android:textColorHint="@color/color999999"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phoneLine" />
+
+    <View
+        android:id="@+id/passwordLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginStart="@dimen/dp_26"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/colorEEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/passwordEdit" />
+
+    <EditText
+        android:id="@+id/againPasswordEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="@dimen/dp_26"
+        android:inputType="textPassword"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/white"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:hint="@string/app_register_again_password_edit_hint"
+        android:minHeight="@dimen/dp_30"
+        android:paddingStart="@dimen/dp_11"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        android:textColor="@color/color333333"
+        android:textColorHint="@color/color999999"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordLine" />
+
+    <View
+        android:id="@+id/againPasswordLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginStart="@dimen/dp_26"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/colorEEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/againPasswordEdit" />
+
+    <TextView
+        android:id="@+id/textTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_9"
+        android:textColor="@color/color999999"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintEnd_toEndOf="@id/againPasswordLine"
+        app:layout_constraintStart_toStartOf="@id/againPasswordLine"
+        app:layout_constraintTop_toBottomOf="@id/againPasswordLine" />
+
+    <TextView
+        android:id="@+id/registerTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_24"
+        android:background="@drawable/rounded_ffe29d_22_bg"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_11"
+        android:text="@string/app_register"
+        android:textColor="@color/color8F5725"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="@id/textTv"
+        app:layout_constraintStart_toStartOf="@id/textTv"
+        app:layout_constraintTop_toBottomOf="@id/textTv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

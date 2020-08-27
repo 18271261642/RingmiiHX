@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/statusBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_84"
+        android:background="@drawable/bg_login_top_status_bar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/topBgIv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_140"
+        android:background="@drawable/bg_login_top_rounded"
+        app:layout_constraintTop_toBottomOf="@id/statusBar" />
+
+    <TextView
+        android:id="@+id/logoTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_24"
+        android:text="@string/app_name"
+        android:textColor="#ffffffff"
+        android:textSize="@dimen/sp_17"
+        app:layout_constraintBottom_toBottomOf="@id/topBgIv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:layout_width="@dimen/dp_94"
+        android:layout_height="@dimen/dp_94"
+        android:layout_marginBottom="@dimen/dp_11"
+        android:src="@drawable/icon_login_logo"
+        app:layout_constraintBottom_toTopOf="@id/logoTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/phoneIv"
+        android:layout_width="@dimen/dp_13"
+        android:layout_height="@dimen/dp_17"
+        android:layout_marginStart="@dimen/dp_26"
+        android:layout_marginTop="@dimen/dp_48"
+        android:src="@drawable/icon_login_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBgIv" />
+
+    <EditText
+        android:id="@+id/phoneEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/white"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:hint="@string/app_login_phone_edit_hint"
+        android:inputType="phone"
+        android:minHeight="@dimen/dp_30"
+        android:paddingStart="@dimen/dp_11"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        android:textColor="@color/color333333"
+        android:textColorHint="@color/color999999"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/phoneIv"
+        app:layout_constraintTop_toTopOf="@id/phoneIv" />
+
+    <View
+        android:id="@+id/phoneLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginStart="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_13"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/colorEEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/phoneIv" />
+
+    <ImageView
+        android:id="@+id/passwordIv"
+        android:layout_width="@dimen/dp_13"
+        android:layout_height="@dimen/dp_17"
+        android:layout_marginStart="@dimen/dp_26"
+        android:layout_marginTop="@dimen/dp_14"
+        android:src="@drawable/icon_login_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phoneLine" />
+
+    <EditText
+        android:id="@+id/passwordEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/white"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:hint="@string/app_login_password_edit_hint"
+        android:inputType="textPassword"
+        android:minHeight="@dimen/dp_30"
+        android:paddingStart="@dimen/dp_11"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        android:textColor="@color/color333333"
+        android:textColorHint="@color/color999999"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/passwordIv"
+        app:layout_constraintTop_toTopOf="@id/passwordIv" />
+
+    <View
+        android:id="@+id/passwordLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginStart="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_13"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:background="@color/colorEEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/passwordIv" />
+
+    <TextView
+        android:id="@+id/textTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_9"
+        android:text="@string/app_login_to_sing_agree"
+        android:textColor="@color/color999999"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintStart_toStartOf="@id/passwordLine"
+        app:layout_constraintTop_toBottomOf="@id/passwordLine" />
+
+    <TextView
+        android:id="@+id/userServiceTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_2"
+        android:text="@string/app_login_user_service_agreement"
+        android:textColor="@color/colorF18A2E"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBaseline_toBaselineOf="@id/textTv"
+        app:layout_constraintStart_toEndOf="@id/textTv" />
+
+    <TextView
+        android:id="@+id/andTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_2"
+        android:text="@string/app_login_and"
+        android:textColor="@color/color999999"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBaseline_toBaselineOf="@id/userServiceTv"
+        app:layout_constraintStart_toEndOf="@id/userServiceTv" />
+
+    <TextView
+        android:id="@+id/policyTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_2"
+        android:text="@string/app_login_privacy_policy_clause"
+        android:textColor="@color/colorF18A2E"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBaseline_toBaselineOf="@id/andTv"
+        app:layout_constraintStart_toEndOf="@id/andTv" />
+
+    <TextView
+        android:id="@+id/loginTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_24"
+        android:background="@drawable/rounded_ffe29d_22_bg"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_11"
+        android:text="@string/app_login"
+        android:textColor="@color/color8F5725"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="@id/passwordLine"
+        app:layout_constraintStart_toStartOf="@id/passwordLine"
+        app:layout_constraintTop_toBottomOf="@id/textTv" />
+
+    <TextView
+        android:id="@+id/registerTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginEnd="@dimen/dp_26"
+        android:text="@string/app_login_register_now"
+        android:textColor="@color/colorF18C32"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginTv" />
+
+    <TextView
+        android:id="@+id/noAccountTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_3"
+        android:text="@string/app_login_no_account"
+        android:textColor="@color/color999999"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBaseline_toBaselineOf="@id/registerTv"
+        app:layout_constraintEnd_toStartOf="@id/registerTv" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_48"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerTv">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lineIv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <com.linecorp.linesdk.widget.LoginButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/loginButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+            <ImageView
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_48"
+                android:src="@drawable/icon_login_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/weChatIv"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"
+            android:src="@drawable/icon_login_wechat"
+            app:layout_constraintStart_toEndOf="@id/lineIv"
+            android:layout_marginStart="@dimen/dp_48"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

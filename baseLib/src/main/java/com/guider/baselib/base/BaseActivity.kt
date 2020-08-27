@@ -183,7 +183,6 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
     }
 
     fun setStatusBarBackground(resId: Int) {
-        commonToolBarId?.setBackgroundResource(resId)
         mToolbar?.setBackgroundResource(resId)
     }
 

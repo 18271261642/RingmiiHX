@@ -1,6 +1,5 @@
 package com.guider.baselib.utils
 
-import com.guider.baselib.utils.EventBusEvent
 import org.greenrobot.eventbus.EventBus
 
 /**

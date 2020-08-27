@@ -105,6 +105,9 @@ object CommonUtils {
         }
     }
 
+    /**
+     * 得到当前应用的版本号
+     */
     private fun getPackageInfo(ctx: Context): PackageInfo? {
         val pm = ctx.packageManager
         var pi: PackageInfo? = null
@@ -114,5 +117,23 @@ object CommonUtils {
             e.printStackTrace()
         }
         return pi
+    }
+
+    /**
+     * 判断是否安装了微信
+     */
+    fun isHaveWeChat(mContext: Context): Boolean {
+        val packageManager = mContext.packageManager// 获取packagemanager
+        val pinfo = packageManager
+                .getInstalledPackages(0)// 获取所有已安装程序的包信息
+        if (pinfo != null) {
+            for (i in pinfo.indices) {
+                val pn = pinfo[i].packageName
+                if (pn.equals("com.tencent.mm", ignoreCase = true)) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }

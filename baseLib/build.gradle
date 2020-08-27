@@ -25,11 +25,24 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api project(path: ':hellocharts-library')
+    api fileTree(include: ['*.jar'], dir: 'libs')
     def dependencies = rootProject.ext.dependencies
     api dependencies.ktx
     api dependencies.constraintlayout
@@ -63,12 +76,15 @@ dependencies {
     api dependencies.rxjava
     api dependencies.rxandroid
     api dependencies.pickers
+    //微信登录分享支付
+    api dependencies.wechat
     //google地图
     api 'com.google.android.gms:play-services-maps:17.0.0'
     api 'com.google.android.gms:play-services-places:17.0.0'
     api 'com.google.android.gms:play-services-location:17.0.0'
     api 'com.google.maps:google-maps-services:0.14.0'
     api 'com.google.maps.android:android-maps-utils:2.0.3'
+    api 'cat.ereza:customactivityoncrash:2.3.0'
     if (rootGradle.googlePlay) {
         println "Add lib libbuglygoogle"
         api project(':libbuglygoogle')

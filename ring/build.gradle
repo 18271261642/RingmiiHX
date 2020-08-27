@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'com.google.gms.google-services'
     id 'kotlin-android-extensions'
 }
 
@@ -15,18 +14,24 @@ android {
     defaultConfig {
         minSdkVersion rootGradle.minSdkVersion
         targetSdkVersion rootGradle.targetSdkVersion
-        applicationId "com.guider.ring"
+        applicationId "com.guider.gps"
         versionCode rootGradle.codeVersion
         versionName rootGradle.appVersion
         multiDexEnabled true
     }
     signingConfigs {
+        debug {
+            storePassword "GuiderHealth.com"
+            keyAlias "guider"
+            keyPassword "GuiderHealth.com"
+            storeFile file("./guider.jks")
+        }
         // 生产签名
         relealse {
             storePassword "GuiderHealth.com"
             keyAlias "guider"
             keyPassword "GuiderHealth.com"
-            storeFile file("guider.jks")
+            storeFile file("./guider.jks")
             v1SigningEnabled true
 
             v2SigningEnabled true
@@ -51,7 +56,7 @@ android {
             shrinkResources false
             pseudoLocalesEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.relealse
+            signingConfig signingConfigs.debug
 //            versionNameSuffix "_debug_${getTime()}"
         }
     }
@@ -77,9 +82,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api project(':baseLib')
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    // Add the SDK for Firebase Cloud Messaging
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    api 'com.linecorp.linesdk:linesdk:5.5.1'
 }
 
 android.applicationVariants.all { variant ->

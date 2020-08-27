@@ -2,7 +2,6 @@ package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -48,18 +47,6 @@ class MainActivity : BaseActivity() {
     override fun initImmersion() {
         showBackButton(R.drawable.icon_home_left_menu, this)
         setRightImage2(R.drawable.ic_home_msg, this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (intent != null && intent.extras != null) {
-            val extras = intent.extras
-            val sb = StringBuilder()
-            extras?.keySet()?.forEach {
-                sb.append("${extras.get(it)}------")
-            }
-            Log.e("MainActivity", sb.toString())
-        }
     }
 
     override fun initView() {
