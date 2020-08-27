@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
-import com.guider.feifeia3.utils.MMKVUtil
+import com.guider.baselib.utils.MMKVUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.HomeLeftDrawMsgAdapter
 import com.guider.gps.bean.WithSelectBaseBean

@@ -7,7 +7,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.guider.baselib.base.BaseApplication
 import com.guider.baselib.utils.*
-import com.guider.feifeia3.utils.MMKVUtil
+import com.guider.baselib.utils.MMKVUtil
 import com.guider.feifeia3.utils.ToastUtil
 import com.joinutech.ddbeslibrary.bean.WXAccessTokenEntity
 import com.joinutech.ddbeslibrary.bean.WXBaseRespEntity

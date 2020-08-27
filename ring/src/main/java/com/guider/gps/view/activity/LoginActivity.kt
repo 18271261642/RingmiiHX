@@ -2,10 +2,12 @@ package com.guider.gps.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
-import com.guider.feifeia3.utils.MMKVUtil
+import com.guider.baselib.utils.MMKVUtil
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.line.ILineLogin
@@ -23,6 +25,9 @@ import java.util.HashMap
 class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     private lateinit var api: IWXAPI
+
+    private var transY = 0
+    private var isAnim = false
 
     /**
      * Line第三方登陆相关
@@ -54,6 +59,8 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 //        api = WXAPIFactory.createWXAPI(this, APP_ID_WX, true)
 //        //将应用的appid注册到微信
 //        api.registerApp(APP_ID_WX)
+        transY = ScreenUtils.dip2px(this, 30f)
+        setListenerToRootView()
     }
 
     override fun initLogic() {
@@ -62,6 +69,38 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         loginTv.setOnClickListener(this)
 //        weChatIv.setOnClickListener(this)
         lineIv.setOnClickListener(this)
+    }
+
+    /**
+     * 通过view树监听键盘变化
+     */
+    private fun setListenerToRootView() {
+        val rootView = window.decorView.findViewById<View>(android.R.id.content)
+        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val mKeyboardUp = isKeyboardShown(rootView)
+            if (mKeyboardUp) {
+                //键盘弹出
+                editLayout.translationY = -(transY.toFloat())
+                isAnim = true
+            } else {
+                //键盘收起
+                if (isAnim) {
+                    editLayout.translationY = 0f
+                    isAnim = false
+                }
+            }
+        }
+    }
+
+    private fun isKeyboardShown(rootView: View): Boolean {
+        val softKeyboardHeight = 100
+        val r = Rect()
+        rootView.getWindowVisibleDisplayFrame(r)
+        val dm = rootView.resources.displayMetrics
+        val heightDiff = rootView.bottom - r.bottom
+        Log.e("diff", heightDiff.toString())
+        //同时判断键盘高度和是否是密码键盘获取到焦点才去移动布局
+        return heightDiff > softKeyboardHeight * dm.density && passwordEdit.isFocused
     }
 
     override fun onNoDoubleClick(v: View) {
@@ -163,6 +202,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     private fun enterMainPage() {
         val intent = Intent(mContext, MainActivity::class.java)
         startActivity(intent)
+        MMKVUtil.saveString(USER.USERID, phoneEdit.text.toString())
         finish()
     }
 

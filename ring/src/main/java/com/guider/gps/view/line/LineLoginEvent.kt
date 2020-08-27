@@ -21,7 +21,7 @@ object LineLoginEvent {
     @Synchronized
     fun lineOfficeLogin(context: Context?, loginButton: LoginButton,
                         appId: String?, fragment: Fragment?,
-                        onSuccess:(hashMap: HashMap<String, String?>) -> Unit) {
+                        onSuccess: (hashMap: HashMap<String, String?>) -> Unit) {
         // final LoginButton loginButton = new LoginButton(context);
         // if the button is inside a Fragment, this function should be called.
         if (fragment != null) loginButton.setFragment(fragment)
@@ -48,14 +48,14 @@ object LineLoginEvent {
         loginButton.addLoginListener(object : LoginListener {
             override fun onLoginSuccess(result: LineLoginResult) {
                 // Toast.makeText(mContext, "Login success", Toast.LENGTH_SHORT).show();
-                    val ret = HashMap<String, String?>()
-                    ret["userId"] = result.lineProfile!!.userId
-                    if (result.lineProfile!!.pictureUrl != null
-                            && StringUtils.isEmpty(result.lineProfile!!.pictureUrl!!.path))
-                        ret["pictureUrl"] = result.lineProfile!!.pictureUrl!!.path
-                    else ret["pictureUrl"] = ""
-                    ret["displayName"] = result.lineProfile!!.displayName
-                    onSuccess.invoke(ret)
+                val ret = HashMap<String, String?>()
+                ret["userId"] = result.lineProfile!!.userId
+                if (result.lineProfile!!.pictureUrl != null
+                        && StringUtils.isEmpty(result.lineProfile!!.pictureUrl!!.path))
+                    ret["pictureUrl"] = result.lineProfile!!.pictureUrl!!.path
+                else ret["pictureUrl"] = ""
+                ret["displayName"] = result.lineProfile!!.displayName
+                onSuccess.invoke(ret)
             }
 
             override fun onLoginFailure(result: LineLoginResult?) {
@@ -63,7 +63,7 @@ object LineLoginEvent {
                 if (result?.responseCode == LineApiResponseCode.CANCEL) {
                     ToastUtil.show(context!!, "Login cancel")
                 } else {
-                    ToastUtil.show(context!!, result?.errorData?.message.toString())
+                    ToastUtil.show(context!!, "Login failure")
                 }
             }
         })

@@ -1,5 +1,6 @@
-package com.guider.feifeia3.utils
+package com.guider.baselib.utils
 
+import com.guider.feifeia3.utils.GsonUtil
 import com.tencent.mmkv.MMKV
 import java.lang.reflect.Type
 

@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
-import com.guider.feifeia3.utils.MMKVUtil
+import com.guider.baselib.utils.MMKVUtil
 import com.guider.gps.R
 import com.guider.gps.view.activity.MainActivity
 import com.guider.gps.view.activity.PersonInfoActivity

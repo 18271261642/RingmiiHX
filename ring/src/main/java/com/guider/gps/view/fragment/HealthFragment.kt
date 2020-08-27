@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.TARGET_STEP
-import com.guider.feifeia3.utils.MMKVUtil
+import com.guider.baselib.utils.MMKVUtil
 import com.guider.gps.R
 import kotlinx.android.synthetic.main.fragment_home_health.*
 
