@@ -7,7 +7,7 @@
         <item name="colorAccent">@color/bar_grey</item>
     </style>
     <style name="Splash" parent="AppTheme">
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowBackground">@drawable/shape_splash</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

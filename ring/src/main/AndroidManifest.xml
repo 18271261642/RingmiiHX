@@ -40,7 +40,9 @@
             android:value="AIzaSyBStHSiBBid2JNFNtrvOW-G_gSY_XTtMtw" />
         <activity
             android:name=".view.activity.SplashActivity"
-            android:theme="@style/Splash">
+            android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
+            android:theme="@style/Splash"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,6 +62,7 @@
         <activity android:name=".view.activity.LocationFrequencySetActivity" />
         <activity android:name=".view.activity.HistoryRecordActivity" />
         <activity android:name=".view.activity.RegisterActivity" />
+        <activity android:name=".view.activity.GuideActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

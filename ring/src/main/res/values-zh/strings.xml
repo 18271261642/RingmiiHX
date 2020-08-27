@@ -124,4 +124,11 @@
     <string name="app_login_phone_empty">手机号为空</string>
     <string name="app_login_password_empty">密码为空</string>
     <string name="app_register_password_different">两次输入的密码不同</string>
+    <string name="app_guide_page1_title">精准定位，安全守护</string>
+    <string name="app_guide_page1_content">实时位置检测，电子围栏，sos报警，让爱不失联</string>
+    <string name="app_guide_page2_title">智能健康管理</string>
+    <string name="app_guide_page2_content">汇聚多维度健康数据，健康状态随时知晓</string>
+    <string name="app_guide_page3_title">远程健康问诊</string>
+    <string name="app_guide_page3_content">足不出户，远程解答健康问题</string>
+    <string name="app_splash_company_info">盖德健康产业有限公司</string>
 </resources>

@@ -35,6 +35,7 @@ val APP_ID_LINE = "1654871917"
  * */
 const val CURRENT_DEVICE_NAME = "current_device_name"
 const val TARGET_STEP = "target_step"
+const val IS_FIRST_START = "is_first_start"
 
 object USER {
     //个人信息页缓存相关
