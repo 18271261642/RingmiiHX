@@ -11,7 +11,7 @@ import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.apilib.model.DoctorInfo;
-import com.guider.health.apilib.model.UserInfo;
+import com.guider.health.apilib.bean.UserInfo;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
@@ -281,7 +281,7 @@ public class UserManager {
     }
 
     public void getUserInfoOnServer(final Context context) {
-        ApiUtil.createApi(IGuiderApi.class , false).getUserInfo(getAccountId() + "")
+        ApiUtil.createApi(IGuiderApi.class , false).getUserInfo(getAccountId())
                 .enqueue(new ApiCallBack<UserInfo>(context) {
                     @Override
                     public void onApiResponse(Call<UserInfo> call, Response<UserInfo> response) {
@@ -302,7 +302,7 @@ public class UserManager {
     public void synchronizeInfo(final Context context) {
         if (getAccountId() >= 0) {
             Logger.i("同步信息");
-            ApiUtil.createApi(IGuiderApi.class , false).getUserInfo(getAccountId() + "")
+            ApiUtil.createApi(IGuiderApi.class , false).getUserInfo(getAccountId() )
                     .enqueue(new ApiCallBack<UserInfo>(context) {
                         @Override
                         public void onApiResponse(Call<UserInfo> call, Response<UserInfo> response) {

@@ -8,7 +8,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.guider.baselib.base.BaseFragment
-import com.guider.baselib.utils.StringUtils
+import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartModel
 import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartType
 import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAOptionsConstructor
@@ -247,7 +247,7 @@ class HealthDataFragment : BaseFragment() {
         //Y轴
         val axisY = Axis().setHasLines(true)
         axisY.textSize = 8//设置字体大小
-        if (StringUtils.isNotBlankAndEmpty(type)) axisY.textColor = Color.GRAY //X轴灰色
+        if (StringUtil.isNotBlankAndEmpty(type)) axisY.textColor = Color.GRAY //X轴灰色
         else axisY.textColor = Color.WHITE //X轴灰色
         axisY.maxLabelChars = 4
         data.axisYLeft = axisY //设置Y轴位置 左边
@@ -259,7 +259,7 @@ class HealthDataFragment : BaseFragment() {
         //对x轴，数据和属性的设置
         axisX.textSize = 9 //设置字体的大小
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
-        if (StringUtils.isNotBlankAndEmpty(type)) axisX.textColor =
+        if (StringUtil.isNotBlankAndEmpty(type)) axisX.textColor =
                 mActivity.resources.getColor(R.color.colorF18937) //X轴灰色
         else axisX.textColor = Color.WHITE //X轴灰色
         axisX.values = mAxisValues //设置x轴各个坐标点名称

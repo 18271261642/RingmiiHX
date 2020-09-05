@@ -32,6 +32,9 @@
             android:layout_marginStart="@dimen/dp_19"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/colorCCCCCC"
+            android:textSize="@dimen/sp_13"
+            android:text="@string/app_person_info_district_information"
             app:layout_constraintStart_toEndOf="@id/countryTitle"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,6 +68,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:id="@+id/detailAddressEdit"
             android:background="@color/white"
             android:gravity="start"
             android:hint="@string/app_person_info_street_information"
@@ -74,7 +78,7 @@
             android:paddingEnd="@dimen/dp_16"
             android:textColor="@color/color333333"
             android:textColorHint="@color/colorCCCCCC"
-            android:textSize="13sp"
+            android:textSize="@dimen/sp_13"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/detailAddressTitle"
             app:layout_constraintTop_toTopOf="parent" />

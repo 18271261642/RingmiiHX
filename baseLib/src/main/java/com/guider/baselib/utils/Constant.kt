@@ -34,17 +34,39 @@ val APP_ID_LINE = "1654871917"
  * 常用MMKV的key常量
  * */
 const val CURRENT_DEVICE_NAME = "current_device_name"
+const val BIND_DEVICE_ACCOUNT_ID = "bind_device_account_id"
 const val TARGET_STEP = "target_step"
 const val IS_FIRST_START = "is_first_start"
+const val REFRESH_TOKEN= "refresh_token"
+const val EXPIRED_TIME= "expired_time"
 
 object USER {
     //个人信息页缓存相关
     const val USERID = "userId"//用户id
+    const val HEADER = "userHeader"//用户头像
+    const val NAME = "userName"//用户头像
+    const val TOKEN = "token"//用户token
+    const val COUNTRY_CODE = "country_code"//手机号
+    const val PHONE = "phone"//手机号
 }
 
+//裁剪照片路径
+const val CROP_PATH_NEW = "/guiderGps/crop/image/"
+
 //activity的resultCode 常量记录
-const val SINGLE_LINE_EDIT = 0x000001
-const val PERSON_INFO = 0x000002
+const val SPORT_STEP_INFO = 0x000001
+const val PERSON_PHONE = 0x000002
 const val ADDRESS_SELECT = 0x000003
 const val LOCATION_FREQUENCY_SET = 0x000004
 const val REGISTER = 0x000005
+// 图片裁剪
+const val IMAGE_CUT_CODE = 0x000006
+const val PERSON_NAME = 0x000007
+const val PERSON_HEIGHT = 0x000008
+const val PERSON_WEIGHT = 0x000009
+const val PERSON_INFO = 0x000010
+const val COMPLETE_INFO = 0x000011
+const val BIND_PHONE = 0x000012
+const val SCAN_CODE = 0x000013
+const val ADD_NEW_DEVICE = 0x000014
+const val DEVICE_BIND_ADD_MEMBER = 0x000015

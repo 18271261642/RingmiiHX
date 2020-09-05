@@ -24,7 +24,7 @@ public class RequestHead implements Interceptor {
         if (context == null) {
             return;
         }
-        appid = "b3c327c04d8b0471";
+        appid = "b3c327c04d8b9f9s";
 
         Locale locale = context.getResources().getConfiguration().locale;
         String language = locale.getCountry().toLowerCase();
@@ -58,4 +58,6 @@ public class RequestHead implements Interceptor {
         Request request = requestBuilder.build();
         return chain.proceed(request);
     }
+
+
 }

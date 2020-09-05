@@ -4,12 +4,14 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.*
+import com.guider.baselib.utils.BIND_DEVICE_ACCOUNT_ID
+import com.guider.baselib.utils.IS_FIRST_START
+import com.guider.baselib.utils.MMKVUtil
+import com.guider.baselib.utils.USER
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
 import com.guider.gps.R
 import com.guider.gps.view.fragment.GuideFragment
 import kotlinx.android.synthetic.main.activity_guide.*
-import me.jessyan.autosize.internal.CustomAdapt
 
 /**
  * @Package:        com.guider.gps.view.activity
@@ -69,9 +71,14 @@ class GuideActivity : BaseActivity() {
     }
 
     private fun dealEnterPageEvent() {
-        if (StringUtils.isNotBlankAndEmpty(MMKVUtil.getString(USER.USERID))) {
+        if (MMKVUtil.getInt(USER.USERID, 0) != 0) {
             //已经登录过
-            startActivity(Intent(this, MainActivity::class.java))
+            //判断是否有绑定的设备
+            if (!MMKVUtil.containKey(BIND_DEVICE_ACCOUNT_ID)) {
+                val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
+                intent.putExtra("type", "mine")
+                startActivity(intent)
+            } else startActivity(Intent(this, MainActivity::class.java))
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }

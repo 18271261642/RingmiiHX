@@ -3,7 +3,7 @@ package com.guider.gps.view.fragment
 import android.os.Bundle
 import android.view.View
 import com.guider.baselib.base.BaseFragment
-import com.guider.baselib.utils.StringUtils
+import com.guider.baselib.utils.StringUtil
 import com.guider.gps.R
 import kotlinx.android.synthetic.main.fragment_guide.*
 
@@ -36,7 +36,7 @@ class GuideFragment : BaseFragment() {
 
     override fun initLogic() {
         arguments?.takeIf { it.containsKey(ARG_STR) }?.apply {
-            if (StringUtils.isNotBlankAndEmpty(getString(ARG_STR)))
+            if (StringUtil.isNotBlankAndEmpty(getString(ARG_STR)))
                 pageType = getString(ARG_STR)!!
         }
         when (pageType) {

@@ -4,8 +4,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.guider.baselib.base.BaseFragment
-import com.guider.baselib.utils.StringUtils
+import com.guider.baselib.utils.StringUtil
 import com.guider.gps.R
+import com.guider.gps.view.activity.AddNewDeviceActivity
 import kotlinx.android.synthetic.main.fragment_input_code_add_device.*
 
 class InputCodeAddDeviceFragment : BaseFragment() {
@@ -33,19 +34,28 @@ class InputCodeAddDeviceFragment : BaseFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (StringUtils.isNotBlankAndEmpty(s.toString())) {
+                if (StringUtil.isNotBlankAndEmpty(s.toString())) {
                     deleteEdit.visibility = View.VISIBLE
                 } else deleteEdit.visibility = View.GONE
             }
 
         })
         deleteEdit.setOnClickListener(this)
+        enterTv.setOnClickListener(this)
     }
 
     override fun onNoDoubleClick(v: View) {
         when (v) {
             deleteEdit -> {
                 inputEdit.setText("")
+            }
+            enterTv -> {
+                if (StringUtil.isEmpty(inputEdit.text.toString())) {
+                    showToast(mActivity.resources.getString(R.string.app_device_code_empty))
+                    return
+                }
+                val deviceCode = inputEdit.text.toString()
+                (mActivity as AddNewDeviceActivity).bindNewDeviceWithAccount(deviceCode)
             }
         }
     }

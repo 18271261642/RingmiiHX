@@ -224,30 +224,30 @@ public class DeviceInit {
         Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血糖
         Config.DEVICE_KEYS.add(DEV_MEDCHECK_PRE);//MEDCHECK 血压
 
-        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
-                new ApiCallBack<List<Devices>>(){
-                    @Override
-                    public void onApiResponse(Call<List<Devices>> call, Response<List<Devices>> response) {
-                        super.onApiResponse(call, response);
-                        if (response != null && response.body() != null && !response.body().isEmpty()) {
-                            Config.DEVICE_KEYS.clear();
-                            for (Devices device : response.body()) {
-                                Config.DEVICE_KEYS.add(device.getBtName() + device.getVersion());
-                                device.setName(names.get(device.getBtName() + device.getVersion()));
-                                Config.DEVICE_OBJ.put(device.getBtName() + device.getVersion(), device);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onRequestFinish() {
-                        super.onRequestFinish();
-                        if (callback != null) {
-                            callback.onHaveList();
-                        }
-                    }
-                }
-        );
+//        ApiUtil.createHDApi(IGuiderApi.class).getDeviceList(MyUtils.getMacAddress()).enqueue(
+//                new ApiCallBack<List<Devices>>(){
+//                    @Override
+//                    public void onApiResponse(Call<List<Devices>> call, Response<List<Devices>> response) {
+//                        super.onApiResponse(call, response);
+//                        if (response != null && response.body() != null && !response.body().isEmpty()) {
+//                            Config.DEVICE_KEYS.clear();
+//                            for (Devices device : response.body()) {
+//                                Config.DEVICE_KEYS.add(device.getBtName() + device.getVersion());
+//                                device.setName(names.get(device.getBtName() + device.getVersion()));
+//                                Config.DEVICE_OBJ.put(device.getBtName() + device.getVersion(), device);
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onRequestFinish() {
+//                        super.onRequestFinish();
+//                        if (callback != null) {
+//                            callback.onHaveList();
+//                        }
+//                    }
+//                }
+//        );
     }
 
     public interface OnHasDeviceList {

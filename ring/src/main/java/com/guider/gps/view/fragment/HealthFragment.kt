@@ -8,10 +8,15 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.CommonUtils
-import com.guider.baselib.utils.TARGET_STEP
 import com.guider.baselib.utils.MMKVUtil
+import com.guider.baselib.utils.TARGET_STEP
 import com.guider.gps.R
+import com.guider.health.apilib.ApiCallBack
+import com.guider.health.apilib.ApiUtil
+import com.guider.health.apilib.IUserHDApi
 import kotlinx.android.synthetic.main.fragment_home_health.*
+import retrofit2.Call
+import retrofit2.Response
 
 class HealthFragment : BaseFragment() {
 
@@ -19,6 +24,9 @@ class HealthFragment : BaseFragment() {
         get() = R.layout.fragment_home_health
 
     private var tabTitleList = arrayListOf<String>()
+
+    private var startTimeValue = ""
+    private var endTimeValue = ""
 
     override fun initView(rootView: View) {
     }
@@ -78,6 +86,57 @@ class HealthFragment : BaseFragment() {
 //        TabLayoutMediator(healthTabLayout, healthViewPager) { tab, position ->
 //            tab.text = tabTitleList[position]
 //        }.attach()
+        getHealthData()
+    }
+
+    private fun getHealthData() {
+        getStepData()
+        getHealthChartData()
+    }
+
+    private fun getHealthChartData() {
+        getBloodData()
+        getTempData()
+        getHeartData()
+        getSleepData()
+        getSportData()
+    }
+
+    private fun getSportData() {
+
+    }
+
+    private fun getSleepData() {
+
+    }
+
+    private fun getHeartData() {
+
+    }
+
+    private fun getTempData() {
+
+    }
+
+    private fun getBloodData() {
+
+    }
+
+    private fun getStepData() {
+        mActivity.showDialog()
+        ApiUtil.createHDApi(IUserHDApi::class.java)
+                .getHomeStep()
+                .enqueue(object : ApiCallBack<String>() {
+                    override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
+                        if (response?.body() != null) {
+                            stepNumTv.text = response.body()
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        mActivity.dismissDialog()
+                    }
+                })
     }
 
     /**

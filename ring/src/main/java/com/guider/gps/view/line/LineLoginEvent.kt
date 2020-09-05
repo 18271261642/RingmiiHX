@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.StringUtils
+import com.guider.baselib.utils.StringUtil
 import com.guider.feifeia3.utils.ToastUtil
 import com.linecorp.linesdk.LineApiResponseCode
 import com.linecorp.linesdk.LoginListener
@@ -34,7 +34,7 @@ object LineLoginEvent {
         //normal是正常登陆模式
         loginButton.setAuthenticationParams(LineAuthenticationParams.Builder()
                 .scopes(listOf(Scope.PROFILE, Scope.OPENID_CONNECT))
-                .botPrompt(LineAuthenticationParams.BotPrompt.aggressive)
+                .botPrompt(LineAuthenticationParams.BotPrompt.normal)
                 .build()
         )
 
@@ -51,7 +51,7 @@ object LineLoginEvent {
                 val ret = HashMap<String, String?>()
                 ret["userId"] = result.lineProfile!!.userId
                 if (result.lineProfile!!.pictureUrl != null
-                        && StringUtils.isEmpty(result.lineProfile!!.pictureUrl!!.path))
+                        && StringUtil.isEmpty(result.lineProfile!!.pictureUrl!!.path))
                     ret["pictureUrl"] = result.lineProfile!!.pictureUrl!!.path
                 else ret["pictureUrl"] = ""
                 ret["displayName"] = result.lineProfile!!.displayName

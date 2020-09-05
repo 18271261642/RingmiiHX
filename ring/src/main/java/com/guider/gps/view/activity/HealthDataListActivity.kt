@@ -9,7 +9,7 @@ import cn.addapp.pickers.picker.DatePicker.OnYearMonthDayPickListener
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.DateUtilKotlin
-import com.guider.baselib.utils.StringUtils
+import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.utils.toastShort
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
@@ -34,7 +34,7 @@ class HealthDataListActivity : BaseActivity() {
     override fun initImmersion() {
         showBackButton(R.drawable.ic_back_white)
         if (intent != null) {
-            if (StringUtils.isNotBlankAndEmpty(intent.getStringExtra("type"))) {
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("type"))) {
                 type = intent.getStringExtra("type")!!
                 setTitle(type)
             }
@@ -131,7 +131,7 @@ class HealthDataListActivity : BaseActivity() {
         if (type == "start") {
             //选择开始时间
             //结束时间比开始时间必须大，且结束时间不能比开始时间长30天
-            if (StringUtils.isNotBlankAndEmpty(endTimeTv.text.toString()) &&
+            if (StringUtil.isNotBlankAndEmpty(endTimeTv.text.toString()) &&
                     (CommonUtils.calTimeDateCompareNew(
                             selectDate, endTimeTv.text.toString()))
             ) {
@@ -146,7 +146,7 @@ class HealthDataListActivity : BaseActivity() {
             }
         } else {
             //选择结束时间
-            if (StringUtils.isNotBlankAndEmpty(startTimeTv.text.toString()) &&
+            if (StringUtil.isNotBlankAndEmpty(startTimeTv.text.toString()) &&
                     (CommonUtils.calTimeDateCompareNew(
                             startTimeTv.text.toString(), selectDate))
             ) {

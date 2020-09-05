@@ -27,8 +27,8 @@ android {
 
                 println "apilib -- Package Google Play Bundle Release . . ."
             } else { // 大陆版
-                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
-                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+                buildConfigField("String", "APIURL", '"http://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"http://apihd.guiderhealth.com/"')
 
                 println "apilib -- Package CN Bundle Release . . ."
             }
@@ -40,8 +40,8 @@ android {
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
             } else { // 大陆版
-                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
-                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
+                buildConfigField("String", "APIURL", '"http://api.guiderhealth.com/"')
+                buildConfigField("String", "APIHDURL", '"http://apihd.guiderhealth.com/"')
                 // buildConfigField("String", "APIURL", '"http://192.168.1.180:8082/"')
                 // buildConfigField("String", "APIHDURL", '"http://192.168.1.180:8083/"')
             }
@@ -61,5 +61,6 @@ dependencies {
     api dependencies.glassfish_annotation
     api dependencies.logger
     api dependencies.joda_time
-
+    //配置内存存储
+    api dependencies.mmkv
 }

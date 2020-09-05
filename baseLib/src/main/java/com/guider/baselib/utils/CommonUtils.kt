@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Environment
 import android.util.Log
 import androidx.core.content.ContextCompat
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -135,5 +137,36 @@ object CommonUtils {
             }
         }
         return false
+    }
+
+    fun logOutClearMMKV() {
+        var phone = ""
+        if (MMKVUtil.containKey(USER.PHONE) &&
+                StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.PHONE))) {
+            phone = MMKVUtil.getString(USER.PHONE)
+        }
+        var countryCode = ""
+        if (MMKVUtil.containKey(USER.COUNTRY_CODE) &&
+                StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.COUNTRY_CODE))) {
+            countryCode = MMKVUtil.getString(USER.COUNTRY_CODE)
+        }
+        MMKVUtil.clearAll()
+        if (StringUtil.isNotBlankAndEmpty(phone))
+            MMKVUtil.saveString(USER.PHONE, phone)
+        if (StringUtil.isNotBlankAndEmpty(countryCode))
+            MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
+        MMKVUtil.saveBoolean(IS_FIRST_START, true)
+    }
+
+    /**
+     * 自定义压缩存储地址
+     * @return
+     */
+    fun getCompressPath(): String {
+        val path = Environment.getExternalStorageDirectory().path + CROP_PATH_NEW
+        val file = File(path)
+        return if (file.mkdirs()) {
+            path
+        } else path
     }
 }

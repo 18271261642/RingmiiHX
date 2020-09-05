@@ -1,0 +1,167 @@
+package com.guider.health.apilib
+
+import com.guider.health.apilib.model.TempMeasure
+import com.guider.health.apilib.model.hd.*
+import com.guider.health.apilib.model.hd.standard.StandardRequestBean
+import com.guider.health.apilib.model.hd.standard.StandardResultBean
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
+
+/**
+ * 个人用户健康数据
+ */
+interface IUserHDApi {
+    /**
+     * 欧孚计步数据推送
+     */
+    @POST("api/v1/op/data")
+    fun getHomeStep(): Call<String>
+
+    /**
+     * 欧孚血压数据查询
+     * @param accountId 查询用户的id
+     * @param page 页数，查全部的时候为-1
+     * @param row 当查全部的时候row不生效
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
+    @GET("api/v1/op/healthdata/bloodpressure")
+    fun getHealthBloodChartData(
+            @Query("accountId") accountId: Int,
+            @Query("page") page: Int,
+            @Query("row") row: Int,
+            @Query("startTime") startTime: String,
+            @Query("endTime") endTime: String
+            ):Call<Any>
+    /**
+     * 欧孚体温数据查询
+     * @param accountId 查询用户的id
+     * @param page 页数，查全部的时候为-1
+     * @param row 当查全部的时候row不生效
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
+    @GET("api/v1/op/healthdata/bodytemp")
+    fun getHealthTempChartData(
+            @Query("accountId") accountId: Int,
+            @Query("page") page: Int,
+            @Query("row") row: Int,
+            @Query("startTime") startTime: String,
+            @Query("endTime") endTime: String
+    ):Call<Any>
+
+    /**
+     * 欧孚心率数据查询
+     * @param accountId 查询用户的id
+     * @param page 页数，查全部的时候为-1
+     * @param row 当查全部的时候row不生效
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
+    @GET("api/v1/op/healthdata/heartbeat")
+    fun getHealthHeartChartData(
+            @Query("accountId") accountId: Int,
+            @Query("page") page: Int,
+            @Query("row") row: Int,
+            @Query("startTime") startTime: String,
+            @Query("endTime") endTime: String
+    ):Call<Any>
+
+    /**
+     * 欧孚睡眠数据查询
+     * @param accountId 查询用户的id
+     * @param page 页数，查全部的时候为-1
+     * @param row 当查全部的时候row不生效
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
+    @GET("api/v1/op/healthdata/sleep")
+    fun getHealthSleepChartData(
+            @Query("accountId") accountId: Int,
+            @Query("page") page: Int,
+            @Query("row") row: Int,
+            @Query("startTime") startTime: String,
+            @Query("endTime") endTime: String
+    ):Call<Any>
+
+    /**
+     * 欧孚血糖数据查询
+     * @param accountId 查询用户的id
+     * @param page 页数，查全部的时候为-1
+     * @param row 当查全部的时候row不生效
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
+    @GET("api/v1/op/healthdata/bloodsugar")
+    fun getHealthBloodSugarChartData(
+            @Query("accountId") accountId: Int,
+            @Query("page") page: Int,
+            @Query("row") row: Int,
+            @Query("startTime") startTime: String,
+            @Query("endTime") endTime: String
+    ):Call<Any>
+
+    //老版接口
+    /**
+     * 心率入库
+     *
+     * @param body
+     * @return
+     */
+    @POST("api/v1/heartbeat")
+    fun sendHeartBpm(@Body body: List<HeartBpmMeasure?>?): Call<String?>?
+
+    /**
+     * 血压入库
+     */
+    @POST("api/v1/bloodpressure")
+    fun sendBp(@Body body: List<BpMeasure?>?): Call<String?>?
+
+    /**
+     * 动脉硬化
+     */
+    @POST("api/v1/arteriosclerosis")
+    fun sendArt(@Body body: List<ArtMeasure?>?): Call<String?>?
+
+    /**
+     * 血糖
+     */
+    @POST("api/v1/bloodsugar")
+    fun sendBloodSugar(@Body body: List<BloodsugarMeasure?>?): Call<String?>?
+
+    /**
+     * 血氧
+     */
+    @POST("api/v1/bloodoxygen")
+    fun sendBloodOxygen(@Body body: List<BloodoxygenMeasure?>?): Call<String?>?
+
+    /**
+     * 体温
+     */
+    @POST("api/v1/bodytemp")
+    fun sendTemp(@Body body: List<TempMeasure?>?): Call<String?>?
+
+    /**
+     * 心电
+     */
+    @POST("api/v1/heartstate")
+    fun sendHeartState(@Body body: List<HeartStateMeasure?>?): Call<String?>?
+
+    /**
+     * 12导
+     */
+    @POST("api/v1/ecg")
+    fun sendEcg12(@Body body: List<Heart12Measure?>?): Call<String?>?
+
+    /**
+     * 获取标准化
+     *
+     * @param body
+     * @return
+     */
+    @POST("api/v1/healthrange/anlysis")
+    fun getStandard(@Body body: List<StandardRequestBean?>?): Call<List<StandardResultBean?>?>?
+}

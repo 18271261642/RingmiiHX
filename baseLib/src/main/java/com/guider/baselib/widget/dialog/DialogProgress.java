@@ -39,7 +39,7 @@ public class DialogProgress {
         // 去掉标题线
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCanceledOnTouchOutside(true);
 
         // 背景透明
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

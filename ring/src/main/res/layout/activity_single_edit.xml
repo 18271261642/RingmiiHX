@@ -9,6 +9,7 @@
         android:layout_height="42dp"
         android:background="@color/white"
         android:layout_marginTop="11dp"
+        android:id="@+id/editLayout"
         app:layout_constraintTop_toTopOf="parent"
         >
         <TextView

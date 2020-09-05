@@ -87,11 +87,15 @@
     <string name="app_time_interval">The time interval</string>
     <string name="app_history_list">History List</string>
     <string name="app_phone_number">Phone Number</string>
+    <string name="app_bind_phone_number">Bind Phone Number</string>
+    <string name="app_immediately_binding">Immediately binding</string>
     <string name="app_step_number">Step Number</string>
+    <string name="app_please_fill_in">Please fill in</string>
     <string name="app_step_input_hint">Please fill in the target number of steps</string>
     <string name="app_phone_input_hint">Please fill in the target number of Phone Number</string>
     <string name="app_person_info_title">Person Info</string>
     <string name="app_person_info_change_success">Change Success</string>
+    <string name="app_person_info_change_fail">Change Fail</string>
     <string name="app_person_info_select_birthday">Select birthday</string>
     <string name="app_person_info_header">Header</string>
     <string name="app_person_info_name">Name</string>
@@ -104,6 +108,7 @@
     <string name="app_person_info_man">man</string>
     <string name="app_person_info_woman">woman</string>
     <string name="app_person_info_select_area">Select area</string>
+    <string name="app_person_info_district_information">Regional information</string>
     <string name="app_person_info_street_information">Street number information</string>
     <string name="app_please_select">Please select</string>
     <string name="app_confirm">Confirm</string>
@@ -118,12 +123,18 @@
     <string name="app_login">Login</string>
     <string name="app_login_register_now">Register now</string>
     <string name="app_login_no_account">No account yet?</string>
+    <string name="app_complete_name_empty">The name is empty</string>
+    <string name="app_complete_header_empty">Avatar not set</string>
+    <string name="app_complete_sex_empty">Gender not filled in</string>
+    <string name="app_complete_birthday_empty">Birthday not filled in</string>
     <string name="app_login_to_sing_agree">To sign in is to agree</string>
     <string name="app_login_user_service_agreement">User Service Agreement</string>
     <string name="app_login_privacy_policy_clause">Privacy Policy clause</string>
     <string name="app_login_and">and</string>
     <string name="app_login_phone_empty">The cell phone number is empty</string>
+    <string name="app_phone_illegal">Cell phone Numbers are illegal</string>
     <string name="app_login_password_empty">The cell phone number is empty</string>
+    <string name="app_device_nickName_empty">The device nickname is empty</string>
     <string name="app_register_password_different">The two passwords are different</string>
     <string name="app_guide_page1_title">Accurate positioning and safety protection</string>
     <string name="app_guide_page1_content">Real-time location detection, electronic fence, SOS alarm, let love do not lose contact</string>
@@ -132,4 +143,10 @@
     <string name="app_guide_page3_title">Tele-health consultation</string>
     <string name="app_guide_page3_content">Answer health questions remotely without leaving the house</string>
     <string name="app_splash_company_info">Gade Health Industries LTD</string>
+    <string name="app_complete_info">Perfect information</string>
+    <string name="app_complete">complete</string>
+    <string name="app_device_code_empty">The device code is empty</string>
+    <string name="app_own_string">own</string>
+    <string name="app_device_nickName">device nickName</string>
+    <string name="app_device_bind">Binding equipment</string>
 </resources>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bindPhoneLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/phoneTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_31"
+            android:text="@string/app_login_phone_edit_hint"
+            android:textColor="@color/color333333"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/phoneLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_19"
+            app:layout_constraintTop_toBottomOf="@id/phoneTitle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/countryCodeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/phoneEdit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/phoneEdit">
+
+                <TextView
+                    android:id="@+id/countryTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_24"
+                    android:text="+86"
+                    android:textColor="@color/color333333"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/countryIv"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_9"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:src="@drawable/icon_black_arrow_down"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/countryTv"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <EditText
+                android:id="@+id/phoneEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/dp_26"
+                android:background="@color/white"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:hint="@string/app_login_phone_edit_hint"
+                android:inputType="phone"
+                android:minHeight="@dimen/dp_30"
+                android:paddingStart="@dimen/dp_11"
+                android:paddingEnd="0dp"
+                android:singleLine="true"
+                android:textColor="@color/color333333"
+                android:textColorHint="@color/color999999"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/countryCodeLayout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/phoneLine"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_marginStart="@dimen/dp_26"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginEnd="@dimen/dp_26"
+                android:background="@color/colorEEEEEE"
+                app:layout_constraintTop_toBottomOf="@id/phoneEdit" />
+
+            <ImageView
+                android:id="@+id/phoneDelete"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:src="@drawable/icon_grey_delete"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/phoneEdit"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/deviceNameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_31"
+        app:layout_constraintTop_toBottomOf="@id/bindPhoneLayout">
+
+        <TextView
+            android:id="@+id/deviceNameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_24"
+            android:text="@string/app_device_nickName"
+            android:textColor="@color/color333333"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/deviceNameEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_19"
+            android:layout_marginEnd="@dimen/dp_24"
+            android:background="@color/white"
+            android:hint="@string/app_device_nickName"
+            android:minHeight="@dimen/dp_28"
+            android:textColor="@color/color333333"
+            android:textColorHint="@color/color999999"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deviceNameTitle" />
+
+        <View
+            android:id="@+id/deviceNameLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:layout_marginStart="@dimen/dp_26"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_26"
+            android:background="@color/colorEEEEEE"
+            app:layout_constraintTop_toBottomOf="@id/deviceNameEdit" />
+
+        <ImageView
+            android:id="@+id/deviceNameDelete"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:src="@drawable/icon_grey_delete"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/deviceNameEdit"
+            app:layout_constraintTop_toTopOf="@id/deviceNameEdit" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/enterTv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_42"
+        android:layout_marginStart="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_37"
+        android:layout_marginEnd="@dimen/dp_24"
+        android:background="@drawable/bg_round_home_msg_21"
+        android:gravity="center"
+        android:text="@string/app_next_step"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintTop_toBottomOf="@id/deviceNameLayout" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="@string/app_add_device_scan_hint2"
+        android:textColor="@color/color999999"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enterTv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

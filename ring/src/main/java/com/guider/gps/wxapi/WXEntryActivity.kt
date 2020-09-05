@@ -2,12 +2,11 @@ package com.guider.gps.wxapi
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.guider.baselib.base.BaseApplication
 import com.guider.baselib.utils.*
-import com.guider.baselib.utils.MMKVUtil
 import com.guider.feifeia3.utils.ToastUtil
 import com.joinutech.ddbeslibrary.bean.WXAccessTokenEntity
 import com.joinutech.ddbeslibrary.bean.WXBaseRespEntity
@@ -20,7 +19,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.zhy.http.okhttp.OkHttpUtils
 import com.zhy.http.okhttp.callback.StringCallback
 import okhttp3.Call
-import java.lang.Exception
 
 class WXEntryActivity : AppCompatActivity(), IWXAPIEventHandler {
     private lateinit var api: IWXAPI
@@ -89,7 +87,7 @@ class WXEntryActivity : AppCompatActivity(), IWXAPIEventHandler {
                                     val openid = accessTokenEntity.openid
                                     val unionid = accessTokenEntity.unionid
                                     logShow("微信登录资料已获取，后续未完成")
-                                    if (StringUtils.isNotBlankAndEmpty(MMKVUtil.getString("wxInfo"))) {
+                                    if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString("wxInfo"))) {
                                         //需要用户信息
                                         getUserInfo(accessTokenEntity)
                                     } else {
@@ -153,13 +151,21 @@ class WXEntryActivity : AppCompatActivity(), IWXAPIEventHandler {
                         val wxResponse: WXUserInfo? = Gson().fromJson(response,
                                 WXUserInfo::class.java)
                         var nickName = ""
+                        var headimgurl = ""
                         if (wxResponse != null) {
-                            if (StringUtils.isNotBlankAndEmpty(wxResponse.nickname)) {
+                            if (StringUtil.isNotBlankAndEmpty(wxResponse.nickname)) {
                                 nickName = wxResponse.nickname!!
+                            }
+                            if (StringUtil.isNotBlankAndEmpty(wxResponse.nickname)) {
+                                headimgurl = wxResponse.headimgurl!!
                             }
                             EventBusUtils.sendEvent(EventBusEvent(
                                     EventBusAction.WECHAT_LOGIN,
-                                    "${wxResponse.openid}:${wxResponse.unionid}:$nickName"))
+                                    "${wxResponse.openid}:" +
+                                            "${wxResponse.unionid}:" +
+                                            "${wxResponse.sex}:" +
+                                            "$nickName:" +
+                                            headimgurl))
                         }
                         finish()
                     }

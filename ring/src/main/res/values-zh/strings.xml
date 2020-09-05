@@ -86,11 +86,15 @@
     <string name="app_time_interval">时间间隔</string>
     <string name="app_history_list">历史列表</string>
     <string name="app_phone_number">手机号码</string>
+    <string name="app_bind_phone_number">绑定手机号码</string>
+    <string name="app_immediately_binding">立即绑定</string>
     <string name="app_step_number">步数</string>
+    <string name="app_please_fill_in">请填写</string>
     <string name="app_step_input_hint">请填写目标步数</string>
     <string name="app_phone_input_hint">请填写手机号码</string>
     <string name="app_person_info_title">个人信息</string>
     <string name="app_person_info_change_success">修改成功</string>
+    <string name="app_person_info_change_fail">修改失败</string>
     <string name="app_person_info_select_birthday">选择生日</string>
     <string name="app_person_info_header">头像</string>
     <string name="app_person_info_name">姓名</string>
@@ -103,6 +107,7 @@
     <string name="app_person_info_man">男</string>
     <string name="app_person_info_woman">女</string>
     <string name="app_person_info_select_area">选择地区</string>
+    <string name="app_person_info_district_information">地区信息</string>
     <string name="app_person_info_street_information">街道门牌信息</string>
     <string name="app_please_select">请选择</string>
     <string name="app_confirm">确定</string>
@@ -122,6 +127,11 @@
     <string name="app_login_privacy_policy_clause">隐私政策条款</string>
     <string name="app_login_and">和</string>
     <string name="app_login_phone_empty">手机号为空</string>
+    <string name="app_complete_name_empty">姓名为空</string>
+    <string name="app_complete_header_empty">头像未设置</string>
+    <string name="app_complete_sex_empty">性别未填写</string>
+    <string name="app_complete_birthday_empty">生日未填写</string>
+    <string name="app_phone_illegal">手机号码不合法</string>
     <string name="app_login_password_empty">密码为空</string>
     <string name="app_register_password_different">两次输入的密码不同</string>
     <string name="app_guide_page1_title">精准定位，安全守护</string>
@@ -131,4 +141,11 @@
     <string name="app_guide_page3_title">远程健康问诊</string>
     <string name="app_guide_page3_content">足不出户，远程解答健康问题</string>
     <string name="app_splash_company_info">盖德健康产业有限公司</string>
+    <string name="app_complete_info">完善信息</string>
+    <string name="app_complete">完成</string>
+    <string name="app_device_code_empty">设备码为空</string>
+    <string name="app_own_string">自己</string>
+    <string name="app_device_nickName">设备昵称</string>
+    <string name="app_device_bind">绑定设备</string>
+    <string name="app_device_nickName_empty">设备昵称为空</string>
 </resources>

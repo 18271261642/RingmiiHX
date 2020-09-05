@@ -1,4 +1,4 @@
-package com.guider.feifeia3.utils
+package com.guider.baselib.utils
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

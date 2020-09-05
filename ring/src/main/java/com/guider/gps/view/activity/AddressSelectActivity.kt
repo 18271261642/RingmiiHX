@@ -1,21 +1,42 @@
 package com.guider.gps.view.activity
 
-import android.app.Activity
-import android.view.Gravity
+import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import com.guider.baselib.base.BaseActivity
+import com.guider.baselib.utils.CommonUtils
+import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.utils.toastShort
-import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.gps.R
+import com.guider.health.apilib.ApiCallBack
+import com.guider.health.apilib.ApiUtil
+import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.bean.AddressType
+import com.guider.health.apilib.bean.AddressWithCodeBean
+import com.guider.health.apilib.bean.UserInfo
+import com.lljjcoder.Interface.OnCityItemClickListener
+import com.lljjcoder.bean.CityBean
+import com.lljjcoder.bean.DistrictBean
+import com.lljjcoder.bean.ProvinceBean
+import com.lljjcoder.style.cityjd.JDCityConfig
+import com.lljjcoder.style.cityjd.JDCityPicker
 import kotlinx.android.synthetic.main.activity_address_select.*
-import kotlinx.android.synthetic.main.activity_person_info.*
+import retrofit2.Call
+import retrofit2.Response
 
 /**
  * 地址选择页
  */
 class AddressSelectActivity : BaseActivity() {
+
+    private var districtValue = ""
+    private var detailAddress = ""
+    private var provinceValue = ""
+    private var cityValue = ""
+    private var countieValue = ""
+    private var provinceValueInt = 0
+    private var cityValueInt = 0
+    private var countieValueInt = 0
+    private var bean: UserInfo? = null
 
     override val contentViewResId: Int
         get() = R.layout.activity_address_select
@@ -28,10 +49,26 @@ class AddressSelectActivity : BaseActivity() {
         setTitle(resources.getString(R.string.app_person_info_detail_address))
         showBackButton(R.drawable.ic_back_white)
         setRightImage(R.drawable.icon_top_right_confirm, this)
+        if (intent != null) {
+            if (intent.getParcelableExtra<UserInfo>("bean") != null) {
+                bean = intent.getParcelableExtra("bean")
+            }
+        }
     }
 
     override fun initView() {
-
+        if (bean != null) {
+            if (bean!!.province != 0) {
+                provinceValueInt = bean!!.province
+                cityValueInt = bean!!.city
+                countieValueInt = bean!!.countie
+                getProvinceAddress()
+            }
+            if (StringUtil.isNotBlankAndEmpty(bean!!.descDetail)) {
+                detailAddress = bean!!.descDetail!!
+                detailAddressEdit.setText(detailAddress)
+            }
+        }
     }
 
     override fun initLogic() {
@@ -41,9 +78,14 @@ class AddressSelectActivity : BaseActivity() {
     override fun onNoDoubleClick(v: View) {
         when (v) {
             iv_toolbar_right -> {
-                toastShort(resources.getString(R.string.app_person_info_change_success))
-                setResult(Activity.RESULT_OK, intent)
-                finish()
+                if (StringUtil.isEmpty(districtValue)) {
+                    return
+                }
+                detailAddress = detailAddressEdit.text.toString()
+                if (StringUtil.isEmpty(detailAddress)) {
+                    return
+                }
+                getAddressCode()
             }
             countryLayout -> {
                 selectAddressDialog()
@@ -51,28 +93,272 @@ class AddressSelectActivity : BaseActivity() {
         }
     }
 
-    private fun selectAddressDialog() {
-        val dialog = object : DialogHolder(this,
-                R.layout.dialog_select_address, Gravity.BOTTOM) {
-            override fun bindView(dialogView: View) {
-                var tag = 0
-                val addressIv = dialogView.findViewById<ImageView>(R.id.addressIv)
-                addressIv.setOnClickListener {
-                    if (tag == 0) {
-                        tag = 1
-                        addressIv.setImageResource(R.drawable.icon_city)
-                    } else {
-                        addressIv.setImageResource(R.drawable.icon_district)
-                        addressIv.postDelayed({
-                            dialog?.dismiss()
-                            countryTv.text = "北京市 北京市 朝阳区"
-                        }, 1000)
+    private fun getProvinceAddress() {
+        showDialog()
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .getAddressCode(AddressType.PROVINCE, 0)
+                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
+                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
+                                               response: Response<List<AddressWithCodeBean>>?) {
+                        if (!response?.body().isNullOrEmpty()) {
+                            run breaking@{
+                                response?.body()?.forEach {
+                                    if (it.id == provinceValueInt) {
+                                        provinceValue = getProvinceName(it.name)
+                                        getCityAddress(provinceValueInt)
+                                        return@breaking
+                                    }
+                                }
+                            }
+                        }
                     }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun getProvinceName(name: String): String {
+        return when (name) {
+            //4个直辖市
+            "北京", "天津", "上海", "重庆" -> {
+                "${name}市"
+            }
+            //2个自治区
+            "内蒙古", "西藏" -> {
+                "${name}自治区"
+            }
+            "新疆" -> {
+                "新疆维吾尔自治区"
+            }
+            "宁夏" -> {
+                "宁夏回族自治区"
+            }
+            "壮族自治区" -> {
+                "广西壮族自治区"
+            }
+            else -> "${name}省"
+        }
+    }
+
+    private fun getCityAddress(parentId: Int) {
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .getAddressCode(AddressType.CITY, parentId)
+                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
+                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
+                                               response: Response<List<AddressWithCodeBean>>?) {
+                        if (!response?.body().isNullOrEmpty()) {
+                            run breaking@{
+                                response?.body()?.forEach {
+                                    if (it.id == cityValueInt) {
+                                        cityValue = getCityName(it.name)
+                                        getCountieAddress(cityValueInt)
+                                        return@breaking
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun getCityName(name: String): String {
+        return when (name) {
+            //4个直辖市
+            "北京", "天津", "上海", "重庆" -> {
+                "${name}市"
+            }
+            else -> name
+        }
+    }
+
+    private fun getCountieAddress(parentId: Int) {
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .getAddressCode(AddressType.COUNTIE, parentId)
+                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
+                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
+                                               response: Response<List<AddressWithCodeBean>>?) {
+                        if (!response?.body().isNullOrEmpty()) {
+                            run breaking@{
+                                response?.body()?.forEach {
+                                    if (it.id == countieValueInt) {
+                                        countieValue = it.name
+                                        districtValue =
+                                                "$provinceValue $cityValue $countieValue"
+                                        countryTv.text = districtValue
+                                        countryTv.setTextColor(
+                                                CommonUtils.getColor(
+                                                        mContext!!, R.color.color333333))
+                                        return@breaking
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun getAddressCode() {
+        showDialog()
+        val province = when {
+            provinceValue.contains("省") -> {
+                provinceValue.replace("省", "")
+            }
+            provinceValue.contains("市") -> {
+                provinceValue.replace("市", "")
+            }
+            provinceValue.contains("维吾尔自治区") -> {
+                provinceValue.replace("维吾尔自治区", "")
+            }
+            provinceValue.contains("回族自治区") -> {
+                provinceValue.replace("回族自治区", "")
+            }
+            provinceValue.contains("壮族自治区") -> {
+                provinceValue.replace("壮族自治区", "")
+            }
+            provinceValue.contains("自治区") -> {
+                provinceValue.replace("自治区", "")
+            }
+            else -> provinceValue
+        }
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .getAddressCode(AddressType.PROVINCE, 0)
+                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
+                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
+                                               response: Response<List<AddressWithCodeBean>>?) {
+                        if (!response?.body().isNullOrEmpty()) {
+                            run breaking@{
+                                response?.body()?.forEach {
+                                    if (it.name == province) {
+                                        provinceValueInt = it.id
+                                        getCityCode(provinceValueInt)
+                                        return@breaking
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun getCityCode(parentId: Int) {
+        val city = cityValue.replace("市", "")
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .getAddressCode(AddressType.CITY, parentId)
+                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
+                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
+                                               response: Response<List<AddressWithCodeBean>>?) {
+                        if (!response?.body().isNullOrEmpty()) {
+                            run breaking@{
+                                response?.body()?.forEach {
+                                    if (it.name == city) {
+                                        cityValueInt = it.id
+                                        getCountieCode(cityValueInt)
+                                        return@breaking
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun getCountieCode(parentId: Int) {
+        val countie = countieValue
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .getAddressCode(AddressType.COUNTIE, parentId)
+                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
+                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
+                                               response: Response<List<AddressWithCodeBean>>?) {
+                        if (!response?.body().isNullOrEmpty()) {
+                            run breaking@{
+                                response?.body()?.forEach {
+                                    if (it.name == countie) {
+                                        countieValueInt = it.id
+                                        changeAddressInfo()
+                                        return@breaking
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun changeAddressInfo() {
+        showDialog()
+        bean?.province = provinceValueInt
+        bean?.city = cityValueInt
+        bean?.countie = countieValueInt
+        bean?.descDetail = detailAddress
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .editUserInfo(bean)
+                .enqueue(object : ApiCallBack<UserInfo>(mContext) {
+                    override fun onApiResponse(call: Call<UserInfo>?,
+                                               response: Response<UserInfo>?) {
+                        if (response?.body() != null) {
+                            //修改成功
+                            toastShort(mContext!!.resources.getString(
+                                    R.string.app_person_info_change_success))
+                            finish()
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun selectAddressDialog() {
+        val cityPicker = JDCityPicker()
+        val jdCityConfig = JDCityConfig.Builder().build()
+        jdCityConfig.showType = JDCityConfig.ShowType.PRO_CITY_DIS
+        cityPicker.init(this)
+        cityPicker.setConfig(jdCityConfig)
+        cityPicker.setOnCityItemClickListener(object : OnCityItemClickListener() {
+
+            override fun onSelected(province: ProvinceBean, city: CityBean,
+                                    district: DistrictBean) {
+                Log.e("", "城市选择结果：" + province.name + city.name + district.name)
+                provinceValue = province.name
+                cityValue = city.name
+                countieValue = district.name
+                districtValue = "${province.name} ${city.name} ${district.name}"
+                countryTv.setTextColor(CommonUtils.getColor(mContext!!, R.color.color333333))
+                countryTv.text = districtValue
+            }
+
+            override fun onCancel() {
+                if (StringUtil.isEmpty(districtValue)) {
+                    countryTv.text = mContext!!.resources.getString(
+                            R.string.app_person_info_district_information)
+                    countryTv.setTextColor(CommonUtils.getColor(mContext!!, R.color.colorCCCCCC))
                 }
             }
-        }
-        dialog.initView()
-        dialog.show(true)
+        })
+        cityPicker.showCityPicker()
     }
 
     override fun showToolBar(): Boolean {

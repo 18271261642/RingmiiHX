@@ -39,7 +39,7 @@ abstract class BaseApplication : Application() {
         }
         //MMKV初始化
         MMKV_ROOT = MMKV.initialize(guiderHealthContext)
-        MyUtils.setMacAddress("11:11:11:11:11:16")
+        MyUtils.setMacAddress("11:11:11:11:11:26")
         ApiUtil.init(guiderHealthContext,MyUtils.getMacAddress())
         initAutoSize()
         MyUtils.application = this

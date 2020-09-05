@@ -14,7 +14,7 @@ buildscript {
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0-rc01'
+        classpath 'com.android.tools.build:gradle:4.1.0-rc02'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"

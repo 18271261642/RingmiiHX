@@ -40,14 +40,17 @@ ext {
     joda_time = "2.10.6"
     pickers = "2.0.0"
     hellocharts = "1.5.8"
-    crashreport_upgrade ="1.4.5"
-    crashreport ="3.1.8"
+    crashreport_upgrade = "1.4.5"
+    crashreport = "3.1.8"
     nativecrashreport = "3.7.471"
     play_services_maps = "17.0.0"
-    google_maps_services ="0.14.0"
-    android_maps_utils ="2.0.3"
-    customactivityoncrash ="2.3.0"
-    linesdk ="5.5.1"
+    google_maps_services = "0.14.0"
+    android_maps_utils = "2.0.3"
+    customactivityoncrash = "2.3.0"
+    linesdk = "5.5.1"
+    pictureSelector = "2.5.8"
+    city_picker = "5.2.2"
+    zxing = "1.1.9-androidx"
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
             material              : "com.google.android.material:material:$material",
@@ -95,6 +98,9 @@ ext {
             google_maps_services  : "com.google.maps:google-maps-services:0.14.0",
             android_maps_utils    : "com.google.maps.android:android-maps-utils:$android_maps_utils",
             customactivityoncrash : "cat.ereza:customactivityoncrash:$customactivityoncrash",
-            linesdk               : "com.linecorp.linesdk:linesdk:$linesdk"
+            linesdk               : "com.linecorp.linesdk:linesdk:$linesdk",
+            pictureSelector       : "com.github.LuckSiege.PictureSelector:picture_library:v$pictureSelector",
+            city_picker           : "liji.library.dev:citypickerview:$city_picker",
+            zxing                 : "com.king.zxing:zxing-lite:$zxing"
     ]
 }

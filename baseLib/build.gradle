@@ -64,8 +64,6 @@ dependencies {
     api dependencies.immersionBar
     //greenDao 数据库存储
     api dependencies.greendao
-    //配置内存存储
-    api dependencies.mmkv
     //switchButton
     api dependencies.switch_button
     // ViewModel and LiveData
@@ -84,6 +82,9 @@ dependencies {
     api dependencies.android_maps_utils
     api dependencies.customactivityoncrash
     api dependencies.linesdk
+    api dependencies.pictureSelector
+    api dependencies.city_picker
+    api dependencies.zxing
 
     //集成的module
     api project(':apilib')
