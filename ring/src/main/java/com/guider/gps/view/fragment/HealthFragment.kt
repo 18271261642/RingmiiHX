@@ -100,42 +100,38 @@ class HealthFragment : BaseFragment() {
                     when (tab?.text.toString()) {
                         tabTitleList[0] -> {
                             dateType = 0
-//                            startTimeValue = DateUtilKotlin.localToUTC(
-//                                    "${CommonUtils.getCurrentDate()} 00:00:00")!!
-//                            endTimeValue = DateUtilKotlin.localToUTC(
-//                                    "${CommonUtils.getCurrentDate()} 24:00:00")!!
+                            startTimeValue = DateUtilKotlin.localToUTC(
+                                    "${CommonUtils.getCurrentDate()} 00:00:00")!!
+                            endTimeValue = DateUtilKotlin.localToUTC(
+                                    "${CommonUtils.getCurrentDate()} 24:00:00")!!
                             getHealthData()
                         }
                         tabTitleList[1] -> {
                             dateType = 1
-//                            startTimeValue = DateUtilKotlin.localToUTC(
-//                                    "${
-//                                        CommonUtils.calTimeFrontDate(
-//                                                CommonUtils.getCurrentDate(), 1)
-//                                    } 00:00:00")!!
-//                            endTimeValue = DateUtilKotlin.localToUTC(
-//                                    "${
-//                                        CommonUtils.calTimeFrontDate(
-//                                                CommonUtils.getCurrentDate(), 1)
-//                                    } 24:00:00")!!
                             startTimeValue = DateUtilKotlin.localToUTC(
-                                    "2019-05-20 09:00:21")!!
+                                    "${
+                                        CommonUtils.calTimeFrontDate(
+                                                CommonUtils.getCurrentDate(), 1)
+                                    } 00:00:00")!!
                             endTimeValue = DateUtilKotlin.localToUTC(
-                                    "2020-05-20 09:00:21")!!
+                                    "${
+                                        CommonUtils.calTimeFrontDate(
+                                                CommonUtils.getCurrentDate(), 1)
+                                    } 24:00:00")!!
                             getHealthData()
                         }
                         tabTitleList[2] -> {
                             dateType = 2
-//                            startTimeValue = DateUtilKotlin.localToUTC(
-//                                    "${
-//                                        CommonUtils.calTimeFrontDate(
-//                                                CommonUtils.getCurrentDate(), 2)
-//                                    } 00:00:00")!!
-//                            endTimeValue = DateUtilKotlin.localToUTC(
-//                                    "${
-//                                        CommonUtils.calTimeFrontDate(
-//                                                CommonUtils.getCurrentDate(), 2)
-//                                    } 24:00:00")!!
+                            startTimeValue = DateUtilKotlin.localToUTC(
+                                    "${
+                                        CommonUtils.calTimeFrontDate(
+                                                CommonUtils.getCurrentDate(), 2)
+                                    } 00:00:00")!!
+                            endTimeValue = DateUtilKotlin.localToUTC(
+                                    "${
+                                        CommonUtils.calTimeFrontDate(
+                                                CommonUtils.getCurrentDate(), 2)
+                                    } 24:00:00")!!
                             getHealthData()
                         }
                     }

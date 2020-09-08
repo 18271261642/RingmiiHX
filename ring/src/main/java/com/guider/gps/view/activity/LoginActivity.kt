@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
+import com.guider.baselib.utils.USER.BIRTHDAY
 import com.guider.baselib.utils.USER.COUNTRY_CODE
 import com.guider.baselib.utils.USER.HEADER
 import com.guider.baselib.utils.USER.NAME
@@ -276,6 +277,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                             val resultBean = response.body()!!
                             MMKVUtil.saveString(HEADER, resultBean.headUrl!!)
                             MMKVUtil.saveString(NAME, resultBean.name!!)
+                            var birthday = "1970-01-01"
+                            if (StringUtil.isNotBlankAndEmpty(resultBean.birthday))
+                                birthday = resultBean.birthday!!.replace(
+                                        "T00:00:00Z", "")
+                            MMKVUtil.saveString(BIRTHDAY, birthday)
                             //拿到个人信息并保存后去验证是否绑定设备
                             verifyIsBindDevice(accountId)
                         }

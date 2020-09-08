@@ -40,8 +40,8 @@ const val BIND_DEVICE_ACCOUNT_ID = "bind_device_account_id"
 const val BIND_DEVICE_CODE = "bind_device_code"
 const val TARGET_STEP = "target_step"
 const val IS_FIRST_START = "is_first_start"
-const val REFRESH_TOKEN= "refresh_token"
-const val EXPIRED_TIME= "expired_time"
+const val REFRESH_TOKEN = "refresh_token"
+const val EXPIRED_TIME = "expired_time"
 
 object USER {
     //个人信息页缓存相关
@@ -51,6 +51,7 @@ object USER {
     const val TOKEN = "token"//用户token
     const val COUNTRY_CODE = "country_code"//手机号
     const val PHONE = "phone"//手机号
+    const val BIRTHDAY = "birthday"//生日
 }
 
 //裁剪照片路径
@@ -62,6 +63,7 @@ const val PERSON_PHONE = 0x000002
 const val ADDRESS_SELECT = 0x000003
 const val LOCATION_FREQUENCY_SET = 0x000004
 const val REGISTER = 0x000005
+
 // 图片裁剪
 const val IMAGE_CUT_CODE = 0x000006
 const val PERSON_NAME = 0x000007

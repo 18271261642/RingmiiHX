@@ -242,7 +242,6 @@ class LocationFragment : BaseFragment(),
                 line = null
                 //重新定位并添加开始标记
                 mGoogleMap?.clear()
-                locationMyAddress()
                 getElectronicFenceData()
             }
             tabTitleList[3] -> {
@@ -312,6 +311,8 @@ class LocationFragment : BaseFragment(),
                                     .strokeWidth(1.0f).addAll(latLngList)
                                     .strokeWidth(1f)
                             mGoogleMap?.addPolygon(polygon)
+                            mGoogleMap?.animateCamera(
+                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
                         }
                     }
 
@@ -374,7 +375,7 @@ class LocationFragment : BaseFragment(),
                     val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
                     val startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, timeHour)
                     val endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
-                    getUserPointData(startTimeValue,endTimeValue)
+                    getUserPointData(startTimeValue, endTimeValue)
                 }
             }
 
@@ -799,12 +800,15 @@ class LocationFragment : BaseFragment(),
         if (mLastLocation == null) return
         mLocationLat = mLastLocation!!.latitude
         mLocationLon = mLastLocation!!.longitude
-        // 移动到定位点中心，并且缩放级别为18
+        // 移动到定位点中心，并且缩放级别为16
         initCamera(LatLng(mLocationLat, mLocationLon))
         // 添加mark标记
         startDisplayPerth(LatLng(mLocationLat, mLocationLon))
     }
 
+    /**
+     * 设置定位点（开始点）的mark标志
+     */
     private fun startDisplayPerth(latLng: LatLng) {
         val transJC02LatLng =
                 if (BuildConfig.DEBUG) {
@@ -832,7 +836,9 @@ class LocationFragment : BaseFragment(),
         }
     }
 
-
+    /**
+     * 设置结束点的mark标志
+     */
     private fun endDisplayPerth(latLng: LatLng) {
         // 每一次打点第一个的时候就是定位开始的时候
         val bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_mark_end_bg)
@@ -841,6 +847,9 @@ class LocationFragment : BaseFragment(),
         endPerth?.isDraggable = false //设置不可移动
     }
 
+    /**
+     * 添加轨迹线
+     */
     private fun addEndPerthAndDrawLine() {
         val endLng = firstLocationLng + 0.005
         endDisplayPerth(LatLng(firstLocationLat, endLng))
@@ -871,6 +880,9 @@ class LocationFragment : BaseFragment(),
         locationMyAddress()
     }
 
+    /**
+     * 定位我的位置
+     */
     @SuppressLint("MissingPermission")
     private fun locationMyAddress() {
         val perms = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -1005,9 +1017,8 @@ class LocationFragment : BaseFragment(),
     override fun onMarkerClick(marker: Marker?): Boolean {
         if (marker?.tag == martTag) {
             marker.showInfoWindow()
-            return true
         }
-        return false
+        return true
     }
 
     override fun onInfoWindowClick(marker: Marker?) {
@@ -1017,6 +1028,9 @@ class LocationFragment : BaseFragment(),
         }
     }
 
+    /**
+     * 自定义的地图信息弹窗
+     */
     internal inner class CustomInfoWindowAdapter : GoogleMap.InfoWindowAdapter {
 
         private val window: View = mActivity.layoutInflater.inflate(

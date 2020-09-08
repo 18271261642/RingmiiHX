@@ -290,6 +290,7 @@ class PersonInfoActivity : BaseActivity() {
                         } else dayIntValue)
                 birthday = selectDate
                 birthdayTv.text = birthday
+                MMKVUtil.saveString(USER.BIRTHDAY, birthday)
                 isChangeTag = true
             }
         })

@@ -4,7 +4,7 @@ package com.guider.baselib.bean;
  * Created by haix on 2019/7/25.
  */
 
-public class ParamHealthRangeAnlysis {
+public class ParamHealthRangeAnalysis {
 
     public final static int BMI = 1;
     public final static int HEARTBEAT = 2;

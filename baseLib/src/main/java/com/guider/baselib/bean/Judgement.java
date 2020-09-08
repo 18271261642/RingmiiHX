@@ -12,10 +12,10 @@ import java.util.List;
 
 public class Judgement {
 
-    public static JudgeResult healthDataAnlysis(ParamHealthRangeAnlysis paramHealthRangeAnlysis) {
+    public static JudgeResult healthDataAnlysis(ParamHealthRangeAnalysis paramHealthRangeAnlysis) {
 
         JudgeResult judgeResult = new JudgeResult();
-        List<ParamHealthRangeAnlysis> param = new ArrayList<>();
+        List<ParamHealthRangeAnalysis> param = new ArrayList<>();
         param.add(paramHealthRangeAnlysis);
         List<String> list = healthDataAnlysis(param);
         if (list.size() == 0){
@@ -45,7 +45,7 @@ public class Judgement {
      * @param param
      * @return
      */
-    public static List<String> healthDataAnlysis(List<ParamHealthRangeAnlysis> param) {
+    public static List<String> healthDataAnlysis(List<ParamHealthRangeAnalysis> param) {
         List<String> result = new ArrayList<>();
         if (param.size() == 0)
             return result;
@@ -54,10 +54,10 @@ public class Judgement {
         if (tmpRange == null) {
             return result;
         }
-        for (ParamHealthRangeAnlysis item : param) {
+        for (ParamHealthRangeAnalysis item : param) {
 
             switch (item.getType()) {
-                case ParamHealthRangeAnlysis.BMI:
+                case ParamHealthRangeAnalysis.BMI:
                     if (Double.parseDouble(item.getValue1().toString()) < tmpRange.getBmiMin()) {
                         result.add("体脂偏低");
                         index = -1;
@@ -69,7 +69,7 @@ public class Judgement {
                         index = 0;
                     }
                     break;
-                case ParamHealthRangeAnlysis.HEARTBEAT:
+                case ParamHealthRangeAnalysis.HEARTBEAT:
                     if (Integer.parseInt(item.getValue1().toString()) < tmpRange.getHrMin()) {
                         result.add("心率偏低");
                         index = -1;
@@ -81,9 +81,9 @@ public class Judgement {
                         index = 0;
                     }
                     break;
-                case ParamHealthRangeAnlysis.BLOODSUGAR:
+                case ParamHealthRangeAnalysis.BLOODSUGAR:
 
-                    if (item.getBsTime() == ParamHealthRangeAnlysis.TWOHPPG) {
+                    if (item.getBsTime() == ParamHealthRangeAnalysis.TWOHPPG) {
                         if (Double.parseDouble(item.getValue1().toString()) > tmpRange.getPbsMax()) {
                             result.add("血糖偏高");
                             index = 1;
@@ -107,7 +107,7 @@ public class Judgement {
                         }
                     }
                     break;
-                case ParamHealthRangeAnlysis.BLOODOXYGEN:
+                case ParamHealthRangeAnalysis.BLOODOXYGEN:
                     if (Integer.parseInt(item.getValue1().toString()) < tmpRange.getBoMin()) {
                         result.add("血氧偏低");
                         index = -1;
@@ -116,7 +116,7 @@ public class Judgement {
                         index = 0;
                     }
                     break;
-                case ParamHealthRangeAnlysis.BLOODPRESSURE:
+                case ParamHealthRangeAnalysis.BLOODPRESSURE:
 
                     if (item.getYear() == 0){
                         String year = UserManager.getInstance().getBirth().substring(0, 4);
@@ -229,7 +229,7 @@ public class Judgement {
 
                     break;
 
-                case ParamHealthRangeAnlysis.DMYH:
+                case ParamHealthRangeAnalysis.DMYH:
                     if (Integer.parseInt(item.getValue1().toString()) <= 80) {
                         index = 0;
                         result.add("正常");
@@ -257,7 +257,7 @@ public class Judgement {
                     break;
 
 
-                case ParamHealthRangeAnlysis.LLZS:
+                case ParamHealthRangeAnalysis.LLZS:
                     if (0.25 < Double.parseDouble(item.getValue1().toString()) && Double.parseDouble(item.getValue1().toString()) <= 4) {
                         result.add("正常");
                         index = 0;
@@ -272,7 +272,7 @@ public class Judgement {
                     break;
 
 
-                case ParamHealthRangeAnlysis.YLZS:
+                case ParamHealthRangeAnalysis.YLZS:
 
                     if (Double.parseDouble(item.getValue1().toString()) < 15) {
                         result.add("不佳");
@@ -287,7 +287,7 @@ public class Judgement {
                     }
                     break;
 
-                case ParamHealthRangeAnlysis.JKZS:
+                case ParamHealthRangeAnalysis.JKZS:
 
                     if (Double.parseDouble(item.getValue1().toString()) > 0.75) {
                         result.add("不佳");
@@ -301,14 +301,14 @@ public class Judgement {
                     }
                     break;
 
-                case ParamHealthRangeAnlysis.AVI:
+                case ParamHealthRangeAnalysis.AVI:
                     int age = Integer.parseInt(item.getValue1().toString());
                     int avi = Integer.parseInt(item.getValue2().toString());
                     int[] Avi = getAviAndApi(age, avi, 0);
                     result.add(Avi[0] == 0 ? "正常" : "异常");
                     index = Avi[0];
                     break;
-                case ParamHealthRangeAnlysis.API:
+                case ParamHealthRangeAnalysis.API:
                     int age1 = Integer.parseInt(item.getValue1().toString());
                     int api = Integer.parseInt(item.getValue2().toString());
                     int[] Api = getAviAndApi(age1, 0  , api);
