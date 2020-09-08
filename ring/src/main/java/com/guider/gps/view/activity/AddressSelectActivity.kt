@@ -1,5 +1,6 @@
 package com.guider.gps.view.activity
 
+import android.app.Activity
 import android.util.Log
 import android.view.View
 import com.guider.baselib.base.BaseActivity
@@ -13,10 +14,10 @@ import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.bean.AddressType
 import com.guider.health.apilib.bean.AddressWithCodeBean
 import com.guider.health.apilib.bean.UserInfo
-import com.lljjcoder.Interface.OnCityItemClickListener
-import com.lljjcoder.bean.CityBean
-import com.lljjcoder.bean.DistrictBean
-import com.lljjcoder.bean.ProvinceBean
+import com.lljjcoder.Interface.OnCityItemClickListenerNew
+import com.lljjcoder.bean.CityBeanNew
+import com.lljjcoder.bean.DistrictBeanNew
+import com.lljjcoder.bean.ProvinceBeanNew
 import com.lljjcoder.style.cityjd.JDCityConfig
 import com.lljjcoder.style.cityjd.JDCityPicker
 import kotlinx.android.synthetic.main.activity_address_select.*
@@ -255,7 +256,13 @@ class AddressSelectActivity : BaseActivity() {
     }
 
     private fun getCityCode(parentId: Int) {
-        val city = cityValue.replace("市", "")
+        val city = when (cityValue) {
+            //4个直辖市
+            "北京市", "天津市", "上海市", "重庆市" -> {
+                cityValue.replace("市", "")
+            }
+            else -> cityValue
+        }
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .getAddressCode(AddressType.CITY, parentId)
                 .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
@@ -321,6 +328,8 @@ class AddressSelectActivity : BaseActivity() {
                             //修改成功
                             toastShort(mContext!!.resources.getString(
                                     R.string.app_person_info_change_success))
+                            intent.putExtra("bean", bean)
+                            setResult(Activity.RESULT_OK, intent)
                             finish()
                         }
                     }
@@ -337,15 +346,15 @@ class AddressSelectActivity : BaseActivity() {
         jdCityConfig.showType = JDCityConfig.ShowType.PRO_CITY_DIS
         cityPicker.init(this)
         cityPicker.setConfig(jdCityConfig)
-        cityPicker.setOnCityItemClickListener(object : OnCityItemClickListener() {
+        cityPicker.setOnCityItemClickListener(object : OnCityItemClickListenerNew() {
 
-            override fun onSelected(province: ProvinceBean, city: CityBean,
-                                    district: DistrictBean) {
-                Log.e("", "城市选择结果：" + province.name + city.name + district.name)
-                provinceValue = province.name
-                cityValue = city.name
-                countieValue = district.name
-                districtValue = "${province.name} ${city.name} ${district.name}"
+            override fun onSelected(province: ProvinceBeanNew, city: CityBeanNew,
+                                    district: DistrictBeanNew) {
+                Log.e("", "城市选择结果：" + province.area_name + city.area_name + district.area_name)
+                provinceValue = province.area_name
+                cityValue = city.area_name
+                countieValue = district.area_name
+                districtValue = "${province.area_name} ${city.area_name} ${district.area_name}"
                 countryTv.setTextColor(CommonUtils.getColor(mContext!!, R.color.color333333))
                 countryTv.text = districtValue
             }

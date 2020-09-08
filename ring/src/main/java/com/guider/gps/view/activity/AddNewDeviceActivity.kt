@@ -97,12 +97,14 @@ class AddNewDeviceActivity : BaseActivity() {
                                         response.body()!!)
                                 val intent = Intent(mContext!!, MainActivity::class.java)
                                 MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_ID, accountId.toString())
-                                MMKVUtil.saveString(CURRENT_DEVICE_NAME,
+                                MMKVUtil.saveString(BIND_DEVICE_NAME,
                                         mContext!!.resources.getString(R.string.app_own_string))
                                 bean.userInfos?.forEach {
                                     if (it.accountId == accountId) {
                                         it.relationShip = mContext!!.resources.getString(
                                                 R.string.app_own_string)
+                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
+                                            MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
                                     }
                                 }
                                 intent.putExtra("bindListBean", bean)

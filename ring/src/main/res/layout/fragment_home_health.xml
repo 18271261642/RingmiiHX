@@ -2,7 +2,9 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,10 +77,11 @@
             app:tabIndicatorHeight="@dimen/dp_3"
             android:background="@color/colorF5F5F5"
             />
-        <FrameLayout
+        <include
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/healthViewPager"
+            layout="@layout/fragment_health_data"
             />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

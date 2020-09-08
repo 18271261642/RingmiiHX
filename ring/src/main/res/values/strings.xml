@@ -149,4 +149,5 @@
     <string name="app_own_string">own</string>
     <string name="app_device_nickName">device nickName</string>
     <string name="app_device_bind">Binding equipment</string>
+    <string name="app_electronic_set_hint">Locate 4 points on the map to plan the electronic fence area</string>
 </resources>

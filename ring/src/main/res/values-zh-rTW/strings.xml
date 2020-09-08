@@ -148,4 +148,5 @@
     <string name="app_device_nickName">設備暱稱</string>
     <string name="app_device_bind">綁定設備</string>
     <string name="app_device_nickName_empty">設備暱稱爲空</string>
+    <string name="app_electronic_set_hint">在地圖上定位4個點規劃電子圍欄範圍</string>
 </resources>

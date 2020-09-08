@@ -315,11 +315,14 @@ public class CalendarList extends FrameLayout {
             SimpleDateFormat formatYYYYMM = new SimpleDateFormat("yyyy年MM月");
             Date currentDate = new Date();
             //起始日期
-            Date startDate = new Date();
-            calendar.setTime(startDate);
-
+            Date date = new Date();
+            calendar.setTime(date);
             //结束日期
-            calendar.add(Calendar.MONTH, 5);
+            calendar.add(Calendar.MONTH, -6);
+            Date startDate = new Date(calendar.getTimeInMillis());
+            calendar.setTime(startDate);
+            //结束日期
+            calendar.add(Calendar.MONTH, +6);
             Date endDate = new Date(calendar.getTimeInMillis());
 
             Log.d(TAG, "startDate:" + format.format(startDate) +

@@ -132,6 +132,9 @@ class PersonInfoActivity : BaseActivity() {
         heightTv.text = height
         weight = personInfoBean?.weight.toString()
         weightTv.text = weight
+        if (StringUtil.isNotBlankAndEmpty(personInfoBean?.descDetail)){
+            addressTv.text = personInfoBean?.descDetail
+        }
     }
 
     override fun onNoDoubleClick(v: View) {
@@ -148,7 +151,7 @@ class PersonInfoActivity : BaseActivity() {
             addressLayout -> {
                 val intent = Intent(mContext, AddressSelectActivity::class.java)
                 intent.putExtra("bean", personInfoBean)
-                startActivity(intent)
+                startActivityForResult(intent,SELECT_ADDRESS)
             }
             headerLayout -> {
                 headerDialogShow()
@@ -407,6 +410,14 @@ class PersonInfoActivity : BaseActivity() {
                             }
                         }
 
+                    }
+                }
+                SELECT_ADDRESS ->{
+                    if (data.getParcelableExtra<UserInfo>("bean") != null) {
+                        personInfoBean = data.getParcelableExtra("bean")
+                        if (StringUtil.isNotBlankAndEmpty(personInfoBean?.descDetail)){
+                            addressTv.text = personInfoBean?.descDetail
+                        }
                     }
                 }
                 IMAGE_CUT_CODE -> {

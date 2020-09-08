@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+def rootGradle = rootProject.ext.android
+
+android {
+    compileSdkVersion rootGradle.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootGradle.minSdkVersion
+        targetSdkVersion rootGradle.targetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //增加lint选项，不加的话下面上传到jCenter有可能会报错
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    def dependencies = rootProject.ext.dependencies
+    implementation dependencies.appcompat
+    implementation dependencies.constraintlayout
+    implementation dependencies.converter_gson
+    implementation dependencies.recyclerview
+    implementation files('libs/pinyin4j-2.5.0.jar')
+}
+
+
+

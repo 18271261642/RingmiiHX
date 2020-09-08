@@ -193,5 +193,35 @@ interface IGuiderApi {
      */
     @GET("api/v1/register/phone/check")
     fun checkPhoneIsRegister(@Query("telAreaCode") telAreaCode: String?,
-                            @Query("phone") phone: String?): Call<String>
+                             @Query("phone") phone: String?): Call<String>
+
+    /**
+     * 查询设备的电子围栏信息
+     * @param deviceCode 设备码
+     */
+    @GET("api/v1/opdevice/fence")
+    fun getElectronicFence(@Query("deviceCode") deviceCode: String?):
+            Call<List<ElectronicFenceBean>>
+
+    /**
+     * 设置设备的电子围栏信息
+     * @param data 设备码+地址围栏信息的latlng列表
+     */
+    @POST("api/v1/opdevice/fence")
+    fun setElectronicFence(@Body data: Any): Call<String>
+
+    /**
+     * 运动轨迹
+     * @param accountId 查询用户的id
+     * @param page 页数，查全部的时候为-1
+     * @param row 当查全部的时候row不生效
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
+    @GET("api/v1/userpostion")
+    fun userPosition( @Query("accountId") accountId: Int,
+                      @Query("page") page: Int,
+                      @Query("row") row: Int,
+                      @Query("startTime") startTime: String,
+                      @Query("endTime") endTime: String):Call<List<Any>>
 }

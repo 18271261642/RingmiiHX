@@ -8,11 +8,21 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.CommonUtils
+import com.guider.baselib.utils.DateUtilKotlin
+import com.guider.baselib.utils.MMKVUtil
+import com.guider.baselib.utils.USER
+import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
 import com.guider.gps.view.activity.DoctorAnswerActivity
+import com.guider.health.apilib.ApiCallBack
+import com.guider.health.apilib.ApiUtil
+import com.guider.health.apilib.IUserHDApi
+import com.guider.health.apilib.bean.BloodSugarListBean
 import kotlinx.android.synthetic.main.fragment_medicine_data.*
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
+import retrofit2.Call
+import retrofit2.Response
 
 /**
  * 医疗数据2级页面
@@ -98,8 +108,67 @@ class MedicineDataFragment : BaseFragment() {
 
     private fun initDataChart() {
         val mAxisValues = getAxisLabel()
-        val bloodSugarAxisPoints = getBloodSugarAxisPoints()
-        initDataChartShow(bloodSugarAxisPoints, mAxisValues)
+        if (medicineType == resources.getString(R.string.app_main_health_blood_sugar))
+            getBloodSugarData()
+        initDataChartShow(arrayListOf(), mAxisValues)
+    }
+
+    private fun getBloodSugarData() {
+        val mDialog = DialogProgress(mActivity, null)
+        mDialog.showDialog()
+        val accountId = MMKVUtil.getInt(USER.USERID)
+        val startTimeValue = DateUtilKotlin.localToUTC(
+                "2019-05-20 09:00:21")!!
+        val endTimeValue = DateUtilKotlin.localToUTC(
+                "2020-05-20 09:00:21")!!
+        ApiUtil.createHDApi(IUserHDApi::class.java)
+                .getHealthBloodSugarChartData(2197, 1, 7,
+                        startTimeValue, endTimeValue)
+                .enqueue(object : ApiCallBack<List<BloodSugarListBean>>() {
+                    override fun onApiResponse(call: Call<List<BloodSugarListBean>>?,
+                                               response: Response<List<BloodSugarListBean>>?) {
+                        if (!response?.body().isNullOrEmpty()) {
+                            when {
+                                response?.body()!![0].bs < 6 -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
+                                    dataTagTv.text = medicineDataTextValues[2]
+                                    dataValueTv.text = response.body()!![0].bs.toString()
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[2]
+                                    )
+                                }
+                                response.body()!![0].bs > 7 -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
+                                    dataTagTv.text = medicineDataTextValues[0]
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[0]
+                                    )
+                                }
+                                else -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                                    dataTagTv.text = medicineDataTextValues[1]
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[1]
+                                    )
+                                }
+                            }
+                            dataValueTv.text = response.body()!![0].bs.toString()
+                            val bloodSugarAxisPoints = getBloodSugarAxisPoints(response.body()!!)
+                            val mAxisValues = getAxisLabel()
+                            initDataChartShow(bloodSugarAxisPoints, mAxisValues)
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        mDialog.hideDialog()
+                    }
+                })
     }
 
     private fun initDataChartShow(bloodSugarAxisPoints: ArrayList<PointValue>,
@@ -167,9 +236,12 @@ class MedicineDataFragment : BaseFragment() {
         lines.add(line)
     }
 
-    private fun getBloodSugarAxisPoints(): ArrayList<PointValue> {
+    private fun getBloodSugarAxisPoints(list: List<BloodSugarListBean>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
-        val pointYValues = arrayListOf(5.2f, 6.5f, 6f, 8f, 6f, 7f, 8.1f)
+        val pointYValues = arrayListOf<Float>()
+        list.forEach {
+            pointYValues.add(it.bs.toFloat())
+        }
         for (i in 0 until pointYValues.size) {
             val colorInt =
                     when {
@@ -181,7 +253,7 @@ class MedicineDataFragment : BaseFragment() {
                         }
                         else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
                     }
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i],colorInt))
+            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
             if (yMaxValue < pointYValues[i]) yMaxValue = pointYValues[i]
         }
         yMaxValue += 2

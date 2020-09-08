@@ -1,5 +1,9 @@
 package com.guider.health.apilib
 
+import com.guider.health.apilib.bean.BloodListBeann
+import com.guider.health.apilib.bean.BloodSugarListBean
+import com.guider.health.apilib.bean.HeartListBean
+import com.guider.health.apilib.bean.SportListBean
 import com.guider.health.apilib.model.TempMeasure
 import com.guider.health.apilib.model.hd.*
 import com.guider.health.apilib.model.hd.standard.StandardRequestBean
@@ -14,11 +18,6 @@ import retrofit2.http.Query
  * 个人用户健康数据
  */
 interface IUserHDApi {
-    /**
-     * 欧孚计步数据推送
-     */
-    @POST("api/v1/op/data")
-    fun getHomeStep(): Call<String>
 
     /**
      * 欧孚血压数据查询
@@ -28,14 +27,14 @@ interface IUserHDApi {
      * @param startTime 开始时间
      * @param endTime 结束时间
      */
-    @GET("api/v1/op/healthdata/bloodpressure")
+    @GET("api/v1/bloodpressure/page")
     fun getHealthBloodChartData(
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
-            ):Call<Any>
+            @Query("sTime") startTime: String,
+            @Query("eTime") endTime: String
+            ):Call<List<BloodListBeann>>
     /**
      * 欧孚体温数据查询
      * @param accountId 查询用户的id
@@ -44,14 +43,14 @@ interface IUserHDApi {
      * @param startTime 开始时间
      * @param endTime 结束时间
      */
-    @GET("api/v1/op/healthdata/bodytemp")
+    @GET("api/v1/bodytemp/page")
     fun getHealthTempChartData(
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
-    ):Call<Any>
+            @Query("sTime") startTime: String,
+            @Query("eTime") endTime: String
+    ):Call<List<Any>>
 
     /**
      * 欧孚心率数据查询
@@ -61,14 +60,14 @@ interface IUserHDApi {
      * @param startTime 开始时间
      * @param endTime 结束时间
      */
-    @GET("api/v1/op/healthdata/heartbeat")
+    @GET("api/v1/heartbeat/page")
     fun getHealthHeartChartData(
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
-    ):Call<Any>
+            @Query("sTime") startTime: String,
+            @Query("eTime") endTime: String
+    ):Call<List<HeartListBean>>
 
     /**
      * 欧孚睡眠数据查询
@@ -83,9 +82,9 @@ interface IUserHDApi {
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
-    ):Call<Any>
+            @Query("sTime") startTime: String,
+            @Query("eTime") endTime: String
+    ):Call<List<Any>>
 
     /**
      * 欧孚血糖数据查询
@@ -95,14 +94,31 @@ interface IUserHDApi {
      * @param startTime 开始时间
      * @param endTime 结束时间
      */
-    @GET("api/v1/op/healthdata/bloodsugar")
+    @GET("api/v1/bloodsugar/page")
     fun getHealthBloodSugarChartData(
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
-    ):Call<Any>
+            @Query("sTime") startTime: String,
+            @Query("eTime") endTime: String
+    ):Call<List<BloodSugarListBean>>
+
+    /**
+     * 欧孚步数数据查询
+     * @param accountId 查询用户的id
+     * @param page 页数，查全部的时候为-1
+     * @param row 当查全部的时候row不生效
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
+    @GET("api/v1/walkrecord/page")
+    fun getHealthSportChartData(
+            @Query("accountId") accountId: Int,
+            @Query("page") page: Int,
+            @Query("row") row: Int,
+            @Query("sTime") startTime: String,
+            @Query("eTime") endTime: String
+    ):Call<List<SportListBean>>
 
     //老版接口
     /**

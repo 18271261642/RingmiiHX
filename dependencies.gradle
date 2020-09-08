@@ -49,7 +49,6 @@ ext {
     customactivityoncrash = "2.3.0"
     linesdk = "5.5.1"
     pictureSelector = "2.5.8"
-    city_picker = "5.2.2"
     zxing = "1.1.9-androidx"
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
@@ -100,7 +99,6 @@ ext {
             customactivityoncrash : "cat.ereza:customactivityoncrash:$customactivityoncrash",
             linesdk               : "com.linecorp.linesdk:linesdk:$linesdk",
             pictureSelector       : "com.github.LuckSiege.PictureSelector:picture_library:v$pictureSelector",
-            city_picker           : "liji.library.dev:citypickerview:$city_picker",
             zxing                 : "com.king.zxing:zxing-lite:$zxing"
     ]
 }

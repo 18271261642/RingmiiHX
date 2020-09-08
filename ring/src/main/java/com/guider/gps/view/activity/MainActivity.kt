@@ -66,7 +66,7 @@ class MainActivity : BaseActivity() {
     override fun initView() {
         //按年月日输出当前日期
         val currentDayValue = DateUtil.localNowStringByPattern(TIME_FORMAT_PATTERN4)
-        pageTitle = MMKVUtil.getString(CURRENT_DEVICE_NAME)
+        pageTitle = MMKVUtil.getString(BIND_DEVICE_NAME)
         if (StringUtil.isEmpty(pageTitle)) {
             pageTitle = currentDayValue
         }
@@ -100,7 +100,9 @@ class MainActivity : BaseActivity() {
                 toastShort(resources.getString(R.string.app_main_bind_device))
                 homeDrawLayout.closeDrawer(Gravity.START)
                 deviceName = bindDeviceList[position].name!!
-                MMKVUtil.saveString(CURRENT_DEVICE_NAME, deviceName)
+                MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position].deviceCode))
+                    MMKVUtil.saveString(BIND_DEVICE_CODE, bindDeviceList[position].deviceCode!!)
                 //我的页面 顶部标题固定为我的其他页面为设备名称
                 if (homeViewPager.currentItem != 3)
                     setTitle(deviceName)
@@ -145,12 +147,14 @@ class MainActivity : BaseActivity() {
                             if (response?.body() != null) {
                                 bindListBean = response.body()
                                 MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_ID, accountId.toString())
-                                MMKVUtil.saveString(CURRENT_DEVICE_NAME,
+                                MMKVUtil.saveString(BIND_DEVICE_NAME,
                                         mContext!!.resources.getString(R.string.app_own_string))
                                 bindListBean?.userInfos?.forEach {
                                     if (it.accountId == accountId) {
                                         it.relationShip = mContext!!.resources.getString(
                                                 R.string.app_own_string)
+                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
+                                            MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
                                     }
                                 }
                                 bindDeviceList.clear()
@@ -202,11 +206,17 @@ class MainActivity : BaseActivity() {
         when (devicePosition) {
             0 -> {
                 deviceName = bindDeviceList[devicePosition + 1].name!!
-                MMKVUtil.saveString(CURRENT_DEVICE_NAME, deviceName)
+                MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                if (StringUtil.isNotBlankAndEmpty(bindDeviceList[devicePosition + 1].deviceCode))
+                    MMKVUtil.saveString(BIND_DEVICE_CODE,
+                            bindDeviceList[devicePosition + 1].deviceCode!!)
             }
             else -> {
                 deviceName = bindDeviceList[devicePosition - 1].name!!
-                MMKVUtil.saveString(CURRENT_DEVICE_NAME, deviceName)
+                MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                if (StringUtil.isNotBlankAndEmpty(bindDeviceList[devicePosition - 1].deviceCode))
+                    MMKVUtil.saveString(BIND_DEVICE_CODE,
+                            bindDeviceList[devicePosition - 1].deviceCode!!)
             }
         }
         bindDeviceList.removeAt(devicePosition)
@@ -268,7 +278,8 @@ class MainActivity : BaseActivity() {
     private fun unBindDeviceAdapterShow(position: Int) {
         if (bindDeviceList.size == 1) {
             deviceName = ""
-            MMKVUtil.clearByKey(CURRENT_DEVICE_NAME)
+            MMKVUtil.clearByKey(BIND_DEVICE_NAME)
+            MMKVUtil.clearByKey(BIND_DEVICE_CODE)
             if (homeViewPager.currentItem != 3) {
                 val currentDayValue =
                         DateUtil.localNowStringByPattern(TIME_FORMAT_PATTERN4)
@@ -278,13 +289,19 @@ class MainActivity : BaseActivity() {
             when (position) {
                 0 -> {
                     deviceName = bindDeviceList[position + 1].name!!
-                    MMKVUtil.saveString(CURRENT_DEVICE_NAME, deviceName)
+                    MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                    if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position + 1].deviceCode))
+                        MMKVUtil.saveString(BIND_DEVICE_CODE,
+                                bindDeviceList[position + 1].deviceCode!!)
                     if (homeViewPager.currentItem != 3)
                         setTitle(deviceName)
                 }
                 else -> {
                     deviceName = bindDeviceList[position - 1].name!!
-                    MMKVUtil.saveString(CURRENT_DEVICE_NAME, deviceName)
+                    MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                    if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position - 1].deviceCode))
+                        MMKVUtil.saveString(BIND_DEVICE_CODE,
+                                bindDeviceList[position - 1].deviceCode!!)
                     if (homeViewPager.currentItem != 3)
                         setTitle(deviceName)
                 }
@@ -356,7 +373,7 @@ class MainActivity : BaseActivity() {
                 R.id.menu_item_health -> {
                     it.setIcon(R.drawable.icon_home_bottom_health_select)
                     homeViewPager.currentItem = 0
-                    deviceName = MMKVUtil.getString(CURRENT_DEVICE_NAME)
+                    deviceName = MMKVUtil.getString(BIND_DEVICE_NAME)
                     pageTitle = if (StringUtil.isEmpty(deviceName)) {
                         DateUtil.localNowStringByPattern(TIME_FORMAT_PATTERN4)
                     } else deviceName
@@ -366,7 +383,7 @@ class MainActivity : BaseActivity() {
                 R.id.menu_item_location -> {
                     it.setIcon(R.drawable.icon_home_bottom_location_select)
                     homeViewPager.currentItem = 1
-                    deviceName = MMKVUtil.getString(CURRENT_DEVICE_NAME)
+                    deviceName = MMKVUtil.getString(BIND_DEVICE_NAME)
                     pageTitle = if (StringUtil.isEmpty(deviceName)) {
                         DateUtil.localNowStringByPattern(TIME_FORMAT_PATTERN4)
                     } else deviceName
@@ -376,7 +393,7 @@ class MainActivity : BaseActivity() {
                 R.id.menu_item_medicine -> {
                     it.setIcon(R.drawable.icon_home_bottom_medcine_select)
                     homeViewPager.currentItem = 2
-                    deviceName = MMKVUtil.getString(CURRENT_DEVICE_NAME)
+                    deviceName = MMKVUtil.getString(BIND_DEVICE_NAME)
                     pageTitle = if (StringUtil.isEmpty(deviceName)) {
                         DateUtil.localNowStringByPattern(TIME_FORMAT_PATTERN4)
                     } else deviceName

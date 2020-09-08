@@ -267,7 +267,6 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     }
 
     private fun getUserInfo(accountId: Int) {
-        showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .getUserInfo(accountId)
                 ?.enqueue(object : ApiCallBack<UserInfo>(mContext) {
@@ -289,7 +288,6 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     }
 
     private fun verifyIsBindDevice(accountId: Int) {
-        showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .checkIsBindDevice(accountId)
                 .enqueue(object : ApiCallBack<Any>(mContext) {
@@ -301,11 +299,17 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                                     response.body()!!)
                             val intent = Intent(mContext!!, MainActivity::class.java)
                             MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_ID, accountId.toString())
-                            MMKVUtil.saveString(CURRENT_DEVICE_NAME,
+                            MMKVUtil.saveString(BIND_DEVICE_NAME,
                                     mContext!!.resources.getString(R.string.app_own_string))
-                            bean.userInfos?.forEach {
-                                if (it.accountId == accountId) {
-                                    it.relationShip = mContext!!.resources.getString(R.string.app_own_string)
+                            kotlin.run breaking@{
+                                bean.userInfos?.forEach {
+                                    if (it.accountId == accountId) {
+                                        it.relationShip = mContext!!.resources.getString(
+                                                R.string.app_own_string)
+                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
+                                            MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                        return@breaking
+                                    }
                                 }
                             }
                             intent.putExtra("bindListBean", bean)

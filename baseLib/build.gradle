@@ -83,12 +83,12 @@ dependencies {
     api dependencies.customactivityoncrash
     api dependencies.linesdk
     api dependencies.pictureSelector
-    api dependencies.city_picker
     api dependencies.zxing
 
     //集成的module
     api project(':apilib')
     api project(path: ':hellocharts-library')
+    api project(':citypickerview')
     if (rootGradle.googlePlay) {
         println "Add lib libbuglygoogle"
         api project(':libbuglygoogle')

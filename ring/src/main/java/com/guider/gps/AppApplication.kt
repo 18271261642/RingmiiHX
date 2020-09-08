@@ -11,13 +11,13 @@ class AppApplication : BaseApplication() {
 
     @SuppressLint("PrivateApi", "DiscouragedPrivateApi")
     private fun closeAndroidPDialog() {
-        try {
-            val aClass = Class.forName("android.content.pm.PackageParser\$Package")
-            val declaredConstructor = aClass.getDeclaredConstructor(String::class.java)
-            declaredConstructor.isAccessible = true
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        try {
+//            val aClass = Class.forName("android.content.pm.PackageParser${}")
+//            val declaredConstructor = aClass.getDeclaredConstructor(String::class.java)
+//            declaredConstructor.isAccessible = true
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
 
         try {
             val cls = Class.forName("android.app.ActivityThread")

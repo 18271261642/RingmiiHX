@@ -1,434 +1,428 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bloodLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="182dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/rounded_f6f6f6_8_bg"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/bloodLayout"
-            android:layout_width="match_parent"
-            android:layout_height="182dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_f6f6f6_8_bg"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/bloodIv"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/icon_home_blood"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/app_main_health_blood_pressure"
-                android:textColor="@color/colorF18937"
-                android:textSize="@dimen/sp_13"
-                app:layout_constraintBottom_toBottomOf="@id/bloodIv"
-                app:layout_constraintStart_toEndOf="@id/bloodIv"
-                app:layout_constraintTop_toTopOf="@id/bloodIv" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bloodBottomStatusLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <ImageView
-                    android:id="@+id/bloodHighIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:src="@drawable/oval_orange_f18937"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/bloodHighTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_high_pressure"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/bloodHighIv"
-                    app:layout_constraintStart_toEndOf="@id/bloodHighIv"
-                    app:layout_constraintTop_toTopOf="@id/bloodHighIv" />
-
-                <ImageView
-                    android:id="@+id/bloodBelowIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_marginStart="25dp"
-                    android:src="@drawable/oval_blue_5bc2ff"
-                    app:layout_constraintStart_toEndOf="@id/bloodHighTv"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/bloodBelowTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_low_pressure"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/bloodBelowIv"
-                    app:layout_constraintStart_toEndOf="@id/bloodBelowIv"
-                    app:layout_constraintTop_toTopOf="@id/bloodBelowIv" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <lecho.lib.hellocharts.view.LineChartView
-                android:id="@+id/bloodChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:padding="5dp"
-                app:layout_constraintBottom_toTopOf="@id/bloodBottomStatusLayout"
-                app:layout_constraintTop_toBottomOf="@id/bloodIv" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/heartLayout"
-            android:layout_width="match_parent"
-            android:layout_height="173dp"
-            android:layout_marginStart="13dp"
+        <ImageView
+            android:id="@+id/bloodIv"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_6ecdff_8_bg"
-            app:layout_constraintTop_toBottomOf="@id/bloodLayout">
+            android:src="@drawable/icon_home_blood"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/heartIv"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/icon_home_heart"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/app_main_health_heart_rate"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_13"
-                app:layout_constraintBottom_toBottomOf="@id/heartIv"
-                app:layout_constraintStart_toEndOf="@id/heartIv"
-                app:layout_constraintTop_toTopOf="@id/heartIv" />
-
-            <lecho.lib.hellocharts.view.LineChartView
-                android:id="@+id/heartChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/heartIv" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/app_main_health_blood_pressure"
+            android:textColor="@color/colorF18937"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/bloodIv"
+            app:layout_constraintStart_toEndOf="@id/bloodIv"
+            app:layout_constraintTop_toTopOf="@id/bloodIv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tempLayout"
-            android:layout_width="match_parent"
-            android:layout_height="213dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_5e95ff_8_bg"
-            app:layout_constraintTop_toBottomOf="@id/heartLayout">
+            android:id="@+id/bloodBottomStatusLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
-                android:id="@+id/tempIv"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/icon_home_temp"
+                android:id="@+id/bloodHighIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/oval_orange_f18937"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/bloodHighTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/app_main_health_body_temp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_13"
-                app:layout_constraintBottom_toBottomOf="@id/tempIv"
-                app:layout_constraintStart_toEndOf="@id/tempIv"
-                app:layout_constraintTop_toTopOf="@id/tempIv" />
-
-            <TextView
-                android:id="@+id/tempStatusTv"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="11dp"
-                android:background="@drawable/rounded_66ffffff_14_bg"
-                android:gravity="center"
-                android:textColor="@color/color666666"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_high_pressure"
+                android:textColor="@color/color333333"
                 android:textSize="@dimen/sp_12"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/tempBottomStatusLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                app:layout_constraintBottom_toTopOf="@id/tempStatusTv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <ImageView
-                    android:id="@+id/tempSmallIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:src="@drawable/oval_orange_ffad29"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tempSmallTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_mild"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/tempSmallIv"
-                    app:layout_constraintStart_toEndOf="@id/tempSmallIv"
-                    app:layout_constraintTop_toTopOf="@id/tempSmallIv" />
-
-                <ImageView
-                    android:id="@+id/tempNormalIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_marginStart="25dp"
-                    android:src="@drawable/oval_white"
-                    app:layout_constraintStart_toEndOf="@id/tempSmallTv"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tempNormalTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_normal"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/tempNormalIv"
-                    app:layout_constraintStart_toEndOf="@id/tempNormalIv"
-                    app:layout_constraintTop_toTopOf="@id/tempNormalIv" />
-
-                <ImageView
-                    android:id="@+id/tempErrorIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_marginStart="25dp"
-                    android:src="@drawable/oval_red_e2402b"
-                    app:layout_constraintStart_toEndOf="@id/tempNormalTv"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tempErrorTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_error"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/tempErrorIv"
-                    app:layout_constraintStart_toEndOf="@id/tempErrorIv"
-                    app:layout_constraintTop_toTopOf="@id/tempErrorIv" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartView
-                android:id="@+id/tempChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/tempBottomStatusLayout"
-                app:layout_constraintTop_toBottomOf="@id/tempIv" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/sleepLayout"
-            android:layout_width="match_parent"
-            android:layout_height="202dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_8e7aee_8_bg"
-            app:layout_constraintTop_toBottomOf="@id/tempLayout">
+                app:layout_constraintBottom_toBottomOf="@id/bloodHighIv"
+                app:layout_constraintStart_toEndOf="@id/bloodHighIv"
+                app:layout_constraintTop_toTopOf="@id/bloodHighIv" />
 
             <ImageView
-                android:id="@+id/sleepIv"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/icon_home_slep"
-                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/bloodBelowIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/oval_blue_5bc2ff"
+                app:layout_constraintStart_toEndOf="@id/bloodHighTv"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/bloodBelowTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/app_main_health_sleep"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_13"
-                app:layout_constraintBottom_toBottomOf="@id/sleepIv"
-                app:layout_constraintStart_toEndOf="@id/sleepIv"
-                app:layout_constraintTop_toTopOf="@id/sleepIv" />
-
-            <TextView
-                android:id="@+id/sleepStatusTv"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="11dp"
-                android:background="@drawable/rounded_66ffffff_14_bg"
-                android:gravity="center"
-                android:text="[37.4-38]轻度   [36-37.3]正常    [>38]异常"
-                android:textColor="@color/color666666"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_low_pressure"
+                android:textColor="@color/color333333"
                 android:textSize="@dimen/sp_12"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/sleepBottomStatusLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                app:layout_constraintBottom_toTopOf="@id/sleepStatusTv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <ImageView
-                    android:id="@+id/sleepSmallIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:src="@drawable/oval_orange_f18937"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/sleepSmallTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_mild"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/sleepSmallIv"
-                    app:layout_constraintStart_toEndOf="@id/sleepSmallIv"
-                    app:layout_constraintTop_toTopOf="@id/sleepSmallIv" />
-
-                <ImageView
-                    android:id="@+id/sleepNormalIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_marginStart="25dp"
-                    android:src="@drawable/oval_white"
-                    app:layout_constraintStart_toEndOf="@id/sleepSmallTv"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/sleepNormalTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_normal"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/sleepNormalIv"
-                    app:layout_constraintStart_toEndOf="@id/sleepNormalIv"
-                    app:layout_constraintTop_toTopOf="@id/sleepNormalIv" />
-
-                <ImageView
-                    android:id="@+id/sleepErrorIv"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_marginStart="25dp"
-                    android:src="@drawable/oval_red_e2402b"
-                    app:layout_constraintStart_toEndOf="@id/sleepNormalTv"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/sleepErrorTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/app_main_health_error"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@id/sleepErrorIv"
-                    app:layout_constraintStart_toEndOf="@id/sleepErrorIv"
-                    app:layout_constraintTop_toTopOf="@id/sleepErrorIv" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <lecho.lib.hellocharts.view.ColumnChartView
-                android:id="@+id/sleepChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="5dp"
-                app:layout_constraintBottom_toTopOf="@id/sleepBottomStatusLayout"
-                app:layout_constraintTop_toBottomOf="@id/sleepIv" />
+                app:layout_constraintBottom_toBottomOf="@id/bloodBelowIv"
+                app:layout_constraintStart_toEndOf="@id/bloodBelowIv"
+                app:layout_constraintTop_toTopOf="@id/bloodBelowIv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/sportLayout"
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/bloodChart"
             android:layout_width="match_parent"
-            android:layout_height="173dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_71d19b_8_bg"
-            app:layout_constraintTop_toBottomOf="@id/sleepLayout">
-
-            <ImageView
-                android:id="@+id/sportIv"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/icon_home_sport"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/app_main_health_sport"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_13"
-                app:layout_constraintBottom_toBottomOf="@id/sportIv"
-                app:layout_constraintStart_toEndOf="@id/sportIv"
-                app:layout_constraintTop_toTopOf="@id/sportIv" />
-
-            <lecho.lib.hellocharts.view.ColumnChartView
-                android:id="@+id/sportChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sportIv" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="0dp"
+            android:padding="5dp"
+            app:layout_constraintBottom_toTopOf="@id/bloodBottomStatusLayout"
+            app:layout_constraintTop_toBottomOf="@id/bloodIv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.core.widget.NestedScrollView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/heartLayout"
+        android:layout_width="match_parent"
+        android:layout_height="173dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/rounded_6ecdff_8_bg"
+        app:layout_constraintTop_toBottomOf="@id/bloodLayout">
+
+        <ImageView
+            android:id="@+id/heartIv"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/icon_home_heart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/app_main_health_heart_rate"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/heartIv"
+            app:layout_constraintStart_toEndOf="@id/heartIv"
+            app:layout_constraintTop_toTopOf="@id/heartIv" />
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/heartChart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/heartIv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tempLayout"
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/rounded_5e95ff_8_bg"
+        app:layout_constraintTop_toBottomOf="@id/heartLayout">
+
+        <ImageView
+            android:id="@+id/tempIv"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/icon_home_temp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/app_main_health_body_temp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/tempIv"
+            app:layout_constraintStart_toEndOf="@id/tempIv"
+            app:layout_constraintTop_toTopOf="@id/tempIv" />
+
+        <TextView
+            android:id="@+id/tempStatusTv"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="11dp"
+            android:background="@drawable/rounded_66ffffff_14_bg"
+            android:gravity="center"
+            android:textColor="@color/color666666"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tempBottomStatusLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toTopOf="@id/tempStatusTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/tempSmallIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/oval_orange_ffad29"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tempSmallTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_mild"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/tempSmallIv"
+                app:layout_constraintStart_toEndOf="@id/tempSmallIv"
+                app:layout_constraintTop_toTopOf="@id/tempSmallIv" />
+
+            <ImageView
+                android:id="@+id/tempNormalIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/oval_white"
+                app:layout_constraintStart_toEndOf="@id/tempSmallTv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tempNormalTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_normal"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/tempNormalIv"
+                app:layout_constraintStart_toEndOf="@id/tempNormalIv"
+                app:layout_constraintTop_toTopOf="@id/tempNormalIv" />
+
+            <ImageView
+                android:id="@+id/tempErrorIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/oval_red_e2402b"
+                app:layout_constraintStart_toEndOf="@id/tempNormalTv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tempErrorTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_error"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/tempErrorIv"
+                app:layout_constraintStart_toEndOf="@id/tempErrorIv"
+                app:layout_constraintTop_toTopOf="@id/tempErrorIv" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartView
+            android:id="@+id/tempChart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/tempBottomStatusLayout"
+            app:layout_constraintTop_toBottomOf="@id/tempIv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sleepLayout"
+        android:layout_width="match_parent"
+        android:layout_height="202dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/rounded_8e7aee_8_bg"
+        app:layout_constraintTop_toBottomOf="@id/tempLayout">
+
+        <ImageView
+            android:id="@+id/sleepIv"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/icon_home_slep"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/app_main_health_sleep"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/sleepIv"
+            app:layout_constraintStart_toEndOf="@id/sleepIv"
+            app:layout_constraintTop_toTopOf="@id/sleepIv" />
+
+        <TextView
+            android:id="@+id/sleepStatusTv"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="11dp"
+            android:background="@drawable/rounded_66ffffff_14_bg"
+            android:gravity="center"
+            android:text="[37.4-38]轻度   [36-37.3]正常    [>38]异常"
+            android:textColor="@color/color666666"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sleepBottomStatusLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toTopOf="@id/sleepStatusTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/sleepSmallIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/oval_orange_f18937"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sleepSmallTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_mild"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/sleepSmallIv"
+                app:layout_constraintStart_toEndOf="@id/sleepSmallIv"
+                app:layout_constraintTop_toTopOf="@id/sleepSmallIv" />
+
+            <ImageView
+                android:id="@+id/sleepNormalIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/oval_white"
+                app:layout_constraintStart_toEndOf="@id/sleepSmallTv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sleepNormalTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_normal"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/sleepNormalIv"
+                app:layout_constraintStart_toEndOf="@id/sleepNormalIv"
+                app:layout_constraintTop_toTopOf="@id/sleepNormalIv" />
+
+            <ImageView
+                android:id="@+id/sleepErrorIv"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/oval_red_e2402b"
+                app:layout_constraintStart_toEndOf="@id/sleepNormalTv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sleepErrorTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/app_main_health_error"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/sleepErrorIv"
+                app:layout_constraintStart_toEndOf="@id/sleepErrorIv"
+                app:layout_constraintTop_toTopOf="@id/sleepErrorIv" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <lecho.lib.hellocharts.view.ColumnChartView
+            android:id="@+id/sleepChart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            app:layout_constraintBottom_toTopOf="@id/sleepBottomStatusLayout"
+            app:layout_constraintTop_toBottomOf="@id/sleepIv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sportLayout"
+        android:layout_width="match_parent"
+        android:layout_height="173dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/rounded_71d19b_8_bg"
+        app:layout_constraintTop_toBottomOf="@id/sleepLayout">
+
+        <ImageView
+            android:id="@+id/sportIv"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/icon_home_sport"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/app_main_health_sport"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/sportIv"
+            app:layout_constraintStart_toEndOf="@id/sportIv"
+            app:layout_constraintTop_toTopOf="@id/sportIv" />
+
+        <lecho.lib.hellocharts.view.ColumnChartView
+            android:id="@+id/sportChart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sportIv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

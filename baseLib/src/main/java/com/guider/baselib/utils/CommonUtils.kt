@@ -46,6 +46,17 @@ object CommonUtils {
         return sdf.format(needDate)
     }
 
+    //计算当前日期前小时的时间
+    @SuppressLint("WrongConstant", "SimpleDateFormat")
+    fun calTimeFrontHour(date: String, hours: Int): String {
+        val sdf = SimpleDateFormat(DEFAULT_TIME_FORMAT_PATTERN)
+        val rightNow = Calendar.getInstance()
+        rightNow.time = sdf.parse(date)
+        rightNow.add(Calendar.HOUR, -hours)
+        val dt1 = rightNow.time
+        return sdf.format(dt1)
+    }
+
     //计算日期是否符合要求 日期前后
     fun calTimeDateCompareNew(date: String, dateCompare: String): Boolean {
         val format = "yyyy-MM-dd"

@@ -14,6 +14,8 @@ const val TIME_FORMAT_PATTERN2 = "yyyy/MM/dd HH:mm"
 const val TIME_FORMAT_PATTERN3 = "HH:mm:ss"
 const val TIME_FORMAT_PATTERN4 = "yyyy-MM-dd"
 const val TIME_FORMAT_PATTERN5 = "yyyy-MM"
+const val TIME_FORMAT_PATTERN6 = "yyyy年MM月dd日"
+const val TIME_FORMAT_PATTERN7 = "yyyy-MM-dd-HH"
 
 /**
  * app_id是从微信官网申请到的合法APPid
@@ -33,8 +35,9 @@ val APP_ID_LINE = "1654871917"
 /**
  * 常用MMKV的key常量
  * */
-const val CURRENT_DEVICE_NAME = "current_device_name"
+const val BIND_DEVICE_NAME = "bind_device_name"
 const val BIND_DEVICE_ACCOUNT_ID = "bind_device_account_id"
+const val BIND_DEVICE_CODE = "bind_device_code"
 const val TARGET_STEP = "target_step"
 const val IS_FIRST_START = "is_first_start"
 const val REFRESH_TOKEN= "refresh_token"
@@ -70,3 +73,4 @@ const val BIND_PHONE = 0x000012
 const val SCAN_CODE = 0x000013
 const val ADD_NEW_DEVICE = 0x000014
 const val DEVICE_BIND_ADD_MEMBER = 0x000015
+const val SELECT_ADDRESS = 0x000016

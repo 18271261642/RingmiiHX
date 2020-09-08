@@ -172,7 +172,6 @@
                         android:id="@+id/trackEventsDateValueTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2020年8月15日"
                         android:textColor="@color/color999999"
                         android:textSize="@dimen/sp_15"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -209,7 +208,6 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="13dp"
                     android:paddingBottom="5dp"
-                    android:text="2019-07-13"
                     android:textColor="@color/color999999"
                     android:textSize="@dimen/sp_13"
                     app:layout_constraintStart_toStartOf="parent"
@@ -239,7 +237,6 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="13dp"
                     android:paddingBottom="5dp"
-                    android:text="2019-07-13"
                     android:textColor="@color/color999999"
                     android:textSize="@dimen/sp_13"
                     app:layout_constraintStart_toEndOf="@id/timeLine"
@@ -301,59 +298,77 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/electronicFenceLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/electronicIv3"
+            android:id="@+id/electronicCommitLayout"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_14"
-            android:background="@drawable/circle_f28a38_4_bg"
+            android:background="@drawable/select_electronic_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_electronic_fence_3" />
+                android:id="@+id/electronicCommitIv"
+                android:src="@drawable/select_electronic_commit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/electronicIv2"
+            android:id="@+id/electronicDeleteLayout"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_9"
-            android:background="@drawable/circle_f28a38_4_bg"
-            app:layout_constraintEnd_toStartOf="@id/electronicIv3"
+            android:background="@drawable/select_electronic_background"
+            app:layout_constraintEnd_toStartOf="@id/electronicCommitLayout"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_electronic_fence_2" />
+                android:id="@+id/electronicDeleteIv"
+                android:src="@drawable/select_electronic_delete" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/electronicIv1"
+            android:id="@+id/electronicSetLayout"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_9"
-            android:background="@drawable/rounded_f28a38_4_bg"
-            app:layout_constraintEnd_toStartOf="@id/electronicIv2"
+            android:background="@drawable/select_electronic_background"
+            app:layout_constraintEnd_toStartOf="@id/electronicDeleteLayout"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="match_parent"
+                android:id="@+id/electronicSetIv"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_electronic_fence_1" />
+                android:src="@drawable/select_electronic_set" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_38"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/electronicSetLayout"
+            android:gravity="center"
+            android:background="#33F18937"
+            android:visibility="gone"
+            android:id="@+id/electronicSetHint"
+            app:layout_constraintTop_toTopOf="@id/electronicSetLayout"
+            app:layout_constraintBottom_toBottomOf="@id/electronicSetLayout"
+            android:text="@string/app_electronic_set_hint"
+            android:textColor="@color/color333333"
+            android:textSize="@dimen/sp_12"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
