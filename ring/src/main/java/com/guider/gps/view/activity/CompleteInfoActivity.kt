@@ -26,7 +26,6 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.language.LanguageConfig
 import kotlinx.android.synthetic.main.complete_info_activity.*
-import kotlinx.android.synthetic.main.include_phone_edit_layout.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -178,7 +177,7 @@ class CompleteInfoActivity : BaseActivity() {
                             } else {
                                 MMKVUtil.saveString(USER.TOKEN, bean.token!!)
                                 MMKVUtil.saveInt(USER.USERID, bean.accountId)
-                                MMKVUtil.saveString(USER.COUNTRY_CODE, countryTv.text.toString())
+                                MMKVUtil.saveString(USER.COUNTRY_CODE,countryCode)
                                 MMKVUtil.saveString(USER.PHONE, phoneValue)
                                 MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
                                 MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)

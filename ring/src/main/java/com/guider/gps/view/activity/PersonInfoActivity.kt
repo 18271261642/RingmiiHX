@@ -102,14 +102,16 @@ class PersonInfoActivity : BaseActivity() {
     }
 
     private fun dealPersonInfoShow() {
-        if (picPath != personInfoBean?.headUrl) {
+        if (picPath != personInfoBean?.headUrl &&
+                StringUtil.isNotBlankAndEmpty(personInfoBean?.headUrl)) {
             //把这个标志设置为true是因为防止其他设备修改了头像和昵称
             isNameChange = true
             picPath = personInfoBean?.headUrl!!
             ImageLoaderUtils.loadImage(mContext!!, headerIv, picPath)
             MMKVUtil.saveString(HEADER, picPath)
         }
-        if (name != personInfoBean?.name) {
+        if (name != personInfoBean?.name &&
+                StringUtil.isNotBlankAndEmpty(personInfoBean?.name)) {
             //把这个标志设置为true是因为防止其他设备修改了头像和昵称
             isNameChange = true
             name = personInfoBean?.name!!
@@ -220,8 +222,10 @@ class PersonInfoActivity : BaseActivity() {
                     override fun onApiResponse(call: Call<UserInfo>?,
                                                response: Response<UserInfo>?) {
                         if (response?.body() != null) {
-                            MMKVUtil.saveString(NAME, name)
-                            MMKVUtil.saveString(HEADER, header!!)
+                            if (StringUtil.isNotBlankAndEmpty(name))
+                                MMKVUtil.saveString(NAME, name)
+                            if (StringUtil.isNotBlankAndEmpty(header))
+                                MMKVUtil.saveString(HEADER, header!!)
                             toastShort(mContext!!.resources.getString(
                                     R.string.app_person_info_change_success))
                             endEdit()

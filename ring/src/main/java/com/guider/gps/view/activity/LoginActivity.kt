@@ -242,7 +242,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                         super.onFailure(call, t)
                         if (t.message == "该用户未注册") {
                             val intent = Intent(mContext, RegisterActivity::class.java)
-                            if (StringUtil.isEmpty(phoneEdit.text.toString())) {
+                            if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
                                 intent.putExtra("country", countryTv.text.toString())
                                 intent.putExtra("phone", phoneEdit.text.toString())
                             }
@@ -275,8 +275,10 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                                                response: Response<UserInfo>?) {
                         if (response?.body() != null) {
                             val resultBean = response.body()!!
-                            MMKVUtil.saveString(HEADER, resultBean.headUrl!!)
-                            MMKVUtil.saveString(NAME, resultBean.name!!)
+                            if (StringUtil.isNotBlankAndEmpty(resultBean.headUrl))
+                                MMKVUtil.saveString(HEADER, resultBean.headUrl!!)
+                            if (StringUtil.isNotBlankAndEmpty(resultBean.name))
+                                MMKVUtil.saveString(NAME, resultBean.name!!)
                             var birthday = "1970-01-01"
                             if (StringUtil.isNotBlankAndEmpty(resultBean.birthday))
                                 birthday = resultBean.birthday!!.replace(
