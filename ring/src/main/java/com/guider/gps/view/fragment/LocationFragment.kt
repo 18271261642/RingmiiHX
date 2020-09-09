@@ -342,6 +342,8 @@ class LocationFragment : BaseFragment(),
         builder.setOnVisibilityChangedListener(object : GuideBuilder.OnVisibilityChangedListener {
             override fun onShown() {}
             override fun onDismiss() {
+                electronicSetLayout.isSelected = true
+                electronicSetIv.isSelected = true
                 eletronicSetClickEvent()
             }
         })
@@ -513,7 +515,26 @@ class LocationFragment : BaseFragment(),
             }
             //设置电子围栏在地图上坐标的button
             electronicSetLayout -> {
-                eletronicSetClickEvent()
+                if (electronicSetLayout.isSelected) {
+                    electronicSetLayout.isSelected = false
+                    electronicSetIv.isSelected = false
+                    mGoogleMap?.clear()
+                    customFirstPoint?.remove()
+                    customTwoPoint?.remove()
+                    customThirdPoint?.remove()
+                    customFourPoint?.remove()
+                    electronicDeleteLayout.isSelected = false
+                    electronicSetHint.visibility = View.GONE
+                    electronicDeleteIv.isSelected = false
+                    electronicCommitLayout.isSelected = false
+                    electronicCommitIv.isSelected = false
+                    customElectronicFencePointNum = 0
+                    mGoogleMap?.setOnMapClickListener {}
+                } else {
+                    electronicSetLayout.isSelected = true
+                    electronicSetIv.isSelected = true
+                    eletronicSetClickEvent()
+                }
             }
             //删除电子围栏在地图上坐标点
             electronicDeleteLayout -> {
@@ -521,7 +542,7 @@ class LocationFragment : BaseFragment(),
                     when (customElectronicFencePointNum) {
                         1 -> {
                             electronicDeleteLayout.isSelected = false
-                            electronicDeleteLayout.isSelected = false
+                            electronicDeleteIv.isSelected = false
                             customFirstPoint?.remove()
                         }
                         2 -> {
@@ -703,8 +724,6 @@ class LocationFragment : BaseFragment(),
                         1 -> {
                             customFirstLatLng = latLng
                             drawCustomFirstPoint(customFirstLatLng!!)
-                            electronicSetLayout.isSelected = true
-                            electronicSetIv.isSelected = true
                             electronicDeleteLayout.isSelected = true
                             electronicDeleteIv.isSelected = true
                         }
