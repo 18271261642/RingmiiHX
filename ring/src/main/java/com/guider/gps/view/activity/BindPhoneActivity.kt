@@ -2,7 +2,6 @@ package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -120,7 +119,7 @@ class BindPhoneActivity : BaseActivity() {
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .lineBindLogin(map)
                 ?.enqueue(object : ApiCallBack<ThirdBindPhoneBean>(mContext) {
-                    override fun onApiResponseNull(call: Call<ThirdBindPhoneBean>?,
+                    override fun onApiResponse(call: Call<ThirdBindPhoneBean>?,
                                                    response: Response<ThirdBindPhoneBean>?) {
                         if (response?.body() != null) {
                             val bean = response.body()!!
@@ -142,14 +141,13 @@ class BindPhoneActivity : BaseActivity() {
         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
         MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)
         toastShort("登录成功")
+        //登录成功后还需要回到登录页校验账号是否绑定设备的逻辑
         enterMainPage()
     }
 
     private fun enterMainPage() {
         intent.putExtra("bind", "success")
         setResult(Activity.RESULT_OK, intent)
-        val intent = Intent(mContext, MainActivity::class.java)
-        startActivity(intent)
         finish()
     }
 

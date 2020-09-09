@@ -508,6 +508,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        //LINE登录的回调
         if (loginDelegate.onActivityResult(requestCode, resultCode, data)) {
             // Login result is consumed.
             return
@@ -515,12 +516,14 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         if (resultCode == Activity.RESULT_OK && data != null) {
             when (requestCode) {
                 REGISTER -> {
-                    Log.i("登录页", "注册成功，进入首页")
-                    finish()
+                    Log.i("登录页", "注册成功，判断账号和设备的绑定")
+                    val accountId = MMKVUtil.getInt(USERID)
+                    verifyIsBindDevice(accountId)
                 }
                 BIND_PHONE -> {
-                    Log.i("第三方登录", "第三方绑定成功，进入首页")
-                    finish()
+                    Log.i("第三方登录", "第三方绑定成功，判断账号和设备的绑定")
+                    val accountId = MMKVUtil.getInt(USERID)
+                    verifyIsBindDevice(accountId)
                 }
             }
         }

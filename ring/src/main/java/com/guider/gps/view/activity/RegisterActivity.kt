@@ -228,6 +228,8 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
             if (requestCode == COMPLETE_INFO) {
+                intent.putExtra("phone", phoneEdit.text.toString())
+                setResult(Activity.RESULT_OK, intent)
                 finish()
             }
         }

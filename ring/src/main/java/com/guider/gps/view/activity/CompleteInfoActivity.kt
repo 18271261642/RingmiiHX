@@ -185,10 +185,11 @@ class CompleteInfoActivity : BaseActivity() {
                                 MMKVUtil.saveString(USER.HEADER, headerUrl)
                                 MMKVUtil.saveString(USER.NAME, name)
                                 toastShort("注册成功")
-                                enterMainPage()
+                                //登录成功后还需要回到登录页校验账号是否绑定设备的逻辑
+                                intent.putExtra("completeInfo", true)
+                                setResult(Activity.RESULT_OK, intent)
+                                finish()
                             }
-                            intent.putExtra("completeInfo", true)
-                            setResult(Activity.RESULT_OK, intent)
                         }
                     }
 
@@ -196,12 +197,6 @@ class CompleteInfoActivity : BaseActivity() {
                         dismissDialog()
                     }
                 })
-    }
-
-    private fun enterMainPage() {
-        val intent = Intent(mContext, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     private fun selectBirthdayDialog() {
