@@ -132,7 +132,7 @@ class PersonInfoActivity : BaseActivity() {
         heightTv.text = height
         weight = personInfoBean?.weight.toString()
         weightTv.text = weight
-        if (StringUtil.isNotBlankAndEmpty(personInfoBean?.descDetail)){
+        if (StringUtil.isNotBlankAndEmpty(personInfoBean?.descDetail)) {
             addressTv.text = personInfoBean?.descDetail
         }
     }
@@ -151,7 +151,7 @@ class PersonInfoActivity : BaseActivity() {
             addressLayout -> {
                 val intent = Intent(mContext, AddressSelectActivity::class.java)
                 intent.putExtra("bean", personInfoBean)
-                startActivityForResult(intent,SELECT_ADDRESS)
+                startActivityForResult(intent, SELECT_ADDRESS)
             }
             headerLayout -> {
                 headerDialogShow()
@@ -366,7 +366,8 @@ class PersonInfoActivity : BaseActivity() {
         PermissionUtils.requestPermissionActivity(this, perms, "照相机权限", {
             doThings()
         }, {
-            ToastUtil.show(mContext!!, "拍照/选取图片需要您授权读写及照相机权限")
+            ToastUtil.show(mContext!!,
+                    mContext!!.resources.getString(R.string.app_request_permission_camera))
         })
     }
 
@@ -413,10 +414,10 @@ class PersonInfoActivity : BaseActivity() {
 
                     }
                 }
-                SELECT_ADDRESS ->{
+                SELECT_ADDRESS -> {
                     if (data.getParcelableExtra<UserInfo>("bean") != null) {
                         personInfoBean = data.getParcelableExtra("bean")
-                        if (StringUtil.isNotBlankAndEmpty(personInfoBean?.descDetail)){
+                        if (StringUtil.isNotBlankAndEmpty(personInfoBean?.descDetail)) {
                             addressTv.text = personInfoBean?.descDetail
                         }
                     }

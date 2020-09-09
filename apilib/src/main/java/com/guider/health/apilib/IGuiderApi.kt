@@ -121,6 +121,15 @@ interface IGuiderApi {
             Call<Any?>
 
     /**
+     * 解绑登录账号绑定的所属设备
+     * @param accountId 用户ID
+     * @param deviceCode 设备号
+     */
+    @DELETE("api/v1/user/{accountId}/device/unbind")
+    fun unBindDeviceWithAccount(@Query("accountId") accountId: Int,
+                                @Query("deviceCode") deviceCode: String):Call<Any>
+
+    /**
      * 验证设备是否有绑定
      * @param deviceCode 设备的code
      */
@@ -170,11 +179,6 @@ interface IGuiderApi {
     @DELETE("api/v1/group/remove")
     fun unBindGroupMember(@Query("userGroupId") userGroupId: Int,
                           @Query("accountId") accountId: Int): Call<List<UserInfo>?>
-
-    @DELETE("api/v1/user/{accountId}/device/unbind")
-    fun unBindDevice(@Path("accountId") accountId: Int,
-                     @Query("deviceCode") deviceCode: String
-    ): Call<Any>
 
     /**
      * 获取特定类型区域

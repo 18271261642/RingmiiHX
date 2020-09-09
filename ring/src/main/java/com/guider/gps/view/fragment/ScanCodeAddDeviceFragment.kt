@@ -42,7 +42,8 @@ class ScanCodeAddDeviceFragment : BaseFragment() {
                     startScan(CaptureActivity::class.java,
                             mActivity.resources.getString(R.string.app_add_device_scan_code))
                 }, {
-                    ToastUtil.show(mActivity, "拍照/选取图片需要您授权读写及照相机权限")
+                    ToastUtil.show(mActivity,
+                            mActivity.resources.getString(R.string.app_request_permission_camera))
                 })
             }
         }

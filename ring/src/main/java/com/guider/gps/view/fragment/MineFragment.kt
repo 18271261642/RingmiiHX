@@ -101,9 +101,10 @@ class MineFragment : BaseFragment() {
 
     private fun unBindEvent() {
         mActivity.showDialog()
-        val accountId = MMKVUtil.getString(BIND_DEVICE_ACCOUNT_ID).toInt()
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+        val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
         ApiUtil.createApi(IGuiderApi::class.java, false)
-                .unBindDevice(accountId, "")
+                .unBindDeviceWithAccount(accountId, deviceCode)
                 .enqueue(object : ApiCallBack<Any?>(mActivity) {
                     override fun onApiResponse(call: Call<Any?>?,
                                                response: Response<Any?>?) {

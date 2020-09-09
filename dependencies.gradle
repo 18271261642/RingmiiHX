@@ -50,6 +50,7 @@ ext {
     linesdk = "5.5.1"
     pictureSelector = "2.5.8"
     zxing = "1.1.9-androidx"
+    guideview = "1.0.0"
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
             material              : "com.google.android.material:material:$material",
@@ -99,6 +100,7 @@ ext {
             customactivityoncrash : "cat.ereza:customactivityoncrash:$customactivityoncrash",
             linesdk               : "com.linecorp.linesdk:linesdk:$linesdk",
             pictureSelector       : "com.github.LuckSiege.PictureSelector:picture_library:v$pictureSelector",
-            zxing                 : "com.king.zxing:zxing-lite:$zxing"
+            zxing                 : "com.king.zxing:zxing-lite:$zxing",
+            guideview             : "com.binioter:guideview:$guideview"
     ]
 }

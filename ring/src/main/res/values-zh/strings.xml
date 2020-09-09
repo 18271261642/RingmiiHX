@@ -149,4 +149,7 @@
     <string name="app_device_bind">绑定设备</string>
     <string name="app_device_nickName_empty">设备昵称为空</string>
     <string name="app_electronic_set_hint">在地图上定位4个点规划电子围栏范围</string>
+    <string name="app_request_permission_camera">拍照/选取图片需要您授权读写及照相机权限</string>
+    <string name="app_bind_fail">绑定失败</string>
+    <string name="app_component_hint_electronic_fence">点击此处开始设置电子围栏</string>
 </resources>

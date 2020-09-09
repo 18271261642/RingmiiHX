@@ -304,7 +304,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                             val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
                                     response.body()!!)
                             val intent = Intent(mContext!!, MainActivity::class.java)
-                            MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_ID, accountId.toString())
+                            MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
                             MMKVUtil.saveString(BIND_DEVICE_NAME,
                                     mContext!!.resources.getString(R.string.app_own_string))
                             kotlin.run breaking@{

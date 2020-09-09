@@ -146,7 +146,7 @@ class MainActivity : BaseActivity() {
                                                    response: Response<CheckBindDeviceBean>?) {
                             if (response?.body() != null) {
                                 bindListBean = response.body()
-                                MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_ID, accountId.toString())
+                                MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
                                 MMKVUtil.saveString(BIND_DEVICE_NAME,
                                         mContext!!.resources.getString(R.string.app_own_string))
                                 bindListBean?.userInfos?.forEach {
@@ -228,8 +228,9 @@ class MainActivity : BaseActivity() {
         if (bindDeviceList[position].name == mContext!!.resources.getString(R.string.app_own_string)) {
             showDialog()
             val accountId = bindDeviceList[position].accountId
+            val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
             ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .unBindDevice(accountId, "")
+                    .unBindDeviceWithAccount(accountId, deviceCode)
                     .enqueue(object : ApiCallBack<Any?>(mContext) {
                         override fun onApiResponse(call: Call<Any?>?,
                                                    response: Response<Any?>?) {

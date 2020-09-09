@@ -84,6 +84,7 @@ dependencies {
     api dependencies.linesdk
     api dependencies.pictureSelector
     api dependencies.zxing
+    api dependencies.guideview
 
     //集成的module
     api project(':apilib')

@@ -78,15 +78,15 @@ class AddNewDeviceActivity : BaseActivity() {
         if (type == "mine") {
             showDialog()
             val accountId = MMKVUtil.getInt(USER.USERID, 0)
-            val codeValue = "12345678android"
+//            val codeValue = "12345678android"
             ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .bindDeviceWithAccount(accountId, codeValue)
+                    .bindDeviceWithAccount(accountId, code)
                     .enqueue(object : ApiCallBack<Any?>(mContext) {
                         override fun onApiResponseNull(call: Call<Any?>?,
                                                        response: Response<Any?>?) {
                             //绑定失败返回null
                             if (response?.body() != null) {
-                                toastShort("绑定失败")
+                                toastShort(mContext!!.resources.getString(R.string.app_bind_fail))
                             }
                         }
 
@@ -96,7 +96,7 @@ class AddNewDeviceActivity : BaseActivity() {
                                 val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
                                         response.body()!!)
                                 val intent = Intent(mContext!!, MainActivity::class.java)
-                                MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_ID, accountId.toString())
+                                MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
                                 MMKVUtil.saveString(BIND_DEVICE_NAME,
                                         mContext!!.resources.getString(R.string.app_own_string))
                                 bean.userInfos?.forEach {
@@ -119,9 +119,9 @@ class AddNewDeviceActivity : BaseActivity() {
                     })
         } else {
             showDialog()
-            val codeValue = "87654321android"
+//            val codeValue = "87654321android"
             ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .verifyDeviceBind(codeValue)
+                    .verifyDeviceBind(code)
                     .enqueue(object : ApiCallBack<String>(mContext) {
                         override fun onApiResponse(call: Call<String>?,
                                                    response: Response<String>?) {
@@ -131,11 +131,10 @@ class AddNewDeviceActivity : BaseActivity() {
                                 intent.putExtra("userGroupId", userGroupId)
                                 if (response.body()!!.toInt() < 0) {
                                     //返回帐号id，小于0则表示设备未绑定帐号
-                                    intent.putExtra("codeValue", codeValue)
+                                    intent.putExtra("codeValue", code)
                                 } else {
                                     //已有绑定的用户
                                     val accountId = response.body()
-                                    toastShort("该设备已被绑定")
                                     intent.putExtra("accountId", accountId)
                                 }
                                 startActivityForResult(intent, DEVICE_BIND_ADD_MEMBER)

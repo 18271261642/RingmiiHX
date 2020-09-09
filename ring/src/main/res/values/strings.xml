@@ -150,4 +150,7 @@
     <string name="app_device_nickName">device nickName</string>
     <string name="app_device_bind">Binding equipment</string>
     <string name="app_electronic_set_hint">Locate 4 points on the map to plan the electronic fence area</string>
+    <string name="app_request_permission_camera">Taking/selecting pictures requires that you have access to read, write and camera</string>
+    <string name="app_bind_fail">Binding failure</string>
+    <string name="app_component_hint_electronic_fence">Click here to set up the electronic fence</string>
 </resources>

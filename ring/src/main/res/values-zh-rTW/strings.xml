@@ -149,4 +149,7 @@
     <string name="app_device_bind">綁定設備</string>
     <string name="app_device_nickName_empty">設備暱稱爲空</string>
     <string name="app_electronic_set_hint">在地圖上定位4個點規劃電子圍欄範圍</string>
+    <string name="app_request_permission_camera">拍照/選取圖片需要您授權讀寫及照相機權限</string>
+    <string name="app_bind_fail">綁定失敗</string>
+    <string name="app_component_hint_electronic_fence">點擊此處開始設置電子圍欄</string>
 </resources>

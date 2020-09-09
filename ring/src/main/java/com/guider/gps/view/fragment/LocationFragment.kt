@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.addapp.pickers.picker.DatePicker
+import com.binioter.guideview.GuideBuilder
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
@@ -40,6 +41,7 @@ import com.guider.gps.bean.WithSelectBaseBean
 import com.guider.gps.googleMap.MapPositionUtil
 import com.guider.gps.view.activity.HistoryRecordActivity
 import com.guider.gps.view.activity.LocationFrequencySetActivity
+import com.guider.gps.widget.SimpleComponent
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IGuiderApi
@@ -293,7 +295,12 @@ class LocationFragment : BaseFragment(),
      */
     private fun getElectronicFenceData() {
         val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
-        if (StringUtil.isEmpty(deviceCode)) return
+        if (StringUtil.isEmpty(deviceCode)) {
+            electronicSetLayout.post {
+                showGuideView()
+            }
+            return
+        }
         mActivity.showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .getElectronicFence(deviceCode)
@@ -308,11 +315,15 @@ class LocationFragment : BaseFragment(),
                             polygon = PolygonOptions()
                                     .fillColor(CommonUtils.getColor(
                                             mActivity, R.color.color80F18937))
-                                    .strokeWidth(1.0f).addAll(latLngList)
-                                    .strokeWidth(1f)
+                                    .strokeWidth(1.0f)
+                                    .addAll(latLngList)
                             mGoogleMap?.addPolygon(polygon)
                             mGoogleMap?.animateCamera(
                                     CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
+                        } else {
+                            electronicSetLayout.post {
+                                showGuideView()
+                            }
                         }
                     }
 
@@ -320,6 +331,23 @@ class LocationFragment : BaseFragment(),
                         mActivity.dismissDialog()
                     }
                 })
+    }
+
+    fun showGuideView() {
+        val builder = GuideBuilder()
+        builder.setTargetView(electronicSetLayout)
+                .setAlpha(150)
+                .setHighTargetCorner(20)
+                .setHighTargetPadding(10)
+        builder.setOnVisibilityChangedListener(object : GuideBuilder.OnVisibilityChangedListener {
+            override fun onShown() {}
+            override fun onDismiss() {
+                eletronicSetClickEvent()
+            }
+        })
+        builder.addComponent(SimpleComponent())
+        val guide = builder.createGuide()
+        guide.show(mActivity)
     }
 
     /**
@@ -485,13 +513,7 @@ class LocationFragment : BaseFragment(),
             }
             //设置电子围栏在地图上坐标的button
             electronicSetLayout -> {
-                if (customElectronicFencePointNum == 0)
-                    mGoogleMap?.clear()
-                electronicSetHint.visibility = View.VISIBLE
-                mGoogleMap?.setOnMapClickListener {
-                    //手动去编辑电子围栏
-                    mapClickEvent(it)
-                }
+                eletronicSetClickEvent()
             }
             //删除电子围栏在地图上坐标点
             electronicDeleteLayout -> {
@@ -530,6 +552,16 @@ class LocationFragment : BaseFragment(),
                     showToast("请选择足够的电子围栏点")
                 }
             }
+        }
+    }
+
+    private fun eletronicSetClickEvent() {
+        if (customElectronicFencePointNum == 0)
+            mGoogleMap?.clear()
+        electronicSetHint.visibility = View.VISIBLE
+        mGoogleMap?.setOnMapClickListener {
+            //手动去编辑电子围栏
+            mapClickEvent(it)
         }
     }
 
@@ -713,7 +745,6 @@ class LocationFragment : BaseFragment(),
                                 customThirdLatLng?.longitude!!),
                         LatLng(customFourLatLng?.latitude!!,
                                 customFourLatLng?.longitude!!))
-                .strokeWidth(1f)
         mGoogleMap?.addPolygon(polygon)
     }
 
