@@ -176,8 +176,6 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun getSportData() {
-        val mDialog = DialogProgress(mActivity, null)
-        mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
                 .getHealthSportChartData(2197, 1, 9, startTimeValue, endTimeValue)
@@ -191,7 +189,6 @@ class HealthFragment : BaseFragment() {
                     }
 
                     override fun onRequestFinish() {
-                        mDialog.hideDialog()
                     }
                 })
     }
@@ -215,8 +212,6 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun getHeartData() {
-        val mDialog = DialogProgress(mActivity, null)
-        mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
                 .getHealthHeartChartData(2197, 1, 9,
@@ -228,10 +223,6 @@ class HealthFragment : BaseFragment() {
                             val heartAxisPoints = getHeartAxisPoints(response?.body()!!)
                             initHeartLineChart(heartAxisPoints)
                         }
-                    }
-
-                    override fun onRequestFinish() {
-                        mDialog.hideDialog()
                     }
                 })
     }

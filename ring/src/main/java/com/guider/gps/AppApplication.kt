@@ -1,12 +1,15 @@
 package com.guider.gps
 
 import android.annotation.SuppressLint
+import android.os.Build
 import com.guider.baselib.base.BaseApplication
 
 class AppApplication : BaseApplication() {
 
     override fun init() {
-        closeAndroidPDialog()
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P){
+            closeAndroidPDialog()
+        }
     }
 
     @SuppressLint("PrivateApi", "DiscouragedPrivateApi")

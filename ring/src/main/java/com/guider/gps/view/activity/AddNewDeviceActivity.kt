@@ -78,9 +78,9 @@ class AddNewDeviceActivity : BaseActivity() {
         if (type == "mine") {
             showDialog()
             val accountId = MMKVUtil.getInt(USER.USERID, 0)
-//            val codeValue = "12345678android"
+            val codeValue = "OVtest3"
             ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .bindDeviceWithAccount(accountId, code)
+                    .bindDeviceWithAccount(accountId, codeValue)
                     .enqueue(object : ApiCallBack<Any?>(mContext) {
                         override fun onApiResponseNull(call: Call<Any?>?,
                                                        response: Response<Any?>?) {

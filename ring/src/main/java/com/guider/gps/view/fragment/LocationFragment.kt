@@ -46,6 +46,7 @@ import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.bean.ElectronicFenceBean
+import com.guider.health.apilib.bean.UserPositionListBean
 import kotlinx.android.synthetic.main.fragment_location.*
 import retrofit2.Call
 import retrofit2.Response
@@ -161,7 +162,6 @@ class LocationFragment : BaseFragment(),
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
         initMap()
-        requestLocationPermission()
         locationFunctionExtend.setOnClickListener(this)
         electronicSetLayout.setOnClickListener(this)
         electronicDeleteLayout.setOnClickListener(this)
@@ -201,10 +201,16 @@ class LocationFragment : BaseFragment(),
                         CommonUtils.getColor(mActivity, R.color.color333333))
                 historyRecord.text =
                         resources.getString(R.string.app_main_map_history_record)
-                //取消结束标记并重新定位添加开始标记
-                isFirstLocation = true
                 mGoogleMap?.clear()
-                locationMyAddress()
+                if (MMKVUtil.containKey(LAST_LOCATION_POINT_LAT)) {
+                    val latLng = LatLng(
+                            MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0),
+                            MMKVUtil.getDouble(LAST_LOCATION_POINT_LNG, 0.0))
+                    startDisplayPerth(latLng)
+                    mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f))
+                } else {
+                    getUserLocationPointData()
+                }
             }
             tabTitleList[1] -> {
                 tabPosition = 1
@@ -214,11 +220,8 @@ class LocationFragment : BaseFragment(),
                 trackEventsLayout.visibility = View.VISIBLE
                 searchFrontLayout.visibility = View.VISIBLE
                 selectTimeBackLayout.visibility = View.GONE
-                //重新定位并添加开始标记
-                isFirstLocation = true
                 dateSelectTag = false
                 mGoogleMap?.clear()
-                locationMyAddress()
                 //获取年月日格式的当前日期
                 trackEventsDateValueTv.text = CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
                 startTimeTv.text = CommonUtils.calTimeFrontDate(
@@ -226,9 +229,9 @@ class LocationFragment : BaseFragment(),
                 endTimeTv.text = CommonUtils.getCurrentDate()
                 val timeHour = trackEventTimeList[trackEventTimePosition].name.toInt()
                 val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
-                val startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, timeHour)
+                val startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, 24)
                 val endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
-                getUserPointData(startTimeValue, endTimeValue)
+                getUserPointLineData(startTimeValue, endTimeValue)
             }
             tabTitleList[2] -> {
                 if (selectDateDialog != null) {
@@ -242,7 +245,6 @@ class LocationFragment : BaseFragment(),
                 starPerth = null
                 endPerth = null
                 line = null
-                //重新定位并添加开始标记
                 mGoogleMap?.clear()
                 getElectronicFenceData()
             }
@@ -264,9 +266,47 @@ class LocationFragment : BaseFragment(),
     }
 
     /**
+     * 得到用户最近的定位点
+     */
+    private fun getUserLocationPointData() {
+        val dialog = DialogProgress(mActivity, null)
+        dialog.showDialog()
+        val accountId = MMKVUtil.getInt(USER.USERID)
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .userPosition(accountId, 1, 1, "", "")
+                .enqueue(object : ApiCallBack<List<UserPositionListBean>>(mActivity) {
+                    override fun onApiResponse(call: Call<List<UserPositionListBean>>?,
+                                               response: Response<List<UserPositionListBean>>?) {
+                        if (!response?.body().isNullOrEmpty() && response?.body()!!.size == 1) {
+                            val pointList = response.body()!!
+                            val firstPosition = pointList[0]
+                            startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
+                            mGoogleMap?.animateCamera(
+                                    CameraUpdateFactory.newLatLngZoom(
+                                            LatLng(firstPosition.lat, firstPosition.lng), 16.0f))
+                            //判断是否是相同的定位点
+                            if (!MMKVUtil.containKey(LAST_LOCATION_POINT_LAT) ||
+                                    (!(MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0)
+                                            == firstPosition.lat &&
+                                            MMKVUtil.getDouble(
+                                                    LAST_LOCATION_POINT_LNG, 0.0)
+                                            == firstPosition.lng))) {
+                                MMKVUtil.saveDouble(LAST_LOCATION_POINT_LAT, firstPosition.lat)
+                                MMKVUtil.saveDouble(LAST_LOCATION_POINT_LNG, firstPosition.lng)
+                            }
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dialog.hideDialog()
+                    }
+                })
+    }
+
+    /**
      * 得到用户行动轨迹
      */
-    private fun getUserPointData(startTimeValue: String, endTimeValue: String) {
+    private fun getUserPointLineData(startTimeValue: String, endTimeValue: String) {
         val dialog = DialogProgress(mActivity, null)
         dialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
@@ -275,11 +315,27 @@ class LocationFragment : BaseFragment(),
                 .userPosition(accountId, -1, 20,
                         DateUtilKotlin.localToUTC(startTimeValue)!!,
                         DateUtilKotlin.localToUTC(endTimeValue)!!)
-                .enqueue(object : ApiCallBack<List<Any>>(mActivity) {
-                    override fun onApiResponse(call: Call<List<Any>>?,
-                                               response: Response<List<Any>>?) {
-                        if (response?.body() != null) {
-
+                .enqueue(object : ApiCallBack<List<UserPositionListBean>>(mActivity) {
+                    override fun onApiResponse(call: Call<List<UserPositionListBean>>?,
+                                               response: Response<List<UserPositionListBean>>?) {
+                        if (!response?.body().isNullOrEmpty() && response?.body()!!.size > 1) {
+                            val pointList = response.body()!!
+                            val firstPosition = pointList[0]
+                            val endPosition = pointList[pointList.size - 1]
+                            startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
+                            endDisplayPerth(LatLng(endPosition.lat, endPosition.lng))
+                            val latLngList = arrayListOf<LatLng>()
+                            pointList.forEach {
+                                latLngList.add(LatLng(it.lat, it.lng))
+                            }
+                            line = PolylineOptions()
+                                    .color(CommonUtils.getColor(mActivity, R.color.colorF18937))
+                                    .width(4f)
+                                    .geodesic(true)
+                                    .addAll(latLngList)
+                            mGoogleMap?.addPolyline(line)
+                            mGoogleMap?.animateCamera(
+                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
                         }
                     }
 
@@ -287,7 +343,6 @@ class LocationFragment : BaseFragment(),
                         dialog.hideDialog()
                     }
                 })
-        addEndPerthAndDrawLine()
     }
 
     /**
@@ -304,13 +359,16 @@ class LocationFragment : BaseFragment(),
         mActivity.showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .getElectronicFence(deviceCode)
-                .enqueue(object : ApiCallBack<List<ElectronicFenceBean>>(mActivity) {
-                    override fun onApiResponse(call: Call<List<ElectronicFenceBean>>?,
-                                               response: Response<List<ElectronicFenceBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
+                .enqueue(object : ApiCallBack<Any>(mActivity) {
+                    override fun onApiResponse(call: Call<Any>?,
+                                               response: Response<Any>?) {
+                        if (response?.body() != null) {
                             val latLngList = arrayListOf<LatLng>()
-                            response?.body()?.forEach {
-                                latLngList.add(LatLng(it.x, it.y))
+                            val asList = ParseJsonData.parseJsonDataList<ElectronicFenceBean>(
+                                    response.body()!!,ElectronicFenceBean::class.java)
+                            asList.forEach {
+                                latLngList.add(LatLng(
+                                        it.lat, it.lng))
                             }
                             polygon = PolygonOptions()
                                     .fillColor(CommonUtils.getColor(
@@ -320,7 +378,11 @@ class LocationFragment : BaseFragment(),
                             mGoogleMap?.addPolygon(polygon)
                             mGoogleMap?.animateCamera(
                                     CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
-                        } else {
+                        }
+                    }
+
+                    override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
+                        if (response?.body() != null) {
                             electronicSetLayout.post {
                                 showGuideView()
                             }
@@ -333,6 +395,9 @@ class LocationFragment : BaseFragment(),
                 })
     }
 
+    /**
+     * 显示电子围栏高亮提示
+     */
     fun showGuideView() {
         val builder = GuideBuilder()
         builder.setTargetView(electronicSetLayout)
@@ -405,7 +470,7 @@ class LocationFragment : BaseFragment(),
                     val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
                     val startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, timeHour)
                     val endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
-                    getUserPointData(startTimeValue, endTimeValue)
+                    getUserPointLineData(startTimeValue, endTimeValue)
                 }
             }
 
@@ -464,7 +529,7 @@ class LocationFragment : BaseFragment(),
             searchLayout -> {
                 val startTimeValue = "${startTimeTv.text} 00:00:00"
                 val endTimeValue = "${endTimeTv.text} 00:00:00"
-                getUserPointData(startTimeValue, endTimeValue)
+                getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventsDateLeft -> {
                 dateSelectTag = true
@@ -482,7 +547,7 @@ class LocationFragment : BaseFragment(),
                         .replace("日", "")
                 val startTimeValue = "$dateString 00:00:00"
                 val endTimeValue = "$dateString 24:00:00"
-                getUserPointData(startTimeValue, endTimeValue)
+                getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventsDateRight -> {
                 dateSelectTag = true
@@ -500,7 +565,7 @@ class LocationFragment : BaseFragment(),
                         .replace("日", "")
                 val startTimeValue = "$dateString 00:00:00"
                 val endTimeValue = "$dateString 24:00:00"
-                getUserPointData(startTimeValue, endTimeValue)
+                getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventCalIv -> {
                 selectPositionDate()
@@ -576,6 +641,9 @@ class LocationFragment : BaseFragment(),
         }
     }
 
+    /**
+     * 电子围栏设置点击事件
+     */
     private fun eletronicSetClickEvent() {
         if (customElectronicFencePointNum == 0)
             mGoogleMap?.clear()
@@ -627,7 +695,7 @@ class LocationFragment : BaseFragment(),
                 val startTimeValue = "$selectDate 00:00:00"
                 val endTimeValue = "$selectDate 24:00:00"
                 dateSelectTag = false
-                getUserPointData(startTimeValue, endTimeValue)
+                getUserPointLineData(startTimeValue, endTimeValue)
             }
         })
         picker.show()
@@ -690,6 +758,15 @@ class LocationFragment : BaseFragment(),
      */
     override fun onMapReady(it: GoogleMap?) {
         mGoogleMap = it
+        if (MMKVUtil.containKey(LAST_LOCATION_POINT_LAT)) {
+            val latLng = LatLng(
+                    MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0),
+                    MMKVUtil.getDouble(LAST_LOCATION_POINT_LNG, 0.0))
+            startDisplayPerth(latLng)
+            mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f))
+        } else {
+            getUserLocationPointData()
+        }
         val uiSettings = mGoogleMap!!.uiSettings
         uiSettings.isMyLocationButtonEnabled = false //显示定位按钮
         uiSettings.isCompassEnabled = false //设置是否显示指南针
@@ -798,6 +875,8 @@ class LocationFragment : BaseFragment(),
     }
 
     //绘制自定义的电子围栏点 结束
+
+
     /**
      * 位置权限
      */
@@ -861,13 +940,13 @@ class LocationFragment : BaseFragment(),
      */
     private fun startDisplayPerth(latLng: LatLng) {
         val transJC02LatLng =
-                if (BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG && tabPosition == 0) {
                     val gps84ToGcj02 =
                             MapPositionUtil.gps84_To_Gcj02(latLng.latitude, latLng.longitude)
                     LatLng(gps84ToGcj02.lat, gps84ToGcj02.lon)
                 } else latLng
-        firstLocationLat = transJC02LatLng.latitude
-        firstLocationLng = transJC02LatLng.longitude
+        firstLocationLat = latLng.latitude
+        firstLocationLng = latLng.longitude
         // 每一次打点第一个的时候就是定位开始的时候\
         if (tabPosition == 0 || tabPosition == 1) {
             var bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_map_mark_bg_with_head)
@@ -898,19 +977,6 @@ class LocationFragment : BaseFragment(),
     }
 
     /**
-     * 添加轨迹线
-     */
-    private fun addEndPerthAndDrawLine() {
-        val endLng = firstLocationLng + 0.005
-        endDisplayPerth(LatLng(firstLocationLat, endLng))
-        val calculateLineDistance = calculateLineDistance(
-                LatLng(firstLocationLat, firstLocationLng),
-                LatLng(firstLocationLat, endLng))
-        addPointLine(LatLng(firstLocationLat, firstLocationLng),
-                LatLng(firstLocationLat, endLng))
-    }
-
-    /**
      * 将地图视角切换到定位的位置
      */
     private fun initCamera(sydney: LatLng) {
@@ -927,7 +993,7 @@ class LocationFragment : BaseFragment(),
 
 
     override fun onConnected(bundle: Bundle?) {
-        locationMyAddress()
+
     }
 
     /**
@@ -935,27 +1001,27 @@ class LocationFragment : BaseFragment(),
      */
     @SuppressLint("MissingPermission")
     private fun locationMyAddress() {
-        val perms = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-        val checkPermissions = PermissionUtils.checkPermissions(mActivity, perms)
-        if (!checkPermissions) return
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
-        if (mLastLocation != null) {
-            isFirstLocation = false
-            initCamera(LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude))
-            //            // 添加mark标记
-            startDisplayPerth(LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude))
-            getAddress(mActivity, mLastLocation!!.latitude, mLastLocation!!.longitude)
-            //将地图视角切换到定位的位置
-            if (!Geocoder.isPresent()) {
-                // Toast.makeText(this, "No geocoder available", Toast.LENGTH_LONG).show();
-                return
-            }
-        } else {
-            // 启动位置更新
-            isFirstLocation = false
-            startLocationUpdates()
-        }
+//        val perms = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+//                Manifest.permission.ACCESS_FINE_LOCATION)
+//        val checkPermissions = PermissionUtils.checkPermissions(mActivity, perms)
+//        if (!checkPermissions) return
+//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient)
+//        if (mLastLocation != null) {
+//            isFirstLocation = false
+//            initCamera(LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude))
+//            //            // 添加mark标记
+//            startDisplayPerth(LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude))
+//            getAddress(mActivity, mLastLocation!!.latitude, mLastLocation!!.longitude)
+//            //将地图视角切换到定位的位置
+//            if (!Geocoder.isPresent()) {
+//                // Toast.makeText(this, "No geocoder available", Toast.LENGTH_LONG).show();
+//                return
+//            }
+//        } else {
+//            // 启动位置更新
+//            isFirstLocation = false
+//            startLocationUpdates()
+//        }
     }
 
     @SuppressLint("MissingPermission")
@@ -969,9 +1035,7 @@ class LocationFragment : BaseFragment(),
                     mGoogleApiClient, mLocationRequest, locationListener)
     }
 
-    override fun onConnectionSuspended(p0: Int) {
-
-    }
+    override fun onConnectionSuspended(p0: Int) {}
 
     /**
      * 地图两点之间的距离的算法
@@ -1020,21 +1084,6 @@ class LocationFragment : BaseFragment(),
                 0.0f
             }
         }
-    }
-
-    /**
-     * 绘制线 两点一线
-     *
-     * @param oldPointLatLng
-     * @param newPointLatLng
-     */
-    private fun addPointLine(oldPointLatLng: LatLng?, newPointLatLng: LatLng?) {
-        line = PolylineOptions()
-                .color(CommonUtils.getColor(mActivity, R.color.colorF18937))
-                .width(4f)
-                .geodesic(true)
-                .add(oldPointLatLng, newPointLatLng)
-        mGoogleMap?.addPolyline(line)
     }
 
     /**

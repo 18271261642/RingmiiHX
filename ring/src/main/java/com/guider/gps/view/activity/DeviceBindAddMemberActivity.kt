@@ -146,7 +146,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
         showDialog()
         val groupId = userGroupId.substring(0, userGroupId.lastIndexOf(".")).toInt()
         ApiUtil.createApi(IGuiderApi::class.java, false)
-                .devicePhoneVerify(groupId, code, phoneValue, deviceName,countryTv.text.toString())
+                .devicePhoneVerify(groupId, code, phoneValue, deviceName, countryTv.text.toString())
                 .enqueue(object : ApiCallBack<Any?>(mContext) {
                     override fun onApiResponseNull(call: Call<Any?>?,
                                                    response: Response<Any?>?) {
@@ -165,14 +165,15 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                                                response: Response<Any?>?) {
                         //成功返回家人列表
                         if (response?.body() != null) {
-                            val list = ParseJsonData.parseJsonDataList<UserInfo>(response.body()!!)
+                            val list = ParseJsonData.parseJsonDataList<UserInfo>(response.body()!!,
+                                    UserInfo::class.java)
                             if (!list.isNullOrEmpty()) {
                                 val bean = CheckBindDeviceBean()
                                 bean.userGroupId = userGroupId.toDouble()
                                 bean.userInfos = list
                                 EventBusUtils.sendEvent(EventBusEvent(
                                         EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))
-                                setResult(Activity.RESULT_OK,intent)
+                                setResult(Activity.RESULT_OK, intent)
                                 finish()
                             }
                         }
@@ -187,7 +188,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun addNewMemberEvent(event: EventBusEvent<Int>) {
         if (event.code == EventBusAction.DEVICE_ADD_MEMBER_INFO) {
-            if (event.data!=0) {
+            if (event.data != 0) {
                 //为设备添加新用户成功
                 accountId = event.data.toString()
                 addMemberToGroup()
@@ -210,7 +211,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                                 bean.userInfos = response.body()
                                 EventBusUtils.sendEvent(EventBusEvent(
                                         EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))
-                                setResult(Activity.RESULT_OK,intent)
+                                setResult(Activity.RESULT_OK, intent)
                                 finish()
                             }
                         }

@@ -31,6 +31,7 @@ import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
+import com.guider.health.apilib.bean.UserPositionListBean
 import kotlinx.android.synthetic.main.activity_home_draw_layout.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.Subscribe
@@ -131,6 +132,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun getBindDeviceList() {
+        getUserLocationPointData()
         if (bindListBean != null && !bindListBean?.userInfos.isNullOrEmpty()) {
             bindDeviceList.clear()
             bindDeviceList.addAll(bindListBean?.userInfos!!)
@@ -169,6 +171,29 @@ class MainActivity : BaseActivity() {
                         }
                     })
         }
+    }
+
+    /**
+     * 得到用户最近的定位点
+     */
+    private fun getUserLocationPointData() {
+        val accountId = MMKVUtil.getInt(USER.USERID)
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .userPosition(accountId, 1, 1, "", "")
+                .enqueue(object : ApiCallBack<List<UserPositionListBean>>(mContext) {
+                    override fun onApiResponse(call: Call<List<UserPositionListBean>>?,
+                                               response: Response<List<UserPositionListBean>>?) {
+                        if (!response?.body().isNullOrEmpty() && response?.body()!!.size == 1) {
+                            val pointList = response.body()!!
+                            val firstPosition = pointList[0]
+                            MMKVUtil.saveDouble(LAST_LOCATION_POINT_LAT,firstPosition.lat)
+                            MMKVUtil.saveDouble(LAST_LOCATION_POINT_LNG,firstPosition.lng)
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                    }
+                })
     }
 
     private fun unBindDialogShow(position: Int) {

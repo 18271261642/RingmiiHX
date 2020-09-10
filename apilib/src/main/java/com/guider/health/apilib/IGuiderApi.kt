@@ -205,7 +205,7 @@ interface IGuiderApi {
      */
     @GET("api/v1/opdevice/fence")
     fun getElectronicFence(@Query("deviceCode") deviceCode: String?):
-            Call<List<ElectronicFenceBean>>
+            Call<Any>
 
     /**
      * 设置设备的电子围栏信息
@@ -227,5 +227,5 @@ interface IGuiderApi {
                       @Query("page") page: Int,
                       @Query("row") row: Int,
                       @Query("startTime") startTime: String,
-                      @Query("endTime") endTime: String):Call<List<Any>>
+                      @Query("endTime") endTime: String):Call<List<UserPositionListBean>>
 }
