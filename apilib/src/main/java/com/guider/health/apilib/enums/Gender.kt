@@ -1,10 +1,11 @@
-package com.guider.health.apilib.enums;
+package com.guider.health.apilib.enums
 
-public enum Gender {
+enum class Gender {
     /**
      * 男
      */
     MAN,
+
     /**
      * 女
      */

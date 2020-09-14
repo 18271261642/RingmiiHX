@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.os.Environment
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.luck.picture.lib.language.LanguageConfig
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,8 +49,9 @@ object CommonUtils {
 
     //计算当前日期前几年的时间
     @SuppressLint("WrongConstant", "SimpleDateFormat")
-    fun calTimeFrontYear(date: String, years: Int): String {
-        val sdf = SimpleDateFormat(DEFAULT_TIME_FORMAT_PATTERN)
+    fun calTimeFrontYear(date: String, years: Int,
+                         format: String = DEFAULT_TIME_FORMAT_PATTERN): String {
+        val sdf = SimpleDateFormat(format)
         val rightNow = Calendar.getInstance()
         rightNow.time = sdf.parse(date)
         rightNow.add(Calendar.YEAR, -years)
@@ -190,5 +192,16 @@ object CommonUtils {
         return if (file.mkdirs()) {
             path
         } else path
+    }
+
+    /**
+     * 图片挑选库获得当前系统语言
+     */
+    fun getCurrentLanguage(context: Context): Int {
+        val language = Locale.getDefault().language.toLowerCase(Locale.ROOT)
+        return if (language.contains("hk") || language.contains("tw"))
+            LanguageConfig.TRADITIONAL_CHINESE
+        else if (language.contains("cn")) LanguageConfig.CHINESE
+        else LanguageConfig.ENGLISH
     }
 }

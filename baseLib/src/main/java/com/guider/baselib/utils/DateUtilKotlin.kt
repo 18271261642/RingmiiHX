@@ -1,6 +1,8 @@
 package com.guider.baselib.utils
 
 import android.annotation.SuppressLint
+import java.text.SimpleDateFormat
+import java.util.*
 
 object DateUtilKotlin {
 
@@ -17,7 +19,7 @@ object DateUtilKotlin {
     }
 
     /**
-     * Description: 本地时间转化为UTC时间
+     * Description: UTC时间转化为北京时间
      * @param utcTime 本地时间字符串
      * @return utc时间字符串
      */
@@ -25,7 +27,11 @@ object DateUtilKotlin {
     fun uTCToLocal(utcTime: String?, format: String): String? {
         val utcTimeValue = utcTime?.replace("T", " ")
                 ?.replace("Z", "")
-        return DateUtil.dateToString(
-                DateUtil.utcToLocal(DateUtil.stringToDate(utcTimeValue)), format)
+        val sdf = SimpleDateFormat(DEFAULT_TIME_FORMAT_PATTERN)
+        val date = sdf.parse(utcTimeValue!!)
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = date!!
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8)
+        return DateUtil.dateToString(calendar.time, format)
     }
 }

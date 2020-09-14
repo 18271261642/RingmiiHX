@@ -14,7 +14,8 @@
     <string name="app_main_health_before_yesterday">The day before yesterday</string>
     <string name="app_main_health_target_step">Target %d steps</string>
     <string name="app_main_health_step">step</string>
-    <string name="app_main_health_ecg">ecg</string>
+    <string name="app_main_health_blood_oxygen">Blood Oxygen</string>
+    <string name="app_main_health_blood_oxygen_title">Oxygen saturation</string>
     <string name="app_main_health_blood_sugar">Blood sugar</string>
     <string name="app_main_health_blood_pressure">Blood pressure</string>
     <string name="app_main_health_heart_rate">Heart rate</string>
@@ -48,7 +49,17 @@
     <string name="app_main_medicine_suggest_hint">%s%s suggest</string>
     <string name="app_main_medicine_manual_measuring">Manual measuring</string>
     <string name="app_main_medicine_chart_title">%s trend chart of the last seven times</string>
-    <string name="app_main_medicine_suggest_content">Dear, your blood sugar is high!Don\'t be greedy!1 hour after meals</string>
+    <string name="app_main_medicine_suggest_sugar_high">It is suggested to eat less and more meals, pay attention to diet control, strengthen exercise and take medicine on time!If blood glucose monitoring continues to be high, it is recommended to seek medical attention in time!</string>
+    <string name="app_main_medicine_suggest_sugar_low">Take some with you, such as cookies, candy bars, chocolate or sugary drinks and water. Replenish sugar and water in time and strengthen exercise</string>
+    <string name="app_main_medicine_suggest_sugar_normal">Recommended to keep up!Strengthen exercise, maintain good living habits, maintain daily happy mood.</string>
+    <string name="app_main_medicine_suggest_blood_pre_high">It is suggested to strengthen exercise, pay attention to low salt and fat diet, moderate diet, quit smoking and alcohol.</string>
+    <string name="app_main_medicine_suggest_blood_pre_low">Active exercise is recommended to improve physical fitness and cardiopulmonary function.</string>
+    <string name="app_main_medicine_suggest_blood_pre_normal">Recommended to keep up!Strengthen exercise, maintain good living habits, maintain daily happy mood.</string>
+    <string name="app_main_medicine_suggest_hypertension_normal">It is recommended to strengthen physical exercise and monitor blood pressure regularly. If continuous monitoring is high, please see a doctor in time and take medicine as prescribed by the doctor.</string>
+    <string name="app_main_medicine_suggest_blood_oxygen_low">Eat more blood-enriching foods, such as red dates, longan meat, peanuts, red beans, red rice porridge and so on.</string>
+    <string name="app_main_medicine_suggest_blood_oxygen_normal">Please keep it up!Maintain good living habits, maintain daily happy mood.</string>
+    <string name="app_main_medicine_suggest_heart_rate_high">it is recommended to exercise actively, improve physical fitness and cardiopulmonary function</string>
+    <string name="app_main_medicine_suggest_heart_rate_normal">Please keep up! Maintain good living habits, maintain daily happy mood.</string>
     <string name="app_main_medicine_doctors_consultation">Doctors consultation</string>
     <string name="app_doctor_answer_edit_hint">Ask the health doctor</string>
     <string name="app_doctor_answer_picture">To upload pictures</string>
@@ -153,4 +164,13 @@
     <string name="app_request_permission_camera">Taking/selecting pictures requires that you have access to read, write and camera</string>
     <string name="app_bind_fail">Binding failure</string>
     <string name="app_component_hint_electronic_fence">Click here to set up the electronic fence</string>
+    <string name="app_frequency_time_interval">1 min -1440 min (i.e. 24 hours)</string>
+    <string name="app_frequency_configure_one">Configure the first</string>
+    <string name="app_frequency_configure_two">Configure the second</string>
+    <string name="app_frequency_configure_third">Configure the third</string>
+    <string name="app_health_msg_blood_sugar_level">Blood glucose levels</string>
+    <string name="app_health_msg_blood_pre_level">Blood pressure  levels</string>
+    <string name="app_abnormal_msg_tile_model">Hello, your family [%s] measurement  %s</string>
+    <string name="app_abnormal_msg_tile_model_own">Hello, your measurement  %s</string>
+    <string name="app_send">send</string>
 </resources>

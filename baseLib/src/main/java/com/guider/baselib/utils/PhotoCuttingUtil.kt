@@ -27,7 +27,8 @@ object PhotoCuttingUtil {
                 .isWeChatStyle(true)// 是否开启微信图片选择风格
                 .maxSelectNum(1)// 最大图片选择数量
                 .minSelectNum(1)// 最小选择数量
-                .isEnableCrop(true)// 是否裁剪
+                .isPreviewImage(true)// 是否可预览图片
+                .isEnableCrop(false)// 是否裁剪
                 .isCompress(true)// 是否压缩
                 .synOrAsy(true)//同步true或异步false 压缩 默认同步
                 .minimumCompressSize(100)// 小于100kb的图片不压缩
@@ -37,7 +38,7 @@ object PhotoCuttingUtil {
     /**
      * 需要裁剪
      */
-    fun takePhotoZoom2(context: Activity, requestCode: Int, language: Int,
+    fun takePhotoZoom2(context: Activity, requestCode: Int,
                        aspectWidthRatio: Int = 1, aspectHeightRatio: Int = 1) {
         PictureSelector.create(context)
                 .openCamera(PictureConfig.TYPE_IMAGE)// 单独拍照，也可录像或也可音频 看你传入的类型是图片or视频
@@ -46,7 +47,6 @@ object PhotoCuttingUtil {
                 .maxSelectNum(1)// 最大图片选择数量
                 .minSelectNum(1)// 最小选择数量
                 .isWeChatStyle(true)// 是否开启微信图片选择风格
-                .setLanguage(language)// 设置语言，默认中文
                 .isMaxSelectEnabledMask(true)// 选择数到了最大阀值列表是否启用蒙层效果
                 .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
                 .isPreviewImage(true)// 是否可预览图片
@@ -73,15 +73,18 @@ object PhotoCuttingUtil {
                         selectionMedia: MutableList<LocalMedia> = arrayListOf(),
                         maxSelectNum: Int = 9) {
         PictureSelector.create(context)
-                .openGallery(PictureConfig.TYPE_IMAGE)// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
                 .theme(R.style.picture_default_style)// 主题样式设置 具体参考 values/styles   用法：R.style.picture.white.style
                 .maxSelectNum(maxSelectNum)// 最大图片选择数量
                 .minSelectNum(1)// 最小选择数量
+                .isWeChatStyle(true)// 是否开启微信图片选择风格
+                .isMaxSelectEnabledMask(true)// 选择数到了最大阀值列表是否启用蒙层效果
                 .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选
                 .selectionData(selectionMedia)
                 .isPreviewImage(true)// 是否可预览图片
                 .isCamera(true)// 是否显示拍照按钮
-                .isEnableCrop(true)// 是否裁剪
+                .isEnableCrop(false)// 是否裁剪
                 .isCompress(true)// 是否压缩
                 .synOrAsy(true)//同步true或异步false 压缩 默认同步
                 .isGif(false)// 是否显示gif图片
@@ -92,7 +95,7 @@ object PhotoCuttingUtil {
     /**
      * 需要裁剪
      */
-    fun selectPhotoZoom2(context: Activity, requestCode: Int, language: Int,
+    fun selectPhotoZoom2(context: Activity, requestCode: Int,
                          aspectWidthRatio: Int = 1, aspectHeightRatio: Int = 1) {
         PictureSelector.create(context)
                 .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
@@ -101,7 +104,6 @@ object PhotoCuttingUtil {
                 .maxSelectNum(1)// 最大图片选择数量
                 .minSelectNum(1)// 最小选择数量
                 .isWeChatStyle(true)// 是否开启微信图片选择风格
-                .setLanguage(language)// 设置语言，默认中文
                 .isMaxSelectEnabledMask(true)// 选择数到了最大阀值列表是否启用蒙层效果
                 .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
                 .isPreviewImage(true)// 是否可预览图片

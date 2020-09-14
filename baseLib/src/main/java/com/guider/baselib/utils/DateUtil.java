@@ -12,12 +12,12 @@ import java.util.TimeZone;
 /**
  * 日期工具类
  * @author donggang
- *		
+ *
  */
 public class DateUtil
 {
 	private static String defaultDatePattern = "yyyy-MM-dd HH:mm:ss";
-	
+
 	/**
 	 * 获得默认的 date pattern
 	 */
@@ -25,10 +25,10 @@ public class DateUtil
 	{
 		return defaultDatePattern;
 	}
-	
+
 	/**
 	 * 获得当前日期的字符串格式
-	 * 
+	 *
 	 * @return
 	 */
 	@Deprecated
@@ -36,10 +36,10 @@ public class DateUtil
 	{
 		return getDateString(new Date());
 	}
-	
+
 	/**
 	 * 获得Date的字符串格式
-	 * 
+	 *
 	 * @param date
 	 * @return
 	 */
@@ -49,7 +49,7 @@ public class DateUtil
 		SimpleDateFormat formatter = new SimpleDateFormat(defaultDatePattern);
 		return formatter.format(date);
 	}
-	
+
 	/**
 	 * 使用预设格式将字符串转为Date
 	 */
@@ -58,7 +58,7 @@ public class DateUtil
 	{
 		return parse(strDate, getDatePattern());
 	}
-	
+
 	/**
 	 * 使用参数Format将字符串转为Date
 	 */
@@ -79,7 +79,7 @@ public class DateUtil
 	/**
 	 * 获取当前本地时间
 	 * @return
-     */
+	 */
 	public static Date localNow()
 	{
 		return new Date();
@@ -124,7 +124,7 @@ public class DateUtil
 	 * 本地时间转换成国际时间
 	 * @param date 本地时间
 	 * @return
-     */
+	 */
 	public static Date localToUtcV2(Date date)
 	{
 		if (null == date)
@@ -172,7 +172,7 @@ public class DateUtil
 	 * 按照默认格式把字符串时间转换成时间对象
 	 * @param str 字符串时间
 	 * @return
-     */
+	 */
 	public static Date stringToDate(String str)
 	{
 		return stringToDate(str, defaultDatePattern);
@@ -216,7 +216,7 @@ public class DateUtil
 	/**
 	 * 获取当前本地时间的字符串
 	 * @return
-     */
+	 */
 	public static String localNowString()
 	{
 		return dateToString(localNow());
@@ -235,7 +235,7 @@ public class DateUtil
 	 * 把时间对象以默认格式转换成字符串
 	 * @param date
 	 * @return
-     */
+	 */
 	public static String dateToString(Date date)
 	{
 		return dateToString(date, defaultDatePattern);
@@ -245,8 +245,8 @@ public class DateUtil
 	 * 把时间以指定格式转换成字符串
 	 * @param date 时间对象
 	 * @param formater 格式
-     * @return
-     */
+	 * @return
+	 */
 	public static String dateToString(Date date, String formater)
 	{
 		return dateToString(date, formater, TimeZone.getDefault());
@@ -256,8 +256,8 @@ public class DateUtil
 	 * 把时间对象以默认格式指定时区转换成字符串
 	 * @param date 时间对象
 	 * @param timeZone 时区
-     * @return
-     */
+	 * @return
+	 */
 	public static String dateToString(Date date, TimeZone timeZone)
 	{
 		return dateToString(date, defaultDatePattern, timeZone);
@@ -268,8 +268,8 @@ public class DateUtil
 	 * @param date 时间
 	 * @param formater 格式
 	 * @param timeZone 时区
-     * @return
-     */
+	 * @return
+	 */
 	public static String dateToString(Date date, String formater, TimeZone timeZone)
 	{
 		SimpleDateFormat formatter = new SimpleDateFormat(formater);
@@ -281,7 +281,7 @@ public class DateUtil
 	 * 秒数时间戳转化为本地时间，秒数未1970.1.1后的秒数
 	 * @param timeStamp
 	 * @return
-     */
+	 */
 	public static Date stampToDate(String timeStamp)
 	{
 		return stampToDate(Long.decode(timeStamp));
@@ -291,7 +291,7 @@ public class DateUtil
 	 * 秒数时间戳转化为本地时间，秒数未1970.1.1后的秒数
 	 * @param timeStamp
 	 * @return
-     */
+	 */
 	public static Date stampToDate(long timeStamp)
 	{
 		return new Date(timeStamp * 1000);
@@ -301,7 +301,7 @@ public class DateUtil
 	 * 时间转换为秒数时间戳，秒数时间戳未1970.1.1往后的
 	 * @param date
 	 * @return
-     */
+	 */
 	public static long dateToStamp(Date date)
 	{
 		return date.getTime() / 1000;
@@ -310,7 +310,7 @@ public class DateUtil
 	/**
 	 * 当前本地时间转换为秒数时间戳，秒数时间戳未1970.1.1往后的
 	 * @return
-     */
+	 */
 	public static long localNowDateToStamp()
 	{
 		return dateToStamp(localNow());

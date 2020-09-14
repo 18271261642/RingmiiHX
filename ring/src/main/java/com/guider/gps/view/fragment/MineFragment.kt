@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
 import com.guider.baselib.utils.CommonUtils.logOutClearMMKV
+import com.guider.baselib.utils.EventBusAction.REFRESH_TARGET_STEP
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.gps.R
@@ -109,12 +110,11 @@ class MineFragment : BaseFragment() {
                     override fun onApiResponse(call: Call<Any?>?,
                                                response: Response<Any?>?) {
                         if (response?.body() != null) {
-                            (mActivity as MainActivity)
-                                    .unbindDeviceFromMineFragment(
-                                            mActivity.resources.getString(R.string.app_own_string))
+                            (mActivity as MainActivity).unbindDeviceFromMineFragment(accountId)
                             showToast(resources.getString(R.string.app_main_unbind_success))
                             //当前账户必须要有一个设备绑定，所以解绑后要重新到绑定页面
                             MMKVUtil.clearByKey(BIND_DEVICE_ACCOUNT_ID)
+                            MMKVUtil.clearByKey(BIND_DEVICE_CODE)
                             val intent = Intent(mActivity, AddNewDeviceActivity::class.java)
                             intent.putExtra("type", "mine")
                             startActivity(intent)
@@ -134,8 +134,7 @@ class MineFragment : BaseFragment() {
                 SPORT_STEP_INFO -> {
                     if (StringUtil.isNotBlankAndEmpty(data.getStringExtra("inputResult"))) {
                         sportValueInt = data.getStringExtra("inputResult")!!.toInt()
-                        sportValue.text = sportValueInt.toString()
-                        MMKVUtil.saveInt(TARGET_STEP, sportValueInt)
+                        setTargetStepData(sportValueInt)
                     }
                 }
                 PERSON_INFO -> {
@@ -144,6 +143,28 @@ class MineFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun setTargetStepData(sportValueInt: Int) {
+        mActivity.showDialog()
+        val accountId = MMKVUtil.getInt(USER.USERID)
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .setWalkTarget(accountId, sportValueInt)
+                .enqueue(object : ApiCallBack<Any>(mActivity) {
+                    override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
+                        if (response?.body() != null) {
+                            sportValue.text = sportValueInt.toString()
+                            MMKVUtil.saveInt(TARGET_STEP, sportValueInt)
+                            EventBusUtils.sendEvent(EventBusEvent(
+                                    REFRESH_TARGET_STEP, sportValueInt))
+                            showToast("设置成功")
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        mActivity.dismissDialog()
+                    }
+                })
     }
 
     private fun refreshHeaderAndName() {

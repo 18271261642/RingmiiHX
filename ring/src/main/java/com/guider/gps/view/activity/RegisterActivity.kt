@@ -21,6 +21,7 @@ import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.include_password_edit.*
 import kotlinx.android.synthetic.main.include_phone_edit_layout.*
 import me.jessyan.autosize.internal.CustomAdapt
 import retrofit2.Call
@@ -199,20 +200,22 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 if (passwordShowIv.isSelected) {
                     passwordShowIv.isSelected = false
                     passwordShowIv.setImageResource(R.drawable.icon_password_show_close)
-                    againPasswordEdit.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
-                    againPasswordEdit.setSelection(passwordEdit.text.length)
+                    passwordEdit.inputType =
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
+                    passwordEdit.setSelection(passwordEdit.text.length)
                 } else {
                     passwordShowIv.isSelected = true
                     passwordShowIv.setImageResource(R.drawable.icon_password_show_open)
-                    againPasswordEdit.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                    againPasswordEdit.setSelection(passwordEdit.text.length)
+                    passwordEdit.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    passwordEdit.setSelection(passwordEdit.text.length)
                 }
             }
             againPasswordShowIv -> {
                 if (againPasswordShowIv.isSelected) {
                     againPasswordShowIv.isSelected = false
                     againPasswordShowIv.setImageResource(R.drawable.icon_password_show_close)
-                    againPasswordEdit.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
+                    againPasswordEdit.inputType =
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
                     againPasswordEdit.setSelection(passwordEdit.text.length)
                 } else {
                     againPasswordShowIv.isSelected = true

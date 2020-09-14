@@ -1,87 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:overScrollMode="never"
+    android:id="@+id/refreshLayout"
     >
 
-    <LinearLayout
+    <com.scwang.smart.refresh.header.ClassicsHeader
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:layout_height="wrap_content" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="298dp"
-            android:id="@+id/stepLayout"
-            android:background="@drawable/top_status_bar_color_bg"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/stepNumLayout"
-                android:layout_width="190dp"
-                android:layout_height="190dp"
-                android:layout_marginTop="35dp"
-                android:background="@drawable/bg_home_step_num"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/stepLayout"
+                android:layout_width="match_parent"
+                android:layout_height="298dp"
+                android:background="@drawable/top_status_bar_color_bg"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/stepNumLayout"
+                    android:layout_width="190dp"
+                    android:layout_height="190dp"
+                    android:layout_marginTop="35dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@drawable/bg_home_step_num"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/stepNumTv"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="699"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/sp_38"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/app_main_health_step"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/sp_13"
-                        app:layout_constraintBaseline_toBaselineOf="@id/stepNumTv"
-                        app:layout_constraintStart_toEndOf="@id/stepNumTv" />
+                        <TextView
+                            android:id="@+id/stepNumTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_38"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/app_main_health_step"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_13"
+                            app:layout_constraintBaseline_toBaselineOf="@id/stepNumTv"
+                            app:layout_constraintStart_toEndOf="@id/stepNumTv" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/targetStepTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/stepNumLayout" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/stepNumLayout"
-                android:layout_marginTop="26dp"
-                android:id="@+id/targetStepTv"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_15"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            app:layout_constraintTop_toBottomOf="@id/stepLayout"
-            android:id="@+id/healthTabLayout"
-            app:tabIndicatorHeight="@dimen/dp_3"
-            android:background="@color/colorF5F5F5"
-            />
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/healthViewPager"
-            layout="@layout/fragment_health_data"
-            />
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/healthTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@color/colorF5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/stepLayout"
+                app:tabIndicatorHeight="@dimen/dp_3" />
+
+            <include
+                android:id="@+id/healthViewPager"
+                layout="@layout/fragment_health_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

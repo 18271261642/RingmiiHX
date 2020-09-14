@@ -3,7 +3,7 @@ package com.guider.health.apilib.bean
 data class BloodSugarListBean(
     val accountId: Int,
     val bloodSpeed: Int,
-    val bs: Float,
+    val bs: Double,
     val bsTime: String,
     val createTime: String,
     val deviceCode: String,

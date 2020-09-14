@@ -3,6 +3,7 @@ package com.guider.gps.view.fragment
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -20,13 +21,13 @@ import com.guider.gps.view.activity.HealthDataListActivity
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IUserHDApi
-import com.guider.health.apilib.bean.BloodListBeann
-import com.guider.health.apilib.bean.HeartListBean
-import com.guider.health.apilib.bean.SportListBean
+import com.guider.health.apilib.bean.*
 import kotlinx.android.synthetic.main.fragment_health_data.*
 import kotlinx.android.synthetic.main.fragment_home_health.*
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Response
 
@@ -52,6 +53,8 @@ class HealthFragment : BaseFragment() {
     private val mAxisValues = arrayListOf<AxisValue>()
     private lateinit var bloodChart: LineChartView
     private lateinit var heartChart: LineChartView
+    private var isFirstLoadData = true
+    private var isRefresh = false
 
     override fun initView(rootView: View) {
         bloodLayout = rootView.findViewById(R.id.bloodLayout)
@@ -61,10 +64,55 @@ class HealthFragment : BaseFragment() {
         sportLayout = rootView.findViewById(R.id.sportLayout)
         bloodChart = rootView.findViewById(R.id.bloodChart)
         heartChart = rootView.findViewById(R.id.heartChart)
+        EventBusUtils.register(this)
+    }
+
+    override fun initLogic() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            bloodChart.isNestedScrollingEnabled = true
+        }
+        tabInit()
+        tabChangeEvent()
+        rangeShow()
+        bloodLayout.setOnClickListener(this)
+        tempLayout.setOnClickListener(this)
+        heartLayout.setOnClickListener(this)
+        sleepLayout.setOnClickListener(this)
+        sportLayout.setOnClickListener(this)
+        getAxisLabel()
+        initBloodChart()
+        initHeartChart()
+        initTempChart()
+        initSleepChart()
+        initSportChart()
+        getHealthData()
+        refreshLayout.setEnableAutoLoadMore(false)
+        refreshLayout.setEnableRefresh(true)
+        refreshLayout.setOnRefreshListener {
+            isRefresh = true
+            getHealthData()
+        }
     }
 
     @SuppressLint("SetTextI18n")
-    override fun initLogic() {
+    private fun rangeShow() {
+        tempStatusTv.text =
+                "[37.4-38]" +
+                        mActivity.resources.getString(R.string.app_main_health_mild) +
+                        "   [36-37.3]" +
+                        mActivity.resources.getString(R.string.app_main_health_normal) +
+                        "    [>38]" +
+                        mActivity.resources.getString(R.string.app_main_health_error)
+        sleepStatusTv.text =
+                "[0-20]" +
+                        mActivity.resources.getString(R.string.app_main_health_mild) +
+                        "   [21-40]" +
+                        mActivity.resources.getString(R.string.app_main_health_normal) +
+                        "    [>=41]" +
+                        mActivity.resources.getString(R.string.app_main_health_error)
+    }
+
+    private fun tabInit() {
         tabTitleList = arrayListOf(
                 resources.getString(R.string.app_main_health_today),
                 resources.getString(R.string.app_main_health_yesterday),
@@ -86,10 +134,20 @@ class HealthFragment : BaseFragment() {
                 CommonUtils.getColor(mActivity, R.color.color333333))
         // 设置下划线跟文本宽度一致
         healthTabLayout.isTabIndicatorFullWidth = true
-        startTimeValue = DateUtilKotlin.localToUTC(
-                "2019-05-20 09:00:21")!!
+        startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
         endTimeValue = DateUtilKotlin.localToUTC(
-                "2020-05-20 09:00:21")!!
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshTargetStep(event: EventBusEvent<Int>) {
+        if (event.code == EventBusAction.REFRESH_TARGET_STEP) {
+            targetStepTv.text = event.data.toString()
+        }
+    }
+
+    private fun tabChangeEvent() {
         if (healthTabLayout.tabCount == 0) {
             tabTitleList.forEach {
                 healthTabLayout.addTab(healthTabLayout.newTab().setText(it))
@@ -104,34 +162,45 @@ class HealthFragment : BaseFragment() {
                                     "${CommonUtils.getCurrentDate()} 00:00:00")!!
                             endTimeValue = DateUtilKotlin.localToUTC(
                                     "${CommonUtils.getCurrentDate()} 24:00:00")!!
+                            isFirstLoadData = false
                             getHealthData()
                         }
                         tabTitleList[1] -> {
                             dateType = 1
-                            startTimeValue = DateUtilKotlin.localToUTC(
-                                    "${
-                                        CommonUtils.calTimeFrontDate(
-                                                CommonUtils.getCurrentDate(), 1)
-                                    } 00:00:00")!!
+                            //                            startTimeValue = DateUtilKotlin.localToUTC(
+                            //                                    "${
+                            //                                        CommonUtils.calTimeFrontDate(
+                            //                                                CommonUtils.getCurrentDate(), 1)
+                            //                                    } 00:00:00")!!
+                            //                            endTimeValue = DateUtilKotlin.localToUTC(
+                            //                                    "${
+                            //                                        CommonUtils.calTimeFrontDate(
+                            //                                                CommonUtils.getCurrentDate(), 1)
+                            //                                    } 24:00:00")!!
+                            startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
+                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
                             endTimeValue = DateUtilKotlin.localToUTC(
-                                    "${
-                                        CommonUtils.calTimeFrontDate(
-                                                CommonUtils.getCurrentDate(), 1)
-                                    } 24:00:00")!!
+                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+                            isFirstLoadData = false
                             getHealthData()
                         }
                         tabTitleList[2] -> {
                             dateType = 2
-                            startTimeValue = DateUtilKotlin.localToUTC(
-                                    "${
-                                        CommonUtils.calTimeFrontDate(
-                                                CommonUtils.getCurrentDate(), 2)
-                                    } 00:00:00")!!
+                            //                            startTimeValue = DateUtilKotlin.localToUTC(
+                            //                                    "${
+                            //                                        CommonUtils.calTimeFrontDate(
+                            //                                                CommonUtils.getCurrentDate(), 2)
+                            //                                    } 00:00:00")!!
+                            //                            endTimeValue = DateUtilKotlin.localToUTC(
+                            //                                    "${
+                            //                                        CommonUtils.calTimeFrontDate(
+                            //                                                CommonUtils.getCurrentDate(), 2)
+                            //                                    } 24:00:00")!!
+                            startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
+                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
                             endTimeValue = DateUtilKotlin.localToUTC(
-                                    "${
-                                        CommonUtils.calTimeFrontDate(
-                                                CommonUtils.getCurrentDate(), 2)
-                                    } 24:00:00")!!
+                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+                            isFirstLoadData = false
                             getHealthData()
                         }
                     }
@@ -148,122 +217,128 @@ class HealthFragment : BaseFragment() {
 
             })
         }
-        tempStatusTv.text =
-                "[37.4-38]${mActivity.resources.getString(R.string.app_main_health_mild)}   " +
-                        "[36-37.3" +
-                        "]${mActivity.resources.getString(R.string.app_main_health_normal)}" +
-                        "    [>38]${mActivity.resources.getString(R.string.app_main_health_error)}"
-        bloodLayout.setOnClickListener(this)
-        tempLayout.setOnClickListener(this)
-        heartLayout.setOnClickListener(this)
-        sleepLayout.setOnClickListener(this)
-        sportLayout.setOnClickListener(this)
-        getAxisLabel()
-        initBloodChart()
-        initHeartChart()
-        initTempChart()
-        initSleepChart()
-        initSportChart()
-        getHealthData()
     }
 
     private fun getHealthData() {
         getBloodData()
-//        getTempData()
+        getBodyTempData()
         getHeartData()
-//        getSleepData()
+        getSleepData()
         getSportData()
     }
 
     private fun getSportData() {
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthSportChartData(2197, 1, 9, startTimeValue, endTimeValue)
+                .getHealthSportChartData(accountId, 1, 9, startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<SportListBean>>() {
                     override fun onApiResponse(call: Call<List<SportListBean>>?,
                                                response: Response<List<SportListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
                             val sportSubColumnValue = getSportSubColumnValue(response?.body()!!)
                             initSportColumn(sportSubColumnValue)
-                        }
-                    }
-
-                    override fun onRequestFinish() {
+                            //总步数为一天时间段的步数总和
+                            var stepTotal = 0
+                            response.body()?.forEach {
+                                stepTotal += it.step
+                            }
+                            stepNumTv.text = stepTotal.toString()
+//                            val targetSteps = if (MMKVUtil.getInt(TARGET_STEP,
+//                                            0) != 0) {
+//                                MMKVUtil.getInt(TARGET_STEP, 0)
+//                            } else 8000
+//                            val str: String = String.format("%.2f",
+//                                    (4927 * 1.00f / targetSteps))
+//                            val progress: Int = (str.toFloat() * 100).toInt()
+                        } else initSportChart()
                     }
                 })
     }
 
     private fun getSleepData() {
-        mActivity.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthSleepChartData(accountId, 1, 20, startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<Any>>() {
-                    override fun onApiResponse(call: Call<List<Any>>?, response: Response<List<Any>>?) {
+                .getHealthSleepChartData(accountId, 1, 9, startTimeValue, endTimeValue)
+                .enqueue(object : ApiCallBack<List<SleepDataListBean>>() {
+                    override fun onApiResponse(call: Call<List<SleepDataListBean>>?,
+                                               response: Response<List<SleepDataListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
-
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        mActivity.dismissDialog()
+                            val sleepSubColumnValue = getSleepSubColumnValue(
+                                    response?.body()!!.map { it.minute.toFloat() })
+                            initSleepColumn(sleepSubColumnValue)
+                        } else initSleepChart()
                     }
                 })
     }
 
     private fun getHeartData() {
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthHeartChartData(2197, 1, 9,
+                .getHealthHeartChartData(accountId, 1, 9,
                         startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<HeartListBean>>() {
-                    override fun onApiResponse(call: Call<List<HeartListBean>>?,
-                                               response: Response<List<HeartListBean>>?) {
+                .enqueue(object : ApiCallBack<List<HeartRateListBean>>() {
+                    override fun onApiResponse(call: Call<List<HeartRateListBean>>?,
+                                               response: Response<List<HeartRateListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
                             val heartAxisPoints = getHeartAxisPoints(response?.body()!!)
                             initHeartLineChart(heartAxisPoints)
-                        }
+                        } else initHeartChart()
                     }
                 })
     }
 
-    private fun getTempData() {
-        val mDialog = DialogProgress(mActivity, null)
-        mDialog.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+    private fun getBodyTempData() {
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthTempChartData(2197, 1, 9, startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<Any>>() {
-                    override fun onApiResponse(call: Call<List<Any>>?, response: Response<List<Any>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-
+                .getHealthTempChartData(accountId, 1, 9, startTimeValue, endTimeValue)
+                .enqueue(object : ApiCallBack<List<BodyTempListBean>>() {
+                    override fun onApiResponse(call: Call<List<BodyTempListBean>>,
+                                               response: Response<List<BodyTempListBean>>) {
+                        if (!response.body().isNullOrEmpty()) {
+                            val options = getTempXAxisLabels()
+                            val tempDataList = response.body()!!.map { it.bodyTemp }
+                            val dataArray: Array<Any> = tempDataList.toTypedArray()
+                            val aaOptions = initTempLineChart(options, dataArray)
+                            tempChart.aa_drawChartWithChartOptions(aaOptions)
+                        } else {
+                            initTempChart()
                         }
-                    }
-
-                    override fun onRequestFinish() {
-                        mDialog.hideDialog()
                     }
                 })
     }
 
     private fun getBloodData() {
-        val mDialog = DialogProgress(mActivity, null)
-        mDialog.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        val mDialog = DialogProgress(mActivity, null, true)
+        if (!isFirstLoadData) mDialog.showDialog()
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodChartData(2197, 1, 9, startTimeValue, endTimeValue)
+                .getHealthBloodChartData(accountId, 1, 100, startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<BloodListBeann>>() {
                     override fun onApiResponse(call: Call<List<BloodListBeann>>?,
                                                response: Response<List<BloodListBeann>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            if (isRefresh) refreshLayout.finishRefresh(500)
                             val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
                             val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
-                            initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints)
+                            initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints,
+                                    response.body()!!
+                            )
+                        } else {
+                            if (isRefresh) {
+                                refreshLayout.finishRefresh()
+                            }
+                            initBloodChart()
                         }
                     }
 
+                    override fun onFailure(call: Call<List<BloodListBeann>>, t: Throwable) {
+                        super.onFailure(call, t)
+                        if (isRefresh) refreshLayout.finishRefresh()
+                    }
+
                     override fun onRequestFinish() {
-                        mDialog.hideDialog()
+                        if (!isFirstLoadData) mDialog.hideDialog()
+                        isRefresh = false
                     }
                 })
     }
@@ -283,8 +358,7 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun initSleepChart() {
-        val sleepSubColumnValue = getSleepSubColumnValue()
-        initSleepColumn(sleepSubColumnValue)
+        initSleepColumn(arrayListOf())
     }
 
     private fun initSleepColumn(columns: ArrayList<Column>) {
@@ -319,11 +393,12 @@ class HealthFragment : BaseFragment() {
 
     private fun initTempChart() {
         val options = getTempXAxisLabels()
-        val aaOptions = initTempLineChart(options)
+        val aaOptions = initTempLineChart(options, arrayOf())
         tempChart.aa_drawChartWithChartOptions(aaOptions)
     }
 
-    private fun initTempLineChart(category: Array<String>): AAOptions {
+    private fun initTempLineChart(category: Array<String>, bodyTempList: Array<Any>)
+            : AAOptions {
         val zonesArr: Array<Any> = arrayOf(
                 mapOf(
                         "value" to 37.4,
@@ -337,8 +412,6 @@ class HealthFragment : BaseFragment() {
                         "color" to "#E2402B"
                 )
         )
-        val dataArray: Array<Any> =
-                arrayOf(36.3f, 36.8f, 37.8f, 37.5f, 36.5f, 36.9f, 37f, 38.5f, 36.6f)
         val aaChartModel = AAChartModel()
                 .chartType(AAChartType.Spline)//图形类型
                 .dataLabelsEnabled(false)
@@ -350,14 +423,16 @@ class HealthFragment : BaseFragment() {
                 .axesTextColor("#ffffff")
                 .axesTextSize(10f)
                 .series(
-                        arrayOf(
-                                AASeriesElement()
-                                        .name("体温")
-                                        .data(dataArray)
-                                        .fillOpacity(0.5f)
-                                        .lineWidth(1f)
-                                        .zones(zonesArr)
-                        )
+                        if (bodyTempList.isNotEmpty())
+                            arrayOf(
+                                    AASeriesElement()
+                                            .name("体温")
+                                            .data(bodyTempList)
+                                            .fillOpacity(0.5f)
+                                            .lineWidth(1f)
+                                            .zones(zonesArr)
+                            )
+                        else arrayOf()
                 )
 
         return AAOptionsConstructor.configureChartOptions(aaChartModel)
@@ -367,7 +442,7 @@ class HealthFragment : BaseFragment() {
         initHeartLineChart(arrayListOf())
     }
 
-    private fun initHeartLineChart(heartAxisPoints: java.util.ArrayList<PointValue>) {
+    private fun initHeartLineChart(heartAxisPoints: ArrayList<PointValue>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(heartAxisPoints)
@@ -380,15 +455,16 @@ class HealthFragment : BaseFragment() {
         setAxisXShow(data)
         setAxisYShow(data)
         heartChart.lineChartData = data
-        resetViewport(heartYMaxValue, heartChart)
+        resetViewport(heartYMaxValue, heartChart, heartAxisPoints)
     }
 
     private fun initBloodChart() {
-        initBloodLineChart(arrayListOf(), arrayListOf())
+        initBloodLineChart(arrayListOf(), arrayListOf(), arrayListOf())
     }
 
     private fun initBloodLineChart(belowBloodAxisPoints: ArrayList<PointValue>,
-                                   highBloodAxisPoints: ArrayList<PointValue>) {
+                                   highBloodAxisPoints: ArrayList<PointValue>,
+                                   list: List<BloodListBeann>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(belowBloodAxisPoints)
@@ -401,24 +477,47 @@ class HealthFragment : BaseFragment() {
         data.lines = lines
         data.baseValue = Float.NEGATIVE_INFINITY  //设置基准数(大概是数据范围)
         //坐标轴
-        setAxisXShow(data, "blood")
+        setBloodAxisXShow(data, list)
         setAxisYShow(data, "blood")
+//        //设置行为属性，支持缩放、滑动以及平移
+//        bloodChart.isInteractive = true
+//        bloodChart.zoomType = ZoomType.HORIZONTAL
+//        bloodChart.maxZoom = 2f//最大方法比例
+//        bloodChart.setContainerScrollEnabled(
+//                true, ContainerScrollType.HORIZONTAL)
         bloodChart.lineChartData = data
-        resetViewport(bloodYMaxValue, bloodChart)
+        resetViewport(bloodYMaxValue, bloodChart, belowBloodAxisPoints)
         //创建一个图标视图 大小为控件的最大大小
+    }
+
+    private fun setBloodAxisXShow(data: LineChartData, list: List<BloodListBeann>) {
+        //X轴
+        val axisX = Axis()//X轴
+        //对x轴，数据和属性的设置
+        axisX.textSize = 9 //设置字体的大小
+        axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
+        axisX.textColor = CommonUtils.getColor(mActivity, R.color.colorF18937)
+        val mAxisValues = arrayListOf<AxisValue>()
+        for (i in list.indices) {
+            val label = AxisValue((i + 1).toFloat()).setLabel(
+                    DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+            mAxisValues.add(label)
+        }
+        axisX.values = mAxisValues //设置x轴各个坐标点名称
+        data.axisXBottom = axisX //x 轴在底部
     }
 
     /**
      * 重点方法，计算绘制图表
      */
-    private fun resetViewport(yMaxValue: Float, view: LineChartView) {
+    private fun resetViewport(yMaxValue: Float, view: LineChartView, list: List<Any>) {
         //创建一个图标视图 大小为控件的最大大小
         val v = Viewport(view.maximumViewport)
         v.top = yMaxValue
         v.bottom = 0f
         view.maximumViewport = v //给最大的视图设置 相当于原图
         v.left = -0.2f
-        v.right = 10f
+        v.right = if (list.size <= 8) list.size.toFloat() else 8f
         view.currentViewport = v //给当前的视图设置 相当于当前展示的图
         view.postInvalidate()
     }
@@ -464,6 +563,7 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun getHighBloodAxisPoints(list: List<BloodListBeann>): ArrayList<PointValue> {
+        if (list.isNullOrEmpty()) return arrayListOf()
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
         list.forEach {
@@ -478,6 +578,7 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun getBelowBloodAxisPoints(list: List<BloodListBeann>): ArrayList<PointValue> {
+        if (list.isNullOrEmpty()) return arrayListOf()
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
         list.forEach {
@@ -489,7 +590,8 @@ class HealthFragment : BaseFragment() {
         return pointValues
     }
 
-    private fun getHeartAxisPoints(list: List<HeartListBean>): ArrayList<PointValue> {
+    private fun getHeartAxisPoints(list: List<HeartRateListBean>): ArrayList<PointValue> {
+        if (list.isNullOrEmpty()) return arrayListOf()
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
         list.forEach {
@@ -505,30 +607,29 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun getTempXAxisLabels(): Array<String> {
-        val category = arrayOfNulls<String>(9)
+        val category = arrayListOf<String>()
         for (i in 0..9) {
             when (i) {
                 0 -> {
-                    category[i] = "00:00"
+                    category.add("00:00")
                 }
                 1, 2, 3 -> {
-                    category[i] = "0${i * 3}:00"
+                    category.add("0${i * 3}:00")
                 }
                 4, 5, 6, 7 -> {
-                    category[i] = "${i * 3}:00"
+                    category.add("${i * 3}:00")
                 }
                 8 -> {
-                    category[i] = "23:59"
+                    category.add("23:59")
                 }
             }
         }
-        return category as Array<String>
+        return category.toTypedArray()
     }
 
-    private fun getSleepSubColumnValue(): ArrayList<Column> {
+    private fun getSleepSubColumnValue(subColumnValueData: List<Float>): ArrayList<Column> {
         val columns = arrayListOf<Column>()
-        val subColumnValueData = arrayListOf(22f, 40f, 18f, 30f, 60f, 35f, 10f, 72f, 36f)
-        for (i in 0 until subColumnValueData.size) {
+        for (i in subColumnValueData.indices) {
             val colorIntValue = when {
                 subColumnValueData[i] <= 20 -> {
                     CommonUtils.getColor(mActivity, R.color.colorF18937)
@@ -620,5 +721,10 @@ class HealthFragment : BaseFragment() {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        EventBusUtils.unregister(this)
     }
 }

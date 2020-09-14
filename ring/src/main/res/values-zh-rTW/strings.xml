@@ -15,7 +15,8 @@
     <string name="app_main_health_target_step">目標 %d 步</string>
     <string name="app_main_health_step">步</string>
     <string name="app_main_health_blood_sugar">血糖</string>
-    <string name="app_main_health_ecg">心電</string>
+    <string name="app_main_health_blood_oxygen">血氧</string>
+    <string name="app_main_health_blood_oxygen_title">血氧飽和度</string>
     <string name="app_main_health_blood_pressure">血壓</string>
     <string name="app_main_health_heart_rate">心率</string>
     <string name="app_main_health_body_temp">體溫</string>
@@ -47,7 +48,17 @@
     <string name="app_main_medicine_suggest_hint">%s%s 建議</string>
     <string name="app_main_medicine_manual_measuring">手動測量</string>
     <string name="app_main_medicine_chart_title">最近七次%s趨勢圖</string>
-    <string name="app_main_medicine_suggest_content">親，您血糖高了啊！一定不要貪吃啊！飯後1小時</string>
+    <string name="app_main_medicine_suggest_sugar_high">建議少食多餐，注意飲食控制，加強運動鍛鍊，按時服藥！若血糖監測持續較高，建議及時就醫！</string>
+    <string name="app_main_medicine_suggest_sugar_low">隨身攜帶一些如餅乾、糖塊、巧克力或含糖的飲料和水，及時補充糖和水分，加強運動鍛鍊</string>
+    <string name="app_main_medicine_suggest_sugar_normal">建議繼續保持！加強運動鍛鍊，保持良好的生活習慣，保持日常愉快心情。</string>
+    <string name="app_main_medicine_suggest_blood_pre_high">建議加強運動鍛鍊，注意低鹽低脂飲食，節制飲食，戒菸、戒酒。</string>
+    <string name="app_main_medicine_suggest_blood_pre_low">建議積極鍛鍊，改善體質以及心肺的功能。</string>
+    <string name="app_main_medicine_suggest_blood_pre_normal">建議繼續保持！加強運動鍛鍊，保持良好的生活習慣，保持日常愉快心情。</string>
+    <string name="app_main_medicine_suggest_hypertension_normal">建議加強運動鍛鍊，定期監測血壓，如持續監測較高，請及時就醫，遵醫囑按時服藥。</string>
+    <string name="app_main_medicine_suggest_blood_oxygen_low">多吃補血的食物，比如要多吃紅棗 ，桂圓肉，花生，紅豆，紅米粥等。</string>
+    <string name="app_main_medicine_suggest_blood_oxygen_normal">請繼續保持！保持良好的生活習慣，保持日常愉快心情。</string>
+    <string name="app_main_medicine_suggest_heart_rate_high">建議積極鍛鍊，改善體質以及心肺的功能</string>
+    <string name="app_main_medicine_suggest_heart_rate_normal">請繼續保持！保持良好的生活習慣，保持日常愉快心情。</string>
     <string name="app_main_medicine_doctors_consultation">醫師諮詢</string>
     <string name="app_doctor_answer_edit_hint">來問健康醫生</string>
     <string name="app_doctor_answer_picture">上傳圖片</string>
@@ -152,4 +163,13 @@
     <string name="app_request_permission_camera">拍照/選取圖片需要您授權讀寫及照相機權限</string>
     <string name="app_bind_fail">綁定失敗</string>
     <string name="app_component_hint_electronic_fence">點擊此處開始設置電子圍欄</string>
+    <string name="app_frequency_time_interval">1分鐘-1440分鐘（即24小時）</string>
+    <string name="app_frequency_configure_one">配置一</string>
+    <string name="app_frequency_configure_two">配置二</string>
+    <string name="app_frequency_configure_third">配置三</string>
+    <string name="app_health_msg_blood_sugar_level">血糖水平</string>
+    <string name="app_health_msg_blood_pre_level">血壓水平</string>
+    <string name="app_abnormal_msg_tile_model">您好，您的家人【%s】測量了 %s</string>
+    <string name="app_abnormal_msg_tile_model_own">您好，您測量了 %s</string>
+    <string name="app_send">發送</string>
 </resources>

@@ -300,7 +300,6 @@
             android:layout_marginBottom="11dp"
             android:background="@drawable/rounded_66ffffff_14_bg"
             android:gravity="center"
-            android:text="[37.4-38]轻度   [36-37.3]正常    [>38]异常"
             android:textColor="@color/color666666"
             android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="parent" />

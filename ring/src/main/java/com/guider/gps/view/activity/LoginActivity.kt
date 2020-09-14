@@ -211,7 +211,8 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 if (passwordShowIv.isSelected) {
                     passwordShowIv.isSelected = false
                     passwordShowIv.setImageResource(R.drawable.icon_password_show_close)
-                    passwordEdit.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
+                    passwordEdit.inputType =
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
                     passwordEdit.setSelection(passwordEdit.text.length)
                 } else {
                     passwordShowIv.isSelected = true

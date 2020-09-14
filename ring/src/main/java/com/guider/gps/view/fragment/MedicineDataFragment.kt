@@ -7,8 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.guider.baselib.base.BaseFragment
-import com.guider.baselib.bean.Judgement
-import com.guider.baselib.bean.ParamHealthRangeAnalysis
+import com.guider.baselib.device.IUnit
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
@@ -17,8 +16,8 @@ import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IUserHDApi
 import com.guider.health.apilib.bean.BloodListBeann
+import com.guider.health.apilib.bean.BloodOxygenListBean
 import com.guider.health.apilib.bean.BloodSugarListBean
-import com.guider.health.apilib.bean.HeartListBean
 import kotlinx.android.synthetic.main.fragment_medicine_data.*
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
@@ -30,7 +29,7 @@ import retrofit2.Response
  */
 class MedicineDataFragment : BaseFragment() {
 
-    private val ARG_STR = "text"
+    private val fragmentType = "text"
     private var medicineType = ""
     private var medicineDataBgResIds = arrayListOf(
             R.drawable.icon_medicine_high,
@@ -46,7 +45,7 @@ class MedicineDataFragment : BaseFragment() {
 
     companion object {
         fun newInstance(text: String) = MedicineDataFragment().apply {
-            arguments = Bundle().apply { putString(ARG_STR, text) }
+            arguments = Bundle().apply { putString(fragmentType, text) }
             TAG = text
         }
     }
@@ -61,44 +60,12 @@ class MedicineDataFragment : BaseFragment() {
                 resources.getString(R.string.app_main_medicine_high_side),
                 resources.getString(R.string.app_main_health_normal),
                 resources.getString(R.string.app_main_medicine_low_side))
-        arguments?.takeIf { it.containsKey(ARG_STR) }?.apply {
-            val string = getString(ARG_STR)
+        arguments?.takeIf { it.containsKey(fragmentType) }?.apply {
+            val string = getString(fragmentType)
             medicineType = string!!
         }
         chartTitleTv.text = String.format(
                 resources.getString(R.string.app_main_medicine_chart_title), medicineType)
-        when (medicineType) {
-            resources.getString(R.string.app_main_health_blood_sugar) -> {
-                chartLayout.setBackgroundResource(R.drawable.rounded_f6f6f6_7_bg)
-                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
-                dataTagTv.text = medicineDataTextValues[0]
-                dataValueTv.text = "8.1"
-                suggestTitleTv.text = String.format(
-                        resources.getString(R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[0]
-                )
-            }
-            resources.getString(R.string.app_main_health_blood_pressure) -> {
-                chartLayout.setBackgroundResource(R.drawable.rounded_f6f6f6_8_bg)
-                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                dataTagTv.text = medicineDataTextValues[1]
-                dataValueTv.text = "6.2"
-                suggestTitleTv.text = String.format(
-                        resources.getString(R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[1]
-                )
-            }
-            resources.getString(R.string.app_main_health_ecg) -> {
-                chartLayout.setBackgroundResource(R.drawable.rounded_6ecdff_8_bg)
-                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                dataTagTv.text = medicineDataTextValues[2]
-                dataValueTv.text = "5.2"
-                suggestTitleTv.text = String.format(
-                        resources.getString(R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[2]
-                )
-            }
-        }
         initDataChart()
         answerLayout.setOnClickListener(this)
     }
@@ -113,7 +80,6 @@ class MedicineDataFragment : BaseFragment() {
     }
 
     private fun initDataChart() {
-        val mAxisValues = getAxisLabel()
         when (medicineType) {
             resources.getString(R.string.app_main_health_blood_sugar) -> {
                 getBloodSugarData()
@@ -121,23 +87,24 @@ class MedicineDataFragment : BaseFragment() {
             resources.getString(R.string.app_main_health_blood_pressure) -> {
                 getBloodData()
             }
-            resources.getString(R.string.app_main_health_ecg) -> {
-                getHeartData()
+            resources.getString(R.string.app_main_health_blood_oxygen) -> {
+                getBloodOxygenData()
             }
         }
         initDataChartShow(arrayListOf())
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getBloodData() {
         val mDialog = DialogProgress(mActivity, null)
         mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodChartData(2197, 1, 7,
+                .getHealthBloodChartData(accountId, 1, 7,
                         startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<BloodListBeann>>() {
                     override fun onApiResponse(call: Call<List<BloodListBeann>>?,
@@ -146,7 +113,47 @@ class MedicineDataFragment : BaseFragment() {
                             val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
                             val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
                             initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints)
-                            dealBloodStatusShow(response)
+                            val state1 = response.body()!![0].state2.substring(0,
+                                    response.body()!![0].state2.indexOf(","))
+                            val state2 = response.body()!![0].state2.substring(
+                                    response.body()!![0].state2.indexOf(",") + 1)
+                            when {
+                                state1 == "偏低" || (state1 == "正常" && state2 == "偏低") -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[2]
+                                    )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_blood_pre_low)
+                                }
+                                state1 == "正常" && state2 == "正常" -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[1]
+                                    )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_blood_pre_normal)
+                                }
+                                state1 == "偏高" || (state1 == "正常" && state2 == "偏高") -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[0]
+                                    )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_blood_pre_high)
+                                }
+                            }
+                            dataTagTv.text = response.body()!![0].state
+                            dataValueTv.text = "${response.body()!![0].sbp}/" +
+                                    "${response.body()!![0].dbp}"
+                            measureTime.text = DateUtilKotlin.uTCToLocal(
+                                    response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
                         }
                     }
 
@@ -156,67 +163,14 @@ class MedicineDataFragment : BaseFragment() {
                 })
     }
 
-    private fun dealBloodStatusShow(response: Response<List<BloodListBeann>>) {
-        val list = arrayListOf<ParamHealthRangeAnalysis>()
-        val paramHealthRangeAnalysis = ParamHealthRangeAnalysis()
-        paramHealthRangeAnalysis.type = ParamHealthRangeAnalysis.BLOODPRESSURE
-        paramHealthRangeAnalysis.value1 = response.body()!![0].sbp.toString()
-        paramHealthRangeAnalysis.value2 = response.body()!![0].dbp.toString()
-        var birth = "1970-01-01"
-        if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.BIRTHDAY))) {
-            birth = MMKVUtil.getString(USER.BIRTHDAY)
-        }
-        val stringBuilder = StringBuilder()
-        stringBuilder.append(birth.substring(0, 4))
-        stringBuilder.append(birth.substring(5, 7))
-        stringBuilder.append(birth.substring(8, 10))
-        paramHealthRangeAnalysis.year = stringBuilder.toString().toInt()
-        list.add(paramHealthRangeAnalysis)
-        val results: List<String> = Judgement.healthDataAnlysis(list)
-        if (results.isNotEmpty()) {
-            when (results[0]) {
-                "血压偏低" -> {
-                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                    dataTagTv.text = medicineDataTextValues[2]
-                    suggestTitleTv.text = String.format(
-                            resources.getString(
-                                    R.string.app_main_medicine_suggest_hint),
-                            medicineType, medicineDataTextValues[2]
-                    )
-                }
-                "理想血压" -> {
-                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                    dataTagTv.text = medicineDataTextValues[1]
-                    suggestTitleTv.text = String.format(
-                            resources.getString(
-                                    R.string.app_main_medicine_suggest_hint),
-                            medicineType, medicineDataTextValues[1]
-                    )
-                }
-                "疑似高血压" -> {
-                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
-                    dataTagTv.text = medicineDataTextValues[0]
-                    suggestTitleTv.text = String.format(
-                            resources.getString(
-                                    R.string.app_main_medicine_suggest_hint),
-                            medicineType, medicineDataTextValues[0]
-                    )
-                }
-            }
-        }
-        dataValueTv.text = response.body()!![0].sbp.toString()
-        measureTime.text = DateUtilKotlin.uTCToLocal(
-                response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
-    }
-
     private fun initBloodLineChart(belowBloodAxisPoints: ArrayList<PointValue>,
                                    highBloodAxisPoints: ArrayList<PointValue>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(belowBloodAxisPoints)
-                .setColor(ContextCompat.getColor(mActivity, R.color.color5BC2FF))
+                .setColor(ContextCompat.getColor(mActivity, R.color.color46E8FD))
         val line2 = Line(highBloodAxisPoints)
-                .setColor(ContextCompat.getColor(mActivity, R.color.colorF18937))
+                .setColor(ContextCompat.getColor(mActivity, R.color.color4897FF))
         commonLineSetInit(line1, lines)
         commonLineSetInit(line2, lines)
         val data = LineChartData()
@@ -237,7 +191,18 @@ class MedicineDataFragment : BaseFragment() {
             pointYValues.add(it.sbp.toFloat())
         }
         for (i in 0 until pointYValues.size) {
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
+            val colorInt =
+                    when (list[i].state2.substring(0,
+                            list[i].state2.indexOf(","))) {
+                        "偏低" -> {
+                            CommonUtils.getColor(mActivity, R.color.colorF18937)
+                        }
+                        "偏高" -> {
+                            CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                        }
+                        else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
+                    }
+            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
             if (bloodYMaxValue < pointYValues[i]) bloodYMaxValue = pointYValues[i]
         }
         bloodYMaxValue += 10
@@ -251,29 +216,65 @@ class MedicineDataFragment : BaseFragment() {
             pointYValues.add(it.dbp.toFloat())
         }
         for (i in 0 until pointYValues.size) {
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
+            val colorInt =
+                    when (list[i].state2.substring(
+                            list[i].state2.indexOf(",") + 1)) {
+                        "偏低" -> {
+                            CommonUtils.getColor(mActivity, R.color.colorF18937)
+                        }
+                        "偏高" -> {
+                            CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                        }
+                        else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
+                    }
+            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
         }
         return pointValues
     }
 
-    private fun getHeartData() {
+    private fun getBloodOxygenData() {
         val mDialog = DialogProgress(mActivity, null)
         mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthHeartChartData(2197, 1, 7,
+                .getHealthBloodOxygenData(accountId, 1, 7,
                         startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<HeartListBean>>() {
-                    override fun onApiResponse(call: Call<List<HeartListBean>>?,
-                                               response: Response<List<HeartListBean>>?) {
+                .enqueue(object : ApiCallBack<List<BloodOxygenListBean>>() {
+                    override fun onApiResponse(call: Call<List<BloodOxygenListBean>>?,
+                                               response: Response<List<BloodOxygenListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
-                            val heartAxisPoints = getHeartAxisPoints(response?.body()!!)
-                            initHeartLineChart(heartAxisPoints)
-                            dealHeartStatusShow(response.body()!![0])
+                            val bloodOxygenAxisPoints = getBloodOxygenAxisPoints(response?.body()!!)
+                            initBloodOxygenLineChart(bloodOxygenAxisPoints)
+                            when (response.body()!![0].state2) {
+                                "偏低" -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[2]
+                                    )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_blood_oxygen_low)
+                                }
+                                else -> {
+                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                                    suggestTitleTv.text = String.format(
+                                            resources.getString(
+                                                    R.string.app_main_medicine_suggest_hint),
+                                            medicineType, medicineDataTextValues[1]
+                                    )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_blood_oxygen_normal)
+                                }
+                            }
+                            dataValueTv.text = response.body()!![0].bo.toString()
+                            dataTagTv.text = response.body()!![0].state
+                            measureTime.text = DateUtilKotlin.uTCToLocal(
+                                    response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
                         }
                     }
 
@@ -283,37 +284,33 @@ class MedicineDataFragment : BaseFragment() {
                 })
     }
 
-    private fun dealHeartStatusShow(heartListBean: HeartListBean) {
-        val list: List<ParamHealthRangeAnalysis> = java.util.ArrayList<ParamHealthRangeAnalysis>()
-        val paramHealthRangeAnalysis = ParamHealthRangeAnalysis()
-        paramHealthRangeAnalysis.type = ParamHealthRangeAnalysis.HEARTBEAT
-        paramHealthRangeAnalysis.value1 = heartListBean.hb
-        dataValueTv.text = heartListBean.hb.toString()
-        measureTime.text = DateUtilKotlin.uTCToLocal(
-                heartListBean.testTime, TIME_FORMAT_PATTERN1)
-
-    }
-
-    private fun getHeartAxisPoints(list: List<HeartListBean>): ArrayList<PointValue> {
+    private fun getBloodOxygenAxisPoints(list: List<BloodOxygenListBean>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
         list.forEach {
-            pointYValues.add(it.hb.toFloat())
+            pointYValues.add(it.bo.toFloat())
         }
         heartYMaxValue = 0f
         for (i in 0 until pointYValues.size) {
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
+            val colorInt =
+                    when (list[i].state2) {
+                        "偏低" -> {
+                            CommonUtils.getColor(mActivity, R.color.colorF18937)
+                        }
+                        else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
+                    }
+            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
             if (heartYMaxValue < pointYValues[i]) heartYMaxValue = pointYValues[i]
         }
         heartYMaxValue += 10
         return pointValues
     }
 
-    private fun initHeartLineChart(heartAxisPoints: java.util.ArrayList<PointValue>) {
+    private fun initBloodOxygenLineChart(bloodOxygenAxisPoints: java.util.ArrayList<PointValue>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
-        val line1 = Line(heartAxisPoints)
-                .setColor(ContextCompat.getColor(mActivity, R.color.white))
+        val line1 = Line(bloodOxygenAxisPoints)
+                .setColor(ContextCompat.getColor(mActivity, R.color.color59d15f))
         commonLineSetInit(line1, lines)
         val data = LineChartData()
         data.lines = lines
@@ -330,47 +327,55 @@ class MedicineDataFragment : BaseFragment() {
         mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodSugarChartData(2197, 1, 7,
+                .getHealthBloodSugarChartData(accountId, 1, 7,
                         startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<BloodSugarListBean>>() {
                     override fun onApiResponse(call: Call<List<BloodSugarListBean>>?,
                                                response: Response<List<BloodSugarListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
-                            when {
-                                response?.body()!![0].bs < 6 -> {
+                            //返回的数据类中state2的第一个字段为血糖状态
+                            when (response?.body()!![0].state2.substring(0,
+                                    response.body()!![0].state2.indexOf(","))) {
+                                "偏低" -> {
                                     dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                                    dataTagTv.text = medicineDataTextValues[2]
-                                    dataValueTv.text = response.body()!![0].bs.toString()
                                     suggestTitleTv.text = String.format(
                                             resources.getString(
                                                     R.string.app_main_medicine_suggest_hint),
                                             medicineType, medicineDataTextValues[2]
                                     )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_sugar_low)
                                 }
-                                response.body()!![0].bs > 7 -> {
+                                "偏高" -> {
                                     dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
-                                    dataTagTv.text = medicineDataTextValues[0]
                                     suggestTitleTv.text = String.format(
                                             resources.getString(
                                                     R.string.app_main_medicine_suggest_hint),
                                             medicineType, medicineDataTextValues[0]
                                     )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_sugar_high)
                                 }
                                 else -> {
                                     dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                                    dataTagTv.text = medicineDataTextValues[1]
                                     suggestTitleTv.text = String.format(
                                             resources.getString(
                                                     R.string.app_main_medicine_suggest_hint),
                                             medicineType, medicineDataTextValues[1]
                                     )
+                                    suggestContentTv.text = resources.getString(
+                                            R.string.app_main_medicine_suggest_sugar_normal)
                                 }
                             }
-                            dataValueTv.text = response.body()!![0].bs.toString()
+                            val iUnit: IUnit = UnitUtil.getIUnit(mActivity)
+                            val value: Double = iUnit.getGluShowValue(
+                                    response.body()!![0].bs, 2)
+                            dataValueTv.text = value.toString()
+                            dataTagTv.text = response.body()!![0].state
                             measureTime.text = DateUtilKotlin.uTCToLocal(
                                     response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
                             val bloodSugarAxisPoints = getBloodSugarAxisPoints(response.body()!!)
@@ -451,16 +456,18 @@ class MedicineDataFragment : BaseFragment() {
     private fun getBloodSugarAxisPoints(list: List<BloodSugarListBean>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
+        val iUnit: IUnit = UnitUtil.getIUnit(mActivity)
         list.forEach {
-            pointYValues.add(it.bs)
+            val value = iUnit.getGluShowValue(it.bs, 2).toFloat()
+            pointYValues.add(value)
         }
         for (i in 0 until pointYValues.size) {
             val colorInt =
-                    when {
-                        pointYValues[i] < 6 -> {
+                    when (list[i].state2.substring(0, list[i].state2.indexOf(","))) {
+                        "偏低" -> {
                             CommonUtils.getColor(mActivity, R.color.colorF18937)
                         }
-                        pointYValues[i] > 7 -> {
+                        "偏高" -> {
                             CommonUtils.getColor(mActivity, R.color.colorE2402B)
                         }
                         else -> CommonUtils.getColor(mActivity, R.color.color59d15f)

@@ -1,4 +1,4 @@
-package com.guider.health.apilib.bean
+package com.guider.health.apilib.enums
 
 /**
  * @Package: com.guider.gps.bean

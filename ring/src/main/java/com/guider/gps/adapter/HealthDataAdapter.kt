@@ -6,17 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
+import com.guider.health.apilib.bean.HealthDataDetailListBean
 
-class HealthDataAdapter(context: Context, dataList: ArrayList<String>)
-    : CommonAdapter<String>(context, dataList, R.layout.item_health_data) {
+class HealthDataAdapter(context: Context, dataList: ArrayList<HealthDataDetailListBean>,
+                        val type:String)
+    : CommonAdapter<HealthDataDetailListBean>(context, dataList, R.layout.item_health_data) {
 
-    override fun bindData(holder: ViewHolder, data: String, position: Int) {
-        holder.setText(R.id.dateTv, data)
+    override fun bindData(holder: ViewHolder, data: HealthDataDetailListBean, position: Int) {
+        holder.setText(R.id.dateTv, data.time)
         val dataDetailListRv = holder.getView<RecyclerView>(R.id.dataDetailListRv)
         dataDetailListRv.isNestedScrollingEnabled = true
         dataDetailListRv.layoutManager = LinearLayoutManager(mContext)
-        val list = arrayListOf("08:30", "09:30", "10:30")
-        val adapter = HealthDetailListAdapter(mContext, list)
+        val adapter = HealthDetailListAdapter(mContext, data.list as ArrayList,type)
         dataDetailListRv.adapter = adapter
     }
 }

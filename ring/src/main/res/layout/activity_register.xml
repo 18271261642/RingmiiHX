@@ -10,58 +10,12 @@
         layout="@layout/include_phone_edit_layout"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/passwordIv"
-        android:layout_width="@dimen/dp_13"
-        android:layout_height="@dimen/dp_17"
-        android:layout_marginStart="@dimen/dp_26"
-        android:layout_marginTop="@dimen/dp_14"
-        android:src="@drawable/icon_login_password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editLayout" />
-
-    <EditText
-        android:id="@+id/passwordEdit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
-        android:layout_marginTop="@dimen/dp_14"
-        android:layout_marginEnd="@dimen/dp_26"
-        android:background="@color/white"
-        android:ellipsize="end"
-        android:gravity="start"
-        android:hint="@string/app_login_password_edit_hint"
-        android:inputType="textPassword"
-        android:minHeight="@dimen/dp_30"
-        android:paddingStart="@dimen/dp_11"
-        android:paddingEnd="0dp"
-        android:singleLine="true"
-        android:textColor="@color/color333333"
-        android:textColorHint="@color/color999999"
-        android:textSize="@dimen/sp_13"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/passwordIv"
-        app:layout_constraintTop_toBottomOf="@id/editLayout" />
-
-    <ImageView
-        android:id="@+id/passwordShowIv"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_11"
-        android:layout_marginEnd="@dimen/dp_20"
-        android:visibility="gone"
-        android:src="@drawable/icon_password_show_close"
-        app:layout_constraintBottom_toBottomOf="@id/passwordEdit"
-        app:layout_constraintEnd_toEndOf="@id/passwordEdit"
-        app:layout_constraintTop_toTopOf="@id/passwordEdit" />
-
-    <View
-        android:id="@+id/passwordLine"
+    <include
+        android:id="@+id/includePasswordLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_0_5"
-        android:layout_marginStart="@dimen/dp_26"
-        android:layout_marginEnd="@dimen/dp_26"
-        android:background="@color/colorEEEEEE"
-        app:layout_constraintTop_toBottomOf="@id/passwordEdit" />
+        layout="@layout/include_password_edit"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/editLayout" />
 
     <EditText
         android:id="@+id/againPasswordEdit"
@@ -84,15 +38,15 @@
         android:textSize="@dimen/sp_13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordLine" />
+        app:layout_constraintTop_toBottomOf="@id/includePasswordLayout" />
 
     <ImageView
         android:id="@+id/againPasswordShowIv"
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_11"
         android:layout_marginEnd="@dimen/dp_20"
-        android:visibility="gone"
         android:src="@drawable/icon_password_show_close"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/againPasswordEdit"
         app:layout_constraintEnd_toEndOf="@id/againPasswordEdit"
         app:layout_constraintTop_toTopOf="@id/againPasswordEdit" />

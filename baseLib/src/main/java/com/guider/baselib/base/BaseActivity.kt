@@ -4,24 +4,24 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.graphics.Color
 import android.os.Bundle
-import androidx.annotation.DrawableRes
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewStub
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.Toolbar
 import com.guider.baselib.R
-import com.guider.baselib.utils.OnNoDoubleClickListener
 import com.guider.baselib.utils.AppManager
 import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.EventBusUtils
+import com.guider.baselib.utils.OnNoDoubleClickListener
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.gyf.immersionbar.ImmersionBar
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-import me.jessyan.autosize.utils.ScreenUtils
 
 abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
 
@@ -109,7 +109,7 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
      * @Description: 显示进度条
      */
     fun showDialog() {
-        mLoadingDialog = DialogProgress(mContext, null)
+        mLoadingDialog = DialogProgress(mContext!!, null)
         mLoadingDialog?.showDialog()
     }
 

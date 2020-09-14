@@ -14,7 +14,8 @@ public class DialogProgressCountdown {
     }
 
     public void showDialog(long millisInFuture, long countDownInterval, final Runnable onFinish) {
-        mDialogProgress = new DialogProgress(mContext, null);
+        mDialogProgress = new DialogProgress(mContext, null,
+                false);
         mDialogProgress.showDialog();
         mDialogProgress.setTvText((millisInFuture / 1000) + "S");
         mCountDownTimer = new CountDownTimer(millisInFuture, countDownInterval) {

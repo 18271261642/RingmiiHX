@@ -26,7 +26,6 @@ import com.guider.health.apilib.bean.UserInfo
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.language.LanguageConfig
 import kotlinx.android.synthetic.main.activity_person_info.*
 import retrofit2.Call
 import retrofit2.Response
@@ -381,11 +380,11 @@ class PersonInfoActivity : BaseActivity() {
     }
 
     private fun selectPhoto() {
-        PhotoCuttingUtil.selectPhotoZoom2(this, IMAGE_CUT_CODE, LanguageConfig.CHINESE)
+        PhotoCuttingUtil.selectPhotoZoom2(this, IMAGE_CUT_CODE)
     }
 
     private fun takePhoto() {
-        PhotoCuttingUtil.takePhotoZoom2(this, IMAGE_CUT_CODE, LanguageConfig.CHINESE)
+        PhotoCuttingUtil.takePhotoZoom2(this, IMAGE_CUT_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

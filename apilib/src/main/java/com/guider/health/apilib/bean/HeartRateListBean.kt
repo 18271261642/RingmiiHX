@@ -1,6 +1,6 @@
 package com.guider.health.apilib.bean
 
-data class HeartListBean(
+data class HeartRateListBean(
     val accountId: Int,
     val createTime: String,
     val deviceCode: String,

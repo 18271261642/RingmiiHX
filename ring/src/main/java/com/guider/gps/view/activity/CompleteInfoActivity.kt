@@ -24,8 +24,8 @@ import com.guider.health.apilib.bean.TokenInfo
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.language.LanguageConfig
 import kotlinx.android.synthetic.main.complete_info_activity.*
+import kotlinx.android.synthetic.main.include_simple_complete_info.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -320,11 +320,11 @@ class CompleteInfoActivity : BaseActivity() {
     }
 
     private fun selectPhoto() {
-        PhotoCuttingUtil.selectPhotoZoom2(this, IMAGE_CUT_CODE, LanguageConfig.CHINESE)
+        PhotoCuttingUtil.selectPhotoZoom2(this, IMAGE_CUT_CODE)
     }
 
     private fun takePhoto() {
-        PhotoCuttingUtil.takePhotoZoom2(this, IMAGE_CUT_CODE, LanguageConfig.CHINESE)
+        PhotoCuttingUtil.takePhotoZoom2(this, IMAGE_CUT_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

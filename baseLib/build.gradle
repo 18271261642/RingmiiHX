@@ -58,6 +58,8 @@ dependencies {
     api dependencies.autosize
     //上下拉刷新
     api dependencies.SmartRefreshLayout
+    api dependencies.refreshClassicHeader
+    api dependencies.refreshClassicFooter
     //事件传递
     api dependencies.eventbus
     //状态栏适配

@@ -21,6 +21,16 @@ object ParseJsonData {
     }
 
     /**
+     * 解决json内嵌解析kotlin的Any问题
+     * @param json json字符串
+     * @param T 数据bean类
+     */
+    inline fun <reified T> parseJsonAny(json: String): T {
+        val gson = GsonBuilder().enableComplexMapKeySerialization().create()
+        return gson.fromJson(json, T::class.java)
+    }
+
+    /**
      * 解决json解析kotlin中集合问题
      * @param data 数据Any
      * @param T 数据bean类

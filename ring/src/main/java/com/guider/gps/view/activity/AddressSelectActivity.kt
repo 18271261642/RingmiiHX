@@ -11,7 +11,7 @@ import com.guider.gps.R
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IGuiderApi
-import com.guider.health.apilib.bean.AddressType
+import com.guider.health.apilib.enums.AddressType
 import com.guider.health.apilib.bean.AddressWithCodeBean
 import com.guider.health.apilib.bean.UserInfo
 import com.lljjcoder.Interface.OnCityItemClickListenerNew

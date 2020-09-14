@@ -186,6 +186,7 @@ class LocationFragment : BaseFragment(),
         resetFunctionLayout()
         when (tab.text.toString()) {
             tabTitleList[0] -> {
+                mGoogleMap!!.setInfoWindowAdapter(CustomInfoWindowAdapter())
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
                 }
@@ -213,6 +214,7 @@ class LocationFragment : BaseFragment(),
                 }
             }
             tabTitleList[1] -> {
+                mGoogleMap!!.setInfoWindowAdapter(null)
                 tabPosition = 1
                 if (loadView != null) {
                     loadView?.dismiss()
@@ -227,13 +229,13 @@ class LocationFragment : BaseFragment(),
                 startTimeTv.text = CommonUtils.calTimeFrontDate(
                         CommonUtils.getCurrentDate(), 7)
                 endTimeTv.text = CommonUtils.getCurrentDate()
-                val timeHour = trackEventTimeList[trackEventTimePosition].name.toInt()
                 val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
                 val startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, 24)
                 val endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             tabTitleList[2] -> {
+                mGoogleMap!!.setInfoWindowAdapter(null)
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
                 }
@@ -249,6 +251,7 @@ class LocationFragment : BaseFragment(),
                 getElectronicFenceData()
             }
             tabTitleList[3] -> {
+                mGoogleMap!!.setInfoWindowAdapter(null)
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
                 }
@@ -271,7 +274,11 @@ class LocationFragment : BaseFragment(),
     private fun getUserLocationPointData() {
         val dialog = DialogProgress(mActivity, null)
         dialog.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+        if (accountId == 0) {
+            dialog.hideDialog()
+            return
+        }
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .userPosition(accountId, 1, 1, "", "")
                 .enqueue(object : ApiCallBack<List<UserPositionListBean>>(mActivity) {
@@ -284,6 +291,8 @@ class LocationFragment : BaseFragment(),
                             mGoogleMap?.animateCamera(
                                     CameraUpdateFactory.newLatLngZoom(
                                             LatLng(firstPosition.lat, firstPosition.lng), 16.0f))
+                            MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
+                            MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
                             //判断是否是相同的定位点
                             if (!MMKVUtil.containKey(LAST_LOCATION_POINT_LAT) ||
                                     (!(MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0)
@@ -309,7 +318,11 @@ class LocationFragment : BaseFragment(),
     private fun getUserPointLineData(startTimeValue: String, endTimeValue: String) {
         val dialog = DialogProgress(mActivity, null)
         dialog.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+        if (accountId == 0) {
+            dialog.hideDialog()
+            return
+        }
         Log.i("getUserPointDataTime", "start$startTimeValue-----end$endTimeValue")
         ApiUtil.createApi(IGuiderApi::class.java, false)
                 .userPosition(accountId, -1, 20,
@@ -350,6 +363,7 @@ class LocationFragment : BaseFragment(),
      */
     private fun getElectronicFenceData() {
         val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (StringUtil.isEmpty(deviceCode)) {
             electronicSetLayout.post {
                 showGuideView()
@@ -358,14 +372,14 @@ class LocationFragment : BaseFragment(),
         }
         mActivity.showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getElectronicFence(deviceCode)
+                .getElectronicFence(deviceCode,accountId)
                 .enqueue(object : ApiCallBack<Any>(mActivity) {
                     override fun onApiResponse(call: Call<Any>?,
                                                response: Response<Any>?) {
                         if (response?.body() != null) {
                             val latLngList = arrayListOf<LatLng>()
                             val asList = ParseJsonData.parseJsonDataList<ElectronicFenceBean>(
-                                    response.body()!!,ElectronicFenceBean::class.java)
+                                    response.body()!!, ElectronicFenceBean::class.java)
                             asList.forEach {
                                 latLngList.add(LatLng(
                                         it.lat, it.lng))
@@ -422,10 +436,12 @@ class LocationFragment : BaseFragment(),
      */
     private fun setElectronicFenceData() {
         val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (StringUtil.isEmpty(deviceCode)) return
         mActivity.showDialog()
         val data = hashMapOf<String, Any>()
         data["deviceCode"] = deviceCode
+        data["accountId"] = accountId
         data["points"] = arrayListOf(
                 ElectronicFenceBean(customFirstLatLng!!.latitude, customFirstLatLng!!.longitude),
                 ElectronicFenceBean(customTwoLatLng!!.latitude, customTwoLatLng!!.longitude),
@@ -521,7 +537,8 @@ class LocationFragment : BaseFragment(),
             trackEventsDateCalSelectIv -> {
                 searchFrontLayout.visibility = View.GONE
                 selectTimeBackLayout.visibility = View.VISIBLE
-                dateSelectTag = true
+                dateSelectTag = trackEventsDateValueTv.text.toString() !=
+                        CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
             }
             startTimeTv, endTimeTv -> {
                 initSelectDateDialogShow()
@@ -1142,6 +1159,18 @@ class LocationFragment : BaseFragment(),
 
         private fun render(marker: Any, window: View) {
             val locationMethodTv = window.findViewById<TextView>(R.id.locationMethodTv)
+            val timeTv = window.findViewById<TextView>(R.id.timeTv)
+            if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_TIME))) {
+                val localTime = DateUtilKotlin.uTCToLocal(
+                        MMKVUtil.getString(LAST_LOCATION_POINT_TIME),
+                        TIME_FORMAT_PATTERN1)
+                timeTv.text = localTime
+            }
+            val martLocationTv = window.findViewById<TextView>(R.id.martLocationTv)
+            if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS))) {
+                val address = MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS)
+                martLocationTv.text = address
+            }
             locationMethodTv.text = String.format(
                     this@LocationFragment.mActivity.resources.getString(
                             R.string.app_map_location_method_content), "WIFI"

@@ -16,6 +16,9 @@ const val TIME_FORMAT_PATTERN4 = "yyyy-MM-dd"
 const val TIME_FORMAT_PATTERN5 = "yyyy-MM"
 const val TIME_FORMAT_PATTERN6 = "yyyy年MM月dd日"
 const val TIME_FORMAT_PATTERN7 = "yyyy-MM-dd-HH"
+const val TIME_FORMAT_PATTERN8 = "HH:mm"
+const val TIME_FORMAT_PATTERN9 = "MM-dd HH:mm"
+const val TIME_FORMAT_PATTERN10 = "MM-dd"
 
 /**
  * app_id是从微信官网申请到的合法APPid
@@ -40,6 +43,8 @@ const val BIND_DEVICE_ACCOUNT_ID = "bind_device_account_id"
 const val BIND_DEVICE_CODE = "bind_device_code"
 const val LAST_LOCATION_POINT_LAT = "last_location_point_lat"
 const val LAST_LOCATION_POINT_LNG= "last_location_point_lng"
+const val LAST_LOCATION_POINT_ADDRESS= "last_location_point_address"
+const val LAST_LOCATION_POINT_TIME= "last_location_point_time"
 const val TARGET_STEP = "target_step"
 const val IS_FIRST_START = "is_first_start"
 const val REFRESH_TOKEN = "refresh_token"

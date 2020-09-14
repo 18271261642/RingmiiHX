@@ -1,6 +1,7 @@
 package com.guider.health.apilib
 
 import com.guider.health.apilib.bean.*
+import com.guider.health.apilib.enums.AddressType
 import com.guider.health.apilib.model.WechatUserInfo
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -126,8 +127,8 @@ interface IGuiderApi {
      * @param deviceCode 设备号
      */
     @DELETE("api/v1/user/{accountId}/device/unbind")
-    fun unBindDeviceWithAccount(@Query("accountId") accountId: Int,
-                                @Query("deviceCode") deviceCode: String):Call<Any>
+    fun unBindDeviceWithAccount(@Path("accountId") accountId: Int,
+                                @Query("deviceCode") deviceCode: String): Call<Any>
 
     /**
      * 验证设备是否有绑定
@@ -204,7 +205,8 @@ interface IGuiderApi {
      * @param deviceCode 设备码
      */
     @GET("api/v1/opdevice/fence")
-    fun getElectronicFence(@Query("deviceCode") deviceCode: String?):
+    fun getElectronicFence(@Query("deviceCode") deviceCode: String?,
+                           @Query("accountId") accountId: Int):
             Call<Any>
 
     /**
@@ -223,9 +225,57 @@ interface IGuiderApi {
      * @param endTime 结束时间
      */
     @GET("api/v1/userpostion")
-    fun userPosition( @Query("accountId") accountId: Int,
-                      @Query("page") page: Int,
-                      @Query("row") row: Int,
-                      @Query("startTime") startTime: String,
-                      @Query("endTime") endTime: String):Call<List<UserPositionListBean>>
+    fun userPosition(@Query("accountId") accountId: Int,
+                     @Query("page") page: Int,
+                     @Query("row") row: Int,
+                     @Query("startTime") startTime: String,
+                     @Query("endTime") endTime: String): Call<List<UserPositionListBean>>
+
+    /**
+     * 获取手环设备定位频率设置
+     * @param deviceCode 设备码
+     */
+    @GET("api/v1/opdevice/optionrate")
+    fun locationFrequencySet(@Query("deviceCode") deviceCode: String?):
+            Call<List<FrequencySetBean>>
+
+    /**
+     * 设置手环设备定位频率
+     * @param body 设备码+频率的设置数组
+     */
+    @POST("api/v1/opdevice/optionrate")
+    fun setLocationFrequency(@Body body: Any): Call<Any>
+
+    /**
+     * 发送咨询聊天内容
+     */
+    @POST("api/v1/consult/chat")
+    fun sendAnswerMsg(@Body body: Any): Call<SendAnswerListBean>
+
+    /**
+     * 分页获取会话聊天内容
+     * @param fromAccount 咨询发送者id
+     * @param toAccount 咨询接受者id
+     */
+    @GET("api/v1/consult/chat/page")
+    fun getAnswerMsgList(@Query("fromAccount") fromAccount: Int,
+                         @Query("toAccount") toAccount: Int,
+                         @Query("page") page: Boolean,
+                         @Query("row") row: Int,
+                         @Query("currDate") currDate: String
+    ): Call<Map<String, List<AnswerListBean>>>
+
+    /**
+     * 获取用户设置的运动目标
+     */
+    @GET("api/v1/opdevice/walktarget")
+    fun getWalkTarget(@Query("accountId") accountId: Int): Call<String>
+
+    /**
+     * 获取用户设置的运动目标
+     */
+    @POST("api/v1/opdevice/walktarget")
+    fun setWalkTarget(@Query("accountId") accountId: Int,
+                      @Query("walkTarget") walkTarget: Int
+    ): Call<Any>
 }

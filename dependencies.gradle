@@ -17,7 +17,7 @@ ext {
     logging_interceptor = "4.8.1"
     okhttp = "4.8.1"
     glassfish_annotation = "10.0-b28"
-    SmartRefreshLayout = "1.1.2"
+    SmartRefreshLayout = "2.0.1"
     eventbus = "3.2.0"
     wechat = "wechat-sdk-android-with-mta:+"
     greendao = "3.3.0"
@@ -69,7 +69,9 @@ ext {
             wechat                : "com.tencent.mm.opensdk:$wechat",
             logging_interceptor   : "com.squareup.okhttp3:logging-interceptor:$logging_interceptor",
             glassfish_annotation  : "org.glassfish:javax.annotation:$glassfish_annotation",
-            SmartRefreshLayout    : "com.scwang.smartrefresh:SmartRefreshLayout:$SmartRefreshLayout",
+            SmartRefreshLayout    : "com.scwang.smart:refresh-layout-kernel:$SmartRefreshLayout",
+            refreshClassicHeader  : "com.scwang.smart:refresh-header-classics:$SmartRefreshLayout",
+            refreshClassicFooter  : "com.scwang.smart:refresh-footer-classics:$SmartRefreshLayout",
             eventbus              : "org.greenrobot:eventbus:$eventbus",
             immersionBar          : "com.gyf.immersionbar:immersionbar:$immersionBar",
             //greenDao
