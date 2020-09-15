@@ -3,7 +3,7 @@ package com.guider.gps.view.fragment
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
+import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -30,6 +30,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Response
+import kotlin.math.abs
+
 
 class HealthFragment : BaseFragment() {
 
@@ -67,10 +69,11 @@ class HealthFragment : BaseFragment() {
         EventBusUtils.register(this)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initLogic() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            bloodChart.isNestedScrollingEnabled = true
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            bloodChart.isNestedScrollingEnabled = true
+//        }
         tabInit()
         tabChangeEvent()
         rangeShow()
@@ -92,6 +95,10 @@ class HealthFragment : BaseFragment() {
             isRefresh = true
             getHealthData()
         }
+        bloodChart.setOnTouchListener(touchListener)
+        heartChart.setOnTouchListener(touchListener)
+        sleepChart.setOnTouchListener(touchListener)
+        sportChart.setOnTouchListener(touchListener)
     }
 
     @SuppressLint("SetTextI18n")
@@ -720,6 +727,32 @@ class HealthFragment : BaseFragment() {
                         resources.getString(R.string.app_main_health_sport))
                 startActivity(intent)
             }
+        }
+    }
+
+    var touchListener: View.OnTouchListener = object : View.OnTouchListener {
+        var ratio = 1.8f //水平和竖直方向滑动的灵敏度,偏大是水平方向灵敏
+        var x0 = 0f
+        var y0 = 0f
+        override fun onTouch(v: View, event: MotionEvent): Boolean {
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    x0 = event.x
+                    y0 = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val dx = abs(event.x - x0)
+                    val dy = abs(event.y - y0)
+                    x0 = event.x
+                    y0 = event.y
+                    contentScrollview.requestDisallowInterceptTouchEvent(
+                            dx * ratio > dy)
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.performClick()
+                }
+            }
+            return false
         }
     }
 

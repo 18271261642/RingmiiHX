@@ -84,6 +84,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
         msgListRv.layoutManager = LinearLayoutManager(this)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initLogic() {
         more.setOnClickListener(this)
         msgAdapter = AnswerListAdapter(mContext!!, msgList)
@@ -92,6 +93,10 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
         editInput.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 if (isOpenMoreTag) hideMoreLayout()
+                if (msgList.size > 1)
+                    msgListRv.postDelayed({
+                        msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
+                    }, 300)
             }
         }
         editInput.addTextChangedListener(object : TextWatcher {
@@ -123,6 +128,10 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
             page = false
             getAnswerListData()
         }
+        msgListRv.setOnTouchListener { _, _ ->
+            hideKeyboard(more)
+            false
+        }
         refresh_immsg.setEnableAutoLoadMore(false)
         getAnswerListData()
         send.setOnClickListener(this)
@@ -152,7 +161,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                             }
                             searchTime = tempList[0].createTime
                             if (isLoadMore) {
-                                msgList.addAll(tempList)
+                                msgList.addAll(0, tempList)
                             } else {
                                 msgList = tempList
                             }
@@ -199,6 +208,10 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                     moreLayout.visibility = View.GONE
                     isOpenMoreTag = false
                 }
+                if (msgList.size > 1)
+                    msgListRv.postDelayed({
+                        msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
+                    }, 300)
             }
             cameraLayout -> {
                 type = "takePhoto"

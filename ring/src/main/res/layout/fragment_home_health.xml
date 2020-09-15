@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
+        android:id="@+id/contentScrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -90,5 +91,5 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </com.scwang.smart.refresh.layout.SmartRefreshLayout>

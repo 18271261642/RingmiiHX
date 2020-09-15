@@ -22,26 +22,24 @@ class LineChartViewFixed : LineChartView {
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) :
             super(context!!, attrs, defStyle)
 
-    private var startx = 0
-    private var starty = 0
+    private var startx = 0f
+    private var starty = 0f
 
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        parent.requestDisallowInterceptTouchEvent(true)
+        var ratio = 1.8f //水平和竖直方向滑动的灵敏度,偏大是水平方向灵敏
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                startx = event.x.toInt()
-                starty = event.y.toInt()
+                startx = event.x
+                starty = event.y
             }
             MotionEvent.ACTION_MOVE -> {
-                val endx = event.x.toInt()
-                val endy = event.y.toInt()
-                val dx: Int = endx - startx
-                val dy: Int = endy - starty
-                if (abs(dy) < abs(dx)) {
-                    //左右滑动
-                    parent.requestDisallowInterceptTouchEvent(true)
-                }
+                val dx = abs(event.x - startx)
+                val dy = abs(event.y - starty)
+                startx = event.x
+                starty = event.y
+                parent.requestDisallowInterceptTouchEvent(
+                        dx * ratio > dy)
             }
         }
         return super.dispatchTouchEvent(event)

@@ -5,11 +5,8 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.os.Environment
 import android.util.Log
 import androidx.core.content.ContextCompat
-import com.luck.picture.lib.language.LanguageConfig
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -180,28 +177,5 @@ object CommonUtils {
         if (StringUtil.isNotBlankAndEmpty(countryCode))
             MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
         MMKVUtil.saveBoolean(IS_FIRST_START, true)
-    }
-
-    /**
-     * 自定义压缩存储地址
-     * @return
-     */
-    fun getCompressPath(): String {
-        val path = Environment.getExternalStorageDirectory().path + CROP_PATH_NEW
-        val file = File(path)
-        return if (file.mkdirs()) {
-            path
-        } else path
-    }
-
-    /**
-     * 图片挑选库获得当前系统语言
-     */
-    fun getCurrentLanguage(context: Context): Int {
-        val language = Locale.getDefault().language.toLowerCase(Locale.ROOT)
-        return if (language.contains("hk") || language.contains("tw"))
-            LanguageConfig.TRADITIONAL_CHINESE
-        else if (language.contains("cn")) LanguageConfig.CHINESE
-        else LanguageConfig.ENGLISH
     }
 }
