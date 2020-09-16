@@ -178,7 +178,8 @@ public class ThirdLogin {
         });
     }
 
-    public void thidLogin(String name, final String appId, final boolean customCallBack, final ThirdLoginCallback thirdLoginCallback,
+    public void thidLogin(String name, final String appId, final boolean customCallBack,
+                          final ThirdLoginCallback thirdLoginCallback,
                           final HandleOriginUserInfo handleOriginUserInfo) {
         /*
         if (thirdLoginCallback != null) {

@@ -71,14 +71,11 @@ public class LaunchActivity extends WatchBaseActivity {
 
 
         final boolean isGuide = (boolean) SharedPreferencesUtils.getParam(LaunchActivity.this, "isGuide", false);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Message message = handler.obtainMessage();
-                message.what = 1001;
-                message.obj = isGuide;
-                handler.sendMessage(message);
-            }
+        handler.postDelayed(() -> {
+            Message message = handler.obtainMessage();
+            message.what = 1001;
+            message.obj = isGuide;
+            handler.sendMessage(message);
         }, 3 * 1000);
 
     }

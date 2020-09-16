@@ -2,6 +2,8 @@ package com.guider.healthring.util
 
 import android.annotation.SuppressLint
 import com.guider.health.common.core.DateUtil
+import java.text.SimpleDateFormat
+import java.util.*
 
 object DateUtilKotlin {
 
@@ -26,7 +28,11 @@ object DateUtilKotlin {
     fun uTCToLocal(utcTime: String?, format: String): String? {
         val utcTimeValue = utcTime?.replace("T", " ")
                 ?.replace("Z", "")
-        return DateUtil.dateToString(
-                DateUtil.utcToLocal(DateUtil.stringToDate(utcTimeValue)), format)
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val date = sdf.parse(utcTimeValue!!)
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = date!!
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8)
+        return DateUtil.dateToString(calendar.time, format)
     }
 }

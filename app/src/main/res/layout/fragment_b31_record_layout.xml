@@ -27,7 +27,7 @@
 
 
     <!--4DDDFF-->
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/b31HomeSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,6 @@
         app:srlPrimaryColor="#ffffff">
         <!-- srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色 -->
         <!-- srlEnablePreviewInEditMode 可以开启和关闭下拉预览 -->
-
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -296,6 +295,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

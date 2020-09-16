@@ -82,33 +82,30 @@ public class WXEntryActivityAdapter {
         if (Commont.isDebug)Log.e(TAG, "3333游客注册或者登陆参数：" + params.toString());
         String url = Commont.FRIEND_BASE_URL + URLs.disanfang;
         if (Commont.isDebug)Log.e(TAG, "====  json  " +  new Gson().toJson(params));
-        OkHttpTool.getInstance().doRequest(url, new Gson().toJson(params), this, new OkHttpTool.HttpResult() {
-                    @Override
-                    public void onResult(String result) {
-                        Log.e(TAG, "-------微信登录到bl=" + result);
-                        try {
-                            JSONObject jsonObject = new JSONObject(result);
-                            if (!jsonObject.has("code"))
-                                return;
-                            if (jsonObject.getInt("code") == 200) {
-                                String userStr = jsonObject.getString("data");
-                                if (userStr != null) {
-                                    UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
-                                    Common.customer_id = userInfoBean.getUserid();
-                                    //保存userid
-                                    SharedPreferencesUtils.saveObject(mContext, Commont.USER_ID_DATA, userInfoBean.getUserid());
-                                    SharedPreferencesUtils.saveObject(mContext, "userInfo", userStr);
-                                    SharedPreferencesUtils.saveObject(mContext, Commont.USER_INFO_DATA, userStr);
+        OkHttpTool.getInstance().doRequest(url, new Gson().toJson(params), this, result -> {
+            Log.e(TAG, "-------微信登录到bl=" + result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (!jsonObject.has("code"))
+                    return;
+                if (jsonObject.getInt("code") == 200) {
+                    String userStr = jsonObject.getString("data");
+                    if (userStr != null) {
+                        UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
+                        Common.customer_id = userInfoBean.getUserid();
+                        //保存userid
+                        SharedPreferencesUtils.saveObject(mContext, Commont.USER_ID_DATA, userInfoBean.getUserid());
+                        SharedPreferencesUtils.saveObject(mContext, "userInfo", userStr);
+                        SharedPreferencesUtils.saveObject(mContext, Commont.USER_INFO_DATA, userStr);
 
-                                    // startActivity(NewSearchActivity.class);
-                                    // finish();
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        }
-                    });
+                        // startActivity(NewSearchActivity.class);
+                        // finish();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            });
 
     }
 

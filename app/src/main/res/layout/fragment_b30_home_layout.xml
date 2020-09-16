@@ -20,7 +20,7 @@
         android:layout_height="1dp"
         android:background="@color/white"/>
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/b30HomeSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -218,6 +218,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>
