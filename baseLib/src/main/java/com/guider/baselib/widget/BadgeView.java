@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TabWidget;
+
 import androidx.appcompat.widget.AppCompatTextView;
 
 /**
@@ -52,8 +53,8 @@ public class BadgeView extends AppCompatTextView {
         // set default font
         setTextColor(Color.WHITE);
         setTypeface(Typeface.DEFAULT_BOLD);
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-        setPadding(dip2Px(5), dip2Px(1), dip2Px(5), dip2Px(1));
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 9);
+        setPadding(dip2Px(3), dip2Px(2), dip2Px(3), dip2Px(2));
 
         // set default background
         setBackground(9, Color.parseColor("#D76155"));
@@ -67,8 +68,8 @@ public class BadgeView extends AppCompatTextView {
 
     public void setBackground(int dipRadius, int badgeColor) {
         int radius = dip2Px(dipRadius);
-        float[] radiusArray = new float[] { radius, radius, radius, radius,
-                radius, radius, radius, radius };
+        float[] radiusArray = new float[]{radius, radius, radius, radius,
+                radius, radius, radius, radius};
 
         RoundRectShape roundRect = new RoundRectShape(radiusArray, null, null);
         ShapeDrawable bgDrawable = new ShapeDrawable(roundRect);
@@ -150,8 +151,8 @@ public class BadgeView extends AppCompatTextView {
 
     public int[] getBadgeMargin() {
         LayoutParams params = (LayoutParams) getLayoutParams();
-        return new int[] { params.leftMargin, params.topMargin,
-                params.rightMargin, params.bottomMargin };
+        return new int[]{params.leftMargin, params.topMargin,
+                params.rightMargin, params.bottomMargin};
     }
 
     public void incrementBadgeCount(int increment) {

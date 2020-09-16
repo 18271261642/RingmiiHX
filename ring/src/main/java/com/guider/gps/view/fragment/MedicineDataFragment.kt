@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.device.IUnit
+import com.guider.baselib.device.Unit
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
@@ -21,6 +22,8 @@ import com.guider.health.apilib.bean.BloodSugarListBean
 import kotlinx.android.synthetic.main.fragment_medicine_data.*
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Response
 
@@ -64,10 +67,12 @@ class MedicineDataFragment : BaseFragment() {
             val string = getString(fragmentType)
             medicineType = string!!
         }
+        suggestTitleTv.text = medicineType
         chartTitleTv.text = String.format(
                 resources.getString(R.string.app_main_medicine_chart_title), medicineType)
         initDataChart()
         answerLayout.setOnClickListener(this)
+        measure.setOnClickListener(this)
     }
 
     override fun onNoDoubleClick(v: View) {
@@ -76,18 +81,37 @@ class MedicineDataFragment : BaseFragment() {
                 val intent = Intent(mActivity, DoctorAnswerActivity::class.java)
                 startActivity(intent)
             }
+            measure -> {
+                showToast("相关功能开发中，敬请期待...")
+            }
+        }
+    }
+
+    override fun openEventBus(): Boolean {
+        return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshHealthData(event: EventBusEvent<String>) {
+        if (event.code == EventBusAction.REFRESH_HEALTH_DATA) {
+            initDataChart()
         }
     }
 
     private fun initDataChart() {
+        heartYMaxValue = 0f
+        bloodYMaxValue = 0f
         when (medicineType) {
             resources.getString(R.string.app_main_health_blood_sugar) -> {
+                dataUnitTv.text = mActivity.resources.getString(R.string.glu_unit_food_2)
                 getBloodSugarData()
             }
             resources.getString(R.string.app_main_health_blood_pressure) -> {
+                dataUnitTv.text = Unit().bp
                 getBloodData()
             }
             resources.getString(R.string.app_main_health_blood_oxygen) -> {
+                dataUnitTv.text = Unit().bloodO2
                 getBloodOxygenData()
             }
         }
@@ -100,7 +124,7 @@ class MedicineDataFragment : BaseFragment() {
         mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
@@ -110,6 +134,7 @@ class MedicineDataFragment : BaseFragment() {
                     override fun onApiResponse(call: Call<List<BloodListBeann>>?,
                                                response: Response<List<BloodListBeann>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            noDataTv.visibility = View.GONE
                             val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
                             val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
                             initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints)
@@ -154,6 +179,8 @@ class MedicineDataFragment : BaseFragment() {
                                     "${response.body()!![0].dbp}"
                             measureTime.text = DateUtilKotlin.uTCToLocal(
                                     response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
+                        } else {
+                            noDataTv.visibility = View.VISIBLE
                         }
                     }
 
@@ -190,6 +217,9 @@ class MedicineDataFragment : BaseFragment() {
         list.forEach {
             pointYValues.add(it.sbp.toFloat())
         }
+        if (list.size == 1) {
+            pointYValues.add(0f)
+        }
         for (i in 0 until pointYValues.size) {
             val colorInt =
                     when (list[i].state2.substring(0,
@@ -212,6 +242,9 @@ class MedicineDataFragment : BaseFragment() {
     private fun getBelowBloodAxisPoints(list: List<BloodListBeann>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
+        if (list.size == 1) {
+            pointYValues.add(0f)
+        }
         list.forEach {
             pointYValues.add(it.dbp.toFloat())
         }
@@ -237,19 +270,22 @@ class MedicineDataFragment : BaseFragment() {
         mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
                 .getHealthBloodOxygenData(accountId, 1, 7,
                         startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<BloodOxygenListBean>>() {
-                    override fun onApiResponse(call: Call<List<BloodOxygenListBean>>?,
-                                               response: Response<List<BloodOxygenListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            val bloodOxygenAxisPoints = getBloodOxygenAxisPoints(response?.body()!!)
+                .enqueue(object : ApiCallBack<Any>() {
+                    override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
+                        if (response?.body() != null) {
+                            noDataTv.visibility = View.GONE
+                            val tempList = ParseJsonData.parseJsonDataList<BloodOxygenListBean>(
+                                    response.body()!!, BloodOxygenListBean::class.java
+                            )
+                            val bloodOxygenAxisPoints = getBloodOxygenAxisPoints(tempList)
                             initBloodOxygenLineChart(bloodOxygenAxisPoints)
-                            when (response.body()!![0].state2) {
+                            when (tempList[0].state2) {
                                 "偏低" -> {
                                     dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
                                     suggestTitleTv.text = String.format(
@@ -271,11 +307,18 @@ class MedicineDataFragment : BaseFragment() {
                                             R.string.app_main_medicine_suggest_blood_oxygen_normal)
                                 }
                             }
-                            dataValueTv.text = response.body()!![0].bo.toString()
-                            dataTagTv.text = response.body()!![0].state
+                            dataValueTv.text = tempList[0].bo.toString()
+                            dataTagTv.text = tempList[0].state
                             measureTime.text = DateUtilKotlin.uTCToLocal(
-                                    response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
+                                    tempList[0].testTime, TIME_FORMAT_PATTERN1)
+                        } else {
+                            noDataTv.visibility = View.VISIBLE
                         }
+                    }
+
+                    override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
+                        super.onApiResponseNull(call, response)
+                        noDataTv.visibility = View.VISIBLE
                     }
 
                     override fun onRequestFinish() {
@@ -287,6 +330,9 @@ class MedicineDataFragment : BaseFragment() {
     private fun getBloodOxygenAxisPoints(list: List<BloodOxygenListBean>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
+        if (list.size == 1) {
+            pointYValues.add(0f)
+        }
         list.forEach {
             pointYValues.add(it.bo.toFloat())
         }
@@ -327,7 +373,7 @@ class MedicineDataFragment : BaseFragment() {
         mDialog.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
@@ -337,6 +383,7 @@ class MedicineDataFragment : BaseFragment() {
                     override fun onApiResponse(call: Call<List<BloodSugarListBean>>?,
                                                response: Response<List<BloodSugarListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            noDataTv.visibility = View.GONE
                             //返回的数据类中state2的第一个字段为血糖状态
                             when (response?.body()!![0].state2.substring(0,
                                     response.body()!![0].state2.indexOf(","))) {
@@ -380,7 +427,7 @@ class MedicineDataFragment : BaseFragment() {
                                     response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
                             val bloodSugarAxisPoints = getBloodSugarAxisPoints(response.body()!!)
                             initDataChartShow(bloodSugarAxisPoints)
-                        }
+                        } else noDataTv.visibility = View.VISIBLE
                     }
 
                     override fun onRequestFinish() {
@@ -457,6 +504,9 @@ class MedicineDataFragment : BaseFragment() {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
         val iUnit: IUnit = UnitUtil.getIUnit(mActivity)
+        if (list.size == 1) {
+            pointYValues.add(0f)
+        }
         list.forEach {
             val value = iUnit.getGluShowValue(it.bs, 2).toFloat()
             pointYValues.add(value)

@@ -31,7 +31,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="5dp"
         android:singleLine="true"
-        android:text="@string/app_main_left_msg_device_name1"
         android:textColor="@color/color333333"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"

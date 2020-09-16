@@ -1406,4 +1406,5 @@
 
     <string name="download_ecg_tips">Visceral sound application component download？</string>
     <string name="glu_unit_food_2">mmol/L</string>
+    <string name="app_send_success">Send Success</string>
 </resources>

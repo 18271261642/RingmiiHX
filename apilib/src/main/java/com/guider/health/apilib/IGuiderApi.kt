@@ -236,7 +236,7 @@ interface IGuiderApi {
      * @param deviceCode 设备码
      */
     @GET("api/v1/opdevice/optionrate")
-    fun locationFrequencySet(@Query("deviceCode") deviceCode: String?):
+    fun locationFrequencySet(@Query("accountId") accountId: Int?):
             Call<List<FrequencySetBean>>
 
     /**
@@ -277,5 +277,33 @@ interface IGuiderApi {
     @POST("api/v1/opdevice/walktarget")
     fun setWalkTarget(@Query("accountId") accountId: Int,
                       @Query("walkTarget") walkTarget: Int
+    ): Call<Any>
+
+    /**
+     * 获取用户手环设置
+     */
+    @GET("api/v1/opdevice/setdetail")
+    fun getUserRingSet(@Query("accountId") accountId: Int): Call<RingSetBean>
+
+    /**
+     * 设置手环心率测量间隔
+     * @param interval 时间间隔 分钟
+     * @param open true：开启，false：关闭
+     */
+    @PATCH("api/v1/opdevice/hr/set")
+    fun setHeartRateAlarm(@Query("accountId") accountId: Int,
+                          @Query("interval") interval: Int,
+                          @Query("open") open: Boolean
+    ): Call<Any>
+
+    /**
+     * 设置手环体温测量间隔
+     * @param interval 时间间隔 分钟
+     * @param open true：开启，false：关闭
+     */
+    @PATCH("api/v1/opdevice/bt/set")
+    fun setBodyTempAlarm(@Query("accountId") accountId: Int,
+                         @Query("interval") interval: Int,
+                         @Query("open") open: Boolean
     ): Call<Any>
 }

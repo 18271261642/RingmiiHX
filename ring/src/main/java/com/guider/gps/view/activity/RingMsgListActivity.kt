@@ -1,6 +1,7 @@
 package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +73,18 @@ class RingMsgListActivity : BaseActivity() {
         mBadgeCountList.add(abnormalMsgUndoNum)
         mBadgeCountList.add(careMsgUndoNum)
         mBadgeCountList.add(0)
+        if (mBadgeCountList[0] != 0)
+            msgTabLayout.postDelayed({
+                resetAbnormalMsgUnReadStatus()
+            }, 3000)
         setUpTabBadge()
+    }
+
+    fun resetCareNum() {
+        if (mBadgeCountList[1] != 0)
+            msgTabLayout.postDelayed({
+                resetCareMsgUnReadStatus()
+            }, 3000)
     }
 
     fun getCareMsgUndoNum() {
@@ -108,15 +120,15 @@ class RingMsgListActivity : BaseActivity() {
                 })
     }
 
-    fun resetCareMsgUnReadStatus(id: Int) {
+    private fun resetCareMsgUnReadStatus() {
         if (mBadgeCountList[1] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
         ApiUtil.createHDApi(IUserHDApi::class.java, false)
-                .resetCareMsgReadStatus(accountId, id)
+                .resetCareMsgReadStatus(accountId)
                 .enqueue(object : ApiCallBack<Any>(mContext) {
-                    override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
+                    override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
                         if (response?.body() != null) {
-                            mBadgeCountList[1]--
+                            mBadgeCountList[1] = 0
                             updateCustomTab(1)
                         }
                     }
@@ -124,6 +136,7 @@ class RingMsgListActivity : BaseActivity() {
     }
 
     private fun resetAbnormalMsgUnReadStatus() {
+        if (mBadgeCountList[0] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
         ApiUtil.createHDApi(IUserHDApi::class.java, false)
                 .resetAbnormalMsgReadStatus(accountId)
@@ -165,6 +178,10 @@ class RingMsgListActivity : BaseActivity() {
         badgeView.setTargetView(target)
         badgeView.setBadgeMargin(0, 6,
                 10, 0)
+        if (mBadgeCountList[position] < 10) {
+            badgeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
+        } else badgeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7f)
+
         badgeView.text = formatBadgeNumber(mBadgeCountList[position])
         return view
     }

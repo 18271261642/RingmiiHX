@@ -90,6 +90,7 @@ class RingMsgListFragment : BaseFragment() {
                 if (isShowLoading)
                     mActivity.showDialog()
                 getCareMsgListData(accountId, isShowLoading)
+                (mActivity as RingMsgListActivity).resetCareNum()
             }
         }
 
@@ -212,12 +213,12 @@ class RingMsgListFragment : BaseFragment() {
     private fun initData(bundle: Bundle, ringMsgListFragment: RingMsgListFragment) {
         when (bundle.getString(ringMsgListFragment.ARG_STR)) {
             resources.getString(R.string.app_msg_error_notify) -> {
-                emptyData.visibility = View.GONE
+                emptyData.visibility = View.VISIBLE
                 abnormalAdapter = AbnormalMsgListAdapter(mActivity, abnormalMsgList)
                 msgListRv.adapter = abnormalAdapter
             }
             resources.getString(R.string.app_msg_care_info) -> {
-                emptyData.visibility = View.GONE
+                emptyData.visibility = View.VISIBLE
                 careAdapter = HealthCareMsgListAdapter(mActivity, careMsgList)
                 msgListRv.adapter = careAdapter
                 careAdapter.setListener(object : AdapterOnItemClickListener {
@@ -225,8 +226,6 @@ class RingMsgListFragment : BaseFragment() {
                         val intent = Intent(mActivity, HealthCareMsgDetailActivity::class.java)
                         intent.putExtra("content", careMsgList[position].adviceContent)
                         startActivity(intent)
-                        (mActivity as RingMsgListActivity).resetCareMsgUnReadStatus(
-                                careMsgList[position].id)
                     }
 
                 })

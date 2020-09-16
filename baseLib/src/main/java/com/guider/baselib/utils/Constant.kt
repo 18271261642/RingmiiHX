@@ -49,6 +49,10 @@ const val TARGET_STEP = "target_step"
 const val IS_FIRST_START = "is_first_start"
 const val REFRESH_TOKEN = "refresh_token"
 const val EXPIRED_TIME = "expired_time"
+const val HR_CHECK = "hrOpen"
+const val HR_INTERVAL = "hrInterval"
+const val BT_CHECK = "btOpen"
+const val BT_INTERVAL = "btInterval"
 
 object USER {
     //个人信息页缓存相关
@@ -83,3 +87,4 @@ const val SCAN_CODE = 0x000013
 const val ADD_NEW_DEVICE = 0x000014
 const val DEVICE_BIND_ADD_MEMBER = 0x000015
 const val SELECT_ADDRESS = 0x000016
+const val ALARM_SET = 0x000017

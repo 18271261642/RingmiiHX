@@ -191,7 +191,8 @@ class DeviceBindAddMemberActivity : BaseActivity() {
             if (event.data != 0) {
                 //为设备添加新用户成功
                 accountId = event.data.toString()
-                addMemberToGroup()
+                val phoneValue = phoneEdit.text.toString()
+                bindNewMemberCheck(phoneValue, deviceNameEdit.text.toString())
             }
         }
     }

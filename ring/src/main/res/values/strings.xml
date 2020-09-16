@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Guider GPS</string>
     <string name="app_main_bottom_health">health</string>
-    <string name="app_main_bottom_location">positioning</string>
+    <string name="app_main_bottom_location">location</string>
     <string name="app_main_bottom_medicine">medical</string>
     <string name="app_main_bottom_mine">mine</string>
     <string name="app_main_left_msg_device_name1">father</string>
@@ -68,6 +68,7 @@
     <string name="app_main_mine_set">Setting</string>
     <string name="app_main_mine_sport_target">Sport target</string>
     <string name="app_main_mine_heart_rate_set">Heart rate alarm threshold setting</string>
+    <string name="app_main_mine_temp_set">Temperature alarm threshold setting</string>
     <string name="app_main_mine_remove_bind">Remove the binding</string>
     <string name="app_main_mine_version_check">Version checking</string>
     <string name="app_main_mine_log_out">Log out</string>
@@ -173,4 +174,10 @@
     <string name="app_abnormal_msg_tile_model">Hello, your family [%s] measurement  %s</string>
     <string name="app_abnormal_msg_tile_model_own">Hello, your measurement  %s</string>
     <string name="app_send">send</string>
+    <string name="app_no_data">No Data</string>
+    <string name="app_no_msg">No Msg</string>
+    <string name="app_no_open">Did not open</string>
+    <string name="app_cycle_switch">Cycle switch</string>
+    <string name="app_more">more</string>
+    <string name="app_no_suggest">No Suggest</string>
 </resources>

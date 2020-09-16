@@ -31,6 +31,7 @@ import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.IUserHDApi
 import com.guider.health.apilib.bean.CheckBindDeviceBean
+import com.guider.health.apilib.bean.RingSetBean
 import com.guider.health.apilib.bean.UserInfo
 import com.guider.health.apilib.bean.UserPositionListBean
 import kotlinx.android.synthetic.main.activity_home_draw_layout.*
@@ -56,6 +57,7 @@ class MainActivity : BaseActivity() {
     private var bindListBean: CheckBindDeviceBean? = null
     private var abnormalMsgUndoNum = 0
     private var careMsgUndoNum = 0
+    private var bindPosition = 0
 
     override fun initImmersion() {
         showBackButton(R.drawable.icon_home_left_menu, this)
@@ -101,15 +103,27 @@ class MainActivity : BaseActivity() {
         drawAdapter.setListener(object : AdapterOnItemClickListener {
             @SuppressLint("WrongConstant")
             override fun onClickItem(position: Int) {
-                toastShort(resources.getString(R.string.app_main_bind_device))
+//                toastShort(resources.getString(R.string.app_main_bind_device))
+                //如果是相同的位置，则不需要重新加载数据
+                if (bindPosition == position) return
+                bindDeviceList[bindPosition].isSelected = 0
+                drawAdapter.notifyItemChanged(bindPosition)
+                bindPosition = position
+                bindDeviceList[bindPosition].isSelected = 1
+                drawAdapter.notifyItemChanged(bindPosition)
                 homeDrawLayout.closeDrawer(Gravity.START)
-                deviceName = bindDeviceList[position].name!!
+                deviceName = bindDeviceList[bindPosition].relationShip!!
                 MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
-                if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position].deviceCode))
-                    MMKVUtil.saveString(BIND_DEVICE_CODE, bindDeviceList[position].deviceCode!!)
+                MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, bindDeviceList[bindPosition].accountId)
+                if (StringUtil.isNotBlankAndEmpty(bindDeviceList[bindPosition].deviceCode))
+                    MMKVUtil.saveString(BIND_DEVICE_CODE, bindDeviceList[bindPosition].deviceCode!!)
                 //我的页面 顶部标题固定为我的其他页面为设备名称
-                if (homeViewPager.currentItem != 3)
-                    setTitle(deviceName)
+                if (homeViewPager.currentItem != 3) {
+                    pageTitle = deviceName
+                    setTitle(pageTitle)
+                }
+                EventBusUtils.sendEvent(EventBusEvent(EventBusAction.REFRESH_HEALTH_DATA,
+                        "refresh"))
             }
 
         })
@@ -129,12 +143,16 @@ class MainActivity : BaseActivity() {
     private fun getWalkTargetData() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getWalkTarget(accountId)
-                .enqueue(object : ApiCallBack<String>(mContext) {
-                    override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
+                .getUserRingSet(accountId)
+                .enqueue(object : ApiCallBack<RingSetBean>(mContext) {
+                    override fun onApiResponse(call: Call<RingSetBean>?,
+                                               response: Response<RingSetBean>?) {
                         if (response?.body() != null) {
-                            val targetStep = response.body()!!
-                            MMKVUtil.saveInt(TARGET_STEP, targetStep.toInt())
+                            MMKVUtil.saveInt(TARGET_STEP, response.body()!!.walkTarget)
+                            MMKVUtil.saveBoolean(BT_CHECK, response.body()!!.btOpen)
+                            MMKVUtil.saveInt(BT_INTERVAL, response.body()!!.btInterval)
+                            MMKVUtil.saveBoolean(HR_CHECK, response.body()!!.hrOpen)
+                            MMKVUtil.saveInt(HR_INTERVAL, response.body()!!.hrInterval)
                         }
                     }
                 })
@@ -199,14 +217,34 @@ class MainActivity : BaseActivity() {
 
     private fun getBindDeviceList() {
         getUserLocationPointData()
+        val accountId = MMKVUtil.getInt(USER.USERID, 0)
+        val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+        val bingAccountName = MMKVUtil.getString(BIND_DEVICE_NAME)
         if (bindListBean != null && !bindListBean?.userInfos.isNullOrEmpty()) {
             bindDeviceList.clear()
             bindDeviceList.addAll(bindListBean?.userInfos!!)
-            bindDeviceList[0].isSelected = 1
+            run breaking@{
+                bindListBean?.userInfos?.forEach {
+                    if (it.accountId == accountId) {
+                        it.relationShip = mContext!!.resources.getString(
+                                R.string.app_own_string)
+                        return@breaking
+                    }
+                }
+            }
+            breaking@ for (i in bindDeviceList.indices) {
+                if (bindDeviceList[i].accountId == bindAccountId) {
+                    bindDeviceList[i].isSelected = 1
+                    bindPosition = i
+                    pageTitle = bindDeviceList[i].relationShip!!
+                    setTitle(pageTitle,
+                            CommonUtils.getColor(mContext!!, R.color.white))
+                    break@breaking
+                }
+            }
             drawAdapter.setSourceList(bindDeviceList)
         } else {
             showDialog()
-            val accountId = MMKVUtil.getInt(USER.USERID, 0)
             ApiUtil.createApi(IGuiderApi::class.java, false)
                     .getGroupBindMember(accountId = accountId)
                     .enqueue(object : ApiCallBack<CheckBindDeviceBean>(mContext) {
@@ -214,20 +252,32 @@ class MainActivity : BaseActivity() {
                                                    response: Response<CheckBindDeviceBean>?) {
                             if (response?.body() != null) {
                                 bindListBean = response.body()
-                                MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
-                                MMKVUtil.saveString(BIND_DEVICE_NAME,
-                                        mContext!!.resources.getString(R.string.app_own_string))
-                                bindListBean?.userInfos?.forEach {
-                                    if (it.accountId == accountId) {
-                                        it.relationShip = mContext!!.resources.getString(
-                                                R.string.app_own_string)
-                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
-                                            MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                run breaking@{
+                                    bindListBean?.userInfos?.forEach {
+                                        if (it.accountId == accountId) {
+                                            it.relationShip = mContext!!.resources.getString(
+                                                    R.string.app_own_string)
+                                            return@breaking
+                                        }
+                                    }
+                                }
+                                breaking@ for (i in bindListBean?.userInfos!!.indices) {
+                                    if (bindListBean?.userInfos!![i].accountId == bindAccountId) {
+                                        bindListBean?.userInfos!![i].isSelected = 1
+                                        bindPosition = i
+                                        if (bingAccountName !=
+                                                bindListBean?.userInfos!![i].relationShip) {
+                                            pageTitle = bindListBean?.userInfos!![i].relationShip!!
+                                            MMKVUtil.saveString(BIND_DEVICE_NAME,
+                                                    bindListBean?.userInfos!![i].relationShip!!)
+                                            setTitle(pageTitle,
+                                                    CommonUtils.getColor(mContext!!, R.color.white))
+                                        }
+                                        break@breaking
                                     }
                                 }
                                 bindDeviceList.clear()
                                 bindDeviceList.addAll(bindListBean?.userInfos!!)
-                                bindDeviceList[0].isSelected = 1
                                 drawAdapter.setSourceList(bindDeviceList)
                             }
                         }
@@ -255,8 +305,15 @@ class MainActivity : BaseActivity() {
                             val firstPosition = pointList[0]
                             MMKVUtil.saveDouble(LAST_LOCATION_POINT_LAT, firstPosition.lat)
                             MMKVUtil.saveDouble(LAST_LOCATION_POINT_LNG, firstPosition.lng)
-                            MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
-                            MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
+                            if (StringUtil.isNotBlankAndEmpty(firstPosition.addr))
+                                MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
+                            if (StringUtil.isNotBlankAndEmpty(firstPosition.testTime))
+                                MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
+                        } else {
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_LAT)
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_LNG)
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_ADDRESS)
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
                         }
                     }
                 })
@@ -271,13 +328,13 @@ class MainActivity : BaseActivity() {
                 cancel.setOnClickListener {
                     dialog?.dismiss()
                 }
-                val accountId = bindDeviceList[position].accountId
+                val accountId = MMKVUtil.getInt(USER.USERID)
                 val unBindContentTv = dialogView.findViewById<TextView>(R.id.unBindContentTv)
                 val unbindValue = String.format(
                         resources.getString(R.string.app_main_unbind_device),
                         if (bindDeviceList[position].accountId == accountId) {
                             mContext!!.resources.getString(R.string.app_own_string)
-                        } else bindDeviceList[position].name)
+                        } else bindDeviceList[position].relationShip)
                 unBindContentTv.text = unbindValue
                 val confirm = dialogView.findViewById<ConstraintLayout>(R.id.confirmLayout)
                 confirm.setOnClickListener {
@@ -292,9 +349,10 @@ class MainActivity : BaseActivity() {
 
     fun unbindDeviceFromMineFragment(accountId: Int) {
         var devicePosition = 0
-        for (i in 0 until bindDeviceList.size) {
+        breaking@ for (i in 0 until bindDeviceList.size) {
             if (bindDeviceList[i].accountId == accountId) {
                 devicePosition = i
+                break@breaking
             }
         }
         if (bindDeviceList.size > 1) {
@@ -328,7 +386,7 @@ class MainActivity : BaseActivity() {
 
     private fun unbindDeviceEvent(position: Int) {
         //如果是解绑的是当前账户绑定的设备则需要去重新绑定
-        val accountId = bindDeviceList[position].accountId
+        val accountId = MMKVUtil.getInt(USER.USERID)
         if (bindDeviceList[position].accountId == accountId) {
             showDialog()
             val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
@@ -339,10 +397,11 @@ class MainActivity : BaseActivity() {
                                                    response: Response<Any?>?) {
                             if (response?.body() != null) {
                                 MMKVUtil.clearByKey(BIND_DEVICE_ACCOUNT_ID)
-                                val intent = Intent(mContext, AddNewDeviceActivity::class.java)
-                                intent.putExtra("type", "mine")
-                                startActivity(intent)
+                                unBindAndEnterAddDevice()
                                 unBindDeviceAdapterShow(position)
+                                EventBusUtils.sendEvent(EventBusEvent(
+                                        EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
+                                        false))
                             }
                         }
 
@@ -353,6 +412,12 @@ class MainActivity : BaseActivity() {
         } else {
             unBindGroupMemberEvent(position)
         }
+    }
+
+    fun unBindAndEnterAddDevice() {
+        val intent = Intent(mContext, AddNewDeviceActivity::class.java)
+        intent.putExtra("type", "unBindAndBindNew")
+        startActivityForResult(intent, ADD_NEW_DEVICE)
     }
 
     private fun unBindGroupMemberEvent(position: Int) {
@@ -380,6 +445,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun unBindDeviceAdapterShow(position: Int) {
+        val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (bindDeviceList.size == 1) {
             deviceName = ""
             MMKVUtil.clearByKey(BIND_DEVICE_NAME)
@@ -394,23 +460,29 @@ class MainActivity : BaseActivity() {
             when (position) {
                 0 -> {
                     deviceName = bindDeviceList[position + 1].name!!
-                    MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
-                    MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, bindDeviceList[position + 1].accountId)
-                    if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position + 1].deviceCode))
-                        MMKVUtil.saveString(BIND_DEVICE_CODE,
-                                bindDeviceList[position + 1].deviceCode!!)
-                    if (homeViewPager.currentItem != 3)
-                        setTitle(deviceName)
+                    if (bindAccountId == bindDeviceList[position + 1].accountId) {
+                        MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                        MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
+                                bindDeviceList[position + 1].accountId)
+                        if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position + 1].deviceCode))
+                            MMKVUtil.saveString(BIND_DEVICE_CODE,
+                                    bindDeviceList[position + 1].deviceCode!!)
+                        if (homeViewPager.currentItem != 3)
+                            setTitle(deviceName)
+                    }
                 }
                 else -> {
                     deviceName = bindDeviceList[position - 1].name!!
-                    MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
-                    MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, bindDeviceList[position - 1].accountId)
-                    if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position - 1].deviceCode))
-                        MMKVUtil.saveString(BIND_DEVICE_CODE,
-                                bindDeviceList[position - 1].deviceCode!!)
-                    if (homeViewPager.currentItem != 3)
-                        setTitle(deviceName)
+                    if (bindAccountId == bindDeviceList[position - 1].accountId) {
+                        MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                        MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
+                                bindDeviceList[position - 1].accountId)
+                        if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position - 1].deviceCode))
+                            MMKVUtil.saveString(BIND_DEVICE_CODE,
+                                    bindDeviceList[position - 1].deviceCode!!)
+                        if (homeViewPager.currentItem != 3)
+                            setTitle(deviceName)
+                    }
                 }
             }
         }
@@ -429,7 +501,7 @@ class MainActivity : BaseActivity() {
                 val intent = Intent(mContext, AddNewDeviceActivity::class.java)
                 intent.putExtra("type", "family")
                 intent.putExtra("userGroupId", bindListBean?.userGroupId.toString())
-                startActivityForResult(intent, ADD_NEW_DEVICE)
+                startActivity(intent)
             }
             iv_toolbar_right2 -> {
                 val intent = Intent(mContext, RingMsgListActivity::class.java)
@@ -445,7 +517,17 @@ class MainActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK && data != null) {
             when (requestCode) {
                 ADD_NEW_DEVICE -> {
-                    //添加新设备成功，刷新设备列表
+                    //绑定了新设备，刷新设备列表
+                    if (data.getParcelableExtra<CheckBindDeviceBean?>(
+                                    "bindListBean") != null) {
+                        bindListBean = data.getParcelableExtra("bindListBean")
+                    }
+                    EventBusUtils.sendEvent(EventBusEvent(
+                            EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
+                            true))
+                    getBindDeviceList()
+                    EventBusUtils.sendEvent(EventBusEvent(EventBusAction.REFRESH_HEALTH_DATA,
+                            "refresh"))
                 }
             }
         }

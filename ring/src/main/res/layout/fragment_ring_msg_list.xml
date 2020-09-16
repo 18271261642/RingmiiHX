@@ -29,6 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="暂无消息"
+        android:text="@string/app_no_msg"
         android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

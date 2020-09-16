@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">CityPicker</string>
-    <string name="city_lib_please_select">Please select</string>
+    <string name="city_lib_please_select">請選擇</string>
 </resources>

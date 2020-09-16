@@ -81,7 +81,9 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
 
     open fun beforeContentViewSet() {}
 
-    abstract fun openEventBus(): Boolean
+    open fun openEventBus(): Boolean {
+        return false
+    }
 
     //状态栏白底黑字
     fun whiteStatusBarBlackFont() {

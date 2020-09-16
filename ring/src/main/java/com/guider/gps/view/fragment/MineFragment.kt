@@ -19,8 +19,11 @@ import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.IGuiderApi
 import kotlinx.android.synthetic.main.fragment_mine.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Response
+import kotlin.math.floor
 
 class MineFragment : BaseFragment() {
 
@@ -34,12 +37,7 @@ class MineFragment : BaseFragment() {
 
     override fun initLogic() {
         refreshHeaderAndName()
-        sportValueInt = if (MMKVUtil.getInt(TARGET_STEP, 0) != 0) {
-            MMKVUtil.getInt(TARGET_STEP, 0)
-        } else {
-            8000
-        }
-        sportValue.text = sportValueInt.toString()
+        ringSetShow()
         versionValue.text = CommonUtils.getPKgVersionName(mActivity)
         bindLayout.setOnClickListener(this)
         topLayout.setOnClickListener(this)
@@ -47,10 +45,87 @@ class MineFragment : BaseFragment() {
         loginOutLayout.setOnClickListener(this)
     }
 
+    private fun ringSetShow() {
+        sportValueInt = if (MMKVUtil.getInt(TARGET_STEP, 0) != 0) {
+            MMKVUtil.getInt(TARGET_STEP, 0)
+        } else {
+            8000
+        }
+        if (MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID) != 0 && MMKVUtil.getInt(BIND_DEVICE_CODE) != 0) {
+            //说明有绑定的设备 是解绑
+            bindTv.text = mActivity.resources.getString(R.string.app_main_mine_remove_bind)
+        } else {
+            //说明是没有绑定的设备 是绑定
+            bindTv.text = mActivity.resources.getString(R.string.app_device_bind)
+        }
+        sportValue.text = sportValueInt.toString()
+        setTempAndHeartShow()
+        heartLayout.setOnClickListener(this)
+        tempSetLayout.setOnClickListener(this)
+    }
+
+    @SuppressLint("SetTextI18n")
+    /**
+     * 设置心率和体温周期设置
+     * @param type 0全部 1心率 2体温
+     */
+    private fun setTempAndHeartShow(type: Int = 0) {
+        if (type == 0 || type == 1) {
+            val hrCheck = MMKVUtil.getBoolean(HR_CHECK, false)
+            if (hrCheck) {
+                val timeIntervalValue = MMKVUtil.getInt(HR_INTERVAL, 0)
+                if (timeIntervalValue != 0) {
+                    val hours = floor((timeIntervalValue / 60).toDouble()).toInt()
+                    val minute: Int = timeIntervalValue % 60
+                    heartSetTv.text = "${hours}h${minute}m"
+                }
+            } else {
+                heartSetTv.text = mActivity.resources.getString(R.string.app_no_open)
+            }
+        }
+        if (type == 0 || type == 2) {
+            val btCheck = MMKVUtil.getBoolean(BT_CHECK, false)
+            if (btCheck) {
+                val timeIntervalValue = MMKVUtil.getInt(BT_INTERVAL, 0)
+                if (timeIntervalValue != 0) {
+                    val hours = floor((timeIntervalValue / 60).toDouble()).toInt()
+                    val minute: Int = timeIntervalValue % 60
+                    tempSetTv.text = "${hours}h${minute}m"
+                }
+            } else {
+                tempSetTv.text = mActivity.resources.getString(R.string.app_no_open)
+            }
+        }
+    }
+
+    override fun openEventBus(): Boolean {
+        return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshRightRedPoint(event: EventBusEvent<Boolean>) {
+        if (event.code == EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW) {
+            if (event.data!!) {
+                bindTv.text = mActivity.resources.getString(R.string.app_main_mine_remove_bind)
+            } else {
+                bindTv.text = mActivity.resources.getString(R.string.app_device_bind)
+            }
+        }
+    }
+
     override fun onNoDoubleClick(v: View) {
         when (v) {
             bindLayout -> {
-                unBindDialogShow()
+                if (MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID) != 0
+                        && MMKVUtil.getInt(BIND_DEVICE_CODE) != 0) {
+                    //说明有绑定的设备 是解绑
+                    unBindDialogShow()
+                } else {
+                    //说明是没有绑定的设备 是绑定
+                    val intent = Intent(mActivity, AddNewDeviceActivity::class.java)
+                    intent.putExtra("type", "unBindAndBindNew")
+                    startActivityForResult(intent, ADD_NEW_DEVICE)
+                }
             }
             topLayout -> {
                 val intent = Intent(mActivity, PersonInfoActivity::class.java)
@@ -61,7 +136,7 @@ class MineFragment : BaseFragment() {
                 intent.putExtra("type",
                         resources.getString(R.string.app_main_mine_sport_target))
                 if (sportValueInt != 0)
-                    intent.putExtra("inputValue", sportValueInt)
+                    intent.putExtra("inputValue", sportValueInt.toString())
                 startActivityForResult(intent, SPORT_STEP_INFO)
             }
             loginOutLayout -> {
@@ -71,6 +146,16 @@ class MineFragment : BaseFragment() {
                         Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 mActivity.finish()
+            }
+            heartLayout -> {
+                val intent = Intent(mActivity, AlarmSeActivity::class.java)
+                intent.putExtra("enterType", "heart")
+                startActivityForResult(intent, ALARM_SET)
+            }
+            tempSetLayout ->{
+                val intent = Intent(mActivity, AlarmSeActivity::class.java)
+                intent.putExtra("enterType", "temp")
+                startActivityForResult(intent, ALARM_SET)
             }
         }
     }
@@ -115,9 +200,8 @@ class MineFragment : BaseFragment() {
                             //当前账户必须要有一个设备绑定，所以解绑后要重新到绑定页面
                             MMKVUtil.clearByKey(BIND_DEVICE_ACCOUNT_ID)
                             MMKVUtil.clearByKey(BIND_DEVICE_CODE)
-                            val intent = Intent(mActivity, AddNewDeviceActivity::class.java)
-                            intent.putExtra("type", "mine")
-                            startActivity(intent)
+                            bindTv.text = mActivity.resources.getString(R.string.app_device_bind)
+                            (mActivity as MainActivity).unBindAndEnterAddDevice()
                         }
                     }
 
@@ -140,6 +224,16 @@ class MineFragment : BaseFragment() {
                 PERSON_INFO -> {
                     if (data.getBooleanExtra("isChange", false))
                         refreshHeaderAndName()
+                }
+                ALARM_SET -> {
+                    if (StringUtil.isNotBlankAndEmpty(data.getStringExtra("enterType"))) {
+                        val enterType = data.getStringExtra("enterType")!!
+                        if (enterType == "heart") {
+                            setTempAndHeartShow(type = 1)
+                        } else {
+                            setTempAndHeartShow(type = 2)
+                        }
+                    }
                 }
             }
         }

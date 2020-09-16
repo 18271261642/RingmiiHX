@@ -36,18 +36,24 @@ class HomeLeftDrawMsgAdapter(context: Context, dataList: ArrayList<UserInfo>)
         } else holder.setViewVisibility(R.id.msgSelectIv, View.GONE)
         holder.setText(R.id.msgPersonName, data.relationShip)
         val batteryView = holder.getView<BatteryView>(R.id.batteryLayout)
-        when (data.relationShip) {
-            mContext.resources.getString(R.string.app_own_string) -> {
+        when (data.deviceState) {
+            "ONLINE" -> {
                 holder.setImageResource(R.id.msgRingStatusIv, R.drawable.oval_green_59d15f)
                 holder.setText(R.id.msgRingStatusTv,
                         mContext.resources.getString(
                                 R.string.app_main_left_msg_device_status_online))
                 holder.setViewVisibility(R.id.batteryLayout, View.VISIBLE)
                 holder.setViewVisibility(R.id.batteryStatusTv, View.VISIBLE)
-                batteryView.power = 100
-                holder.setText(R.id.batteryStatusTv, "100%")
+                batteryView.power = if (data.electricity == null) {
+                    0
+                } else data.electricity!!
+                holder.setText(R.id.batteryStatusTv, "${
+                    if (data.electricity == null) {
+                        0
+                    } else data.electricity!!
+                }%")
             }
-            mContext.resources.getString(R.string.app_main_left_msg_device_name2) -> {
+            "OFFLINE" -> {
                 holder.setImageResource(R.id.msgRingStatusIv, R.drawable.oval_red_d76155)
                 holder.setText(R.id.msgRingStatusTv, mContext.resources.getString(
                         R.string.app_main_left_msg_device_status_offline))

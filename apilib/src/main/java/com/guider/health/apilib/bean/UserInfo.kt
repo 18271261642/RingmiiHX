@@ -55,6 +55,8 @@ class UserInfo : Parcelable {
     var isSelected = 0
     var relationShip: String? = null
     var deviceCode: String? = null
+    var electricity: Int? = 0
+    var deviceState: String? = ""
     override fun describeContents(): Int {
         return 0
     }
@@ -86,6 +88,10 @@ class UserInfo : Parcelable {
         dest.writeInt(isSelected)
         dest.writeString(relationShip)
         dest.writeString(deviceCode)
+        dest.writeInt(if (electricity == null) {
+            0
+        } else electricity!!)
+        dest.writeString(deviceState)
     }
 
     constructor() {}
@@ -116,6 +122,8 @@ class UserInfo : Parcelable {
         isSelected = `in`.readInt()
         relationShip = `in`.readString()
         deviceCode = `in`.readString()
+        electricity = `in`.readInt()
+        deviceState = `in`.readString()
     }
 
     companion object {

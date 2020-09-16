@@ -80,7 +80,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     } else {
                         msgContent.text = mContext.resources.getString(
                                 R.string.app_abnormal_msg_tile_model,
-                                data.name, mContext.resources.getString(
+                                data.relationShip, mContext.resources.getString(
                                 R.string.app_main_health_blood_sugar))
                     }
                 }
@@ -135,7 +135,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     } else {
                         msgContent.text = mContext.resources.getString(
                                 R.string.app_abnormal_msg_tile_model,
-                                data.name, mContext.resources.getString(
+                                data.relationShip, mContext.resources.getString(
                                 R.string.app_main_health_blood_pressure))
                     }
                 }
@@ -171,7 +171,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     } else {
                         msgContent.text = mContext.resources.getString(
                                 R.string.app_abnormal_msg_tile_model,
-                                data.name, mContext.resources.getString(
+                                data.relationShip, mContext.resources.getString(
                                 R.string.app_main_health_blood_oxygen))
                     }
                 }
@@ -207,7 +207,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     } else {
                         msgContent.text = mContext.resources.getString(
                                 R.string.app_abnormal_msg_tile_model,
-                                data.name, mContext.resources.getString(
+                                data.relationShip, mContext.resources.getString(
                                 R.string.app_main_health_heart_rate))
                     }
                 }

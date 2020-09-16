@@ -66,7 +66,8 @@
     <string name="app_doctor_answer_expression">表情</string>
     <string name="app_main_mine_set">设置</string>
     <string name="app_main_mine_sport_target">运动目标</string>
-    <string name="app_main_mine_heart_rate_set">心率报警阀值设置</string>
+    <string name="app_main_mine_heart_rate_set">心率监测周期设置</string>
+    <string name="app_main_mine_temp_set">温度监测周期设置</string>
     <string name="app_main_mine_remove_bind">解除绑定</string>
     <string name="app_main_mine_version_check">版本检测</string>
     <string name="app_main_mine_log_out">退出登录</string>
@@ -172,4 +173,10 @@
     <string name="app_abnormal_msg_tile_model">您好，您的家人【%s】测量了 %s</string>
     <string name="app_abnormal_msg_tile_model_own">您好，您测量了 %s</string>
     <string name="app_send">发送</string>
+    <string name="app_no_data">暂无数据</string>
+    <string name="app_no_msg">暂无消息</string>
+    <string name="app_no_open">未开启</string>
+    <string name="app_cycle_switch">周期开关</string>
+    <string name="app_more">更多</string>
+    <string name="app_no_suggest">暂无建议</string>
 </resources>

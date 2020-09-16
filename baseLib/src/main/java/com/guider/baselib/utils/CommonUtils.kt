@@ -35,7 +35,7 @@ object CommonUtils {
 
     //计算当前日期前时间
     @SuppressLint("WrongConstant", "SimpleDateFormat")
-    fun calTimeFrontDate(date: String, days: Int, format: String = "yyyy-MM-dd"): String {
+    fun calTimeFrontDay(date: String, days: Int, format: String = "yyyy-MM-dd"): String {
         val sdf = SimpleDateFormat(format)
         val theCa: Calendar = Calendar.getInstance()
         theCa.time = sdf.parse(date)

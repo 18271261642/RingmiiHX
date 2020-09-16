@@ -137,8 +137,8 @@ class LocationFragment : BaseFragment(),
         tabTitleList = arrayListOf(
                 resources.getString(R.string.app_main_map_location_information),
                 resources.getString(R.string.app_main_map_track_events),
-                resources.getString(R.string.app_main_map_electronic_fence),
-                resources.getString(R.string.app_main_map_proactively_addressing))
+                resources.getString(R.string.app_main_map_electronic_fence))
+//                , resources.getString(R.string.app_main_map_proactively_addressing))
         locationTabLayout.tabMode = TabLayout.MODE_FIXED
         // 设置选中下划线颜色
         locationTabLayout.setSelectedTabIndicatorColor(
@@ -186,7 +186,7 @@ class LocationFragment : BaseFragment(),
         resetFunctionLayout()
         when (tab.text.toString()) {
             tabTitleList[0] -> {
-                mGoogleMap!!.setInfoWindowAdapter(CustomInfoWindowAdapter())
+                mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
                 }
@@ -214,7 +214,7 @@ class LocationFragment : BaseFragment(),
                 }
             }
             tabTitleList[1] -> {
-                mGoogleMap!!.setInfoWindowAdapter(null)
+                mGoogleMap?.setInfoWindowAdapter(null)
                 tabPosition = 1
                 if (loadView != null) {
                     loadView?.dismiss()
@@ -226,7 +226,7 @@ class LocationFragment : BaseFragment(),
                 mGoogleMap?.clear()
                 //获取年月日格式的当前日期
                 trackEventsDateValueTv.text = CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
-                startTimeTv.text = CommonUtils.calTimeFrontDate(
+                startTimeTv.text = CommonUtils.calTimeFrontDay(
                         CommonUtils.getCurrentDate(), 7)
                 endTimeTv.text = CommonUtils.getCurrentDate()
                 val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
@@ -235,7 +235,7 @@ class LocationFragment : BaseFragment(),
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             tabTitleList[2] -> {
-                mGoogleMap!!.setInfoWindowAdapter(null)
+                mGoogleMap?.setInfoWindowAdapter(null)
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
                 }
@@ -250,21 +250,21 @@ class LocationFragment : BaseFragment(),
                 mGoogleMap?.clear()
                 getElectronicFenceData()
             }
-            tabTitleList[3] -> {
-                mGoogleMap!!.setInfoWindowAdapter(null)
-                if (selectDateDialog != null) {
-                    selectDateDialog?.closeDialog()
-                }
-                tabPosition = 3
-                locationInfoLayout.visibility = View.VISIBLE
-                locationNumberSet.text =
-                        resources.getString(R.string.app_main_map_send_instructions)
-                locationNumberSet.setTextColor(
-                        CommonUtils.getColor(mActivity, R.color.colorF18937))
-                historyRecord.text =
-                        resources.getString(R.string.app_main_map_address_history)
-                mGoogleMap?.clear()
-            }
+//            tabTitleList[3] -> {
+//                mGoogleMap!!.setInfoWindowAdapter(null)
+//                if (selectDateDialog != null) {
+//                    selectDateDialog?.closeDialog()
+//                }
+//                tabPosition = 3
+//                locationInfoLayout.visibility = View.VISIBLE
+//                locationNumberSet.text =
+//                        resources.getString(R.string.app_main_map_send_instructions)
+//                locationNumberSet.setTextColor(
+//                        CommonUtils.getColor(mActivity, R.color.colorF18937))
+//                historyRecord.text =
+//                        resources.getString(R.string.app_main_map_address_history)
+//                mGoogleMap?.clear()
+//            }
         }
     }
 
@@ -372,7 +372,7 @@ class LocationFragment : BaseFragment(),
         }
         mActivity.showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getElectronicFence(deviceCode,accountId)
+                .getElectronicFence(deviceCode, accountId)
                 .enqueue(object : ApiCallBack<Any>(mActivity) {
                     override fun onApiResponse(call: Call<Any>?,
                                                response: Response<Any>?) {
@@ -391,7 +391,7 @@ class LocationFragment : BaseFragment(),
                                     .addAll(latLngList)
                             mGoogleMap?.addPolygon(polygon)
                             mGoogleMap?.animateCamera(
-                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
+                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 17.8f))
                         }
                     }
 
@@ -551,7 +551,7 @@ class LocationFragment : BaseFragment(),
             trackEventsDateLeft -> {
                 dateSelectTag = true
                 val currentDate = trackEventsDateValueTv.text.toString()
-                val calTimeFrontDate = CommonUtils.calTimeFrontDate(
+                val calTimeFrontDate = CommonUtils.calTimeFrontDay(
                         currentDate, 1, TIME_FORMAT_PATTERN6)
                 //切到了当前日期
                 if (calTimeFrontDate == CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)) {
@@ -569,7 +569,7 @@ class LocationFragment : BaseFragment(),
             trackEventsDateRight -> {
                 dateSelectTag = true
                 val currentDate = trackEventsDateValueTv.text.toString()
-                val calTimeFrontDate = CommonUtils.calTimeFrontDate(
+                val calTimeFrontDate = CommonUtils.calTimeFrontDay(
                         currentDate, -1, TIME_FORMAT_PATTERN6)
                 trackEventsDateValueTv.text = calTimeFrontDate
                 //切到了当前日期

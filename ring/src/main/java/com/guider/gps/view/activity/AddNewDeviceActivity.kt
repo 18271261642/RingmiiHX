@@ -75,12 +75,13 @@ class AddNewDeviceActivity : BaseActivity() {
      */
     fun bindNewDeviceWithAccount(code: String) {
         //判断是为当前账户绑定还是添加家人的设备
-        if (type == "mine") {
+        //第一种type是登录之后或者打开app时绑定新设备
+        //第二种type是在首页解绑设备后重新绑定新设备
+        if (type == "mine" || type == "unBindAndBindNew") {
             showDialog()
             val accountId = MMKVUtil.getInt(USER.USERID, 0)
-            val codeValue = "OVtest3"
             ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .bindDeviceWithAccount(accountId, codeValue)
+                    .bindDeviceWithAccount(accountId, code)
                     .enqueue(object : ApiCallBack<Any?>(mContext) {
                         override fun onApiResponseNull(call: Call<Any?>?,
                                                        response: Response<Any?>?) {
@@ -95,7 +96,6 @@ class AddNewDeviceActivity : BaseActivity() {
                             if (response?.body() != null) {
                                 val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
                                         response.body()!!)
-                                val intent = Intent(mContext!!, MainActivity::class.java)
                                 MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
                                 MMKVUtil.saveString(BIND_DEVICE_NAME,
                                         mContext!!.resources.getString(R.string.app_own_string))
@@ -107,8 +107,15 @@ class AddNewDeviceActivity : BaseActivity() {
                                             MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
                                     }
                                 }
-                                intent.putExtra("bindListBean", bean)
-                                startActivity(intent)
+                                if (type == "unBindAndBindNew") {
+                                    val intent = Intent()
+                                    intent.putExtra("bindListBean", bean)
+                                    setResult(Activity.RESULT_OK, intent)
+                                } else {
+                                    val intent = Intent(mContext!!, MainActivity::class.java)
+                                    intent.putExtra("bindListBean", bean)
+                                    startActivity(intent)
+                                }
                                 finish()
                             }
                         }
@@ -119,7 +126,6 @@ class AddNewDeviceActivity : BaseActivity() {
                     })
         } else {
             showDialog()
-//            val codeValue = "87654321android"
             ApiUtil.createApi(IGuiderApi::class.java, false)
                     .verifyDeviceBind(code)
                     .enqueue(object : ApiCallBack<String>(mContext) {

@@ -82,7 +82,7 @@ interface IUserHDApi {
             @Query("row") row: Int,
             @Query("sTime") startTime: String,
             @Query("eTime") endTime: String
-    ): Call<List<BloodOxygenListBean>>
+    ): Call<Any>
 
     /**
      * 欧孚睡眠数据查询
@@ -149,13 +149,14 @@ interface IUserHDApi {
      * @param accountId 用户id
      */
     @GET("api/v1/healthadvice/readCnt")
-    fun getAbnormalMsgUndo(@Query("accountId") accountId: Int): Call<String>
+    fun getCareMsgUndo(@Query("accountId") accountId: Int): Call<String>
+
     /**
      * 获取指定用户健康预警未读数量
      * @param accountId 用户id
      */
     @GET("api/v1/healthwarn/unread/user/cnt")
-    fun getCareMsgUndo(@Query("accountId") accountId: Int): Call<String>
+    fun getAbnormalMsgUndo(@Query("accountId") accountId: Int): Call<String>
 
     /**
      * 查询指定用户健康预警信息
@@ -175,13 +176,11 @@ interface IUserHDApi {
     fun resetAbnormalMsgReadStatus(@Query("accountId") accountId: Int): Call<Any>
 
     /**
-     * 根据id更新已读健康建议
+     * 根据用户id更新已读健康建议
      * @param accountId 用户id
      */
-    @GET("api/v1/healthadvice/read")
-    fun resetCareMsgReadStatus(@Query("accountId") accountId: Int,
-                               @Query("id") id: Int
-                               ): Call<Any>
+    @POST("api/v1/healthadvice/read")
+    fun resetCareMsgReadStatus(@Query("accountId") accountId: Int): Call<Any>
 
 
     //老版接口

@@ -7,10 +7,7 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import cn.addapp.pickers.picker.TimePicker
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.BIND_DEVICE_CODE
-import com.guider.baselib.utils.MMKVUtil
-import com.guider.baselib.utils.StringUtil
-import com.guider.baselib.utils.toastShort
+import com.guider.baselib.utils.*
 import com.guider.gps.R
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
@@ -100,12 +97,12 @@ class LocationFrequencySetActivity : BaseActivity() {
                 }
             }
             setLayout3StartTimeLayout -> {
-                onTimePicker(startTimeTv3.text.toString())  { hour, minute ->
+                onTimePicker(startTimeTv3.text.toString()) { hour, minute ->
                     startTimeTv3.text = "${hour}:${minute}"
                 }
             }
             setLayout3EndTimeLayout -> {
-                onTimePicker(endTimeTv3.text.toString())  { hour, minute ->
+                onTimePicker(endTimeTv3.text.toString()) { hour, minute ->
                     endTimeTv3.text = "${hour}:${minute}"
                 }
             }
@@ -146,7 +143,8 @@ class LocationFrequencySetActivity : BaseActivity() {
                 },
                 startTimeTv3.text.toString(),
         )
-        hashMap["deviceCode"] = deviceCode
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+        hashMap["accountId"] = accountId
         hashMap["rates"] = arrayListOf(setBean1, setBean2, setBean3)
         showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
@@ -166,14 +164,14 @@ class LocationFrequencySetActivity : BaseActivity() {
                 })
     }
 
-    private fun onTimePicker(time:String,onSelectTime: (hour: String, minute: String) -> Unit) {
+    private fun onTimePicker(time: String, onSelectTime: (hour: String, minute: String) -> Unit) {
         val picker = TimePicker(this, TimePicker.HOUR_24)
         picker.setRangeStart(0, 0)
         picker.setRangeEnd(23, 59)
-        if (StringUtil.isNotBlankAndEmpty(time) && time.length == 5 && time.contains(":")){
-            val selectHour = time.substring(0,2)
+        if (StringUtil.isNotBlankAndEmpty(time) && time.length == 5 && time.contains(":")) {
+            val selectHour = time.substring(0, 2)
             val selectMinute = time.substring(3)
-            picker.setSelectedItem(selectHour.toInt(),selectMinute.toInt())
+            picker.setSelectedItem(selectHour.toInt(), selectMinute.toInt())
         }
         picker.setTopLineVisible(false)
         picker.setLineVisible(false)
@@ -242,13 +240,13 @@ class LocationFrequencySetActivity : BaseActivity() {
     }
 
     private fun getLocationFrequencySet() {
-        val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
-        if (StringUtil.isEmpty(deviceCode)) {
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+        if (accountId == 0) {
             return
         }
         showDialog()
         ApiUtil.createApi(IGuiderApi::class.java, false)
-                .locationFrequencySet(deviceCode)
+                .locationFrequencySet(accountId)
                 .enqueue(object : ApiCallBack<List<FrequencySetBean>>(mContext) {
                     override fun onApiResponse(call: Call<List<FrequencySetBean>>?,
                                                response: Response<List<FrequencySetBean>>?) {

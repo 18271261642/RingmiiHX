@@ -87,8 +87,8 @@
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_11"
             android:layout_marginEnd="@dimen/dp_20"
-            android:visibility="gone"
             android:src="@drawable/icon_password_show_close"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/passwordEdit"
             app:layout_constraintEnd_toEndOf="@id/passwordEdit"
             app:layout_constraintTop_toTopOf="@id/passwordEdit" />
@@ -115,28 +115,6 @@
             app:layout_constraintTop_toBottomOf="@id/passwordLine" />
 
         <TextView
-            android:id="@+id/userServiceTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_2"
-            android:text="@string/app_login_user_service_agreement"
-            android:textColor="@color/colorF18A2E"
-            android:textSize="@dimen/sp_11"
-            app:layout_constraintBaseline_toBaselineOf="@id/textTv"
-            app:layout_constraintStart_toEndOf="@id/textTv" />
-
-        <TextView
-            android:id="@+id/andTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_2"
-            android:text="@string/app_login_and"
-            android:textColor="@color/color999999"
-            android:textSize="@dimen/sp_11"
-            app:layout_constraintBaseline_toBaselineOf="@id/userServiceTv"
-            app:layout_constraintStart_toEndOf="@id/userServiceTv" />
-
-        <TextView
             android:id="@+id/policyTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,8 +122,8 @@
             android:text="@string/app_login_privacy_policy_clause"
             android:textColor="@color/colorF18A2E"
             android:textSize="@dimen/sp_11"
-            app:layout_constraintBaseline_toBaselineOf="@id/andTv"
-            app:layout_constraintStart_toEndOf="@id/andTv" />
+            app:layout_constraintBaseline_toBaselineOf="@id/textTv"
+            app:layout_constraintStart_toEndOf="@id/textTv" />
 
         <TextView
             android:id="@+id/loginTv"
@@ -223,6 +201,7 @@
             android:layout_height="@dimen/dp_48"
             android:layout_marginStart="@dimen/dp_48"
             android:src="@drawable/icon_login_wechat"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/lineIv"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

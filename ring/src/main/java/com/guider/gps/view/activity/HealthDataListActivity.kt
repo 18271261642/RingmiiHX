@@ -49,11 +49,12 @@ class HealthDataListActivity : BaseActivity() {
 
     override fun initView() {
         healthDataListRv.layoutManager = LinearLayoutManager(this)
-        startTime = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
-        startTimeTv.text = CommonUtils.calTimeFrontYear(
+        startTime = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontDay(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN),
-                2, TIME_FORMAT_PATTERN4)
+                7,DEFAULT_TIME_FORMAT_PATTERN))!!
+        startTimeTv.text = CommonUtils.calTimeFrontDay(
+                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN),
+                7, TIME_FORMAT_PATTERN4)
         endTime = DateUtilKotlin.localToUTC(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         endTimeTv.text = CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN4)

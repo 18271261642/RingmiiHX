@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.guider.baselib.utils.EventBusUtils
 import com.guider.baselib.utils.OnNoDoubleClickListener
 import com.guider.feifeia3.utils.ToastUtil
 import com.orhanobut.logger.Logger
@@ -36,6 +37,10 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        if (openEventBus()) {
+            EventBusUtils.register(this)
+        }
         if (rootView == null) {
             rootView = inflater.inflate(layoutRes, container, false)
         }
@@ -57,6 +62,12 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
         }
     }
 
+    /**
+     * 是否开启eventBus
+     */
+    open fun openEventBus(): Boolean{
+        return false
+    }
 
     /**
      * 初始化view
@@ -69,6 +80,9 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
     protected abstract fun initLogic()
 
     override fun onDestroyView() {
+        if (openEventBus()) {
+            EventBusUtils.unregister(this)
+        }
         isLoaded = false
         super.onDestroyView()
     }

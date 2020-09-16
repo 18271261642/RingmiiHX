@@ -42,7 +42,7 @@ class AbnormalMsgContentDetailAdapter(context: Context, dataList: ArrayList<Simp
             }
             mContext.resources.getString(
                     R.string.app_main_health_heart_rate) -> {
-                if (StringUtil.isNotBlankAndEmpty(data.vaule))
+                if (StringUtil.isNotBlankAndEmpty(data.vaule) && data.vaule != "0")
                     holder.setText(R.id.dataContentTv, data.vaule)
                 else holder.setText(R.id.dataContentTv, "-")
             }

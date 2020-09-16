@@ -1435,4 +1435,5 @@
 
     <string name="download_ecg_tips">臟音組件下載？</string>
     <string name="glu_unit_food_2">mg/dL</string>
+    <string name="app_send_success">發送成功</string>
 </resources>

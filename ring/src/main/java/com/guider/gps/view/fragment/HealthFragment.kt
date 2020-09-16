@@ -10,11 +10,11 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
-import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartModel
-import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartType
-import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAOptionsConstructor
-import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AASeriesElement
+import com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.*
+import com.guider.baselib.widget.aAInfographicsLib.aAOptionsModel.AALabels
 import com.guider.baselib.widget.aAInfographicsLib.aAOptionsModel.AAOptions
+import com.guider.baselib.widget.aAInfographicsLib.aAOptionsModel.AAStyle
+import com.guider.baselib.widget.aAInfographicsLib.aATools.AAColor
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
 import com.guider.gps.view.activity.HealthDataListActivity
@@ -25,6 +25,7 @@ import com.guider.health.apilib.bean.*
 import kotlinx.android.synthetic.main.fragment_health_data.*
 import kotlinx.android.synthetic.main.fragment_home_health.*
 import lecho.lib.hellocharts.model.*
+import lecho.lib.hellocharts.view.AbstractChartView
 import lecho.lib.hellocharts.view.LineChartView
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -49,6 +50,8 @@ class HealthFragment : BaseFragment() {
     private lateinit var sportLayout: ConstraintLayout
     private var bloodYMaxValue = 0f
     private var heartYMaxValue = 0f
+    private var sleepYMaxValue = 0f
+    private var sportYMaxValue = 0f
 
     //日期类型分为今天，昨天，前天
     private var dateType = 0
@@ -66,7 +69,6 @@ class HealthFragment : BaseFragment() {
         sportLayout = rootView.findViewById(R.id.sportLayout)
         bloodChart = rootView.findViewById(R.id.bloodChart)
         heartChart = rootView.findViewById(R.id.heartChart)
-        EventBusUtils.register(this)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -141,16 +143,27 @@ class HealthFragment : BaseFragment() {
                 CommonUtils.getColor(mActivity, R.color.color333333))
         // 设置下划线跟文本宽度一致
         healthTabLayout.isTabIndicatorFullWidth = true
-        startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
+        startTimeValue = DateUtilKotlin.localToUTC(
+                "${CommonUtils.getCurrentDate()} 00:00:00")!!
         endTimeValue = DateUtilKotlin.localToUTC(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+                "${CommonUtils.getCurrentDate()} 24:00:00")!!
+    }
+
+    override fun openEventBus(): Boolean {
+        return true
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun refreshTargetStep(event: EventBusEvent<Int>) {
         if (event.code == EventBusAction.REFRESH_TARGET_STEP) {
             targetStepTv.text = event.data.toString()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshHealthData(event: EventBusEvent<String>) {
+        if (event.code == EventBusAction.REFRESH_HEALTH_DATA) {
+            getHealthData()
         }
     }
 
@@ -174,39 +187,31 @@ class HealthFragment : BaseFragment() {
                         }
                         tabTitleList[1] -> {
                             dateType = 1
-                            //                            startTimeValue = DateUtilKotlin.localToUTC(
-                            //                                    "${
-                            //                                        CommonUtils.calTimeFrontDate(
-                            //                                                CommonUtils.getCurrentDate(), 1)
-                            //                                    } 00:00:00")!!
-                            //                            endTimeValue = DateUtilKotlin.localToUTC(
-                            //                                    "${
-                            //                                        CommonUtils.calTimeFrontDate(
-                            //                                                CommonUtils.getCurrentDate(), 1)
-                            //                                    } 24:00:00")!!
-                            startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
+                            startTimeValue = DateUtilKotlin.localToUTC(
+                                    "${
+                                        CommonUtils.calTimeFrontDay(
+                                                CommonUtils.getCurrentDate(), 1)
+                                    } 00:00:00")!!
                             endTimeValue = DateUtilKotlin.localToUTC(
-                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+                                    "${
+                                        CommonUtils.calTimeFrontDay(
+                                                CommonUtils.getCurrentDate(), 1)
+                                    } 24:00:00")!!
                             isFirstLoadData = false
                             getHealthData()
                         }
                         tabTitleList[2] -> {
                             dateType = 2
-                            //                            startTimeValue = DateUtilKotlin.localToUTC(
-                            //                                    "${
-                            //                                        CommonUtils.calTimeFrontDate(
-                            //                                                CommonUtils.getCurrentDate(), 2)
-                            //                                    } 00:00:00")!!
-                            //                            endTimeValue = DateUtilKotlin.localToUTC(
-                            //                                    "${
-                            //                                        CommonUtils.calTimeFrontDate(
-                            //                                                CommonUtils.getCurrentDate(), 2)
-                            //                                    } 24:00:00")!!
-                            startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 2))!!
+                            startTimeValue = DateUtilKotlin.localToUTC(
+                                    "${
+                                        CommonUtils.calTimeFrontDay(
+                                                CommonUtils.getCurrentDate(), 2)
+                                    } 00:00:00")!!
                             endTimeValue = DateUtilKotlin.localToUTC(
-                                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+                                    "${
+                                        CommonUtils.calTimeFrontDay(
+                                                CommonUtils.getCurrentDate(), 2)
+                                    } 24:00:00")!!
                             isFirstLoadData = false
                             getHealthData()
                         }
@@ -227,6 +232,10 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun getHealthData() {
+        bloodYMaxValue = 0f
+        heartYMaxValue = 0f
+        sleepYMaxValue = 0f
+        sportYMaxValue = 0f
         getBloodData()
         getBodyTempData()
         getHeartData()
@@ -237,13 +246,14 @@ class HealthFragment : BaseFragment() {
     private fun getSportData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthSportChartData(accountId, 1, 9, startTimeValue, endTimeValue)
+                .getHealthSportChartData(accountId, -1, 100, startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<SportListBean>>() {
                     override fun onApiResponse(call: Call<List<SportListBean>>?,
                                                response: Response<List<SportListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            sportNoDataTv.visibility = View.GONE
                             val sportSubColumnValue = getSportSubColumnValue(response?.body()!!)
-                            initSportColumn(sportSubColumnValue)
+                            initSportColumn(sportSubColumnValue, response.body()!!)
                             //总步数为一天时间段的步数总和
                             var stepTotal = 0
                             response.body()?.forEach {
@@ -257,7 +267,10 @@ class HealthFragment : BaseFragment() {
 //                            val str: String = String.format("%.2f",
 //                                    (4927 * 1.00f / targetSteps))
 //                            val progress: Int = (str.toFloat() * 100).toInt()
-                        } else initSportChart()
+                        } else {
+                            initSportChart()
+                            sportNoDataTv.visibility = View.VISIBLE
+                        }
                     }
                 })
     }
@@ -265,15 +278,19 @@ class HealthFragment : BaseFragment() {
     private fun getSleepData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthSleepChartData(accountId, 1, 9, startTimeValue, endTimeValue)
+                .getHealthSleepChartData(accountId, -1, 100, startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<SleepDataListBean>>() {
                     override fun onApiResponse(call: Call<List<SleepDataListBean>>?,
                                                response: Response<List<SleepDataListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            sleepNoDataTv.visibility = View.GONE
                             val sleepSubColumnValue = getSleepSubColumnValue(
                                     response?.body()!!.map { it.minute.toFloat() })
-                            initSleepColumn(sleepSubColumnValue)
-                        } else initSleepChart()
+                            initSleepColumn(sleepSubColumnValue, response.body()!!)
+                        } else {
+                            initSleepChart()
+                            sleepNoDataTv.visibility = View.VISIBLE
+                        }
                     }
                 })
     }
@@ -281,15 +298,19 @@ class HealthFragment : BaseFragment() {
     private fun getHeartData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthHeartChartData(accountId, 1, 9,
+                .getHealthHeartChartData(accountId, -1, 100,
                         startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<HeartRateListBean>>() {
                     override fun onApiResponse(call: Call<List<HeartRateListBean>>?,
                                                response: Response<List<HeartRateListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            heartNoDataTv.visibility = View.GONE
                             val heartAxisPoints = getHeartAxisPoints(response?.body()!!)
-                            initHeartLineChart(heartAxisPoints)
-                        } else initHeartChart()
+                            initHeartLineChart(heartAxisPoints, response.body()!!)
+                        } else {
+                            initHeartChart()
+                            heartNoDataTv.visibility = View.VISIBLE
+                        }
                     }
                 })
     }
@@ -297,18 +318,22 @@ class HealthFragment : BaseFragment() {
     private fun getBodyTempData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthTempChartData(accountId, 1, 9, startTimeValue, endTimeValue)
+                .getHealthTempChartData(accountId, -1, 9, startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<BodyTempListBean>>() {
                     override fun onApiResponse(call: Call<List<BodyTempListBean>>,
                                                response: Response<List<BodyTempListBean>>) {
                         if (!response.body().isNullOrEmpty()) {
-                            val options = getTempXAxisLabels()
+                            tempNoDataTv.visibility = View.GONE
+                            val options = getTempXAxisLabels(response.body()!!)
+                            val yAxisLabels = getTempYAxisLabels()
                             val tempDataList = response.body()!!.map { it.bodyTemp }
                             val dataArray: Array<Any> = tempDataList.toTypedArray()
                             val aaOptions = initTempLineChart(options, dataArray)
+                            aaOptions.yAxis!!.labels(yAxisLabels)
                             tempChart.aa_drawChartWithChartOptions(aaOptions)
                         } else {
                             initTempChart()
+                            tempNoDataTv.visibility = View.VISIBLE
                         }
                     }
                 })
@@ -319,11 +344,12 @@ class HealthFragment : BaseFragment() {
         if (!isFirstLoadData) mDialog.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodChartData(accountId, 1, 100, startTimeValue, endTimeValue)
+                .getHealthBloodChartData(accountId, -1, 100, startTimeValue, endTimeValue)
                 .enqueue(object : ApiCallBack<List<BloodListBeann>>() {
                     override fun onApiResponse(call: Call<List<BloodListBeann>>?,
                                                response: Response<List<BloodListBeann>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            bloodPressureNoDataTv.visibility = View.GONE
                             if (isRefresh) refreshLayout.finishRefresh(500)
                             val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
                             val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
@@ -335,6 +361,7 @@ class HealthFragment : BaseFragment() {
                                 refreshLayout.finishRefresh()
                             }
                             initBloodChart()
+                            bloodPressureNoDataTv.visibility = View.VISIBLE
                         }
                     }
 
@@ -351,45 +378,70 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun initSportChart() {
-        initSportColumn(arrayListOf())
+        initSportColumn(arrayListOf(), arrayListOf())
     }
 
-    private fun initSportColumn(columns: java.util.ArrayList<Column>) {
+    private fun initSportColumn(columns: ArrayList<Column>, list: List<SportListBean>) {
         val mColumnChartData = ColumnChartData(columns) //设置数据
         mColumnChartData.isStacked = false //设置是否堆叠
         mColumnChartData.fillRatio = 0.2f//设置柱子宽度 0-1之间
         //坐标轴
-        setAxisXShowColumn(mColumnChartData)
+        setSportAxisXShowColumn(mColumnChartData, list)
         setAxisYShowColumn(mColumnChartData)
         sportChart.columnChartData = mColumnChartData
+        resetViewport(sportYMaxValue, sportChart, list)
     }
 
     private fun initSleepChart() {
-        initSleepColumn(arrayListOf())
+        initSleepColumn(arrayListOf(), arrayListOf())
     }
 
-    private fun initSleepColumn(columns: ArrayList<Column>) {
+    private fun initSleepColumn(columns: ArrayList<Column>, list: List<SleepDataListBean>) {
         val mColumnChartData = ColumnChartData(columns) //设置数据
         mColumnChartData.isStacked = false //设置是否堆叠
         mColumnChartData.fillRatio = 0.2f//设置柱子宽度 0-1之间
         //坐标轴
-        setAxisXShowColumn(mColumnChartData)
+        setSleepAxisXShowColumn(mColumnChartData, list)
         setAxisYShowColumn(mColumnChartData)
         sleepChart.columnChartData = mColumnChartData
+        resetViewport(sleepYMaxValue, sleepChart, list)
     }
 
-    private fun setAxisYShowColumn(data: ColumnChartData) {
+    private fun setSleepAxisXShowColumn(data: ColumnChartData, list: List<SleepDataListBean>) {
         //X轴
         val axisX = Axis()//X轴
         //对x轴，数据和属性的设置
         axisX.textSize = 9 //设置字体的大小
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
         axisX.textColor = Color.WHITE //X轴灰色
+        val mAxisValues = arrayListOf<AxisValue>()
+        for (i in list.indices) {
+            val label = AxisValue((i).toFloat()).setLabel(
+                    DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+            mAxisValues.add(label)
+        }
         axisX.values = mAxisValues //设置x轴各个坐标点名称
         data.axisXBottom = axisX //x 轴在底部
     }
 
-    private fun setAxisXShowColumn(data: ColumnChartData) {
+    private fun setSportAxisXShowColumn(data: ColumnChartData, list: List<SportListBean>) {
+        //X轴
+        val axisX = Axis()//X轴
+        //对x轴，数据和属性的设置
+        axisX.textSize = 9 //设置字体的大小
+        axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
+        axisX.textColor = Color.WHITE //X轴白色
+        val mAxisValues = arrayListOf<AxisValue>()
+        for (i in list.indices) {
+            val label = AxisValue((i).toFloat()).setLabel(
+                    DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+            mAxisValues.add(label)
+        }
+        axisX.values = mAxisValues //设置x轴各个坐标点名称
+        data.axisXBottom = axisX //x 轴在底部
+    }
+
+    private fun setAxisYShowColumn(data: ColumnChartData) {
         //Y轴
         val axisY = Axis().setHasLines(true)
         axisY.textSize = 8//设置字体大小
@@ -399,8 +451,10 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun initTempChart() {
-        val options = getTempXAxisLabels()
+        val options = getTempXAxisLabels(arrayListOf())
+        val yAxisLabels = getTempYAxisLabels()
         val aaOptions = initTempLineChart(options, arrayOf())
+        aaOptions.yAxis?.labels(yAxisLabels)
         tempChart.aa_drawChartWithChartOptions(aaOptions)
     }
 
@@ -428,7 +482,8 @@ class HealthFragment : BaseFragment() {
                 .yAxisTitle("")
                 .backgroundColor("#5E95FF")
                 .axesTextColor("#ffffff")
-                .axesTextSize(10f)
+                .axesTextSize(8f)
+                .zoomType(AAChartZoomType.X)
                 .series(
                         if (bodyTempList.isNotEmpty())
                             arrayOf(
@@ -446,10 +501,11 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun initHeartChart() {
-        initHeartLineChart(arrayListOf())
+        initHeartLineChart(arrayListOf(), arrayListOf())
     }
 
-    private fun initHeartLineChart(heartAxisPoints: ArrayList<PointValue>) {
+    private fun initHeartLineChart(heartAxisPoints: ArrayList<PointValue>,
+                                   body: List<HeartRateListBean>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(heartAxisPoints)
@@ -459,7 +515,7 @@ class HealthFragment : BaseFragment() {
         data.lines = lines
         data.baseValue = Float.NEGATIVE_INFINITY  //设置基准数(大概是数据范围)
         //坐标轴
-        setAxisXShow(data)
+        setHeartAxisXShow(data, body)
         setAxisYShow(data)
         heartChart.lineChartData = data
         resetViewport(heartYMaxValue, heartChart, heartAxisPoints)
@@ -486,12 +542,6 @@ class HealthFragment : BaseFragment() {
         //坐标轴
         setBloodAxisXShow(data, list)
         setAxisYShow(data, "blood")
-//        //设置行为属性，支持缩放、滑动以及平移
-//        bloodChart.isInteractive = true
-//        bloodChart.zoomType = ZoomType.HORIZONTAL
-//        bloodChart.maxZoom = 2f//最大方法比例
-//        bloodChart.setContainerScrollEnabled(
-//                true, ContainerScrollType.HORIZONTAL)
         bloodChart.lineChartData = data
         resetViewport(bloodYMaxValue, bloodChart, belowBloodAxisPoints)
         //创建一个图标视图 大小为控件的最大大小
@@ -505,11 +555,19 @@ class HealthFragment : BaseFragment() {
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
         axisX.textColor = CommonUtils.getColor(mActivity, R.color.colorF18937)
         val mAxisValues = arrayListOf<AxisValue>()
-        for (i in list.indices) {
-            val label = AxisValue((i + 1).toFloat()).setLabel(
-                    DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
-            mAxisValues.add(label)
-        }
+        if (list.size == 1) {
+            mAxisValues.add(AxisValue(0f).setLabel("0"))
+            for (i in list.indices) {
+                val label = AxisValue((i + 1).toFloat()).setLabel(
+                        DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+                mAxisValues.add(label)
+            }
+        } else
+            for (i in list.indices) {
+                val label = AxisValue((i).toFloat()).setLabel(
+                        DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+                mAxisValues.add(label)
+            }
         axisX.values = mAxisValues //设置x轴各个坐标点名称
         data.axisXBottom = axisX //x 轴在底部
     }
@@ -517,7 +575,7 @@ class HealthFragment : BaseFragment() {
     /**
      * 重点方法，计算绘制图表
      */
-    private fun resetViewport(yMaxValue: Float, view: LineChartView, list: List<Any>) {
+    private fun resetViewport(yMaxValue: Float, view: AbstractChartView, list: List<Any>) {
         //创建一个图标视图 大小为控件的最大大小
         val v = Viewport(view.maximumViewport)
         v.top = yMaxValue
@@ -539,16 +597,31 @@ class HealthFragment : BaseFragment() {
         data.axisYLeft = axisY //设置Y轴位置 左边
     }
 
-    private fun setAxisXShow(data: LineChartData, type: String = "") {
+    private fun setHeartAxisXShow(data: LineChartData, list: List<HeartRateListBean>) {
         //X轴
         val axisX = Axis()//X轴
         //对x轴，数据和属性的设置
         axisX.textSize = 9 //设置字体的大小
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
-        if (StringUtil.isNotBlankAndEmpty(type))
-            axisX.textColor = CommonUtils.getColor(mActivity, R.color.colorF18937)
-        //X轴灰色
-        else axisX.textColor = Color.WHITE //X轴白色
+//        if (StringUtil.isNotBlankAndEmpty(type))
+//            axisX.textColor = CommonUtils.getColor(mActivity, R.color.colorF18937)
+//        //X轴灰色
+//        else
+        axisX.textColor = Color.WHITE //X轴白色
+        val mAxisValues = arrayListOf<AxisValue>()
+        if (list.size == 1) {
+            mAxisValues.add(AxisValue(0f).setLabel("0"))
+            for (i in list.indices) {
+                val label = AxisValue((i + 1).toFloat()).setLabel(
+                        DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+                mAxisValues.add(label)
+            }
+        } else
+            for (i in list.indices) {
+                val label = AxisValue((i).toFloat()).setLabel(
+                        DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+                mAxisValues.add(label)
+            }
         axisX.values = mAxisValues //设置x轴各个坐标点名称
         data.axisXBottom = axisX //x 轴在底部
     }
@@ -573,6 +646,9 @@ class HealthFragment : BaseFragment() {
         if (list.isNullOrEmpty()) return arrayListOf()
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
+        if (list.size == 1) {
+            pointYValues.add(0f)
+        }
         list.forEach {
             pointYValues.add(it.sbp.toFloat())
         }
@@ -588,6 +664,9 @@ class HealthFragment : BaseFragment() {
         if (list.isNullOrEmpty()) return arrayListOf()
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
+        if (list.size == 1) {
+            pointYValues.add(0f)
+        }
         list.forEach {
             pointYValues.add(it.dbp.toFloat())
         }
@@ -601,6 +680,9 @@ class HealthFragment : BaseFragment() {
         if (list.isNullOrEmpty()) return arrayListOf()
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
+        if (list.size == 1) {
+            pointYValues.add(0f)
+        }
         list.forEach {
             pointYValues.add(it.hb.toFloat())
         }
@@ -613,23 +695,57 @@ class HealthFragment : BaseFragment() {
         return pointValues
     }
 
-    private fun getTempXAxisLabels(): Array<String> {
+    private fun getTempYAxisLabels(): AALabels {
+        return AALabels()
+                .style(
+                        AAStyle()
+                                .fontSize(8f)
+                                .color(AAColor.whiteColor())
+                )
+                .formatter(
+                        """
+                    function () {
+                            var yValue = this.value;
+                            if (yValue >= 40) {
+                                return "40";
+                            } else if (yValue >= 39 && yValue < 40) {
+                                return "39";
+                            } else if (yValue >= 38 && yValue < 39) {
+                                return "38";
+                            } else if (yValue >= 37 && yValue < 38) {
+                                return "37";
+                            } else if (yValue >= 36 && yValue < 37) {
+                                return "36";
+                            }else {
+                                return "0";
+                            }
+                        }
+                """.trimIndent()
+                )
+    }
+
+    private fun getTempXAxisLabels(list: List<BodyTempListBean>): Array<String> {
+        if (list.isNullOrEmpty()) return arrayOf()
         val category = arrayListOf<String>()
-        for (i in 0..9) {
-            when (i) {
-                0 -> {
-                    category.add("00:00")
-                }
-                1, 2, 3 -> {
-                    category.add("0${i * 3}:00")
-                }
-                4, 5, 6, 7 -> {
-                    category.add("${i * 3}:00")
-                }
-                8 -> {
-                    category.add("23:59")
-                }
-            }
+//        for (i in 0..9) {
+//            when (i) {
+//                0 -> {
+//                    category.add("00:00")
+//                }
+//                1, 2, 3 -> {
+//                    category.add("0${i * 3}:00")
+//                }
+//                4, 5, 6, 7 -> {
+//                    category.add("${i * 3}:00")
+//                }
+//                8 -> {
+//                    category.add("23:59")
+//                }
+//            }
+//        }
+        for (i in list.indices) {
+            category.add(
+                    DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
         }
         return category.toTypedArray()
     }
@@ -654,7 +770,9 @@ class HealthFragment : BaseFragment() {
             column.setHasLabels(true) //没有标签
             column.setHasLabelsOnlyForSelected(true) //点击只放大
             columns.add(column)
+            if (sleepYMaxValue < subColumnValueData[i]) sleepYMaxValue = subColumnValueData[i]
         }
+        sleepYMaxValue += 10
         return columns
     }
 
@@ -672,7 +790,9 @@ class HealthFragment : BaseFragment() {
             column.setHasLabels(true) //没有标签
             column.setHasLabelsOnlyForSelected(true) //点击只放大
             columns.add(column)
+            if (sportYMaxValue < subColumnValueData[i]) sportYMaxValue = subColumnValueData[i]
         }
+        sportYMaxValue += 10
         return columns
     }
 
@@ -754,10 +874,5 @@ class HealthFragment : BaseFragment() {
             }
             return false
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        EventBusUtils.unregister(this)
     }
 }

@@ -241,18 +241,15 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
                     override fun onFailure(call: Call<TokenInfo>, t: Throwable) {
                         super.onFailure(call, t)
-                        if (t.message == "该用户未注册") {
-                            val intent = Intent(mContext, RegisterActivity::class.java)
-                            if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
-                                intent.putExtra("country", countryTv.text.toString())
-                                intent.putExtra("phone", phoneEdit.text.toString())
-                            }
-                            startActivityForResult(intent, REGISTER)
-                        }
-                    }
-
-                    override fun onRequestFinish() {
                         dismissDialog()
+//                        if (t.message == "该用户未注册") {
+//                            val intent = Intent(mContext, RegisterActivity::class.java)
+//                            if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
+//                                intent.putExtra("country", countryTv.text.toString())
+//                                intent.putExtra("phone", phoneEdit.text.toString())
+//                            }
+//                            startActivityForResult(intent, REGISTER)
+//                        }
                     }
                 })
     }
@@ -290,7 +287,8 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                         }
                     }
 
-                    override fun onRequestFinish() {
+                    override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                        super.onFailure(call, t)
                         dismissDialog()
                     }
                 })

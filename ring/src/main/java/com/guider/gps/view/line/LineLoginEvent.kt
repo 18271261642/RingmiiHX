@@ -34,7 +34,7 @@ object LineLoginEvent {
         //normal是正常登陆模式
         loginButton.setAuthenticationParams(LineAuthenticationParams.Builder()
                 .scopes(listOf(Scope.PROFILE, Scope.OPENID_CONNECT))
-                .botPrompt(LineAuthenticationParams.BotPrompt.normal)
+                .botPrompt(LineAuthenticationParams.BotPrompt.aggressive)
                 .build()
         )
 
