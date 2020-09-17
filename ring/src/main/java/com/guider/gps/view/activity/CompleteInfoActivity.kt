@@ -8,7 +8,6 @@ import android.net.Uri
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import cn.addapp.pickers.picker.DatePicker
 import com.guider.baselib.base.BaseActivity
@@ -97,6 +96,8 @@ class CompleteInfoActivity : BaseActivity() {
             nameLayout -> {
                 val intent = Intent(mContext, SingleLineEditActivity::class.java)
                 intent.putExtra("type", resources.getString(R.string.app_person_info_name))
+                if (StringUtil.isNotBlankAndEmpty(nameTv.text.toString()))
+                    intent.putExtra("inputValue", nameTv.text.toString())
                 startActivityForResult(intent, PERSON_NAME)
             }
             birthdayLayout -> {
@@ -177,7 +178,7 @@ class CompleteInfoActivity : BaseActivity() {
                             } else {
                                 MMKVUtil.saveString(USER.TOKEN, bean.token!!)
                                 MMKVUtil.saveInt(USER.USERID, bean.accountId)
-                                MMKVUtil.saveString(USER.COUNTRY_CODE,countryCode)
+                                MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
                                 MMKVUtil.saveString(USER.PHONE, phoneValue)
                                 MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
                                 MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)
@@ -256,20 +257,24 @@ class CompleteInfoActivity : BaseActivity() {
                 manTv.setOnClickListener {
                     manTv.isSelected = true
                     girlTv.isSelected = false
-                }
-                girlTv.setOnClickListener {
-                    girlTv.isSelected = true
-                    manTv.isSelected = false
-                }
-                val sexConfirmIv = dialogView.findViewById<ImageView>(R.id.sexConfirmIv)
-                sexConfirmIv.setOnClickListener {
-                    dialog?.dismiss()
                     if (manTv.isSelected) {
                         sexTv.text = manTv.text
                     } else {
                         sexTv.text = girlTv.text
                     }
                     sex = sexTv.text.toString()
+                    dialog?.dismiss()
+                }
+                girlTv.setOnClickListener {
+                    girlTv.isSelected = true
+                    manTv.isSelected = false
+                    if (manTv.isSelected) {
+                        sexTv.text = manTv.text
+                    } else {
+                        sexTv.text = girlTv.text
+                    }
+                    sex = sexTv.text.toString()
+                    dialog?.dismiss()
                 }
             }
         }

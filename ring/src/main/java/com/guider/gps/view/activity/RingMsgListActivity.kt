@@ -178,6 +178,13 @@ class RingMsgListActivity : BaseActivity() {
         badgeView.setTargetView(target)
         badgeView.setBadgeMargin(0, 6,
                 10, 0)
+        if (mBadgeCountList[position]<10){
+            badgeView.setBadgePadding(6, 2,
+                    6, 2)
+        }else {
+            badgeView.setBadgePadding(3, 5,
+                    3, 5)
+        }
         if (mBadgeCountList[position] < 10) {
             badgeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
         } else badgeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7f)

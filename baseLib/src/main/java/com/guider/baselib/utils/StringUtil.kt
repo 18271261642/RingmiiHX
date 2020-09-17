@@ -475,11 +475,11 @@ class StringUtil private constructor() {
             var isMobileNumber = false
             for (regularExp in MobileRegularExp.values()) {
                 val pattern = Pattern.compile(regularExp.regularExp)
-                val matcher = pattern.matcher(StringBuilder().append(nationalCode)
+                val matcher = pattern.matcher(StringBuilder().append("+${nationalCode}")
                         .append(mobileNumber).toString())
                 if (matcher.matches()) {
                     isMobileNumber = true
-                    // 枚举中把最常用的国际区号拍在前面可以减少校验开销
+                    // 枚举中把最常用的国际区号排在前面可以减少校验开销
                     break
                 }
             }

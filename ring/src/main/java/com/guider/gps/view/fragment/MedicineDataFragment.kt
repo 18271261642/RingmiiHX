@@ -42,6 +42,7 @@ class MedicineDataFragment : BaseFragment() {
     private var yMaxValue = 0f
     private var heartYMaxValue = 0f
     private var bloodYMaxValue = 0f
+    private var isRefresh = false
 
     override val layoutRes: Int
         get() = R.layout.fragment_medicine_data
@@ -67,12 +68,19 @@ class MedicineDataFragment : BaseFragment() {
             val string = getString(fragmentType)
             medicineType = string!!
         }
-        suggestTitleTv.text = medicineType
+        suggestTitleTv.text =
+                "$medicineType ${mActivity.resources.getString(R.string.app_health_suggest)}"
         chartTitleTv.text = String.format(
                 resources.getString(R.string.app_main_medicine_chart_title), medicineType)
         initDataChart()
         answerLayout.setOnClickListener(this)
         measure.setOnClickListener(this)
+        refreshLayout.setEnableAutoLoadMore(false)
+        refreshLayout.setEnableRefresh(true)
+        refreshLayout.setOnRefreshListener {
+            isRefresh = true
+            initDataChart()
+        }
     }
 
     override fun onNoDoubleClick(v: View) {
@@ -121,8 +129,8 @@ class MedicineDataFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun getBloodData() {
         val mDialog = DialogProgress(mActivity, null)
-        mDialog.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        if (!isRefresh) mDialog.showDialog()
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
@@ -134,6 +142,7 @@ class MedicineDataFragment : BaseFragment() {
                     override fun onApiResponse(call: Call<List<BloodListBeann>>?,
                                                response: Response<List<BloodListBeann>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            if (isRefresh) refreshLayout.finishRefresh(500)
                             noDataTv.visibility = View.GONE
                             val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
                             val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
@@ -180,12 +189,23 @@ class MedicineDataFragment : BaseFragment() {
                             measureTime.text = DateUtilKotlin.uTCToLocal(
                                     response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
                         } else {
+                            if (isRefresh) {
+                                refreshLayout.finishRefresh()
+                            }
                             noDataTv.visibility = View.VISIBLE
                         }
                     }
 
+                    override fun onFailure(call: Call<List<BloodListBeann>>, t: Throwable) {
+                        super.onFailure(call, t)
+                        if (isRefresh) {
+                            refreshLayout.finishRefresh()
+                        }
+                    }
+
                     override fun onRequestFinish() {
-                        mDialog.hideDialog()
+                        if (!isRefresh) mDialog.hideDialog()
+                        isRefresh = false
                     }
                 })
     }
@@ -267,8 +287,8 @@ class MedicineDataFragment : BaseFragment() {
 
     private fun getBloodOxygenData() {
         val mDialog = DialogProgress(mActivity, null)
-        mDialog.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        if (!isRefresh) mDialog.showDialog()
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
@@ -279,6 +299,7 @@ class MedicineDataFragment : BaseFragment() {
                 .enqueue(object : ApiCallBack<Any>() {
                     override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
                         if (response?.body() != null) {
+                            if (isRefresh) refreshLayout.finishRefresh(500)
                             noDataTv.visibility = View.GONE
                             val tempList = ParseJsonData.parseJsonDataList<BloodOxygenListBean>(
                                     response.body()!!, BloodOxygenListBean::class.java
@@ -312,17 +333,22 @@ class MedicineDataFragment : BaseFragment() {
                             measureTime.text = DateUtilKotlin.uTCToLocal(
                                     tempList[0].testTime, TIME_FORMAT_PATTERN1)
                         } else {
+                            if (isRefresh) {
+                                refreshLayout.finishRefresh()
+                            }
                             noDataTv.visibility = View.VISIBLE
                         }
                     }
 
                     override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
                         super.onApiResponseNull(call, response)
+                        if (isRefresh) refreshLayout.finishRefresh()
                         noDataTv.visibility = View.VISIBLE
                     }
 
                     override fun onRequestFinish() {
-                        mDialog.hideDialog()
+                        if (!isRefresh) mDialog.hideDialog()
+                        isRefresh = false
                     }
                 })
     }
@@ -370,8 +396,8 @@ class MedicineDataFragment : BaseFragment() {
 
     private fun getBloodSugarData() {
         val mDialog = DialogProgress(mActivity, null)
-        mDialog.showDialog()
-        val accountId = MMKVUtil.getInt(USER.USERID)
+        if (!isRefresh) mDialog.showDialog()
+        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
                 CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
         val endTimeValue = DateUtilKotlin.localToUTC(
@@ -384,6 +410,7 @@ class MedicineDataFragment : BaseFragment() {
                                                response: Response<List<BloodSugarListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
                             noDataTv.visibility = View.GONE
+                            if (isRefresh) refreshLayout.finishRefresh(500)
                             //返回的数据类中state2的第一个字段为血糖状态
                             when (response?.body()!![0].state2.substring(0,
                                     response.body()!![0].state2.indexOf(","))) {
@@ -427,11 +454,24 @@ class MedicineDataFragment : BaseFragment() {
                                     response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
                             val bloodSugarAxisPoints = getBloodSugarAxisPoints(response.body()!!)
                             initDataChartShow(bloodSugarAxisPoints)
-                        } else noDataTv.visibility = View.VISIBLE
+                        } else {
+                            if (isRefresh) {
+                                refreshLayout.finishRefresh()
+                            }
+                            noDataTv.visibility = View.VISIBLE
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<BloodSugarListBean>>, t: Throwable) {
+                        super.onFailure(call, t)
+                        if (isRefresh) {
+                            refreshLayout.finishRefresh()
+                        }
                     }
 
                     override fun onRequestFinish() {
-                        mDialog.hideDialog()
+                        if (!isRefresh) mDialog.hideDialog()
+                        isRefresh = false
                     }
                 })
     }

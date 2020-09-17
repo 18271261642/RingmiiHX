@@ -179,4 +179,11 @@
     <string name="app_cycle_switch">週期開關</string>
     <string name="app_more">更多</string>
     <string name="app_no_suggest">暫無建議</string>
+    <string name="app_fail_upload">上傳失敗</string>
+    <string name="app_edit_text_limit_300">輸入內容字數不能大於300</string>
+    <string name="app_incorrect_format">格式不正確</string>
+    <string name="app_health_suggest">健康建議</string>
+    <string name="app_phone_register">該手機號已註冊</string>
+    <string name="app_set_success">設置成功</string>
+    <string name="app_electronic_hint">請選擇足夠的電子圍欄點</string>
 </resources>

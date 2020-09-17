@@ -8,15 +8,18 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
+import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.fragment.InputCodeAddDeviceFragment
 import com.guider.gps.view.fragment.ScanCodeAddDeviceFragment
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
+import com.guider.health.apilib.BuildConfig
 import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.king.zxing.Intents
 import kotlinx.android.synthetic.main.activity_add_new_device.*
+import kotlinx.android.synthetic.main.fragment_input_code_add_device.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -159,8 +162,14 @@ class AddNewDeviceActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK && data != null) {
             if (requestCode == SCAN_CODE) {
                 val result = data.getStringExtra(Intents.Scan.RESULT)
+                val tempCode = "863659040064551"
                 if (StringUtil.isNotBlankAndEmpty(result)) {
-                    bindNewDeviceWithAccount(result!!)
+                    if (!BuildConfig.DEBUG && inputEdit.text?.length != tempCode.length){
+                        ToastUtil.showCenter(mContext!!,
+                                mContext!!.resources.getString(R.string.app_incorrect_format))
+                    }else {
+                        bindNewDeviceWithAccount(result!!)
+                    }
                 }
             } else if (requestCode == DEVICE_BIND_ADD_MEMBER) {
                 finish()

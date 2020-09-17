@@ -244,49 +244,65 @@ class MainActivity : BaseActivity() {
             }
             drawAdapter.setSourceList(bindDeviceList)
         } else {
-            showDialog()
-            ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .getGroupBindMember(accountId = accountId)
-                    .enqueue(object : ApiCallBack<CheckBindDeviceBean>(mContext) {
-                        override fun onApiResponse(call: Call<CheckBindDeviceBean>?,
-                                                   response: Response<CheckBindDeviceBean>?) {
-                            if (response?.body() != null) {
-                                bindListBean = response.body()
-                                run breaking@{
-                                    bindListBean?.userInfos?.forEach {
-                                        if (it.accountId == accountId) {
-                                            it.relationShip = mContext!!.resources.getString(
-                                                    R.string.app_own_string)
-                                            return@breaking
-                                        }
-                                    }
-                                }
-                                breaking@ for (i in bindListBean?.userInfos!!.indices) {
-                                    if (bindListBean?.userInfos!![i].accountId == bindAccountId) {
-                                        bindListBean?.userInfos!![i].isSelected = 1
-                                        bindPosition = i
-                                        if (bingAccountName !=
-                                                bindListBean?.userInfos!![i].relationShip) {
-                                            pageTitle = bindListBean?.userInfos!![i].relationShip!!
-                                            MMKVUtil.saveString(BIND_DEVICE_NAME,
-                                                    bindListBean?.userInfos!![i].relationShip!!)
-                                            setTitle(pageTitle,
-                                                    CommonUtils.getColor(mContext!!, R.color.white))
-                                        }
-                                        break@breaking
-                                    }
-                                }
-                                bindDeviceList.clear()
-                                bindDeviceList.addAll(bindListBean?.userInfos!!)
-                                drawAdapter.setSourceList(bindDeviceList)
-                            }
-                        }
-
-                        override fun onRequestFinish() {
-                            dismissDialog()
-                        }
-                    })
+            getLatestGroupData(accountId, bindAccountId, bingAccountName)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshLatestGroupData(event: EventBusEvent<Boolean>) {
+        if (event.code == EventBusAction.REFRESH_LATEST_GROUP_DATA) {
+            if (event.data!!) {
+                val accountId = MMKVUtil.getInt(USER.USERID, 0)
+                val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+                val bingAccountName = MMKVUtil.getString(BIND_DEVICE_NAME)
+                getLatestGroupData(accountId, bindAccountId, bingAccountName)
+            }
+        }
+    }
+
+    private fun getLatestGroupData(accountId: Int, bindAccountId: Int, bingAccountName: String) {
+        showDialog()
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .getGroupBindMember(accountId = accountId)
+                .enqueue(object : ApiCallBack<CheckBindDeviceBean>(mContext) {
+                    override fun onApiResponse(call: Call<CheckBindDeviceBean>?,
+                                               response: Response<CheckBindDeviceBean>?) {
+                        if (response?.body() != null) {
+                            bindListBean = response.body()
+                            run breaking@{
+                                bindListBean?.userInfos?.forEach {
+                                    if (it.accountId == accountId) {
+                                        it.relationShip = mContext!!.resources.getString(
+                                                R.string.app_own_string)
+                                        return@breaking
+                                    }
+                                }
+                            }
+                            breaking@ for (i in bindListBean?.userInfos!!.indices) {
+                                if (bindListBean?.userInfos!![i].accountId == bindAccountId) {
+                                    bindListBean?.userInfos!![i].isSelected = 1
+                                    bindPosition = i
+                                    if (bingAccountName !=
+                                            bindListBean?.userInfos!![i].relationShip) {
+                                        pageTitle = bindListBean?.userInfos!![i].relationShip!!
+                                        MMKVUtil.saveString(BIND_DEVICE_NAME,
+                                                bindListBean?.userInfos!![i].relationShip!!)
+                                        setTitle(pageTitle,
+                                                CommonUtils.getColor(mContext!!, R.color.white))
+                                    }
+                                    break@breaking
+                                }
+                            }
+                            bindDeviceList.clear()
+                            bindDeviceList.addAll(bindListBean?.userInfos!!)
+                            drawAdapter.setSourceList(bindDeviceList)
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
     }
 
     /**

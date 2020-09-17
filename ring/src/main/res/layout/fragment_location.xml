@@ -217,8 +217,8 @@
                     android:id="@+id/timeLine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/dp_10"
-                    android:paddingEnd="@dimen/dp_10"
+                    android:paddingStart="@dimen/dp_2"
+                    android:paddingEnd="@dimen/dp_2"
                     android:text="-"
                     android:textColor="@color/colorDDDDDD"
                     android:textSize="@dimen/sp_13"
@@ -276,8 +276,9 @@
 
                 <ImageView
                     android:id="@+id/trackEventCalIv"
-                    android:layout_width="42dp"
+                    android:layout_width="@dimen/dp_42"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/dp_10"
                     android:src="@drawable/icon_location_track_event_cal"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -315,9 +316,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/electronicCommitIv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/electronicCommitIv"
                 android:src="@drawable/select_electronic_commit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -332,9 +333,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/electronicDeleteIv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/electronicDeleteIv"
                 android:src="@drawable/select_electronic_delete" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -349,26 +350,26 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="match_parent"
                 android:id="@+id/electronicSetIv"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/select_electronic_set" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
+            android:id="@+id/electronicSetHint"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_38"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/electronicSetLayout"
-            android:gravity="center"
             android:background="#33F18937"
-            android:visibility="gone"
-            android:id="@+id/electronicSetHint"
-            app:layout_constraintTop_toTopOf="@id/electronicSetLayout"
-            app:layout_constraintBottom_toBottomOf="@id/electronicSetLayout"
+            android:gravity="center"
             android:text="@string/app_electronic_set_hint"
             android:textColor="@color/color333333"
             android:textSize="@dimen/sp_12"
-            />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/electronicSetLayout"
+            app:layout_constraintEnd_toStartOf="@id/electronicSetLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/electronicSetLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

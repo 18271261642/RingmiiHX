@@ -5,8 +5,8 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.StringRes
 import android.widget.Toast
+import androidx.annotation.StringRes
 import com.guider.baselib.R
 
 /**
@@ -26,6 +26,16 @@ object ToastUtil {
         if (toast == null) {
             toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
         }
+        toast!!.setText(text)
+        toast!!.show()
+    }
+
+    @SuppressLint("ShowToast")
+    fun showCenter(context: Context, text: CharSequence) {
+        if (toast == null) {
+            toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
+        }
+        toast!!.setGravity(Gravity.CENTER,0,0)
         toast!!.setText(text)
         toast!!.show()
     }

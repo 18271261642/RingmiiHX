@@ -1,4 +1,4 @@
-package com.guider.gps.googleMap;
+package com.guider.baselib.utils;
 
 /**
  * Created by apple on 2017/11/8.

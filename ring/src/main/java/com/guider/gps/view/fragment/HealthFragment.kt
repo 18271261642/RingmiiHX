@@ -341,7 +341,7 @@ class HealthFragment : BaseFragment() {
 
     private fun getBloodData() {
         val mDialog = DialogProgress(mActivity, null, true)
-        if (!isFirstLoadData) mDialog.showDialog()
+        if (!isFirstLoadData && !isRefresh) mDialog.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         ApiUtil.createHDApi(IUserHDApi::class.java)
                 .getHealthBloodChartData(accountId, -1, 100, startTimeValue, endTimeValue)
@@ -371,7 +371,7 @@ class HealthFragment : BaseFragment() {
                     }
 
                     override fun onRequestFinish() {
-                        if (!isFirstLoadData) mDialog.hideDialog()
+                        if (!isFirstLoadData && !isRefresh)  mDialog.hideDialog()
                         isRefresh = false
                     }
                 })

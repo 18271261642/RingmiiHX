@@ -180,4 +180,11 @@
     <string name="app_cycle_switch">Cycle switch</string>
     <string name="app_more">more</string>
     <string name="app_no_suggest">No Suggest</string>
+    <string name="app_fail_upload">Upload failed</string>
+    <string name="app_edit_text_limit_300">Enter no more than 300 words</string>
+    <string name="app_incorrect_format">Incorrect format</string>
+    <string name="app_health_suggest">Health Suggest</string>
+    <string name="app_phone_register">The phone number has been registered</string>
+    <string name="app_set_success">Set Success</string>
+    <string name="app_electronic_hint">Please select enough electronic fence points</string>
 </resources>

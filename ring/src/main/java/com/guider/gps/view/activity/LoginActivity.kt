@@ -94,8 +94,10 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         loginTv.setOnClickListener(this)
 //        weChatIv.setOnClickListener(this)
         lineIv.setOnClickListener(this)
+        textTv.setOnClickListener(this)
         policyTv.setOnClickListener(this)
         countryCodeLayout.setOnClickListener(this)
+        userServiceTv.setOnClickListener(this)
         passwordEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -113,6 +115,19 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
         })
         passwordShowIv.setOnClickListener(this)
+        phoneEdit.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
+                    phoneValue = phoneEdit.text.toString()
+                    val countryCode = countryTv.text.toString().replace(
+                            "+", "")
+                    if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                        ToastUtil.showCenter(mContext!!,
+                                mContext!!.resources.getString(R.string.app_incorrect_format))
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -196,7 +211,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     }
                 }
             }
-            policyTv -> {
+            policyTv, userServiceTv, textTv -> {
                 val intent = Intent(mContext, SimpleCustomWebActivity::class.java)
                 intent.putExtra("pageTitle",
                         mContext?.resources?.getString(R.string.app_login_privacy_policy_clause))

@@ -13,8 +13,8 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import cn.addapp.pickers.picker.DatePicker
 import com.binioter.guideview.GuideBuilder
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -38,7 +38,6 @@ import com.guider.gps.BuildConfig
 import com.guider.gps.R
 import com.guider.gps.adapter.LocationTrackEventTimeAdapter
 import com.guider.gps.bean.WithSelectBaseBean
-import com.guider.gps.googleMap.MapPositionUtil
 import com.guider.gps.view.activity.HistoryRecordActivity
 import com.guider.gps.view.activity.LocationFrequencySetActivity
 import com.guider.gps.widget.SimpleComponent
@@ -48,6 +47,8 @@ import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.bean.ElectronicFenceBean
 import com.guider.health.apilib.bean.UserPositionListBean
 import kotlinx.android.synthetic.main.fragment_location.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
@@ -129,6 +130,8 @@ class LocationFragment : BaseFragment(),
     private var customFourMartTag = "customFourMartTag"
     private var customFourLatLng: LatLng? = null
     private var dateSelectTag = false
+    private var startTimeValue = ""
+    private var endTimeValue = ""
 
     override fun initView(rootView: View) {
     }
@@ -230,8 +233,8 @@ class LocationFragment : BaseFragment(),
                         CommonUtils.getCurrentDate(), 7)
                 endTimeTv.text = CommonUtils.getCurrentDate()
                 val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
-                val startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, 24)
-                val endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
+                startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, 24)
+                endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             tabTitleList[2] -> {
@@ -268,6 +271,37 @@ class LocationFragment : BaseFragment(),
         }
     }
 
+
+    override fun openEventBus(): Boolean {
+        return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshHealthData(event: EventBusEvent<String>) {
+        if (event.code == EventBusAction.REFRESH_HEALTH_DATA) {
+            mGoogleMap?.clear()
+            when (tabPosition) {
+                0 -> {
+                    mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+                    getUserLocationPointData()
+                }
+                1 -> {
+                    mGoogleMap?.setInfoWindowAdapter(null)
+                    val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
+                    startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, 24)
+                    endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
+                    getUserPointLineData(startTimeValue, endTimeValue)
+                }
+                2 -> {
+                    mGoogleMap?.setInfoWindowAdapter(null)
+                    confirmElectronicShow()
+                    getElectronicFenceData()
+                }
+            }
+        }
+    }
+
+
     /**
      * 得到用户最近的定位点
      */
@@ -291,8 +325,10 @@ class LocationFragment : BaseFragment(),
                             mGoogleMap?.animateCamera(
                                     CameraUpdateFactory.newLatLngZoom(
                                             LatLng(firstPosition.lat, firstPosition.lng), 16.0f))
-                            MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
-                            MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
+                            if (StringUtil.isNotBlankAndEmpty(firstPosition.addr))
+                                MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
+                            if (StringUtil.isNotBlankAndEmpty(firstPosition.testTime))
+                                MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
                             //判断是否是相同的定位点
                             if (!MMKVUtil.containKey(LAST_LOCATION_POINT_LAT) ||
                                     (!(MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0)
@@ -303,6 +339,11 @@ class LocationFragment : BaseFragment(),
                                 MMKVUtil.saveDouble(LAST_LOCATION_POINT_LAT, firstPosition.lat)
                                 MMKVUtil.saveDouble(LAST_LOCATION_POINT_LNG, firstPosition.lng)
                             }
+                        } else {
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_LAT)
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_LNG)
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_ADDRESS)
+                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
                         }
                     }
 
@@ -391,7 +432,7 @@ class LocationFragment : BaseFragment(),
                                     .addAll(latLngList)
                             mGoogleMap?.addPolygon(polygon)
                             mGoogleMap?.animateCamera(
-                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 17.8f))
+                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
                         }
                     }
 
@@ -453,7 +494,8 @@ class LocationFragment : BaseFragment(),
                     override fun onApiResponse(call: Call<String>?,
                                                response: Response<String>?) {
                         if (response?.body() == "true") {
-                            showToast("设置成功")
+                            showToast(mActivity.resources.getString(R.string.app_set_success))
+                            confirmElectronicShow()
                         }
                     }
 
@@ -461,6 +503,25 @@ class LocationFragment : BaseFragment(),
                         mActivity.dismissDialog()
                     }
                 })
+    }
+
+    /**
+     * 确认电子围栏的显示或者取消已设置的信息
+     */
+    private fun confirmElectronicShow() {
+        electronicSetLayout.isSelected = false
+        electronicSetIv.isSelected = false
+        customFirstPoint?.remove()
+        customTwoPoint?.remove()
+        customThirdPoint?.remove()
+        customFourPoint?.remove()
+        electronicDeleteLayout.isSelected = false
+        electronicSetHint.visibility = View.GONE
+        electronicDeleteIv.isSelected = false
+        electronicCommitLayout.isSelected = false
+        electronicCommitIv.isSelected = false
+        customElectronicFencePointNum = 0
+        mGoogleMap?.setOnMapClickListener {}
     }
 
     /**
@@ -484,8 +545,8 @@ class LocationFragment : BaseFragment(),
                     trackEventTimePosition = position
                     val timeHour = trackEventTimeList[trackEventTimePosition].name.toInt()
                     val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
-                    val startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, timeHour)
-                    val endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
+                    startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, timeHour)
+                    endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
                     getUserPointLineData(startTimeValue, endTimeValue)
                 }
             }
@@ -544,8 +605,8 @@ class LocationFragment : BaseFragment(),
                 initSelectDateDialogShow()
             }
             searchLayout -> {
-                val startTimeValue = "${startTimeTv.text} 00:00:00"
-                val endTimeValue = "${endTimeTv.text} 00:00:00"
+                startTimeValue = "${startTimeTv.text} 00:00:00"
+                endTimeValue = "${endTimeTv.text} 00:00:00"
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventsDateLeft -> {
@@ -562,8 +623,8 @@ class LocationFragment : BaseFragment(),
                         .replace("年", "-")
                         .replace("月", "-")
                         .replace("日", "")
-                val startTimeValue = "$dateString 00:00:00"
-                val endTimeValue = "$dateString 24:00:00"
+                startTimeValue = "$dateString 00:00:00"
+                endTimeValue = "$dateString 24:00:00"
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventsDateRight -> {
@@ -580,12 +641,19 @@ class LocationFragment : BaseFragment(),
                         .replace("年", "-")
                         .replace("月", "-")
                         .replace("日", "")
-                val startTimeValue = "$dateString 00:00:00"
-                val endTimeValue = "$dateString 24:00:00"
+                startTimeValue = "$dateString 00:00:00"
+                endTimeValue = "$dateString 24:00:00"
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventCalIv -> {
-                selectPositionDate()
+                trackEventsDateValueTv.text = CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
+                selectTimeBackLayout.visibility = View.GONE
+                searchFrontLayout.visibility = View.VISIBLE
+                val currentDateString = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
+                startTimeValue = CommonUtils.calTimeFrontHour(currentDateString, 24)
+                endTimeValue = CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN)
+                dateSelectTag = false
+                getUserPointLineData(startTimeValue, endTimeValue)
             }
             mapLocationIv -> {
                 if (isShowGpsMode) {
@@ -598,20 +666,8 @@ class LocationFragment : BaseFragment(),
             //设置电子围栏在地图上坐标的button
             electronicSetLayout -> {
                 if (electronicSetLayout.isSelected) {
-                    electronicSetLayout.isSelected = false
-                    electronicSetIv.isSelected = false
                     mGoogleMap?.clear()
-                    customFirstPoint?.remove()
-                    customTwoPoint?.remove()
-                    customThirdPoint?.remove()
-                    customFourPoint?.remove()
-                    electronicDeleteLayout.isSelected = false
-                    electronicSetHint.visibility = View.GONE
-                    electronicDeleteIv.isSelected = false
-                    electronicCommitLayout.isSelected = false
-                    electronicCommitIv.isSelected = false
-                    customElectronicFencePointNum = 0
-                    mGoogleMap?.setOnMapClickListener {}
+                    confirmElectronicShow()
                 } else {
                     electronicSetLayout.isSelected = true
                     electronicSetIv.isSelected = true
@@ -652,7 +708,7 @@ class LocationFragment : BaseFragment(),
                 if (customElectronicFencePointNum == 4) {
                     setElectronicFenceData()
                 } else {
-                    showToast("请选择足够的电子围栏点")
+                    showToast(mActivity.resources.getString(R.string.app_electronic_hint))
                 }
             }
         }
@@ -669,53 +725,6 @@ class LocationFragment : BaseFragment(),
             //手动去编辑电子围栏
             mapClickEvent(it)
         }
-    }
-
-    /**
-     * 选择指定某一天查询运动轨迹
-     */
-    private fun selectPositionDate() {
-        val picker = DatePicker(mActivity)
-        picker.setGravity(Gravity.BOTTOM)
-        picker.setTopPadding(15)
-        picker.setRangeStart(1900, 1, 1)
-        picker.setRangeEnd(2100, 12, 31)
-        val timeValue = trackEventsDateValueTv.text.toString().replace("日", "")
-        val dayInt = timeValue.substring(
-                timeValue.lastIndexOf('月') + 1).toInt()
-        val yearInt = timeValue.substring(0, timeValue.indexOf('年')).toInt()
-        val monthInt = timeValue.substring(
-                timeValue.indexOf('年') + 1,
-                timeValue.lastIndexOf('月')).toInt()
-        picker.setSelectedItem(yearInt, monthInt, dayInt)
-        picker.setTitleText("$yearInt-$monthInt-$dayInt")
-        picker.setWeightEnable(true)
-        picker.setTitleText(resources.getString(R.string.app_person_info_select_birthday))
-        picker.setSelectedTextColor(CommonUtils.getColor(mActivity, R.color.colorF18937))
-        picker.setUnSelectedTextColor(CommonUtils.getColor(mActivity, R.color.colorDDDDDD))
-        picker.setTopLineColor(CommonUtils.getColor(mActivity, R.color.colorDDDDDD))
-        picker.setLineColor(CommonUtils.getColor(mActivity, R.color.colorDDDDDD))
-        picker.setOnDatePickListener(DatePicker.OnYearMonthDayPickListener { year, month, day ->
-            run {
-                val monthIntValue = month.toInt()
-                val dayIntValue = day.toInt()
-                val selectDate = year.plus("年")
-                        .plus(if (monthIntValue < 10) {
-                            "0$monthIntValue"
-                        } else monthIntValue)
-                        .plus("月").plus(if (dayIntValue < 10) {
-                            "0$dayIntValue"
-                        } else dayIntValue).plus("日")
-                trackEventsDateValueTv.text = selectDate
-                selectTimeBackLayout.visibility = View.GONE
-                searchFrontLayout.visibility = View.VISIBLE
-                val startTimeValue = "$selectDate 00:00:00"
-                val endTimeValue = "$selectDate 24:00:00"
-                dateSelectTag = false
-                getUserPointLineData(startTimeValue, endTimeValue)
-            }
-        })
-        picker.show()
     }
 
     /**
@@ -1175,6 +1184,19 @@ class LocationFragment : BaseFragment(),
                     this@LocationFragment.mActivity.resources.getString(
                             R.string.app_map_location_method_content), "WIFI"
             )
+            val locationLayout = window.findViewById<ConstraintLayout>(R.id.locationLayout)
+            if (MMKVUtil.containKey(LAST_LOCATION_POINT_LAT)) {
+                val latLng = LatLng(
+                        MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0),
+                        MMKVUtil.getDouble(LAST_LOCATION_POINT_LNG, 0.0))
+                locationLayout.setOnClickListener(object : OnNoDoubleClickListener {
+                    override fun onNoDoubleClick(v: View) {
+                        MapUtils.startGuide(mActivity, latLng.latitude, latLng.longitude)
+                    }
+
+                })
+            }
+
         }
 
         override fun getInfoContents(p0: Marker?): View? {

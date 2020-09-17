@@ -152,7 +152,7 @@ class MineFragment : BaseFragment() {
                 intent.putExtra("enterType", "heart")
                 startActivityForResult(intent, ALARM_SET)
             }
-            tempSetLayout ->{
+            tempSetLayout -> {
                 val intent = Intent(mActivity, AlarmSeActivity::class.java)
                 intent.putExtra("enterType", "temp")
                 startActivityForResult(intent, ALARM_SET)
@@ -223,7 +223,7 @@ class MineFragment : BaseFragment() {
                 }
                 PERSON_INFO -> {
                     if (data.getBooleanExtra("isChange", false))
-                        refreshHeaderAndName()
+                        refreshHeaderAndName(false)
                 }
                 ALARM_SET -> {
                     if (StringUtil.isNotBlankAndEmpty(data.getStringExtra("enterType"))) {
@@ -261,14 +261,18 @@ class MineFragment : BaseFragment() {
                 })
     }
 
-    private fun refreshHeaderAndName() {
+    private fun refreshHeaderAndName(isFirst: Boolean = true) {
         if (MMKVUtil.containKey(USER.HEADER) &&
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.HEADER))) {
             ImageLoaderUtils.loadImage(mActivity, headerIv, MMKVUtil.getString(USER.HEADER))
+        } else {
+            headerIv.setImageResource(R.drawable.bg_image_default)
         }
         if (MMKVUtil.containKey(USER.NAME) &&
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.NAME))) {
             nameTv.text = MMKVUtil.getString(USER.NAME)
         }
+        if (!isFirst) EventBusUtils.sendEvent(
+                EventBusEvent(EventBusAction.REFRESH_LATEST_GROUP_DATA, true))
     }
 }

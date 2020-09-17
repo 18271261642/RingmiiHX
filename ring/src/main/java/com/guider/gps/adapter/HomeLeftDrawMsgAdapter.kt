@@ -33,7 +33,7 @@ class HomeLeftDrawMsgAdapter(context: Context, dataList: ArrayList<UserInfo>)
     override fun bindData(holder: ViewHolder, data: UserInfo, position: Int) {
         if (data.isSelected == 1) {
             holder.setViewVisibility(R.id.msgSelectIv, View.VISIBLE)
-        } else holder.setViewVisibility(R.id.msgSelectIv, View.GONE)
+        } else holder.setViewVisibility(R.id.msgSelectIv, View.INVISIBLE)
         holder.setText(R.id.msgPersonName, data.relationShip)
         val batteryView = holder.getView<BatteryView>(R.id.batteryLayout)
         when (data.deviceState) {

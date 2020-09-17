@@ -54,7 +54,7 @@ public class BadgeView extends AppCompatTextView {
         setTextColor(Color.WHITE);
         setTypeface(Typeface.DEFAULT_BOLD);
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 9);
-        setPadding(dip2Px(3), dip2Px(2), dip2Px(3), dip2Px(2));
+//        setPadding(dip2Px(3), dip2Px(5), dip2Px(3), dip2Px(5));
 
         // set default background
         setBackground(9, Color.parseColor("#D76155"));
@@ -137,6 +137,12 @@ public class BadgeView extends AppCompatTextView {
 
     public void setBadgeMargin(int dipMargin) {
         setBadgeMargin(dipMargin, dipMargin, dipMargin, dipMargin);
+    }
+
+    public void setBadgePadding(int leftDipMargin, int topDipMargin,
+                                int rightDipMargin, int bottomDipMargin) {
+        setPadding(dip2Px(leftDipMargin), dip2Px(topDipMargin),
+                dip2Px(rightDipMargin), dip2Px(bottomDipMargin));
     }
 
     public void setBadgeMargin(int leftDipMargin, int topDipMargin,

@@ -12,8 +12,8 @@
 
     <include
         android:id="@+id/includePasswordLayout"
-        android:layout_width="match_parent"
         layout="@layout/include_password_edit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/editLayout" />
 
@@ -65,7 +65,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_9"
-        android:textColor="@color/color999999"
+        android:gravity="start"
+        android:textColor="#ff0000"
         android:textSize="@dimen/sp_11"
         app:layout_constraintEnd_toEndOf="@id/againPasswordLine"
         app:layout_constraintStart_toStartOf="@id/againPasswordLine"

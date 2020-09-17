@@ -179,4 +179,11 @@
     <string name="app_cycle_switch">周期开关</string>
     <string name="app_more">更多</string>
     <string name="app_no_suggest">暂无建议</string>
+    <string name="app_fail_upload">上传失败</string>
+    <string name="app_edit_text_limit_300">输入内容字数不能大于300</string>
+    <string name="app_incorrect_format">格式不正确</string>
+    <string name="app_health_suggest">健康建议</string>
+    <string name="app_phone_register">该手机号已注册</string>
+    <string name="app_set_success">设置成功</string>
+    <string name="app_electronic_hint">请选择足够的电子围栏点</string>
 </resources>

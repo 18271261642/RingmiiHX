@@ -31,6 +31,7 @@
             android:layout_marginEnd="@dimen/dp_1"
             android:src="@drawable/icon_orange_confirm"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View

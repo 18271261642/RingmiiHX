@@ -5,8 +5,10 @@ import android.text.TextWatcher
 import android.view.View
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.StringUtil
+import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.activity.AddNewDeviceActivity
+import com.guider.health.apilib.BuildConfig
 import kotlinx.android.synthetic.main.fragment_input_code_add_device.*
 
 class InputCodeAddDeviceFragment : BaseFragment() {
@@ -52,6 +54,12 @@ class InputCodeAddDeviceFragment : BaseFragment() {
             enterTv -> {
                 if (StringUtil.isEmpty(inputEdit.text.toString())) {
                     showToast(mActivity.resources.getString(R.string.app_device_code_empty))
+                    return
+                }
+                val tempCode = "863659040064551"
+                if (!BuildConfig.DEBUG && inputEdit.text?.length != tempCode.length){
+                    ToastUtil.showCenter(mActivity,
+                            mActivity.resources.getString(R.string.app_incorrect_format))
                     return
                 }
                 val deviceCode = inputEdit.text.toString()

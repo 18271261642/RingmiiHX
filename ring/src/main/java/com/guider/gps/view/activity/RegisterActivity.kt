@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
+import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.CountryCodeDialogAdapter
 import com.guider.health.apilib.ApiCallBack
@@ -73,7 +74,10 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                         phoneValue = phoneEdit.text.toString()
                         val countryCode = countryTv.text.toString().replace(
                                 "+", "")
-                        if (StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                        if (!StringUtil.isMobileNumber(countryCode,
+                                        phoneValue)) {
+                            formatError()
+                        } else {
                             //符合要求的手机号去判断是否是已注册的手机号
                             checkPhone(countryCode, phoneEdit.text.toString(), false)
                         }
@@ -85,6 +89,17 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
         }
     }
 
+    private fun formatError() {
+        ToastUtil.showCenter(mContext!!,
+                mContext!!.resources.getString(R.string.app_incorrect_format))
+        textTv.visibility = View.VISIBLE
+        textTv.text = mContext!!.resources.getString(
+                R.string.app_incorrect_format)
+        textTv.postDelayed({
+            textTv.visibility = View.GONE
+        }, 1000)
+    }
+
     private fun checkPhone(countryCode: String, phone: String, isExit: Boolean) {
         //如果符合要求弹出提示
         ApiUtil.createApi(IGuiderApi::class.java, false)
@@ -94,7 +109,13 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                                                response: Response<String?>?) {
                         //true可以用 false不可用
                         if (response?.body() == "false") {
-                            toastShort("该手机号已注册")
+                            ToastUtil.showCenter(mContext!!,
+                                    mContext!!.resources.getString(R.string.app_phone_register))
+                            textTv.visibility = View.VISIBLE
+                            textTv.text = mContext!!.resources.getString(R.string.app_phone_register)
+                            textTv.postDelayed({
+                                textTv.visibility = View.GONE
+                            }, 1000)
                         } else {
                             if (isExit) {
                                 val intent = Intent(mContext!!, CompleteInfoActivity::class.java)
@@ -181,7 +202,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 }
                 //如果是绑定其他设备的新注册用户由于不能输入手机号也就不需要再去判断是否注册过
                 if (StringUtil.isEmpty(pageEnterType))
-                    checkPhone(phoneValue, countryCode, true)
+                    checkPhone(countryCode, phoneValue, true)
                 else {
                     val intent = Intent(mContext!!, CompleteInfoActivity::class.java)
                     val passwordValue = MyUtils.md5(passwordEdit.text.toString())

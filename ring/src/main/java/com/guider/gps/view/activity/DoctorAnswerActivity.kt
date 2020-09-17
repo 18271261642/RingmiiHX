@@ -116,7 +116,8 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                     more.visibility = View.VISIBLE
                 }
                 if (s != null && s.length >= 300) {
-                    ToastUtil.show(mContext!!, "输入内容字数不能大于300！")
+                    ToastUtil.show(mContext!!,
+                            mContext!!.resources.getString(R.string.app_edit_text_limit_300))
                 }
             }
 
@@ -268,7 +269,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                     override fun onApiResponse(call: Call<SendAnswerListBean>?,
                                                response: Response<SendAnswerListBean>?) {
                         if (response?.body() != null) {
-                            toastShort("发送成功")
+                            toastShort(mContext!!.resources.getString(R.string.app_send_success))
                             val body = response.body()!!
                             val bean = AnswerListBean(body.accountId, body.content,
                                     body.id, body.createTime, if (body.chatContentType == "STRING") {
@@ -297,7 +298,8 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
         PermissionUtils.requestPermissionActivity(this, perms, "照相机权限", {
             doThings()
         }, {
-            ToastUtil.show(mContext!!, "拍照/选取图片需要您授权读写及照相机权限")
+            ToastUtil.show(mContext!!,
+                    mContext!!.resources.getString(R.string.app_request_permission_camera))
         })
     }
 
@@ -359,7 +361,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                             uploadPic(it, { url ->
                                 sendAnswerMsg(AnswerMsgType.IMAGE, url)
                             }, {
-                                toastShort("上传失败")
+                                toastShort(mContext!!.resources.getString(R.string.app_fail_upload))
                             })
                         }
                     }
