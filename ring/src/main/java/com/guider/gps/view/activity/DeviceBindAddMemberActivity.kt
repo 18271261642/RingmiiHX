@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
+import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.CountryCodeDialogAdapter
 import com.guider.health.apilib.ApiCallBack
@@ -68,6 +69,20 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     override fun initView() {
         if (StringUtil.isNotBlankAndEmpty(accountId)) {
             bindPhoneLayout.visibility = View.GONE
+        } else {
+            phoneEdit.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
+                        val phoneValue = phoneEdit.text.toString()
+                        val countryCode = countryTv.text.toString().replace(
+                                "+", "")
+                        if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                            ToastUtil.showCenter(mContext!!,
+                                    mContext!!.resources.getString(R.string.app_incorrect_format))
+                        }
+                    }
+                }
+            }
         }
     }
 

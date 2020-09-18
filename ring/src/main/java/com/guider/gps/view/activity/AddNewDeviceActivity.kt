@@ -100,12 +100,10 @@ class AddNewDeviceActivity : BaseActivity() {
                                 val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
                                         response.body()!!)
                                 MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
-                                MMKVUtil.saveString(BIND_DEVICE_NAME,
-                                        mContext!!.resources.getString(R.string.app_own_string))
                                 bean.userInfos?.forEach {
                                     if (it.accountId == accountId) {
-                                        it.relationShip = mContext!!.resources.getString(
-                                                R.string.app_own_string)
+                                        it.relationShip = it.name
+                                        MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
                                         if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
                                             MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
                                     }
@@ -164,10 +162,10 @@ class AddNewDeviceActivity : BaseActivity() {
                 val result = data.getStringExtra(Intents.Scan.RESULT)
                 val tempCode = "863659040064551"
                 if (StringUtil.isNotBlankAndEmpty(result)) {
-                    if (!BuildConfig.DEBUG && inputEdit.text?.length != tempCode.length){
+                    if (!BuildConfig.DEBUG && inputEdit.text?.length != tempCode.length) {
                         ToastUtil.showCenter(mContext!!,
                                 mContext!!.resources.getString(R.string.app_incorrect_format))
-                    }else {
+                    } else {
                         bindNewDeviceWithAccount(result!!)
                     }
                 }

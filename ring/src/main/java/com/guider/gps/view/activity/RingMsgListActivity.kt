@@ -48,8 +48,8 @@ class RingMsgListActivity : BaseActivity() {
     override fun initView() {
         tabTitles = arrayListOf(
                 resources.getString(R.string.app_msg_error_notify),
-                resources.getString(R.string.app_msg_care_info),
-                resources.getString(R.string.app_msg_system_info)
+                resources.getString(R.string.app_msg_care_info)
+//                , resources.getString(R.string.app_msg_system_info)
         )
         msgTabLayout.tabMode = TabLayout.MODE_FIXED
         // 设置选中下划线颜色
@@ -72,7 +72,7 @@ class RingMsgListActivity : BaseActivity() {
         }.attach()
         mBadgeCountList.add(abnormalMsgUndoNum)
         mBadgeCountList.add(careMsgUndoNum)
-        mBadgeCountList.add(0)
+//        mBadgeCountList.add(0)
         if (mBadgeCountList[0] != 0)
             msgTabLayout.postDelayed({
                 resetAbnormalMsgUnReadStatus()
@@ -96,6 +96,10 @@ class RingMsgListActivity : BaseActivity() {
                         if (response?.body() != null) {
                             mBadgeCountList[1] = response.body()!!.toInt()
                             updateCustomTab(1)
+                            if (mBadgeCountList[1] != 0)
+                                msgTabLayout.postDelayed({
+                                    resetCareMsgUnReadStatus()
+                                }, 3000)
                         }
                     }
                 })
@@ -125,9 +129,10 @@ class RingMsgListActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         ApiUtil.createHDApi(IUserHDApi::class.java, false)
                 .resetCareMsgReadStatus(accountId)
-                .enqueue(object : ApiCallBack<Any>(mContext) {
-                    override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
-                        if (response?.body() != null) {
+                .enqueue(object : ApiCallBack<String>(mContext) {
+                    override fun onApiResponse(call: Call<String>?,
+                                               response: Response<String>?) {
+                        if (response?.body() == "true") {
                             mBadgeCountList[1] = 0
                             updateCustomTab(1)
                         }
@@ -178,10 +183,10 @@ class RingMsgListActivity : BaseActivity() {
         badgeView.setTargetView(target)
         badgeView.setBadgeMargin(0, 6,
                 10, 0)
-        if (mBadgeCountList[position]<10){
+        if (mBadgeCountList[position] < 10) {
             badgeView.setBadgePadding(6, 2,
                     6, 2)
-        }else {
+        } else {
             badgeView.setBadgePadding(3, 5,
                     3, 5)
         }

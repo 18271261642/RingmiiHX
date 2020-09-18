@@ -154,7 +154,7 @@
     <string name="app_guide_page2_content">Multi-dimensional health data will be collected and health status will be known at any time</string>
     <string name="app_guide_page3_title">Tele-health consultation</string>
     <string name="app_guide_page3_content">Answer health questions remotely without leaving the house</string>
-    <string name="app_splash_company_info">Gade Health Industries LTD</string>
+    <string name="app_splash_company_info">RFID GUIDER TECHNOLOGY CO.,LTD</string>
     <string name="app_complete_info">Perfect information</string>
     <string name="app_complete">complete</string>
     <string name="app_device_code_empty">The device code is empty</string>
@@ -187,4 +187,8 @@
     <string name="app_phone_register">The phone number has been registered</string>
     <string name="app_set_success">Set Success</string>
     <string name="app_electronic_hint">Please select enough electronic fence points</string>
+    <string name="app_hour">Hour</string>
+    <string name="app_minute">minute</string>
+    <string name="app_hour_simple">h</string>
+    <string name="app_minute_simple">m</string>
 </resources>

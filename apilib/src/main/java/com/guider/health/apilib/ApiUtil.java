@@ -1,13 +1,21 @@
 package com.guider.health.apilib;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.InputStream;
+import java.security.KeyStore;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -46,6 +54,7 @@ public class ApiUtil {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
+//                .sslSocketFactory(getSSLSocketFactory(context))
                 .writeTimeout(2, TimeUnit.MINUTES);
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -188,5 +197,41 @@ public class ApiUtil {
         MultipartBody.Part body = MultipartBody.Part.createFormData(
                 "file", file.getName(), requestFile);
         createApi(IGuiderApi.class).uploadFile(body).enqueue(callBack);
+    }
+
+    /**
+     * 获取bks文件的sslsocketfactory
+     *
+     * @param context
+     * @return
+     */
+    public static SSLSocketFactory getSSLSocketFactory(Context context) {
+        final String CLIENT_TRUST_PASSWORD = "123456"; //信任证书密码，该证书默认密码是123456
+        final String CLIENT_AGREEMENT = "TLS"; //使用协议
+        final String CLIENT_TRUST_KEYSTORE = "BKS";
+        SSLContext sslContext = null;
+        try {
+            //取得SSL的SSLContext实例
+            sslContext = SSLContext.getInstance(CLIENT_AGREEMENT);
+            //取得TrustManagerFactory的X509密钥管理器实例
+            TrustManagerFactory trustManager = TrustManagerFactory.getInstance(
+                    TrustManagerFactory.getDefaultAlgorithm());
+            //取得BKS密库实例
+            KeyStore tks = KeyStore.getInstance(CLIENT_TRUST_KEYSTORE);
+            InputStream is = context.getResources().openRawResource(R.raw.server);
+            try {
+                tks.load(is, CLIENT_TRUST_PASSWORD.toCharArray());
+            } finally {
+                is.close();
+            }
+            //初始化密钥管理器
+            trustManager.init(tks);
+            //初始化SSLContext
+            sslContext.init(null, trustManager.getTrustManagers(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("SslContextFactory", Objects.requireNonNull(e.getMessage()));
+        }
+        return sslContext != null ? sslContext.getSocketFactory() : null;
     }
 }

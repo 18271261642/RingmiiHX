@@ -73,7 +73,15 @@ class AlarmSeActivity : BaseActivity() {
         if (timeIntervalValue != 0) {
             val hours = floor((timeIntervalValue / 60).toDouble()).toInt()
             val minute: Int = timeIntervalValue % 60
-            timeIntervalTv.text = "${hours}h${minute}m"
+            if (hours > 0)
+                timeIntervalTv.text = "$hours" +
+                        mContext!!.resources.getString(R.string.app_hour) +
+                        "$minute" +
+                        mContext!!.resources.getString(R.string.app_minute)
+            else {
+                timeIntervalTv.text = "$minute" +
+                        mContext!!.resources.getString(R.string.app_minute)
+            }
         }
     }
 
@@ -85,8 +93,12 @@ class AlarmSeActivity : BaseActivity() {
                 timeIntervalLayout.visibility = View.VISIBLE
                 onTimePicker(timeIntervalTv.text.toString()) { hour, minute ->
                     if (hour == "0") {
-                        timeIntervalTv.text = "${minute.toInt()}m"
-                    } else timeIntervalTv.text = "${hour.toInt()}h${minute.toInt()}m"
+                        timeIntervalTv.text = "${minute.toInt()}" +
+                                mContext!!.resources.getString(R.string.app_minute)
+                    } else timeIntervalTv.text = "${hour.toInt()}" +
+                            mContext!!.resources.getString(R.string.app_hour) +
+                            "${minute.toInt()}" +
+                            mContext!!.resources.getString(R.string.app_minute)
                 }
             } else {
                 timeIntervalLayout.visibility = View.GONE
@@ -98,10 +110,13 @@ class AlarmSeActivity : BaseActivity() {
     override fun onNoDoubleClick(v: View) {
         when (v) {
             iv_toolbar_right -> {
-                timeIntervalValue = if (timeIntervalTv.text.toString().contains("h")) {
+                timeIntervalValue = if (timeIntervalTv.text.toString().contains(
+                                mContext!!.resources.getString(R.string.app_hour))) {
                     val timeReplace = timeIntervalTv.text.toString()
-                            .replace("h", ":")
-                            .replace("m", "")
+                            .replace(mContext!!.resources.getString(R.string.app_hour),
+                                    ":")
+                            .replace(mContext!!.resources.getString(R.string.app_minute),
+                                    "")
                     val selectHour = timeReplace.substring(0,
                             timeReplace.indexOf(":")).toInt()
                     val selectMinute = timeReplace.substring(
@@ -109,7 +124,8 @@ class AlarmSeActivity : BaseActivity() {
                     selectHour * 60 + selectMinute
                 } else {
                     val timeReplace = timeIntervalTv.text.toString()
-                            .replace("m", "")
+                            .replace(mContext!!.resources.getString(R.string.app_minute),
+                                    "")
                     timeReplace.toInt()
                 }
                 val checked = switchSet1.isChecked
@@ -122,8 +138,12 @@ class AlarmSeActivity : BaseActivity() {
             timeIntervalLayout -> {
                 onTimePicker(timeIntervalTv.text.toString()) { hour, minute ->
                     if (hour == "0") {
-                        timeIntervalTv.text = "${minute.toInt()}m"
-                    } else timeIntervalTv.text = "${hour.toInt()}h${minute.toInt()}m"
+                        timeIntervalTv.text = "${minute.toInt()}" +
+                                mContext!!.resources.getString(R.string.app_minute)
+                    } else timeIntervalTv.text = "${hour.toInt()}" +
+                            mContext!!.resources.getString(R.string.app_hour) +
+                            "${minute.toInt()}" +
+                            mContext!!.resources.getString(R.string.app_minute)
                 }
             }
         }
@@ -182,14 +202,16 @@ class AlarmSeActivity : BaseActivity() {
         if (StringUtil.isNotBlankAndEmpty(time)) {
             val selectHour: Int
             val selectMinute: Int
-            if (time.contains("h")) {
-                val timeReplace = time.replace("h", ":")
-                        .replace("m", "")
+            if (time.contains(mContext!!.resources.getString(R.string.app_hour))) {
+                val timeReplace = time.replace(mContext!!.resources.getString(R.string.app_hour),
+                        ":")
+                        .replace(mContext!!.resources.getString(R.string.app_minute), "")
                 selectHour = timeReplace.substring(0, timeReplace.indexOf(":")).toInt()
                 selectMinute = timeReplace.substring(
                         timeReplace.indexOf(":") + 1).toInt()
             } else {
-                val timeReplace = time.replace("m", "")
+                val timeReplace = time.replace(mContext!!.resources.getString(R.string.app_minute),
+                        "")
                 selectHour = 0
                 selectMinute = timeReplace.toInt()
             }

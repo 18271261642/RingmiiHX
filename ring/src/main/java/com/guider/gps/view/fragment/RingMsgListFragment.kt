@@ -230,9 +230,9 @@ class RingMsgListFragment : BaseFragment() {
 
                 })
             }
-            resources.getString(R.string.app_msg_system_info) -> {
-                emptyData.visibility = View.VISIBLE
-            }
+//            resources.getString(R.string.app_msg_system_info) -> {
+//                emptyData.visibility = View.VISIBLE
+//            }
         }
     }
 }

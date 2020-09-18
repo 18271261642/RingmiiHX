@@ -226,8 +226,7 @@ class MainActivity : BaseActivity() {
             run breaking@{
                 bindListBean?.userInfos?.forEach {
                     if (it.accountId == accountId) {
-                        it.relationShip = mContext!!.resources.getString(
-                                R.string.app_own_string)
+                        it.relationShip = it.name
                         return@breaking
                     }
                 }
@@ -272,8 +271,7 @@ class MainActivity : BaseActivity() {
                             run breaking@{
                                 bindListBean?.userInfos?.forEach {
                                     if (it.accountId == accountId) {
-                                        it.relationShip = mContext!!.resources.getString(
-                                                R.string.app_own_string)
+                                        it.relationShip = it.name
                                         return@breaking
                                     }
                                 }

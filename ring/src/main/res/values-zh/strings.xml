@@ -152,7 +152,7 @@
     <string name="app_guide_page2_content">汇聚多维度健康数据，健康状态随时知晓</string>
     <string name="app_guide_page3_title">远程健康问诊</string>
     <string name="app_guide_page3_content">足不出户，远程解答健康问题</string>
-    <string name="app_splash_company_info">盖德健康产业有限公司</string>
+    <string name="app_splash_company_info">盖德科技股份有限公司</string>
     <string name="app_complete_info">完善信息</string>
     <string name="app_complete">完成</string>
     <string name="app_device_code_empty">设备码为空</string>
@@ -186,4 +186,8 @@
     <string name="app_phone_register">该手机号已注册</string>
     <string name="app_set_success">设置成功</string>
     <string name="app_electronic_hint">请选择足够的电子围栏点</string>
+    <string name="app_hour">小时</string>
+    <string name="app_minute">分钟</string>
+    <string name="app_hour_simple">小时</string>
+    <string name="app_minute_simple">分钟</string>
 </resources>

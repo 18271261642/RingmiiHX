@@ -321,13 +321,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                                     response.body()!!)
                             val intent = Intent(mContext!!, MainActivity::class.java)
                             MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
-                            MMKVUtil.saveString(BIND_DEVICE_NAME,
-                                    mContext!!.resources.getString(R.string.app_own_string))
                             kotlin.run breaking@{
                                 bean.userInfos?.forEach {
                                     if (it.accountId == accountId) {
-                                        it.relationShip = mContext!!.resources.getString(
-                                                R.string.app_own_string)
+                                        it.relationShip = it.name
+                                        MMKVUtil.saveString(BIND_DEVICE_NAME,it.name!!)
                                         if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
                                             MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
                                         return@breaking

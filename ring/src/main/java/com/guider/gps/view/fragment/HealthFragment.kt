@@ -3,6 +3,7 @@ package com.guider.gps.view.fragment
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -73,9 +74,6 @@ class HealthFragment : BaseFragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initLogic() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            bloodChart.isNestedScrollingEnabled = true
-//        }
         tabInit()
         tabChangeEvent()
         rangeShow()
@@ -99,6 +97,7 @@ class HealthFragment : BaseFragment() {
         }
         bloodChart.setOnTouchListener(touchListener)
         heartChart.setOnTouchListener(touchListener)
+        tempChart.setOnTouchListener(touchListener)
         sleepChart.setOnTouchListener(touchListener)
         sportChart.setOnTouchListener(touchListener)
     }
@@ -216,7 +215,7 @@ class HealthFragment : BaseFragment() {
                             getHealthData()
                         }
                     }
-                    showToast("获取的是${tab?.text.toString()}的数据")
+                    Log.i(TAG, "获取的是${tab?.text.toString()}的数据")
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -330,6 +329,19 @@ class HealthFragment : BaseFragment() {
                             val dataArray: Array<Any> = tempDataList.toTypedArray()
                             val aaOptions = initTempLineChart(options, dataArray)
                             aaOptions.yAxis!!.labels(yAxisLabels)
+                            Log.e(TAG, "体温数据的个数为${tempDataList.size}")
+                            val requestPage: Int
+                            if (tempDataList.size > 40) {
+                                requestPage = tempDataList.size / 40
+                                Log.e(TAG, "需要展示的页数为${requestPage}")
+                                tempChart.contentWidth =
+                                        (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                            } else if (tempDataList.size in 31..40) {
+                                requestPage = tempDataList.size / 30
+                                Log.e(TAG, "需要展示的页数为${requestPage}")
+                                tempChart.contentWidth =
+                                        (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                            }
                             tempChart.aa_drawChartWithChartOptions(aaOptions)
                         } else {
                             initTempChart()
@@ -371,7 +383,7 @@ class HealthFragment : BaseFragment() {
                     }
 
                     override fun onRequestFinish() {
-                        if (!isFirstLoadData && !isRefresh)  mDialog.hideDialog()
+                        if (!isFirstLoadData && !isRefresh) mDialog.hideDialog()
                         isRefresh = false
                     }
                 })
@@ -510,6 +522,11 @@ class HealthFragment : BaseFragment() {
         val lines = arrayListOf<Line>()
         val line1 = Line(heartAxisPoints)
                 .setColor(ContextCompat.getColor(mActivity, R.color.white))
+        if (body.size == 1) {
+            line1.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
+        } else {
+            line1.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+        }
         commonLineSetInit(line1, lines)
         val data = LineChartData()
         data.lines = lines
@@ -534,6 +551,13 @@ class HealthFragment : BaseFragment() {
                 .setColor(ContextCompat.getColor(mActivity, R.color.color5BC2FF))
         val line2 = Line(highBloodAxisPoints)
                 .setColor(ContextCompat.getColor(mActivity, R.color.colorF18937))
+        if (list.size == 1) {
+            line1.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
+            line2.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
+        } else {
+            line1.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+            line2.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+        }
         commonLineSetInit(line1, lines)
         commonLineSetInit(line2, lines)
         val data = LineChartData()
@@ -637,7 +661,6 @@ class HealthFragment : BaseFragment() {
         line.setHasLabels(false) //曲线的数据坐标是否加上备注
         line.setHasLabelsOnlyForSelected(false)
         //点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
-        line.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
         line.setHasPoints(true) //是否显示圆点 如果为false 则没有原点只有点显示
         lines.add(line)
     }

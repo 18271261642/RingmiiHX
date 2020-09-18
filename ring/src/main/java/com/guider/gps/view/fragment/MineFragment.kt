@@ -77,7 +77,13 @@ class MineFragment : BaseFragment() {
                 if (timeIntervalValue != 0) {
                     val hours = floor((timeIntervalValue / 60).toDouble()).toInt()
                     val minute: Int = timeIntervalValue % 60
-                    heartSetTv.text = "${hours}h${minute}m"
+                    if (hours > 0)
+                        heartSetTv.text = "$hours" +
+                                mActivity.resources.getString(R.string.app_hour_simple) +
+                                "$minute" +
+                                mActivity.resources.getString(R.string.app_minute_simple)
+                    else heartSetTv.text = "$minute" +
+                            mActivity.resources.getString(R.string.app_minute_simple)
                 }
             } else {
                 heartSetTv.text = mActivity.resources.getString(R.string.app_no_open)
@@ -90,7 +96,13 @@ class MineFragment : BaseFragment() {
                 if (timeIntervalValue != 0) {
                     val hours = floor((timeIntervalValue / 60).toDouble()).toInt()
                     val minute: Int = timeIntervalValue % 60
-                    tempSetTv.text = "${hours}h${minute}m"
+                    if (hours > 0)
+                        tempSetTv.text = "$hours" +
+                                mActivity.resources.getString(R.string.app_hour_simple) +
+                                "$minute" +
+                                mActivity.resources.getString(R.string.app_minute_simple)
+                    else tempSetTv.text = "$minute" +
+                            mActivity.resources.getString(R.string.app_minute_simple)
                 }
             } else {
                 tempSetTv.text = mActivity.resources.getString(R.string.app_no_open)
@@ -251,7 +263,7 @@ class MineFragment : BaseFragment() {
                             MMKVUtil.saveInt(TARGET_STEP, sportValueInt)
                             EventBusUtils.sendEvent(EventBusEvent(
                                     REFRESH_TARGET_STEP, sportValueInt))
-                            showToast("设置成功")
+                            showToast(mActivity.resources.getString(R.string.app_set_success))
                         }
                     }
 

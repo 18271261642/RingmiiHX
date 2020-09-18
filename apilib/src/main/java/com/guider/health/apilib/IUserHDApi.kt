@@ -180,7 +180,7 @@ interface IUserHDApi {
      * @param accountId 用户id
      */
     @POST("api/v1/healthadvice/read")
-    fun resetCareMsgReadStatus(@Query("accountId") accountId: Int): Call<Any>
+    fun resetCareMsgReadStatus(@Query("accountId") accountId: Int): Call<String>
 
 
     //老版接口
