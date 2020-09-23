@@ -10,6 +10,7 @@ import com.guider.health.bp.view.BPVIewInterface;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -87,6 +88,7 @@ public class BPServiceManager {
                 bpModel.sendDataToDevice();
             } else {
                 ArrayList<Byte> characteristicValues = new ArrayList<Byte>();
+                System.out.println("characteristic的值 " + Arrays.toString(characteristic.getValue()));
                 // Mark 裡面是量測值
                 for (int i = 0; i < characteristic.getValue().length; i++) {
                     if (characteristic.getValue()[i] != 0) {

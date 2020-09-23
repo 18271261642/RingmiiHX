@@ -38,9 +38,9 @@ public class ForaBOModel extends FORA {
     private String bpm;
 
     public void writeReadDeviceSerial() {
-//        write(null, READ_DEVICE_SERIAL_NUMBER1);
+        write(null, READ_DEVICE_SERIAL_NUMBER1);
         //目前发现血氧仪只支持写入一次指令，再次写入系统报蓝牙写入数据失败
-        write(null, READ_FINAL_DATA);
+//        write(null, READ_FINAL_DATA);
     }
 
     public void write(BluetoothGatt gatt, String command) {
@@ -171,10 +171,10 @@ public class ForaBOModel extends FORA {
             ForaBO.getForaBOInstance().setHeartBeat(bpm);
 
             Log.i(TAG, "血氧 " + sop2 + "心率 " + bpm + ", 准备关机");
-//            write(gatt, TRUN_OFF_DEVICE);
+            write(gatt, TRUN_OFF_DEVICE);
             //目前发现血氧仪只支持写入一次指令，再次写入系统报蓝牙写入数据失败,所以关机指令也无法执行，
             // 只能是断开蓝牙连接
-            closeBluetooth(gatt);
+//            closeBluetooth(gatt);
         }
     }
 
@@ -184,8 +184,8 @@ public class ForaBOModel extends FORA {
                               BluetoothGattCharacteristic characteristic,
                               BluetoothGatt gatt) {
         if (characteristic.getValue() != null & characteristicValues.size() == 4) {
-            // Log.i(TAG, "准备断开链接");
-            // System.out.println("Mark 這邊6");
+             Log.i(TAG, "准备断开链接");
+             System.out.println("Mark 這邊6");
             closeBluetooth(gatt);
         }
     }

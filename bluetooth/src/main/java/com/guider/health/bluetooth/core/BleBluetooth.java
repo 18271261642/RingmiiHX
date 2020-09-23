@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -599,7 +600,7 @@ public class BleBluetooth {
 
 
         bytes = buf;
-
+        Log.i("haix", "发送数据的字节数组为: " + Arrays.toString(bytes));
         //最多单次1支持 20 个字节数据的传输
         //设置数组进去
         characteristic.setValue(buf);

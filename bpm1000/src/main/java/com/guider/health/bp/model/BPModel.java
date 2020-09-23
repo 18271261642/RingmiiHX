@@ -163,14 +163,15 @@ public class BPModel {
             String Yearbinary = String.valueOf(Integer.toBinaryString(yea));//轉二進位
             String YearLength = fillLength(8, Yearbinary);//二進位長度
             int year = Integer.valueOf(decimalFormat(0, YearLength.length() - 1, YearLength)) + 2000;//轉十進位 Year(7-bit)計算
-
-            String MDbinary = String.valueOf(Integer.toBinaryString(md));
+            String substring = YearLength.substring(YearLength.length() - 1);
+            String MDbinary = Integer.toBinaryString(md);
             String monthDay = fillLength(8, MDbinary);
-            int month = decimalFormat(0, 3, monthDay);//Month (4-bit)
-            int day = decimalFormat(3, 8, monthDay);//Day (5-bit)
+            String monthDayValue = substring + monthDay;
+            int month = decimalFormat(0, 4, monthDayValue);//Month (4-bit)
+            int day = decimalFormat(4, monthDayValue.length(), monthDayValue);//Day (5-bit)
 
             System.out.println("Mark 這邊4");
-
+            System.out.println("设备返回的时间为" + year + "---" + month + "---"+ day + "---"+ hour + "---"+ min + "---");
 
             sendDataToDevice("512600000000a31a");
         }

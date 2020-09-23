@@ -186,8 +186,8 @@ public class DeviceInit {
         pics.put(DEV_BP_MBB_88, R.mipmap.device_mbb_88);
         pics.put(DEV_BP_MBB_9804, R.mipmap.device_mbb_98);
         pics.put(DEV_FORA_GLU, R.mipmap.device_fora_glu_logo);
-        pics.put(DEV_FORA_BO, R.mipmap.device_fora_glu_logo);
-        pics.put(DEV_FORA_ET, R.mipmap.device_fora_glu_logo);
+        pics.put(DEV_FORA_BO, R.mipmap.device_fora_bo_logo);
+        pics.put(DEV_FORA_ET, R.mipmap.device_fora_et_logo);
         pics.put(DEV_MEDCHECK_GLU, R.mipmap.device_medcheck_glu_logo);
         pics.put(DEV_MEDCHECK_PRE, R.mipmap.device_medcheck_pressure_logo);
         // TODO 新设备图片
@@ -234,7 +234,8 @@ public class DeviceInit {
             Config.DEVICE_KEYS.add(DEV_GLU);//MEDCHECK 血压
             Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血压
             Config.DEVICE_KEYS.add(DEV_MEDCHECK_PRE);//MEDCHECK 血压
-            Config.DEVICE_KEYS.add(DEV_FORA_GLU);//MEDCHECK 血压
+            Config.DEVICE_KEYS.add(DEV_FORA_ET);//福尔耳温
+            Config.DEVICE_KEYS.add(DEV_FORA_BO);//福尔血氧
             if (callback != null) {
                 callback.onHaveList();
             }

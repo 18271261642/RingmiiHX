@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -87,6 +88,7 @@ public class GluServiceManager implements IBleServiceManager{
             }
             ArrayList<Byte> characteristicValues = new ArrayList<Byte>();
             // Mark 裡面是量測值
+            System.out.println("characteristic的值 " + Arrays.toString(characteristic.getValue()));
             for(int i = 0 ; i < characteristic.getValue().length ; i++){
                 if (characteristic.getValue()[i] != 0){
                     characteristicValues.add(characteristic.getValue()[i]);

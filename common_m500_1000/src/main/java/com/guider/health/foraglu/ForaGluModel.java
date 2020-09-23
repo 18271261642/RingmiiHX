@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import android.util.Log;
 
 import com.guider.health.bluetooth.core.BleBluetooth;
@@ -12,6 +14,7 @@ import com.guider.health.common.core.ForaGlucose;
 import com.guider.health.common.core.MyUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ForaGluModel extends FORA {
     private String serialNumber1;
@@ -56,7 +59,7 @@ public class ForaGluModel extends FORA {
                                               BluetoothGattCharacteristic characteristic,
                                               BluetoothGatt gatt) {
         System.out.println("Mark 有到這嗎?");
-
+        //得到十六进制的数
         String value1 = hexString(intParse(characteristic, 2));
         String value2 = hexString(intParse(characteristic, 3));
         String value3 = hexString(intParse(characteristic, 4));
@@ -83,26 +86,30 @@ public class ForaGluModel extends FORA {
 
             serialNumber1 = value4 + value3 + value2 + value1;
             System.out.println("Mark 數值? = " + value1 + "," + value2 + "," + value3 + "," + value4 + "," + serialNumber2);
-
+            //得到的是十六进制的日期
             String clockTime = getClockTime();
+            // SET_CLOCK_CMD + clockTime + END  十六进制 转10进制数组
+            //十进制数组转16进制
+            System.out.println("拼接的时间" + SET_CLOCK_CMD + clockTime + END + "-------" + Arrays.toString(getHexBytes(SET_CLOCK_CMD + clockTime + END)) );
             String datetime = CalculateCheckSum(getHexBytes(SET_CLOCK_CMD + clockTime + END));
+            System.out.println("当前时间" + clockTime + "-------" + datetime);
             String fallZero = "";
             int writeDateTime = 0;
-
-            if(!isNumeric(datetime)) {
+            if (!isNumeric(datetime)) {
                 System.out.println("if");
                 fallZero = fillZero(datetime);
                 if (datetime.length() > 1)
-                    datetime = datetime.substring(datetime.length() - 2, datetime.length());
+                    datetime = datetime.substring(datetime.length() - 2);
+                System.out.println("发给服务器的时间命令" + clockTime + "---" + fallZero + "-------" + datetime);
                 write(gatt, SET_CLOCK_CMD + clockTime + END + fallZero + datetime);
-            }
-            else{
+            } else {
                 System.out.println("else");
-                writeDateTime = Integer.valueOf(datetime);
+                writeDateTime = Integer.parseInt(datetime);
                 if (writeDateTime >= 100)
                     writeDateTime -= 100;
                 fallZero = String.valueOf(fillZero(writeDateTime));
-                write(gatt, SET_CLOCK_CMD + clockTime + END + fallZero + String.valueOf(writeDateTime));
+                System.out.println("发给服务器的时间命令" + clockTime + "---" + fallZero + "-------" + writeDateTime);
+                write(gatt, SET_CLOCK_CMD + clockTime + END + fallZero + writeDateTime);
             }
         }
     }
@@ -128,22 +135,25 @@ public class ForaGluModel extends FORA {
             String Yearbinary = String.valueOf(Integer.toBinaryString(yea));//轉二進位
             String YearLength = fillLength(8, Yearbinary);//長度
             int year = Integer.valueOf(decimalFormat(0, YearLength.length() - 1, YearLength)) + 2000;//轉十進位 Year(7-bit)計算
-
-            String MDbinary = String.valueOf(Integer.toBinaryString(md));
+            String substring = YearLength.substring(YearLength.length() - 1);
+            String MDbinary = Integer.toBinaryString(md);
             String monthDay = fillLength(8, MDbinary);
-            int month = decimalFormat(0, 3, monthDay);//Month (4-bit)
-            int day = decimalFormat(3, 8, monthDay);//Day (5-bit)
+            String monthDayValue = substring + monthDay;
+            int month = decimalFormat(0, 4, monthDayValue);//Month (4-bit)
+            int day = decimalFormat(4, monthDayValue.length(), monthDayValue);//Day (5-bit)
 
             setYear(String.valueOf(year));
             setMonth(String.valueOf(month));
             setDay(String.valueOf(day));
             setHour(String.valueOf(hour));
             setMin(String.valueOf(min));
+            System.out.println("设备返回的时间为" + year + "---" + month + "---"+ day + "---"+ hour + "---"+ min + "---");
 
             // tool.writeMeasureData(gatt);
             write(gatt, READ_FINAL_DATA);
         }
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -156,11 +166,10 @@ public class ForaGluModel extends FORA {
             int bg = intParse(characteristic, 2);
             float fBg = bg / 18;
             setBg(String.valueOf(fBg));
-
             // 获得数据
             ForaGlucose.getForaGluInstance().setGlucose(fBg); // 设置血糖值
             ForaGlucose.getForaGluInstance().setDeviceAddress(MyUtils.getMacAddress());
-            Log.i("haix", "Fora血糖值 ; "+ ForaGlucose.getForaGluInstance().get_glucose());//146
+            Log.i("haix", "Fora血糖值 ; " + fBg);//146
 
             // tool.writeTrunOffDevice(gatt);
             write(gatt, TRUN_OFF_DEVICE);

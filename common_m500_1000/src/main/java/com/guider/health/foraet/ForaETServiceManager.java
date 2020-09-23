@@ -12,6 +12,7 @@ import com.guider.health.foraglu.IBleServiceManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -66,11 +67,12 @@ public class ForaETServiceManager implements IBleServiceManager {
                 foraETModel.writeReadDeviceSerial();
                 return;
             }
+            System.out.println("characteristic的值 " + Arrays.toString(characteristic.getValue()));
             ArrayList<Byte> characteristicValues = new ArrayList<Byte>();
             for (int i = 0; i < characteristic.getValue().length; i++) {
                 if (characteristic.getValue()[i] != 0){
                     characteristicValues.add(characteristic.getValue()[i]);
-                    // System.out.println("Mark"+intParse(characteristic, i));
+                     System.out.println("Mark"+intParse(characteristic, i));
                 }
             }
             switch (characteristic.getValue()[1]) {

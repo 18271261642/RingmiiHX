@@ -90,9 +90,10 @@ public class ForaBOReminderFragment extends BaseFragment implements BleVIewInter
         // title显式
         ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.fora_bo_reminder_title));
         ((TextView) view.findViewById(R.id.tv_test_type)).setText(R.string.blood_oxygen);
+        ((TextView) view.findViewById(R.id.tv_test_reminder)).setText(R.string.fora_bo_tips);
         // 是否能跳过
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_FORA_GLU));
+        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_FORA_BO));
 
         // 返回上一页
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
