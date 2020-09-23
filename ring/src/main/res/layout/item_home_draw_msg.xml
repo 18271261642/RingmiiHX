@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="240dp"
-    android:layout_height="67dp">
+    android:layout_width="@dimen/dp_250"
+    android:layout_height="@dimen/dp_84">
 
     <ImageView
         android:id="@+id/msgSelectIv"
@@ -10,7 +10,7 @@
         android:layout_height="19dp"
         android:layout_marginStart="11dp"
         android:src="@drawable/ic_home_draw_msg_select"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,23 +29,36 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="5dp"
+        android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/color333333"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/msgHeadIv"
-        app:layout_constraintTop_toTopOf="@id/msgHeadIv" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/deviceCodeTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_6"
+        android:singleLine="true"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/msgRingStatusIv"
+        app:layout_constraintTop_toBottomOf="@id/msgPersonName" />
 
     <ImageView
         android:id="@+id/msgRingStatusIv"
         android:layout_width="6dp"
         android:layout_height="6dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="@dimen/dp_12"
         android:src="@drawable/oval_green_59d15f"
         app:layout_constraintStart_toStartOf="@id/msgPersonName"
-        app:layout_constraintTop_toBottomOf="@id/msgPersonName" />
+        app:layout_constraintTop_toBottomOf="@id/deviceCodeTv" />
 
     <TextView
         android:id="@+id/msgRingStatusTv"
@@ -77,7 +90,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
-        android:text="100%"
         android:textColor="@color/color333333"
         android:textSize="@dimen/sp_10"
         android:visibility="gone"

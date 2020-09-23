@@ -268,6 +268,7 @@ class HealthFragment : BaseFragment() {
 //                            val progress: Int = (str.toFloat() * 100).toInt()
                         } else {
                             initSportChart()
+                            stepNumTv.text = "0"
                             sportNoDataTv.visibility = View.VISIBLE
                         }
                     }

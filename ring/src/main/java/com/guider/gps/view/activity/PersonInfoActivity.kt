@@ -10,7 +10,6 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import cn.addapp.pickers.picker.DatePicker
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.utils.USER.HEADER
@@ -256,48 +255,47 @@ class PersonInfoActivity : BaseActivity() {
     }
 
     private fun selectBirthdayDialog() {
-        val picker = DatePicker(this)
-        picker.setGravity(Gravity.BOTTOM)
-        picker.setTopPadding(15)
-        picker.setRangeStart(1900, 1, 1)
-        picker.setRangeEnd(2100, 12, 31)
         val timeValue = if (StringUtil.isNotBlankAndEmpty(birthday)) {
             birthday
         } else {
             CommonUtils.getCurrentDate()
         }
-        val dayInt = timeValue.substring(
+        var dayInt = timeValue.substring(
                 timeValue.lastIndexOf('-') + 1).toInt()
-        val yearInt = timeValue.substring(0, timeValue.indexOf('-')).toInt()
-        val monthInt = timeValue.substring(
+        var yearInt = timeValue.substring(0, timeValue.indexOf('-')).toInt()
+        var monthInt = timeValue.substring(
                 timeValue.indexOf('-') + 1,
                 timeValue.lastIndexOf('-')).toInt()
-        picker.setSelectedItem(yearInt, monthInt, dayInt)
-        picker.setTitleText("$yearInt-$monthInt-$dayInt")
-        picker.setWeightEnable(true)
-        picker.setTitleText(resources.getString(R.string.app_person_info_select_birthday))
-        picker.setSelectedTextColor(CommonUtils.getColor(mContext!!, R.color.colorF18937))
-        picker.setUnSelectedTextColor(CommonUtils.getColor(mContext!!, R.color.colorDDDDDD))
-        picker.setTopLineColor(CommonUtils.getColor(mContext!!, R.color.colorDDDDDD))
-        picker.setLineColor(CommonUtils.getColor(mContext!!, R.color.colorDDDDDD))
-        picker.setOnDatePickListener(DatePicker.OnYearMonthDayPickListener { year, month, day ->
-            run {
-                val monthIntValue = month.toInt()
-                val dayIntValue = day.toInt()
-                val selectDate = year.plus("-")
-                        .plus(if (monthIntValue < 10) {
-                            "0$monthIntValue"
-                        } else monthIntValue)
-                        .plus("-").plus(if (dayIntValue < 10) {
-                            "0$dayIntValue"
-                        } else dayIntValue)
-                birthday = selectDate
-                birthdayTv.text = birthday
-                MMKVUtil.saveString(USER.BIRTHDAY, birthday)
-                isChangeTag = true
+        val dialog = object : DialogHolder(this,
+                R.layout.dialog_persondate_bottom_layout, Gravity.BOTTOM) {
+            override fun bindView(dialogView: View) {
+                val confirmIv = dialogView.findViewById<ImageView>(R.id.confirmIv)
+                val mDatePicker = dialogView.findViewById<android.widget.DatePicker>(R.id.datePicker)
+                mDatePicker.init(yearInt, monthInt - 1, dayInt) { _, year, monthOfYear, dayOfMonth ->
+                    yearInt = year
+                    monthInt = monthOfYear
+                    dayInt = dayOfMonth
+                }
+                //月份返回的是少1的数
+                confirmIv.setOnClickListener {
+                    var mMonthNew: String = (monthInt + 1).toString()
+                    if (monthInt + 1 < 10) {
+                        mMonthNew = "0$mMonthNew"
+                    }
+                    var mDayNew: String = (dayInt).toString()
+                    if (dayInt < 10) {
+                        mDayNew = "0$dayInt"
+                    }
+                    birthday = "$yearInt-$mMonthNew-$mDayNew"
+                    birthdayTv.text = birthday
+                    MMKVUtil.saveString(USER.BIRTHDAY, birthday)
+                    isChangeTag = true
+                    dialog?.dismiss()
+                }
             }
-        })
-        picker.show()
+        }
+        dialog.initView()
+        dialog.show(true)
     }
 
     private fun sexDialogShow() {
@@ -314,13 +312,6 @@ class PersonInfoActivity : BaseActivity() {
                 manTv.setOnClickListener {
                     manTv.isSelected = true
                     girlTv.isSelected = false
-                }
-                girlTv.setOnClickListener {
-                    girlTv.isSelected = true
-                    manTv.isSelected = false
-                }
-                val sexConfirmIv = dialogView.findViewById<ImageView>(R.id.sexConfirmIv)
-                sexConfirmIv.setOnClickListener {
                     dialog?.dismiss()
                     if (manTv.isSelected) {
                         sexTv.text = manTv.text
@@ -328,7 +319,17 @@ class PersonInfoActivity : BaseActivity() {
                         sexTv.text = girlTv.text
                     }
                     sex = sexTv.text.toString()
-                    isChangeTag = true
+                }
+                girlTv.setOnClickListener {
+                    girlTv.isSelected = true
+                    manTv.isSelected = false
+                    dialog?.dismiss()
+                    if (manTv.isSelected) {
+                        sexTv.text = manTv.text
+                    } else {
+                        sexTv.text = girlTv.text
+                    }
+                    sex = sexTv.text.toString()
                 }
             }
         }

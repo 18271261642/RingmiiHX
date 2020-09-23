@@ -29,8 +29,8 @@ interface IUserHDApi {
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
+            @Query("startTime") startTime: String? = null,
+            @Query("endTime") endTime: String? = null
     ): Call<List<BloodListBeann>>
 
     /**
@@ -80,8 +80,8 @@ interface IUserHDApi {
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("sTime") startTime: String,
-            @Query("eTime") endTime: String
+            @Query("sTime") startTime: String? = null,
+            @Query("eTime") endTime: String? = null
     ): Call<Any>
 
     /**
@@ -114,8 +114,8 @@ interface IUserHDApi {
             @Query("accountId") accountId: Int,
             @Query("page") page: Int,
             @Query("row") row: Int,
-            @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
+            @Query("startTime") startTime: String? = null,
+            @Query("endTime") endTime: String? = null
     ): Call<List<BloodSugarListBean>>
 
     /**
@@ -144,6 +144,7 @@ interface IUserHDApi {
                            @Query("dataType") dataType: Int,
                            @Query("page") page: Int,
                            @Query("row") row: Int): Call<List<AbnormalRingMsgListBean>>
+
     /**
      * 根据用户id健康建议未读条数
      * @param accountId 用户id
@@ -168,6 +169,7 @@ interface IUserHDApi {
                        @Query("page") page: Int,
                        @Query("row") row: Int,
                        @Query("state") state: Int): Call<List<CareMsgListBean>>
+
     /**
      * 重置用户所有健康预警未读记录为已读
      * @param accountId 用户id

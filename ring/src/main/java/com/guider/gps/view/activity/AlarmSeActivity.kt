@@ -92,7 +92,7 @@ class AlarmSeActivity : BaseActivity() {
             if (isChecked) {
                 timeIntervalLayout.visibility = View.VISIBLE
                 onTimePicker(timeIntervalTv.text.toString()) { hour, minute ->
-                    if (hour == "0") {
+                    if (hour == "00") {
                         timeIntervalTv.text = "${minute.toInt()}" +
                                 mContext!!.resources.getString(R.string.app_minute)
                     } else timeIntervalTv.text = "${hour.toInt()}" +
@@ -137,7 +137,7 @@ class AlarmSeActivity : BaseActivity() {
             }
             timeIntervalLayout -> {
                 onTimePicker(timeIntervalTv.text.toString()) { hour, minute ->
-                    if (hour == "0") {
+                    if (hour == "00") {
                         timeIntervalTv.text = "${minute.toInt()}" +
                                 mContext!!.resources.getString(R.string.app_minute)
                     } else timeIntervalTv.text = "${hour.toInt()}" +

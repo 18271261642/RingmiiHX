@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -95,9 +96,23 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 //        weChatIv.setOnClickListener(this)
         lineIv.setOnClickListener(this)
         textTv.setOnClickListener(this)
-        policyTv.setOnClickListener(this)
+        val spanny = Spanny()
+                .append(mContext!!.resources.getString(R.string.app_login_to_sing_agree),
+                        ForegroundColorSpan(
+                                CommonUtils.getColor(mContext!!, R.color.color999999))
+                )
+                .append(mContext!!.resources.getString(R.string.app_login_user_service_agreement),
+                        ForegroundColorSpan(
+                                CommonUtils.getColor(mContext!!, R.color.colorF18A2E)))
+                .append(mContext!!.resources.getString(R.string.app_login_and),
+                        ForegroundColorSpan(
+                                CommonUtils.getColor(mContext!!, R.color.color999999))
+                )
+                .append(mContext!!.resources.getString(R.string.app_login_privacy_policy_clause),
+                        ForegroundColorSpan(
+                                CommonUtils.getColor(mContext!!, R.color.colorF18A2E)))
+        textTv.text = spanny
         countryCodeLayout.setOnClickListener(this)
-        userServiceTv.setOnClickListener(this)
         passwordEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -211,11 +226,12 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     }
                 }
             }
-            policyTv, userServiceTv, textTv -> {
+            textTv -> {
                 val intent = Intent(mContext, SimpleCustomWebActivity::class.java)
                 intent.putExtra("pageTitle",
                         mContext?.resources?.getString(R.string.app_login_privacy_policy_clause))
-                intent.putExtra("webUrl", "http://cmate.guidertech.com/#/open")
+                intent.putExtra("webUrl",
+                        "http://cmate.guidertech.com/#/open?navbartitle=1")
                 startActivity(intent)
             }
             //获取国家区号
@@ -325,9 +341,12 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                                 bean.userInfos?.forEach {
                                     if (it.accountId == accountId) {
                                         it.relationShip = it.name
-                                        MMKVUtil.saveString(BIND_DEVICE_NAME,it.name!!)
-                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
+                                        MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
+                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
                                             MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                            MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE,
+                                                    it.deviceCode!!)
+                                        }
                                         return@breaking
                                     }
                                 }

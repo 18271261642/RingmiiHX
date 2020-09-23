@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.BIND_DEVICE_ACCOUNT_ID
 import com.guider.baselib.utils.IS_FIRST_START
 import com.guider.baselib.utils.MMKVUtil
 import com.guider.baselib.utils.USER
@@ -74,10 +73,11 @@ class GuideActivity : BaseActivity() {
         if (MMKVUtil.getInt(USER.USERID, 0) != 0) {
             //已经登录过
             //判断是否有绑定的设备
-            if (!MMKVUtil.containKey(BIND_DEVICE_ACCOUNT_ID)) {
-                val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
-                intent.putExtra("type", "mine")
-                startActivity(intent)
+            if (!MMKVUtil.containKey(USER.OWN_BIND_DEVICE_CODE)) {
+//                val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
+//                intent.putExtra("type", "mine")
+//                startActivity(intent)
+                startActivity(Intent(this, LoginActivity::class.java))
             } else startActivity(Intent(this, MainActivity::class.java))
         } else {
             startActivity(Intent(this, LoginActivity::class.java))

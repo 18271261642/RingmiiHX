@@ -2,7 +2,7 @@
     <string name="app_name">盖德GPS</string>
     <string name="app_main_bottom_health">健康</string>
     <string name="app_main_bottom_location">定位</string>
-    <string name="app_main_bottom_medicine">医疗</string>
+    <string name="app_main_bottom_medicine">照顾</string>
     <string name="app_main_bottom_mine">我的</string>
     <string name="app_main_left_msg_device_name1">爸爸</string>
     <string name="app_main_left_msg_device_name2">妈妈</string>
@@ -67,7 +67,7 @@
     <string name="app_main_mine_set">设置</string>
     <string name="app_main_mine_sport_target">运动目标</string>
     <string name="app_main_mine_heart_rate_set">心率监测周期设置</string>
-    <string name="app_main_mine_temp_set">温度监测周期设置</string>
+    <string name="app_main_mine_temp_set">体温监测周期设置</string>
     <string name="app_main_mine_remove_bind">解除绑定</string>
     <string name="app_main_mine_version_check">版本检测</string>
     <string name="app_main_mine_log_out">退出登录</string>
@@ -190,4 +190,8 @@
     <string name="app_minute">分钟</string>
     <string name="app_hour_simple">小时</string>
     <string name="app_minute_simple">分钟</string>
+    <string name="app_general_pattern">一般模式</string>
+    <string name="app_search_pattern">寻人模式</string>
+    <string name="app_time_interval_one_hour">时间间隔：1小时</string>
+    <string name="app_time_interval_five_minutes">时间间隔：5分钟</string>
 </resources>

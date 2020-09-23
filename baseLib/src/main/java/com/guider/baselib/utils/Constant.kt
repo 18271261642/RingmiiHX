@@ -63,6 +63,7 @@ object USER {
     const val COUNTRY_CODE = "country_code"//手机号
     const val PHONE = "phone"//手机号
     const val BIRTHDAY = "birthday"//生日
+    const val OWN_BIND_DEVICE_CODE = "own_bind_device_code"
 }
 
 //裁剪照片路径

@@ -123,7 +123,7 @@ class MedicineDataFragment : BaseFragment() {
                 getBloodOxygenData()
             }
         }
-        initDataChartShow(arrayListOf())
+        initDataChartShow(arrayListOf(), arrayListOf())
     }
 
     @SuppressLint("SetTextI18n")
@@ -131,13 +131,8 @@ class MedicineDataFragment : BaseFragment() {
         val mDialog = DialogProgress(mActivity, null)
         if (!isRefresh) mDialog.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
-        val endTimeValue = DateUtilKotlin.localToUTC(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodChartData(accountId, 1, 7,
-                        startTimeValue, endTimeValue)
+                .getHealthBloodChartData(accountId, 1, 7)
                 .enqueue(object : ApiCallBack<List<BloodListBeann>>() {
                     override fun onApiResponse(call: Call<List<BloodListBeann>>?,
                                                response: Response<List<BloodListBeann>>?) {
@@ -146,7 +141,7 @@ class MedicineDataFragment : BaseFragment() {
                             noDataTv.visibility = View.GONE
                             val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
                             val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
-                            initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints)
+                            initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints, response.body()!!)
                             val state1 = response.body()!![0].state2.substring(0,
                                     response.body()!![0].state2.indexOf(","))
                             val state2 = response.body()!![0].state2.substring(
@@ -193,6 +188,15 @@ class MedicineDataFragment : BaseFragment() {
                                 refreshLayout.finishRefresh()
                             }
                             noDataTv.visibility = View.VISIBLE
+                            suggestTitleTv.text =
+                                    "$medicineType " +
+                                            mActivity.resources.getString(
+                                                    R.string.app_health_suggest)
+                            initBloodLineChart(arrayListOf(), arrayListOf(), arrayListOf())
+                            dataTagTv.text = ""
+                            dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
+                            measureTime.text = ""
+                            suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
                         }
                     }
 
@@ -211,13 +215,21 @@ class MedicineDataFragment : BaseFragment() {
     }
 
     private fun initBloodLineChart(belowBloodAxisPoints: ArrayList<PointValue>,
-                                   highBloodAxisPoints: ArrayList<PointValue>) {
+                                   highBloodAxisPoints: ArrayList<PointValue>,
+                                   list: List<BloodListBeann>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(belowBloodAxisPoints)
                 .setColor(ContextCompat.getColor(mActivity, R.color.color46E8FD))
         val line2 = Line(highBloodAxisPoints)
                 .setColor(ContextCompat.getColor(mActivity, R.color.color4897FF))
+        if (list.size == 1) {
+            line1.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
+            line2.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
+        } else {
+            line1.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+            line2.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+        }
         commonLineSetInit(line1, lines)
         commonLineSetInit(line2, lines)
         val data = LineChartData()
@@ -234,26 +246,49 @@ class MedicineDataFragment : BaseFragment() {
     private fun getHighBloodAxisPoints(list: List<BloodListBeann>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
-        list.forEach {
-            pointYValues.add(it.sbp.toFloat())
-        }
         if (list.size == 1) {
             pointYValues.add(0f)
         }
-        for (i in 0 until pointYValues.size) {
-            val colorInt =
-                    when (list[i].state2.substring(0,
-                            list[i].state2.indexOf(","))) {
-                        "偏低" -> {
-                            CommonUtils.getColor(mActivity, R.color.colorF18937)
+        list.forEach {
+            pointYValues.add(it.sbp.toFloat())
+        }
+
+        if (list.size == 1) {
+            for (i in 0 until pointYValues.size) {
+                if (i == 0) {
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
+                } else {
+                    val colorInt =
+                            when (list[i - 1].state2.substring(
+                                    list[i - 1].state2.indexOf(",") + 1)) {
+                                "偏低" -> {
+                                    CommonUtils.getColor(mActivity, R.color.colorF18937)
+                                }
+                                "偏高" -> {
+                                    CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                                }
+                                else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
+                            }
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                }
+                if (bloodYMaxValue < pointYValues[i]) bloodYMaxValue = pointYValues[i]
+            }
+        } else {
+            for (i in 0 until pointYValues.size) {
+                val colorInt =
+                        when (list[i].state2.substring(
+                                list[i].state2.indexOf(",") + 1)) {
+                            "偏低" -> {
+                                CommonUtils.getColor(mActivity, R.color.colorF18937)
+                            }
+                            "偏高" -> {
+                                CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                            }
+                            else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
                         }
-                        "偏高" -> {
-                            CommonUtils.getColor(mActivity, R.color.colorE2402B)
-                        }
-                        else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
-                    }
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
-            if (bloodYMaxValue < pointYValues[i]) bloodYMaxValue = pointYValues[i]
+                pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                if (bloodYMaxValue < pointYValues[i]) bloodYMaxValue = pointYValues[i]
+            }
         }
         bloodYMaxValue += 10
         return pointValues
@@ -268,20 +303,45 @@ class MedicineDataFragment : BaseFragment() {
         list.forEach {
             pointYValues.add(it.dbp.toFloat())
         }
-        for (i in 0 until pointYValues.size) {
-            val colorInt =
-                    when (list[i].state2.substring(
-                            list[i].state2.indexOf(",") + 1)) {
-                        "偏低" -> {
-                            CommonUtils.getColor(mActivity, R.color.colorF18937)
+        //1条数据的问题
+        if (list.size == 1) {
+            for (i in 0 until pointYValues.size) {
+                if (i == 0) {
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
+                } else {
+                    val colorInt =
+                            when (list[i - 1].state2.substring(
+                                    list[i - 1].state2.indexOf(",") + 1)) {
+                                "偏低" -> {
+                                    CommonUtils.getColor(mActivity, R.color.colorF18937)
+                                }
+                                "偏高" -> {
+                                    CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                                }
+                                else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
+                            }
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                }
+            }
+        } else {
+            for (i in 0 until pointYValues.size) {
+
+
+                val colorInt =
+                        when (list[i].state2.substring(
+                                list[i].state2.indexOf(",") + 1)) {
+                            "偏低" -> {
+                                CommonUtils.getColor(mActivity, R.color.colorF18937)
+                            }
+                            "偏高" -> {
+                                CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                            }
+                            else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
                         }
-                        "偏高" -> {
-                            CommonUtils.getColor(mActivity, R.color.colorE2402B)
-                        }
-                        else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
-                    }
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+            }
         }
+
         return pointValues
     }
 
@@ -289,14 +349,10 @@ class MedicineDataFragment : BaseFragment() {
         val mDialog = DialogProgress(mActivity, null)
         if (!isRefresh) mDialog.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
-        val endTimeValue = DateUtilKotlin.localToUTC(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodOxygenData(accountId, 1, 7,
-                        startTimeValue, endTimeValue)
+                .getHealthBloodOxygenData(accountId, 1, 7)
                 .enqueue(object : ApiCallBack<Any>() {
+                    @SuppressLint("SetTextI18n")
                     override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
                         if (response?.body() != null) {
                             if (isRefresh) refreshLayout.finishRefresh(500)
@@ -305,7 +361,7 @@ class MedicineDataFragment : BaseFragment() {
                                     response.body()!!, BloodOxygenListBean::class.java
                             )
                             val bloodOxygenAxisPoints = getBloodOxygenAxisPoints(tempList)
-                            initBloodOxygenLineChart(bloodOxygenAxisPoints)
+                            initBloodOxygenLineChart(bloodOxygenAxisPoints, tempList)
                             when (tempList[0].state2) {
                                 "偏低" -> {
                                     dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
@@ -337,13 +393,32 @@ class MedicineDataFragment : BaseFragment() {
                                 refreshLayout.finishRefresh()
                             }
                             noDataTv.visibility = View.VISIBLE
+                            suggestTitleTv.text =
+                                    "$medicineType " +
+                                            mActivity.resources.getString(
+                                                    R.string.app_health_suggest)
+                            initBloodOxygenLineChart(arrayListOf(), arrayListOf())
+                            dataTagTv.text = ""
+                            dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
+                            measureTime.text = ""
+                            suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
                         }
                     }
 
+                    @SuppressLint("SetTextI18n")
                     override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
                         super.onApiResponseNull(call, response)
                         if (isRefresh) refreshLayout.finishRefresh()
                         noDataTv.visibility = View.VISIBLE
+                        suggestTitleTv.text =
+                                "$medicineType " +
+                                        mActivity.resources.getString(
+                                                R.string.app_health_suggest)
+                        initBloodOxygenLineChart(arrayListOf(), arrayListOf())
+                        dataTagTv.text = ""
+                        dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
+                        measureTime.text = ""
+                        suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
                     }
 
                     override fun onRequestFinish() {
@@ -363,26 +438,51 @@ class MedicineDataFragment : BaseFragment() {
             pointYValues.add(it.bo.toFloat())
         }
         heartYMaxValue = 0f
-        for (i in 0 until pointYValues.size) {
-            val colorInt =
-                    when (list[i].state2) {
-                        "偏低" -> {
-                            CommonUtils.getColor(mActivity, R.color.colorF18937)
+
+        if (list.size == 1) {
+            for (i in 0 until pointYValues.size) {
+                if (i == 0) {
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
+                } else {
+                    val colorInt =
+                            when (list[i - 1].state2) {
+                                "偏低" -> {
+                                    CommonUtils.getColor(mActivity, R.color.colorF18937)
+                                }
+                                else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
+                            }
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                }
+                if (heartYMaxValue < pointYValues[i]) heartYMaxValue = pointYValues[i]
+            }
+        } else {
+            for (i in 0 until pointYValues.size) {
+                val colorInt =
+                        when (list[i].state2) {
+                            "偏低" -> {
+                                CommonUtils.getColor(mActivity, R.color.colorF18937)
+                            }
+                            else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
                         }
-                        else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
-                    }
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
-            if (heartYMaxValue < pointYValues[i]) heartYMaxValue = pointYValues[i]
+                pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                if (heartYMaxValue < pointYValues[i]) heartYMaxValue = pointYValues[i]
+            }
         }
         heartYMaxValue += 10
         return pointValues
     }
 
-    private fun initBloodOxygenLineChart(bloodOxygenAxisPoints: java.util.ArrayList<PointValue>) {
+    private fun initBloodOxygenLineChart(bloodOxygenAxisPoints: ArrayList<PointValue>,
+                                         list: List<BloodOxygenListBean>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(bloodOxygenAxisPoints)
                 .setColor(ContextCompat.getColor(mActivity, R.color.color59d15f))
+        if (list.size == 1) {
+            line1.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
+        } else {
+            line1.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+        }
         commonLineSetInit(line1, lines)
         val data = LineChartData()
         data.lines = lines
@@ -398,14 +498,10 @@ class MedicineDataFragment : BaseFragment() {
         val mDialog = DialogProgress(mActivity, null)
         if (!isRefresh) mDialog.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        val startTimeValue = DateUtilKotlin.localToUTC(CommonUtils.calTimeFrontYear(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN), 1))!!
-        val endTimeValue = DateUtilKotlin.localToUTC(
-                CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
         ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodSugarChartData(accountId, 1, 7,
-                        startTimeValue, endTimeValue)
+                .getHealthBloodSugarChartData(accountId, 1, 7)
                 .enqueue(object : ApiCallBack<List<BloodSugarListBean>>() {
+                    @SuppressLint("SetTextI18n")
                     override fun onApiResponse(call: Call<List<BloodSugarListBean>>?,
                                                response: Response<List<BloodSugarListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
@@ -453,12 +549,21 @@ class MedicineDataFragment : BaseFragment() {
                             measureTime.text = DateUtilKotlin.uTCToLocal(
                                     response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
                             val bloodSugarAxisPoints = getBloodSugarAxisPoints(response.body()!!)
-                            initDataChartShow(bloodSugarAxisPoints)
+                            initDataChartShow(bloodSugarAxisPoints, response.body()!!)
                         } else {
                             if (isRefresh) {
                                 refreshLayout.finishRefresh()
                             }
                             noDataTv.visibility = View.VISIBLE
+                            suggestTitleTv.text =
+                                    "$medicineType " +
+                                            mActivity.resources.getString(
+                                                    R.string.app_health_suggest)
+                            initDataChartShow(arrayListOf(), arrayListOf())
+                            dataTagTv.text = ""
+                            dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
+                            measureTime.text = ""
+                            suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
                         }
                     }
 
@@ -476,11 +581,17 @@ class MedicineDataFragment : BaseFragment() {
                 })
     }
 
-    private fun initDataChartShow(bloodSugarAxisPoints: ArrayList<PointValue>) {
+    private fun initDataChartShow(bloodSugarAxisPoints: ArrayList<PointValue>,
+                                  list: List<BloodSugarListBean>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(bloodSugarAxisPoints)
                 .setColor(ContextCompat.getColor(mActivity, R.color.color59d15f))
+        if (list.size == 1) {
+            line1.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
+        } else {
+            line1.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+        }
         commonLineSetInit(line1, lines)
         val data = LineChartData()
         data.lines = lines
@@ -535,7 +646,7 @@ class MedicineDataFragment : BaseFragment() {
         line.setHasLabels(false) //曲线的数据坐标是否加上备注
         line.setHasLabelsOnlyForSelected(false)
         //点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
-        line.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
+//        line.setHasLines(true) //是否用直线显示。如果为false 则没有曲线只有点显示
         line.setHasPoints(true) //是否显示圆点 如果为false 则没有原点只有点显示
         lines.add(line)
     }
@@ -551,19 +662,42 @@ class MedicineDataFragment : BaseFragment() {
             val value = iUnit.getGluShowValue(it.bs, 2).toFloat()
             pointYValues.add(value)
         }
-        for (i in 0 until pointYValues.size) {
-            val colorInt =
-                    when (list[i].state2.substring(0, list[i].state2.indexOf(","))) {
-                        "偏低" -> {
-                            CommonUtils.getColor(mActivity, R.color.colorF18937)
+        if (list.size == 1) {
+            for (i in 0 until pointYValues.size) {
+                if (i == 0) {
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
+                } else {
+                    val colorInt =
+                            when (list[i - 1].state2.substring(
+                                    list[i - 1].state2.indexOf(",") + 1)) {
+                                "偏低" -> {
+                                    CommonUtils.getColor(mActivity, R.color.colorF18937)
+                                }
+                                "偏高" -> {
+                                    CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                                }
+                                else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
+                            }
+                    pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                }
+                if (yMaxValue < pointYValues[i]) yMaxValue = pointYValues[i]
+            }
+        } else {
+            for (i in 0 until pointYValues.size) {
+                val colorInt =
+                        when (list[i].state2.substring(
+                                list[i].state2.indexOf(",") + 1)) {
+                            "偏低" -> {
+                                CommonUtils.getColor(mActivity, R.color.colorF18937)
+                            }
+                            "偏高" -> {
+                                CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                            }
+                            else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
                         }
-                        "偏高" -> {
-                            CommonUtils.getColor(mActivity, R.color.colorE2402B)
-                        }
-                        else -> CommonUtils.getColor(mActivity, R.color.color59d15f)
-                    }
-            pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
-            if (yMaxValue < pointYValues[i]) yMaxValue = pointYValues[i]
+                pointValues.add(PointValue(i.toFloat(), pointYValues[i], colorInt))
+                if (yMaxValue < pointYValues[i]) yMaxValue = pointYValues[i]
+            }
         }
         yMaxValue += 2
         return pointValues

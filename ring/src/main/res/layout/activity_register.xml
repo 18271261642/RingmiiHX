@@ -84,7 +84,7 @@
         android:text="@string/app_register"
         android:textColor="@color/color8F5725"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintEnd_toEndOf="@id/textTv"
-        app:layout_constraintStart_toStartOf="@id/textTv"
+        app:layout_constraintEnd_toEndOf="@id/againPasswordLine"
+        app:layout_constraintStart_toStartOf="@id/againPasswordLine"
         app:layout_constraintTop_toBottomOf="@id/textTv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

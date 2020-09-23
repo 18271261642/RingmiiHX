@@ -334,6 +334,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun unBindDialogShow(position: Int) {
+        val accountId = MMKVUtil.getInt(USER.USERID)
+        if (bindDeviceList[position].accountId == accountId) {
+            return
+        }
         val dialog = object : DialogHolder(this,
                 R.layout.dialog_mine_unbind, Gravity.CENTER) {
             @SuppressLint("SetTextI18n")
@@ -342,13 +346,11 @@ class MainActivity : BaseActivity() {
                 cancel.setOnClickListener {
                     dialog?.dismiss()
                 }
-                val accountId = MMKVUtil.getInt(USER.USERID)
+
                 val unBindContentTv = dialogView.findViewById<TextView>(R.id.unBindContentTv)
                 val unbindValue = String.format(
                         resources.getString(R.string.app_main_unbind_device),
-                        if (bindDeviceList[position].accountId == accountId) {
-                            mContext!!.resources.getString(R.string.app_own_string)
-                        } else bindDeviceList[position].relationShip)
+                        bindDeviceList[position].relationShip)
                 unBindContentTv.text = unbindValue
                 val confirm = dialogView.findViewById<ConstraintLayout>(R.id.confirmLayout)
                 confirm.setOnClickListener {
@@ -362,6 +364,38 @@ class MainActivity : BaseActivity() {
     }
 
     fun unbindDeviceFromMineFragment(accountId: Int) {
+        showDialog()
+        var deviceCode = ""
+        bindDeviceList.forEach {
+            if (it.accountId == accountId) {
+                if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
+                    deviceCode = it.deviceCode!!
+            }
+        }
+        ApiUtil.createApi(IGuiderApi::class.java, false)
+                .unBindDeviceWithAccount(accountId, deviceCode)
+                .enqueue(object : ApiCallBack<Any?>(mContext) {
+                    override fun onApiResponse(call: Call<Any?>?,
+                                               response: Response<Any?>?) {
+                        if (response?.body() != null) {
+                            toastShort(resources.getString(R.string.app_main_unbind_success))
+                            //当前账户必须要有一个设备绑定，所以解绑后要重新到绑定页面
+                            MMKVUtil.clearByKey(USER.OWN_BIND_DEVICE_CODE)
+                            unbindDeviceFromMineFragmentBackEvent(accountId)
+                            EventBusUtils.sendEvent(EventBusEvent(
+                                    EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
+                                    false))
+                            unBindAndEnterAddDevice()
+                        }
+                    }
+
+                    override fun onRequestFinish() {
+                        dismissDialog()
+                    }
+                })
+    }
+
+    private fun unbindDeviceFromMineFragmentBackEvent(accountId: Int) {
         var devicePosition = 0
         breaking@ for (i in 0 until bindDeviceList.size) {
             if (bindDeviceList[i].accountId == accountId) {
@@ -369,30 +403,56 @@ class MainActivity : BaseActivity() {
                 break@breaking
             }
         }
+        val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID, 0)
         if (bindDeviceList.size > 1) {
             when (devicePosition) {
                 0 -> {
-                    deviceName = bindDeviceList[devicePosition + 1].name!!
-                    MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
-                    MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
-                            bindDeviceList[devicePosition + 1].accountId)
-                    if (StringUtil.isNotBlankAndEmpty(bindDeviceList[devicePosition + 1].deviceCode))
-                        MMKVUtil.saveString(BIND_DEVICE_CODE,
-                                bindDeviceList[devicePosition + 1].deviceCode!!)
+                    deviceName = if (StringUtil.isNotBlankAndEmpty(
+                                    bindDeviceList[devicePosition + 1].relationShip))
+                        bindDeviceList[devicePosition + 1].relationShip!!
+                    else bindDeviceList[devicePosition + 1].name!!
+                    //删除了绑定的设备
+                    if ((bindAccountId != 0 && bindAccountId == bindDeviceList[devicePosition].accountId)
+                            || (bindAccountId == bindDeviceList[devicePosition + 1].accountId)
+                    ) {
+                        bindDeviceList[devicePosition + 1].isSelected = 1
+                        MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                        MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
+                                bindDeviceList[devicePosition + 1].accountId)
+                        if (StringUtil.isNotBlankAndEmpty(bindDeviceList[devicePosition + 1].deviceCode))
+                            MMKVUtil.saveString(BIND_DEVICE_CODE,
+                                    bindDeviceList[devicePosition + 1].deviceCode!!)
+                        if (homeViewPager.currentItem != 3)
+                            setTitle(deviceName)
+                        drawAdapter.notifyItemChanged(devicePosition + 1)
+                    }
                 }
                 else -> {
-                    deviceName = bindDeviceList[devicePosition - 1].name!!
-                    MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
-                    MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
-                            bindDeviceList[devicePosition - 1].accountId)
-                    if (StringUtil.isNotBlankAndEmpty(bindDeviceList[devicePosition - 1].deviceCode))
-                        MMKVUtil.saveString(BIND_DEVICE_CODE,
-                                bindDeviceList[devicePosition - 1].deviceCode!!)
+                    deviceName = if (StringUtil.isNotBlankAndEmpty(
+                                    bindDeviceList[devicePosition - 1].relationShip))
+                        bindDeviceList[devicePosition - 1].relationShip!!
+                    else bindDeviceList[devicePosition - 1].name!!
+                    if ((bindAccountId != 0 && bindAccountId == bindDeviceList[devicePosition].accountId)
+                            || (bindAccountId == bindDeviceList[devicePosition - 1].accountId)
+                    ) {
+                        bindDeviceList[devicePosition - 1].isSelected = 1
+                        MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
+                        MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
+                                bindDeviceList[devicePosition - 1].accountId)
+                        if (StringUtil.isNotBlankAndEmpty(bindDeviceList[devicePosition - 1].deviceCode))
+                            MMKVUtil.saveString(BIND_DEVICE_CODE,
+                                    bindDeviceList[devicePosition - 1].deviceCode!!)
+                        if (homeViewPager.currentItem != 3)
+                            setTitle(deviceName)
+                        drawAdapter.notifyItemChanged(devicePosition - 1)
+                    }
                 }
             }
         } else {
             deviceName = ""
             MMKVUtil.clearByKey(BIND_DEVICE_NAME)
+            MMKVUtil.clearByKey(BIND_DEVICE_ACCOUNT_ID)
+            MMKVUtil.clearByKey(BIND_DEVICE_CODE)
         }
         bindDeviceList.removeAt(devicePosition)
         drawAdapter.notifyDataSetChanged()
@@ -400,32 +460,34 @@ class MainActivity : BaseActivity() {
 
     private fun unbindDeviceEvent(position: Int) {
         //如果是解绑的是当前账户绑定的设备则需要去重新绑定
-        val accountId = MMKVUtil.getInt(USER.USERID)
-        if (bindDeviceList[position].accountId == accountId) {
-            showDialog()
-            val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
-            ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .unBindDeviceWithAccount(accountId, deviceCode)
-                    .enqueue(object : ApiCallBack<Any?>(mContext) {
-                        override fun onApiResponse(call: Call<Any?>?,
-                                                   response: Response<Any?>?) {
-                            if (response?.body() != null) {
-                                MMKVUtil.clearByKey(BIND_DEVICE_ACCOUNT_ID)
-                                unBindAndEnterAddDevice()
-                                unBindDeviceAdapterShow(position)
-                                EventBusUtils.sendEvent(EventBusEvent(
-                                        EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
-                                        false))
-                            }
-                        }
-
-                        override fun onRequestFinish() {
-                            dismissDialog()
-                        }
-                    })
-        } else {
-            unBindGroupMemberEvent(position)
-        }
+//        val accountId = MMKVUtil.getInt(USER.USERID)
+//        if (bindDeviceList[position].accountId == accountId) {
+//            showDialog()
+//            val deviceCode = if (StringUtil.isNotBlankAndEmpty(bindDeviceList[position].deviceCode)) {
+//                bindDeviceList[position].deviceCode!!
+//            } else "0"
+//            ApiUtil.createApi(IGuiderApi::class.java, false)
+//                    .unBindDeviceWithAccount(accountId, deviceCode)
+//                    .enqueue(object : ApiCallBack<Any?>(mContext) {
+//                        override fun onApiResponse(call: Call<Any?>?,
+//                                                   response: Response<Any?>?) {
+//                            if (response?.body() != null) {
+//                                MMKVUtil.clearByKey(USER.OWN_BIND_DEVICE_CODE)
+//                                unBindDeviceAdapterShow(position)
+//                                EventBusUtils.sendEvent(EventBusEvent(
+//                                        EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
+//                                        false))
+//                                unBindAndEnterAddDevice()
+//                            }
+//                        }
+//
+//                        override fun onRequestFinish() {
+//                            dismissDialog()
+//                        }
+//                    })
+//        } else {
+        unBindGroupMemberEvent(position)
+//        }
     }
 
     fun unBindAndEnterAddDevice() {
@@ -459,7 +521,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun unBindDeviceAdapterShow(position: Int) {
-        val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+        val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID, 0)
         if (bindDeviceList.size == 1) {
             deviceName = ""
             MMKVUtil.clearByKey(BIND_DEVICE_NAME)
@@ -473,8 +535,15 @@ class MainActivity : BaseActivity() {
         } else {
             when (position) {
                 0 -> {
-                    deviceName = bindDeviceList[position + 1].name!!
-                    if (bindAccountId == bindDeviceList[position + 1].accountId) {
+                    deviceName = if (StringUtil.isNotBlankAndEmpty(
+                                    bindDeviceList[position + 1].relationShip))
+                        bindDeviceList[position + 1].relationShip!!
+                    else bindDeviceList[position + 1].name!!
+                    //删除了绑定的设备
+                    if ((bindAccountId != 0 && bindAccountId == bindDeviceList[position].accountId)
+                            || (bindAccountId == bindDeviceList[position + 1].accountId)
+                    ) {
+                        bindDeviceList[position + 1].isSelected = 1
                         MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
                         MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
                                 bindDeviceList[position + 1].accountId)
@@ -483,11 +552,18 @@ class MainActivity : BaseActivity() {
                                     bindDeviceList[position + 1].deviceCode!!)
                         if (homeViewPager.currentItem != 3)
                             setTitle(deviceName)
+                        drawAdapter.notifyItemChanged(position + 1)
                     }
                 }
                 else -> {
-                    deviceName = bindDeviceList[position - 1].name!!
-                    if (bindAccountId == bindDeviceList[position - 1].accountId) {
+                    deviceName = if (StringUtil.isNotBlankAndEmpty(
+                                    bindDeviceList[position - 1].relationShip))
+                        bindDeviceList[position - 1].relationShip!!
+                    else bindDeviceList[position - 1].name!!
+                    if ((bindAccountId != 0 && bindAccountId == bindDeviceList[position].accountId)
+                            || (bindAccountId == bindDeviceList[position - 1].accountId)
+                    ) {
+                        bindDeviceList[position - 1].isSelected = 1
                         MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
                         MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID,
                                 bindDeviceList[position - 1].accountId)
@@ -496,6 +572,7 @@ class MainActivity : BaseActivity() {
                                     bindDeviceList[position - 1].deviceCode!!)
                         if (homeViewPager.currentItem != 3)
                             setTitle(deviceName)
+                        drawAdapter.notifyItemChanged(position - 1)
                     }
                 }
             }

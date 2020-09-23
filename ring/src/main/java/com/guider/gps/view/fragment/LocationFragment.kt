@@ -39,7 +39,7 @@ import com.guider.gps.R
 import com.guider.gps.adapter.LocationTrackEventTimeAdapter
 import com.guider.gps.bean.WithSelectBaseBean
 import com.guider.gps.view.activity.HistoryRecordActivity
-import com.guider.gps.view.activity.LocationFrequencySetActivity
+import com.guider.gps.view.activity.LocationFrequencySetNewActivity
 import com.guider.gps.widget.SimpleComponent
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
@@ -587,7 +587,7 @@ class LocationFragment : BaseFragment(),
                                 resources.getString(R.string.app_main_map_send_success))
                     }, 500)
                 } else {
-                    val intent = Intent(mActivity, LocationFrequencySetActivity::class.java)
+                    val intent = Intent(mActivity, LocationFrequencySetNewActivity::class.java)
                     startActivityForResult(intent, LOCATION_FREQUENCY_SET)
                 }
             }
@@ -757,7 +757,7 @@ class LocationFragment : BaseFragment(),
         if (resultCode == Activity.RESULT_OK && data != null) {
             when (requestCode) {
                 LOCATION_FREQUENCY_SET -> {
-
+                    showToast(mActivity.resources.getString(R.string.app_set_success))
                 }
             }
         }
@@ -797,10 +797,10 @@ class LocationFragment : BaseFragment(),
         uiSettings.isMyLocationButtonEnabled = false //显示定位按钮
         uiSettings.isCompassEnabled = false //设置是否显示指南针
         uiSettings.isZoomControlsEnabled = true//缩放控件
-        mGoogleMap!!.isTrafficEnabled = true
-        mGoogleMap!!.setInfoWindowAdapter(CustomInfoWindowAdapter())
-        mGoogleMap!!.setOnMarkerClickListener(this)
-        mGoogleMap!!.setOnInfoWindowClickListener(this)
+        mGoogleMap?.isTrafficEnabled = true
+        mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+        mGoogleMap?.setOnMarkerClickListener(this)
+        mGoogleMap?.setOnInfoWindowClickListener(this)
         mLocationRequest = LocationRequest()
         mLocationRequest!!.interval = 1000
         mLocationRequest!!.fastestInterval = 1000
@@ -997,7 +997,7 @@ class LocationFragment : BaseFragment(),
     private fun endDisplayPerth(latLng: LatLng) {
         // 每一次打点第一个的时候就是定位开始的时候
         val bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_mark_end_bg)
-        endPerth = mGoogleMap!!.addMarker(MarkerOptions()
+        endPerth = mGoogleMap?.addMarker(MarkerOptions()
                 .draggable(false).icon(bitmap).position(latLng))
         endPerth?.isDraggable = false //设置不可移动
     }
@@ -1013,7 +1013,7 @@ class LocationFragment : BaseFragment(),
                                 MapPositionUtil.gps84_To_Gcj02(sydney.latitude, sydney.longitude)
                         LatLng(gps84ToGcj02.lat, gps84ToGcj02.lon)
                     } else sydney
-            mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(transJC02LatLng, 16.0f))
+            mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(transJC02LatLng, 16.0f))
         }
     }
 

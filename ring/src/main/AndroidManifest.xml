@@ -71,6 +71,7 @@
             android:theme="@style/CaptureTheme"/>
         <activity android:name=".view.activity.DeviceBindAddMemberActivity" />
         <activity android:name=".view.activity.AlarmSeActivity" />
+        <activity android:name=".view.activity.LocationFrequencySetNewActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

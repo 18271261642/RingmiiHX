@@ -128,8 +128,7 @@ class MineFragment : BaseFragment() {
     override fun onNoDoubleClick(v: View) {
         when (v) {
             bindLayout -> {
-                if (MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID) != 0
-                        && MMKVUtil.getInt(BIND_DEVICE_CODE) != 0) {
+                if (MMKVUtil.getInt(USER.OWN_BIND_DEVICE_CODE) != 0) {
                     //说明有绑定的设备 是解绑
                     unBindDialogShow()
                 } else {
@@ -198,29 +197,14 @@ class MineFragment : BaseFragment() {
     }
 
     private fun unBindEvent() {
-        mActivity.showDialog()
-        val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .unBindDeviceWithAccount(accountId, deviceCode)
-                .enqueue(object : ApiCallBack<Any?>(mActivity) {
-                    override fun onApiResponse(call: Call<Any?>?,
-                                               response: Response<Any?>?) {
-                        if (response?.body() != null) {
-                            (mActivity as MainActivity).unbindDeviceFromMineFragment(accountId)
-                            showToast(resources.getString(R.string.app_main_unbind_success))
-                            //当前账户必须要有一个设备绑定，所以解绑后要重新到绑定页面
-                            MMKVUtil.clearByKey(BIND_DEVICE_ACCOUNT_ID)
-                            MMKVUtil.clearByKey(BIND_DEVICE_CODE)
-                            bindTv.text = mActivity.resources.getString(R.string.app_device_bind)
-                            (mActivity as MainActivity).unBindAndEnterAddDevice()
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        mActivity.dismissDialog()
-                    }
-                })
+//        val accountId = MMKVUtil.getInt(USER.USERID)
+//        (mActivity as MainActivity).unbindDeviceFromMineFragment(accountId)
+        logOutClearMMKV()
+        val intent = Intent(mActivity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        mActivity.finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -278,7 +262,7 @@ class MineFragment : BaseFragment() {
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.HEADER))) {
             ImageLoaderUtils.loadImage(mActivity, headerIv, MMKVUtil.getString(USER.HEADER))
         } else {
-            headerIv.setImageResource(R.drawable.bg_image_default)
+            headerIv.setImageResource(R.drawable.icon_default_user)
         }
         if (MMKVUtil.containKey(USER.NAME) &&
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.NAME))) {

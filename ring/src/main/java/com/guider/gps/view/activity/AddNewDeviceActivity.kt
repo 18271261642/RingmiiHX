@@ -104,8 +104,13 @@ class AddNewDeviceActivity : BaseActivity() {
                                     if (it.accountId == accountId) {
                                         it.relationShip = it.name
                                         MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
-                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode))
-                                            MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode)){
+                                            if (type == "unBindAndBindNew"){
+                                                MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                            }else {
+                                                MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE, it.deviceCode!!)
+                                            }
+                                        }
                                     }
                                 }
                                 if (type == "unBindAndBindNew") {

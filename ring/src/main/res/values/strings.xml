@@ -2,7 +2,7 @@
     <string name="app_name">Guider GPS</string>
     <string name="app_main_bottom_health">health</string>
     <string name="app_main_bottom_location">location</string>
-    <string name="app_main_bottom_medicine">medical</string>
+    <string name="app_main_bottom_medicine">care</string>
     <string name="app_main_bottom_mine">mine</string>
     <string name="app_main_left_msg_device_name1">father</string>
     <string name="app_main_left_msg_device_name2">mother</string>
@@ -68,7 +68,7 @@
     <string name="app_main_mine_set">Setting</string>
     <string name="app_main_mine_sport_target">Sport target</string>
     <string name="app_main_mine_heart_rate_set">Heart rate alarm threshold setting</string>
-    <string name="app_main_mine_temp_set">Temperature alarm threshold setting</string>
+    <string name="app_main_mine_temp_set">Body temperature alarm threshold setting</string>
     <string name="app_main_mine_remove_bind">Remove the binding</string>
     <string name="app_main_mine_version_check">Version checking</string>
     <string name="app_main_mine_log_out">Log out</string>
@@ -191,4 +191,8 @@
     <string name="app_minute">minute</string>
     <string name="app_hour_simple">h</string>
     <string name="app_minute_simple">m</string>
+    <string name="app_general_pattern">General pattern</string>
+    <string name="app_search_pattern">People search pattern</string>
+    <string name="app_time_interval_one_hour">Time interval: 1 hour</string>
+    <string name="app_time_interval_five_minutes">Time interval: 5 minutes</string>
 </resources>
