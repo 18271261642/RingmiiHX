@@ -186,7 +186,8 @@ class BindPhoneActivity : BaseActivity() {
         PermissionUtils.requestPermissionActivity(this, perms, "照相机权限", {
             doThings()
         }, {
-            ToastUtil.show(mContext!!, "拍照/选取图片需要您授权读写及照相机权限")
+            ToastUtil.show(mContext!!, mContext!!.resources.getString(
+                    R.string.app_request_permission_camera))
         })
     }
 

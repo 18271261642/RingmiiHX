@@ -79,6 +79,8 @@
     <string name="app_add_device_scan_hint">請掃描設備碼</string>
     <string name="app_add_device_scan_hint2">請確保設備處於開機狀態並且插入SIM卡</string>
     <string name="app_add_device_input_title">請輸入設備碼</string>
+    <string name="app_add_device_nickname_input_title">請輸入用戶暱稱</string>
+    <string name="app_add_user_header_title">請上傳用戶頭像</string>
     <string name="app_add_device_input_hint">設備IMEI碼</string>
     <string name="app_next_step">下一步</string>
     <string name="app_msg">消息</string>
@@ -157,7 +159,7 @@
     <string name="app_complete">完成</string>
     <string name="app_device_code_empty">設備碼爲空</string>
     <string name="app_own_string">自己</string>
-    <string name="app_device_nickName">設備暱稱</string>
+    <string name="app_device_nickName">用戶暱稱</string>
     <string name="app_device_bind">綁定設備</string>
     <string name="app_device_nickName_empty">設備暱稱爲空</string>
     <string name="app_electronic_set_hint">在地圖上定位4個點規劃電子圍欄範圍</string>

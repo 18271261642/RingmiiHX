@@ -184,7 +184,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                                     UserInfo::class.java)
                             if (!list.isNullOrEmpty()) {
                                 val bean = CheckBindDeviceBean()
-                                bean.userGroupId = userGroupId.toDouble()
+                                bean.userGroupId = userGroupId.toInt()
                                 bean.userInfos = list
                                 EventBusUtils.sendEvent(EventBusEvent(
                                         EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))
@@ -223,7 +223,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                         if (response?.body() != null) {
                             if (!response.body().isNullOrEmpty()) {
                                 val bean = CheckBindDeviceBean()
-                                bean.userGroupId = userGroupId.toDouble()
+                                bean.userGroupId = userGroupId.toInt()
                                 bean.userInfos = response.body()
                                 EventBusUtils.sendEvent(EventBusEvent(
                                         EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))

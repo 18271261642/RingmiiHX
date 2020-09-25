@@ -109,6 +109,7 @@ class HealthDataListActivity : BaseActivity() {
                     override fun onApiResponse(call: Call<List<BloodListBeann>>?,
                                                response: Response<List<BloodListBeann>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            noDataTv.visibility = View.GONE
                             if (isRefresh) refreshLayout.finishRefresh(500)
                             if (isLoadMore) refreshLayout.finishLoadMore(500)
                             if (response?.body()!!.size < 20) {
@@ -131,6 +132,7 @@ class HealthDataListActivity : BaseActivity() {
                                     R.string.app_main_health_blood_pressure)
                             adapter.setSourceList(dataList)
                         } else {
+                            noDataTv.visibility = View.VISIBLE
                             if (isRefresh) {
                                 refreshLayout.finishRefresh()
                             }
@@ -169,6 +171,7 @@ class HealthDataListActivity : BaseActivity() {
                     override fun onApiResponse(call: Call<List<HeartRateListBean>>?,
                                                response: Response<List<HeartRateListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            noDataTv.visibility = View.GONE
                             if (isRefresh) refreshLayout.finishRefresh(500)
                             if (isLoadMore) refreshLayout.finishLoadMore(500)
                             if (response?.body()!!.size < 20) {
@@ -190,6 +193,7 @@ class HealthDataListActivity : BaseActivity() {
                                     R.string.app_main_health_heart_rate)
                             adapter.setSourceList(dataList)
                         } else {
+                            noDataTv.visibility = View.VISIBLE
                             if (isRefresh) {
                                 refreshLayout.finishRefresh()
                             }
@@ -228,6 +232,7 @@ class HealthDataListActivity : BaseActivity() {
                     override fun onApiResponse(call: Call<List<BodyTempListBean>>?,
                                                response: Response<List<BodyTempListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            noDataTv.visibility = View.GONE
                             if (isRefresh) refreshLayout.finishRefresh(500)
                             if (isLoadMore) refreshLayout.finishLoadMore(500)
                             if (response?.body()!!.size < 20) {
@@ -249,6 +254,7 @@ class HealthDataListActivity : BaseActivity() {
                                     R.string.app_main_health_body_temp)
                             adapter.setSourceList(dataList)
                         } else {
+                            noDataTv.visibility = View.VISIBLE
                             if (isRefresh) {
                                 refreshLayout.finishRefresh()
                             }
@@ -287,6 +293,7 @@ class HealthDataListActivity : BaseActivity() {
                     override fun onApiResponse(call: Call<List<SleepDataListBean>>?,
                                                response: Response<List<SleepDataListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            noDataTv.visibility = View.GONE
                             if (isRefresh) refreshLayout.finishRefresh(500)
                             if (isLoadMore) refreshLayout.finishLoadMore(500)
                             if (response?.body()!!.size < 20) {
@@ -307,6 +314,7 @@ class HealthDataListActivity : BaseActivity() {
                                     R.string.app_main_health_sleep)
                             adapter.setSourceList(dataList)
                         } else {
+                            noDataTv.visibility = View.VISIBLE
                             if (isRefresh) {
                                 refreshLayout.finishRefresh()
                             }
@@ -345,6 +353,7 @@ class HealthDataListActivity : BaseActivity() {
                     override fun onApiResponse(call: Call<List<SportListBean>>?,
                                                response: Response<List<SportListBean>>?) {
                         if (!response?.body().isNullOrEmpty()) {
+                            noDataTv.visibility = View.GONE
                             if (isRefresh) refreshLayout.finishRefresh(500)
                             if (isLoadMore) refreshLayout.finishLoadMore(500)
                             if (response?.body()!!.size < 20) {
@@ -365,6 +374,7 @@ class HealthDataListActivity : BaseActivity() {
                                     R.string.app_main_health_sport)
                             adapter.setSourceList(dataList)
                         } else {
+                            noDataTv.visibility = View.VISIBLE
                             if (isRefresh) {
                                 refreshLayout.finishRefresh()
                             }

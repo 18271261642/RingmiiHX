@@ -12,20 +12,20 @@ import android.os.Parcelable
  * Copyright (C), 1998-2020, GuiderTechnology
  */
 class CheckBindDeviceBean : Parcelable {
-    var userGroupId = 0.0
+    var userGroupId = 0
     var userInfos: List<UserInfo>? = null
     override fun describeContents(): Int {
         return 0
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeDouble(userGroupId)
+        dest.writeInt(userGroupId)
         dest.writeTypedList(userInfos)
     }
 
     constructor() {}
     protected constructor(`in`: Parcel) {
-        userGroupId = `in`.readDouble()
+        userGroupId = `in`.readInt()
         userInfos = `in`.createTypedArrayList(UserInfo.CREATOR) as List<UserInfo>
     }
 

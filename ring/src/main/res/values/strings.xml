@@ -80,6 +80,8 @@
     <string name="app_add_device_scan_hint">Please scan the device code</string>
     <string name="app_add_device_scan_hint2">Make sure the device is on and the SIM card is inserted</string>
     <string name="app_add_device_input_title">Please enter the device code</string>
+    <string name="app_add_device_nickname_input_title">Please enter a user nickname</string>
+    <string name="app_add_user_header_title">Please upload user avatar</string>
     <string name="app_add_device_input_hint">Equipment IMEI code</string>
     <string name="app_next_step">The next step</string>
     <string name="app_msg">Message</string>
@@ -159,7 +161,7 @@
     <string name="app_complete">complete</string>
     <string name="app_device_code_empty">The device code is empty</string>
     <string name="app_own_string">own</string>
-    <string name="app_device_nickName">device nickName</string>
+    <string name="app_device_nickName">User nickname</string>
     <string name="app_device_bind">Binding equipment</string>
     <string name="app_electronic_set_hint">Locate 4 points on the map to plan the electronic fence area</string>
     <string name="app_request_permission_camera">Taking/selecting pictures requires that you have access to read, write and camera</string>

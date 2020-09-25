@@ -13,7 +13,7 @@ public class UnitUtil {
     public static IUnit getIUnit(Context context) {
         Locale locale = context.getResources().getConfiguration().locale;
         String language = locale.getCountry().toLowerCase();
-        if (language.contains("cn"))
+        if (language.contains("tw"))
             return new UnitImpl(new UnitCN());
         else
             return new UnitImpl(new UnitTW());

@@ -379,13 +379,19 @@ class MainActivity : BaseActivity() {
                                                response: Response<Any?>?) {
                         if (response?.body() != null) {
                             toastShort(resources.getString(R.string.app_main_unbind_success))
+                            CommonUtils.logOutClearMMKV()
+                            val intent = Intent(mContext, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                    Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                            finish()
                             //当前账户必须要有一个设备绑定，所以解绑后要重新到绑定页面
-                            MMKVUtil.clearByKey(USER.OWN_BIND_DEVICE_CODE)
-                            unbindDeviceFromMineFragmentBackEvent(accountId)
-                            EventBusUtils.sendEvent(EventBusEvent(
-                                    EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
-                                    false))
-                            unBindAndEnterAddDevice()
+//                            MMKVUtil.clearByKey(USER.OWN_BIND_DEVICE_CODE)
+//                            unbindDeviceFromMineFragmentBackEvent(accountId)
+//                            EventBusUtils.sendEvent(EventBusEvent(
+//                                    EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
+//                                    false))
+//                            unBindAndEnterAddDevice()
                         }
                     }
 
@@ -497,9 +503,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun unBindGroupMemberEvent(position: Int) {
-        if (bindListBean != null && bindListBean!!.userGroupId != 0.0) {
+        if (bindListBean != null && bindListBean!!.userGroupId != 0) {
             showDialog()
-            val groupId = bindListBean!!.userGroupId.toInt()
+            val groupId = bindListBean!!.userGroupId
             val accountId = bindDeviceList[position].accountId
             ApiUtil.createApi(IGuiderApi::class.java, false)
                     .unBindGroupMember(groupId, accountId)
@@ -507,7 +513,7 @@ class MainActivity : BaseActivity() {
                         override fun onApiResponse(call: Call<List<UserInfo>?>?,
                                                    response: Response<List<UserInfo>?>?) {
                             if (response?.body() != null) {
-                                bindListBean!!.userGroupId = groupId.toDouble()
+                                bindListBean!!.userGroupId = groupId
                                 bindListBean!!.userInfos = response.body()
                                 unBindDeviceAdapterShow(position)
                             }
@@ -592,7 +598,7 @@ class MainActivity : BaseActivity() {
                 val intent = Intent(mContext, AddNewDeviceActivity::class.java)
                 intent.putExtra("type", "family")
                 intent.putExtra("userGroupId", bindListBean?.userGroupId.toString())
-                startActivity(intent)
+                startActivityForResult(intent, ADD_NEW_MEMBER)
             }
             iv_toolbar_right2 -> {
                 val intent = Intent(mContext, RingMsgListActivity::class.java)
@@ -619,6 +625,14 @@ class MainActivity : BaseActivity() {
                     getBindDeviceList()
                     EventBusUtils.sendEvent(EventBusEvent(EventBusAction.REFRESH_HEALTH_DATA,
                             "refresh"))
+                }
+                ADD_NEW_MEMBER -> {
+                    //添加了家人
+                    if (data.getParcelableExtra<CheckBindDeviceBean?>(
+                                    "bindListBean") != null) {
+                        bindListBean = data.getParcelableExtra("bindListBean")
+                    }
+                    getBindDeviceList()
                 }
             }
         }

@@ -79,6 +79,8 @@
     <string name="app_add_device_scan_hint">请扫描设备码</string>
     <string name="app_add_device_scan_hint2">请确保设备处于开机状态并且插入SIM卡</string>
     <string name="app_add_device_input_title">请输入设备码</string>
+    <string name="app_add_device_nickname_input_title">请输入用户昵称</string>
+    <string name="app_add_user_header_title">请上传用户头像</string>
     <string name="app_add_device_input_hint">设备IMEI码</string>
     <string name="app_next_step">下一步</string>
     <string name="app_msg">消息</string>
@@ -157,7 +159,7 @@
     <string name="app_complete">完成</string>
     <string name="app_device_code_empty">设备码为空</string>
     <string name="app_own_string">自己</string>
-    <string name="app_device_nickName">设备昵称</string>
+    <string name="app_device_nickName">用户昵称</string>
     <string name="app_device_bind">绑定设备</string>
     <string name="app_device_nickName_empty">设备昵称为空</string>
     <string name="app_electronic_set_hint">在地图上定位4个点规划电子围栏范围</string>

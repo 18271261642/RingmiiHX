@@ -131,9 +131,17 @@ interface IGuiderApi {
                                 @Query("deviceCode") deviceCode: String): Call<Any>
 
     /**
+     * 通过设备号添加家人
+     * @param body 设备所需信息
+     */
+    @POST("api/v1/opdevice/joingroup")
+    fun memberJoinGroup(@Body body: Any): Call<Any>
+
+    /**
      * 验证设备是否有绑定
      * @param deviceCode 设备的code
      */
+    @Deprecated("废弃")
     @GET("api/v1/opdevice/device/check")
     fun verifyDeviceBind(@Query("deviceCode") deviceCode: String): Call<String>
 
@@ -144,6 +152,7 @@ interface IGuiderApi {
      * @param phone 手机号
      * @param relationShip 设备昵称
      */
+    @Deprecated("废弃")
     @GET("api/v1/opdevice/phone/check")
     fun devicePhoneVerify(@Query("userGroupId") userGroupId: Int,
                           @Query("deviceCode") deviceCode: String,

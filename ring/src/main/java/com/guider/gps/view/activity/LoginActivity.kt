@@ -87,6 +87,14 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 //        api.registerApp(APP_ID_WX)
         transY = ScreenUtils.dip2px(this, 25f)
         setListenerToRootView()
+        if (MMKVUtil.containKey(PHONE) &&
+                StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(PHONE))) {
+            phoneEdit.setText(MMKVUtil.getString(PHONE))
+        }
+        if (MMKVUtil.containKey(COUNTRY_CODE) &&
+                StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(COUNTRY_CODE))) {
+            countryTv.text = MMKVUtil.getString(COUNTRY_CODE)
+        }
     }
 
     override fun initLogic() {

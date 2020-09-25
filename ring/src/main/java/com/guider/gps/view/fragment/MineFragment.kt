@@ -197,14 +197,8 @@ class MineFragment : BaseFragment() {
     }
 
     private fun unBindEvent() {
-//        val accountId = MMKVUtil.getInt(USER.USERID)
-//        (mActivity as MainActivity).unbindDeviceFromMineFragment(accountId)
-        logOutClearMMKV()
-        val intent = Intent(mActivity, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-        mActivity.finish()
+        val accountId = MMKVUtil.getInt(USER.USERID)
+        (mActivity as MainActivity).unbindDeviceFromMineFragment(accountId)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

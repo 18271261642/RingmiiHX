@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.guider.baselib.base.BaseActivity
+import com.guider.baselib.utils.CommonUtils.logOutClearMMKV
 import com.guider.baselib.utils.IS_FIRST_START
 import com.guider.baselib.utils.MMKVUtil
 import com.guider.baselib.utils.USER
@@ -77,6 +78,7 @@ class GuideActivity : BaseActivity() {
 //                val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
 //                intent.putExtra("type", "mine")
 //                startActivity(intent)
+                logOutClearMMKV()
                 startActivity(Intent(this, LoginActivity::class.java))
             } else startActivity(Intent(this, MainActivity::class.java))
         } else {

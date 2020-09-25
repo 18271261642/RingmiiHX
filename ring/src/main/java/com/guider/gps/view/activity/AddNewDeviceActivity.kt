@@ -3,11 +3,11 @@ package com.guider.gps.view.activity
 import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
-import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.fragment.InputCodeAddDeviceFragment
@@ -17,12 +17,14 @@ import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.BuildConfig
 import com.guider.health.apilib.IGuiderApi
 import com.guider.health.apilib.bean.CheckBindDeviceBean
+import com.guider.health.apilib.bean.UserInfo
 import com.king.zxing.Intents
 import kotlinx.android.synthetic.main.activity_add_new_device.*
 import kotlinx.android.synthetic.main.fragment_input_code_add_device.*
 import retrofit2.Call
 import retrofit2.Response
 
+@Suppress("DEPRECATION")
 class AddNewDeviceActivity : BaseActivity() {
 
     override val contentViewResId: Int
@@ -62,21 +64,35 @@ class AddNewDeviceActivity : BaseActivity() {
         // 设置下划线跟文本宽度一致
         newDeviceTabLayout.isTabIndicatorFullWidth = true
         fragments.add(ScanCodeAddDeviceFragment.newInstance())
-        fragments.add(InputCodeAddDeviceFragment.newInstance())
+        fragments.add(InputCodeAddDeviceFragment.newInstance(type))
         newDeviceViewPager.apply {
-            adapter = FragmentLazyStateAdapterViewPager2(
-                    this@AddNewDeviceActivity, fragments = fragments)
+            adapter = DeviceViewPagerAdapter(
+                    this@AddNewDeviceActivity.supportFragmentManager,
+                    fragments = fragments, titles = tabTitleList)
         }
-        TabLayoutMediator(newDeviceTabLayout, newDeviceViewPager) { tab, position ->
-            tab.text = tabTitleList[position]
-        }.attach()
+        newDeviceViewPager.offscreenPageLimit = fragments.size
+        newDeviceTabLayout.setupWithViewPager(newDeviceViewPager)
+    }
+
+    inner class DeviceViewPagerAdapter(fragmentManager: FragmentManager,
+                                       private val fragments: MutableList<Fragment>,
+                                       private val titles: MutableList<String>) :
+            FragmentPagerAdapter(fragmentManager) {
+
+        override fun getItem(position: Int) = fragments[position]
+
+        override fun getCount() = fragments.size
+
+        override fun getPageTitle(position: Int) = titles[position]
+
     }
 
     /**
      * 绑定新设备是当前登录账户新绑定
      * @param code 要绑定的设备的设备码
      */
-    fun bindNewDeviceWithAccount(code: String) {
+    fun bindNewDeviceWithAccount(code: String, nickName: String, header: String,
+                                 isShowDialog: Boolean = true) {
         //判断是为当前账户绑定还是添加家人的设备
         //第一种type是登录之后或者打开app时绑定新设备
         //第二种type是在首页解绑设备后重新绑定新设备
@@ -104,10 +120,10 @@ class AddNewDeviceActivity : BaseActivity() {
                                     if (it.accountId == accountId) {
                                         it.relationShip = it.name
                                         MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
-                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode)){
-                                            if (type == "unBindAndBindNew"){
+                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
+                                            if (type == "unBindAndBindNew") {
                                                 MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
-                                            }else {
+                                            } else {
                                                 MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE, it.deviceCode!!)
                                             }
                                         }
@@ -131,25 +147,29 @@ class AddNewDeviceActivity : BaseActivity() {
                         }
                     })
         } else {
-            showDialog()
+            if (isShowDialog)
+                showDialog()
+            val map = hashMapOf<String, Any>()
+            map["deviceCode"] = code
+            map["relationShip"] = nickName
+            map["url"] = header
+            map["userGroupId"] = userGroupId.toInt()
             ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .verifyDeviceBind(code)
-                    .enqueue(object : ApiCallBack<String>(mContext) {
-                        override fun onApiResponse(call: Call<String>?,
-                                                   response: Response<String>?) {
+                    .memberJoinGroup(map)
+                    .enqueue(object : ApiCallBack<Any>(mContext) {
+                        override fun onApiResponse(call: Call<Any>?,
+                                                   response: Response<Any>?) {
                             if (response?.body() != null) {
-                                val intent = Intent(mContext,
-                                        DeviceBindAddMemberActivity::class.java)
-                                intent.putExtra("userGroupId", userGroupId)
-                                if (response.body()!!.toInt() < 0) {
-                                    //返回帐号id，小于0则表示设备未绑定帐号
-                                    intent.putExtra("codeValue", code)
-                                } else {
-                                    //已有绑定的用户
-                                    val accountId = response.body()
-                                    intent.putExtra("accountId", accountId)
+                                val list = ParseJsonData.parseJsonDataList<UserInfo>(response.body()!!,
+                                        UserInfo::class.java)
+                                if (!list.isNullOrEmpty()) {
+                                    val bean = CheckBindDeviceBean()
+                                    bean.userGroupId = userGroupId.toInt()
+                                    bean.userInfos = list
+                                    intent.putExtra("bindListBean", bean)
+                                    setResult(Activity.RESULT_OK, intent)
+                                    finish()
                                 }
-                                startActivityForResult(intent, DEVICE_BIND_ADD_MEMBER)
                             }
                         }
 
@@ -163,19 +183,23 @@ class AddNewDeviceActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
-            if (requestCode == SCAN_CODE) {
-                val result = data.getStringExtra(Intents.Scan.RESULT)
-                val tempCode = "863659040064551"
-                if (StringUtil.isNotBlankAndEmpty(result)) {
-                    if (!BuildConfig.DEBUG && inputEdit.text?.length != tempCode.length) {
-                        ToastUtil.showCenter(mContext!!,
-                                mContext!!.resources.getString(R.string.app_incorrect_format))
-                    } else {
-                        bindNewDeviceWithAccount(result!!)
+            when (requestCode) {
+                SCAN_CODE -> {
+                    val result = data.getStringExtra(Intents.Scan.RESULT)
+                    val tempCode = "863659040064551"
+                    if (StringUtil.isNotBlankAndEmpty(result)) {
+                        if (!BuildConfig.DEBUG && inputEdit.text?.length != tempCode.length) {
+                            ToastUtil.showCenter(mContext!!,
+                                    mContext!!.resources.getString(R.string.app_incorrect_format))
+                        } else {
+                            newDeviceViewPager.currentItem = 1
+                            (fragments[1] as InputCodeAddDeviceFragment).refreshCodeShow(result!!)
+                        }
                     }
                 }
-            } else if (requestCode == DEVICE_BIND_ADD_MEMBER) {
-                finish()
+                IMAGE_CUT_CODE -> {
+                    (fragments[1] as InputCodeAddDeviceFragment).selectPicCallBack(data)
+                }
             }
         }
     }

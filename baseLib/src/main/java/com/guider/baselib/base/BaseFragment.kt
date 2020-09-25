@@ -55,18 +55,30 @@ abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
 
     override fun onResume() {
         super.onResume()
-        if (!isLoaded && !isHidden) {
+        if (openIsLazy()) {
+            if (!isLoaded && !isHidden) {
+                initLogic()
+                Log.d(TAG, "lazyInit:!!!!!!!")
+                isLoaded = true
+            }
+        }else {
             initLogic()
-            Log.d(TAG, "lazyInit:!!!!!!!")
-            isLoaded = true
         }
     }
 
     /**
      * 是否开启eventBus
      */
-    open fun openEventBus(): Boolean{
+    open fun openEventBus(): Boolean {
         return false
+    }
+
+    /**
+     * 是否开启懒加载
+     * @return 默认开启
+     */
+    open fun openIsLazy(): Boolean {
+        return true
     }
 
     /**
