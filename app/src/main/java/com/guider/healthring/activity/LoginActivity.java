@@ -247,7 +247,8 @@ public class LoginActivity extends WatchBaseActivity
         AndPermission.with(LoginActivity.this)
                 .runtime()
                 .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
                 .start();
 
         //判断蓝牙是否开启

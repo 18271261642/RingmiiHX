@@ -17,6 +17,7 @@ import com.getmedcheck.lib.events.EventReadingProgress;
 import com.getmedcheck.lib.model.BleDevice;
 import com.getmedcheck.lib.model.BloodPressureData;
 import com.getmedcheck.lib.model.IDeviceData;
+import com.guider.health.PermissionUtil;
 import com.guider.health.all.R;
 import com.guider.health.common.core.Config;
 import com.guider.health.common.core.MEDCHECKPressure;
@@ -32,7 +33,7 @@ import no.nordicsemi.android.support.v18.scanner.ScanResult;
 import static com.getmedcheck.lib.constant.Constants.BLOOD_PRESSURE_DEVICE_ID_NEW;
 
 //MEDCheck血压提示页面
-public class MEDCheckPressureReminderFragment extends MedCheckFragment {
+public class MEDCheckPressureReminderFragment extends MedCheckFragment implements View.OnClickListener {
     private View view;
     private DialogProgressCountdown mDialogProgressCountdown;
     private Button nextButton;
@@ -61,23 +62,7 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
         requestLocationPermission();
         //开始测量先进行设备的连接
         nextButton = (Button) view.findViewById(R.id.btn_fora_glu_test);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextButton.setEnabled(false);
-                mDialogProgressCountdown.showDialog(1000 * 60,
-                        1000, new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e("medcheckpre", "60s连接失败");
-                        MedCheck.getInstance().stopScan(_mActivity);
-                        ToastUtil.showShort(_mActivity,"连接失败");
-                        nextButton.setEnabled(true);
-                    }
-                });
-                checkAllConditions();
-            }
-        });
+        nextButton.setOnClickListener(this);
     }
 
 
@@ -213,6 +198,30 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment {
                 pop();
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_fora_glu_test){
+            nextButton.setEnabled(false);
+            mDialogProgressCountdown.showDialog(1000 * 60,
+                    1000, new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.e("medcheckglu", "60s连接失败");
+                            MedCheck.getInstance().stopScan(_mActivity);
+                            nextButton.setText(_mActivity.getResources().getString(
+                                    R.string.common_m_retest));
+                            nextButton.setEnabled(true);
+                        }
+                    });
+            if (!PermissionUtil.checkLocationPermission(_mActivity)) {
+                PermissionUtil.requestLocationPerm(_mActivity);
+            } else {
+                mAllPermissionsReady = true;
+                MedCheck.getInstance().startScan(_mActivity);
+            }
+        }
     }
 
 }

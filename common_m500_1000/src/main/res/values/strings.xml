@@ -38,24 +38,24 @@
     <string name="fora_glu_reult_format">Your blood sugar value：\n%.2f </string>
     <string name="fora_glu_redult_title">Measurement results</string>
 
-    <string name="fora_bo_reminder_title">Measurement tips</string>
+    <string name="fora_bo_reminder_title">Measurement Tips</string>
     <string name="fora_bo_reult_format">Your blood oxygen value：\n%d </string>
     <string name="fora_bo_tips">1. Press the power button on the right to turn on\n\n2. Please put your finger into the blood oxygen clip\n\n3. When the value appears on the screen, please click the \"Start Measurement\" button below</string>
-    <string name="fora_bo_redult_title">Measurement results</string>
+    <string name="fora_bo_redult_title">Measurement Results</string>
 
-    <string name="fora_et_reminder_title">Measurement tips</string>
+    <string name="fora_et_reminder_title">Measurement Tips</string>
     <string name="fora_et_reult_format">Your body temp value：\n%.2f°C</string>
     <string name="fora_et_tips">1. Press the button at the bottom of the screen to power on\n\n2. Press the button on the back of the ear thermometer to determine the temperature\n\n3. When you hear the sound, click the \"Start Measurement\" button below</string>
-    <string name="fora_et_redult_title">Measurement results</string>
+    <string name="fora_et_redult_title">Measurement Results</string>
 
-    <string name="medcheck_glu_reminder_title">Measurement tips</string>
+    <string name="medcheck_glu_reminder_title">Measurement Tips</string>
     <string name="medcheck_glu_reult_format">Your blood glucose value：\n%.2f</string>
     <string name="medcheck_glu_tips">1. Insert the test strip in the direction indicated by the arrow and turn it on automatically.\n2. Confirm that the code number of the test paper on the screen matches the test paper box.\n3. Use a blood collection pen to obtain a fingertip blood sample.\n4. The test strips draw blood samples.\n5. Measurement data appears after the screen countdown ends.\n\n6. Click "Save Data" and the measurement data will be stored in the system platform.\n7. Withdraw the test paper and discard into the biochemical pollutant container.</string>
-    <string name="medcheck_glu_redult_title">Measurement results</string>
+    <string name="medcheck_glu_redult_title">Measurement Results</string>
 
-    <string name="medcheck_pre_reminder_title">Measurement tips</string>
+    <string name="medcheck_pre_reminder_title">Measurement Tips</string>
     <string name="medcheck_pre_tips">1. Connect the cuff to the blood pressure meter correctly, expose your arms, palm up, and straighten your elbows, and put on the cuff.\n2. The cuff trachea points to the lower arm, and the lower edge of the cuff is 2–3cm away from the elbow socket.\n3. Place the cuff hose at the pulse point of the brachial artery.\n4. Sit still for 3 minutes before the measurement, keeping the center of the cuff at the same height as the heart.\n5. Press the [Power] button to start measurement.\n6. Please do not speak or move your body during the measurement.\n7. After the measurement is completed, when the value appears on the screen, please click the [Save Data] button below.</string>
-    <string name="medcheck_pre_redult_title">Measurement results</string>
+    <string name="medcheck_pre_redult_title">Measurement Results</string>
 
     <string name="sbp_with_">Systolic pressure(mmHg) :</string>
     <string name="dbp_with_">Diastolic pressure(mmHg) :</string>
@@ -119,4 +119,5 @@
     <string name="dmyh_index">Arteriosclerosis index</string>
 
     <string name="talk_to_doctor">Talk to doctor</string>
+    <string name="common_m_retest">Remeasure</string>
 </resources>

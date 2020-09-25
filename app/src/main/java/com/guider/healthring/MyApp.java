@@ -145,7 +145,7 @@ public class MyApp extends LitePalApplication {
 
         // locationService = new LocationService(application);
 
-        Bugly.init(this, "ff6d0ec595", true);
+        Bugly.init(this, "e4251eb2f8", true);
 
         MobSDK.init(this, "2dc65dc4724aa", "5c4cd9ab545da0ccebd0d4b6d46c73fd");
 

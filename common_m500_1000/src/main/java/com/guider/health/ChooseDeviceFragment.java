@@ -1,5 +1,7 @@
 package com.guider.health;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.getmedcheck.lib.MedCheck;
 import com.guider.health.all.R;
 import com.guider.health.arouter_annotation.Route;
 import com.guider.health.common.cache.MeasureDataUploader;
@@ -168,51 +171,90 @@ public class ChooseDeviceFragment extends BaseFragment {
         view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!MyUtils.isNormalClickTime()) {
-                    return;
-                }
-
-                RouterPathManager.Devices.clear();
-                RouterPathManager.Devices.addAll(list);
-
-                Config.mapX.put("ecg", true);
-                Config.mapX.put("glu", true);
-                Config.mapX.put("bp", true);
-
-                if (RouterPathManager.Devices.size() == 0) {
-                    for (String key : Config.DEVICE_KEYS) {
-
-                        RouterPathManager.Devices.add(deviceInit.fragments.get(key));
-                        deviceInit.setDeviceTag(key, true);
-                    }
-                }
-                UserManager.getInstance();
-                Log.i("haix", "=============选择了:  bp: " + HeartPressBp.getInstance().isTag()
-                        + " glu: " + Glucose.getInstance().isTag()
-                        + " ecg: " + HearRate.getInstance().isTag());
-
-
-                Toast.makeText(_mActivity, getResources().getString(R.string.choose_tips_pre)
-                        + RouterPathManager.Devices.size()
-                        + getResources().getString(R.string.choose_tips_tail), Toast.LENGTH_LONG).show();
-
-                String fragmentPath = RouterPathManager.Devices.remove();
-                if (fragmentPath != null) {
-
-                    try {
-                        start((ISupportFragment) Class.forName(fragmentPath).newInstance());
-                    } catch (java.lang.InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if (!PermissionUtil.checkLocationPermission(_mActivity)) {
+                    PermissionUtil.requestLocationPerm(_mActivity);
+                } else {
+                    //判断蓝牙是否开启
+                    BluetoothManager bluetoothManager =
+                            (BluetoothManager) _mActivity.getSystemService(
+                                    Context.BLUETOOTH_SERVICE);
+                    BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+                    if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
+                        turnOnBlue();
+                        view.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                nextEvent();
+                            }
+                        }, 500);
+                    } else {
+                        nextEvent();
                     }
                 }
             }
         });
+    }
+
+    private void turnOnBlue() {
+        // 请求打开 Bluetooth
+        Intent requestBluetoothOn = new Intent(
+                BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        // 设置 Bluetooth 设备可以被其它 Bluetooth 设备扫描到
+        requestBluetoothOn
+                .setAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        // 设置 Bluetooth 设备可见时间
+        requestBluetoothOn.putExtra(
+                BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
+                1111);
+        // 请求开启 Bluetooth
+        this.startActivityForResult(requestBluetoothOn,
+                1112);
+    }
+
+    private void nextEvent() {
+        if (!MyUtils.isNormalClickTime()) {
+            return;
+        }
+
+        RouterPathManager.Devices.clear();
+        RouterPathManager.Devices.addAll(list);
+
+        Config.mapX.put("ecg", true);
+        Config.mapX.put("glu", true);
+        Config.mapX.put("bp", true);
+
+        if (RouterPathManager.Devices.size() == 0) {
+            for (String key : Config.DEVICE_KEYS) {
+
+                RouterPathManager.Devices.add(deviceInit.fragments.get(key));
+                deviceInit.setDeviceTag(key, true);
+            }
+        }
+        UserManager.getInstance();
+        Log.i("haix", "=============选择了:  bp: " + HeartPressBp.getInstance().isTag()
+                + " glu: " + Glucose.getInstance().isTag()
+                + " ecg: " + HearRate.getInstance().isTag());
+
+
+        Toast.makeText(_mActivity, getResources().getString(R.string.choose_tips_pre)
+                + RouterPathManager.Devices.size()
+                + getResources().getString(R.string.choose_tips_tail), Toast.LENGTH_LONG).show();
+
+        String fragmentPath = RouterPathManager.Devices.remove();
+        if (fragmentPath != null) {
+
+            try {
+                start((ISupportFragment) Class.forName(fragmentPath).newInstance());
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
