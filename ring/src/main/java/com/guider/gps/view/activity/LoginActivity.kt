@@ -85,7 +85,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 //        api = WXAPIFactory.createWXAPI(this, APP_ID_WX, true)
 //        //将应用的appid注册到微信
 //        api.registerApp(APP_ID_WX)
-        transY = ScreenUtils.dip2px(this, 25f)
+        transY = ScreenUtils.dip2px(this, 60f)
         setListenerToRootView()
         if (MMKVUtil.containKey(PHONE) &&
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(PHONE))) {

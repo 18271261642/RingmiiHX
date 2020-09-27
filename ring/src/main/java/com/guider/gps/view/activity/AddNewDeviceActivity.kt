@@ -20,7 +20,6 @@ import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
 import com.king.zxing.Intents
 import kotlinx.android.synthetic.main.activity_add_new_device.*
-import kotlinx.android.synthetic.main.fragment_input_code_add_device.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -188,7 +187,7 @@ class AddNewDeviceActivity : BaseActivity() {
                     val result = data.getStringExtra(Intents.Scan.RESULT)
                     val tempCode = "863659040064551"
                     if (StringUtil.isNotBlankAndEmpty(result)) {
-                        if (!BuildConfig.DEBUG && inputEdit.text?.length != tempCode.length) {
+                        if (!BuildConfig.DEBUG && result?.length != tempCode.length) {
                             ToastUtil.showCenter(mContext!!,
                                     mContext!!.resources.getString(R.string.app_incorrect_format))
                         } else {
