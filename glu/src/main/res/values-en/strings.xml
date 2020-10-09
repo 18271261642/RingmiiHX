@@ -42,9 +42,10 @@
         
     <string name="glu_level">Glycemic level</string>
       
+
     <string name="normal">normal</string>    
     <string name="abnormal">Abnormal</string>    
-    <string name="abnormal_glu">Abnormal≥7mmol/L</string>
+    <string name="abnormal_glu">Abnormal≥7</string>
 
         
     <string name="fpg">Early morning fasting</string>    

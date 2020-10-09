@@ -57,16 +57,13 @@ public class GLUOperateReminders extends GLUFragment {
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
         view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_GLU));
 
-        view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        view.findViewById(R.id.next).setOnClickListener(v -> {
 
-                Intent intent = new Intent(_mActivity, GLUConnectAndMeassureActivity.class);
-                intent.putExtra("body", BodyIndex.getInstance());
-                intent.putExtra("HealthRange", HealthRange.getInstance());
-                intent.putExtra("footTime", Glucose.getInstance().getFoodTime());
-                startActivityForResult(intent, REQUEST_CODE);
-            }
+            Intent intent = new Intent(_mActivity, GLUConnectAndMeassureActivity.class);
+            intent.putExtra("body", BodyIndex.getInstance());
+            intent.putExtra("HealthRange", HealthRange.getInstance());
+            intent.putExtra("footTime", Glucose.getInstance().getFoodTime());
+            startActivityForResult(intent, REQUEST_CODE);
         });
 
     }

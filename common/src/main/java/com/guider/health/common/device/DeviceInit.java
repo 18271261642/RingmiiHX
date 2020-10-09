@@ -212,7 +212,7 @@ public class DeviceInit {
 
         names.put(DEV_ECG_6, MyUtils.application.getString(R.string.CmateHv100));//6导测量仪器
         names.put(DEV_BP, MyUtils.application.getString(R.string.FORAP30PLUSv100));//福尔臂式血壓測量
-        names.put(DEV_GLU, MyUtils.application.getString(R.string.BDE_WEIXIN_TTMv100)); // 无创血糖测量
+        names.put(DEV_GLU, MyUtils.application.getString(R.string.Multi_health_data)); // 无创血糖测量
         names.put(DEV_ECG_HD, MyUtils.application.getString(R.string.device_hdv100)); // 红豆心电
         names.put(DEV_BP_CX, MyUtils.application.getString(R.string.CXBPv100)); // 臂筒式血压测量
         names.put(DEV_BP_YF, MyUtils.application.getString(R.string.YFKJv100)); // 动脉硬化测量
@@ -230,12 +230,22 @@ public class DeviceInit {
 
         if (BuildConfig.DEBUG) {
             Config.DEVICE_KEYS.clear();
-            Config.DEVICE_KEYS.add(DEV_ECG_12);//MEDCHECK 血压
-            Config.DEVICE_KEYS.add(DEV_GLU);//MEDCHECK 血压
-            Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血压
+            Config.DEVICE_KEYS.add(DEV_FORA_GLU);      // 福尔血氧
+            Config.DEVICE_KEYS.add(DEV_FORA_ET);      // 福尔耳温
+            Config.DEVICE_KEYS.add(DEV_FORA_BO);      // 福尔血氧
+            Config.DEVICE_KEYS.add(DEV_MEDCHECK_GLU);//MEDCHECK 血糖
             Config.DEVICE_KEYS.add(DEV_MEDCHECK_PRE);//MEDCHECK 血压
-            Config.DEVICE_KEYS.add(DEV_FORA_ET);//福尔耳温
-            Config.DEVICE_KEYS.add(DEV_FORA_BO);//福尔血氧
+            Config.DEVICE_KEYS.add(DEV_GLU); // 无创血糖
+            Config.DEVICE_KEYS.add(DEV_ECG_6);// 六导心电
+            Config.DEVICE_KEYS.add(DEV_BP);  // 移动版
+            Config.DEVICE_KEYS.add(DEV_BP_CX);           // 插线版
+            Config.DEVICE_KEYS.add(DEV_BP_YF);           // 云峰
+            Config.DEVICE_KEYS.add(DEV_BP_AVE);       // ave
+            Config.DEVICE_KEYS.add(DEV_ECG_12);         // 12导心电
+            Config.DEVICE_KEYS.add(DEV_ECG_tzq);         // 听诊器
+            Config.DEVICE_KEYS.add(DEV_BP_MBB_88);         // 小脉搏波
+            Config.DEVICE_KEYS.add(DEV_BP_MBB_9804);         // 大脉搏波
+            Config.DEVICE_KEYS.add(DEV_ECG_HD);
             if (callback != null) {
                 callback.onHaveList();
             }

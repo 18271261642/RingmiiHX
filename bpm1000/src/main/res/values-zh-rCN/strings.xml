@@ -31,8 +31,8 @@
     <string name="central_arterial_stiffness_index">中心动脉硬度指标</string>
     <string name="upper_arm_arteriosclerosis_index">上臂动脉硬化指标</string>
 
-    <string name="bp_ave_reminder_first_1">1.将手臂伸入臂筒内，\n手臂肘部放在凹陷处。</string>
-    <string name="bp_ave_reminder_first_2">2.保持正确坐姿，\n按[开始/停止]按钮，\n开始测量血压。</string>
+    <string name="bp_ave_reminder_first_1">1.将手臂伸入臂筒内，手臂肘部放在凹陷处。</string>
+    <string name="bp_ave_reminder_first_2">2.保持正确坐姿，按[开始/停止]按钮，开始测量血压。</string>
 
     <string name="arm_cylinder_sphygmomanometer">臂筒血压计式</string>
 

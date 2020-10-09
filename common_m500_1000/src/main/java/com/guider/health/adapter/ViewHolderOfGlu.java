@@ -59,7 +59,7 @@ public class ViewHolderOfGlu extends BaseResultViewHolder {
 
     @Override
     protected String getName() {
-        return getContext().getResources().getString(R.string.blood_sugar);
+        return getContext().getResources().getString(R.string.data_level);
     }
 
     @Override
@@ -68,11 +68,12 @@ public class ViewHolderOfGlu extends BaseResultViewHolder {
             Glucose instance = Glucose.getInstance();
             Unit unit = new Unit();
             IUnit iUnit = UnitUtil.getIUnit(mContext);
-            TooLazyToWrite.setTextView(view, R.id.xuetang, iUnit.getGluShowValue(instance.getGlucose(), 2) +  iUnit.getGluUnit());
+            TooLazyToWrite.setTextView(view, R.id.xuetang,
+                    iUnit.getGluShowValue(instance.getGlucose(), 2) + "");
 
-            TooLazyToWrite.setTextView(view, R.id.xueliusu, instance.getSpeed() +  unit.bloodFlow);
-            TooLazyToWrite.setTextView(view, R.id.xuehongdanbai, instance.getHemoglobin() +  unit.hemoglobin);
-            TooLazyToWrite.setTextView(view, R.id.xueyang, instance.getOxygenSaturation() +  unit.bloodO2);
+            TooLazyToWrite.setTextView(view, R.id.xueliusu, instance.getSpeed() + "");
+            TooLazyToWrite.setTextView(view, R.id.xuehongdanbai, instance.getHemoglobin() + "");
+            TooLazyToWrite.setTextView(view, R.id.xueyang, instance.getOxygenSaturation() + "");
             TooLazyToWrite.setTextView(view, R.id.status, instance.getCardShowStr());
         }
     }
@@ -181,7 +182,7 @@ public class ViewHolderOfGlu extends BaseResultViewHolder {
             bpm.setTestTime(new Date());
             bpm.setDeviceCode(MyUtils.getMacAddress());
             bpm.setHb(Integer.valueOf(Glucose.getInstance().getPulse()));
-            ApiUtil.createHDApi(IUserHDApi.class).sendHeartBpm(Arrays.asList(bpm)).enqueue(new ApiCallBack<String>(view.getContext()){
+            ApiUtil.createHDApi(IUserHDApi.class).sendHeartBpm(Arrays.asList(bpm)).enqueue(new ApiCallBack<String>(view.getContext()) {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     super.onResponse(call, response);

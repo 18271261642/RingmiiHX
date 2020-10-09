@@ -52,6 +52,8 @@
     <string name="FORAET">Fora temp</string>
     <string name="MEDCHECKBLU">MEDCHECK Glucose</string>
     <string name="MEDCHECKPRE">MEDCHECK Pressure</string>
+    <string name="Multi_health_data">Multi-health Data</string>
+    <string name="data_level">Data Level</string>
     <string name="zy_download_tips">Downloading, please be patient...</string>
     <string name="custom_next">Next</string>
            <!--wuweikang-->

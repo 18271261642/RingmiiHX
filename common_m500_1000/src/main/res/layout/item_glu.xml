@@ -12,7 +12,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_49"
+        android:layout_marginTop="@dimen/dp_60"
         android:text="@string/bp"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_15"

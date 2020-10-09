@@ -41,7 +41,7 @@
 
     <string name="normal">正常</string>
     <string name="abnormal">異常</string>
-    <string name="abnormal_glu">異常≥7mmol/L</string>
+    <string name="abnormal_glu">異常≥7</string>
 
     <string name="fpg">清晨空腹</string>
     <string name="fpg_">清晨空腹:</string>

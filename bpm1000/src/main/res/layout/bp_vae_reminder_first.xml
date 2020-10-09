@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_80"
-            android:layout_marginEnd="@dimen/dp_80"
             android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginEnd="@dimen/dp_80"
             android:orientation="vertical">
 
 
@@ -56,8 +56,8 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_204"
-                        android:layout_height="@dimen/dp_148"
+                        android:layout_width="@dimen/dp_150"
+                        android:layout_height="@dimen/dp_100"
                         android:background="@mipmap/icon_01" />
 
                     <TextView
@@ -67,7 +67,7 @@
                         android:lineSpacingExtra="@dimen/dp_5"
                         android:text="@string/bp_ave_reminder_first_1"
                         android:textColor="#171717"
-                        android:textSize="@dimen/sp_21" />
+                        android:textSize="@dimen/sp_15" />
 
                 </LinearLayout>
 
@@ -75,13 +75,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_100"
+                    android:layout_marginStart="@dimen/dp_80"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_204"
-                        android:layout_height="@dimen/dp_148"
+                        android:layout_width="@dimen/dp_180"
+                        android:layout_height="@dimen/dp_100"
                         android:background="@mipmap/icon_02" />
 
                     <TextView
@@ -91,7 +91,7 @@
                         android:lineSpacingExtra="@dimen/dp_5"
                         android:text="@string/bp_ave_reminder_first_2"
                         android:textColor="#171717"
-                        android:textSize="@dimen/sp_21" />
+                        android:textSize="@dimen/sp_15" />
 
                 </LinearLayout>
 
@@ -99,7 +99,7 @@
 
             <Button
                 android:id="@+id/bp_vae_next"
-                android:layout_width="@dimen/dp_394"
+                android:layout_width="@dimen/dp_134"
                 android:layout_height="@dimen/dp_44"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_13"
@@ -109,6 +109,7 @@
                 android:textColor="#ffffff"
                 android:textSize="@dimen/sp_19"
                 android:visibility="visible" />
+
 
         </LinearLayout>
     </ScrollView>

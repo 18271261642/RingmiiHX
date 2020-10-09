@@ -14,8 +14,8 @@ public class UnitUtil {
         Locale locale = context.getResources().getConfiguration().locale;
         String language = locale.getCountry().toLowerCase();
         if (language.contains("tw"))
-            return new UnitImpl(new UnitCN());
-        else
             return new UnitImpl(new UnitTW());
+        else
+            return new UnitImpl(new UnitCN());
     }
 }

@@ -117,7 +117,7 @@ public class GLUChooseTime extends GLUFragment {
         IUnit iUnit = UnitUtil.getIUnit(_mActivity);
         // 异常单选框
         TextView tvGluUnit = view.findViewById(R.id.glu_abnormal_textview);
-        String unit = iUnit.getGluShowValue(7, 2) + iUnit.getGluUnit();
+        String unit = iUnit.getGluShowValue(7, 2) + "";
         tvGluUnit.setText(tvGluUnit.getText().toString().replace("7mmol/L", unit));
         // 异常输入单位
         TextView tvGluInputUnit = view.findViewById(R.id.tv_abnormal_input_unit);

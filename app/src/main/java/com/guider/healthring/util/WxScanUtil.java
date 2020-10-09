@@ -5,6 +5,7 @@ import android.content.Context;
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.IGuiderApi;
+import com.guider.health.common.BuildConfig;
 import com.guider.health.common.utils.AppUtils;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import retrofit2.Response;
 public class WxScanUtil {
     public static <T> boolean handle(Context context, long accountId, IWxScan iWxScan) {
         // 1 检测微信是否安装
-        if (!AppUtils.isWeixinAvilible(context))
+        if (!(AppUtils.isWeixinAvilible(context) || BuildConfig.DEBUG))
             return false;
         // 2. 若微信安装访问后台接口
         ApiUtil.createApi(IGuiderApi.class)

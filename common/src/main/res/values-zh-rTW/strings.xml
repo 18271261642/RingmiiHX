@@ -52,6 +52,8 @@
     <string name="FORAET">福爾耳溫</string>
     <string name="MEDCHECKBLU">MEDCHECK血糖</string>
     <string name="MEDCHECKPRE">MEDCHECK血壓</string>
+    <string name="Multi_health_data">多健康數據</string>
+    <string name="data_level">數據水平</string>
     <string name="zy_download_tips">正在下載中 , 請耐心等待...</string>
         <!-- wuweikang -->
         

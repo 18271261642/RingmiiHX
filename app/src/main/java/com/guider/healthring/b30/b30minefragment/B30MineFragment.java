@@ -5,15 +5,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -61,7 +64,7 @@ import java.util.ArrayList;
 /**
  * B30 我的界面
  */
-public class B30MineFragment extends LazyFragment implements RequestView,View.OnClickListener {
+public class B30MineFragment extends LazyFragment implements RequestView, View.OnClickListener {
     private static final String TAG = "B30MineFragment";
     View b30MineView;
 
@@ -160,19 +163,20 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
     //获取盖德的用户信息
     private void getGadiDeUserInfoData() {
         try {
-            long accountId = (long) SharedPreferencesUtils.getParam(getContext(),"accountIdGD",0L);
-            if(accountId == 0)
+            long accountId = (long) SharedPreferencesUtils.getParam(getContext(), "accountIdGD", 0L);
+            if (accountId == 0)
                 return;
             // http://api.guiderhealth.com/
-            String guiderUrl = BuildConfig.APIURL + "api/v1/userinfo?accountId="+accountId;
-            if(requestPressent != null){
-                requestPressent.getRequestJSONObjectGet(11,guiderUrl,getContext(),11);
+            String guiderUrl = BuildConfig.APIURL + "api/v1/userinfo?accountId=" + accountId;
+            if (requestPressent != null) {
+                requestPressent.getRequestJSONObjectGet(11, guiderUrl, getContext(), 11);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
     private void initViews() {
         commentB30TitleTv.setText(getResources().getString(R.string.menu_settings));
 
@@ -273,7 +277,7 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
                 longOutApp();
                 break;
             case R.id.bemoRel:
-                startActivity(new Intent(getActivity(),BemoSwitchActivity.class));
+                startActivity(new Intent(getActivity(), BemoSwitchActivity.class));
             case R.id.rl_family: // 我的家人 https://app.guiderhealth.com/
                 startWebviewActivity(BuildConfig.WEBDOMAIN + "#/family");
                 break;
@@ -318,7 +322,7 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
 
     //开关设置
     private void setSwitchCheck() {
-        if(MyCommandManager.DEVICENAME == null)
+        if (MyCommandManager.DEVICENAME == null)
             return;
         showLoadingDialog("loading...");
 
@@ -362,7 +366,7 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
             isOpenSOS = EFunctionStatus.SUPPORT_CLOSE;
         }
 
-        Log.i("bbbbbbbbo" , "B31MineFragment");
+        Log.i("bbbbbbbbo", "B31MineFragment");
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 isAutomaticBoold, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);
@@ -427,8 +431,7 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
                                 }
                             }
                         });
-                    }
-                    else {
+                    } else {
                         MyCommandManager.DEVICENAME = null;
                         MyCommandManager.ADDRESS = null;
                         SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
@@ -575,7 +578,7 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
      */
     void readDevicesSwithStute() {
         Log.e(TAG, "HRV-----Spo同步状态 " + ReadHRVSoDataForDevices.isUpdataHRV() + " == " + ReadHRVSoDataForDevices.isUpdataO2O());
-        if(MyCommandManager.DEVICENAME == null)
+        if (MyCommandManager.DEVICENAME == null)
             return;
         if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)
                 && MyCommandManager.DEVICENAME.equals("500S")
@@ -668,9 +671,9 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
 
     @Override
     public void successData(int what, Object object, int daystag) {
-        if(object == null)
+        if (object == null)
             return;
-        if(what == 11){
+        if (what == 11) {
             showGaideUserInfo(object.toString());
         }
     }
@@ -685,28 +688,27 @@ public class B30MineFragment extends LazyFragment implements RequestView,View.On
 
     }
 
-    private void showGaideUserInfo(String userStr){
-        if(WatchUtils.isNetRequestSuccess(userStr,0)){
+    private void showGaideUserInfo(String userStr) {
+        if (WatchUtils.isNetRequestSuccess(userStr, 0)) {
             try {
                 JSONObject jsonObject = new JSONObject(userStr);
                 String dataStr = jsonObject.getString("data");
                 GuiderUserInfo guiderUserInfo = gson.fromJson(dataStr, GuiderUserInfo.class);
-                if(guiderUserInfo == null)
+                if (guiderUserInfo == null)
                     return;
 
                 //头像
                 //mineLogoIv
                 String hearUrl = guiderUserInfo.getHeadUrl();
-                if(hearUrl != null){
-                    RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true);
+                if (hearUrl != null) {
+                    RequestOptions mRequestOptions = RequestOptions.circleCropTransform();
                     Glide.with(this).load(hearUrl).apply(mRequestOptions).into(b30UserImageHead);//头像
                 }
                 // 用户名
                 String name = guiderUserInfo.getName();
                 b30UserNameTv.setText(name);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
