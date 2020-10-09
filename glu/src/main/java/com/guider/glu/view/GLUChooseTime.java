@@ -92,8 +92,8 @@ public class GLUChooseTime extends GLUFragment {
         String weight = mWeight.getText().toString().trim();
         String height = mHeight.getText().toString().trim();
         if (!"".equals(weight) && !"".equals(height)) {
-            UserManager.getInstance().setWeight(Integer.valueOf(weight));
-            UserManager.getInstance().setHeight(Integer.valueOf(height));
+            UserManager.getInstance().setWeight(Integer.parseInt(weight));
+            UserManager.getInstance().setHeight(Integer.parseInt(height));
             UserManager.getInstance().synchronizeInfo(_mActivity);
         }
     }
@@ -118,7 +118,7 @@ public class GLUChooseTime extends GLUFragment {
         // 异常单选框
         TextView tvGluUnit = view.findViewById(R.id.glu_abnormal_textview);
         String unit = iUnit.getGluShowValue(7, 2) + "";
-        tvGluUnit.setText(tvGluUnit.getText().toString().replace("7mmol/L", unit));
+        tvGluUnit.setText(tvGluUnit.getText().toString().replace("7", unit));
         // 异常输入单位
         TextView tvGluInputUnit = view.findViewById(R.id.tv_abnormal_input_unit);
         tvGluInputUnit.setText(tvGluInputUnit.getText().toString().replace("mmol/L",
@@ -242,6 +242,7 @@ public class GLUChooseTime extends GLUFragment {
                 IUnit iUnit1 = UnitUtil.getIUnit(_mActivity);
                 double value = iUnit1.getGluShowValue(BodyIndex.getInstance().getValue(), 2);
                 input_glu_value.setText(value + "");
+                String diabetesType = BodyIndex.getInstance().getDiabetesType();
                 if ("".equals(BodyIndex.getInstance().getDiabetesType())) {
                     // 后台返回这个用户有糖尿病
                     leftCheckBox.setChecked(false);
