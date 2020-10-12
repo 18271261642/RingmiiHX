@@ -1,11 +1,7 @@
 package com.guider.glu.view;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -13,11 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.guider.glu.R;
 import com.guider.glu.model.BodyIndex;
@@ -98,7 +95,7 @@ public class GLUChooseTime extends GLUFragment {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "InflateParams"})
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -160,23 +157,11 @@ public class GLUChooseTime extends GLUFragment {
 
                 BodyIndex.getInstance().setEatmedicine(true);
 
-                if ("0".equals(BodyIndex.getInstance().getSulphonylureasState())) {
-                    toogle_2.setChecked(false);
-                } else {
-                    toogle_2.setChecked(true);
-                }
+                toogle_2.setChecked(!"0".equals(BodyIndex.getInstance().getSulphonylureasState()));
 
-                if ("0".equals(BodyIndex.getInstance().getBiguanidesState())) {
-                    toogle_3.setChecked(false);
-                } else {
-                    toogle_3.setChecked(true);
-                }
+                toogle_3.setChecked(!"0".equals(BodyIndex.getInstance().getBiguanidesState()));
 
-                if ("0".equals(BodyIndex.getInstance().getGlucosedesesSate())) {
-                    toogle_4.setChecked(false);
-                } else {
-                    toogle_4.setChecked(true);
-                }
+                toogle_4.setChecked(!"0".equals(BodyIndex.getInstance().getGlucosedesesSate()));
 
             }
         });
@@ -291,9 +276,8 @@ public class GLUChooseTime extends GLUFragment {
                     }
 
                 }
-            } else {
-//                    Toast.makeText(_mActivity, re, Toast.LENGTH_SHORT).show();
             }
+
 
             hideDialog();
 

@@ -36,9 +36,9 @@
     public static final String DEV_ECG_HD = "device_hdv100";
     public static final String DEV_FORA_GLU = "FORA GD40bv100";
     -->
-    <string name="CmateHv100">Six-lead ECG measurement</string>
+    <string name="CmateHv100">Six-lead ECG</string>
     <string name="BDE_WEIXIN_TTMv100">Non-invasive blood glucose measurement</string>
-    <string name="FORAP30PLUSv100">Arm blood pressure measurement</string>
+    <string name="FORAP30PLUSv100">FORA Pressure measurement</string>
     <string name="CXBPv100">Boom tube blood pressure measurement</string>
     <string name="YFKJv100">Arteriosclerosis measurement</string>
     <string name="AVE2000v100">Arteriosclerosis measurement</string>
@@ -52,7 +52,7 @@
     <string name="FORAET">Fora temp</string>
     <string name="MEDCHECKBLU">MEDCHECK Glucose</string>
     <string name="MEDCHECKPRE">MEDCHECK Pressure</string>
-    <string name="Multi_health_data">Multi-health Data</string>
+    <string name="Multi_health_data">Noninvasive Data</string>
     <string name="data_level">Data Level</string>
     <string name="zy_download_tips">Downloading, please be patient...</string>
 

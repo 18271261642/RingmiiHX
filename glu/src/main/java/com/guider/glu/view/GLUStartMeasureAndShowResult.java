@@ -1,5 +1,6 @@
 package com.guider.glu.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -200,6 +201,7 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void measureErrorAndCloseBlueConnect() {
         if (myAlphaAnimation != null) {
@@ -207,19 +209,16 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
         }
 
 
-        _mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                promp.setText(promp.getText().toString() + "\n" + getResources().getString(R.string.reboot_device));
-                promp.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                view.findViewById(R.id.loadinglayout).setVisibility(View.GONE);
-                view.findViewById(R.id.glu_touch_tip).setVisibility(View.GONE);
-                view.findViewById(R.id.tip_icon).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.glu_cancel).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.loadingroot).setVisibility(View.VISIBLE);
-                Toast.makeText(_mActivity, getResources().getString(R.string.test_error), Toast.LENGTH_SHORT).show();
+        _mActivity.runOnUiThread(() -> {
+            promp.setText(promp.getText().toString() + "\n" + getResources().getString(R.string.reboot_device));
+            promp.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            view.findViewById(R.id.loadinglayout).setVisibility(View.GONE);
+            view.findViewById(R.id.glu_touch_tip).setVisibility(View.GONE);
+            view.findViewById(R.id.tip_icon).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.glu_cancel).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.loadingroot).setVisibility(View.VISIBLE);
+            Toast.makeText(_mActivity, getResources().getString(R.string.test_error), Toast.LENGTH_SHORT).show();
 
-            }
         });
     }
 

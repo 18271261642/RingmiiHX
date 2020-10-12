@@ -36,9 +36,9 @@
     public static final String DEV_ECG_HD = "device_hdv100";
     public static final String DEV_FORA_GLU = "FORA GD40bv100";
     -->
-    <string name="CmateHv100">六導心電測量</string>
+    <string name="CmateHv100">六導心電</string>
     <string name="BDE_WEIXIN_TTMv100">無創血糖測量</string>
-    <string name="FORAP30PLUSv100">臂式血壓測量</string>
+    <string name="FORAP30PLUSv100">福爾血壓</string>
     <string name="CXBPv100">臂筒式血壓測量</string>
     <string name="YFKJv100">動脈硬化測量</string>
     <string name="AVE2000v100">動脈硬化測量</string>
@@ -52,7 +52,7 @@
     <string name="FORAET">福爾耳溫</string>
     <string name="MEDCHECKBLU">MEDCHECK血糖</string>
     <string name="MEDCHECKPRE">MEDCHECK血压</string>
-    <string name="Multi_health_data">多健康数据</string>
+    <string name="Multi_health_data">无创数据</string>
     <string name="data_level">数据水平</string>
     <string name="zy_download_tips">正在下載中 , 請耐心等待...</string>
 </resources>

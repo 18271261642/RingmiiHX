@@ -3,11 +3,14 @@ package com.guider.healthring.commdbserver;
 import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.os.Environment;
+
 import androidx.annotation.Nullable;
+
+import android.os.Environment;
 import android.util.Log;
 
 import com.arialyy.aria.util.NetUtils;
+import com.guider.health.common.utils.FileDirUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.siswatch.utils.WatchUtils;
@@ -36,7 +39,7 @@ public class UploadCommDbServices extends IntentService {
 
     static String filtPath = Environment.getExternalStorageDirectory()+"/DCIM/";
 
-
+//    static String filePath = FileDirUtil.INSTANCE.getExternalFileDir(MyApp.getContext());
     private String bleName = null;
     private Gson gson = new Gson();
     //bac地址
@@ -62,7 +65,6 @@ public class UploadCommDbServices extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-
         //查询步数
         findAllUploadData();
         //查询心率
@@ -378,7 +380,8 @@ public class UploadCommDbServices extends IntentService {
             @Override
             public void onResult(String result) {
 //                Log.e(TAG,"-------下载步数返回="+result);
-                new GetJsonDataUtil().writeTxtToFile("步数下载返回"+result,filtPath,"downStep.json");
+
+                new GetJsonDataUtil().writeTxtToFile("步数下载返回"+result, filtPath,"downStep.json");
                 //downloadCountStepListener.allCountStep(result);
                 if (WatchUtils.isEmpty(result))
                     return;

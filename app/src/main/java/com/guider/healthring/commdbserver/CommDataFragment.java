@@ -248,9 +248,6 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
         String startDay;
 
         switch (code) {
-            case 0x00:
-                startDay = WatchUtils.obtainFormatDate(6);
-                break;
             case 0x01:
                 startDay = WatchUtils.obtainFormatDate(29);
                 break;
@@ -513,12 +510,7 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
                 heartValues.clear();
                 heartXList.clear();
                 //排序，
-                Collections.sort(heartDb, new Comparator<CommDownloadDb>() {
-                    @Override
-                    public int compare(CommDownloadDb o1, CommDownloadDb o2) {
-                        return o1.getDateStr().compareTo(o2.getDateStr());
-                    }
-                });
+                Collections.sort(heartDb, (o1, o2) -> o1.getDateStr().compareTo(o2.getDateStr()));
 
                 //用于计算年的，每个月总心率
                 int sum = 0;
@@ -530,7 +522,7 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
                 Map<String, Integer> countMap = new HashMap<>();
 
                 for (CommDownloadDb commDownloadDb : heartDb) {
-                    int stepNumber = Integer.valueOf(commDownloadDb.getStepNumber());
+                    int stepNumber = Integer.parseInt(commDownloadDb.getStepNumber());
                     String dateStr = commDownloadDb.getDateStr();
                     if (code == 0x02) {   //年
                         String strDate = dateStr.substring(2, 7); //显示 yy-MM
@@ -594,91 +586,88 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
     //步数的计算
     private void analysisStepData(final List<CommDownloadDb> stepDb, final int code) {
 //        Log.e(TAG,"-----------stepCountDb--------下载步数大小="+stepDb.size());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //排序，
-                Collections.sort(stepDb, new Comparator<CommDownloadDb>() {
+        new Thread(() -> {
+            //排序，
+            Collections.sort(stepDb, new Comparator<CommDownloadDb>() {
+                @Override
+                public int compare(CommDownloadDb o1, CommDownloadDb o2) {
+                    return o1.getDateStr().compareTo(o2.getDateStr());
+                }
+            });
+
+            //用于计算年的，每个月总步数
+            int sum = 0;
+            //每个月有步数的天数
+            int count = 0;
+            //日期和总步数的map
+            Map<String, Integer> stepNumberMap = new HashMap<>();
+            //日期和总次数的map
+            Map<String, Integer> countMap = new HashMap<>();
+
+            for (CommDownloadDb commDownloadDb : stepDb) {
+                int stepNumber = Integer.parseInt(commDownloadDb.getStepNumber());
+                String dateStr = commDownloadDb.getDateStr();
+                if (code == 0x02) {   //年
+//                        Log.e(TAG,"----------commDownloadDb="+commDownloadDb.toString());
+                    String strDate = dateStr.substring(2, 7); //显示 yy-MM
+                    if (stepNumberMap.get(strDate) != null) {
+                        if (stepNumber != 0) {
+                            count++;
+                            sum += stepNumber;
+                        }
+                    } else {
+                        if (stepNumber != 0) {
+                            count = 1;
+                            sum += stepNumber;
+                        }
+                    }
+
+                    //Log.e(TAG,"-----sum="+sum+"--count="+count);
+
+                    //保存日期和步数的map  key:yy-mm ;value : 总步数
+                    stepNumberMap.put(strDate, sum);
+                    countMap.put(strDate, count);
+
+                    // showStepsChat(mValues,xStepList);
+
+                } else {
+                    mValues.add(stepNumber);
+                    xStepList.add(dateStr.substring(5, dateStr.length()));
+
+                }
+
+            }
+
+            if (code == 0x02) {   //年
+                //遍历map，得到日期
+                for (Map.Entry<String, Integer> mp : stepNumberMap.entrySet()) {
+                    xStepList.add(mp.getKey().trim());
+                }
+
+                Collections.sort(xStepList, new Comparator<String>() {
                     @Override
-                    public int compare(CommDownloadDb o1, CommDownloadDb o2) {
-                        return o1.getDateStr().compareTo(o2.getDateStr());
+                    public int compare(String o1, String o2) {
+                        return o1.compareTo(o2);
                     }
                 });
 
-                //用于计算年的，每个月总步数
-                int sum = 0;
-                //每个月有步数的天数
-                int count = 0;
-                //日期和总步数的map
-                Map<String, Integer> stepNumberMap = new HashMap<>();
-                //日期和总次数的map
-                Map<String, Integer> countMap = new HashMap<>();
-
-                for (CommDownloadDb commDownloadDb : stepDb) {
-                    int stepNumber = Integer.valueOf(commDownloadDb.getStepNumber());
-                    String dateStr = commDownloadDb.getDateStr();
-                    if (code == 0x02) {   //年
-//                        Log.e(TAG,"----------commDownloadDb="+commDownloadDb.toString());
-                        String strDate = dateStr.substring(2, 7); //显示 yy-MM
-                        if (stepNumberMap.get(strDate) != null) {
-                            if (stepNumber != 0) {
-                                count++;
-                                sum += stepNumber;
-                            }
-                        } else {
-                            if (stepNumber != 0) {
-                                count = 1;
-                                sum += stepNumber;
-                            }
-                        }
-
-                        //Log.e(TAG,"-----sum="+sum+"--count="+count);
-
-                        //保存日期和步数的map  key:yy-mm ;value : 总步数
-                        stepNumberMap.put(strDate, sum);
-                        countMap.put(strDate, count);
-
-                        // showStepsChat(mValues,xStepList);
-
-                    } else {
-                        mValues.add(stepNumber);
-                        xStepList.add(dateStr.substring(5, dateStr.length()));
-
-                    }
+                //遍历日期，排序
+                for (int i = 0; i < xStepList.size(); i++) {
+                    //每个月有数据的总次数
+                    int couontStr = countMap.get(xStepList.get(i));
+                    //Log.e(TAG,"----------couontStr="+couontStr);
+                    //步数
+                    int countStep = stepNumberMap.get(xStepList.get(i));
+                    //Log.e(TAG,"-------countStep="+countStep);
+                    //每个月的平均步数
+                    int avgStep = countStep / (couontStr == 0 ? 1 : couontStr);
+                    //Log.e(TAG,"-------avgStep="+avgStep);
+                    mValues.add(avgStep);
 
                 }
 
-                if (code == 0x02) {   //年
-                    //遍历map，得到日期
-                    for (Map.Entry<String, Integer> mp : stepNumberMap.entrySet()) {
-                        xStepList.add(mp.getKey().trim());
-                    }
-
-                    Collections.sort(xStepList, new Comparator<String>() {
-                        @Override
-                        public int compare(String o1, String o2) {
-                            return o1.compareTo(o2);
-                        }
-                    });
-
-                    //遍历日期，排序
-                    for (int i = 0; i < xStepList.size(); i++) {
-                        //每个月有数据的总次数
-                        int couontStr = countMap.get(xStepList.get(i));
-                        //Log.e(TAG,"----------couontStr="+couontStr);
-                        //步数
-                        int countStep = stepNumberMap.get(xStepList.get(i));
-                        //Log.e(TAG,"-------countStep="+countStep);
-                        //每个月的平均步数
-                        int avgStep = countStep / (couontStr == 0 ? 1 : couontStr);
-                        //Log.e(TAG,"-------avgStep="+avgStep);
-                        mValues.add(avgStep);
-
-                    }
-
-                }
-                handler.sendEmptyMessage(0x01);
             }
+            handler.sendEmptyMessage(0x01);
         }).start();
     }
 

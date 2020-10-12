@@ -266,6 +266,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
     }
 
 
+    @SuppressLint("WrongConstant")
     private void initViews() {
 //        tvTitle.setText(R.string.personal_info);
         findViewById(R.id.personal_info_back).setOnClickListener(new View.OnClickListener() {
@@ -413,6 +414,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                 URLs.HTTPs + URLs.getUserInfo, mapjson);
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
         String userId = (String) SharedPreferencesUtils.readObject(MyPersonalActivity.this, "userId");
@@ -431,17 +433,11 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                                 .runtime()
                                 .permission(Manifest.permission.CAMERA,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                .onGranted(new Action<List<String>>() {
-                                    @Override
-                                    public void onAction(List<String> data) {
+                                .onGranted(data -> {
 
-                                    }
                                 })
-                                .onDenied(new Action<List<String>>() {
-                                    @Override
-                                    public void onAction(List<String> data) {
+                                .onDenied(data -> {
 
-                                    }
                                 }).start();
 
                     }

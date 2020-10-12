@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="@dimen/dp_182"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/dp_200"
     android:background="@mipmap/long_icon2"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -12,7 +12,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_49"
+        android:layout_marginTop="@dimen/dp_30"
         android:text="@string/ecg"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_15"
@@ -55,23 +55,23 @@
         </LinearLayout>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/result"
             android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/jielun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_6"
             android:gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textColor="#ffffff"
             android:textSize="@dimen/sp_16" />
 

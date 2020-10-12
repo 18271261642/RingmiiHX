@@ -148,10 +148,10 @@
                         android:id="@+id/ecg_operat_reminders"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:text="@string/ecg_tips3"
                         android:textColor="#171717"
-                        android:textSize="@dimen/sp_21" />
+                        android:textSize="@dimen/sp_19" />
 
                     <Button
                         android:id="@+id/ecg_bt_start_measure"

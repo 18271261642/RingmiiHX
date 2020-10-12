@@ -9,24 +9,29 @@
 
     <include layout="@layout/device_head" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
         <LinearLayout
-            style="@style/myBodyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_50"
+            android:layout_marginEnd="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
             android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="@dimen/dp_720"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_gravity="center_horizontal">
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dp_5"
                     android:scrollbars="none">
 
                     <com.guider.health.adapter.ResultListView
@@ -54,6 +59,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_44"
                     android:layout_weight="1"
+                    android:layout_marginStart="@dimen/dp_20"
                     android:background="@drawable/button_cancel"
                     android:text="@string/end_measurement"
                     android:textColor="#ffffff"
@@ -65,6 +71,7 @@
                     android:layout_height="@dimen/dp_44"
                     android:layout_marginLeft="@dimen/dp_32"
                     android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/dp_20"
                     android:background="@drawable/button_back"
                     android:text="@string/remeasure"
                     android:textColor="#F18937"
@@ -97,7 +104,7 @@
 
 
         </LinearLayout>
-    </ScrollView>
+<!--    </ScrollView>-->
 
 
 </LinearLayout>

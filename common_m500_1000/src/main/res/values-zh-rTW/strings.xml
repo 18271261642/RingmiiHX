@@ -31,7 +31,7 @@
     <string name="glu">血糖</string>
     <string name="test_result">測量結果</string>
     <string name="fora_glu_reminder_title">福爾血糖測量提示</string>
-    <string name="fora_glu_tips">1. 請按長M鍵打開機器\n\n2. 請將試紙吸血後插入插槽\n\n3. 請下滑左側按鍵打開藍牙，此時左上角藍燈亮起</string>
+    <string name="fora_glu_tips">1. 請按長M鍵打開機器\n2. 請將試紙吸血後插入插槽\n3. 請下滑左側按鍵打開藍牙，此時左上角藍燈亮起</string>
     <string name="start_test">開始測量</string>
     <string name="fora_glu_start_tips">測量開始</string>
     <string name="restart_test">重新開始測量</string>
@@ -40,12 +40,12 @@
 
     <string name="fora_bo_reminder_title">福爾血氧測量提示</string>
     <string name="fora_bo_reult_format">您的血氧值為：\n%d</string>
-    <string name="fora_bo_tips">1. 請按右側電源鍵開機\n\n2. 請將手指伸入血氧夾\n\n3. 待屏幕出現數值請點擊下方\"開始測量\"按鈕</string>
+    <string name="fora_bo_tips">1. 請按右側電源鍵開機\n2. 請將手指伸入血氧夾\n3. 待屏幕出現數值請點擊下方\"開始測量\"按鈕</string>
     <string name="fora_bo_redult_title">福爾血氧測量結果</string>
 
     <string name="fora_et_reminder_title">福爾耳溫測量提示</string>
     <string name="fora_et_reult_format">您的耳溫值為：\n%.2f°C</string>
-    <string name="fora_et_tips">1. 請按屏幕下方按鈕開機\n\n2. 請按耳溫儀背部按鈕確定溫度\n\n3. 待聽到響聲點擊下方\"開始測量\"按鈕</string>
+    <string name="fora_et_tips">1. 請按屏幕下方按鈕開機\n2. 請按耳溫儀背部按鈕確定溫度\n3. 待聽到響聲點擊下方\"開始測量\"按鈕</string>
     <string name="fora_et_redult_title">福爾耳溫測量結果</string>
 
     <string name="medcheck_glu_reminder_title">MEDCHECK血糖測量提示</string>

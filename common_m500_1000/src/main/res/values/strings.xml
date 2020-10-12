@@ -31,7 +31,7 @@
     <string name="glu">Blood sugar</string>
     <string name="test_result">Results</string>
     <string name="fora_glu_reminder_title">Measurement tips</string>
-    <string name="fora_glu_tips">1. Press the long M key to turn on the machine \n \n2. Please insert the test paper into the slot after sucking blood \n \n3. Please slide the left button to turn on the Bluetooth, and the blue light on the upper left corner is on</string>
+    <string name="fora_glu_tips">1. Press the long M key to turn on the machine \n 2. Please insert the test paper into the slot after sucking blood \n 3. Please slide the left button to turn on the Bluetooth, and the blue light on the upper left corner is on</string>
     <string name="start_test">Start measuring</string>
     <string name="fora_glu_start_tips">Measurement starts</string>
     <string name="restart_test">Restart measurement</string>
@@ -40,12 +40,12 @@
 
     <string name="fora_bo_reminder_title">Measurement Tips</string>
     <string name="fora_bo_reult_format">Your blood oxygen value：\n%d </string>
-    <string name="fora_bo_tips">1. Press the power button on the right to turn on\n\n2. Please put your finger into the blood oxygen clip\n\n3. When the value appears on the screen, please click the \"Start Measurement\" button below</string>
+    <string name="fora_bo_tips">1. Press the power button on the right to turn on\n2. Please put your finger into the blood oxygen clip\n3. When the value appears on the screen, please click the \"Start Measurement\" button below</string>
     <string name="fora_bo_redult_title">Measurement Results</string>
 
     <string name="fora_et_reminder_title">Measurement Tips</string>
     <string name="fora_et_reult_format">Your body temp value：\n%.2f°C</string>
-    <string name="fora_et_tips">1. Press the button at the bottom of the screen to power on\n\n2. Press the button on the back of the ear thermometer to determine the temperature\n\n3. When you hear the sound, click the \"Start Measurement\" button below</string>
+    <string name="fora_et_tips">1. Press the button at the bottom of the screen to power on\n2. Press the button on the back of the ear thermometer to determine the temperature\n3. When you hear the sound, click the \"Start Measurement\" button below</string>
     <string name="fora_et_redult_title">Measurement Results</string>
 
     <string name="medcheck_glu_reminder_title">Measurement Tips</string>

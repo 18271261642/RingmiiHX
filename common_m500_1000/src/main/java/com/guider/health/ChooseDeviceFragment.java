@@ -147,7 +147,7 @@ public class ChooseDeviceFragment extends BaseFragment {
         view.findViewById(R.id.middle_line).setVisibility(View.GONE);
         view.findViewById(R.id.home).setVisibility(View.GONE);
         ((TextView) view.findViewById(R.id.title)).setText(
-                getResources().getString(R.string.choose_device));
+                _mActivity.getResources().getString(R.string.choose_device));
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +158,7 @@ public class ChooseDeviceFragment extends BaseFragment {
         if (recyclerView == null) {
             recyclerView = view.findViewById(R.id.recycler_view);
             LinearLayoutManager layoutManager = new LinearLayoutManager(
-                    _mActivity,LinearLayoutManager.HORIZONTAL,false);
+                    _mActivity, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
             normalAdapter = new NormalAdapter();
             recyclerView.setAdapter(normalAdapter);
@@ -238,7 +238,7 @@ public class ChooseDeviceFragment extends BaseFragment {
         Toast.makeText(_mActivity, getResources().getString(R.string.choose_tips_pre)
                 + RouterPathManager.Devices.size()
                 + getResources().getString(R.string.choose_tips_tail), Toast.LENGTH_LONG).show();
-
+        if (RouterPathManager.Devices.isEmpty()) return;
         String fragmentPath = RouterPathManager.Devices.remove();
         if (fragmentPath != null) {
 

@@ -2,19 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/background_all"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <include layout="@layout/device_head" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_80"
             android:layout_marginEnd="@dimen/dp_80"
             android:layout_marginTop="@dimen/dp_15"
@@ -110,19 +111,22 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_20"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dp_20"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/contentLayout"
                     android:orientation="vertical">
 
                     <TextView
@@ -162,17 +166,22 @@
 
                 <TextView
                     android:id="@+id/operat_reminders"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/dp_50"
                     android:layout_marginTop="@dimen/dp_20"
                     android:text="@string/xueyashuoming"
                     android:textColor="#ACACAC"
                     android:textSize="@dimen/sp_15" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-    </ScrollView>
+<!--    </ScrollView>-->
 
 
 </LinearLayout>

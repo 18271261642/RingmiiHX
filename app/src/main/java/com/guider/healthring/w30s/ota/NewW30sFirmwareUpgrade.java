@@ -361,8 +361,8 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
                     Log.e(TAG,"---upDataStringUrl--="+upDataStringUrl);
                     Aria.download(this)
                             .load(String.valueOf(upDataStringUrl))     //读取下载地址
-                            .setFilePath(FileStringPath) //设置文件保存的完整路径
-                            .create();//启动下载
+                            .setDownloadPath(FileStringPath) //设置文件保存的完整路径
+                            .start();   //启动下载
                 }else{
                     W30SBleUtils.isOtaConn = false;
                     btnStartUp.setEnabled(false);//默认禁止点击
@@ -701,7 +701,7 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
                                         Aria.download(this)
                                                 .load(String.valueOf(upDataStringUrl))     //读取下载地址
                                                 .setFilePath(FileStringPath) //设置文件保存的完整路径
-                                                .create();   //启动下载
+                                                .start();   //启动下载
                                     } else {
                                         Log.e(TAG,"----4444----");
                                         //获取网络的版本
@@ -744,7 +744,7 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
                             Aria.download(this)
                                     .load(String.valueOf(upDataStringUrl))     //读取下载地址
                                     .setFilePath(FileStringPath) //设置文件保存的完整路径
-                                    .create();   //启动下载
+                                    .start();   //启动下载
                         } else {
                             getNetWorke();
                         }

@@ -23,6 +23,8 @@ import com.guider.health.common.net.NetStateController;
 import com.guider.health.common.net.net.RestService;
 import com.guider.health.common.net.net.RetrofitLogInterceptor;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -340,11 +342,11 @@ public class GLUServiceManager {
 
                             //unTake == false 是吃药了
                             BodyIndex.getInstance().setEatmedicine(!data.getBoolean("unTake"));
-                            BodyIndex.getInstance().setGlucosedesesSate(data.getBoolean("enzyme") == false ? "0" : "1");
-                            BodyIndex.getInstance().setBiguanidesState(data.getBoolean("phmb") == false ? "0" : "1");
-                            BodyIndex.getInstance().setSulphonylureasState(data.getBoolean("urea") == false ? "0" : "1");
+                            BodyIndex.getInstance().setGlucosedesesSate(!data.getBoolean("enzyme") ? "0" : "1");
+                            BodyIndex.getInstance().setBiguanidesState(!data.getBoolean("phmb") ? "0" : "1");
+                            BodyIndex.getInstance().setSulphonylureasState(!data.getBoolean("urea") ? "0" : "1");
                             //abnormal == flase 为展示页面
-                            BodyIndex.getInstance().setDiabetesType(data.getBoolean("abnormal") == true ? "" : BodyIndex.Normal);
+                            BodyIndex.getInstance().setDiabetesType(data.getBoolean("abnormal") ? "" : BodyIndex.Normal);
                             BodyIndex.getInstance().setCreateTime(data.getString("createTime"));
                             BodyIndex.getInstance().setUpdateTime(data.getString("updateTime"));
                             BodyIndex.getInstance().setValue(data.getFloat("value"));
@@ -365,7 +367,7 @@ public class GLUServiceManager {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
 
                     operatorCallBack.result(1, "失败");
                 }

@@ -35,7 +35,8 @@ public class SmsMob {
                             @Override
                             public void run() {
                                 if (!onError(data)) {
-                                    mSmsCodeVerifyListener.onResult(0);
+                                    if (mSmsCodeVerifyListener != null)
+                                        mSmsCodeVerifyListener.onResult(0);
                                 }
                             }
                         });
@@ -81,7 +82,8 @@ public class SmsMob {
                     } else {
                         msg = codeBean.error;
                     }
-                    mSmsCodeVerifyListener.onResult(status);
+                    if (mSmsCodeVerifyListener != null)
+                        mSmsCodeVerifyListener.onResult(status);
                     ToastUtil.showLong(mContext, msg);
                 }
             }
@@ -107,7 +109,7 @@ public class SmsMob {
         SMSSDK.unregisterEventHandler(eventHandler);
     }
 
-    public static String  getTempCode(String country) {
+    public static String getTempCode(String country) {
         if (country.trim().startsWith("+"))
             country = country.trim().replace("+", "");
         String tempCode = "4004692";

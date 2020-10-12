@@ -8,9 +8,9 @@
 
     <com.guider.health.ecg.view.ECGImageView
         android:id="@+id/ecg_img"
-        android:visibility="invisible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,13 +29,15 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_5"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_13"
                     android:layout_gravity="center_vertical"
-                    android:background="@mipmap/m500" />
+                    android:background="@mipmap/logon_guider" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,7 +116,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <FrameLayout
                     android:id="@+id/fragment_progress"
@@ -143,216 +146,216 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
+                    android:gravity="center"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:gravity="center">
-
-                <LinearLayout
-                    android:id="@+id/linear"
-                    android:layout_width="@dimen/dp_294"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintLeft_toRightOf="@+id/fragment_progress"
-                    app:layout_constraintTop_toTopOf="@+id/fragment_progress">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:id="@+id/linear"
+                        android:layout_width="@dimen/dp_294"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        app:layout_constraintLeft_toRightOf="@+id/fragment_progress"
+                        app:layout_constraintTop_toTopOf="@+id/fragment_progress">
 
-                        <ImageView
-                            android:layout_width="@dimen/dp_23"
-                            android:layout_height="@dimen/dp_20"
-                            android:background="@mipmap/icon1" />
-
-                        <TextView
-                            android:id="@+id/xinlvjiankang"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_20"
-                            android:text="@string/hr_good"
-                            android:textColor="#171717"
-                            android:textSize="@dimen/sp_16" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_23"
+                                android:layout_height="@dimen/dp_20"
+                                android:background="@mipmap/icon1" />
+
+                            <TextView
+                                android:id="@+id/xinlvjiankang"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_20"
+                                android:text="@string/hr_good"
+                                android:textColor="#171717"
+                                android:textSize="@dimen/sp_16" />
+
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:id="@+id/tag_xinlvjiankang_p"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_5">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@mipmap/icon_progress_line" />
+
+                            <View
+                                android:id="@+id/tag_xinglvjiankang"
+                                android:layout_width="@dimen/dp_2"
+                                android:layout_height="@dimen/dp_20"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginEnd="30dp"
+                                android:background="#000000" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="正常"-->
+                            <!--android:textColor="#7D7D7D"-->
+                            <!--android:textSize="@dimen/sp_14" />-->
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#7D7D7D"
+                                android:textSize="@dimen/sp_14" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_26"
+                                android:layout_height="@dimen/dp_22"
+                                android:background="@mipmap/icon2" />
+
+                            <TextView
+                                android:id="@+id/yalizhishu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_20"
+                                android:text="@string/stress_good"
+                                android:textColor="#171717"
+                                android:textSize="@dimen/sp_16" />
+
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:id="@+id/tag_yalizhishu_p"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_5">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@mipmap/icon_progress_line" />
+
+                            <View
+                                android:id="@+id/tag_yalizhishu"
+                                android:layout_width="@dimen/dp_2"
+                                android:layout_height="@dimen/dp_20"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#000000" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#7D7D7D"
+                                android:textSize="@dimen/sp_14" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_26"
+                                android:layout_height="@dimen/dp_26"
+                                android:background="@mipmap/icon3" />
+
+                            <TextView
+                                android:id="@+id/pilaozhishu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_20"
+                                android:text="@string/tired_good"
+                                android:textColor="#171717"
+                                android:textSize="@dimen/sp_16" />
+
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:id="@+id/tag_pilaozhishu_p"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_5">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@mipmap/icon_progress_line" />
+
+                            <View
+                                android:id="@+id/tag_pilaozhishu"
+                                android:layout_width="@dimen/dp_2"
+                                android:layout_height="@dimen/dp_20"
+                                android:layout_gravity="center_horizontal"
+                                android:background="#000000" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="正常"-->
+                            <!--android:textColor="#7D7D7D"-->
+                            <!--android:textSize="@dimen/sp_14" />-->
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#7D7D7D"
+                                android:textSize="@dimen/sp_14" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
-
-                    <FrameLayout
-                        android:id="@+id/tag_xinlvjiankang_p"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_5">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/icon_progress_line" />
-
-                        <View
-                            android:id="@+id/tag_xinglvjiankang"
-                            android:layout_width="@dimen/dp_2"
-                            android:layout_height="@dimen/dp_20"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#000000"
-                            android:layout_marginEnd="30dp"/>
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="正常"-->
-                        <!--android:textColor="#7D7D7D"-->
-                        <!--android:textSize="@dimen/sp_14" />-->
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#7D7D7D"
-                            android:textSize="@dimen/sp_14" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_26"
-                            android:layout_height="@dimen/dp_22"
-                            android:background="@mipmap/icon2" />
-
-                        <TextView
-                            android:id="@+id/yalizhishu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_20"
-                            android:text="@string/stress_good"
-                            android:textColor="#171717"
-                            android:textSize="@dimen/sp_16" />
-
-                    </LinearLayout>
-
-                    <FrameLayout
-                        android:id="@+id/tag_yalizhishu_p"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_5">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/icon_progress_line" />
-
-                        <View
-                            android:id="@+id/tag_yalizhishu"
-                            android:layout_width="@dimen/dp_2"
-                            android:layout_height="@dimen/dp_20"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#000000" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#7D7D7D"
-                            android:textSize="@dimen/sp_14" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_26"
-                            android:layout_height="@dimen/dp_26"
-                            android:background="@mipmap/icon3" />
-
-                        <TextView
-                            android:id="@+id/pilaozhishu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_20"
-                            android:text="@string/tired_good"
-                            android:textColor="#171717"
-                            android:textSize="@dimen/sp_16" />
-
-                    </LinearLayout>
-
-                    <FrameLayout
-                        android:id="@+id/tag_pilaozhishu_p"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_5">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/icon_progress_line" />
-
-                        <View
-                            android:id="@+id/tag_pilaozhishu"
-                            android:layout_width="@dimen/dp_2"
-                            android:layout_height="@dimen/dp_20"
-                            android:layout_gravity="center_horizontal"
-                            android:background="#000000" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="正常"-->
-                        <!--android:textColor="#7D7D7D"-->
-                        <!--android:textSize="@dimen/sp_14" />-->
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#7D7D7D"
-                            android:textSize="@dimen/sp_14" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -383,16 +386,17 @@
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <Button
                     android:id="@+id/loog_img"
                     android:layout_width="@dimen/dp_134"
                     android:layout_height="@dimen/dp_44"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_40"
                     android:background="@drawable/button_cancel"
                     android:text="@string/look_ecg_image"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/dp_19"
+                    android:textSize="@dimen/sp_19"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/ecg_result_next" />
@@ -401,12 +405,12 @@
                     android:id="@+id/ecg_result_next"
                     android:layout_width="@dimen/dp_134"
                     android:layout_height="@dimen/dp_44"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_40"
                     android:background="@drawable/button_cancel"
                     android:text="@string/next_step"
                     android:textColor="#ffffff"
-                    android:textSize="@dimen/dp_19"
+                    android:textSize="@dimen/sp_19"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
@@ -415,7 +419,6 @@
 
 
         </LinearLayout>
-
     </LinearLayout>
 </FrameLayout>
 
