@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -481,13 +482,11 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
     private final String Base_Url = BuildConfig.APIURL + "api/v1/";
 
     void unbindDevices() {
-        Long l;
-        Integer i;
         long accountIdGD = (long) SharedPreferencesUtils.getParam(MyApp.getInstance(), "accountIdGD", 0L);
         if (accountIdGD == 0L) return;
         String deviceCode = (String) SharedPreferencesUtils.readObject(MyApp.getInstance(), Commont.BLEMAC);
         String upStepPatch = Base_Url + "user/" + accountIdGD + "/device/unbind?deviceCode=" + deviceCode;
-        //{accountId}/deviceandcompany/bind?deviceCode=
+        if (StringUtil.isEmpty(deviceCode)) return;
         OkHttpTool.getInstance().doDelete(upStepPatch, "", this, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {

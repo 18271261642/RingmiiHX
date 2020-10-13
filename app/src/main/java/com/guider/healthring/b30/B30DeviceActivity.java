@@ -19,6 +19,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -166,12 +167,8 @@ public class B30DeviceActivity extends WatchBaseActivity
                     || MyCommandManager.DEVICENAME.equals("B31")) {
                 return;
             }
-            MyApp.getInstance().getVpOperateManager().readDetectBP(iBleWriteResponse, new IBPSettingDataListener() {
-                @Override
-                public void onDataChange(BpSettingData bpSettingData) {
-                    readDetectBp(bpSettingData);
-                }
-            });
+            MyApp.getInstance().getVpOperateManager().readDetectBP(iBleWriteResponse,
+                    bpSettingData -> readDetectBp(bpSettingData));
         }
 
 
@@ -334,15 +331,12 @@ public class B30DeviceActivity extends WatchBaseActivity
             if (accountIdGD == 0L) return;
             String deviceCode = (String) SharedPreferencesUtils.readObject(MyApp.getInstance(), Commont.BLEMAC);
             String upStepPatch = Base_Url + "user/" + accountIdGD + "/device/unbind?deviceCode=" + deviceCode;
-            //{accountId}/deviceandcompany/bind?deviceCode=
-            OkHttpTool.getInstance().doDelete(upStepPatch, "", this, new OkHttpTool.HttpResult() {
-                @Override
-                public void onResult(String result) {
-                    if (!WatchUtils.isEmpty(result)) {
-                        BaseResultVoNew baseResultVoNew = new Gson().fromJson(result, BaseResultVoNew.class);
-                        if (baseResultVoNew.getCode() == 0 || baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
-                            if (Commont.isDebug)Log.e(TAG, "=======解绑该设备= " + result);
-                        }
+            if (StringUtil.isEmpty(deviceCode)) return;
+            OkHttpTool.getInstance().doDelete(upStepPatch, "", this, result -> {
+                if (!WatchUtils.isEmpty(result)) {
+                    BaseResultVoNew baseResultVoNew = new Gson().fromJson(result, BaseResultVoNew.class);
+                    if (baseResultVoNew.getCode() == 0 || baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
+                        if (Commont.isDebug)Log.e(TAG, "=======解绑该设备= " + result);
                     }
                 }
             });
@@ -360,11 +354,8 @@ public class B30DeviceActivity extends WatchBaseActivity
                 () -> {
                     unbindDevices();
                     if (MyCommandManager.DEVICENAME != null) {
-                        MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                            @Override
-                            public void onResponse(int state) {
-                                if (Commont.isDebug)Log.e(TAG, "----state=" + state);
-                            }
+                        MyApp.getInstance().getVpOperateManager().disconnectWatch(state -> {
+                            if (Commont.isDebug)Log.e(TAG, "----state=" + state);
                         });
                     }
                     MyCommandManager.DEVICENAME = null;
