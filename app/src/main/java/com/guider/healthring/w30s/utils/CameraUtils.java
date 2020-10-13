@@ -13,6 +13,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+import com.guider.health.common.utils.FileDirUtil;
+import com.guider.health.common.utils.StringUtil;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,8 +29,9 @@ public class CameraUtils {
     public static File getDiskCacheDir(Context context, String uniqueName) {
         String cachePath;
         if ((Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) && context.getExternalCacheDir() != null) {
-            cachePath = context.getExternalCacheDir().getPath();
+                || !Environment.isExternalStorageRemovable())
+                && !StringUtil.isEmpty(FileDirUtil.INSTANCE.getExternalFileDir(context))) {
+            cachePath = FileDirUtil.INSTANCE.getExternalFileDir(context);
         } else {
             cachePath = context.getCacheDir().getPath();
         }
@@ -424,6 +428,7 @@ public class CameraUtils {
 
     /**
      * byte[]转bitmap
+     *
      * @param imgByte
      * @return
      */

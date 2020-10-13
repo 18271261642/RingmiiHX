@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.guider.health.common.utils.FileDirUtil;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.bumptech.glide.Glide;
 import com.guider.healthring.R;
@@ -286,12 +287,7 @@ public class H8ShareActivity extends WatchBaseActivity {
     };
 
     private void doShare() {
-        Date timedf = new Date();
-        SimpleDateFormat formatdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String xXXXdf = formatdf.format(timedf);
-        String filePath = Environment.getExternalStorageDirectory() + "/DCIM/" + System.currentTimeMillis() + ".png";
-        Log.e(TAG,"-----imgPath="+filePath);
-        ScreenShot.shoot(H8ShareActivity.this, new File(filePath));
+        ScreenShot.INSTANCE.shoot(H8ShareActivity.this);
 //        Common.showShare(H8ShareActivity.this, null, false, filePath);
     }
 

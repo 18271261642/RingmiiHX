@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.arialyy.aria.core.Aria;
+import com.guider.health.common.utils.FileDirUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.bleutil.MyCommandManager;
@@ -64,7 +65,8 @@ public class NewW30sFirmwareUpgrade extends WatchBaseActivity implements Request
     private static final String TAG = "NewW30sFirmwareUpgrade";
     
     public static final String UpData = "com.exalpme.bozhilun.android.w30s.ota";
-    private static final String FileStringPath = "/storage/emulated/0/Android/com.bozlun.bozhilun.android/cache/W30V3.zip";
+    private static final String FileStringPath = FileDirUtil.INSTANCE.getExternalFilePath(
+            MyApp.getContext(),"W30V3.zip");
 
 //    private static final String FileStringPath = Environment.getExternalStorageDirectory()+"/RaceFit/";//"/storage/emulated/0/Android/com.bozlun.bozhilun.android/cache/W30V3.zip";
     

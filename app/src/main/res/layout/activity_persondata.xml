@@ -14,7 +14,7 @@
 
        <include layout="@layout/appbar_toolbar"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.guider.health.common.views.CircleImageView
             android:id="@+id/head_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -23,7 +23,7 @@
             android:scaleType="centerCrop"
             android:src="@mipmap/touxiang"
             app:civ_border_color="@color/colorAccent"
-            app:civ_border_width="2dp" />
+            app:civ_border_width="@dimen/dp_1" />
 
         <LinearLayout
             android:layout_width="match_parent"

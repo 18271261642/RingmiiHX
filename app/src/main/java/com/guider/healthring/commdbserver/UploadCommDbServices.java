@@ -37,9 +37,7 @@ public class UploadCommDbServices extends IntentService {
 
     private static final String TAG = "UploadCommDbServices";
 
-    static String filtPath = Environment.getExternalStorageDirectory()+"/DCIM/";
-
-//    static String filePath = FileDirUtil.INSTANCE.getExternalFileDir(MyApp.getContext());
+    static String filePath = FileDirUtil.INSTANCE.getExternalFileDir(MyApp.getContext())+"/";
     private String bleName = null;
     private Gson gson = new Gson();
     //bac地址
@@ -381,7 +379,7 @@ public class UploadCommDbServices extends IntentService {
             public void onResult(String result) {
 //                Log.e(TAG,"-------下载步数返回="+result);
 
-                new GetJsonDataUtil().writeTxtToFile("步数下载返回"+result, filtPath,"downStep.json");
+                new GetJsonDataUtil().writeTxtToFile("步数下载返回"+result, filePath,"downStep.json");
                 //downloadCountStepListener.allCountStep(result);
                 if (WatchUtils.isEmpty(result))
                     return;

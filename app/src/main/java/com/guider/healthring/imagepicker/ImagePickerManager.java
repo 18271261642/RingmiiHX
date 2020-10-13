@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * Created by Mickael on 10/10/2016.
  */
 
 public class ImagePickerManager extends PickerManager {
 
-    public ImagePickerManager(Activity activity) {
+    public ImagePickerManager(AppCompatActivity activity) {
         super(activity);
     }
 

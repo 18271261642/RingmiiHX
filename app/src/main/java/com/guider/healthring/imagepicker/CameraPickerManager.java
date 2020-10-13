@@ -1,8 +1,9 @@
 package com.guider.healthring.imagepicker;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.provider.MediaStore;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Mickael on 10/10/2016.
@@ -10,7 +11,7 @@ import android.provider.MediaStore;
 
 public class CameraPickerManager extends PickerManager {
 
-    public CameraPickerManager(Activity activity) {
+    public CameraPickerManager(AppCompatActivity activity) {
         super(activity);
     }
 

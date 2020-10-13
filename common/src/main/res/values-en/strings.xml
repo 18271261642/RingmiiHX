@@ -339,4 +339,5 @@
     <string name="wwk_title3">equipment measurement</string>
         
     <string name="wwk_title4">Measurement result</string>
+    <string name="addPicToAlbum">Add image to gallery successfully</string>
 </resources>

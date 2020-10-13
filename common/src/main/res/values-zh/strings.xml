@@ -55,4 +55,5 @@
     <string name="Multi_health_data">无创数据</string>
     <string name="data_level">数据水平</string>
     <string name="zy_download_tips">正在下載中 , 請耐心等待...</string>
+    <string name="addPicToAlbum">添加图片到图库成功</string>
 </resources>

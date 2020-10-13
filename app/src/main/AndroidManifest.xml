@@ -106,7 +106,6 @@
         android:vmSafeMode="true"
         tools:ignore="AllowBackup,HardcodedDebugMode,UnusedAttribute"
         tools:replace="android:label,android:name,android:icon"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
 
         <!--支持高宽高比屏幕-->
@@ -339,10 +338,10 @@
             </intent-filter>
         </activity>
         <!--图片裁剪的页面-->
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base" />
+<!--        <activity-->
+<!--            android:name="com.yalantis.ucrop.UCropActivity"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:theme="@style/AppTheme.Base" />-->
 
 
         <!-- sis watch 主页面 -->

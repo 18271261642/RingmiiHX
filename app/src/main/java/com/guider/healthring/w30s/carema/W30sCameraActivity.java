@@ -680,34 +680,28 @@ public class W30sCameraActivity extends WatchBaseActivity implements View.OnClic
     public void takePhonePic() {
         try {
             stopFocus();
-            takePicture(null, null, new Camera.PictureCallback() {
-                @Override
-                public void onPictureTaken(byte[] data, Camera camera) {
-                    if (data == null || data.length <= 0) {
-                        safeToTakePicture = true;
-                        return;
-                    }
-                    Log.d("CameraSurfaceView", "CameraSurfaceView onPictureTaken data.length : " + data.length);
-                    isPortrait = mScreenSwitchInstance.isPortrait();
-                    orientationState = mScreenSwitchInstance.getOrientationState();
-                    Log.e("==========", "louis==xx==isPortrait：" + isPortrait);
-                    Log.e("=========", "louis==xx==orientationState：" + orientationState);
-                    // 保存图片
-                    final byte[] b = data;
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Message message = new Message();
-                            message.obj = b;
-                            message.what = 1111;
-                            handler.sendMessage(message);
-                            isShowCamera = false;
-                            safeToTakePicture = true;
-                        }
-                    }).start();
-
-
+            takePicture(null, null, (data, camera) -> {
+                if (data == null || data.length <= 0) {
+                    safeToTakePicture = true;
+                    return;
                 }
+                Log.d("CameraSurfaceView", "CameraSurfaceView onPictureTaken data.length : " + data.length);
+                isPortrait = mScreenSwitchInstance.isPortrait();
+                orientationState = mScreenSwitchInstance.getOrientationState();
+                Log.e("==========", "louis==xx==isPortrait：" + isPortrait);
+                Log.e("=========", "louis==xx==orientationState：" + orientationState);
+                // 保存图片
+                final byte[] b = data;
+                new Thread(() -> {
+                    Message message = new Message();
+                    message.obj = b;
+                    message.what = 1111;
+                    handler.sendMessage(message);
+                    isShowCamera = false;
+                    safeToTakePicture = true;
+                }).start();
+
+
             });
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,17 +2,13 @@ package com.guider.healthring.w30s.activity;
 
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.guider.healthring.R;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.util.MaterialDialogUtil;

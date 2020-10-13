@@ -3,6 +3,7 @@ package com.guider.healthring.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -37,6 +38,9 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
+import com.guider.health.common.utils.FileDirUtil;
+import com.guider.health.common.utils.PhotoCuttingUtil;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -62,6 +66,9 @@ import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ICustomSettingDataListener;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
@@ -79,6 +86,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,7 +148,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
     private int userSex = 1;
     private int userHeight = 170;
     private int userWeitht = 60;
-
+    private String picPath = "";
 
     boolean w30sunit = true;
     private String bleMac;
@@ -464,19 +472,19 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     if (w30sunit) { //公制
                         ProfessionPick professionPopWin = new ProfessionPick.Builder(
                                 MyPersonalActivity.this, profession -> {
-                                    heightTv.setText(profession);
-                                    guiderUserInfo.setHeight(
-                                            Integer.parseInt(profession.substring(0, 3).trim()));
-                                    updateGuiderUserInfo(guiderUserInfo);
-                                    if (mUserInfo != null) {
-                                        mUserInfo.height = profession.substring(0, 3);// 记录一下提交要用
-                                        flag = "height";
-    //                                    heightTv.setText(profession);
-    //                                    height = profession.substring(0, 3);
-                                        String uHeight = profession.substring(0, 3).trim();
-                                        modifyPersonData(uHeight);
-                                    }
-                                }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
+                            heightTv.setText(profession);
+                            guiderUserInfo.setHeight(
+                                    Integer.parseInt(profession.substring(0, 3).trim()));
+                            updateGuiderUserInfo(guiderUserInfo);
+                            if (mUserInfo != null) {
+                                mUserInfo.height = profession.substring(0, 3);// 记录一下提交要用
+                                flag = "height";
+                                //                                    heightTv.setText(profession);
+                                //                                    height = profession.substring(0, 3);
+                                String uHeight = profession.substring(0, 3).trim();
+                                modifyPersonData(uHeight);
+                            }
+                        }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                                 .textCancel(getResources().getString(R.string.cancle))
                                 .btnTextSize(16) // button text size
                                 .viewTextSize(25) // pick view text size
@@ -490,48 +498,48 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     } else {      //英制
                         ProfessionPick professionPopWin = new ProfessionPick.Builder(
                                 MyPersonalActivity.this, profession -> {
-                                    heightTv.setText(profession);
-                                    guiderUserInfo.setHeight(Integer.parseInt(
-                                            profession.substring(0, 3).trim()));
-                                    heightTv.setText(profession);
-                                    String tmpHeight = StringUtils.substringBefore(profession,
-                                            "in").trim();
-    //                                    Log.e(TAG, "---tmpHeight--" + tmpHeight);
-                                    flag = "height";
-                                    //height = profession.substring(0, 3);
-                                    //1,英寸转cm
-                                    double tmpCal = WatchUtils.mul(Double.valueOf(tmpHeight), 2.5);
-                                    //截取小数点前的数据
-                                    int beforeTmpCal = Integer.parseInt(
-                                            StringUtils.substringBefore(String.valueOf(tmpCal),
-                                                    ".").trim());
-                                    //截取小数点后的数据
-                                    String afterTmpCal = StringUtils.substringAfter(
-                                            String.valueOf(tmpCal), ".").trim();
-                                    //判断小数点后一位是否》=5
-                                    int lastAterTmpCal = Integer.parseInt(
-                                            afterTmpCal.length() >= 1 ? afterTmpCal.substring(0, 1) : "0");
-    //                                    Log.e(TAG, "----lastAterTmpCal--=" + lastAterTmpCal);
-                                    if (lastAterTmpCal >= 5) {
-                                        guiderUserInfo.setHeight((beforeTmpCal + 1));
-                                        if (mUserInfo != null) {
-                                            mUserInfo.height = (beforeTmpCal + 1) + "";
-                                        }
+                            heightTv.setText(profession);
+                            guiderUserInfo.setHeight(Integer.parseInt(
+                                    profession.substring(0, 3).trim()));
+                            heightTv.setText(profession);
+                            String tmpHeight = StringUtils.substringBefore(profession,
+                                    "in").trim();
+                            //                                    Log.e(TAG, "---tmpHeight--" + tmpHeight);
+                            flag = "height";
+                            //height = profession.substring(0, 3);
+                            //1,英寸转cm
+                            double tmpCal = WatchUtils.mul(Double.valueOf(tmpHeight), 2.5);
+                            //截取小数点前的数据
+                            int beforeTmpCal = Integer.parseInt(
+                                    StringUtils.substringBefore(String.valueOf(tmpCal),
+                                            ".").trim());
+                            //截取小数点后的数据
+                            String afterTmpCal = StringUtils.substringAfter(
+                                    String.valueOf(tmpCal), ".").trim();
+                            //判断小数点后一位是否》=5
+                            int lastAterTmpCal = Integer.parseInt(
+                                    afterTmpCal.length() >= 1 ? afterTmpCal.substring(0, 1) : "0");
+                            //                                    Log.e(TAG, "----lastAterTmpCal--=" + lastAterTmpCal);
+                            if (lastAterTmpCal >= 5) {
+                                guiderUserInfo.setHeight((beforeTmpCal + 1));
+                                if (mUserInfo != null) {
+                                    mUserInfo.height = (beforeTmpCal + 1) + "";
+                                }
 
-                                    } else {
-                                        guiderUserInfo.setHeight(beforeTmpCal);
-                                        if (mUserInfo != null) {
-                                            mUserInfo.height = beforeTmpCal + "";
-                                        }
+                            } else {
+                                guiderUserInfo.setHeight(beforeTmpCal);
+                                if (mUserInfo != null) {
+                                    mUserInfo.height = beforeTmpCal + "";
+                                }
 
-                                    }
-                                    updateGuiderUserInfo(guiderUserInfo);
-                                    if (mUserInfo != null) {
-                                        modifyPersonData(mUserInfo.height);
-                                    }
-    //                                    Log.e(TAG, "---tmpHeight-height-" + height);
+                            }
+                            updateGuiderUserInfo(guiderUserInfo);
+                            if (mUserInfo != null) {
+                                modifyPersonData(mUserInfo.height);
+                            }
+                            //                                    Log.e(TAG, "---tmpHeight-height-" + height);
 
-                                }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
+                        }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                                 .textCancel(getResources().getString(R.string.cancle))
                                 .btnTextSize(16) // button text size
                                 .viewTextSize(25) // pick view text size
@@ -551,20 +559,20 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     if (w30sunit) { //公制
                         ProfessionPick weightPopWin = new ProfessionPick.Builder(
                                 MyPersonalActivity.this, profession -> {
-                                    weightTv.setText(profession);
+                            weightTv.setText(profession);
 
-                                    guiderUserInfo.setWeight(Integer.parseInt(
-                                            profession.substring(0, 3).trim()));
+                            guiderUserInfo.setWeight(Integer.parseInt(
+                                    profession.substring(0, 3).trim()));
 
-                                    updateGuiderUserInfo(guiderUserInfo);
-                                    if (mUserInfo != null) {
-                                        mUserInfo.weight = profession.substring(0, 3);// 记录一下提交要用
-                                        flag = "weight";
-                                        weight = profession.substring(0, 3);
-                                        modifyPersonData(weight);
-                                    }
+                            updateGuiderUserInfo(guiderUserInfo);
+                            if (mUserInfo != null) {
+                                mUserInfo.weight = profession.substring(0, 3);// 记录一下提交要用
+                                flag = "weight";
+                                weight = profession.substring(0, 3);
+                                modifyPersonData(weight);
+                            }
 
-                                }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
+                        }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                                 .textCancel(getResources().getString(R.string.cancle))
                                 .btnTextSize(16) // button text size
                                 .viewTextSize(25) // pick view text size
@@ -579,44 +587,44 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                         //英制体重
                         ProfessionPick weightPopWin = new ProfessionPick.Builder(
                                 MyPersonalActivity.this, profession -> {
-                                    weightTv.setText(profession);
-                                    flag = "weight";
-                                    String tmpWeid = StringUtils.substringBefore(
-                                            profession, "lb").trim();
-                                    double calWeid = WatchUtils.mul(Double.valueOf(tmpWeid), 0.454);
-                                    //截取小数点前的数据
-                                    String beforeCalWeid =
-                                            StringUtils.substringBefore(
-                                                    String.valueOf(calWeid), ".");
-                                    //截取后小数点后的数据
-                                    String afterCalWeid = StringUtils.substringAfter(
+                            weightTv.setText(profession);
+                            flag = "weight";
+                            String tmpWeid = StringUtils.substringBefore(
+                                    profession, "lb").trim();
+                            double calWeid = WatchUtils.mul(Double.valueOf(tmpWeid), 0.454);
+                            //截取小数点前的数据
+                            String beforeCalWeid =
+                                    StringUtils.substringBefore(
                                             String.valueOf(calWeid), ".");
-                                    int lastNum = Integer.parseInt(
-                                            afterCalWeid.length() >= 1 ? afterCalWeid.substring(0, 1) : "0");
-    //                                    Log.e(TAG, "----lastNum=" + lastNum);
-                                    //判断小数点后一位是否大于5
-                                    if (lastNum >= 5) {
-                                        guiderUserInfo.setWeight(
-                                                Integer.parseInt(beforeCalWeid.trim()) + 1);
-                                        if (mUserInfo != null) {
-                                            mUserInfo.weight = String.valueOf(
-                                                    Integer.parseInt(beforeCalWeid.trim()) + 1);
-                                        }
+                            //截取后小数点后的数据
+                            String afterCalWeid = StringUtils.substringAfter(
+                                    String.valueOf(calWeid), ".");
+                            int lastNum = Integer.parseInt(
+                                    afterCalWeid.length() >= 1 ? afterCalWeid.substring(0, 1) : "0");
+                            //                                    Log.e(TAG, "----lastNum=" + lastNum);
+                            //判断小数点后一位是否大于5
+                            if (lastNum >= 5) {
+                                guiderUserInfo.setWeight(
+                                        Integer.parseInt(beforeCalWeid.trim()) + 1);
+                                if (mUserInfo != null) {
+                                    mUserInfo.weight = String.valueOf(
+                                            Integer.parseInt(beforeCalWeid.trim()) + 1);
+                                }
 
-                                    } else {
-                                        guiderUserInfo.setWeight(
-                                                Integer.parseInt(beforeCalWeid.trim()));
-                                        if (mUserInfo != null) {
-                                            mUserInfo.weight = beforeCalWeid.trim();
-                                        }
+                            } else {
+                                guiderUserInfo.setWeight(
+                                        Integer.parseInt(beforeCalWeid.trim()));
+                                if (mUserInfo != null) {
+                                    mUserInfo.weight = beforeCalWeid.trim();
+                                }
 
-                                    }
-                                    if (mUserInfo != null) {
-                                        modifyPersonData(mUserInfo.weight);
-                                    }
-                                    // weight = profession.substring(0, 3);
-                                    updateGuiderUserInfo(guiderUserInfo);
-                                }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
+                            }
+                            if (mUserInfo != null) {
+                                modifyPersonData(mUserInfo.weight);
+                            }
+                            // weight = profession.substring(0, 3);
+                            updateGuiderUserInfo(guiderUserInfo);
+                        }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                                 .textCancel(getResources().getString(R.string.cancle))
                                 .btnTextSize(16) // button text size
                                 .viewTextSize(25) // pick view text size
@@ -636,17 +644,17 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     if (guiderUserInfo == null) return;
                     DatePick pickerPopWin = new DatePick.Builder(
                             MyPersonalActivity.this, (year, month, day, dateDesc) -> {
-                                birthdayTv.setText(dateDesc);
-                                guiderUserInfo.setBirthday(dateDesc + "T00:00:00Z");
-                                updateGuiderUserInfo(guiderUserInfo);
-                                if (mUserInfo != null) {
-                                    mUserInfo.birthday = dateDesc;
-                                    flag = "birthday";
-                                    birthday = dateDesc;
-                                    modifyPersonData(dateDesc);//
-                                }
+                        birthdayTv.setText(dateDesc);
+                        guiderUserInfo.setBirthday(dateDesc + "T00:00:00Z");
+                        updateGuiderUserInfo(guiderUserInfo);
+                        if (mUserInfo != null) {
+                            mUserInfo.birthday = dateDesc;
+                            flag = "birthday";
+                            birthday = dateDesc;
+                            modifyPersonData(dateDesc);//
+                        }
 
-                            }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
+                    }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                             .textCancel(getResources().getString(R.string.cancle)) //text of cancel button
                             .btnTextSize(16) // button text size
                             .viewTextSize(25) // pick view text size
@@ -665,27 +673,27 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     b30SkinColorView.show();
                     b30SkinColorView.setB30SkinColorListener(
                             new B30SkinColorView.B30SkinColorListener() {
-                        @Override
-                        public void doSureSkinClick(int selectImgId, int position) {
-                            b30SkinColorView.dismiss();
-                            defaultSkinColorImg.setImageResource(selectImgId);
+                                @Override
+                                public void doSureSkinClick(int selectImgId, int position) {
+                                    b30SkinColorView.dismiss();
+                                    defaultSkinColorImg.setImageResource(selectImgId);
 
-                            //保存选择的肤色下标
-                            SharedPreferencesUtils.setParam(MyPersonalActivity.this,
-                                    SKIN_COLOR_KEY, position);
-                            if (position == 4 || position == 5) {
-                                setSwtchStutas(false);
-                            } else {
-                                setSwtchStutas(true);
-                            }
+                                    //保存选择的肤色下标
+                                    SharedPreferencesUtils.setParam(MyPersonalActivity.this,
+                                            SKIN_COLOR_KEY, position);
+                                    if (position == 4 || position == 5) {
+                                        setSwtchStutas(false);
+                                    } else {
+                                        setSwtchStutas(true);
+                                    }
 
-                        }
+                                }
 
-                        @Override
-                        public void doCancleSkinClick() {
-                            b30SkinColorView.dismiss();
-                        }
-                    });
+                                @Override
+                                public void doCancleSkinClick() {
+                                    b30SkinColorView.dismiss();
+                                }
+                            });
                     break;
             }
 
@@ -805,28 +813,35 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
 
     //选择图片
+    @SuppressLint("NonConstantResourceId")
     private void chooseImgForUserHead() {
         MenuSheetView menuSheetView =
                 new MenuSheetView(MyPersonalActivity.this,
                         MenuSheetView.MenuType.LIST, R.string.select_photo, item -> {
-                            if (bottomSheetLayout.isSheetShowing()) {
-                                bottomSheetLayout.dismissSheet();
-                            }
-                            switch (item.getItemId()) {
-                                case R.id.take_camera:
-                                    cameraPic();
-                                    break;
-                                case R.id.take_Album:   //相册
-                                    getImage();
-    //                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-    //                                intent.setType("image/*");
-    //                                startActivityForResult(intent,120);
-                                    break;
-                                case R.id.cancle:
-                                    break;
-                            }
-                            return true;
-                        });
+                    if (bottomSheetLayout.isSheetShowing()) {
+                        bottomSheetLayout.dismissSheet();
+                    }
+                    switch (item.getItemId()) {
+                        case R.id.take_camera:
+//                            cameraPic();
+                            PhotoCuttingUtil.INSTANCE.takePhotoZoom2(
+                                    MyPersonalActivity.this, 111,
+                                    1, 1);
+                            break;
+                        case R.id.take_Album:   //相册
+//                            getImage();
+                            //                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            //                                intent.setType("image/*");
+                            //                                startActivityForResult(intent,120);
+                            PhotoCuttingUtil.INSTANCE.selectPhotoZoom2(
+                                    MyPersonalActivity.this, 111,
+                                    1, 1);
+                            break;
+                        case R.id.cancle:
+                            break;
+                    }
+                    return true;
+                });
         menuSheetView.inflateMenu(R.menu.menu_takepictures);
         bottomSheetLayout.showWithSheetView(menuSheetView);
     }
@@ -872,7 +887,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     RequestOptions mRequestOptions =
                             RequestOptions.circleCropTransform()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true);
+                                    .skipMemoryCache(true);
                     Glide.with(MyPersonalActivity.this).
                             load(imageUri).apply(mRequestOptions).into(mineLogoIv);
 
@@ -1206,37 +1221,80 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     break;
                 case 1001: //相机返回的 uri
                     //启动裁剪
-                    String path = getExternalCacheDir().getPath();
+                    String path = FileDirUtil.INSTANCE.getExternalFileDir(this);
 //                    Log.e(TAG, "----裁剪path=" + path);
                     String name = "output.png";
                     startActivityForResult(CutForCamera(path, name), 111);
                     break;
                 case 111:
-                    try {
-                        //获取裁剪后的图片，并显示出来
-                        Bitmap bitmap = BitmapFactory.decodeStream(
-                                this.getContentResolver().openInputStream(mCutUri));
-                        //showImg.setImageBitmap(bitmap);
-                        mineLogoIv.setImageBitmap(bitmap);
-                        uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
-
-                        String finalPhotoName =
-                                Environment.getExternalStorageDirectory() +
-                                        "/" + "NewBluetoothStrap/headImg" + "_" +
-                                        new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
-                                                .format(new Date(System.currentTimeMillis()))
-                                        + ".jpg";
-                        //上传盖德后台图片
-                        //Log.e(TAG,"-------")
-                        File flieP = FileOperUtils.saveFiles(bitmap, finalPhotoName);
-                        uploadGuiderPic(flieP.getPath());
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        //获取裁剪后的图片，并显示出来
+//                        Bitmap bitmap = BitmapFactory.decodeStream(
+//                                this.getContentResolver().openInputStream(mCutUri));
+//                        //showImg.setImageBitmap(bitmap);
+//                        mineLogoIv.setImageBitmap(bitmap);
+//                        uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
+//
+//                        String finalPhotoName =
+//                                FileDirUtil.INSTANCE.getExternalFileDir(this) +
+//                                        "/" + "NewBluetoothStrap/headImg" + "_" +
+//                                        new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
+//                                                .format(new Date(System.currentTimeMillis()))
+//                                        + ".jpg";
+//                        //上传盖德后台图片
+//                        //Log.e(TAG,"-------")
+//                        File flieP = FileOperUtils.saveFiles(bitmap, finalPhotoName);
+//                        uploadGuiderPic(flieP.getPath());
+//
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    if (data == null) return;
+                    dealHeaderShowAndUpload(data);
                     break;
+            }
+        }
+    }
+
+    private void dealHeaderShowAndUpload(Intent data) {
+        // 图片选择结果回调
+        List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+        // 例如 LocalMedia 里面返回三种path
+        // 1.media.getPath(); 为原图path
+        // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+        // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+        // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+        if (!selectList.isEmpty()) {
+            LocalMedia media = selectList.get(0);
+            if (StringUtil.isEmpty(media.getPath())) {
+                return;
+            }
+
+            String path;
+            if (media.isCut() && !media.isCompressed()) {
+                // 裁剪过
+                path = media.getCutPath();
+            } else if (media.isCompressed() || media.isCut() && media.isCompressed()) {
+                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                path = media.getCompressPath();
+            } else {
+                // 原图
+                path = media.getPath();
+            }
+            if (!(PictureMimeType.isContent(path) &&
+                    !media.isCut() && !media.isCompressed())) {
+                picPath = path;
+            }
+            if (!StringUtil.isEmpty(picPath)) {
+                WeakReference<Context> mContext =
+                        new WeakReference(MyPersonalActivity.this);
+                Glide.with(mContext.get()).load(picPath)
+                        .into(mineLogoIv);
+                uploadPic(picPath, 1);
+                //上传盖德后台图片
+                uploadGuiderPic(picPath);
             }
         }
     }
@@ -1247,7 +1305,8 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
      */
     private void cameraPic() {
         //创建一个file，用来存储拍照后的照片
-        File outputfile = new File(getExternalCacheDir().getPath(), "output.png");
+        File outputfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
+                "output.png");
         try {
             if (outputfile.exists()) {
                 outputfile.delete();//删除
@@ -1289,7 +1348,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
     private Intent CutForCamera(String camerapath, String imgname) {
         try {
             //设置裁剪之后的图片路径文件
-            File cutfile = new File(getExternalCacheDir().getPath(),
+            File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
                     "cutcamera.png"); //随便命名一个
             if (cutfile.exists()) {
                 //如果已经存在，则先删除,这里应该是上传到服务器，然后再删除本地的，没服务器，只能这样了
@@ -1359,7 +1418,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
             //直接裁剪
             Intent intent = new Intent("com.android.camera.action.CROP");
             //设置裁剪之后的图片路径文件
-            File cutfile = new File(getExternalCacheDir().getPath(),
+            File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
                     "cutcamera.png"); //随便命名一个
             if (cutfile.exists()) { //如果已经存在，则先删除,这里应该是上传到服务器，然后再删除本地的，没服务器，只能这样了
                 cutfile.delete();

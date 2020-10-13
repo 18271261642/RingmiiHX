@@ -1,6 +1,7 @@
 package com.guider.healthring.b30;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -198,6 +199,7 @@ public class B30DeviceActivity extends WatchBaseActivity
     }
 
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

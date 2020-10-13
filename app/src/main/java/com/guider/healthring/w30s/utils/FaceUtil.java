@@ -29,6 +29,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.guider.health.common.utils.FileDirUtil;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
@@ -69,7 +71,7 @@ public class FaceUtil {
      * @return
      */
     public static void openCamera(Activity activity) {
-        mPictureFile = new File(Environment.getExternalStorageDirectory(),
+        mPictureFile = new File(FileDirUtil.INSTANCE.getExternalFileDir(activity),
                 "picture" + System.currentTimeMillis() / 1000 + ".jpg");
         // 启动拍照,并保存到临时文件
         Intent mIntent = new Intent();

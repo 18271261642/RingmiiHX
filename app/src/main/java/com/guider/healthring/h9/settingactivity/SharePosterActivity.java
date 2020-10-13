@@ -390,11 +390,7 @@ public class SharePosterActivity extends WatchBaseActivity implements View.OnCli
 
     //分享
     private void doShareClick() {
-        Date timedf = new Date();
-        SimpleDateFormat formatdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String xXXXdf = formatdf.format(timedf);
-        String filePath = Environment.getExternalStorageDirectory() + "/DCIM/" + System.currentTimeMillis() + ".png";
-        ScreenShot.shoot(SharePosterActivity.this, new File(filePath));
+        ScreenShot.INSTANCE.shoot(SharePosterActivity.this);
 //        Common.showShare(this, null, false, filePath);
     }
 

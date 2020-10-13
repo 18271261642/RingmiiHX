@@ -7,16 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -25,22 +21,30 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+
 import com.aigestudio.wheelpicker.widgets.DatePick;
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
-import com.bumptech.glide.request.RequestOptions;
-import com.guider.health.apilib.BuildConfig;
-import com.guider.healthring.Commont;
-import com.guider.healthring.bean.GuiderUserInfo;
-import com.guider.healthring.siswatch.NewSearchActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.flipboard.bottomsheet.commons.MenuSheetView;
+import com.google.gson.Gson;
+import com.guider.health.apilib.BuildConfig;
+import com.guider.health.common.utils.FileDirUtil;
+import com.guider.health.common.utils.PhotoCuttingUtil;
+import com.guider.health.common.utils.StringUtil;
+import com.guider.health.common.views.CircleImageView;
+import com.guider.healthring.Commont;
 import com.guider.healthring.R;
+import com.guider.healthring.bean.GuiderUserInfo;
 import com.guider.healthring.imagepicker.PickerBuilder;
 import com.guider.healthring.rxandroid.DialogSubscriber;
 import com.guider.healthring.rxandroid.SubscriberOnNextListener;
+import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
-import com.guider.healthring.siswatch.utils.Base64BitmapUtil;
-import com.guider.healthring.siswatch.utils.FileOperUtils;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Common;
 import com.guider.healthring.util.ImageTool;
@@ -51,9 +55,9 @@ import com.guider.healthring.util.URLs;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.guider.healthring.widget.SwitchIconView;
-import com.flipboard.bottomsheet.BottomSheetLayout;
-import com.flipboard.bottomsheet.commons.MenuSheetView;
-import com.google.gson.Gson;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
@@ -64,15 +68,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.guider.healthring.util.Common.userInfo;
 
@@ -82,7 +82,7 @@ import static com.guider.healthring.util.Common.userInfo;
  */
 
 public class PersonDataActivity extends WatchBaseActivity
-        implements RequestView,View.OnClickListener {
+        implements RequestView, View.OnClickListener {
     private static final String TAG = "PersonDataActivity";
 
     private static final int GET_OPENCAMERA_CODE = 100;
@@ -105,7 +105,7 @@ public class PersonDataActivity extends WatchBaseActivity
     private ArrayList<String> weightList;
 
     private Uri mCutUri;
-
+    private String picPath="";
 
     private RequestPressent requestPressent;
     //盖德用户实体类
@@ -148,6 +148,7 @@ public class PersonDataActivity extends WatchBaseActivity
     }
 
 
+    @SuppressLint("WrongConstant")
     private void initViews() {
         tvTitle.setText(R.string.mine_data);
         manIconview.switchState();
@@ -244,6 +245,7 @@ public class PersonDataActivity extends WatchBaseActivity
 
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -255,17 +257,9 @@ public class PersonDataActivity extends WatchBaseActivity
                     AndPermission.with(PersonDataActivity.this)
                             .runtime()
                             .permission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            .onGranted(new Action<List<String>>() {
-                                @Override
-                                public void onAction(List<String> data) {
-                                    chooseHeadImg();
-                                }
-                            })
-                            .onDenied(new Action<List<String>>() {
-                                @Override
-                                public void onAction(List<String> data) {
+                            .onGranted(data -> chooseHeadImg())
+                            .onDenied(data -> {
 
-                                }
                             })
                             .start();
                 }
@@ -297,7 +291,7 @@ public class PersonDataActivity extends WatchBaseActivity
                     public void onProCityPickCompleted(String profession) {
                         height = profession;
                         heightvalTv.setText(height);
-                        guiderUserInfo.setWeight(Integer.valueOf(StringUtils.substringBefore(profession,"cm").trim()));
+                        guiderUserInfo.setWeight(Integer.valueOf(StringUtils.substringBefore(profession, "cm").trim()));
 
                     }
                 }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
@@ -317,7 +311,7 @@ public class PersonDataActivity extends WatchBaseActivity
                     public void onProCityPickCompleted(String profession) {
                         weight = profession;
                         weightvalTv.setText(profession);
-                        guiderUserInfo.setWeight(Integer.valueOf(StringUtils.substringBefore(profession,"kg").trim()));
+                        guiderUserInfo.setWeight(Integer.valueOf(StringUtils.substringBefore(profession, "kg").trim()));
                     }
                 }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                         .textCancel(getResources().getString(R.string.cancle)) //text of cancel button
@@ -358,7 +352,6 @@ public class PersonDataActivity extends WatchBaseActivity
                 submitPersonData(uName, birthTxt, heightTxt, weightTxt);
 
 
-
 //                //完成
 //                nickName = codeEt.getText().toString();
 //                if (TextUtils.isEmpty(nickName)) {
@@ -396,52 +389,57 @@ public class PersonDataActivity extends WatchBaseActivity
     //提交盖德编辑用户信息接口
     private void submitGuiderUserInfoData() {
         try {
-            long guiderAccountId = (long) SharedPreferencesUtils.getParam(this,"accountIdGD",0L);
-            if(guiderAccountId == 0)
+            long guiderAccountId = (long) SharedPreferencesUtils.getParam(this, "accountIdGD", 0L);
+            if (guiderAccountId == 0)
                 return;
             guiderUserInfo.setAccountId((int) guiderAccountId);
             guiderUserInfo.setAddr("");
             guiderUserInfo.setCardId("");
 
             String birthdarStr = brithdayvalTv.getText().toString();
-            guiderUserInfo.setBirthday(birthdarStr+"T00:00:00Z");
+            guiderUserInfo.setBirthday(birthdarStr + "T00:00:00Z");
             String userUrl = BuildConfig.APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
-            if(requestPressent != null){
+            if (requestPressent != null) {
                 //Log.e(TAG,"-------盖德参数="+new Gson().toJson(guiderUserInfo));
-                requestPressent.getRequestPutJsonObject(12,userUrl,this,new Gson().toJson(guiderUserInfo),12);
+                requestPressent.getRequestPutJsonObject(12, userUrl, this, new Gson().toJson(guiderUserInfo), 12);
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
     //头像选择
+    @SuppressLint("NonConstantResourceId")
     private void chooseHeadImg() {
         MenuSheetView menuSheetView =
-                new MenuSheetView(PersonDataActivity.this, MenuSheetView.MenuType.LIST, R.string.select_photo, new MenuSheetView.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (bottomSheetLayout.isSheetShowing()) {
-                            bottomSheetLayout.dismissSheet();
-                        }
-                        switch (item.getItemId()) {
-                            case R.id.take_camera:  //拍照
-                                // getImage(PickerBuilder.SELECT_FROM_CAMERA);
-                                cameraPic();
-                                break;
-                            case R.id.take_Album:   //相册选择
-                                getImage(PickerBuilder.SELECT_FROM_GALLERY);
+                new MenuSheetView(PersonDataActivity.this,
+                        MenuSheetView.MenuType.LIST, R.string.select_photo, item -> {
+                    if (bottomSheetLayout.isSheetShowing()) {
+                        bottomSheetLayout.dismissSheet();
+                    }
+                    switch (item.getItemId()) {
+                        case R.id.take_camera:  //拍照
+                            // getImage(PickerBuilder.SELECT_FROM_CAMERA);
+//                            cameraPic();
+                            PhotoCuttingUtil.INSTANCE.takePhotoZoom2(
+                                    PersonDataActivity.this, 111,
+                                    1, 1);
+                            break;
+                        case R.id.take_Album:   //相册选择
+//                            getImage(PickerBuilder.SELECT_FROM_GALLERY);
 //                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 //                                intent.setType("image/*");
 //                                startActivityForResult(intent,120);
-                                break;
-                            case R.id.cancle:
-                                break;
-                        }
-                        return true;
+                            PhotoCuttingUtil.INSTANCE.selectPhotoZoom2(
+                                    PersonDataActivity.this, 111,
+                                    1, 1);
+                            break;
+                        case R.id.cancle:
+                            break;
                     }
+                    return true;
                 });
         menuSheetView.inflateMenu(R.menu.menu_takepictures);
         bottomSheetLayout.showWithSheetView(menuSheetView);
@@ -478,17 +476,17 @@ public class PersonDataActivity extends WatchBaseActivity
         OkHttpTool.getInstance().doRequestUploadFile(guiderImgUrl, new File(path).getName(), path, "11", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
-                Log.e(TAG,"---盖德上传图片返回="+result);
-                if(WatchUtils.isNetRequestSuccess(result,0)){
+                Log.e(TAG, "---盖德上传图片返回=" + result);
+                if (WatchUtils.isNetRequestSuccess(result, 0)) {
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         String data = jsonObject.getString("data");
-                        if(data == null)
+                        if (data == null)
                             return;
 //                        guiderUserInfo.setHeadUrl(data);    //用户的头像地址
 //                        updateGuiderUserInfo(guiderUserInfo);
                         guiderUserInfo.setHeadUrl(data);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -496,8 +494,6 @@ public class PersonDataActivity extends WatchBaseActivity
             }
         });
     }
-
-
 
 
     //上传我平台用户头像
@@ -517,9 +513,6 @@ public class PersonDataActivity extends WatchBaseActivity
 //        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.ziliaotouxiang, mapjson);
 
 
-
-
-
         Gson gson = new Gson();
         HashMap<String, Object> map = new HashMap<>();
         map.put("userId", Common.customer_id);
@@ -531,8 +524,9 @@ public class PersonDataActivity extends WatchBaseActivity
 
         String mapjson = gson.toJson(map);
         if (requestPressent != null)
-            requestPressent.getRequestJSONObject(0x01, Commont.FRIEND_BASE_URL + URLs.ziliaotouxiang, PersonDataActivity.this, mapjson, 1);
-
+            requestPressent.getRequestJSONObject(0x01,
+                    Commont.FRIEND_BASE_URL + URLs.ziliaotouxiang,
+                    PersonDataActivity.this, mapjson, 1);
 
 
     }
@@ -552,46 +546,93 @@ public class PersonDataActivity extends WatchBaseActivity
                     break;
                 case 1001: //相机返回的 uri
                     //启动裁剪
-                    String path = getExternalCacheDir().getPath();
+                    String path = FileDirUtil.INSTANCE.getExternalFileDir(this);
 //                    Log.e(TAG, "----裁剪path=" + path);
                     String name = "output.png";
                     startActivityForResult(CutForCamera(path, name), 111);
                     break;
                 case 111:
-                    try {
-                        if (mCutUri != null) {
-                            //获取裁剪后的图片，并显示出来
-                            Bitmap bitmap = BitmapFactory.decodeStream(
-                                    this.getContentResolver().openInputStream(mCutUri));
-                            //showImg.setImageBitmap(bitmap);
-                            headImg.setImageBitmap(bitmap);
-//                            RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
-//                                    .skipMemoryCache(true);
-//                            Glide.with(PersonDataActivity.this).
-//                                    load(mCutUri).apply(mRequestOptions).into(headImg);
-                            // uploadPic(ImageTool.getRealFilePath(PersonDataActivity.this, mCutUri));
-                            uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
-
-
-                            String finalPhotoName =
-                                    Environment.getExternalStorageDirectory()+"/"+"NewBluetoothStrap/headImg"+"_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date(System.currentTimeMillis()))
-                                            + ".jpg";
-                            //上传盖德后台图片
-                            //Log.e(TAG,"-------")
-                            File flieP = FileOperUtils.saveFiles(bitmap,finalPhotoName);
-                            uploadGuiderPic(flieP.getPath());
-
-                        }
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        if (mCutUri != null) {
+//                            //获取裁剪后的图片，并显示出来
+//                            Bitmap bitmap = BitmapFactory.decodeStream(
+//                                    this.getContentResolver().openInputStream(mCutUri));
+//                            //showImg.setImageBitmap(bitmap);
+//                            headImg.setImageBitmap(bitmap);
+////                            RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
+////                                    .skipMemoryCache(true);
+////                            Glide.with(PersonDataActivity.this).
+////                                    load(mCutUri).apply(mRequestOptions).into(headImg);
+//                            // uploadPic(ImageTool.getRealFilePath(PersonDataActivity.this, mCutUri));
+//                            uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
+//
+//
+//                            String finalPhotoName =
+//                                    FileDirUtil.INSTANCE.getExternalFileDir(this)
+//                                            + "/" + "NewBluetoothStrap/headImg" + "_"
+//                                            + new SimpleDateFormat(
+//                                            "yyyyMMdd_HHmmss", Locale.US)
+//                                            .format(new Date(System.currentTimeMillis()))
+//                                            + ".jpg";
+//                            //上传盖德后台图片
+//                            //Log.e(TAG,"-------")
+//                            File flieP = FileOperUtils.saveFiles(bitmap, finalPhotoName);
+//                            uploadGuiderPic(flieP.getPath());
+//
+//                        }
+//
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    if (data == null) return;
+                    dealHeaderShowAndUpload(data);
                     break;
             }
         }
 
+    }
+
+    private void dealHeaderShowAndUpload(Intent data) {
+        // 图片选择结果回调
+        List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+        // 例如 LocalMedia 里面返回三种path
+        // 1.media.getPath(); 为原图path
+        // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+        // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+        // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+        if (!selectList.isEmpty()) {
+            LocalMedia media = selectList.get(0);
+            if (StringUtil.isEmpty(media.getPath())) {
+                return;
+            }
+
+            String path;
+            if (media.isCut() && !media.isCompressed()) {
+                // 裁剪过
+                path = media.getCutPath();
+            } else if (media.isCompressed() || media.isCut() && media.isCompressed()) {
+                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                path = media.getCompressPath();
+            } else {
+                // 原图
+                path = media.getPath();
+            }
+            if (!(PictureMimeType.isContent(path) &&
+                    !media.isCut() && !media.isCompressed())) {
+                picPath = path;
+            }
+            if (!StringUtil.isEmpty(picPath)) {
+                WeakReference<Context> mContext =
+                        new WeakReference(PersonDataActivity.this);
+                Glide.with(mContext.get()).load(picPath)
+                        .into(headImg);
+                uploadPic(picPath, 1);
+                //上传盖德后台图片
+                uploadGuiderPic(picPath);
+            }
+        }
     }
 
     private void submitPersonData(String uName, String birthTxt, String heightTxt, String weightTxt) {
@@ -609,7 +650,6 @@ public class PersonDataActivity extends WatchBaseActivity
 ////        Log.e("PersonDataActivity", "----222------" + mapjson);
 //        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, PersonDataActivity.this);
 //        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.yonghuziliao, mapjson);
-
 
 
         Gson gson = new Gson();
@@ -634,7 +674,7 @@ public class PersonDataActivity extends WatchBaseActivity
      */
     private void cameraPic() {
         //创建一个file，用来存储拍照后的照片
-        File outputfile = new File(getExternalCacheDir().getPath(), "output.png");
+        File outputfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this), "output.png");
         try {
             if (outputfile.exists()) {
                 outputfile.delete();//删除
@@ -649,7 +689,7 @@ public class PersonDataActivity extends WatchBaseActivity
 //                    "com.guider.ringmiihx.fileprovider", //可以是任意字符串
 //                    outputfile);
             imageuri = FileProvider.getUriForFile(PersonDataActivity.this,
-                    getPackageName()+".fileProvider", //可以是任意字符串
+                    getPackageName() + ".fileProvider", //可以是任意字符串
                     outputfile);
         } else {
             imageuri = Uri.fromFile(outputfile);
@@ -672,7 +712,7 @@ public class PersonDataActivity extends WatchBaseActivity
     private Intent CutForCamera(String camerapath, String imgname) {
         try {
             //设置裁剪之后的图片路径文件
-            File cutfile = new File(getExternalCacheDir().getPath(),
+            File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
                     "cutcamera.png"); //随便命名一个
             if (cutfile.exists()) { //如果已经存在，则先删除,这里应该是上传到服务器，然后再删除本地的，没服务器，只能这样了
                 cutfile.delete();
@@ -690,7 +730,7 @@ public class PersonDataActivity extends WatchBaseActivity
 //                        "com.guider.ringmiihx.fileprovider",
 //                        camerafile);
                 imageUri = FileProvider.getUriForFile(PersonDataActivity.this,
-                        getPackageName()+".fileProvider",
+                        getPackageName() + ".fileProvider",
                         camerafile);
             } else {
                 imageUri = Uri.fromFile(camerafile);
@@ -736,7 +776,7 @@ public class PersonDataActivity extends WatchBaseActivity
             //直接裁剪
             Intent intent = new Intent("com.android.camera.action.CROP");
             //设置裁剪之后的图片路径文件
-            File cutfile = new File(getExternalCacheDir().getPath(),
+            File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
                     "cutcamera.png"); //随便命名一个
             if (cutfile.exists()) { //如果已经存在，则先删除,这里应该是上传到服务器，然后再删除本地的，没服务器，只能这样了
                 cutfile.delete();
@@ -825,7 +865,7 @@ public class PersonDataActivity extends WatchBaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(requestPressent != null)
+        if (requestPressent != null)
             requestPressent.detach();
     }
 
@@ -844,19 +884,19 @@ public class PersonDataActivity extends WatchBaseActivity
             JSONObject jsonObject = new JSONObject(object.toString());
             switch (what) {
                 case 0x01:  //头像
-                    if(!jsonObject.has("code"))
+                    if (!jsonObject.has("code"))
                         return;
-                    if(jsonObject.getInt("code") == 200){
-                        ToastUtil.showToast(PersonDataActivity.this,getResources().getString(R.string.submit_success));
-                    }else{
-                        ToastUtil.showToast(PersonDataActivity.this,jsonObject.getString("msg"));
+                    if (jsonObject.getInt("code") == 200) {
+                        ToastUtil.showToast(PersonDataActivity.this, getResources().getString(R.string.submit_success));
+                    } else {
+                        ToastUtil.showToast(PersonDataActivity.this, jsonObject.getString("msg"));
                     }
                     break;
                 case 0x02:  //完善用户信息
                     analysisUserStr(jsonObject);
                     break;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -872,15 +912,13 @@ public class PersonDataActivity extends WatchBaseActivity
     }
 
 
-
-
     //完善用户信息
     private void analysisUserStr(JSONObject jsonObject) {
         try {
             if (!jsonObject.has("code"))
                 return;
             if (jsonObject.getInt("code") == 200) {
-                ToastUtil.showToast(PersonDataActivity.this,getResources().getString(R.string.modify_success));
+                ToastUtil.showToast(PersonDataActivity.this, getResources().getString(R.string.modify_success));
                 startActivity(NewSearchActivity.class);
                 finish();
             } else {

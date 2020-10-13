@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.yalantis.ucrop.UCrop;
 
 /**
@@ -18,7 +20,7 @@ public class PickerBuilder {
     protected onImageReceivedListener imageReceivedListener;
     private PickerManager pickerManager;
 
-    public PickerBuilder(Activity activity, int type) {
+    public PickerBuilder(AppCompatActivity activity, int type) {
         this.activity = activity;
         pickerManager = (type == PickerBuilder.SELECT_FROM_GALLERY)
                 ? new ImagePickerManager(activity) : new CameraPickerManager(activity);

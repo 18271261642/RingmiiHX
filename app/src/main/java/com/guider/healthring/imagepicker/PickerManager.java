@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -30,7 +32,7 @@ public abstract  class PickerManager {
     private boolean withTimeStamp = true;
     private String folder = null;
     private String imageName;
-    protected Activity activity;
+    protected AppCompatActivity activity;
     private UCrop uCrop;
     protected PickerBuilder.onImageReceivedListener imageReceivedListener;
     protected PickerBuilder.onPermissionRefusedListener permissionRefusedListener;
@@ -45,7 +47,7 @@ public abstract  class PickerManager {
         return this;
     }
 
-    public PickerManager(Activity activity) {
+    public PickerManager(AppCompatActivity activity) {
         this.activity = activity;
         this.imageName = activity.getString(R.string.app_name);
     }
@@ -142,7 +144,7 @@ public abstract  class PickerManager {
     }
 
 
-    public PickerManager setActivity(Activity activity) {
+    public PickerManager setActivity(AppCompatActivity activity) {
         this.activity = activity;
         return this;
     }

@@ -85,12 +85,7 @@ public class W30sAlbumActivity extends WatchBaseActivity implements OnAlbumItemC
         Log.e(TAG, "-------foloPath=" + folderPath);
         if (folderPath != null) {
             File file = new File(folderPath);
-            photos = file.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".jpg");
-                }
-            });
+            photos = file.listFiles((dir, name) -> name.endsWith(".jpg"));
             tempList.clear();
             if (photos == null) return;
             for (int i = 0; i < photos.length; i++) {

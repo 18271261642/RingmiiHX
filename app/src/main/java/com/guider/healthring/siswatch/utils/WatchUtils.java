@@ -20,6 +20,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.guider.health.common.utils.FileDirUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -849,8 +850,7 @@ public class WatchUtils {
 
     //分享
     public static void shareCommData(Activity activity) {
-        String filePath = Environment.getExternalStorageDirectory() + "/DCIM/" + System.currentTimeMillis() + ".png";
-        ScreenShot.shoot(activity, new File(filePath));
+        ScreenShot.INSTANCE.shoot(activity);
 //        Common.showShare(activity, null, false, filePath);
     }
 
