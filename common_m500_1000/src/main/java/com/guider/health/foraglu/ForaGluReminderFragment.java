@@ -60,6 +60,14 @@ public class ForaGluReminderFragment extends BaseFragment implements BleVIewInte
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDialogProgressCountdown != null) {
+            mDialogProgressCountdown.hideDialog();
+        }
+    }
+
+    @Override
     public void connectAndMessureIsOK() {
         GluServiceManager.getInstance().stopDeviceConnect();
         _mActivity.runOnUiThread(new Runnable() {

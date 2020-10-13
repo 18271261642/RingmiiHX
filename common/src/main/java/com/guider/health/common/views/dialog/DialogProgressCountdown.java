@@ -35,7 +35,9 @@ public class DialogProgressCountdown {
     }
 
     public void hideDialog() {
-        mDialogProgress.hideDialog();
-        mCountDownTimer.cancel();
+        if (mDialogProgress != null)
+            mDialogProgress.hideDialog();
+        if (mCountDownTimer != null)
+            mCountDownTimer.cancel();
     }
 }

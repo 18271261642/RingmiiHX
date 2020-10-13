@@ -105,6 +105,14 @@ public class MEDCheckPressureReminderFragment extends MedCheckFragment implement
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDialogProgressCountdown != null) {
+            mDialogProgressCountdown.hideDialog();
+        }
+    }
+
+    @Override
     protected void onDeviceConnectionStateChange(BleDevice bleDevice, int status) {
         super.onDeviceConnectionStateChange(bleDevice, status);
         if (mBleDevice != null && bleDevice.getMacAddress().equals(mBleDevice.getMacAddress())

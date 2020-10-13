@@ -3,8 +3,10 @@ package com.guider.healthring.b30.view;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -186,7 +188,7 @@ import java.util.List;
 //}
 
 
-public class B30DeviceAlarmActivity extends WatchBaseActivity implements View.OnClickListener{
+public class B30DeviceAlarmActivity extends WatchBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "B30DeviceAlarmActivity";
 
@@ -282,7 +284,7 @@ public class B30DeviceAlarmActivity extends WatchBaseActivity implements View.On
      */
     private void showDeleteAlarmDia(final int position) {
         final Alarm2Setting alarm2Setting = mAlarmList.get(position);
-        Log.e(TAG,"------删除闹钟="+alarm2Setting.toString());
+        Log.e(TAG, "------删除闹钟=" + alarm2Setting.toString());
         AlertDialog.Builder builder = new AlertDialog.Builder(B30DeviceAlarmActivity.this)
                 .setTitle(R.string.deleda)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
@@ -299,10 +301,14 @@ public class B30DeviceAlarmActivity extends WatchBaseActivity implements View.On
      * 从手环读取闹钟数据
      */
     private void readAlarmFromBleAll() {
-        // MyApp.getInstance().getVpOperateManager().readAlarm2(iBleWriteResponse, alarmDataListener);
-
-        List<Alarm2Setting> readList = MyApp.getInstance().getVpOperateManager().getAlarm2List();
-        showAllAlarm(readList);
+        try {
+            List<Alarm2Setting> readList =
+                    MyApp.getInstance().getVpOperateManager().getAlarm2List();
+            showAllAlarm(readList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAllAlarm(new ArrayList<>());
+        }
     }
 
     /**
@@ -345,7 +351,7 @@ public class B30DeviceAlarmActivity extends WatchBaseActivity implements View.On
     private IAlarm2DataListListener alarmDataListener = new IAlarm2DataListListener() {
         @Override
         public void onAlarmDataChangeListListener(AlarmData2 alarmData2) {
-            Log.e(TAG,"---------手环读取闹钟返回="+alarmData2.toString());
+            Log.e(TAG, "---------手环读取闹钟返回=" + alarmData2.toString());
             showAllAlarm(alarmData2.getAlarm2SettingList());
         }
     };

@@ -1,8 +1,10 @@
 package com.guider.health.forabo;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import ble.BleClient;
 public class ForaBOReminderFragment extends BaseFragment implements BleVIewInterface {
     private View view;
     private DialogProgressCountdown mDialogProgressCountdown;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,11 +51,19 @@ public class ForaBOReminderFragment extends BaseFragment implements BleVIewInter
             ForaBOServiceManager.getInstance().setViewObject(this);
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         ForaBOServiceManager.getInstance().stopDeviceConnect();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDialogProgressCountdown != null) {
+            mDialogProgressCountdown.hideDialog();
+        }
     }
 
     @Override
@@ -93,7 +104,7 @@ public class ForaBOReminderFragment extends BaseFragment implements BleVIewInter
         ((TextView) view.findViewById(R.id.tv_test_reminder)).setText(R.string.fora_bo_tips);
         // 是否能跳过
         view.findViewById(R.id.skip).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this , DeviceInit.DEV_FORA_BO));
+        view.findViewById(R.id.skip).setOnClickListener(new SkipClick(this, DeviceInit.DEV_FORA_BO));
 
         // 返回上一页
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
@@ -112,7 +123,7 @@ public class ForaBOReminderFragment extends BaseFragment implements BleVIewInter
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!MyUtils.isNormalClickTime()){
+                if (!MyUtils.isNormalClickTime()) {
                     return;
                 }
                 btnTest.setEnabled(false);
@@ -143,11 +154,11 @@ public class ForaBOReminderFragment extends BaseFragment implements BleVIewInter
         ForaBOServiceManager.getInstance().startMeasure();
         mDialogProgressCountdown.showDialog(1000 * 30, 1000,
                 new Runnable() {
-            @Override
-            public void run() {
-                changeUi2Fail();
-                ForaBOServiceManager.getInstance().stopDeviceConnect();
-            }
-        });
+                    @Override
+                    public void run() {
+                        changeUi2Fail();
+                        ForaBOServiceManager.getInstance().stopDeviceConnect();
+                    }
+                });
     }
 }

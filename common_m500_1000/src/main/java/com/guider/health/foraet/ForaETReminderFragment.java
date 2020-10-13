@@ -57,6 +57,14 @@ public class ForaETReminderFragment extends BaseFragment implements BleVIewInter
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDialogProgressCountdown != null) {
+            mDialogProgressCountdown.hideDialog();
+        }
+    }
+
+    @Override
     public void connectAndMessureIsOK() {
         ForaETServiceManager.getInstance().stopDeviceConnect();
         _mActivity.runOnUiThread(new Runnable() {

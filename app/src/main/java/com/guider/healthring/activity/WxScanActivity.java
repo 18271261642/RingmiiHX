@@ -129,4 +129,12 @@ public class WxScanActivity extends AppCompatActivity implements View.OnClickLis
         }
         return false;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDialogProgress != null) {
+            mDialogProgress.hideDialog();
+        }
+    }
 }

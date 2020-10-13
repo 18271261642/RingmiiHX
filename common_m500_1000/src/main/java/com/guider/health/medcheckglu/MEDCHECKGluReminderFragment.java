@@ -200,6 +200,14 @@ public class MEDCHECKGluReminderFragment extends MedCheckFragment implements Vie
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mDialogProgressCountdown != null) {
+            mDialogProgressCountdown.hideDialog();
+        }
+    }
+
+    @Override
     protected void onPermissionGrantedAndBluetoothOn() {
         super.onPermissionGrantedAndBluetoothOn();
         mAllPermissionsReady = true;
