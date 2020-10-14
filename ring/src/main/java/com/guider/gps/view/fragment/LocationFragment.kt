@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -14,8 +16,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binioter.guideview.GuideBuilder
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
@@ -29,6 +34,8 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
+import com.guider.baselib.utils.CommonUtils.convertViewToBitmap
+import com.guider.baselib.widget.CircleImageView
 import com.guider.baselib.widget.LoadingView
 import com.guider.baselib.widget.calendarList.CalendarList
 import com.guider.baselib.widget.dialog.DialogHolder
@@ -41,16 +48,12 @@ import com.guider.gps.bean.WithSelectBaseBean
 import com.guider.gps.view.activity.HistoryRecordActivity
 import com.guider.gps.view.activity.LocationFrequencySetNewActivity
 import com.guider.gps.widget.SimpleComponent
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.ElectronicFenceBean
-import com.guider.health.apilib.bean.UserPositionListBean
 import kotlinx.android.synthetic.main.fragment_location.*
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import retrofit2.Call
-import retrofit2.Response
 import java.util.*
 import kotlin.math.asin
 import kotlin.math.cos
@@ -132,6 +135,8 @@ class LocationFragment : BaseFragment(),
     private var dateSelectTag = false
     private var startTimeValue = ""
     private var endTimeValue = ""
+    private var mDialog1: DialogProgress? = null
+    private var mDialog2: DialogProgress? = null
 
     override fun initView(rootView: View) {
     }
@@ -306,97 +311,91 @@ class LocationFragment : BaseFragment(),
      * 得到用户最近的定位点
      */
     private fun getUserLocationPointData() {
-        val dialog = DialogProgress(mActivity, null)
-        dialog.showDialog()
+        mDialog1 = DialogProgress(mActivity, null)
+        mDialog1?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (accountId == 0) {
-            dialog.hideDialog()
+            mDialog1?.hideDialog()
             return
         }
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .userPosition(accountId, 1, 1, "", "")
-                .enqueue(object : ApiCallBack<List<UserPositionListBean>>(mActivity) {
-                    override fun onApiResponse(call: Call<List<UserPositionListBean>>?,
-                                               response: Response<List<UserPositionListBean>>?) {
-                        if (!response?.body().isNullOrEmpty() && response?.body()!!.size == 1) {
-                            val pointList = response.body()!!
-                            val firstPosition = pointList[0]
-                            startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
-                            mGoogleMap?.animateCamera(
-                                    CameraUpdateFactory.newLatLngZoom(
-                                            LatLng(firstPosition.lat, firstPosition.lng), 16.0f))
-                            if (StringUtil.isNotBlankAndEmpty(firstPosition.addr))
-                                MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
-                            if (StringUtil.isNotBlankAndEmpty(firstPosition.testTime))
-                                MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
-                            //判断是否是相同的定位点
-                            if (!MMKVUtil.containKey(LAST_LOCATION_POINT_LAT) ||
-                                    (!(MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0)
-                                            == firstPosition.lat &&
-                                            MMKVUtil.getDouble(
-                                                    LAST_LOCATION_POINT_LNG, 0.0)
-                                            == firstPosition.lng))) {
-                                MMKVUtil.saveDouble(LAST_LOCATION_POINT_LAT, firstPosition.lat)
-                                MMKVUtil.saveDouble(LAST_LOCATION_POINT_LNG, firstPosition.lng)
-                            }
-                        } else {
-                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_LAT)
-                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_LNG)
-                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_ADDRESS)
-                            MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .userPosition(accountId, 1, 1, "", "")
+                mDialog1?.hideDialog()
+                if (!resultBean.isNullOrEmpty() && resultBean.size == 1) {
+                    val firstPosition = resultBean[0]
+                    startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
+                    mGoogleMap?.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(firstPosition.lat, firstPosition.lng), 16.0f))
+                    if (StringUtil.isNotBlankAndEmpty(firstPosition.addr))
+                        MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
+                    if (StringUtil.isNotBlankAndEmpty(firstPosition.testTime))
+                        MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
+                    //判断是否是相同的定位点
+                    if (!MMKVUtil.containKey(LAST_LOCATION_POINT_LAT) ||
+                            (!(MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0)
+                                    == firstPosition.lat &&
+                                    MMKVUtil.getDouble(
+                                            LAST_LOCATION_POINT_LNG, 0.0)
+                                    == firstPosition.lng))) {
+                        MMKVUtil.saveDouble(LAST_LOCATION_POINT_LAT, firstPosition.lat)
+                        MMKVUtil.saveDouble(LAST_LOCATION_POINT_LNG, firstPosition.lng)
                     }
-
-                    override fun onRequestFinish() {
-                        dialog.hideDialog()
-                    }
-                })
+                } else {
+                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_LAT)
+                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_LNG)
+                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_ADDRESS)
+                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
+                }
+            } catch (e: Exception) {
+                mDialog1?.hideDialog()
+                showToast(e.message!!)
+            }
+        }
     }
 
     /**
      * 得到用户行动轨迹
      */
     private fun getUserPointLineData(startTimeValue: String, endTimeValue: String) {
-        val dialog = DialogProgress(mActivity, null)
-        dialog.showDialog()
+        mDialog2 = DialogProgress(mActivity, null)
+        mDialog2?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (accountId == 0) {
-            dialog.hideDialog()
+            mDialog2?.hideDialog()
             return
         }
         Log.i("getUserPointDataTime", "start$startTimeValue-----end$endTimeValue")
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .userPosition(accountId, -1, 20,
-                        DateUtilKotlin.localToUTC(startTimeValue)!!,
-                        DateUtilKotlin.localToUTC(endTimeValue)!!)
-                .enqueue(object : ApiCallBack<List<UserPositionListBean>>(mActivity) {
-                    override fun onApiResponse(call: Call<List<UserPositionListBean>>?,
-                                               response: Response<List<UserPositionListBean>>?) {
-                        if (!response?.body().isNullOrEmpty() && response?.body()!!.size > 1) {
-                            val pointList = response.body()!!
-                            val firstPosition = pointList[0]
-                            val endPosition = pointList[pointList.size - 1]
-                            startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
-                            endDisplayPerth(LatLng(endPosition.lat, endPosition.lng))
-                            val latLngList = arrayListOf<LatLng>()
-                            pointList.forEach {
-                                latLngList.add(LatLng(it.lat, it.lng))
-                            }
-                            line = PolylineOptions()
-                                    .color(CommonUtils.getColor(mActivity, R.color.colorF18937))
-                                    .width(4f)
-                                    .geodesic(true)
-                                    .addAll(latLngList)
-                            mGoogleMap?.addPolyline(line)
-                            mGoogleMap?.animateCamera(
-                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .userPosition(accountId, 1, 1, "", "")
+                mDialog2?.hideDialog()
+                if (!resultBean.isNullOrEmpty() && resultBean.size > 1) {
+                    val firstPosition = resultBean[0]
+                    val endPosition = resultBean[resultBean.size - 1]
+                    startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
+                    endDisplayPerth(LatLng(endPosition.lat, endPosition.lng))
+                    val latLngList = arrayListOf<LatLng>()
+                    resultBean.forEach {
+                        latLngList.add(LatLng(it.lat, it.lng))
                     }
-
-                    override fun onRequestFinish() {
-                        dialog.hideDialog()
-                    }
-                })
+                    line = PolylineOptions()
+                            .color(CommonUtils.getColor(mActivity, R.color.colorF18937))
+                            .width(4f)
+                            .geodesic(true)
+                            .addAll(latLngList)
+                    mGoogleMap?.addPolyline(line)
+                    mGoogleMap?.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
+                }
+            } catch (e: Exception) {
+                mDialog2?.hideDialog()
+                showToast(e.message!!)
+            }
+        }
     }
 
     /**
@@ -412,48 +411,43 @@ class LocationFragment : BaseFragment(),
             return
         }
         mActivity.showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getElectronicFence(deviceCode, accountId)
-                .enqueue(object : ApiCallBack<Any>(mActivity) {
-                    override fun onApiResponse(call: Call<Any>?,
-                                               response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            val latLngList = arrayListOf<LatLng>()
-                            val asList = ParseJsonData.parseJsonDataList<ElectronicFenceBean>(
-                                    response.body()!!, ElectronicFenceBean::class.java)
-                            asList.forEach {
-                                latLngList.add(LatLng(
-                                        it.lat, it.lng))
-                            }
-                            polygon = PolygonOptions()
-                                    .fillColor(CommonUtils.getColor(
-                                            mActivity, R.color.color80F18937))
-                                    .strokeWidth(1.0f)
-                                    .addAll(latLngList)
-                            mGoogleMap?.addPolygon(polygon)
-                            mGoogleMap?.animateCamera(
-                                    CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getElectronicFence(deviceCode, accountId)
+                mActivity.dismissDialog()
+                if (resultBean is String && resultBean == "null") {
+                    electronicSetLayout.post {
+                        showGuideView()
                     }
-
-                    override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            electronicSetLayout.post {
-                                showGuideView()
-                            }
-                        }
+                } else {
+                    val latLngList = arrayListOf<LatLng>()
+                    val asList = ParseJsonData.parseJsonDataList<ElectronicFenceBean>(
+                            resultBean, ElectronicFenceBean::class.java)
+                    asList.forEach {
+                        latLngList.add(LatLng(
+                                it.lat, it.lng))
                     }
-
-                    override fun onRequestFinish() {
-                        mActivity.dismissDialog()
-                    }
-                })
+                    polygon = PolygonOptions()
+                            .fillColor(CommonUtils.getColor(
+                                    mActivity, R.color.color80F18937))
+                            .strokeWidth(1.0f)
+                            .addAll(latLngList)
+                    mGoogleMap?.addPolygon(polygon)
+                    mGoogleMap?.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
+                }
+            } catch (e: Exception) {
+                mActivity.dismissDialog()
+                showToast(e.message!!)
+            }
+        }
     }
 
     /**
      * 显示电子围栏高亮提示
      */
-    fun showGuideView() {
+    private fun showGuideView() {
         val builder = GuideBuilder()
         builder.setTargetView(electronicSetLayout)
                 .setAlpha(150)
@@ -488,21 +482,19 @@ class LocationFragment : BaseFragment(),
                 ElectronicFenceBean(customTwoLatLng!!.latitude, customTwoLatLng!!.longitude),
                 ElectronicFenceBean(customThirdLatLng!!.latitude, customThirdLatLng!!.longitude),
                 ElectronicFenceBean(customFourLatLng!!.latitude, customFourLatLng!!.longitude))
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .setElectronicFence(data)
-                .enqueue(object : ApiCallBack<String>(mActivity) {
-                    override fun onApiResponse(call: Call<String>?,
-                                               response: Response<String>?) {
-                        if (response?.body() == "true") {
-                            showToast(mActivity.resources.getString(R.string.app_set_success))
-                            confirmElectronicShow()
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        mActivity.dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().setElectronicFence(data)
+                mActivity.dismissDialog()
+                if (resultBean == "true") {
+                    showToast(mActivity.resources.getString(R.string.app_set_success))
+                    confirmElectronicShow()
+                }
+            } catch (e: Exception) {
+                mActivity.dismissDialog()
+                showToast(e.message!!)
+            }
+        }
     }
 
     /**
@@ -965,29 +957,57 @@ class LocationFragment : BaseFragment(),
      * 设置定位点（开始点）的mark标志
      */
     private fun startDisplayPerth(latLng: LatLng) {
-        val transJC02LatLng =
-                if (BuildConfig.DEBUG && tabPosition == 0) {
-                    val gps84ToGcj02 =
-                            MapPositionUtil.gps84_To_Gcj02(latLng.latitude, latLng.longitude)
-                    LatLng(gps84ToGcj02.lat, gps84ToGcj02.lon)
-                } else latLng
+//        val transJC02LatLng =
+//                if (BuildConfig.DEBUG && tabPosition == 0) {
+//                    val gps84ToGcj02 =
+//                            MapPositionUtil.gps84_To_Gcj02(latLng.latitude, latLng.longitude)
+//                    LatLng(gps84ToGcj02.lat, gps84ToGcj02.lon)
+//                } else latLng
         firstLocationLat = latLng.latitude
         firstLocationLng = latLng.longitude
-        // 每一次打点第一个的时候就是定位开始的时候\
-        if (tabPosition == 0 || tabPosition == 1) {
-            var bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_map_mark_bg_with_head)
-            if (tabPosition == 1) {
-                bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_mark_start_bg)
-            }
-            if (mGoogleMap == null) return
-            starPerth = mGoogleMap?.addMarker(MarkerOptions()
-                    .draggable(false).icon(bitmap).position(
-                            LatLng(firstLocationLat, firstLocationLng)))
-            if (tabPosition == 0) {
-                starPerth?.tag = martTag
-            }
+        // 每一次打点第一个的时候就是定位开始的时候
+        if (tabPosition == 0) {
+            createCustomMarkIcon()
+        }
+        if (tabPosition == 1) {
+            val bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_mark_start_bg)
+            setMarkCustomShow(bitmap)
+        }
+    }
 
-            starPerth?.isDraggable = false //设置不可移动
+    private fun setMarkCustomShow(bitmap: BitmapDescriptor?) {
+        if (mGoogleMap == null) return
+        starPerth = mGoogleMap?.addMarker(MarkerOptions()
+                .draggable(false).icon(bitmap).position(
+                        LatLng(firstLocationLat, firstLocationLng)))
+        if (tabPosition == 0) {
+            starPerth?.tag = martTag
+        }
+
+        starPerth?.isDraggable = false //设置不可移动
+    }
+
+    private fun createCustomMarkIcon() {
+        var bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_map_mark_bg_with_head)
+        if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(BIND_DEVICE_ACCOUNT_HEADER))) {
+            val view = View.inflate(mActivity, R.layout.fragment_google_map_mark_custom, null)
+            val userHeaderIv = view.findViewById<CircleImageView>(R.id.userHeader)
+            val picture = MMKVUtil.getString(BIND_DEVICE_ACCOUNT_HEADER)
+            GlideApp.with(mActivity).asBitmap().load(picture)
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap,
+                                                     transition: Transition<in Bitmap>?) {
+                            userHeaderIv.setImageBitmap(resource)
+                            bitmap = BitmapDescriptorFactory.fromBitmap(convertViewToBitmap(view))
+                            setMarkCustomShow(bitmap)
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {}
+
+                    })
+
+        } else {
+            setMarkCustomShow(bitmap)
         }
     }
 
@@ -1206,7 +1226,15 @@ class LocationFragment : BaseFragment(),
     }
 
     override fun onConnectionFailed(failResult: ConnectionResult) {
-        showToast("地图连接失败${failResult.errorMessage}")
+        showToast("地图连接失败" +
+                "${
+                    if (StringUtil.isNotBlankAndEmpty(failResult.errorMessage))
+                        failResult.errorMessage else ""
+                }")
+        eventDealLayout.setChildClickable(false)
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            eventDealLayout.focusable = NOT_FOCUSABLE
+//        }
     }
 
     override fun onResume() {
@@ -1233,6 +1261,14 @@ class LocationFragment : BaseFragment(),
                 LocationServices.FusedLocationApi.removeLocationUpdates(
                         mGoogleApiClient, locationListener)
             }
+        }
+        if (mDialog1 != null) {
+            mDialog1?.hideDialog()
+            mDialog1 = null
+        }
+        if (mDialog2 != null) {
+            mDialog2?.hideDialog()
+            mDialog2 = null
         }
     }
 

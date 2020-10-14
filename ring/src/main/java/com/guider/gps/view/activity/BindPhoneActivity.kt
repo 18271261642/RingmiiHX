@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
@@ -26,10 +27,9 @@ import com.guider.gps.R
 import com.guider.gps.adapter.CountryCodeDialogAdapter
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
-import com.guider.health.apilib.bean.ThirdBindPhoneBean
 import com.guider.health.apilib.bean.TokenInfo
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
@@ -38,6 +38,7 @@ import kotlinx.android.synthetic.main.activity_bind_phone.*
 import kotlinx.android.synthetic.main.include_password_edit.*
 import kotlinx.android.synthetic.main.include_phone_edit_layout.*
 import kotlinx.android.synthetic.main.include_simple_complete_info.*
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
@@ -60,6 +61,7 @@ class BindPhoneActivity : BaseActivity() {
     private var birthday = ""
     private var type = ""
     private var isHaveLineHead = true
+    private var mDialog: DialogProgress? = null
 
     override val contentViewResId: Int
         get() = R.layout.activity_bind_phone
@@ -375,32 +377,28 @@ class BindPhoneActivity : BaseActivity() {
     private fun uploadHeader(countryCode: String, passwordValue: String) {
         // 上传头像
         showDialog()
-        ApiUtil.uploadFile(null, header, object : ApiCallBack<String>(mContext) {
-            override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
-                Log.e("上传头像", "成功")
-                if (response?.body() != null) {
-                    header = response.body()!!
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().uploadFile(
+                        GuiderApiUtil.uploadFile(header))
+                dismissDialog()
+                if (resultBean != null) {
+                    Log.e("上传头像", "成功")
+                    header = resultBean
                     bindLineToPhone(header, countryCode, passwordValue)
                 }
-
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                super.onFailure(call, t)
-                Log.e("上传头像", "失败")
-            }
-
-            override fun onRequestFinish() {
-                super.onRequestFinish()
+            } catch (e: Exception) {
                 dismissDialog()
+                Log.e("上传头像", "失败")
+                toastShort(e.message!!)
             }
-        })
+        }
     }
 
 
     private fun bindLineToPhone(header: String, countryCode: String, passwordValue: String) {
-        val mDialog = DialogProgress(mContext!!, null)
-        mDialog.showDialog()
+        mDialog = DialogProgress(mContext!!, null)
+        mDialog?.showDialog()
         val map = hashMapOf<String, Any?>()
         map["appId"] = appId
         map["areaCode"] = countryCode
@@ -415,21 +413,26 @@ class BindPhoneActivity : BaseActivity() {
         map["nickname"] = name
         map["openid"] = openId
         map["phone"] = phoneValue
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .lineBindLogin(map)
-                ?.enqueue(object : ApiCallBack<ThirdBindPhoneBean>(mContext) {
-                    override fun onApiResponse(call: Call<ThirdBindPhoneBean>?,
-                                               response: Response<ThirdBindPhoneBean>?) {
-                        if (response?.body() != null) {
-                            val bean = response.body()!!
-                            loginSuccessEvent(bean.TokenInfo)
-                        }
-                    }
+        lifecycleScope.launch {
+            try {
+                val bean = GuiderApiUtil.getApiService()
+                        .lineBindLogin(map)
+                mDialog?.hideDialog()
+                if (bean != null)
+                    loginSuccessEvent(bean.TokenInfo)
+            } catch (e: Exception) {
+                mDialog?.hideDialog()
+                toastShort(e.message!!)
+            }
+        }
+    }
 
-                    override fun onRequestFinish() {
-                        mDialog.hideDialog()
-                    }
-                })
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mDialog != null) {
+            mDialog?.hideDialog()
+            mDialog = null
+        }
     }
 
     private fun loginSuccessEvent(bean: TokenInfo) {

@@ -87,6 +87,14 @@ dependencies {
     api dependencies.pictureSelector
     api dependencies.zxing
     api dependencies.guideview
+    //协程相关
+    api dependencies.coroutines_core
+    api dependencies.coroutines_android
+    api dependencies.activity_ktx
+    api dependencies.runtime_ktx
+    api dependencies.livedata_ktx
+    api dependencies.viewmodel_ktx
+
 
     //集成的module
     api project(':apilib')

@@ -4,16 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.Gravity
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import cn.addapp.pickers.picker.TimePicker
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.gps.R
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import kotlinx.android.synthetic.main.activity_alarm_set.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import kotlin.math.floor
 
 /**
@@ -152,47 +150,43 @@ class AlarmSeActivity : BaseActivity() {
     private fun commitTempAlarmSet(checked: Boolean) {
         showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .setBodyTempAlarm(accountId, timeIntervalValue, checked)
-                .enqueue(object : ApiCallBack<Any>(mContext) {
-                    override fun onApiResponse(call: Call<Any>?,
-                                               response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            MMKVUtil.saveBoolean(BT_CHECK, checked)
-                            MMKVUtil.saveInt(BT_INTERVAL, timeIntervalValue)
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        super.onRequestFinish()
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .setBodyTempAlarm(accountId, timeIntervalValue, checked)
+                dismissDialog()
+                if (resultBean != null) {
+                    MMKVUtil.saveBoolean(BT_CHECK, checked)
+                    MMKVUtil.saveInt(BT_INTERVAL, timeIntervalValue)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun commitHeartAlarmSet(checked: Boolean) {
         showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .setHeartRateAlarm(accountId, timeIntervalValue, checked)
-                .enqueue(object : ApiCallBack<Any>(mContext) {
-                    override fun onApiResponse(call: Call<Any>?,
-                                               response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            MMKVUtil.saveBoolean(HR_CHECK, checked)
-                            MMKVUtil.saveInt(HR_INTERVAL, timeIntervalValue)
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        super.onRequestFinish()
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .setHeartRateAlarm(accountId, timeIntervalValue, checked)
+                dismissDialog()
+                if (resultBean != null) {
+                    MMKVUtil.saveBoolean(HR_CHECK, checked)
+                    MMKVUtil.saveInt(HR_INTERVAL, timeIntervalValue)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun onTimePicker(time: String, onSelectTime: (hour: String, minute: String) -> Unit) {

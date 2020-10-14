@@ -44,7 +44,7 @@ public class ColumnChartData extends AbstractChartData {
         List<SubcolumnValue> values;
         Column column;
         for (int i = 1; i <= numColumns; ++i) {
-            values = new ArrayList<SubcolumnValue>(numColumns);
+            values = new ArrayList<>(numColumns);
             values.add(new SubcolumnValue(i));
             column = new Column(values);
             columns.add(column);

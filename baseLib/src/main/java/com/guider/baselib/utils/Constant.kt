@@ -40,6 +40,7 @@ val APP_ID_LINE = "1654871917"
  * */
 const val BIND_DEVICE_NAME = "bind_device_name"
 const val BIND_DEVICE_ACCOUNT_ID = "bind_device_account_id"
+const val BIND_DEVICE_ACCOUNT_HEADER = "bind_device_account_header"
 const val BIND_DEVICE_CODE = "bind_device_code"
 const val LAST_LOCATION_POINT_LAT = "last_location_point_lat"
 const val LAST_LOCATION_POINT_LNG= "last_location_point_lng"

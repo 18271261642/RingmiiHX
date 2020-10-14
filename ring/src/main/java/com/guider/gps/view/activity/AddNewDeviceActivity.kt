@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
@@ -12,16 +13,13 @@ import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.fragment.InputCodeAddDeviceFragment
 import com.guider.gps.view.fragment.ScanCodeAddDeviceFragment
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.BuildConfig
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
 import com.king.zxing.Intents
 import kotlinx.android.synthetic.main.activity_add_new_device.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 class AddNewDeviceActivity : BaseActivity() {
@@ -98,53 +96,49 @@ class AddNewDeviceActivity : BaseActivity() {
         if (type == "mine" || type == "unBindAndBindNew") {
             showDialog()
             val accountId = MMKVUtil.getInt(USER.USERID, 0)
-            ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .bindDeviceWithAccount(accountId, code)
-                    .enqueue(object : ApiCallBack<Any?>(mContext) {
-                        override fun onApiResponseNull(call: Call<Any?>?,
-                                                       response: Response<Any?>?) {
-                            //绑定失败返回null
-                            if (response?.body() != null) {
-                                toastShort(mContext!!.resources.getString(R.string.app_bind_fail))
-                            }
-                        }
-
-                        override fun onApiResponse(call: Call<Any?>?,
-                                                   response: Response<Any?>?) {
-                            if (response?.body() != null) {
-                                val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
-                                        response.body()!!)
-                                MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
-                                bean.userInfos?.forEach {
-                                    if (it.accountId == accountId) {
-                                        it.relationShip = it.name
-                                        MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
-                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
-                                            if (type == "unBindAndBindNew") {
-                                                MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
-                                            } else {
-                                                MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE, it.deviceCode!!)
-                                            }
-                                        }
+            lifecycleScope.launch {
+                try {
+                    val resultBean = GuiderApiUtil.getApiService()
+                            .bindDeviceWithAccount(accountId, code)
+                    dismissDialog()
+                    if (resultBean is String && resultBean == "null") {
+                        //绑定失败返回null
+                        toastShort(mContext!!.resources.getString(R.string.app_bind_fail))
+                    } else {
+                        val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
+                                resultBean)
+                        MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
+                        bean.userInfos?.forEach {
+                            if (it.accountId == accountId) {
+                                it.relationShip = it.name
+                                MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
+                                if (StringUtil.isNotBlankAndEmpty(it.headUrl))
+                                    MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_HEADER,it.headUrl!!)
+                                if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
+                                    if (type == "unBindAndBindNew") {
+                                        MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                    } else {
+                                        MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE, it.deviceCode!!)
                                     }
                                 }
-                                if (type == "unBindAndBindNew") {
-                                    val intent = Intent()
-                                    intent.putExtra("bindListBean", bean)
-                                    setResult(Activity.RESULT_OK, intent)
-                                } else {
-                                    val intent = Intent(mContext!!, MainActivity::class.java)
-                                    intent.putExtra("bindListBean", bean)
-                                    startActivity(intent)
-                                }
-                                finish()
                             }
                         }
-
-                        override fun onRequestFinish() {
-                            dismissDialog()
+                        if (type == "unBindAndBindNew") {
+                            val intent = Intent()
+                            intent.putExtra("bindListBean", bean)
+                            setResult(Activity.RESULT_OK, intent)
+                        } else {
+                            val intent = Intent(mContext!!, MainActivity::class.java)
+                            intent.putExtra("bindListBean", bean)
+                            startActivity(intent)
                         }
-                    })
+                        finish()
+                    }
+                } catch (e: Exception) {
+                    dismissDialog()
+                    toastShort(e.message!!)
+                }
+            }
         } else {
             if (isShowDialog)
                 showDialog()
@@ -153,29 +147,27 @@ class AddNewDeviceActivity : BaseActivity() {
             map["relationShip"] = nickName
             map["url"] = header
             map["userGroupId"] = userGroupId.toInt()
-            ApiUtil.createApi(IGuiderApi::class.java, false)
-                    .memberJoinGroup(map)
-                    .enqueue(object : ApiCallBack<Any>(mContext) {
-                        override fun onApiResponse(call: Call<Any>?,
-                                                   response: Response<Any>?) {
-                            if (response?.body() != null) {
-                                val list = ParseJsonData.parseJsonDataList<UserInfo>(response.body()!!,
-                                        UserInfo::class.java)
-                                if (!list.isNullOrEmpty()) {
-                                    val bean = CheckBindDeviceBean()
-                                    bean.userGroupId = userGroupId.toInt()
-                                    bean.userInfos = list
-                                    intent.putExtra("bindListBean", bean)
-                                    setResult(Activity.RESULT_OK, intent)
-                                    finish()
-                                }
-                            }
+            lifecycleScope.launch {
+                try {
+                    val resultBean = GuiderApiUtil.getApiService().memberJoinGroup(map)
+                    dismissDialog()
+                    if (resultBean != null) {
+                        val list = ParseJsonData.parseJsonDataList<UserInfo>(resultBean,
+                                UserInfo::class.java)
+                        if (!list.isNullOrEmpty()) {
+                            val bean = CheckBindDeviceBean()
+                            bean.userGroupId = userGroupId.toInt()
+                            bean.userInfos = list
+                            intent.putExtra("bindListBean", bean)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
                         }
-
-                        override fun onRequestFinish() {
-                            dismissDialog()
-                        }
-                    })
+                    }
+                } catch (e: Exception) {
+                    dismissDialog()
+                    toastShort(e.message!!)
+                }
+            }
         }
     }
 

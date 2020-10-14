@@ -10,23 +10,20 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
-import com.guider.health.apilib.bean.TokenInfo
+import com.guider.health.apilib.GuiderApiUtil
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.android.synthetic.main.complete_info_activity.*
 import kotlinx.android.synthetic.main.include_simple_complete_info.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  * @Package: com.guider.gps.view.activity
@@ -134,18 +131,21 @@ class CompleteInfoActivity : BaseActivity() {
     private fun uploadHeader() {
         // 上传头像
         showDialog()
-        ApiUtil.uploadFile(null, picPath, object : ApiCallBack<String>(mContext) {
-            override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
-                Log.e("上传头像", "成功")
-                if (response?.body() != null)
-                    registerEvent(response.body()!!)
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                super.onFailure(call, t)
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().uploadFile(
+                        GuiderApiUtil.uploadFile(picPath))
+                dismissDialog()
+                if (resultBean != null) {
+                    Log.e("上传头像", "成功")
+                    registerEvent(resultBean)
+                }
+            } catch (e: Exception) {
+                dismissDialog()
                 Log.e("上传头像", "失败")
+                toastShort(e.message!!)
             }
-        })
+        }
     }
 
     private fun registerEvent(headerUrl: String) {
@@ -160,43 +160,41 @@ class CompleteInfoActivity : BaseActivity() {
                 if (sex == mContext!!.resources.getString(R.string.app_person_info_man)) "MAN"
                 else "WOMAN"
         map["birthday"] = "${birthday}T00:00:00Z"
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .register(map)
-                ?.enqueue(object : ApiCallBack<TokenInfo>(mContext) {
-                    override fun onApiResponse(call: Call<TokenInfo>?,
-                                               response: Response<TokenInfo>?) {
-                        if (response?.body() != null) {
-                            val bean = response.body()!!
-                            if (StringUtil.isNotBlankAndEmpty(pageEnterType)) {
-                                //为设备添加新用户成功
-                                intent.putExtra("completeInfo", true)
-                                setResult(Activity.RESULT_OK, intent)
-                                EventBusUtils.sendEvent(EventBusEvent(
-                                        EventBusAction.DEVICE_ADD_MEMBER_INFO,
-                                        bean.accountId))
-                                finish()
-                            } else {
-                                MMKVUtil.saveString(USER.TOKEN, bean.token!!)
-                                MMKVUtil.saveInt(USER.USERID, bean.accountId)
-                                MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
-                                MMKVUtil.saveString(USER.PHONE, phoneValue)
-                                MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
-                                MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)
-                                MMKVUtil.saveString(USER.HEADER, headerUrl)
-                                MMKVUtil.saveString(USER.NAME, name)
-                                toastShort("注册成功")
-                                //登录成功后还需要回到登录页校验账号是否绑定设备的逻辑
-                                intent.putExtra("completeInfo", true)
-                                setResult(Activity.RESULT_OK, intent)
-                                finish()
-                            }
-                        }
+        lifecycleScope.launch {
+            try {
+                val bean = GuiderApiUtil.getApiService()
+                        .register(map)
+                dismissDialog()
+                if (bean != null) {
+                    if (StringUtil.isNotBlankAndEmpty(pageEnterType)) {
+                        //为设备添加新用户成功
+                        intent.putExtra("completeInfo", true)
+                        setResult(Activity.RESULT_OK, intent)
+                        EventBusUtils.sendEvent(EventBusEvent(
+                                EventBusAction.DEVICE_ADD_MEMBER_INFO,
+                                bean.accountId))
+                        finish()
+                    } else {
+                        MMKVUtil.saveString(USER.TOKEN, bean.token!!)
+                        MMKVUtil.saveInt(USER.USERID, bean.accountId)
+                        MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
+                        MMKVUtil.saveString(USER.PHONE, phoneValue)
+                        MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
+                        MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)
+                        MMKVUtil.saveString(USER.HEADER, headerUrl)
+                        MMKVUtil.saveString(USER.NAME, name)
+                        toastShort("注册成功")
+                        //登录成功后还需要回到登录页校验账号是否绑定设备的逻辑
+                        intent.putExtra("completeInfo", true)
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun selectBirthdayDialog() {

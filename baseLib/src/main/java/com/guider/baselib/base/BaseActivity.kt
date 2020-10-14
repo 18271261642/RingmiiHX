@@ -21,7 +21,7 @@ import com.guider.baselib.utils.EventBusUtils
 import com.guider.baselib.utils.OnNoDoubleClickListener
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.gyf.immersionbar.ImmersionBar
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
+import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 
 abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
 

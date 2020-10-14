@@ -29,6 +29,10 @@
     <string name="app_main_health_mild">輕度</string>
     <string name="app_main_health_normal">正常</string>
     <string name="app_main_health_error">異常</string>
+    <string name="app_main_health_sleep_deep">深睡</string>
+    <string name="app_main_health_sleep_shallow">淺睡</string>
+    <string name="app_main_health_sleep_awake">清醒</string>
+    <string name="app_main_health_time_sleep">睡眠時間: %s-%s</string>
     <string name="app_main_health_query">查詢</string>
     <string name="app_main_bind_device">綁定了 %s 的手環</string>
     <string name="app_main_unbind_device">您確定要解除對%s手環的綁定嗎？</string>
@@ -196,4 +200,11 @@
     <string name="app_search_pattern">尋人模式</string>
     <string name="app_time_interval_one_hour">時間間隔：1小時</string>
     <string name="app_time_interval_five_minutes">時間間隔：5分鐘</string>
+    <string name="app_hint">提示</string>
+    <string name="app_watch">查看</string>
+    <string name="app_bracelet_power_reminder">手環電量提醒</string>
+    <string name="app_shutdown_to_remind">關機提醒</string>
+    <string name="app_Erase_remind">擦除提醒</string>
+    <string name="app_sos_alarm">SOS 報警</string>
+    <string name="app_electronic_fence_alarm">電子圍欄報警</string>
 </resources>

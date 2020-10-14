@@ -10,366 +10,374 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/locationTabLayout"
+    <com.guider.gps.widget.ChildClickableConstrainLayout
+        android:id="@+id/eventDealLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_42"
-        android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorHeight="@dimen/dp_2"
-        app:tabTextAppearance="@style/CustomTabLayoutTextSizeStyle" />
+        android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/locationInfoLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/locationTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_42"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorHeight="@dimen/dp_2"
+            app:tabTextAppearance="@style/CustomTabLayoutTextSizeStyle" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/locationFunctionExtend"
+            android:id="@+id/locationInfoLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/white"
-            android:src="@drawable/icon_below_arrow_location"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/locationFunctionExtend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:src="@drawable/icon_below_arrow_location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/extendIv"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@drawable/icon_below_arrow_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/extendFunctionLayout"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/locationFunctionExtend"
+                app:layout_constraintTop_toBottomOf="@id/locationFunctionExtend">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/locationNumberSet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/dp_13"
+                        android:text="@string/app_main_map_positioning_frequency_setting"
+                        android:textColor="@color/color333333"
+                        android:textSize="@dimen/sp_13"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/line"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0_5"
+                        android:layout_marginStart="@dimen/dp_13"
+                        android:layout_marginEnd="@dimen/dp_13"
+                        android:background="@color/line_grey"
+                        app:layout_constraintTop_toBottomOf="@id/locationNumberSet" />
+
+                    <TextView
+                        android:id="@+id/historyRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:paddingBottom="@dimen/dp_13"
+                        android:text="@string/app_main_map_history_record"
+                        android:textColor="@color/color333333"
+                        android:textSize="@dimen/sp_13"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/line" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_12"
+            android:layout_marginBottom="@dimen/dp_110"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
-                android:id="@+id/extendIv"
+                android:id="@+id/mapLocationIv"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:src="@drawable/icon_below_arrow_location"
+                android:src="@drawable/icon_map_change"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/extendFunctionLayout"
-            android:layout_width="105dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/trackEventsLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_4"
+            android:background="@color/white"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/locationFunctionExtend"
-            app:layout_constraintTop_toBottomOf="@id/locationFunctionExtend">
+            app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/trackEventsDateLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/locationNumberSet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_13"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/dp_13"
-                    android:text="@string/app_main_map_positioning_frequency_setting"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_13"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="42dp"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <View
-                    android:id="@+id/line"
+                    android:id="@+id/trackEventsLine"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_0_5"
-                    android:layout_marginStart="@dimen/dp_13"
-                    android:layout_marginEnd="@dimen/dp_13"
                     android:background="@color/line_grey"
-                    app:layout_constraintTop_toBottomOf="@id/locationNumberSet" />
-
-                <TextView
-                    android:id="@+id/historyRecord"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_13"
-                    android:paddingBottom="@dimen/dp_13"
-                    android:text="@string/app_main_map_history_record"
-                    android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_13"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/line" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottomLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_12"
-        android:layout_marginBottom="@dimen/dp_110"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/mapLocationIv"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:src="@drawable/icon_map_change"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/trackEventsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/trackEventsDateLayout"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:id="@+id/trackEventsLine"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/line_grey"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/searchFrontLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/trackEventsDateLeft"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/icon_arrow_left"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <ImageView
-                    android:id="@+id/trackEventsDateRight"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/icon_arrow_right"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/searchFrontLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/trackEventsDateValueTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/color999999"
-                        android:textSize="@dimen/sp_15"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
                     <ImageView
-                        android:id="@+id/trackEventsDateCalSelectIv"
+                        android:id="@+id/trackEventsDateLeft"
                         android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:src="@drawable/icon_location_cal_select"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/trackEventsDateValueTv"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/selectTimeBackLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/startTimeTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="7dp"
-                    android:background="@drawable/rounded_f5f5f5_14_bg"
-                    android:paddingStart="13dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="13dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/color999999"
-                    android:textSize="@dimen/sp_13"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/timeLine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/dp_2"
-                    android:paddingEnd="@dimen/dp_2"
-                    android:text="-"
-                    android:textColor="@color/colorDDDDDD"
-                    android:textSize="@dimen/sp_13"
-                    app:layout_constraintBottom_toBottomOf="@id/startTimeTv"
-                    app:layout_constraintStart_toEndOf="@id/startTimeTv"
-                    app:layout_constraintTop_toTopOf="@id/startTimeTv" />
-
-                <TextView
-                    android:id="@+id/endTimeTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="7dp"
-                    android:background="@drawable/rounded_f5f5f5_14_bg"
-                    android:paddingStart="13dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="13dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/color999999"
-                    android:textSize="@dimen/sp_13"
-                    app:layout_constraintStart_toEndOf="@id/timeLine"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/searchLayout"
-                    android:layout_width="71dp"
-                    android:layout_height="29dp"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginTop="7dp"
-                    android:background="@drawable/rounded_f28a38_14_bg"
-                    app:layout_constraintStart_toEndOf="@id/endTimeTv"
-                    app:layout_constraintTop_toTopOf="parent">
+                        android:layout_height="match_parent"
+                        android:src="@drawable/icon_arrow_left"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <ImageView
-                        android:id="@+id/searchIv"
-                        android:layout_width="17dp"
-                        android:layout_height="14dp"
-                        android:layout_marginStart="12dp"
-                        android:src="@drawable/icon_search_white"
+                        android:id="@+id/trackEventsDateRight"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/icon_arrow_right"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/trackEventsDateValueTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color999999"
+                            android:textSize="@dimen/sp_15"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/trackEventsDateCalSelectIv"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:src="@drawable/icon_location_cal_select"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/trackEventsDateValueTv"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/selectTimeBackLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/startTimeTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/rounded_f5f5f5_14_bg"
+                        android:paddingStart="13dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="13dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/color999999"
+                        android:textSize="@dimen/sp_13"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/timeLine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@string/app_main_health_query"
-                        android:textColor="@color/white"
+                        android:paddingStart="@dimen/dp_2"
+                        android:paddingEnd="@dimen/dp_2"
+                        android:text="-"
+                        android:textColor="@color/colorDDDDDD"
                         android:textSize="@dimen/sp_13"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/searchIv"
+                        app:layout_constraintBottom_toBottomOf="@id/startTimeTv"
+                        app:layout_constraintStart_toEndOf="@id/startTimeTv"
+                        app:layout_constraintTop_toTopOf="@id/startTimeTv" />
+
+                    <TextView
+                        android:id="@+id/endTimeTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/rounded_f5f5f5_14_bg"
+                        android:paddingStart="13dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="13dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/color999999"
+                        android:textSize="@dimen/sp_13"
+                        app:layout_constraintStart_toEndOf="@id/timeLine"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/searchLayout"
+                        android:layout_width="71dp"
+                        android:layout_height="29dp"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/rounded_f28a38_14_bg"
+                        app:layout_constraintStart_toEndOf="@id/endTimeTv"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/searchIv"
+                            android:layout_width="17dp"
+                            android:layout_height="14dp"
+                            android:layout_marginStart="12dp"
+                            android:src="@drawable/icon_search_white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:text="@string/app_main_health_query"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_13"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/searchIv"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/trackEventCalIv"
+                        android:layout_width="@dimen/dp_42"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:src="@drawable/icon_location_track_event_cal"
+                        app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/trackEventsTimeRv"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@color/white"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingTop="@dimen/dp_6"
+                android:paddingEnd="0dp"
+                android:paddingBottom="@dimen/dp_6"
+                app:layout_constraintTop_toBottomOf="@id/trackEventsDateLayout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/electronicFenceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/electronicCommitLayout"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/dp_14"
+                android:background="@drawable/select_electronic_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/trackEventCalIv"
-                    android:layout_width="@dimen/dp_42"
+                    android:id="@+id/electronicCommitIv"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:src="@drawable/icon_location_track_event_cal"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:src="@drawable/select_electronic_commit" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/electronicDeleteLayout"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/dp_9"
+                android:background="@drawable/select_electronic_background"
+                app:layout_constraintEnd_toStartOf="@id/electronicCommitLayout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/electronicDeleteIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/select_electronic_delete" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/electronicSetLayout"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/dp_9"
+                android:background="@drawable/select_electronic_background"
+                app:layout_constraintEnd_toStartOf="@id/electronicDeleteLayout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/electronicSetIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/select_electronic_set" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/electronicSetHint"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_38"
+                android:background="#33F18937"
+                android:gravity="center"
+                android:text="@string/app_electronic_set_hint"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/electronicSetLayout"
+                app:layout_constraintEnd_toStartOf="@id/electronicSetLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/electronicSetLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trackEventsTimeRv"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:background="@color/white"
-            android:overScrollMode="never"
-            android:paddingStart="@dimen/dp_5"
-            android:paddingTop="@dimen/dp_6"
-            android:paddingEnd="0dp"
-            android:paddingBottom="@dimen/dp_6"
-            app:layout_constraintTop_toBottomOf="@id/trackEventsDateLayout" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.guider.gps.widget.ChildClickableConstrainLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/electronicFenceLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationTabLayout">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/electronicCommitLayout"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_14"
-            android:background="@drawable/select_electronic_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/electronicCommitIv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/select_electronic_commit" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/electronicDeleteLayout"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_9"
-            android:background="@drawable/select_electronic_background"
-            app:layout_constraintEnd_toStartOf="@id/electronicCommitLayout"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/electronicDeleteIv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/select_electronic_delete" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/electronicSetLayout"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_9"
-            android:background="@drawable/select_electronic_background"
-            app:layout_constraintEnd_toStartOf="@id/electronicDeleteLayout"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/electronicSetIv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/select_electronic_set" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/electronicSetHint"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_38"
-            android:background="#33F18937"
-            android:gravity="center"
-            android:text="@string/app_electronic_set_hint"
-            android:textColor="@color/color333333"
-            android:textSize="@dimen/sp_12"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/electronicSetLayout"
-            app:layout_constraintEnd_toStartOf="@id/electronicSetLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/electronicSetLayout" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

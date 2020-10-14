@@ -2,7 +2,7 @@ package com.guider.gps.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.trello.rxlifecycle3.LifecycleTransformer
+import com.trello.rxlifecycle4.LifecycleTransformer
 
 /**
  * @Package: com.guider.gps.viewModel
@@ -18,7 +18,7 @@ class RingMsgListViewModel :ViewModel(){
     var abnormalMsgUndoErrorObservable: MutableLiveData<String> = MutableLiveData()
 
     fun getAbnormalMsgUndoNum(life: LifecycleTransformer<Result<String>>,
-                        client: String, version: String){
+                              client: String, version: String){
 //        module.validateVersion(life,client,version,{
 //            validateVersionObservable.value =it
 //        },{

@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
@@ -22,11 +23,8 @@ import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.AnswerListAdapter
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.AnswerListBean
-import com.guider.health.apilib.bean.SendAnswerListBean
 import com.guider.health.apilib.enums.AnswerMsgType
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
@@ -35,8 +33,7 @@ import com.scwang.smart.refresh.header.ClassicsHeader
 import kotlinx.android.synthetic.main.activity_doctor_answer.*
 import kotlinx.android.synthetic.main.activity_doctor_answer.msgListRv
 import kotlinx.android.synthetic.main.fragment_ring_msg_list.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  * 医生咨询页面
@@ -69,6 +66,8 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     //true：上一页(刷新)，false：下一页(加载更多)
     private var page = false
     private var isLoadMore = false
+    private var mDialog1: DialogProgress? = null
+    private var mDialog2: DialogProgress? = null
 
     override fun openEventBus(): Boolean {
         return false
@@ -141,50 +140,44 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     private fun getAnswerListData() {
         if (!isLoadMore)
             showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getAnswerMsgList(1, MMKVUtil.getInt(USER.USERID), page,
-                        20, searchTime)
-                .enqueue(object : ApiCallBack<Map<String, List<AnswerListBean>>>(mContext) {
-                    override fun onApiResponse(call: Call<Map<String, List<AnswerListBean>>>?,
-                                               response: Response<Map<String,
-                                                       List<AnswerListBean>>>?) {
-                        if (response?.body() != null) {
-                            val body = response.body()!!
-                            if (body.isNullOrEmpty()) {
-                                loadDataEmpty()
-                                return
-                            }
-                            if (isLoadMore) refresh_immsg.finishRefresh()
-                            val tempList = arrayListOf<AnswerListBean>()
-                            for (key in body.keys) {
-                                //遍历取出key，再遍历map取出value。
-                                body[key]?.let { tempList.addAll(it) }
-                            }
-                            searchTime = tempList[0].createTime
-                            if (isLoadMore) {
-                                msgList.addAll(0, tempList)
-                            } else {
-                                msgList = tempList
-                            }
-                            msgAdapter.setSourceList(msgList)
-                            if (!isLoadMore) {
-                                msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
-                            }
-                        } else {
-                            loadDataEmpty()
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAnswerMsgList(1, MMKVUtil.getInt(USER.USERID), page,
+                                20, searchTime)
+                if (!isLoadMore) dismissDialog()
+                isLoadMore = false
+                if (resultBean != null) {
+                    if (resultBean.isNullOrEmpty()) {
+                        loadDataEmpty()
+                        return@launch
                     }
-
-                    override fun onFailure(call: Call<Map<String, List<AnswerListBean>>>,
-                                           t: Throwable) {
-                        if (isLoadMore) refreshLayout.finishRefresh()
+                    if (isLoadMore) refresh_immsg.finishRefresh()
+                    val tempList = arrayListOf<AnswerListBean>()
+                    for (key in resultBean.keys) {
+                        //遍历取出key，再遍历map取出value。
+                        resultBean[key]?.let { tempList.addAll(it) }
                     }
-
-                    override fun onRequestFinish() {
-                        if (!isLoadMore) dismissDialog()
-                        isLoadMore = false
+                    searchTime = tempList[0].createTime
+                    if (isLoadMore) {
+                        msgList.addAll(0, tempList)
+                    } else {
+                        msgList = tempList
                     }
-                })
+                    msgAdapter.setSourceList(msgList)
+                    if (!isLoadMore) {
+                        msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
+                    }
+                } else {
+                    loadDataEmpty()
+                }
+            } catch (e: Exception) {
+                if (!isLoadMore) dismissDialog()
+                isLoadMore = false
+                if (isLoadMore) refreshLayout.finishRefresh()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun loadDataEmpty() {
@@ -233,62 +226,70 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     }
 
     private fun uploadPic(pic: String, onSuccess: (url: String) -> Unit, onFail: () -> Unit) {
-        showDialog()
-        ApiUtil.uploadFile(null, pic, object : ApiCallBack<String>(mContext) {
-            override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
-                Log.e("上传单张图片", "成功")
-                if (response?.body() != null) {
-                    onSuccess.invoke(response.body()!!)
+        mDialog1 = DialogProgress(mContext!!, null)
+        mDialog1?.showDialog()
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().uploadFile(
+                        GuiderApiUtil.uploadFile(pic))
+                mDialog1?.hideDialog()
+                if (resultBean != null) {
+                    Log.e("上传单张图片", "成功")
+                    onSuccess.invoke(resultBean)
                 }
-
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            } catch (e: Exception) {
+                mDialog1?.hideDialog()
                 Log.e("上传单张图片", "失败")
                 onFail.invoke()
+                toastShort(e.message!!)
             }
-
-            override fun onRequestFinish() {
-                super.onRequestFinish()
-                dismissDialog()
-            }
-        })
+        }
     }
 
     private fun sendAnswerMsg(type: AnswerMsgType, content: String) {
-        val mDialog = DialogProgress(mContext!!, null)
-        mDialog.showDialog()
+        mDialog2 = DialogProgress(mContext!!, null)
+        mDialog2?.showDialog()
         val map = hashMapOf<String, Any>()
         map["content"] = content
         map["fromAccount"] = MMKVUtil.getInt(USER.USERID)
         map["toAccount"] = 1
         map["type"] = type
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .sendAnswerMsg(map)
-                .enqueue(object : ApiCallBack<SendAnswerListBean>(mContext) {
-                    override fun onApiResponse(call: Call<SendAnswerListBean>?,
-                                               response: Response<SendAnswerListBean>?) {
-                        if (response?.body() != null) {
-                            toastShort(mContext!!.resources.getString(R.string.app_send_success))
-                            val body = response.body()!!
-                            val bean = AnswerListBean(body.accountId, body.content,
-                                    body.id, body.createTime, if (body.chatContentType == "STRING") {
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().sendAnswerMsg(map)
+                mDialog2?.hideDialog()
+                if (resultBean != null) {
+                    toastShort(mContext!!.resources.getString(R.string.app_send_success))
+                    val bean = AnswerListBean(resultBean.accountId, resultBean.content,
+                            resultBean.id, resultBean.createTime,
+                            if (resultBean.chatContentType == "STRING") {
                                 AnswerMsgType.STRING
                             } else AnswerMsgType.IMAGE
-                            )
-                            msgList.add(bean)
-                            if (type == AnswerMsgType.STRING) {
-                                editInput.setText("")
-                            }
-                            msgAdapter.setSourceList(msgList)
-                            msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
-                        }
+                    )
+                    msgList.add(bean)
+                    if (type == AnswerMsgType.STRING) {
+                        editInput.setText("")
                     }
+                    msgAdapter.setSourceList(msgList)
+                    msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
+                }
+            } catch (e: Exception) {
+                mDialog2?.hideDialog()
+                toastShort(e.message!!)
+            }
+        }
+    }
 
-                    override fun onRequestFinish() {
-                        mDialog.hideDialog()
-                    }
-                })
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mDialog1 != null) {
+            mDialog1?.hideDialog()
+            mDialog1 = null
+        }
+        if (mDialog2 != null) {
+            mDialog2?.hideDialog()
+            mDialog2 = null
+        }
     }
 
     @SuppressLint("CheckResult")

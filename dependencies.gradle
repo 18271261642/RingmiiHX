@@ -10,12 +10,11 @@ ext {
 
     supportLibVersion = '1.1.0'
     retrofitVersion = "2.9.0"
-    rxlifecycle = "3.1.0"
     glide = "4.11.0"
     gson = "2.8.6"
     glide_transformations = "4.1.0"
-    logging_interceptor = "4.8.1"
-    okhttp = "4.8.1"
+    logging_interceptor = "4.9.0"
+    okhttp = "4.9.0"
     glassfish_annotation = "10.0-b28"
     SmartRefreshLayout = "2.0.1"
     eventbus = "3.2.0"
@@ -29,14 +28,14 @@ ext {
     switch_button = '2.0.2'
     recyclerview = '1.1.0'
     logger_version = '2.2.0'
-    ktx = '1.3.1'
-    constraintlayout = '1.1.3'
-    material = "1.2.0"
+    ktx = '1.3.2'
+    constraintlayout = '2.0.2'
+    material = "1.2.1"
     dbflow = "4.2.1"
     lifecycle = "2.2.0"
-    rxlifecycle = "3.1.0"
-    rxjava = "2.2.12"
-    rxandroid = "2.1.1"
+    rxlifecycle = "4.0.0"
+    rxjava = "3.0.7"
+    rxandroid = "3.0.0"
     joda_time = "2.10.6"
     pickers = "1.0.3"
     hellocharts = "1.5.8"
@@ -48,9 +47,13 @@ ext {
     android_maps_utils = "2.0.3"
     customactivityoncrash = "2.3.0"
     linesdk = "5.5.1"
-    pictureSelector = "2.5.8"
+    pictureSelector = "2.5.9"
     zxing = "1.1.9-androidx"
     guideview = "1.0.0"
+    activity_ktx = "1.1.0"
+    runtime_ktx = "2.2.0"
+    coroutines = "1.3.9"
+
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
             material              : "com.google.android.material:material:$material",
@@ -85,9 +88,9 @@ ext {
             dbflow_core           : "com.github.Raizlabs.DBFlow:dbflow-core:$dbflow",
             dbflow                : "com.github.Raizlabs.DBFlow:dbflow:$dbflow",
             lifecycle             : "androidx.lifecycle:lifecycle-extensions:$lifecycle",
-            rxlifecycle_components: "com.trello.rxlifecycle3:rxlifecycle-components:$rxlifecycle",
-            rxjava                : "io.reactivex.rxjava2:rxjava:$rxjava",
-            rxandroid             : "io.reactivex.rxjava2:rxandroid:$rxandroid",
+            rxlifecycle_components: "com.trello.rxlifecycle4:rxlifecycle-components:$rxlifecycle",
+            rxjava                : "io.reactivex.rxjava3:rxjava:$rxjava",
+            rxandroid             : "io.reactivex.rxjava3:rxandroid:$rxandroid",
             joda_time             : "joda-time:joda-time:2.10.6",
             pickers               : "com.github.addappcn:android-pickers:$pickers",
             hellocharts           : "com.github.lecho:hellocharts-android:v$hellocharts",
@@ -103,6 +106,13 @@ ext {
             linesdk               : "com.linecorp.linesdk:linesdk:$linesdk",
             pictureSelector       : "com.github.LuckSiege.PictureSelector:picture_library:v$pictureSelector",
             zxing                 : "com.king.zxing:zxing-lite:$zxing",
-            guideview             : "com.binioter:guideview:$guideview"
+            guideview             : "com.binioter:guideview:$guideview",
+            //协程相关
+            coroutines_core       : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines",
+            coroutines_android    : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines",
+            activity_ktx          : "androidx.activity:activity-ktx:$activity_ktx",
+            runtime_ktx           : "androidx.lifecycle:lifecycle-runtime-ktx:$runtime_ktx",
+            livedata_ktx          : "androidx.lifecycle:lifecycle-livedata-ktx:$runtime_ktx",
+            viewmodel_ktx         : "androidx.lifecycle:lifecycle-viewmodel-ktx:$runtime_ktx"
     ]
 }

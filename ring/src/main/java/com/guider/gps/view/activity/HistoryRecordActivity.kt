@@ -1,18 +1,17 @@
 package com.guider.gps.view.activity
 
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.BIND_DEVICE_ACCOUNT_ID
 import com.guider.baselib.utils.MMKVUtil
+import com.guider.baselib.utils.toastShort
 import com.guider.gps.R
 import com.guider.gps.adapter.HistoryRecordListAdapter
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.UserPositionListBean
 import kotlinx.android.synthetic.main.activity_history_record.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  * 历史记录
@@ -64,53 +63,50 @@ class HistoryRecordActivity : BaseActivity() {
         if (isShowLoading)
             showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .userPosition(accountId, page, 20, "", "")
-                .enqueue(object : ApiCallBack<List<UserPositionListBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<UserPositionListBean>>?,
-                                               response: Response<List<UserPositionListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            if (isRefresh) refreshLayout.finishRefresh(500)
-                            if (isLoadMore) refreshLayout.finishLoadMore(500)
-                            if (response?.body()!!.size < 20) {
-                                refreshLayout.setEnableLoadMore(false)
-                            } else refreshLayout.setEnableLoadMore(true)
-                            if (isLoadMore) {
-                                historyRecordList.addAll(response.body()!!)
-                            } else {
-                                historyRecordList = response.body() as ArrayList<UserPositionListBean>
-                            }
-                            adapter.setSourceList(historyRecordList)
-                        } else {
-                            if (isRefresh) {
-                                refreshLayout.finishRefresh()
-                            }
-                            if (isLoadMore) {
-                                refreshLayout.finishLoadMore()
-                                refreshLayout.setEnableLoadMore(false)
-                            }
-                            if (!isLoadMore) {
-                                historyRecordList.clear()
-                                adapter.setSourceList(historyRecordList)
-                            }
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .userPosition(accountId, page, 20, "", "")
+                if (isShowLoading) dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+                if (!resultBean.isNullOrEmpty()) {
+                    if (isRefresh) refreshLayout.finishRefresh(500)
+                    if (isLoadMore) refreshLayout.finishLoadMore(500)
+                    if (resultBean.size < 20) {
+                        refreshLayout.setEnableLoadMore(false)
+                    } else refreshLayout.setEnableLoadMore(true)
+                    if (isLoadMore) {
+                        historyRecordList.addAll(resultBean)
+                    } else {
+                        historyRecordList = resultBean as ArrayList<UserPositionListBean>
                     }
-
-                    override fun onFailure(call: Call<List<UserPositionListBean>>, t: Throwable) {
-                        super.onFailure(call, t)
-                        if (isRefresh) refreshLayout.finishRefresh()
-                        if (isLoadMore) {
-                            refreshLayout.finishLoadMore()
-                            page--
-                        }
+                    adapter.setSourceList(historyRecordList)
+                } else {
+                    if (isRefresh) {
+                        refreshLayout.finishRefresh()
                     }
-
-                    override fun onRequestFinish() {
-                        if (isShowLoading) dismissDialog()
-                        isRefresh = false
-                        isLoadMore = false
+                    if (isLoadMore) {
+                        refreshLayout.finishLoadMore()
+                        refreshLayout.setEnableLoadMore(false)
                     }
-                })
+                    if (!isLoadMore) {
+                        historyRecordList.clear()
+                        adapter.setSourceList(historyRecordList)
+                    }
+                }
+            } catch (e: Exception) {
+                if (isShowLoading) dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                    page--
+                }
+                toastShort(e.message!!)
+            }
+        }
     }
 
     override fun showToolBar(): Boolean {

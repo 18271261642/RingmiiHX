@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.IMAGE_CUT_CODE
 import com.guider.baselib.utils.PermissionUtils
@@ -21,15 +22,13 @@ import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.activity.AddNewDeviceActivity
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.BuildConfig
+import com.guider.health.apilib.GuiderApiUtil
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.android.synthetic.main.fragment_input_code_add_device.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 class InputCodeAddDeviceFragment : BaseFragment() {
 
@@ -153,23 +152,22 @@ class InputCodeAddDeviceFragment : BaseFragment() {
     private fun uploadHeader(deviceCode: String, nickName: String) {
         // 上传头像
         mActivity.showDialog()
-        ApiUtil.uploadFile(null, header, object : ApiCallBack<String>(mActivity) {
-            override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
-                Log.e("上传头像", "成功")
-                if (response?.body() != null) {
-                    header = response.body()!!
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().uploadFile(
+                        GuiderApiUtil.uploadFile(header))
+                if (resultBean != null) {
+                    Log.e("上传头像", "成功")
+                    header = resultBean
                     (mActivity as AddNewDeviceActivity).bindNewDeviceWithAccount(
                             deviceCode, nickName, header, false)
                 }
-
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                super.onFailure(call, t)
-                Log.e("上传头像", "失败")
+            } catch (e: Exception) {
                 mActivity.dismissDialog()
+                Log.e("上传头像", "失败")
+                showToast(e.message!!)
             }
-        })
+        }
     }
 
     private fun headerDialogShow() {

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.device.IUnit
 import com.guider.baselib.device.Unit
@@ -13,19 +14,16 @@ import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
 import com.guider.gps.view.activity.DoctorAnswerActivity
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IUserHDApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.BloodListBeann
 import com.guider.health.apilib.bean.BloodOxygenListBean
 import com.guider.health.apilib.bean.BloodSugarListBean
 import kotlinx.android.synthetic.main.fragment_medicine_data.*
+import kotlinx.coroutines.launch
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.LineChartView
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import retrofit2.Call
-import retrofit2.Response
 
 /**
  * 医疗数据2级页面
@@ -43,7 +41,9 @@ class MedicineDataFragment : BaseFragment() {
     private var heartYMaxValue = 0f
     private var bloodYMaxValue = 0f
     private var isRefresh = false
-
+    private var mDialog1: DialogProgress? = null
+    private var mDialog2: DialogProgress? = null
+    private var mDialog3: DialogProgress? = null
     override val layoutRes: Int
         get() = R.layout.fragment_medicine_data
 
@@ -126,92 +126,97 @@ class MedicineDataFragment : BaseFragment() {
         initDataChartShow(arrayListOf(), arrayListOf())
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getBloodData() {
-        val mDialog = DialogProgress(mActivity, null)
-        if (!isRefresh) mDialog.showDialog()
+        mDialog1 = DialogProgress(mActivity, null)
+        if (!isRefresh) mDialog1?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodChartData(accountId, 1, 7)
-                .enqueue(object : ApiCallBack<List<BloodListBeann>>() {
-                    override fun onApiResponse(call: Call<List<BloodListBeann>>?,
-                                               response: Response<List<BloodListBeann>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            if (isRefresh) refreshLayout.finishRefresh(500)
-                            noDataTv.visibility = View.GONE
-                            val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
-                            val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
-                            initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints, response.body()!!)
-                            val state1 = response.body()!![0].state2.substring(0,
-                                    response.body()!![0].state2.indexOf(","))
-                            val state2 = response.body()!![0].state2.substring(
-                                    response.body()!![0].state2.indexOf(",") + 1)
-                            when {
-                                state1 == "偏低" || (state1 == "正常" && state2 == "偏低") -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[2]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_blood_pre_low)
-                                }
-                                state1 == "正常" && state2 == "正常" -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[1]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_blood_pre_normal)
-                                }
-                                state1 == "偏高" || (state1 == "正常" && state2 == "偏高") -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[0]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_blood_pre_high)
-                                }
-                            }
-                            dataTagTv.text = response.body()!![0].state
-                            dataValueTv.text = "${response.body()!![0].sbp}/" +
-                                    "${response.body()!![0].dbp}"
-                            measureTime.text = DateUtilKotlin.uTCToLocal(
-                                    response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
-                        } else {
-                            if (isRefresh) {
-                                refreshLayout.finishRefresh()
-                            }
-                            noDataTv.visibility = View.VISIBLE
-                            suggestTitleTv.text =
-                                    "$medicineType " +
-                                            mActivity.resources.getString(
-                                                    R.string.app_health_suggest)
-                            initBloodLineChart(arrayListOf(), arrayListOf(), arrayListOf())
-                            dataTagTv.text = ""
-                            dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
-                            measureTime.text = ""
-                            suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
-                        }
-                    }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthBloodChartData(accountId, 1, 7)
+                if (!isRefresh) mDialog1?.hideDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    dealBloodSuccessList(resultBean)
+                } else {
+                    dealBloodEmptyList()
+                }
+                isRefresh = false
+            } catch (e: Exception) {
+                if (!isRefresh) mDialog1?.hideDialog()
+                isRefresh = false
+                if (isRefresh) {
+                    refreshLayout.finishRefresh()
+                }
+                showToast(e.message!!)
+            }
+        }
+    }
 
-                    override fun onFailure(call: Call<List<BloodListBeann>>, t: Throwable) {
-                        super.onFailure(call, t)
-                        if (isRefresh) {
-                            refreshLayout.finishRefresh()
-                        }
-                    }
+    @SuppressLint("SetTextI18n")
+    private fun dealBloodEmptyList() {
+        if (isRefresh) {
+            refreshLayout.finishRefresh()
+        }
+        noDataTv.visibility = View.VISIBLE
+        suggestTitleTv.text =
+                "$medicineType " +
+                        mActivity.resources.getString(
+                                R.string.app_health_suggest)
+        initBloodLineChart(arrayListOf(), arrayListOf(), arrayListOf())
+        dataTagTv.text = ""
+        dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
+        measureTime.text = ""
+        suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
+    }
 
-                    override fun onRequestFinish() {
-                        if (!isRefresh) mDialog.hideDialog()
-                        isRefresh = false
-                    }
-                })
+    @SuppressLint("SetTextI18n")
+    private fun dealBloodSuccessList(resultBean: List<BloodListBeann>) {
+        if (isRefresh) refreshLayout.finishRefresh(500)
+        noDataTv.visibility = View.GONE
+        val belowBloodAxisPoints = getBelowBloodAxisPoints(resultBean)
+        val highBloodAxisPoints = getHighBloodAxisPoints(resultBean)
+        initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints, resultBean)
+        val state1 = resultBean[0].state2.substring(0,
+                resultBean[0].state2.indexOf(","))
+        val state2 = resultBean[0].state2.substring(
+                resultBean[0].state2.indexOf(",") + 1)
+        when {
+            state1 == "偏低" || (state1 == "正常" && state2 == "偏低") -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[2]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_blood_pre_low)
+            }
+            state1 == "正常" && state2 == "正常" -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[1]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_blood_pre_normal)
+            }
+            state1 == "偏高" || (state1 == "正常" && state2 == "偏高") -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[0]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_blood_pre_high)
+            }
+        }
+        dataTagTv.text = resultBean[0].state
+        dataValueTv.text = "${resultBean[0].sbp}/" +
+                "${resultBean[0].dbp}"
+        measureTime.text = DateUtilKotlin.uTCToLocal(
+                resultBean[0].testTime, TIME_FORMAT_PATTERN1)
     }
 
     private fun initBloodLineChart(belowBloodAxisPoints: ArrayList<PointValue>,
@@ -346,86 +351,84 @@ class MedicineDataFragment : BaseFragment() {
     }
 
     private fun getBloodOxygenData() {
-        val mDialog = DialogProgress(mActivity, null)
-        if (!isRefresh) mDialog.showDialog()
+        mDialog2 = DialogProgress(mActivity, null)
+        if (!isRefresh) mDialog2?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodOxygenData(accountId, 1, 7)
-                .enqueue(object : ApiCallBack<Any>() {
-                    @SuppressLint("SetTextI18n")
-                    override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            if (isRefresh) refreshLayout.finishRefresh(500)
-                            noDataTv.visibility = View.GONE
-                            val tempList = ParseJsonData.parseJsonDataList<BloodOxygenListBean>(
-                                    response.body()!!, BloodOxygenListBean::class.java
-                            )
-                            val bloodOxygenAxisPoints = getBloodOxygenAxisPoints(tempList)
-                            initBloodOxygenLineChart(bloodOxygenAxisPoints, tempList)
-                            when (tempList[0].state2) {
-                                "偏低" -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[2]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_blood_oxygen_low)
-                                }
-                                else -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[1]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_blood_oxygen_normal)
-                                }
-                            }
-                            dataValueTv.text = tempList[0].bo.toString()
-                            dataTagTv.text = tempList[0].state
-                            measureTime.text = DateUtilKotlin.uTCToLocal(
-                                    tempList[0].testTime, TIME_FORMAT_PATTERN1)
-                        } else {
-                            if (isRefresh) {
-                                refreshLayout.finishRefresh()
-                            }
-                            noDataTv.visibility = View.VISIBLE
-                            suggestTitleTv.text =
-                                    "$medicineType " +
-                                            mActivity.resources.getString(
-                                                    R.string.app_health_suggest)
-                            initBloodOxygenLineChart(arrayListOf(), arrayListOf())
-                            dataTagTv.text = ""
-                            dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
-                            measureTime.text = ""
-                            suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthBloodOxygenData(accountId, 1, 7)
+                if (!isRefresh) mDialog2?.hideDialog()
+                if (resultBean is String && resultBean == "null") {
+                    dealBloodOxygenEmptyList()
+                } else {
+                    if (resultBean != null) {
+                        dealBloodOxygenSuccessList(resultBean)
+                    } else {
+                        dealBloodOxygenEmptyList()
                     }
 
-                    @SuppressLint("SetTextI18n")
-                    override fun onApiResponseNull(call: Call<Any>?, response: Response<Any>?) {
-                        super.onApiResponseNull(call, response)
-                        if (isRefresh) refreshLayout.finishRefresh()
-                        noDataTv.visibility = View.VISIBLE
-                        suggestTitleTv.text =
-                                "$medicineType " +
-                                        mActivity.resources.getString(
-                                                R.string.app_health_suggest)
-                        initBloodOxygenLineChart(arrayListOf(), arrayListOf())
-                        dataTagTv.text = ""
-                        dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
-                        measureTime.text = ""
-                        suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
-                    }
+                }
+                isRefresh = false
+            } catch (e: Exception) {
+                if (!isRefresh) mDialog2?.hideDialog()
+                isRefresh = false
+                showToast(e.message!!)
+            }
+        }
+    }
 
-                    override fun onRequestFinish() {
-                        if (!isRefresh) mDialog.hideDialog()
-                        isRefresh = false
-                    }
-                })
+    @SuppressLint("SetTextI18n")
+    private fun dealBloodOxygenEmptyList() {
+        if (isRefresh) {
+            refreshLayout.finishRefresh()
+        }
+        noDataTv.visibility = View.VISIBLE
+        suggestTitleTv.text =
+                "$medicineType " +
+                        mActivity.resources.getString(
+                                R.string.app_health_suggest)
+        initBloodOxygenLineChart(arrayListOf(), arrayListOf())
+        dataTagTv.text = ""
+        dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
+        measureTime.text = ""
+        suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
+    }
+
+    private fun dealBloodOxygenSuccessList(resultBean: Any) {
+        if (isRefresh) refreshLayout.finishRefresh(500)
+        noDataTv.visibility = View.GONE
+        val tempList = ParseJsonData.parseJsonDataList<BloodOxygenListBean>(
+                resultBean, BloodOxygenListBean::class.java
+        )
+        val bloodOxygenAxisPoints = getBloodOxygenAxisPoints(tempList)
+        initBloodOxygenLineChart(bloodOxygenAxisPoints, tempList)
+        when (tempList[0].state2) {
+            "偏低" -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[2]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_blood_oxygen_low)
+            }
+            else -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[1]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_blood_oxygen_normal)
+            }
+        }
+        dataValueTv.text = tempList[0].bo.toString()
+        dataTagTv.text = tempList[0].state
+        measureTime.text = DateUtilKotlin.uTCToLocal(
+                tempList[0].testTime, TIME_FORMAT_PATTERN1)
     }
 
     private fun getBloodOxygenAxisPoints(list: List<BloodOxygenListBean>): ArrayList<PointValue> {
@@ -495,90 +498,94 @@ class MedicineDataFragment : BaseFragment() {
     }
 
     private fun getBloodSugarData() {
-        val mDialog = DialogProgress(mActivity, null)
-        if (!isRefresh) mDialog.showDialog()
+        mDialog3 = DialogProgress(mActivity, null)
+        if (!isRefresh) mDialog3?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodSugarChartData(accountId, 1, 7)
-                .enqueue(object : ApiCallBack<List<BloodSugarListBean>>() {
-                    @SuppressLint("SetTextI18n")
-                    override fun onApiResponse(call: Call<List<BloodSugarListBean>>?,
-                                               response: Response<List<BloodSugarListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            noDataTv.visibility = View.GONE
-                            if (isRefresh) refreshLayout.finishRefresh(500)
-                            //返回的数据类中state2的第一个字段为血糖状态
-                            when (response?.body()!![0].state2.substring(0,
-                                    response.body()!![0].state2.indexOf(","))) {
-                                "偏低" -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[2]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_sugar_low)
-                                }
-                                "偏高" -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[0]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_sugar_high)
-                                }
-                                else -> {
-                                    dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                                    suggestTitleTv.text = String.format(
-                                            resources.getString(
-                                                    R.string.app_main_medicine_suggest_hint),
-                                            medicineType, medicineDataTextValues[1]
-                                    )
-                                    suggestContentTv.text = resources.getString(
-                                            R.string.app_main_medicine_suggest_sugar_normal)
-                                }
-                            }
-                            val iUnit: IUnit = UnitUtil.getIUnit(mActivity)
-                            val value: Double = iUnit.getGluShowValue(
-                                    response.body()!![0].bs, 2)
-                            dataValueTv.text = value.toString()
-                            dataTagTv.text = response.body()!![0].state
-                            measureTime.text = DateUtilKotlin.uTCToLocal(
-                                    response.body()!![0].testTime, TIME_FORMAT_PATTERN1)
-                            val bloodSugarAxisPoints = getBloodSugarAxisPoints(response.body()!!)
-                            initDataChartShow(bloodSugarAxisPoints, response.body()!!)
-                        } else {
-                            if (isRefresh) {
-                                refreshLayout.finishRefresh()
-                            }
-                            noDataTv.visibility = View.VISIBLE
-                            suggestTitleTv.text =
-                                    "$medicineType " +
-                                            mActivity.resources.getString(
-                                                    R.string.app_health_suggest)
-                            initDataChartShow(arrayListOf(), arrayListOf())
-                            dataTagTv.text = ""
-                            dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
-                            measureTime.text = ""
-                            suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
-                        }
-                    }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthBloodSugarChartData(accountId, 1, 7)
+                if (!isRefresh) mDialog3?.hideDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    dealBloodSugarSuccessList(resultBean)
+                } else {
+                    dealBloodSugarEmptyList()
+                }
+                isRefresh = false
+            } catch (e: Exception) {
+                if (!isRefresh) mDialog3?.hideDialog()
+                isRefresh = false
+                if (isRefresh) {
+                    refreshLayout.finishRefresh()
+                }
+                showToast(e.message!!)
+            }
+        }
+    }
 
-                    override fun onFailure(call: Call<List<BloodSugarListBean>>, t: Throwable) {
-                        super.onFailure(call, t)
-                        if (isRefresh) {
-                            refreshLayout.finishRefresh()
-                        }
-                    }
+    @SuppressLint("SetTextI18n")
+    private fun dealBloodSugarEmptyList() {
+        if (isRefresh) {
+            refreshLayout.finishRefresh()
+        }
+        noDataTv.visibility = View.VISIBLE
+        suggestTitleTv.text =
+                "$medicineType " +
+                        mActivity.resources.getString(
+                                R.string.app_health_suggest)
+        initDataChartShow(arrayListOf(), arrayListOf())
+        dataTagTv.text = ""
+        dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
+        measureTime.text = ""
+        suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
+    }
 
-                    override fun onRequestFinish() {
-                        if (!isRefresh) mDialog.hideDialog()
-                        isRefresh = false
-                    }
-                })
+    private fun dealBloodSugarSuccessList(resultBean: List<BloodSugarListBean>) {
+        noDataTv.visibility = View.GONE
+        if (isRefresh) refreshLayout.finishRefresh(500)
+        //返回的数据类中state2的第一个字段为血糖状态
+        when (resultBean[0].state2.substring(0,
+                resultBean[0].state2.indexOf(","))) {
+            "偏低" -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[2]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_sugar_low)
+            }
+            "偏高" -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[0]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_sugar_high)
+            }
+            else -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                suggestTitleTv.text = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        medicineType, medicineDataTextValues[1]
+                )
+                suggestContentTv.text = resources.getString(
+                        R.string.app_main_medicine_suggest_sugar_normal)
+            }
+        }
+        val iUnit: IUnit = UnitUtil.getIUnit(mActivity)
+        val value: Double = iUnit.getGluShowValue(
+                resultBean[0].bs, 2)
+        dataValueTv.text = value.toString()
+        dataTagTv.text = resultBean[0].state
+        measureTime.text = DateUtilKotlin.uTCToLocal(
+                resultBean[0].testTime, TIME_FORMAT_PATTERN1)
+        val bloodSugarAxisPoints = getBloodSugarAxisPoints(resultBean)
+        initDataChartShow(bloodSugarAxisPoints, resultBean)
     }
 
     private fun initDataChartShow(bloodSugarAxisPoints: ArrayList<PointValue>,

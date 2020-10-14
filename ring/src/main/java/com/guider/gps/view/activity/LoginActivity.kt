@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
@@ -30,14 +31,18 @@ import com.guider.gps.view.line.ILineLogin
 import com.guider.gps.view.line.LineLoginEvent
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.JsonApi
-import com.guider.health.apilib.bean.*
+import com.guider.health.apilib.bean.AreCodeBean
+import com.guider.health.apilib.bean.CheckBindDeviceBean
+import com.guider.health.apilib.bean.TokenInfo
+import com.guider.health.apilib.bean.WeChatInfo
 import com.linecorp.linesdk.LoginDelegate
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.include_phone_edit_layout.*
+import kotlinx.coroutines.launch
 import me.jessyan.autosize.internal.CustomAdapt
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -267,30 +272,18 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         val countryCode = countryTv.text.toString().replace("+", "")
         val passwordValue = MyUtils.md5(passwordEdit.text.toString())
         showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .loginWithPassword(countryCode, phoneValue, passwordValue)
-                ?.enqueue(object : ApiCallBack<TokenInfo>(mContext) {
-                    override fun onApiResponse(call: Call<TokenInfo>?,
-                                               response: Response<TokenInfo>?) {
-                        if (response?.body() != null) {
-                            val bean = response.body()!!
-                            loginSuccessEvent(bean)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TokenInfo>, t: Throwable) {
-                        super.onFailure(call, t)
-                        dismissDialog()
-//                        if (t.message == "该用户未注册") {
-//                            val intent = Intent(mContext, RegisterActivity::class.java)
-//                            if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
-//                                intent.putExtra("country", countryTv.text.toString())
-//                                intent.putExtra("phone", phoneEdit.text.toString())
-//                            }
-//                            startActivityForResult(intent, REGISTER)
-//                        }
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val tokenInfo = GuiderApiUtil.getApiService().loginWithPassword(
+                        countryCode, phoneValue, passwordValue)
+                if (tokenInfo != null) {
+                    loginSuccessEvent(tokenInfo)
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun loginSuccessEvent(bean: TokenInfo) {
@@ -305,81 +298,72 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     }
 
     private fun getUserInfo(accountId: Int) {
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getUserInfo(accountId)
-                ?.enqueue(object : ApiCallBack<UserInfo>(mContext) {
-                    override fun onApiResponse(call: Call<UserInfo>?,
-                                               response: Response<UserInfo>?) {
-                        if (response?.body() != null) {
-                            val resultBean = response.body()!!
-                            if (StringUtil.isNotBlankAndEmpty(resultBean.headUrl))
-                                MMKVUtil.saveString(HEADER, resultBean.headUrl!!)
-                            if (StringUtil.isNotBlankAndEmpty(resultBean.name))
-                                MMKVUtil.saveString(NAME, resultBean.name!!)
-                            var birthday = "1970-01-01"
-                            if (StringUtil.isNotBlankAndEmpty(resultBean.birthday))
-                                birthday = resultBean.birthday!!.replace(
-                                        "T00:00:00Z", "")
-                            MMKVUtil.saveString(BIRTHDAY, birthday)
-                            //拿到个人信息并保存后去验证是否绑定设备
-                            verifyIsBindDevice(accountId)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                        super.onFailure(call, t)
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().getUserInfo(
+                        accountId)
+                if (resultBean != null) {
+                    if (StringUtil.isNotBlankAndEmpty(resultBean.headUrl))
+                        MMKVUtil.saveString(HEADER, resultBean.headUrl!!)
+                    if (StringUtil.isNotBlankAndEmpty(resultBean.name))
+                        MMKVUtil.saveString(NAME, resultBean.name!!)
+                    var birthday = "1970-01-01"
+                    if (StringUtil.isNotBlankAndEmpty(resultBean.birthday))
+                        birthday = resultBean.birthday!!.replace(
+                                "T00:00:00Z", "")
+                    MMKVUtil.saveString(BIRTHDAY, birthday)
+                    //拿到个人信息并保存后去验证是否绑定设备
+                    verifyIsBindDevice(accountId)
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun verifyIsBindDevice(accountId: Int) {
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .checkIsBindDevice(accountId)
-                .enqueue(object : ApiCallBack<Any>(mContext) {
-                    override fun onApiResponse(call: Call<Any?>?,
-                                               response: Response<Any?>?) {
-                        //已绑定帐号返回map
-                        if (response?.body() != null) {
-                            val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
-                                    response.body()!!)
-                            val intent = Intent(mContext!!, MainActivity::class.java)
-                            MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
-                            kotlin.run breaking@{
-                                bean.userInfos?.forEach {
-                                    if (it.accountId == accountId) {
-                                        it.relationShip = it.name
-                                        MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
-                                        if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
-                                            MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
-                                            MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE,
-                                                    it.deviceCode!!)
-                                        }
-                                        return@breaking
-                                    }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().checkIsBindDevice(
+                        accountId)
+                dismissDialog()
+                if (resultBean is String && resultBean == "null") {
+                    //未绑定帐号返回null
+                    val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
+                    intent.putExtra("type", "mine")
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
+                            resultBean)
+                    val intent = Intent(mContext!!, MainActivity::class.java)
+                    MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
+                    kotlin.run breaking@{
+                        bean.userInfos?.forEach {
+                            if (it.accountId == accountId) {
+                                it.relationShip = it.name
+                                MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
+                                if (StringUtil.isNotBlankAndEmpty(it.headUrl))
+                                    MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_HEADER, it.headUrl!!)
+                                if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
+                                    MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                    MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE,
+                                            it.deviceCode!!)
                                 }
+                                return@breaking
                             }
-                            intent.putExtra("bindListBean", bean)
-                            startActivity(intent)
-                            finish()
                         }
                     }
-
-                    override fun onApiResponseNull(call: Call<Any?>?,
-                                                   response: Response<Any?>?) {
-                        //未绑定帐号返回null
-                        if (response?.body() != null) {
-                            val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
-                            intent.putExtra("type", "mine")
-                            startActivity(intent)
-                        }
-                        finish()
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                    intent.putExtra("bindListBean", bean)
+                    startActivity(intent)
+                    finish()
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun getCountryCode() {
@@ -446,37 +430,31 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     private fun lineLogin(openId: String, header: String, name: String) {
         showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .lineVerifyLogin(APP_ID_LINE, openId, -1, -1)
-                ?.enqueue(object : ApiCallBack<ThirdLoginVerifyBean>(mContext) {
-                    override fun onApiResponse(call: Call<ThirdLoginVerifyBean>?,
-                                               response: Response<ThirdLoginVerifyBean>?) {
-                        if (response?.body() != null) {
-                            val resultBean = response.body()!!
-                            if (resultBean.TokenInfo == null) {
-                                //说明没有绑定用户
-                                val intent = Intent(mContext!!, BindPhoneActivity::class.java)
-                                intent.putExtra("openId", openId)
-                                intent.putExtra("appId", APP_ID_LINE)
-                                intent.putExtra("header", header)
-                                intent.putExtra("name", name)
-                                startActivityForResult(intent, BIND_PHONE)
-                            } else {
-                                //绑定了用户成功登录
-                                loginSuccessEvent(resultBean.TokenInfo!!)
-                            }
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .lineVerifyLogin(APP_ID_LINE, openId, -1, -1)
+                dismissDialog()
+                if (resultBean != null) {
+                    if (resultBean.TokenInfo == null) {
+                        //说明没有绑定用户
+                        val intent = Intent(mContext!!, BindPhoneActivity::class.java)
+                        intent.putExtra("openId", openId)
+                        intent.putExtra("appId", APP_ID_LINE)
+                        intent.putExtra("header", header)
+                        intent.putExtra("name", name)
+                        startActivityForResult(intent, BIND_PHONE)
+                    } else {
+                        //绑定了用户成功登录
+                        loginSuccessEvent(resultBean.TokenInfo!!)
                     }
-
-                    override fun onFailure(call: Call<ThirdLoginVerifyBean>, t: Throwable) {
-                        super.onFailure(call, t)
-                        isLineLoginFirst = false
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                isLineLoginFirst = false
+                toastShort(e.message!!)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -520,31 +498,29 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         weChatInfo.unionid = unionid
         weChatInfo.sex = sex
         showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .weChatLoginToken(weChatInfo)
-                ?.enqueue(object : ApiCallBack<BeanOfWeChat>(mContext) {
-                    override fun onApiResponse(call: Call<BeanOfWeChat>?,
-                                               response: Response<BeanOfWeChat>?) {
-                        if (response?.body() != null) {
-                            val resultBean = response.body()!!
-                            //如果返回flag==false，调用第二步绑定手机号
-                            if (!resultBean.isFlag) {
-                                //说明没有绑定用户
-                                val intent = Intent(mContext!!, BindPhoneActivity::class.java)
-                                intent.putExtra("weChatInfo", weChatInfo)
-                                intent.putExtra("type", "weChat")
-                                startActivityForResult(intent, BIND_PHONE)
-                            } else {
-                                //绑定了用户成功登录
-                                loginSuccessEvent(resultBean.tokenInfo!!)
-                            }
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .weChatLoginToken(weChatInfo)
+                dismissDialog()
+                if (resultBean != null) {
+                    //如果返回flag==false，调用第二步绑定手机号
+                    if (!resultBean.isFlag) {
+                        //说明没有绑定用户
+                        val intent = Intent(mContext!!, BindPhoneActivity::class.java)
+                        intent.putExtra("weChatInfo", weChatInfo)
+                        intent.putExtra("type", "weChat")
+                        startActivityForResult(intent, BIND_PHONE)
+                    } else {
+                        //绑定了用户成功登录
+                        loginSuccessEvent(resultBean.tokenInfo!!)
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

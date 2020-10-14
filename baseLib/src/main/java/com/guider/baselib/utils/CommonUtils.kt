@@ -4,8 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.View
+import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -177,5 +182,42 @@ object CommonUtils {
         if (StringUtil.isNotBlankAndEmpty(countryCode))
             MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
         MMKVUtil.saveBoolean(IS_FIRST_START, true)
+    }
+
+    /**
+     * 已渲染的view生成bitmap
+     */
+    fun getBitmapFromView(v: View): Bitmap {
+        var h = 0
+        if (v is ScrollView) {
+            v.getChildAt(0).setBackgroundColor(Color.parseColor("#ffffff"))
+            for (i in 0 until v.childCount) {
+                h += v.getChildAt(i).height
+            }
+        } else {
+            h = v.height
+        }
+        val b = Bitmap.createBitmap(v.width, h, Bitmap.Config.ARGB_4444)
+        val c = Canvas(b)
+        if (v is ScrollView) {
+            v.getChildAt(0).draw(c)
+        } else v.draw(c)
+        return b
+    }
+
+    /**
+     * 未渲染的view生成bitmap
+     */
+    fun convertViewToBitmap(view: View): Bitmap? {
+        view.isDrawingCacheEnabled = true
+        view.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+        view.layout(0, 0,
+                view.measuredWidth,
+                view.measuredHeight)
+        view.buildDrawingCache()
+        val cacheBitmap: Bitmap = view.drawingCache
+        return Bitmap.createBitmap(cacheBitmap)
     }
 }

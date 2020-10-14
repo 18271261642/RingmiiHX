@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.utils.USER.HEADER
@@ -18,16 +19,13 @@ import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.UserInfo
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.android.synthetic.main.activity_person_info.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  * 个人信息页
@@ -81,22 +79,21 @@ class PersonInfoActivity : BaseActivity() {
 
     private fun getUserInfoData(accountId: Int) {
         showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getUserInfo(accountId)
-                ?.enqueue(object : ApiCallBack<UserInfo>(mContext) {
-                    override fun onApiResponse(call: Call<UserInfo>?,
-                                               response: Response<UserInfo>?) {
-                        if (response?.body() != null) {
-                            personInfoBean = response.body()!!
-                            //拿到个人信息刷新页面
-                            dealPersonInfoShow()
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getUserInfo(accountId)
+                dismissDialog()
+                if (resultBean != null) {
+                    personInfoBean = resultBean
+                    //拿到个人信息刷新页面
+                    dealPersonInfoShow()
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun dealPersonInfoShow() {
@@ -181,18 +178,20 @@ class PersonInfoActivity : BaseActivity() {
         showDialog()
         if (isChangeTag) {
             if (isChangePicTag) {
-                ApiUtil.uploadFile(null, picPath, object : ApiCallBack<String>(mContext) {
-                    override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
-                        Log.e("上传头像", "成功")
-                        if (response?.body() != null)
-                            changePersonInfo(response.body())
-                    }
-
-                    override fun onFailure(call: Call<String>, t: Throwable) {
-                        super.onFailure(call, t)
+                lifecycleScope.launch {
+                    try {
+                        val resultBean = GuiderApiUtil.getApiService().uploadFile(
+                                GuiderApiUtil.uploadFile(picPath))
+                        if (resultBean != null) {
+                            Log.e("上传头像", "成功")
+                            changePersonInfo(resultBean)
+                        }
+                    } catch (e: Exception) {
+                        dismissDialog()
                         Log.e("上传头像", "失败")
+                        toastShort(e.message!!)
                     }
-                })
+                }
             } else {
                 changePersonInfo(picPath)
             }
@@ -214,27 +213,29 @@ class PersonInfoActivity : BaseActivity() {
         personInfoBean?.phone = phone
         personInfoBean?.accountId = MMKVUtil.getInt(USER.USERID)
         personInfoBean?.headUrl = header
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .editUserInfo(personInfoBean)
-                .enqueue(object : ApiCallBack<UserInfo>(mContext) {
-                    override fun onApiResponse(call: Call<UserInfo>?,
-                                               response: Response<UserInfo>?) {
-                        if (response?.body() != null) {
-                            if (StringUtil.isNotBlankAndEmpty(name))
-                                MMKVUtil.saveString(NAME, name)
-                            if (StringUtil.isNotBlankAndEmpty(header))
-                                MMKVUtil.saveString(HEADER, header!!)
-                            toastShort(mContext!!.resources.getString(
-                                    R.string.app_person_info_change_success))
-                            endEdit()
-                        } else toastShort(mContext!!.resources.getString(
-                                R.string.app_person_info_change_fail))
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .editUserInfo(personInfoBean)
+                dismissDialog()
+                if (resultBean != null) {
+                    //修改成功
+                    if (StringUtil.isNotBlankAndEmpty(name))
+                        MMKVUtil.saveString(NAME, name)
+                    if (StringUtil.isNotBlankAndEmpty(header))
+                        MMKVUtil.saveString(HEADER, header!!)
+                    toastShort(mContext!!.resources.getString(
+                            R.string.app_person_info_change_success))
+                    endEdit()
+                } else {
+                    toastShort(mContext!!.resources.getString(
+                            R.string.app_person_info_change_fail))
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun endEdit() {

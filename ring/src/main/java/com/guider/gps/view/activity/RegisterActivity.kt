@@ -8,6 +8,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
@@ -18,12 +19,13 @@ import com.guider.gps.R
 import com.guider.gps.adapter.CountryCodeDialogAdapter
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.include_password_edit.*
 import kotlinx.android.synthetic.main.include_phone_edit_layout.*
+import kotlinx.coroutines.launch
 import me.jessyan.autosize.internal.CustomAdapt
 import retrofit2.Call
 import retrofit2.Response
@@ -102,33 +104,34 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
 
     private fun checkPhone(countryCode: String, phone: String, isExit: Boolean) {
         //如果符合要求弹出提示
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .checkPhoneIsRegister(countryCode, phone)
-                .enqueue(object : ApiCallBack<String?>(mContext) {
-                    override fun onApiResponse(call: Call<String?>?,
-                                               response: Response<String?>?) {
-                        //true可以用 false不可用
-                        if (response?.body() == "false") {
-                            ToastUtil.showCenter(mContext!!,
-                                    mContext!!.resources.getString(R.string.app_phone_register))
-                            textTv.visibility = View.VISIBLE
-                            textTv.text = mContext!!.resources.getString(R.string.app_phone_register)
-                            textTv.postDelayed({
-                                textTv.visibility = View.GONE
-                            }, 1000)
-                        } else {
-                            if (isExit) {
-                                val intent = Intent(mContext!!, CompleteInfoActivity::class.java)
-                                val passwordValue = MyUtils.md5(passwordEdit.text.toString())
-                                intent.putExtra("passwd", passwordValue)
-                                intent.putExtra("phone", phoneValue)
-                                intent.putExtra("telAreaCode", countryCode)
-                                intent.putExtra("pageEnterType", pageEnterType)
-                                startActivityForResult(intent, COMPLETE_INFO)
-                            }
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .checkPhoneIsRegister(countryCode, phone)
+                //true可以用 false不可用
+                if (resultBean == "false") {
+                    ToastUtil.showCenter(mContext!!,
+                            mContext!!.resources.getString(R.string.app_phone_register))
+                    textTv.visibility = View.VISIBLE
+                    textTv.text = mContext!!.resources.getString(R.string.app_phone_register)
+                    textTv.postDelayed({
+                        textTv.visibility = View.GONE
+                    }, 1000)
+                } else {
+                    if (isExit) {
+                        val intent = Intent(mContext!!, CompleteInfoActivity::class.java)
+                        val passwordValue = MyUtils.md5(passwordEdit.text.toString())
+                        intent.putExtra("passwd", passwordValue)
+                        intent.putExtra("phone", phoneValue)
+                        intent.putExtra("telAreaCode", countryCode)
+                        intent.putExtra("pageEnterType", pageEnterType)
+                        startActivityForResult(intent, COMPLETE_INFO)
                     }
-                })
+                }
+            } catch (e: Exception) {
+                toastShort(e.message!!)
+            }
+        }
     }
 
     override fun getSizeInDp(): Float {

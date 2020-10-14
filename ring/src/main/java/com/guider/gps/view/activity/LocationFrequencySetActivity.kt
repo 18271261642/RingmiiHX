@@ -5,17 +5,15 @@ import android.app.Activity
 import android.view.Gravity
 import android.view.View
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import cn.addapp.pickers.picker.TimePicker
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.gps.R
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.FrequencySetBean
 import kotlinx.android.synthetic.main.activity_location_frequency_set.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  * 定位频率设置
@@ -147,21 +145,19 @@ class LocationFrequencySetActivity : BaseActivity() {
         hashMap["accountId"] = accountId
         hashMap["rates"] = arrayListOf(setBean1, setBean2, setBean3)
         showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .setLocationFrequency(hashMap)
-                .enqueue(object : ApiCallBack<Any>(mContext) {
-                    override fun onApiResponse(call: Call<Any>?,
-                                               response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(hashMap)
+                if (resultBean != null) {
+                    dismissDialog()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun onTimePicker(time: String, onSelectTime: (hour: String, minute: String) -> Unit) {
@@ -245,21 +241,19 @@ class LocationFrequencySetActivity : BaseActivity() {
             return
         }
         showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .locationFrequencySet(accountId)
-                .enqueue(object : ApiCallBack<List<FrequencySetBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<FrequencySetBean>>?,
-                                               response: Response<List<FrequencySetBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            frequencySetList = response?.body() as ArrayList
-                            showFrequencySet(frequencySetList)
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().locationFrequencySet(accountId)
+                dismissDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    frequencySetList = resultBean as ArrayList
+                    showFrequencySet(frequencySetList)
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun showFrequencySet(frequencySetList: ArrayList<FrequencySetBean>) {

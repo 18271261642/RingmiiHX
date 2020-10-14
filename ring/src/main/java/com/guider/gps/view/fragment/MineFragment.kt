@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
 import com.guider.baselib.utils.CommonUtils.logOutClearMMKV
@@ -15,14 +16,11 @@ import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.gps.R
 import com.guider.gps.view.activity.*
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import kotlinx.android.synthetic.main.fragment_mine.*
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import retrofit2.Call
-import retrofit2.Response
 import kotlin.math.floor
 
 class MineFragment : BaseFragment() {
@@ -232,23 +230,23 @@ class MineFragment : BaseFragment() {
     private fun setTargetStepData(sportValueInt: Int) {
         mActivity.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .setWalkTarget(accountId, sportValueInt)
-                .enqueue(object : ApiCallBack<Any>(mActivity) {
-                    override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            sportValue.text = sportValueInt.toString()
-                            MMKVUtil.saveInt(TARGET_STEP, sportValueInt)
-                            EventBusUtils.sendEvent(EventBusEvent(
-                                    REFRESH_TARGET_STEP, sportValueInt))
-                            showToast(mActivity.resources.getString(R.string.app_set_success))
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        mActivity.dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .setWalkTarget(accountId, sportValueInt)
+                mActivity.dismissDialog()
+                if (resultBean != null) {
+                    sportValue.text = sportValueInt.toString()
+                    MMKVUtil.saveInt(TARGET_STEP, sportValueInt)
+                    EventBusUtils.sendEvent(EventBusEvent(
+                            REFRESH_TARGET_STEP, sportValueInt))
+                    showToast(mActivity.resources.getString(R.string.app_set_success))
+                }
+            } catch (e: Exception) {
+                mActivity.dismissDialog()
+                showToast(e.message!!)
+            }
+        }
     }
 
     private fun refreshHeaderAndName(isFirst: Boolean = true) {

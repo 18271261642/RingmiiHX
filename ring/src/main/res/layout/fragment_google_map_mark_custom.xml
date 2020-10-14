@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dp_8"
+    android:paddingEnd="@dimen/dp_8"
+    android:paddingBottom="@dimen/dp_20"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/icon_map_mark_bg">
+    <com.guider.baselib.widget.CircleImageView
+        android:layout_width="@dimen/dp_29"
+        android:layout_height="@dimen/dp_29"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_9"
+        app:civ_border_width="@dimen/dp_0_5"
+        app:civ_border_color="@color/white"
+        android:id="@+id/userHeader"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ data class SleepDataListBean(
     val endTime: String,
     val id: Int,
     val minute: Int,
+    //1；深度睡眠，2；浅度睡眠，3；醒来时长
     val sleepType: Int,
     val startTime: String,
     val testTime: String

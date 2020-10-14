@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.guider.baselib.base.BaseActivity
@@ -15,12 +16,9 @@ import com.guider.baselib.widget.BadgeView
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
 import com.guider.gps.R
 import com.guider.gps.view.fragment.RingMsgListFragment
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IUserHDApi
+import com.guider.health.apilib.GuiderApiUtil
 import kotlinx.android.synthetic.main.activity_msg_list.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 class RingMsgListActivity : BaseActivity() {
 
@@ -28,6 +26,8 @@ class RingMsgListActivity : BaseActivity() {
     private val mBadgeCountList = arrayListOf<Int>()
     private var abnormalMsgUndoNum = 0
     private var careMsgUndoNum = 0
+    //进入页面需跳转到的指定列表项
+    private var entryPageIndex = 0
 
     override val contentViewResId: Int
         get() = R.layout.activity_msg_list
@@ -42,14 +42,17 @@ class RingMsgListActivity : BaseActivity() {
             if (intent.getIntExtra("careMsgUndoNum", 0) != 0) {
                 careMsgUndoNum = intent.getIntExtra("careMsgUndoNum", 0)
             }
+            if (intent.getIntExtra("entryPageIndex", 0) != 0) {
+                entryPageIndex = intent.getIntExtra("entryPageIndex", 0)
+            }
         }
     }
 
     override fun initView() {
         tabTitles = arrayListOf(
                 resources.getString(R.string.app_msg_error_notify),
-                resources.getString(R.string.app_msg_care_info)
-//                , resources.getString(R.string.app_msg_system_info)
+                resources.getString(R.string.app_msg_care_info),
+                resources.getString(R.string.app_msg_system_info)
         )
         msgTabLayout.tabMode = TabLayout.MODE_FIXED
         // 设置选中下划线颜色
@@ -68,11 +71,11 @@ class RingMsgListActivity : BaseActivity() {
                     this@RingMsgListActivity,
                     fragments = generateTextFragments(tabTitles))
         }
-        TabLayoutMediator(msgTabLayout, msgViewpager) { _, _ ->
-        }.attach()
+        TabLayoutMediator(msgTabLayout, msgViewpager) { _, _ -> }.attach()
+        if (entryPageIndex != 0) msgViewpager.currentItem = entryPageIndex
         mBadgeCountList.add(abnormalMsgUndoNum)
         mBadgeCountList.add(careMsgUndoNum)
-//        mBadgeCountList.add(0)
+        mBadgeCountList.add(0)
         if (mBadgeCountList[0] != 0)
             msgTabLayout.postDelayed({
                 resetAbnormalMsgUnReadStatus()
@@ -89,70 +92,74 @@ class RingMsgListActivity : BaseActivity() {
 
     fun getCareMsgUndoNum() {
         val accountId = MMKVUtil.getInt(USER.USERID)
-        ApiUtil.createHDApi(IUserHDApi::class.java, false)
-                .getCareMsgUndo(accountId)
-                .enqueue(object : ApiCallBack<String>(mContext) {
-                    override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
-                        if (response?.body() != null) {
-                            mBadgeCountList[1] = response.body()!!.toInt()
-                            updateCustomTab(1)
-                            if (mBadgeCountList[1] != 0)
-                                msgTabLayout.postDelayed({
-                                    resetCareMsgUnReadStatus()
-                                }, 3000)
-                        }
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService().getCareMsgUndo(accountId)
+                if (resultBean != null) {
+                    mBadgeCountList[1] = resultBean.toInt()
+                    updateCustomTab(1)
+                    if (mBadgeCountList[1] != 0)
+                        msgTabLayout.postDelayed({
+                            resetCareMsgUnReadStatus()
+                        }, 3000)
+                }
+            } catch (e: Exception) {
+                toastShort(e.message!!)
+            }
+        }
     }
 
     fun getAbnormalMsgUndoNum() {
         val accountId = MMKVUtil.getInt(USER.USERID)
-        ApiUtil.createHDApi(IUserHDApi::class.java, false)
-                .getAbnormalMsgUndo(accountId)
-                .enqueue(object : ApiCallBack<String>(mContext) {
-                    override fun onApiResponse(call: Call<String>?, response: Response<String>?) {
-                        if (response?.body() != null) {
-                            mBadgeCountList[0] = response.body()!!.toInt()
-                            updateCustomTab(0)
-                            if (mBadgeCountList[0] != 0)
-                                msgTabLayout.postDelayed({
-                                    resetAbnormalMsgUnReadStatus()
-                                }, 3000)
-
-                        }
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService().getAbnormalMsgUndo(accountId)
+                if (resultBean != null) {
+                    mBadgeCountList[0] = resultBean.toInt()
+                    updateCustomTab(0)
+                    if (mBadgeCountList[0] != 0)
+                        msgTabLayout.postDelayed({
+                            resetAbnormalMsgUnReadStatus()
+                        }, 3000)
+                }
+            } catch (e: Exception) {
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun resetCareMsgUnReadStatus() {
         if (mBadgeCountList[1] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
-        ApiUtil.createHDApi(IUserHDApi::class.java, false)
-                .resetCareMsgReadStatus(accountId)
-                .enqueue(object : ApiCallBack<String>(mContext) {
-                    override fun onApiResponse(call: Call<String>?,
-                                               response: Response<String>?) {
-                        if (response?.body() == "true") {
-                            mBadgeCountList[1] = 0
-                            updateCustomTab(1)
-                        }
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService().resetCareMsgReadStatus(accountId)
+                if (resultBean == "true") {
+                    mBadgeCountList[1] = 0
+                    updateCustomTab(1)
+                }
+            } catch (e: Exception) {
+                toastShort(e.message!!)
+            }
+        }
+
     }
 
     private fun resetAbnormalMsgUnReadStatus() {
         if (mBadgeCountList[0] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
-        ApiUtil.createHDApi(IUserHDApi::class.java, false)
-                .resetAbnormalMsgReadStatus(accountId)
-                .enqueue(object : ApiCallBack<Any>(mContext) {
-                    override fun onApiResponse(call: Call<Any>?, response: Response<Any>?) {
-                        if (response?.body() != null) {
-                            mBadgeCountList[0] = 0
-                            updateCustomTab(0)
-                        }
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .resetAbnormalMsgReadStatus(accountId)
+                if (resultBean != null) {
+                    mBadgeCountList[0] = 0
+                    updateCustomTab(0)
+                }
+            } catch (e: Exception) {
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun setUpTabBadge() {

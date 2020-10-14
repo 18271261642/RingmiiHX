@@ -28,6 +28,10 @@
     <string name="app_main_health_mild">mild</string>
     <string name="app_main_health_normal">normal</string>
     <string name="app_main_health_error">Abnormal</string>
+    <string name="app_main_health_sleep_deep">Deep sleep</string>
+    <string name="app_main_health_sleep_shallow">Shallow sleep</string>
+    <string name="app_main_health_sleep_awake">Awake</string>
+    <string name="app_main_health_time_sleep">The amount of sleep: %s-%s</string>
     <string name="app_main_medicine_high_side">On the high side</string>
     <string name="app_main_health_query">query</string>
     <string name="app_main_bind_device">bound to %s bracelet</string>
@@ -197,4 +201,11 @@
     <string name="app_search_pattern">People search pattern</string>
     <string name="app_time_interval_one_hour">Time interval: 1 hour</string>
     <string name="app_time_interval_five_minutes">Time interval: 5 minutes</string>
+    <string name="app_hint">Hint</string>
+    <string name="app_watch">Watch</string>
+    <string name="app_bracelet_power_reminder">Bracelet power reminder</string>
+    <string name="app_shutdown_to_remind">Shutdown to remind</string>
+    <string name="app_Erase_remind">Erase remind</string>
+    <string name="app_sos_alarm">SOS alarm</string>
+    <string name="app_electronic_fence_alarm">Electronic fence alarm</string>
 </resources>

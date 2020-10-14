@@ -3,6 +3,7 @@ package com.guider.gps.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.AdapterOnItemClickListener
@@ -12,17 +13,16 @@ import com.guider.baselib.utils.USER
 import com.guider.gps.R
 import com.guider.gps.adapter.AbnormalMsgListAdapter
 import com.guider.gps.adapter.HealthCareMsgListAdapter
+import com.guider.gps.adapter.SystemMsgListAdapter
 import com.guider.gps.view.activity.HealthCareMsgDetailActivity
 import com.guider.gps.view.activity.RingMsgListActivity
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IUserHDApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.AbnormalRingMsgListBean
 import com.guider.health.apilib.bean.CareMsgListBean
 import com.guider.health.apilib.bean.HealthDataSimpleBean
+import com.guider.health.apilib.bean.SystemMsgBean
 import kotlinx.android.synthetic.main.fragment_ring_msg_list.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 class RingMsgListFragment : BaseFragment() {
 
@@ -37,8 +37,10 @@ class RingMsgListFragment : BaseFragment() {
 
     private var abnormalMsgList = arrayListOf<AbnormalRingMsgListBean>()
     private var careMsgList = arrayListOf<CareMsgListBean>()
+    private var systemMsgList = arrayListOf<SystemMsgBean>()
     private lateinit var abnormalAdapter: AbnormalMsgListAdapter
     private lateinit var careAdapter: HealthCareMsgListAdapter
+    private lateinit var systemAdapter: SystemMsgListAdapter
     private var page = 1
     private var isRefresh = false
     private var isLoadMore = false
@@ -92,122 +94,170 @@ class RingMsgListFragment : BaseFragment() {
                 getCareMsgListData(accountId, isShowLoading)
                 (mActivity as RingMsgListActivity).resetCareNum()
             }
+            resources.getString(R.string.app_msg_system_info) -> {
+                if (isShowLoading)
+                    mActivity.showDialog()
+                getSystemMsgListData(accountId, isShowLoading)
+            }
         }
 
     }
 
     private fun getAbnormalMsgListData(accountId: Int, isShowLoading: Boolean) {
-        ApiUtil.createHDApi(IUserHDApi::class.java, false)
-                .getAbnormalMsgList(accountId, -1, page, 20)
-                .enqueue(object : ApiCallBack<List<AbnormalRingMsgListBean>>(mActivity) {
-                    override fun onApiResponse(call: Call<List<AbnormalRingMsgListBean>>?,
-                                               response: Response<List<AbnormalRingMsgListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            emptyData.visibility = View.GONE
-                            if (isRefresh) refreshLayout.finishRefresh(500)
-                            if (isLoadMore) refreshLayout.finishLoadMore(500)
-                            if (response?.body()!!.size < 20) {
-                                refreshLayout.setEnableLoadMore(false)
-                            } else refreshLayout.setEnableLoadMore(true)
-                            val dataList = response.body()!!.map {
-                                val dataBean = ParseJsonData.parseJsonAny<HealthDataSimpleBean>(
-                                        it.warningContent)
-                                val state = dataBean.state
-                                val warningContent = dataBean.warningContent
-                                dataBean.state = warningContent
-                                dataBean.state2 = state
-                                it.dataBean = dataBean
-                                it
-                            }
-                            if (isLoadMore) {
-                                abnormalMsgList.addAll(dataList)
-                            } else {
-                                abnormalMsgList = dataList as ArrayList
-                            }
-                            abnormalAdapter.setSourceList(abnormalMsgList)
-                        } else {
-                            if (isRefresh) {
-                                refreshLayout.finishRefresh()
-                                emptyData.visibility = View.VISIBLE
-                            }
-                            if (isLoadMore) {
-                                refreshLayout.finishLoadMore()
-                                refreshLayout.setEnableLoadMore(false)
-                            }
-                            if (!isLoadMore) {
-                                abnormalMsgList.clear()
-                                abnormalAdapter.setSourceList(abnormalMsgList)
-                            }
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getAbnormalMsgList(accountId, -1, page, 20)
+                if (isShowLoading) mActivity.dismissDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    emptyData.visibility = View.GONE
+                    if (isRefresh) refreshLayout.finishRefresh(500)
+                    if (isLoadMore) refreshLayout.finishLoadMore(500)
+                    if (resultBean.size < 20) {
+                        refreshLayout.setEnableLoadMore(false)
+                    } else refreshLayout.setEnableLoadMore(true)
+                    val dataList = resultBean.map {
+                        val dataBean = ParseJsonData.parseJsonAny<HealthDataSimpleBean>(
+                                it.warningContent)
+                        val state = dataBean.state
+                        val warningContent = dataBean.warningContent
+                        dataBean.state = warningContent
+                        dataBean.state2 = state
+                        it.dataBean = dataBean
+                        it
                     }
-
-                    override fun onFailure(call: Call<List<AbnormalRingMsgListBean>>, t: Throwable) {
-                        super.onFailure(call, t)
-                        if (isRefresh) refreshLayout.finishRefresh()
-                        if (isLoadMore) {
-                            refreshLayout.finishLoadMore()
-                            page--
-                        }
+                    if (isLoadMore) {
+                        abnormalMsgList.addAll(dataList)
+                    } else {
+                        abnormalMsgList = dataList as ArrayList
                     }
-
-                    override fun onRequestFinish() {
-                        if (isShowLoading) mActivity.dismissDialog()
-                        isRefresh = false
-                        isLoadMore = false
+                    abnormalAdapter.setSourceList(abnormalMsgList)
+                } else {
+                    if (isRefresh) {
+                        refreshLayout.finishRefresh()
+                        emptyData.visibility = View.VISIBLE
                     }
-                })
+                    if (isLoadMore) {
+                        refreshLayout.finishLoadMore()
+                        refreshLayout.setEnableLoadMore(false)
+                    }
+                    if (!isLoadMore) {
+                        abnormalMsgList.clear()
+                        abnormalAdapter.setSourceList(abnormalMsgList)
+                    }
+                }
+                isRefresh = false
+                isLoadMore = false
+            } catch (e: Exception) {
+                if (isShowLoading) mActivity.dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                    page--
+                }
+                showToast(e.message!!)
+            }
+        }
     }
 
     private fun getCareMsgListData(accountId: Int, isShowLoading: Boolean) {
-        ApiUtil.createHDApi(IUserHDApi::class.java, false)
-                .getCareMsgList(accountId, page, 20, -1)
-                .enqueue(object : ApiCallBack<List<CareMsgListBean>>(mActivity) {
-                    override fun onApiResponse(call: Call<List<CareMsgListBean>>?,
-                                               response: Response<List<CareMsgListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            emptyData.visibility = View.GONE
-                            if (isRefresh) refreshLayout.finishRefresh(500)
-                            if (isLoadMore) refreshLayout.finishLoadMore(500)
-                            if (response?.body()!!.size < 20) {
-                                refreshLayout.setEnableLoadMore(false)
-                            } else refreshLayout.setEnableLoadMore(true)
-                            if (isLoadMore) {
-                                careMsgList.addAll(response.body()!!)
-                            } else {
-                                careMsgList = response.body() as ArrayList
-                            }
-                            careAdapter.setSourceList(careMsgList)
-                        } else {
-                            emptyData.visibility = View.VISIBLE
-                            if (isRefresh) {
-                                refreshLayout.finishRefresh()
-                            }
-                            if (isLoadMore) {
-                                refreshLayout.finishLoadMore()
-                                refreshLayout.setEnableLoadMore(false)
-                            }
-                            if (!isLoadMore) {
-                                careMsgList.clear()
-                                careAdapter.setSourceList(careMsgList)
-                            }
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getCareMsgList(accountId, page, 20, -1)
+                if (isShowLoading) mActivity.dismissDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    emptyData.visibility = View.GONE
+                    if (isRefresh) refreshLayout.finishRefresh(500)
+                    if (isLoadMore) refreshLayout.finishLoadMore(500)
+                    if (resultBean.size < 20) {
+                        refreshLayout.setEnableLoadMore(false)
+                    } else refreshLayout.setEnableLoadMore(true)
+                    if (isLoadMore) {
+                        careMsgList.addAll(resultBean)
+                    } else {
+                        careMsgList = resultBean as ArrayList
                     }
+                    careAdapter.setSourceList(careMsgList)
+                } else {
+                    emptyData.visibility = View.VISIBLE
+                    if (isRefresh) {
+                        refreshLayout.finishRefresh()
+                    }
+                    if (isLoadMore) {
+                        refreshLayout.finishLoadMore()
+                        refreshLayout.setEnableLoadMore(false)
+                    }
+                    if (!isLoadMore) {
+                        careMsgList.clear()
+                        careAdapter.setSourceList(careMsgList)
+                    }
+                }
+                isRefresh = false
+                isLoadMore = false
+            } catch (e: Exception) {
+                if (isShowLoading) mActivity.dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                    page--
+                }
+                showToast(e.message!!)
+            }
+        }
+    }
 
-                    override fun onFailure(call: Call<List<CareMsgListBean>>, t: Throwable) {
-                        super.onFailure(call, t)
-                        if (isRefresh) refreshLayout.finishRefresh()
-                        if (isLoadMore) {
-                            refreshLayout.finishLoadMore()
-                            page--
-                        }
+    private fun getSystemMsgListData(accountId: Int, isShowLoading: Boolean) {
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().getSystemMsgList(
+                        accountId, page, 20)
+                if (isShowLoading) mActivity.dismissDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    emptyData.visibility = View.GONE
+                    if (isRefresh) refreshLayout.finishRefresh(500)
+                    if (isLoadMore) refreshLayout.finishLoadMore(500)
+                    if (resultBean.size < 20) {
+                        refreshLayout.setEnableLoadMore(false)
+                    } else refreshLayout.setEnableLoadMore(true)
+                    if (isLoadMore) {
+                        systemMsgList.addAll(resultBean)
+                    } else {
+                        systemMsgList = resultBean as ArrayList
                     }
-
-                    override fun onRequestFinish() {
-                        if (isShowLoading) mActivity.dismissDialog()
-                        isRefresh = false
-                        isLoadMore = false
+                    systemAdapter.setSourceList(systemMsgList)
+                } else {
+                    emptyData.visibility = View.VISIBLE
+                    if (isRefresh) {
+                        refreshLayout.finishRefresh()
                     }
-                })
+                    if (isLoadMore) {
+                        refreshLayout.finishLoadMore()
+                        refreshLayout.setEnableLoadMore(false)
+                    }
+                    if (!isLoadMore) {
+                        systemMsgList.clear()
+                        systemAdapter.setSourceList(systemMsgList)
+                    }
+                }
+                isRefresh = false
+                isLoadMore = false
+            } catch (e: Exception) {
+                if (isShowLoading) mActivity.dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                    page--
+                }
+                showToast(e.message!!)
+            }
+        }
     }
 
     private fun initData(bundle: Bundle, ringMsgListFragment: RingMsgListFragment) {
@@ -230,9 +280,11 @@ class RingMsgListFragment : BaseFragment() {
 
                 })
             }
-//            resources.getString(R.string.app_msg_system_info) -> {
-//                emptyData.visibility = View.VISIBLE
-//            }
+            resources.getString(R.string.app_msg_system_info) -> {
+                emptyData.visibility = View.VISIBLE
+                systemAdapter = SystemMsgListAdapter(mActivity, systemMsgList)
+                msgListRv.adapter = systemAdapter
+            }
         }
     }
 }

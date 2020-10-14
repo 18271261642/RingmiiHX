@@ -2,10 +2,7 @@ package com.guider.baselib.utils.permissions;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * author：luck
@@ -71,35 +68,24 @@ public class Permission {
     }
 
     private String combineName(List<Permission> permissions) {
-        return ((StringBuilder)Observable.fromIterable(permissions).map(new Function<Permission, String>() {
-            public String apply(Permission permission) throws Exception {
-                return permission.name;
+        return ((StringBuilder) Observable.fromIterable(permissions)
+                .map(permission -> permission.name).collectInto(new StringBuilder(), (s, s2) -> {
+            if (s.length() == 0) {
+                s.append(s2);
+            } else {
+                s.append(", ").append(s2);
             }
-        }).collectInto(new StringBuilder(), new BiConsumer<StringBuilder, String>() {
-            public void accept(StringBuilder s, String s2) throws Exception {
-                if (s.length() == 0) {
-                    s.append(s2);
-                } else {
-                    s.append(", ").append(s2);
-                }
 
-            }
         }).blockingGet()).toString();
     }
 
     private Boolean combineGranted(List<Permission> permissions) {
-        return (Boolean)Observable.fromIterable(permissions).all(new Predicate<Permission>() {
-            public boolean test(Permission permission) throws Exception {
-                return permission.granted;
-            }
-        }).blockingGet();
+        return (Boolean)Observable.fromIterable(permissions)
+                .all(permission -> permission.granted).blockingGet();
     }
 
     private Boolean combineShouldShowRequestPermissionRationale(List<Permission> permissions) {
-        return (Boolean)Observable.fromIterable(permissions).any(new Predicate<Permission>() {
-            public boolean test(Permission permission) throws Exception {
-                return permission.shouldShowRequestPermissionRationale;
-            }
-        }).blockingGet();
+        return (Boolean)Observable.fromIterable(permissions)
+                .any(permission -> permission.shouldShowRequestPermissionRationale).blockingGet();
     }
 }

@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
@@ -19,19 +20,17 @@ import com.guider.baselib.widget.aAInfographicsLib.aATools.AAColor
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
 import com.guider.gps.view.activity.HealthDataListActivity
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IUserHDApi
+import com.guider.gps.view.activity.MainActivity
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.*
 import kotlinx.android.synthetic.main.fragment_health_data.*
 import kotlinx.android.synthetic.main.fragment_home_health.*
+import kotlinx.coroutines.launch
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.AbstractChartView
 import lecho.lib.hellocharts.view.LineChartView
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import retrofit2.Call
-import retrofit2.Response
 import kotlin.math.abs
 
 
@@ -61,6 +60,7 @@ class HealthFragment : BaseFragment() {
     private lateinit var heartChart: LineChartView
     private var isFirstLoadData = true
     private var isRefresh = false
+    private var mDialog: DialogProgress? = null
 
     override fun initView(rootView: View) {
         bloodLayout = rootView.findViewById(R.id.bloodLayout)
@@ -93,6 +93,7 @@ class HealthFragment : BaseFragment() {
         refreshLayout.setEnableRefresh(true)
         refreshLayout.setOnRefreshListener {
             isRefresh = true
+            (mActivity as MainActivity).getLatestGroupData(false)
             getHealthData()
         }
         bloodChart.setOnTouchListener(touchListener)
@@ -110,13 +111,6 @@ class HealthFragment : BaseFragment() {
                         "   [36-37.3]" +
                         mActivity.resources.getString(R.string.app_main_health_normal) +
                         "    [>38]" +
-                        mActivity.resources.getString(R.string.app_main_health_error)
-        sleepStatusTv.text =
-                "[0-20]" +
-                        mActivity.resources.getString(R.string.app_main_health_mild) +
-                        "   [21-40]" +
-                        mActivity.resources.getString(R.string.app_main_health_normal) +
-                        "    [>=41]" +
                         mActivity.resources.getString(R.string.app_main_health_error)
     }
 
@@ -244,150 +238,174 @@ class HealthFragment : BaseFragment() {
 
     private fun getSportData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthSportChartData(accountId, -1, 100, startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<SportListBean>>() {
-                    override fun onApiResponse(call: Call<List<SportListBean>>?,
-                                               response: Response<List<SportListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            sportNoDataTv.visibility = View.GONE
-                            val sportSubColumnValue = getSportSubColumnValue(response?.body()!!)
-                            initSportColumn(sportSubColumnValue, response.body()!!)
-                            //总步数为一天时间段的步数总和
-                            var stepTotal = 0
-                            response.body()?.forEach {
-                                stepTotal += it.step
-                            }
-                            stepNumTv.text = stepTotal.toString()
-//                            val targetSteps = if (MMKVUtil.getInt(TARGET_STEP,
-//                                            0) != 0) {
-//                                MMKVUtil.getInt(TARGET_STEP, 0)
-//                            } else 8000
-//                            val str: String = String.format("%.2f",
-//                                    (4927 * 1.00f / targetSteps))
-//                            val progress: Int = (str.toFloat() * 100).toInt()
-                        } else {
-                            initSportChart()
-                            stepNumTv.text = "0"
-                            sportNoDataTv.visibility = View.VISIBLE
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthSportChartData(accountId, -1, 100,
+                                startTimeValue, endTimeValue)
+                if (!resultBean.isNullOrEmpty()) {
+                    sportNoDataTv.visibility = View.GONE
+                    val sportSubColumnValue = getSportSubColumnValue(resultBean)
+                    initSportColumn(sportSubColumnValue, resultBean)
+                    //总步数为一天时间段的步数总和
+                    var stepTotal = 0
+                    resultBean.forEach {
+                        stepTotal += it.step
                     }
-                })
+                    stepNumTv.text = stepTotal.toString()
+//                    val targetSteps = if (MMKVUtil.getInt(TARGET_STEP,
+//                                    0) != 0) {
+//                        MMKVUtil.getInt(TARGET_STEP, 0)
+//                    } else 8000
+//                    val str: String = String.format("%.2f",
+//                            (4927 * 1.00f / targetSteps))
+//                    val progress: Int = (str.toFloat() * 100).toInt()
+                } else {
+                    initSportChart()
+                    stepNumTv.text = "0"
+                    sportNoDataTv.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                showToast(e.message!!)
+            }
+        }
     }
 
     private fun getSleepData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthSleepChartData(accountId, -1, 100, startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<SleepDataListBean>>() {
-                    override fun onApiResponse(call: Call<List<SleepDataListBean>>?,
-                                               response: Response<List<SleepDataListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            sleepNoDataTv.visibility = View.GONE
-                            val sleepSubColumnValue = getSleepSubColumnValue(
-                                    response?.body()!!.map { it.minute.toFloat() })
-                            initSleepColumn(sleepSubColumnValue, response.body()!!)
-                        } else {
-                            initSleepChart()
-                            sleepNoDataTv.visibility = View.VISIBLE
-                        }
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthSleepChartData(accountId, startTimeValue)
+                if (!resultBean.isNullOrEmpty()) {
+                    sleepNoDataTv.visibility = View.GONE
+                    val sleepSubColumnValue = getSleepSubColumnValue(resultBean)
+                    showSleepTime(resultBean)
+                    initSleepColumn(sleepSubColumnValue, resultBean)
+                } else {
+                    sleepTimeTv.text = ""
+                    initSleepChart()
+                    sleepNoDataTv.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                showToast(e.message!!)
+            }
+        }
+    }
+
+    private fun showSleepTime(list: List<SleepDataListBean>) {
+        if (list.size == 1) {
+            val startTime = DateUtilKotlin.uTCToLocal(list[0].startTime, TIME_FORMAT_PATTERN8)
+            sleepTimeTv.text = mActivity.resources.getString(
+                    R.string.app_main_health_time_sleep, startTime, startTime)
+        } else {
+            val startTime = DateUtilKotlin.uTCToLocal(list[0].startTime, TIME_FORMAT_PATTERN8)
+            val endTime = DateUtilKotlin.uTCToLocal(
+                    list[list.size - 1].startTime, TIME_FORMAT_PATTERN8)
+            sleepTimeTv.text = mActivity.resources.getString(
+                    R.string.app_main_health_time_sleep, startTime, endTime)
+        }
     }
 
     private fun getHeartData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthHeartChartData(accountId, -1, 100,
-                        startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<HeartRateListBean>>() {
-                    override fun onApiResponse(call: Call<List<HeartRateListBean>>?,
-                                               response: Response<List<HeartRateListBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            heartNoDataTv.visibility = View.GONE
-                            val heartAxisPoints = getHeartAxisPoints(response?.body()!!)
-                            initHeartLineChart(heartAxisPoints, response.body()!!)
-                        } else {
-                            initHeartChart()
-                            heartNoDataTv.visibility = View.VISIBLE
-                        }
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthHeartChartData(accountId, -1, 100,
+                                startTimeValue, endTimeValue)
+                if (!resultBean.isNullOrEmpty()) {
+                    heartNoDataTv.visibility = View.GONE
+                    val heartAxisPoints = getHeartAxisPoints(resultBean)
+                    initHeartLineChart(heartAxisPoints, resultBean)
+                } else {
+                    initHeartChart()
+                    heartNoDataTv.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                showToast(e.message!!)
+            }
+        }
     }
 
     private fun getBodyTempData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthTempChartData(accountId, -1, 9, startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<BodyTempListBean>>() {
-                    override fun onApiResponse(call: Call<List<BodyTempListBean>>,
-                                               response: Response<List<BodyTempListBean>>) {
-                        if (!response.body().isNullOrEmpty()) {
-                            tempNoDataTv.visibility = View.GONE
-                            val options = getTempXAxisLabels(response.body()!!)
-                            val yAxisLabels = getTempYAxisLabels()
-                            val tempDataList = response.body()!!.map { it.bodyTemp }
-                            val dataArray: Array<Any> = tempDataList.toTypedArray()
-                            val aaOptions = initTempLineChart(options, dataArray)
-                            aaOptions.yAxis!!.labels(yAxisLabels)
-                            Log.e(TAG, "体温数据的个数为${tempDataList.size}")
-                            val requestPage: Int
-                            if (tempDataList.size > 40) {
-                                requestPage = tempDataList.size / 40
-                                Log.e(TAG, "需要展示的页数为${requestPage}")
-                                tempChart.contentWidth =
-                                        (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
-                            } else if (tempDataList.size in 31..40) {
-                                requestPage = tempDataList.size / 30
-                                Log.e(TAG, "需要展示的页数为${requestPage}")
-                                tempChart.contentWidth =
-                                        (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
-                            }
-                            tempChart.aa_drawChartWithChartOptions(aaOptions)
-                        } else {
-                            initTempChart()
-                            tempNoDataTv.visibility = View.VISIBLE
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthTempChartData(accountId,
+                                -1, 9, startTimeValue, endTimeValue)
+                if (!resultBean.isNullOrEmpty()) {
+                    tempNoDataTv.visibility = View.GONE
+                    val options = getTempXAxisLabels(resultBean)
+                    val yAxisLabels = getTempYAxisLabels()
+                    val tempDataList = resultBean.map { it.bodyTemp }
+                    val dataArray: Array<Any> = tempDataList.toTypedArray()
+                    val aaOptions = initTempLineChart(options, dataArray)
+                    aaOptions.yAxis!!.labels(yAxisLabels)
+                    Log.e(TAG, "体温数据的个数为${tempDataList.size}")
+                    val requestPage: Int
+                    if (tempDataList.size > 40) {
+                        requestPage = tempDataList.size / 40
+                        Log.e(TAG, "需要展示的页数为${requestPage}")
+                        tempChart.contentWidth =
+                                (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                    } else if (tempDataList.size in 31..40) {
+                        requestPage = tempDataList.size / 30
+                        Log.e(TAG, "需要展示的页数为${requestPage}")
+                        tempChart.contentWidth =
+                                (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
                     }
-                })
+                    tempChart.aa_drawChartWithChartOptions(aaOptions)
+                } else {
+                    initTempChart()
+                    tempNoDataTv.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                showToast(e.message!!)
+            }
+        }
     }
 
     private fun getBloodData() {
-        val mDialog = DialogProgress(mActivity, null, true)
-        if (!isFirstLoadData && !isRefresh) mDialog.showDialog()
+        mDialog = DialogProgress(mActivity, null, true)
+        if (!isFirstLoadData && !isRefresh) mDialog?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-        ApiUtil.createHDApi(IUserHDApi::class.java)
-                .getHealthBloodChartData(accountId, -1, 100, startTimeValue, endTimeValue)
-                .enqueue(object : ApiCallBack<List<BloodListBeann>>() {
-                    override fun onApiResponse(call: Call<List<BloodListBeann>>?,
-                                               response: Response<List<BloodListBeann>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            bloodPressureNoDataTv.visibility = View.GONE
-                            if (isRefresh) refreshLayout.finishRefresh(500)
-                            val belowBloodAxisPoints = getBelowBloodAxisPoints(response?.body()!!)
-                            val highBloodAxisPoints = getHighBloodAxisPoints(response.body()!!)
-                            initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints,
-                                    response.body()!!
-                            )
-                        } else {
-                            if (isRefresh) {
-                                refreshLayout.finishRefresh()
-                            }
-                            initBloodChart()
-                            bloodPressureNoDataTv.visibility = View.VISIBLE
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getHDApiService()
+                        .getHealthBloodChartData(
+                                accountId, -1, 100, startTimeValue, endTimeValue)
+                if (!isFirstLoadData && !isRefresh) mDialog?.hideDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    bloodPressureNoDataTv.visibility = View.GONE
+                    if (isRefresh) refreshLayout.finishRefresh(500)
+                    val belowBloodAxisPoints = getBelowBloodAxisPoints(resultBean)
+                    val highBloodAxisPoints = getHighBloodAxisPoints(resultBean)
+                    initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints, resultBean)
+                } else {
+                    if (isRefresh) {
+                        refreshLayout.finishRefresh()
                     }
+                    initBloodChart()
+                    bloodPressureNoDataTv.visibility = View.VISIBLE
+                }
+                isRefresh = false
+            } catch (e: Exception) {
+                if (!isFirstLoadData && !isRefresh) mDialog?.hideDialog()
+                isRefresh = false
+                if (isRefresh) refreshLayout.finishRefresh()
+                showToast(e.message!!)
+            }
+        }
+    }
 
-                    override fun onFailure(call: Call<List<BloodListBeann>>, t: Throwable) {
-                        super.onFailure(call, t)
-                        if (isRefresh) refreshLayout.finishRefresh()
-                    }
-
-                    override fun onRequestFinish() {
-                        if (!isFirstLoadData && !isRefresh) mDialog.hideDialog()
-                        isRefresh = false
-                    }
-                })
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mDialog != null) {
+            mDialog?.hideDialog()
+            mDialog = null
+        }
     }
 
     private fun initSportChart() {
@@ -412,10 +430,11 @@ class HealthFragment : BaseFragment() {
     private fun initSleepColumn(columns: ArrayList<Column>, list: List<SleepDataListBean>) {
         val mColumnChartData = ColumnChartData(columns) //设置数据
         mColumnChartData.isStacked = false //设置是否堆叠
-        mColumnChartData.fillRatio = 0.2f//设置柱子宽度 0-1之间
+        mColumnChartData.fillRatio = 0.5f//设置柱子宽度 0-1之间
         //坐标轴
         setSleepAxisXShowColumn(mColumnChartData, list)
         setAxisYShowColumn(mColumnChartData)
+        sleepChart.maxZoom = (list.size / 6 + 66).toFloat()//按照柱体数量增加缩放次数
         sleepChart.columnChartData = mColumnChartData
         resetViewport(sleepYMaxValue, sleepChart, list)
     }
@@ -430,7 +449,7 @@ class HealthFragment : BaseFragment() {
         val mAxisValues = arrayListOf<AxisValue>()
         for (i in list.indices) {
             val label = AxisValue((i).toFloat()).setLabel(
-                    DateUtilKotlin.uTCToLocal(list[i].testTime, TIME_FORMAT_PATTERN8)!!)
+                    DateUtilKotlin.uTCToLocal(list[i].startTime, TIME_FORMAT_PATTERN8)!!)
             mAxisValues.add(label)
         }
         axisX.values = mAxisValues //设置x轴各个坐标点名称
@@ -774,27 +793,30 @@ class HealthFragment : BaseFragment() {
         return category.toTypedArray()
     }
 
-    private fun getSleepSubColumnValue(subColumnValueData: List<Float>): ArrayList<Column> {
+    private fun getSleepSubColumnValue(subColumnValueData: List<SleepDataListBean>)
+            : ArrayList<Column> {
         val columns = arrayListOf<Column>()
         for (i in subColumnValueData.indices) {
-            val colorIntValue = when {
-                subColumnValueData[i] <= 20 -> {
-                    CommonUtils.getColor(mActivity, R.color.colorF18937)
+            //根据1；深度睡眠，2；浅度睡眠，3；醒来时长
+            val colorIntValue = when (subColumnValueData[i].sleepType) {
+                1 -> {
+                    CommonUtils.getColor(mActivity, R.color.color5838F0)
                 }
-                subColumnValueData[i] <= 40 -> {
-                    CommonUtils.getColor(mActivity, R.color.white)
+                2 -> {
+                    CommonUtils.getColor(mActivity, R.color.colorB6A7FF)
                 }
                 else -> {
-                    CommonUtils.getColor(mActivity, R.color.colorE2402B)
+                    CommonUtils.getColor(mActivity, R.color.colorFFAD29)
                 }
             }
             /*===== 柱状图相关设置 =====*/
             val column = Column(
-                    arrayListOf(SubcolumnValue(subColumnValueData[i], colorIntValue)))
+                    arrayListOf(SubcolumnValue(subColumnValueData[i].minute.toFloat(), colorIntValue)))
             column.setHasLabels(true) //没有标签
-            column.setHasLabelsOnlyForSelected(true) //点击只放大
+            column.setHasLabelsOnlyForSelected(false)//固定显示，而非在得到点击后才进行显示
             columns.add(column)
-            if (sleepYMaxValue < subColumnValueData[i]) sleepYMaxValue = subColumnValueData[i]
+            if (sleepYMaxValue < subColumnValueData[i].minute.toFloat()) sleepYMaxValue =
+                    subColumnValueData[i].minute.toFloat()
         }
         sleepYMaxValue += 10
         return columns
@@ -860,10 +882,10 @@ class HealthFragment : BaseFragment() {
                 startActivity(intent)
             }
             sleepLayout -> {
-                val intent = Intent(mActivity, HealthDataListActivity::class.java)
-                intent.putExtra("type",
-                        resources.getString(R.string.app_main_health_sleep))
-                startActivity(intent)
+//                val intent = Intent(mActivity, HealthDataListActivity::class.java)
+//                intent.putExtra("type",
+//                        resources.getString(R.string.app_main_health_sleep))
+//                startActivity(intent)
             }
             sportLayout -> {
                 val intent = Intent(mActivity, HealthDataListActivity::class.java)

@@ -89,11 +89,11 @@ object MyDialogNew {
         try {
             val mDismissed: Field = DialogFragment::class.java.getDeclaredField("mDismissed")
             mDismissed.isAccessible = true
-            mDismissed.set(this, false)
+            mDismissed.set(dialog, false)
 
             val mShownByMe: Field = DialogFragment::class.java.getDeclaredField("mShownByMe")
             mShownByMe.isAccessible = true
-            mShownByMe.set(this, true)
+            mShownByMe.set(dialog, true)
         } catch (e: Exception) {
             e.printStackTrace()
         }

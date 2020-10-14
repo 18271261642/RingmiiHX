@@ -12,7 +12,7 @@ import com.guider.baselib.utils.EventBusUtils
 import com.guider.baselib.utils.OnNoDoubleClickListener
 import com.guider.feifeia3.utils.ToastUtil
 import com.orhanobut.logger.Logger
-import com.trello.rxlifecycle3.components.support.RxFragment
+import com.trello.rxlifecycle4.components.support.RxFragment
 
 
 /**

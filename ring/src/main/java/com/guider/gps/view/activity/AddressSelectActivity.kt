@@ -3,17 +3,15 @@ package com.guider.gps.view.activity
 import android.app.Activity
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.utils.toastShort
 import com.guider.gps.R
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
-import com.guider.health.apilib.enums.AddressType
-import com.guider.health.apilib.bean.AddressWithCodeBean
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.UserInfo
+import com.guider.health.apilib.enums.AddressType
 import com.lljjcoder.Interface.OnCityItemClickListenerNew
 import com.lljjcoder.bean.CityBeanNew
 import com.lljjcoder.bean.DistrictBeanNew
@@ -21,8 +19,7 @@ import com.lljjcoder.bean.ProvinceBeanNew
 import com.lljjcoder.style.cityjd.JDCityConfig
 import com.lljjcoder.style.cityjd.JDCityPicker
 import kotlinx.android.synthetic.main.activity_address_select.*
-import retrofit2.Call
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 /**
  * 地址选择页
@@ -96,28 +93,26 @@ class AddressSelectActivity : BaseActivity() {
 
     private fun getProvinceAddress() {
         showDialog()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getAddressCode(AddressType.PROVINCE, 0)
-                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
-                                               response: Response<List<AddressWithCodeBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            run breaking@{
-                                response?.body()?.forEach {
-                                    if (it.id == provinceValueInt) {
-                                        provinceValue = getProvinceName(it.name)
-                                        getCityAddress(provinceValueInt)
-                                        return@breaking
-                                    }
-                                }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAddressCode(AddressType.PROVINCE, 0)
+                if (!resultBean.isNullOrEmpty()) {
+                    run breaking@{
+                        resultBean.forEach {
+                            if (it.id == provinceValueInt) {
+                                provinceValue = getProvinceName(it.name)
+                                getCityAddress(provinceValueInt)
+                                return@breaking
                             }
                         }
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun getProvinceName(name: String): String {
@@ -144,28 +139,26 @@ class AddressSelectActivity : BaseActivity() {
     }
 
     private fun getCityAddress(parentId: Int) {
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getAddressCode(AddressType.CITY, parentId)
-                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
-                                               response: Response<List<AddressWithCodeBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            run breaking@{
-                                response?.body()?.forEach {
-                                    if (it.id == cityValueInt) {
-                                        cityValue = getCityName(it.name)
-                                        getCountieAddress(cityValueInt)
-                                        return@breaking
-                                    }
-                                }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAddressCode(AddressType.CITY, parentId)
+                if (!resultBean.isNullOrEmpty()) {
+                    run breaking@{
+                        resultBean.forEach {
+                            if (it.id == cityValueInt) {
+                                cityValue = getCityName(it.name)
+                                getCountieAddress(cityValueInt)
+                                return@breaking
                             }
                         }
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun getCityName(name: String): String {
@@ -179,33 +172,32 @@ class AddressSelectActivity : BaseActivity() {
     }
 
     private fun getCountieAddress(parentId: Int) {
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getAddressCode(AddressType.COUNTIE, parentId)
-                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
-                                               response: Response<List<AddressWithCodeBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            run breaking@{
-                                response?.body()?.forEach {
-                                    if (it.id == countieValueInt) {
-                                        countieValue = it.name
-                                        districtValue =
-                                                "$provinceValue $cityValue $countieValue"
-                                        countryTv.text = districtValue
-                                        countryTv.setTextColor(
-                                                CommonUtils.getColor(
-                                                        mContext!!, R.color.color333333))
-                                        return@breaking
-                                    }
-                                }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAddressCode(AddressType.COUNTIE, parentId)
+                dismissDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    run breaking@{
+                        resultBean.forEach {
+                            if (it.id == countieValueInt) {
+                                countieValue = it.name
+                                districtValue =
+                                        "$provinceValue $cityValue $countieValue"
+                                countryTv.text = districtValue
+                                countryTv.setTextColor(
+                                        CommonUtils.getColor(
+                                                mContext!!, R.color.color333333))
+                                return@breaking
                             }
                         }
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun getAddressCode() {
@@ -231,28 +223,26 @@ class AddressSelectActivity : BaseActivity() {
             }
             else -> provinceValue
         }
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getAddressCode(AddressType.PROVINCE, 0)
-                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
-                                               response: Response<List<AddressWithCodeBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            run breaking@{
-                                response?.body()?.forEach {
-                                    if (it.name == province) {
-                                        provinceValueInt = it.id
-                                        getCityCode(provinceValueInt)
-                                        return@breaking
-                                    }
-                                }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAddressCode(AddressType.PROVINCE, 0)
+                if (!resultBean.isNullOrEmpty()) {
+                    run breaking@{
+                        resultBean.forEach {
+                            if (it.name == province) {
+                                provinceValueInt = it.id
+                                getCityCode(provinceValueInt)
+                                return@breaking
                             }
                         }
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun getCityCode(parentId: Int) {
@@ -263,54 +253,51 @@ class AddressSelectActivity : BaseActivity() {
             }
             else -> cityValue
         }
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getAddressCode(AddressType.CITY, parentId)
-                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
-                                               response: Response<List<AddressWithCodeBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            run breaking@{
-                                response?.body()?.forEach {
-                                    if (it.name == city) {
-                                        cityValueInt = it.id
-                                        getCountieCode(cityValueInt)
-                                        return@breaking
-                                    }
-                                }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAddressCode(AddressType.CITY, parentId)
+                if (!resultBean.isNullOrEmpty()) {
+                    run breaking@{
+                        resultBean.forEach {
+                            if (it.name == city) {
+                                cityValueInt = it.id
+                                getCountieCode(cityValueInt)
+                                return@breaking
                             }
                         }
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun getCountieCode(parentId: Int) {
         val countie = countieValue
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .getAddressCode(AddressType.COUNTIE, parentId)
-                .enqueue(object : ApiCallBack<List<AddressWithCodeBean>>(mContext) {
-                    override fun onApiResponse(call: Call<List<AddressWithCodeBean>>?,
-                                               response: Response<List<AddressWithCodeBean>>?) {
-                        if (!response?.body().isNullOrEmpty()) {
-                            run breaking@{
-                                response?.body()?.forEach {
-                                    if (it.name == countie) {
-                                        countieValueInt = it.id
-                                        changeAddressInfo()
-                                        return@breaking
-                                    }
-                                }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAddressCode(AddressType.COUNTIE, parentId)
+                dismissDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    run breaking@{
+                        resultBean.forEach {
+                            if (it.name == countie) {
+                                countieValueInt = it.id
+                                changeAddressInfo()
+                                return@breaking
                             }
                         }
                     }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun changeAddressInfo() {
@@ -319,25 +306,24 @@ class AddressSelectActivity : BaseActivity() {
         bean?.city = cityValueInt
         bean?.countie = countieValueInt
         bean?.descDetail = detailAddress
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .editUserInfo(bean)
-                .enqueue(object : ApiCallBack<UserInfo>(mContext) {
-                    override fun onApiResponse(call: Call<UserInfo>?,
-                                               response: Response<UserInfo>?) {
-                        if (response?.body() != null) {
-                            //修改成功
-                            toastShort(mContext!!.resources.getString(
-                                    R.string.app_person_info_change_success))
-                            intent.putExtra("bean", bean)
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .editUserInfo(bean)
+                dismissDialog()
+                if (resultBean != null) {
+                    //修改成功
+                    toastShort(mContext!!.resources.getString(
+                            R.string.app_person_info_change_success))
+                    intent.putExtra("bean", bean)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun selectAddressDialog() {

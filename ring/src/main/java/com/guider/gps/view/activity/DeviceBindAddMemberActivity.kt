@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
@@ -17,12 +18,13 @@ import com.guider.gps.R
 import com.guider.gps.adapter.CountryCodeDialogAdapter
 import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.IGuiderApi
+import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
 import kotlinx.android.synthetic.main.activity_device_bind_add_member.*
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
@@ -160,44 +162,39 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     private fun bindNewMemberCheck(phoneValue: String, deviceName: String) {
         showDialog()
         val groupId = userGroupId.substring(0, userGroupId.lastIndexOf(".")).toInt()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .devicePhoneVerify(groupId, code, phoneValue, deviceName, countryTv.text.toString())
-                .enqueue(object : ApiCallBack<Any?>(mContext) {
-                    override fun onApiResponseNull(call: Call<Any?>?,
-                                                   response: Response<Any?>?) {
-                        //返回null手机号未注册
-                        if (response?.body() != null) {
-                            toastShort("手机号未注册")
-                            val intent = Intent(mContext, RegisterActivity::class.java)
-                            intent.putExtra("pageEnterType", "bindAddMember")
-                            intent.putExtra("country", countryTv.text.toString())
-                            intent.putExtra("phone", phoneEdit.text.toString())
-                            startActivity(intent)
-                        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .devicePhoneVerify(
+                                groupId, code, phoneValue, deviceName, countryTv.text.toString())
+                dismissDialog()
+                if (resultBean is String && resultBean == "null") {
+                    //返回null手机号未注册
+                    toastShort("手机号未注册")
+                    val intent = Intent(mContext, RegisterActivity::class.java)
+                    intent.putExtra("pageEnterType", "bindAddMember")
+                    intent.putExtra("country", countryTv.text.toString())
+                    intent.putExtra("phone", phoneEdit.text.toString())
+                    startActivity(intent)
+                } else {
+                    //成功返回家人列表
+                    val list = ParseJsonData.parseJsonDataList<UserInfo>(resultBean,
+                            UserInfo::class.java)
+                    if (!list.isNullOrEmpty()) {
+                        val bean = CheckBindDeviceBean()
+                        bean.userGroupId = userGroupId.toInt()
+                        bean.userInfos = list
+                        EventBusUtils.sendEvent(EventBusEvent(
+                                EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
                     }
-
-                    override fun onApiResponse(call: Call<Any?>?,
-                                               response: Response<Any?>?) {
-                        //成功返回家人列表
-                        if (response?.body() != null) {
-                            val list = ParseJsonData.parseJsonDataList<UserInfo>(response.body()!!,
-                                    UserInfo::class.java)
-                            if (!list.isNullOrEmpty()) {
-                                val bean = CheckBindDeviceBean()
-                                bean.userGroupId = userGroupId.toInt()
-                                bean.userInfos = list
-                                EventBusUtils.sendEvent(EventBusEvent(
-                                        EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))
-                                setResult(Activity.RESULT_OK, intent)
-                                finish()
-                            }
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -215,28 +212,26 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     private fun addMemberToGroup() {
         showDialog()
         val groupId = userGroupId.substring(0, userGroupId.lastIndexOf(".")).toInt()
-        ApiUtil.createApi(IGuiderApi::class.java, false)
-                .groupAddMemberDevice(groupId, accountId.toInt(), deviceNameEdit.text.toString())
-                .enqueue(object : ApiCallBack<List<UserInfo>?>(mContext) {
-                    override fun onApiResponse(call: Call<List<UserInfo>?>?,
-                                               response: Response<List<UserInfo>?>?) {
-                        if (response?.body() != null) {
-                            if (!response.body().isNullOrEmpty()) {
-                                val bean = CheckBindDeviceBean()
-                                bean.userGroupId = userGroupId.toInt()
-                                bean.userInfos = response.body()
-                                EventBusUtils.sendEvent(EventBusEvent(
-                                        EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))
-                                setResult(Activity.RESULT_OK, intent)
-                                finish()
-                            }
-                        }
-                    }
-
-                    override fun onRequestFinish() {
-                        dismissDialog()
-                    }
-                })
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService()
+                        .groupAddMemberDevice(
+                                groupId, accountId.toInt(), deviceNameEdit.text.toString())
+                dismissDialog()
+                if (!resultBean.isNullOrEmpty()) {
+                    val bean = CheckBindDeviceBean()
+                    bean.userGroupId = userGroupId.toInt()
+                    bean.userInfos = resultBean
+                    EventBusUtils.sendEvent(EventBusEvent(
+                            EventBusAction.REFRESH_DEVICE_MEMBER_LIST, bean))
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            } catch (e: Exception) {
+                dismissDialog()
+                toastShort(e.message!!)
+            }
+        }
     }
 
     private fun getCountryCode() {
