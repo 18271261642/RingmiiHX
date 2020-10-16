@@ -48,7 +48,6 @@
         app:itemIconTint="@color/selector_nav_text_item"
         app:itemTextColor="@color/selector_nav_text_item"
         app:labelVisibilityMode="labeled"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/activity_bottom_nav" />
 </androidx.constraintlayout.widget.ConstraintLayout>

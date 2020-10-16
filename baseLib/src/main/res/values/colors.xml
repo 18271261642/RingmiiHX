@@ -34,6 +34,7 @@
     <color name="colorD76155">#D76155</color>
     <color name="colorF5F5F5">#F5F5F5</color>
     <color name="colorF6F6F6">#F6F6F6</color>
+    <color name="colorFF8147">#FF8147</color>
     <color name="color666666">#666666</color>
     <color name="color5BC2FF">#5BC2FF</color>
     <color name="color6ECDFF">#6ECDFF</color>
@@ -54,4 +55,5 @@
     <color name="colorF18A2E">#F18A2E</color>
     <color name="color46E8FD">#46E8FD</color>
     <color name="color4897FF">#4897FF</color>
+    <color name="color66000000">#66000000</color>
 </resources>

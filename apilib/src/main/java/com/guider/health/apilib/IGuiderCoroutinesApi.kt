@@ -333,14 +333,42 @@ interface IGuiderCoroutinesApi {
      */
     @GET("api/v1/opdevice/systemmessage/now")
     suspend fun getSystemMsgLatest(@Query("accountId") accountId: Int,
-                                  @Query("now") now: String): Any?
+                                   @Query("now") now: String): Any?
+
+    /**
+     * 发起主动寻址
+     * @param accountId 用户id
+     */
+    @GET("api/v1/opdevice/activeposition")
+    suspend fun initiateActiveAddressing(@Query("accountId") accountId: Int): String?
+
+    /**
+     * 轮训获取发起时间后主动寻址结果
+     * @param accountId 用户id
+     * @param now 当前时间
+     */
+    @GET("api/v1/opdevice/user/position")
+    suspend fun proactivelyAddressingData(@Query("accountId") accountId: Int,
+                                          @Query("now") now: String): Any?
+
     /**
      * 查询指定用户消息提醒列表
      * @param accountId 用户id
-     * @param now 当前时间
+     * @param page 页数
      */
     @GET("api/v1/opdevice/systemmessage")
     suspend fun getSystemMsgList(@Query("accountId") accountId: Int,
                                  @Query("page") page: Int,
                                  @Query("row") row: Int): List<SystemMsgBean>?
+
+    /**
+     * 分页获取用户主动寻址记录
+     * @param accountId 用户id
+     * @param page 页数
+     */
+    @GET("api/v1/user/activepostion")
+    suspend fun getProactivelyAddressingList(@Query("accountId") accountId: Int,
+                                             @Query("page") page: Int,
+                                             @Query("row") row: Int)
+            : List<UserPositionListBean>?
 }

@@ -18,7 +18,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.binioter.guideview.GuideBuilder
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.common.ConnectionResult
@@ -47,14 +46,19 @@ import com.guider.gps.adapter.LocationTrackEventTimeAdapter
 import com.guider.gps.bean.WithSelectBaseBean
 import com.guider.gps.view.activity.HistoryRecordActivity
 import com.guider.gps.view.activity.LocationFrequencySetNewActivity
-import com.guider.gps.widget.SimpleComponent
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.ElectronicFenceBean
+import com.guider.health.apilib.bean.UserPositionListBean
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_location.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sin
@@ -137,6 +141,8 @@ class LocationFragment : BaseFragment(),
     private var endTimeValue = ""
     private var mDialog1: DialogProgress? = null
     private var mDialog2: DialogProgress? = null
+    private var subscribe: Disposable? = null
+    private var proactivelyAddressingNum = 0
 
     override fun initView(rootView: View) {
     }
@@ -145,8 +151,8 @@ class LocationFragment : BaseFragment(),
         tabTitleList = arrayListOf(
                 resources.getString(R.string.app_main_map_location_information),
                 resources.getString(R.string.app_main_map_track_events),
-                resources.getString(R.string.app_main_map_electronic_fence))
-//                , resources.getString(R.string.app_main_map_proactively_addressing))
+                resources.getString(R.string.app_main_map_electronic_fence),
+                resources.getString(R.string.app_main_map_proactively_addressing))
         locationTabLayout.tabMode = TabLayout.MODE_FIXED
         // 设置选中下划线颜色
         locationTabLayout.setSelectedTabIndicatorColor(
@@ -171,7 +177,6 @@ class LocationFragment : BaseFragment(),
         })
         initMap()
         locationFunctionExtend.setOnClickListener(this)
-        electronicSetLayout.setOnClickListener(this)
         electronicDeleteLayout.setOnClickListener(this)
         electronicCommitLayout.setOnClickListener(this)
         locationNumberSet.setOnClickListener(this)
@@ -201,6 +206,7 @@ class LocationFragment : BaseFragment(),
                 if (loadView != null) {
                     loadView?.dismiss()
                 }
+                initElectronicPoint()
                 tabPosition = 0
                 locationInfoLayout.visibility = View.VISIBLE
                 locationNumberSet.text =
@@ -215,18 +221,22 @@ class LocationFragment : BaseFragment(),
                     val latLng = LatLng(
                             MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0),
                             MMKVUtil.getDouble(LAST_LOCATION_POINT_LNG, 0.0))
-                    startDisplayPerth(latLng)
                     mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f))
+                    startDisplayPerth(latLng)
                 } else {
                     getUserLocationPointData()
                 }
             }
             tabTitleList[1] -> {
                 mGoogleMap?.setInfoWindowAdapter(null)
-                tabPosition = 1
+                if (selectDateDialog != null) {
+                    selectDateDialog?.closeDialog()
+                }
+                initElectronicPoint()
                 if (loadView != null) {
                     loadView?.dismiss()
                 }
+                tabPosition = 1
                 trackEventsLayout.visibility = View.VISIBLE
                 searchFrontLayout.visibility = View.VISIBLE
                 selectTimeBackLayout.visibility = View.GONE
@@ -244,6 +254,11 @@ class LocationFragment : BaseFragment(),
             }
             tabTitleList[2] -> {
                 mGoogleMap?.setInfoWindowAdapter(null)
+                mGoogleMap?.setOnMapClickListener {
+                    //手动去编辑电子围栏
+                    mapClickEvent(it)
+                }
+                initElectronicPoint()
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
                 }
@@ -258,22 +273,48 @@ class LocationFragment : BaseFragment(),
                 mGoogleMap?.clear()
                 getElectronicFenceData()
             }
-//            tabTitleList[3] -> {
-//                mGoogleMap!!.setInfoWindowAdapter(null)
-//                if (selectDateDialog != null) {
-//                    selectDateDialog?.closeDialog()
-//                }
-//                tabPosition = 3
-//                locationInfoLayout.visibility = View.VISIBLE
-//                locationNumberSet.text =
-//                        resources.getString(R.string.app_main_map_send_instructions)
-//                locationNumberSet.setTextColor(
-//                        CommonUtils.getColor(mActivity, R.color.colorF18937))
-//                historyRecord.text =
-//                        resources.getString(R.string.app_main_map_address_history)
-//                mGoogleMap?.clear()
-//            }
+            tabTitleList[3] -> {
+                mGoogleMap!!.setInfoWindowAdapter(null)
+                if (selectDateDialog != null) {
+                    selectDateDialog?.closeDialog()
+                }
+                initElectronicPoint()
+                if (loadView != null) {
+                    loadView?.dismiss()
+                }
+                tabPosition = 3
+                locationInfoLayout.visibility = View.VISIBLE
+                locationNumberSet.text =
+                        resources.getString(R.string.app_main_map_send_instructions)
+                locationNumberSet.setTextColor(
+                        CommonUtils.getColor(mActivity, R.color.colorF18937))
+                historyRecord.text =
+                        resources.getString(R.string.app_main_map_address_history)
+                mGoogleMap?.clear()
+            }
         }
+    }
+
+    private fun initElectronicPoint() {
+        customFirstPoint = null
+        customFirstLatLng = null
+        customTwoPoint = null
+        customTwoLatLng = null
+        customThirdPoint = null
+        customThirdLatLng = null
+        customFourPoint = null
+        customFourLatLng = null
+        electronicCommitLayout.isSelected = false
+        electronicCommitIv.isSelected = false
+        electronicCommitTv.isSelected = false
+        electronicCommitTv.isSelected = false
+        electronicDeleteIv.isSelected = false
+        electronicDeleteTv.isSelected = false
+        electronicDeleteLayout.isSelected = false
+        electronicSetIv.isSelected = false
+        electronicSetTv.isSelected = false
+        electronicAddLayout.isSelected = false
+        electronicSetHint.visibility = View.GONE
     }
 
 
@@ -299,13 +340,12 @@ class LocationFragment : BaseFragment(),
                 }
                 2 -> {
                     mGoogleMap?.setInfoWindowAdapter(null)
-                    confirmElectronicShow()
+                    mGoogleMap?.clear()
                     getElectronicFenceData()
                 }
             }
         }
     }
-
 
     /**
      * 得到用户最近的定位点
@@ -316,6 +356,10 @@ class LocationFragment : BaseFragment(),
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (accountId == 0) {
             mDialog1?.hideDialog()
+            //如果没有位置的话就先跳转到台北坐标
+            mGoogleMap?.clear()
+            val latLng = LatLng(25.0422452, 121.5802603)
+            mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 9.5f))
             return
         }
         lifecycleScope.launch {
@@ -325,14 +369,16 @@ class LocationFragment : BaseFragment(),
                 mDialog1?.hideDialog()
                 if (!resultBean.isNullOrEmpty() && resultBean.size == 1) {
                     val firstPosition = resultBean[0]
-                    startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
                     mGoogleMap?.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                     LatLng(firstPosition.lat, firstPosition.lng), 16.0f))
+                    startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
                     if (StringUtil.isNotBlankAndEmpty(firstPosition.addr))
                         MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
                     if (StringUtil.isNotBlankAndEmpty(firstPosition.testTime))
                         MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
+                    if (StringUtil.isNotBlankAndEmpty(firstPosition.signalType))
+                        MMKVUtil.saveString(LAST_LOCATION_POINT_METHOD, firstPosition.signalType)
                     //判断是否是相同的定位点
                     if (!MMKVUtil.containKey(LAST_LOCATION_POINT_LAT) ||
                             (!(MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0)
@@ -348,6 +394,11 @@ class LocationFragment : BaseFragment(),
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_LNG)
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_ADDRESS)
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
+                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_METHOD)
+                    //如果没有位置的话就先跳转到台北坐标
+                    mGoogleMap?.clear()
+                    val latLng = LatLng(25.0422452, 121.5802603)
+                    mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 9.5f))
                 }
             } catch (e: Exception) {
                 mDialog1?.hideDialog()
@@ -405,9 +456,6 @@ class LocationFragment : BaseFragment(),
         val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (StringUtil.isEmpty(deviceCode)) {
-            electronicSetLayout.post {
-                showGuideView()
-            }
             return
         }
         mActivity.showDialog()
@@ -417,25 +465,40 @@ class LocationFragment : BaseFragment(),
                         .getElectronicFence(deviceCode, accountId)
                 mActivity.dismissDialog()
                 if (resultBean is String && resultBean == "null") {
-                    electronicSetLayout.post {
+                    electronicAddLayout.post {
                         showGuideView()
                     }
                 } else {
-                    val latLngList = arrayListOf<LatLng>()
                     val asList = ParseJsonData.parseJsonDataList<ElectronicFenceBean>(
                             resultBean, ElectronicFenceBean::class.java)
-                    asList.forEach {
-                        latLngList.add(LatLng(
-                                it.lat, it.lng))
+                    if (asList.size < 4) {
+                        electronicAddLayout.post {
+                            showGuideView()
+                        }
+                    } else {
+                        customFirstLatLng = LatLng(
+                                asList[0].lat, asList[0].lng)
+                        customTwoLatLng = LatLng(
+                                asList[1].lat, asList[1].lng)
+                        customThirdLatLng = LatLng(
+                                asList[2].lat, asList[2].lng)
+                        customFourLatLng = LatLng(
+                                asList[3].lat, asList[3].lng)
+                        drawCustomFirstPoint(customFirstLatLng!!)
+                        drawCustomTwoPoint(customTwoLatLng!!)
+                        drawCustomThirdPoint(customThirdLatLng!!)
+                        drawFourPointAndPolygon(customFourLatLng!!)
+                        electronicCommitLayout.isSelected = true
+                        electronicCommitIv.isSelected = true
+                        electronicCommitTv.isSelected = true
+                        electronicCommitTv.isSelected = true
+                        electronicDeleteIv.isSelected = true
+                        electronicDeleteTv.isSelected = true
+                        electronicDeleteLayout.isSelected = true
+                        customElectronicFencePointNum = 4
+                        mGoogleMap?.animateCamera(
+                                CameraUpdateFactory.newLatLngZoom(customFirstLatLng, 16.0f))
                     }
-                    polygon = PolygonOptions()
-                            .fillColor(CommonUtils.getColor(
-                                    mActivity, R.color.color80F18937))
-                            .strokeWidth(1.0f)
-                            .addAll(latLngList)
-                    mGoogleMap?.addPolygon(polygon)
-                    mGoogleMap?.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
                 }
             } catch (e: Exception) {
                 mActivity.dismissDialog()
@@ -448,22 +511,26 @@ class LocationFragment : BaseFragment(),
      * 显示电子围栏高亮提示
      */
     private fun showGuideView() {
-        val builder = GuideBuilder()
-        builder.setTargetView(electronicSetLayout)
-                .setAlpha(150)
-                .setHighTargetCorner(20)
-                .setHighTargetPadding(10)
-        builder.setOnVisibilityChangedListener(object : GuideBuilder.OnVisibilityChangedListener {
-            override fun onShown() {}
-            override fun onDismiss() {
-                electronicSetLayout.isSelected = true
-                electronicSetIv.isSelected = true
-                eletronicSetClickEvent()
-            }
-        })
-        builder.addComponent(SimpleComponent())
-        val guide = builder.createGuide()
-        guide.show(mActivity)
+        electronicAddLayout.isSelected = true
+        electronicSetIv.isSelected = true
+        electronicSetTv.isSelected = true
+        electronicSetClickEvent()
+//        val builder = GuideBuilder()
+//        builder.setTargetView(electronicAddLayout)
+//                .setAlpha(150)
+//                .setHighTargetCorner(20)
+//                .setHighTargetPadding(10)
+//        builder.setOnVisibilityChangedListener(object : GuideBuilder.OnVisibilityChangedListener {
+//            override fun onShown() {}
+//            override fun onDismiss() {
+//                electronicAddLayout.isSelected = true
+//                electronicSetIv.isSelected = true
+//                electronicSetClickEvent()
+//            }
+//        })
+//        builder.addComponent(SimpleComponent())
+//        val guide = builder.createGuide()
+//        guide.show(mActivity)
     }
 
     /**
@@ -488,7 +555,6 @@ class LocationFragment : BaseFragment(),
                 mActivity.dismissDialog()
                 if (resultBean == "true") {
                     showToast(mActivity.resources.getString(R.string.app_set_success))
-                    confirmElectronicShow()
                 }
             } catch (e: Exception) {
                 mActivity.dismissDialog()
@@ -501,8 +567,9 @@ class LocationFragment : BaseFragment(),
      * 确认电子围栏的显示或者取消已设置的信息
      */
     private fun confirmElectronicShow() {
-        electronicSetLayout.isSelected = false
+        electronicAddLayout.isSelected = false
         electronicSetIv.isSelected = false
+        electronicSetTv.isSelected = false
         customFirstPoint?.remove()
         customTwoPoint?.remove()
         customThirdPoint?.remove()
@@ -510,8 +577,10 @@ class LocationFragment : BaseFragment(),
         electronicDeleteLayout.isSelected = false
         electronicSetHint.visibility = View.GONE
         electronicDeleteIv.isSelected = false
+        electronicDeleteTv.isSelected = false
         electronicCommitLayout.isSelected = false
         electronicCommitIv.isSelected = false
+        electronicCommitTv.isSelected = true
         customElectronicFencePointNum = 0
         mGoogleMap?.setOnMapClickListener {}
     }
@@ -570,14 +639,12 @@ class LocationFragment : BaseFragment(),
             }
             locationNumberSet -> {
                 if (tabPosition == 3) {
-                    loadView = LoadingView(mActivity, false)
-                    loadView?.show()
-                    locationNumberSet.postDelayed({
-                        loadView?.dismiss()
-                        ToastUtil.showCustomToast(null, mActivity,
-                                true,
-                                resources.getString(R.string.app_main_map_send_success))
-                    }, 500)
+                    val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
+                    if (accountId == 0) {
+                        return
+                    }
+                    //发起主动寻址
+                    initiateActiveAddressing(accountId)
                 } else {
                     val intent = Intent(mActivity, LocationFrequencySetNewActivity::class.java)
                     startActivityForResult(intent, LOCATION_FREQUENCY_SET)
@@ -585,6 +652,11 @@ class LocationFragment : BaseFragment(),
             }
             historyRecord -> {
                 val intent = Intent(mActivity, HistoryRecordActivity::class.java)
+                if (tabPosition == 3) {
+                    intent.putExtra("entryType", "proactivelyAddressHistory")
+                } else {
+                    intent.putExtra("entryType", "locationHistory")
+                }
                 startActivity(intent)
             }
             trackEventsDateCalSelectIv -> {
@@ -655,17 +727,6 @@ class LocationFragment : BaseFragment(),
                 }
                 isShowGpsMode = !isShowGpsMode
             }
-            //设置电子围栏在地图上坐标的button
-            electronicSetLayout -> {
-                if (electronicSetLayout.isSelected) {
-                    mGoogleMap?.clear()
-                    confirmElectronicShow()
-                } else {
-                    electronicSetLayout.isSelected = true
-                    electronicSetIv.isSelected = true
-                    eletronicSetClickEvent()
-                }
-            }
             //删除电子围栏在地图上坐标点
             electronicDeleteLayout -> {
                 if (customElectronicFencePointNum in 1..4) {
@@ -673,6 +734,7 @@ class LocationFragment : BaseFragment(),
                         1 -> {
                             electronicDeleteLayout.isSelected = false
                             electronicDeleteIv.isSelected = false
+                            electronicDeleteTv.isSelected = false
                             customFirstPoint?.remove()
                         }
                         2 -> {
@@ -685,6 +747,12 @@ class LocationFragment : BaseFragment(),
                             if (mGoogleMap == null) return
                             electronicCommitLayout.isSelected = false
                             electronicCommitIv.isSelected = false
+                            electronicCommitTv.isSelected = false
+                            electronicCommitTv.isSelected = false
+                            electronicSetHint.visibility = View.VISIBLE
+                            electronicAddLayout.isSelected = true
+                            electronicSetIv.isSelected = true
+                            electronicSetTv.isSelected = true
                             customFourPoint?.remove()
                             mGoogleMap?.clear()
                             drawCustomFirstPoint(customFirstLatLng!!)
@@ -707,16 +775,96 @@ class LocationFragment : BaseFragment(),
     }
 
     /**
+     * 发起主动寻址
+     */
+    private fun initiateActiveAddressing(accountId: Int) {
+        mActivity.showDialog()
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().initiateActiveAddressing(accountId)
+                mActivity.dismissDialog()
+                if (resultBean == "true") {
+                    proactivelyAddressingLoad(accountId)
+                }
+                ToastUtil.showCustomToast(null, mActivity,
+                        true, if (resultBean == "true")
+                    mActivity.resources.getString(R.string.app_main_send_success)
+                else mActivity.resources.getString(R.string.app_main_send_fail))
+            } catch (e: Exception) {
+                mActivity.dismissDialog()
+                Log.e(TAG, if (StringUtil.isNotBlankAndEmpty(e.message)) e.message!! else "fail")
+                ToastUtil.showCustomToast(null, mActivity,
+                        true,
+                        mActivity.resources.getString(R.string.app_main_send_fail))
+            }
+        }
+    }
+
+    /**
+     * 轮询主动寻址
+     */
+    private fun proactivelyAddressingLoad(accountId: Int) {
+        if (subscribe != null && proactivelyAddressingNum < 24) {
+            return
+        }
+        loadView = LoadingView(mActivity, false,
+                mActivity.resources.getString(R.string.app_addressing_in_progress),
+                false)
+        loadView?.show()
+        val time = DateUtilKotlin.localToUTC(
+                DateUtil.localNowStringByPattern(DEFAULT_TIME_FORMAT_PATTERN))!!
+        subscribe = Flowable.interval(0, 5, TimeUnit.SECONDS)
+                .onBackpressureDrop()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    proactivelyAddressing(accountId, time)
+                }
+    }
+
+    /**
+     * 主动寻址
+     */
+    private fun proactivelyAddressing(accountId: Int, time: String) {
+        ++proactivelyAddressingNum
+        //如果2分钟还没有寻址成功，则结束寻址
+        if (proactivelyAddressingNum == 24) {
+            proactivelyAddressingFinish("fail")
+            return
+        }
+        lifecycleScope.launch {
+            try {
+                val resultBean = GuiderApiUtil.getApiService().proactivelyAddressingData(
+                        accountId, time)
+                if (!(resultBean is String && resultBean == "null") && resultBean != null) {
+                    val bean = ParseJsonData.parseJsonAny<UserPositionListBean>(resultBean)
+                    startDisplayPerth(LatLng(bean.lat, bean.lng))
+                    mGoogleMap?.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(LatLng(bean.lat, bean.lng), 16.0f))
+                    proactivelyAddressingFinish("success")
+                }
+            } catch (e: Exception) {
+                showToast(e.message!!)
+            }
+        }
+    }
+
+    private fun proactivelyAddressingFinish(result: String) {
+        subscribe?.dispose()
+        loadView?.dismiss()
+        ToastUtil.showCustomToast(null, mActivity,
+                true, if (result == "success")
+            mActivity.resources.getString(R.string.app_main_map_addressing_success)
+        else mActivity.resources.getString(R.string.app_main_map_addressing_fail))
+    }
+
+    /**
      * 电子围栏设置点击事件
      */
-    private fun eletronicSetClickEvent() {
+    private fun electronicSetClickEvent() {
         if (customElectronicFencePointNum == 0)
             mGoogleMap?.clear()
         electronicSetHint.visibility = View.VISIBLE
-        mGoogleMap?.setOnMapClickListener {
-            //手动去编辑电子围栏
-            mapClickEvent(it)
-        }
     }
 
     /**
@@ -813,6 +961,12 @@ class LocationFragment : BaseFragment(),
                     drawFourPointAndPolygon(customFourLatLng!!)
                     electronicCommitLayout.isSelected = true
                     electronicCommitIv.isSelected = true
+                    electronicCommitTv.isSelected = true
+                    electronicCommitTv.isSelected = true
+                    electronicSetHint.visibility = View.GONE
+                    electronicAddLayout.isSelected = false
+                    electronicSetIv.isSelected = false
+                    electronicSetTv.isSelected = false
                 } else {
                     if (mGoogleMap == null) return
                     when (customElectronicFencePointNum) {
@@ -821,6 +975,7 @@ class LocationFragment : BaseFragment(),
                             drawCustomFirstPoint(customFirstLatLng!!)
                             electronicDeleteLayout.isSelected = true
                             electronicDeleteIv.isSelected = true
+                            electronicDeleteTv.isSelected = true
                         }
                         2 -> {
                             customTwoLatLng = latLng
@@ -965,8 +1120,7 @@ class LocationFragment : BaseFragment(),
 //                } else latLng
         firstLocationLat = latLng.latitude
         firstLocationLng = latLng.longitude
-        // 每一次打点第一个的时候就是定位开始的时候
-        if (tabPosition == 0) {
+        if (tabPosition == 0 || tabPosition == 3) {
             createCustomMarkIcon()
         }
         if (tabPosition == 1) {
@@ -982,8 +1136,10 @@ class LocationFragment : BaseFragment(),
                         LatLng(firstLocationLat, firstLocationLng)))
         if (tabPosition == 0) {
             starPerth?.tag = martTag
+            locationFunctionExtend.postDelayed({
+                starPerth?.showInfoWindow()
+            }, 1000)
         }
-
         starPerth?.isDraggable = false //设置不可移动
     }
 
@@ -1197,10 +1353,19 @@ class LocationFragment : BaseFragment(),
             }
             val martLocationTv = window.findViewById<TextView>(R.id.martLocationTv)
             if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS))) {
+                martLocationTv.visibility = View.VISIBLE
                 val address = MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS)
                 martLocationTv.text = address
+            } else {
+                martLocationTv.visibility = View.GONE
             }
-            locationMethodTv.text = String.format(
+            if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_METHOD))) {
+                val method = MMKVUtil.getString(LAST_LOCATION_POINT_METHOD)
+                locationMethodTv.text = String.format(
+                        this@LocationFragment.mActivity.resources.getString(
+                                R.string.app_map_location_method_content), method
+                )
+            } else locationMethodTv.text = String.format(
                     this@LocationFragment.mActivity.resources.getString(
                             R.string.app_map_location_method_content), "WIFI"
             )
@@ -1232,14 +1397,42 @@ class LocationFragment : BaseFragment(),
                         failResult.errorMessage else ""
                 }")
         eventDealLayout.setChildClickable(false)
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//            eventDealLayout.focusable = NOT_FOCUSABLE
-//        }
     }
 
     override fun onResume() {
         super.onResume()
         if (mGoogleApiClient != null) mGoogleApiClient?.connect()
+        //处理系统消息中需要跳转到地图指定页面的逻辑因为存在可能页面未加载出来的情况，
+        // 所以使用的MMKV和EventBus结合的方式来判断
+        if (MMKVUtil.containKey(EventBusAction.ENTRY_LOCATION_WITH_TYPE)) {
+            Log.i(TAG, "系统消息进来需要跳转的页面为${
+                MMKVUtil.getString(
+                        EventBusAction.ENTRY_LOCATION_WITH_TYPE)
+            }")
+            EventBusUtils.sendStickyEvent(EventBusEvent(
+                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, MMKVUtil.getString(
+                    EventBusAction.ENTRY_LOCATION_WITH_TYPE)))
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun entryDifferentLocationPageWithType(event: EventBusEvent<String>) {
+        if (event.code == EventBusAction.ENTRY_LOCATION_WITH_TYPE) {
+            when (event.data) {
+                "0" -> {
+                    if (locationTabLayout.getTabAt(0) != null) {
+                        locationTabLayout.selectTab(locationTabLayout.getTabAt(0))
+                        MMKVUtil.clearByKey(EventBusAction.ENTRY_LOCATION_WITH_TYPE)
+                    }
+                }
+                "1" -> {
+                    if (locationTabLayout.getTabAt(1) != null) {
+                        locationTabLayout.selectTab(locationTabLayout.getTabAt(1))
+                        MMKVUtil.clearByKey(EventBusAction.ENTRY_LOCATION_WITH_TYPE)
+                    }
+                }
+            }
+        }
     }
 
     override fun onStop() {
@@ -1254,6 +1447,10 @@ class LocationFragment : BaseFragment(),
         }
         if (loadView != null) {
             loadView?.dismiss()
+        }
+        if (subscribe != null) {
+            subscribe?.dispose()
+            subscribe = null
         }
         isStart = false
         if (mGoogleApiClient != null) {

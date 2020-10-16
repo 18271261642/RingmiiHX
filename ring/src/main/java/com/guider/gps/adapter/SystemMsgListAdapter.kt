@@ -2,7 +2,7 @@ package com.guider.gps.adapter
 
 import android.content.Context
 import com.guider.baselib.utils.DateUtilKotlin
-import com.guider.baselib.utils.TIME_FORMAT_PATTERN9
+import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
@@ -13,8 +13,9 @@ class SystemMsgListAdapter(context: Context, dataList: ArrayList<SystemMsgBean>)
     : CommonAdapter<SystemMsgBean>(context, dataList, R.layout.item_system_msg) {
 
     override fun bindData(holder: ViewHolder, data: SystemMsgBean, position: Int) {
-        holder.setText(R.id.timeTv, DateUtilKotlin.uTCToLocal(
-                data.createTime, TIME_FORMAT_PATTERN9))
+        if (StringUtil.isNotBlankAndEmpty(data.createTime))
+            holder.setText(
+                    R.id.timeTv, DateUtilKotlin.getDateWithWeekWithTime(mContext, data.createTime!!))
         when (data.type) {
             //手环电量
             SystemMsgType.OPELECTRICITY -> {

@@ -5,7 +5,7 @@ import com.guider.health.apilib.enums.SystemMsgType
 data class SystemMsgBean(
         val accountId: Int,
         val content: String,
-        val createTime: String,
+        val createTime: String?,
         val deviceCode: String,
         val id: Int,
         val name: String,

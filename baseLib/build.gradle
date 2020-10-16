@@ -94,7 +94,7 @@ dependencies {
     api dependencies.runtime_ktx
     api dependencies.livedata_ktx
     api dependencies.viewmodel_ktx
-
+    api dependencies.MagicIndicator
 
     //集成的module
     api project(':apilib')

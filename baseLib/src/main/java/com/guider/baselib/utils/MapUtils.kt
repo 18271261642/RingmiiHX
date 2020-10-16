@@ -75,11 +75,9 @@ object MapUtils {
         //用于存储所有已安装程序的包名
         val packageNames: MutableList<String> = ArrayList()
         //从pinfo中将包名字逐一取出，压入pName list中
-        if (packageInfos != null) {
-            for (i in packageInfos.indices) {
-                val packName = packageInfos[i].packageName
-                packageNames.add(packName)
-            }
+        for (i in packageInfos.indices) {
+            val packName = packageInfos[i].packageName
+            packageNames.add(packName)
         }
         //判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
         return packageNames.contains(packageName)

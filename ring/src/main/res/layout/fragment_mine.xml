@@ -142,7 +142,7 @@
                     android:layout_marginStart="9dp"
                     android:text="@string/app_main_mine_heart_rate_set"
                     android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
+                    android:textSize="@dimen/sp_13"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/heartIV"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -202,7 +202,7 @@
                     android:layout_marginStart="9dp"
                     android:text="@string/app_main_mine_temp_set"
                     android:textColor="@color/color333333"
-                    android:textSize="@dimen/sp_12"
+                    android:textSize="@dimen/sp_13"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tempSetIV"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -10,4 +10,5 @@ object EventBusAction {
     const val REFRESH_MINE_FRAGMENT_UNBIND_SHOW = "refresh_mine_fragment_unbind_show"
     const val REFRESH_HEALTH_DATA = "refresh_health_data"
     const val REFRESH_LATEST_GROUP_DATA = "refresh_latest_group_data"
+    const val ENTRY_LOCATION_WITH_TYPE = "entry_location_with_type"
 }

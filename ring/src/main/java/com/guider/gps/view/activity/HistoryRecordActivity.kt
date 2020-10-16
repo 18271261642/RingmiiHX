@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.BIND_DEVICE_ACCOUNT_ID
 import com.guider.baselib.utils.MMKVUtil
+import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.utils.toastShort
 import com.guider.gps.R
 import com.guider.gps.adapter.HistoryRecordListAdapter
@@ -26,6 +27,7 @@ class HistoryRecordActivity : BaseActivity() {
     private var page = 1
     private var isRefresh = false
     private var isLoadMore = false
+    private var entryType = ""
 
     override fun openEventBus(): Boolean {
         return false
@@ -34,6 +36,11 @@ class HistoryRecordActivity : BaseActivity() {
     override fun initImmersion() {
         setTitle(resources.getString(R.string.app_history_list))
         showBackButton(R.drawable.ic_back_white)
+        if (intent != null) {
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("entryType"))) {
+                entryType = intent.getStringExtra("entryType")!!
+            }
+        }
     }
 
     override fun initView() {
@@ -53,7 +60,7 @@ class HistoryRecordActivity : BaseActivity() {
             isLoadMore = true
             getUserLocationHistoryData()
         }
-        getUserLocationHistoryData(false)
+        getUserLocationHistoryData()
     }
 
     /**
@@ -65,8 +72,13 @@ class HistoryRecordActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
             try {
-                val resultBean = GuiderApiUtil.getApiService()
-                        .userPosition(accountId, page, 20, "", "")
+                val resultBean = if (entryType == "locationHistory") {
+                    GuiderApiUtil.getApiService()
+                            .userPosition(accountId, page, 20, "", "")
+                } else {
+                    GuiderApiUtil.getApiService()
+                            .getProactivelyAddressingList(accountId, page, 20)
+                }
                 if (isShowLoading) dismissDialog()
                 isRefresh = false
                 isLoadMore = false

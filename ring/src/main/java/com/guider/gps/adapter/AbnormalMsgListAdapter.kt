@@ -26,8 +26,9 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
         val msgDataDetailRv = holder.getView<RecyclerView>(R.id.msgDataDetailRv)
         msgDataDetailRv.isNestedScrollingEnabled = true
         msgDataDetailRv.layoutManager = LinearLayoutManager(mContext)
-        holder.setText(R.id.timeTv, DateUtilKotlin.uTCToLocal(
-                data.testTime, TIME_FORMAT_PATTERN8))
+        if (StringUtil.isNotBlankAndEmpty(data.testTime))
+            holder.setText(
+                    R.id.timeTv, DateUtilKotlin.getDateWithWeekWithTime(mContext, data.testTime))
         holder.setText(R.id.testTimeTv, DateUtilKotlin.uTCToLocal(
                 data.testTime, TIME_FORMAT_PATTERN1))
         val suggestTv = holder.getView<TextView>(R.id.suggestTv)

@@ -21,7 +21,7 @@ class HistoryRecordListAdapter(context: Context, dataList: ArrayList<UserPositio
         holder.setText(R.id.historyLocation, data.addr)
         holder.setText(R.id.locationMethodTv, String.format(
                 mContext.resources.getString(
-                        R.string.app_map_location_method_content), "WIFI"
+                        R.string.app_map_location_method_content), data.signalType
         ))
         val detailLayout = holder.getView<ConstraintLayout>(R.id.detailLayout)
         detailLayout.setOnClickListener(object : OnNoDoubleClickListener {

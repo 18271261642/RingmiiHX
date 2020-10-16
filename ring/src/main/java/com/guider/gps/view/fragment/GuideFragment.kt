@@ -5,6 +5,7 @@ import android.view.View
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.StringUtil
 import com.guider.gps.R
+import com.guider.gps.view.activity.GuideActivity
 import kotlinx.android.synthetic.main.fragment_guide.*
 
 /**
@@ -45,18 +46,24 @@ class GuideFragment : BaseFragment() {
                 contentTv.text = mActivity.resources.getString(R.string.app_guide_page1_content)
                 rootLayout.setImageResource(R.drawable.bg_guide1)
                 guide1.visibility = View.VISIBLE
+                entryApp.visibility = View.GONE
             }
             "page2" -> {
                 titleTv.text = mActivity.resources.getString(R.string.app_guide_page2_title)
                 contentTv.text = mActivity.resources.getString(R.string.app_guide_page2_content)
                 rootLayout.setImageResource(R.drawable.bg_guide2)
                 guide2.visibility = View.VISIBLE
+                entryApp.visibility = View.GONE
             }
             "page3" -> {
                 titleTv.text = mActivity.resources.getString(R.string.app_guide_page3_title)
                 contentTv.text = mActivity.resources.getString(R.string.app_guide_page3_content)
                 rootLayout.setImageResource(R.drawable.bg_guide3)
                 guide3.visibility = View.VISIBLE
+                entryApp.visibility = View.VISIBLE
+                entryApp.setOnClickListener {
+                    (mActivity as GuideActivity).fromGuideEntryApp()
+                }
             }
         }
     }

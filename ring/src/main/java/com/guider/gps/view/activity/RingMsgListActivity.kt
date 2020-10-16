@@ -1,24 +1,36 @@
 package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
-import android.util.TypedValue
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import androidx.viewpager2.widget.ViewPager2
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.*
-import com.guider.baselib.widget.BadgeView
+import com.guider.baselib.utils.CommonUtils
+import com.guider.baselib.utils.MMKVUtil
+import com.guider.baselib.utils.USER
+import com.guider.baselib.utils.toastShort
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
 import com.guider.gps.R
 import com.guider.gps.view.fragment.RingMsgListFragment
 import com.guider.health.apilib.GuiderApiUtil
 import kotlinx.android.synthetic.main.activity_msg_list.*
 import kotlinx.coroutines.launch
+import net.lucode.hackware.magicindicator.buildins.UIUtil
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeAnchor
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgePagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule
 
 class RingMsgListActivity : BaseActivity() {
 
@@ -26,8 +38,12 @@ class RingMsgListActivity : BaseActivity() {
     private val mBadgeCountList = arrayListOf<Int>()
     private var abnormalMsgUndoNum = 0
     private var careMsgUndoNum = 0
+
     //进入页面需跳转到的指定列表项
     private var entryPageIndex = 0
+    private var badgeTextView1: TextView? = null
+    private var badgeTextView2: TextView? = null
+    private var badgeTextView3: TextView? = null
 
     override val contentViewResId: Int
         get() = R.layout.activity_msg_list
@@ -54,15 +70,6 @@ class RingMsgListActivity : BaseActivity() {
                 resources.getString(R.string.app_msg_care_info),
                 resources.getString(R.string.app_msg_system_info)
         )
-        msgTabLayout.tabMode = TabLayout.MODE_FIXED
-        // 设置选中下划线颜色
-        msgTabLayout.setSelectedTabIndicatorColor(
-                CommonUtils.getColor(mContext!!, R.color.colorF18937))
-        // 设置文本字体颜色[未选中颜色、选中颜色]
-        msgTabLayout.setTabTextColors(CommonUtils.getColor(mContext!!, R.color.color999999),
-                CommonUtils.getColor(mContext!!, R.color.color333333))
-        // 设置下划线跟文本宽度一致
-        msgTabLayout.isTabIndicatorFullWidth = true
     }
 
     override fun initLogic() {
@@ -71,16 +78,18 @@ class RingMsgListActivity : BaseActivity() {
                     this@RingMsgListActivity,
                     fragments = generateTextFragments(tabTitles))
         }
-        TabLayoutMediator(msgTabLayout, msgViewpager) { _, _ -> }.attach()
+        initMagicIndicator1()
         if (entryPageIndex != 0) msgViewpager.currentItem = entryPageIndex
         mBadgeCountList.add(abnormalMsgUndoNum)
         mBadgeCountList.add(careMsgUndoNum)
         mBadgeCountList.add(0)
+        updateCustomTab(0)
+        updateCustomTab(1)
+        updateCustomTab(2)
         if (mBadgeCountList[0] != 0)
             msgTabLayout.postDelayed({
                 resetAbnormalMsgUnReadStatus()
             }, 3000)
-        setUpTabBadge()
     }
 
     fun resetCareNum() {
@@ -162,12 +171,87 @@ class RingMsgListActivity : BaseActivity() {
         }
     }
 
-    private fun setUpTabBadge() {
-        for (i in generateTextFragments(tabTitles).indices) {
-            updateCustomTab(i, false)
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun initMagicIndicator1() {
+        val commonNavigator = CommonNavigator(this)
+        commonNavigator.isAdjustMode = true
+        commonNavigator.adapter = object : CommonNavigatorAdapter() {
+            override fun getCount(): Int {
+                return tabTitles.size
+            }
+
+            @SuppressLint("InflateParams")
+            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+                val badgePagerTitleView = BadgePagerTitleView(context)
+                val simplePagerTitleView: SimplePagerTitleView = ColorTransitionPagerTitleView(context)
+                simplePagerTitleView.text = tabTitles[index]
+                simplePagerTitleView.textSize = 15f
+                simplePagerTitleView.normalColor = CommonUtils.getColor(
+                        mContext!!, R.color.color999999)
+                simplePagerTitleView.selectedColor = CommonUtils.getColor(
+                        mContext!!, R.color.color333333)
+                simplePagerTitleView.setOnClickListener {
+                    msgViewpager.currentItem = index
+                }
+                badgePagerTitleView.innerPagerTitleView = simplePagerTitleView
+
+                // setup badge
+                when (index) {
+                    1 -> {
+                        badgeTextView2 = LayoutInflater.from(context).inflate(
+                                R.layout.simple_count_badge_layout, null) as TextView
+                        badgePagerTitleView.badgeView = badgeTextView2
+                    }
+                    2 -> {
+                        badgeTextView3 = LayoutInflater.from(context).inflate(
+                                R.layout.simple_count_badge_layout, null) as TextView
+                        badgePagerTitleView.badgeView = badgeTextView3
+                    }
+                    else -> {
+                        badgeTextView1 = LayoutInflater.from(context).inflate(
+                                R.layout.simple_count_badge_layout, null) as TextView
+                        badgePagerTitleView.badgeView = badgeTextView1
+                    }
+                }
+
+                // set badge position
+                badgePagerTitleView.xBadgeRule = BadgeRule(BadgeAnchor.CONTENT_RIGHT,
+                        +UIUtil.dip2px(context, 2.0))
+                badgePagerTitleView.yBadgeRule = BadgeRule(BadgeAnchor.CONTENT_TOP,
+                        -UIUtil.dip2px(context, 6.0))
+
+                // don't cancel badge when tab selected
+                badgePagerTitleView.isAutoCancelBadge = false
+                return badgePagerTitleView
+            }
+
+            override fun getIndicator(context: Context): IPagerIndicator {
+                val indicator = LinePagerIndicator(context)
+                indicator.setColors(CommonUtils.getColor(
+                        mContext!!, R.color.colorF18937))
+                return indicator
+            }
         }
-        // 需加上以下代码,不然会出现更新Tab角标后,选中的Tab字体颜色不是选中状态的颜色
-        msgTabLayout.getTabAt(msgTabLayout.selectedTabPosition)?.customView?.isSelected = true
+        msgTabLayout.navigator = commonNavigator
+        val titleContainer = commonNavigator.titleContainer // must after setNavigator
+        titleContainer.showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE
+        titleContainer.dividerPadding = UIUtil.dip2px(this, 6.0)
+        titleContainer.dividerDrawable = CommonUtils.getDrawable(
+                mContext!!, R.drawable.simple_splitter)
+        msgViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(position: Int, positionOffset: Float,
+                                        positionOffsetPixels: Int) {
+                msgTabLayout.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+
+            override fun onPageSelected(position: Int) {
+                msgTabLayout.onPageSelected(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                msgTabLayout.onPageScrollStateChanged(state)
+            }
+        })
     }
 
     /**
@@ -180,51 +264,33 @@ class RingMsgListActivity : BaseActivity() {
                 }
             }
 
-    @SuppressLint("InflateParams")
-    private fun getTabItemView(position: Int): View? {
-        val view: View = LayoutInflater.from(mContext).inflate(R.layout.tab_layout_item, null)
-        val textView = view.findViewById<View>(R.id.textview) as TextView
-        textView.text = tabTitles[position]
-        val target = view.findViewById<View>(R.id.badgeview_target)
-        val badgeView = BadgeView(mContext)
-        badgeView.setTargetView(target)
-        badgeView.setBadgeMargin(0, 6,
-                10, 0)
-        if (mBadgeCountList[position] < 10) {
-            badgeView.setBadgePadding(6, 2,
-                    6, 2)
-        } else {
-            badgeView.setBadgePadding(3, 5,
-                    3, 5)
-        }
-        if (mBadgeCountList[position] < 10) {
-            badgeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11f)
-        } else badgeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7f)
-
-        badgeView.text = formatBadgeNumber(mBadgeCountList[position])
-        return view
-    }
-
-    private fun updateCustomTab(tabPosition: Int, isSetSelect: Boolean = true) {
-        val tab = msgTabLayout.getTabAt(tabPosition)!!
-        // 更新Badge前,先remove原来的customView,否则Badge无法更新
-        val customView = tab.customView
-        if (customView != null) {
-            val parent = customView.parent
-            if (parent != null) {
-                (parent as ViewGroup).removeView(customView)
+    private fun updateCustomTab(tabPosition: Int) {
+        when (tabPosition) {
+            0 -> {
+                if (mBadgeCountList[tabPosition] == 0) {
+                    badgeTextView1?.visibility = View.INVISIBLE
+                } else {
+                    badgeTextView1?.visibility = View.VISIBLE
+                    badgeTextView1?.text = formatBadgeNumber(mBadgeCountList[tabPosition])
+                }
+            }
+            1 -> {
+                if (mBadgeCountList[tabPosition] == 0) {
+                    badgeTextView2?.visibility = View.INVISIBLE
+                } else {
+                    badgeTextView2?.visibility = View.VISIBLE
+                    badgeTextView2?.text = formatBadgeNumber(mBadgeCountList[tabPosition])
+                }
+            }
+            2 -> {
+                if (mBadgeCountList[tabPosition] == 0) {
+                    badgeTextView3?.visibility = View.INVISIBLE
+                } else {
+                    badgeTextView3?.visibility = View.VISIBLE
+                    badgeTextView3?.text = formatBadgeNumber(mBadgeCountList[tabPosition])
+                }
             }
         }
-        // 更新CustomView
-        tab.customView = getTabItemView(tabPosition)
-        // 需加上以下代码,不然会出现更新Tab角标后,选中的Tab字体颜色不是选中状态的颜色
-        if (isSetSelect) msgTabLayout.getTabAt(
-                msgTabLayout.selectedTabPosition)?.customView?.isSelected = true
-        //刷新主页的消息红点
-        EventBusUtils.sendEvent(EventBusEvent(
-                EventBusAction.REFRESH_RIGHT_RED_POINT,
-                "${mBadgeCountList[0]}&${mBadgeCountList[1]}"
-        ))
     }
 
     private fun formatBadgeNumber(value: Int): String? {
@@ -232,7 +298,6 @@ class RingMsgListActivity : BaseActivity() {
             return null
         }
         return if (value < 100) {
-            // equivalent to String#valueOf(int);
             value.toString()
         } else "99+"
     }

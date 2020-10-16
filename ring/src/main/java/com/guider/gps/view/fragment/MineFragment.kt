@@ -49,7 +49,7 @@ class MineFragment : BaseFragment() {
         } else {
             8000
         }
-        if (MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID) != 0 && MMKVUtil.getInt(BIND_DEVICE_CODE) != 0) {
+        if (MMKVUtil.getInt(USER.OWN_BIND_DEVICE_CODE) != 0) {
             //说明有绑定的设备 是解绑
             bindTv.text = mActivity.resources.getString(R.string.app_main_mine_remove_bind)
         } else {

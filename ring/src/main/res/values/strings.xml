@@ -20,8 +20,9 @@
     <string name="app_main_health_blood_pressure">Blood pressure</string>
     <string name="app_main_health_heart_rate">Heart rate</string>
     <string name="app_main_health_body_temp">Body temperature</string>
-    <string name="app_main_health_sleep">sleep</string>
-    <string name="app_main_health_sport">sport</string>
+    <string name="app_main_health_sleep">Sleep</string>
+    <string name="app_main_health_sleep_minute">Sleep(Minutes)</string>
+    <string name="app_main_health_sport">Sport</string>
     <string name="app_main_health_high_pressure">High pressure</string>
     <string name="app_main_health_low_pressure">Low pressure</string>
     <string name="app_main_medicine_low_side">On the low side</string>
@@ -46,13 +47,16 @@
     <string name="app_main_map_history_record">History record</string>
     <string name="app_main_map_send_instructions">Send instructions</string>
     <string name="app_main_map_address_history">Addressing the history</string>
-    <string name="app_main_map_send_success">Send success</string>
+    <string name="app_main_map_addressing_success">Addressing  success</string>
+    <string name="app_main_map_addressing_fail">Addressing  fail</string>
+    <string name="app_main_send_success">Send  success</string>
+    <string name="app_main_send_fail">Send Fail</string>
     <string name="app_main_map_location_permission_hint">Using the map service requires location permissions</string>
     <string name="app_main_map_permission_error">Location acquisition failed and the location service could not be implemented</string>
     <string name="illegal_coordinate_value" tools:ignore="MissingTranslation">Illegal coordinate value</string>
-    <string name="app_main_medicine_suggest_hint">%s%s suggest</string>
+    <string name="app_main_medicine_suggest_hint">%s suggest:</string>
     <string name="app_main_medicine_manual_measuring">Manual measuring</string>
-    <string name="app_main_medicine_chart_title">%s trend chart of the last seven times</string>
+    <string name="app_main_medicine_chart_title">Trend chart of the last seven times</string>
     <string name="app_main_medicine_suggest_sugar_high">It is suggested to eat less and more meals, pay attention to diet control, strengthen exercise and take medicine on time!If blood glucose monitoring continues to be high, it is recommended to seek medical attention in time!</string>
     <string name="app_main_medicine_suggest_sugar_low">Take some with you, such as cookies, candy bars, chocolate or sugary drinks and water. Replenish sugar and water in time and strengthen exercise</string>
     <string name="app_main_medicine_suggest_sugar_normal">Recommended to keep up!Strengthen exercise, maintain good living habits, maintain daily happy mood.</string>
@@ -208,4 +212,10 @@
     <string name="app_Erase_remind">Erase remind</string>
     <string name="app_sos_alarm">SOS alarm</string>
     <string name="app_electronic_fence_alarm">Electronic fence alarm</string>
+    <string name="app_data_request_error">Data request error</string>
+    <string name="app_start_to_experience">Start to experience</string>
+    <string name="app_save">Save</string>
+    <string name="app_delete">Delete</string>
+    <string name="app_add">Add</string>
+    <string name="app_addressing_in_progress">Addressing in progress…</string>
 </resources>

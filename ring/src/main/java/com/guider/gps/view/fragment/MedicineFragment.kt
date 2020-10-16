@@ -23,8 +23,8 @@ class MedicineFragment : BaseFragment() {
 
     override fun initLogic() {
         tabTitleList = arrayListOf(
-                resources.getString(R.string.app_main_health_blood_sugar),
                 resources.getString(R.string.app_main_health_blood_pressure),
+                resources.getString(R.string.app_main_health_blood_sugar),
                 resources.getString(R.string.app_main_health_blood_oxygen))
         medicineTabLayout.tabMode = TabLayout.MODE_FIXED
         // 设置选中下划线颜色

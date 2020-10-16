@@ -68,10 +68,8 @@ class MedicineDataFragment : BaseFragment() {
             val string = getString(fragmentType)
             medicineType = string!!
         }
-        suggestTitleTv.text =
-                "$medicineType ${mActivity.resources.getString(R.string.app_health_suggest)}"
-        chartTitleTv.text = String.format(
-                resources.getString(R.string.app_main_medicine_chart_title), medicineType)
+        suggestTitleTv.text =mActivity.resources.getString(R.string.app_health_suggest)
+        chartTitleTv.text = mActivity.resources.getString(R.string.app_main_medicine_chart_title)
         initDataChart()
         answerLayout.setOnClickListener(this)
         measure.setOnClickListener(this)
@@ -158,10 +156,6 @@ class MedicineDataFragment : BaseFragment() {
             refreshLayout.finishRefresh()
         }
         noDataTv.visibility = View.VISIBLE
-        suggestTitleTv.text =
-                "$medicineType " +
-                        mActivity.resources.getString(
-                                R.string.app_health_suggest)
         initBloodLineChart(arrayListOf(), arrayListOf(), arrayListOf())
         dataTagTv.text = ""
         dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
@@ -183,33 +177,33 @@ class MedicineDataFragment : BaseFragment() {
         when {
             state1 == "偏低" || (state1 == "正常" && state2 == "偏低") -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[2]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[2]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_blood_pre_low)
+                suggestContentTv.text = "${title}${content}"
             }
             state1 == "正常" && state2 == "正常" -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[1]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[1]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_blood_pre_normal)
+                suggestContentTv.text = "${title}${content}"
             }
             state1 == "偏高" || (state1 == "正常" && state2 == "偏高") -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[0]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[0]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_blood_pre_high)
+                suggestContentTv.text = "${title}${content}"
             }
         }
         dataTagTv.text = resultBean[0].state
@@ -384,10 +378,6 @@ class MedicineDataFragment : BaseFragment() {
             refreshLayout.finishRefresh()
         }
         noDataTv.visibility = View.VISIBLE
-        suggestTitleTv.text =
-                "$medicineType " +
-                        mActivity.resources.getString(
-                                R.string.app_health_suggest)
         initBloodOxygenLineChart(arrayListOf(), arrayListOf())
         dataTagTv.text = ""
         dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
@@ -395,6 +385,7 @@ class MedicineDataFragment : BaseFragment() {
         suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun dealBloodOxygenSuccessList(resultBean: Any) {
         if (isRefresh) refreshLayout.finishRefresh(500)
         noDataTv.visibility = View.GONE
@@ -406,23 +397,23 @@ class MedicineDataFragment : BaseFragment() {
         when (tempList[0].state2) {
             "偏低" -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[2]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[2]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_blood_oxygen_low)
+                suggestContentTv.text = "${title}${content}"
             }
             else -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[1]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[1]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_blood_oxygen_normal)
+                suggestContentTv.text = "${title}${content}"
             }
         }
         dataValueTv.text = tempList[0].bo.toString()
@@ -529,10 +520,6 @@ class MedicineDataFragment : BaseFragment() {
             refreshLayout.finishRefresh()
         }
         noDataTv.visibility = View.VISIBLE
-        suggestTitleTv.text =
-                "$medicineType " +
-                        mActivity.resources.getString(
-                                R.string.app_health_suggest)
         initDataChartShow(arrayListOf(), arrayListOf())
         dataTagTv.text = ""
         dataValueTv.text = mActivity.resources.getString(R.string.app_no_data)
@@ -540,6 +527,7 @@ class MedicineDataFragment : BaseFragment() {
         suggestContentTv.text = mActivity.resources.getString(R.string.app_no_suggest)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun dealBloodSugarSuccessList(resultBean: List<BloodSugarListBean>) {
         noDataTv.visibility = View.GONE
         if (isRefresh) refreshLayout.finishRefresh(500)
@@ -548,33 +536,33 @@ class MedicineDataFragment : BaseFragment() {
                 resultBean[0].state2.indexOf(","))) {
             "偏低" -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[2]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[2]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_sugar_low)
+                suggestContentTv.text = "${title}${content}"
             }
             "偏高" -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[0]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[0]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_sugar_high)
+                suggestContentTv.text = "${title}${content}"
             }
             else -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                suggestTitleTv.text = String.format(
+                val title = String.format(
                         resources.getString(
-                                R.string.app_main_medicine_suggest_hint),
-                        medicineType, medicineDataTextValues[1]
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[1]
                 )
-                suggestContentTv.text = resources.getString(
+                val content = resources.getString(
                         R.string.app_main_medicine_suggest_sugar_normal)
+                suggestContentTv.text = "${title}${content}"
             }
         }
         val iUnit: IUnit = UnitUtil.getIUnit(mActivity)

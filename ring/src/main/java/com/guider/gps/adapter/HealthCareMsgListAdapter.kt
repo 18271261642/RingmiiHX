@@ -3,7 +3,7 @@ package com.guider.gps.adapter
 import android.content.Context
 import com.guider.baselib.utils.AdapterOnItemClickListener
 import com.guider.baselib.utils.DateUtilKotlin
-import com.guider.baselib.utils.TIME_FORMAT_PATTERN9
+import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
@@ -20,8 +20,9 @@ class HealthCareMsgListAdapter(context: Context, dataList: ArrayList<CareMsgList
 
     override fun bindData(holder: ViewHolder, data: CareMsgListBean, position: Int) {
         holder.setText(R.id.careMsgContent, data.adviceContent)
-        holder.setText(R.id.timeTv, DateUtilKotlin.uTCToLocal(
-                data.sendTime, TIME_FORMAT_PATTERN9))
+        if (StringUtil.isNotBlankAndEmpty(data.sendTime))
+            holder.setText(
+                    R.id.timeTv, DateUtilKotlin.getDateWithWeekWithTime(mContext, data.sendTime))
         holder.setOnItemClickListener {
             listener?.onClickItem(holder.adapterPosition)
         }

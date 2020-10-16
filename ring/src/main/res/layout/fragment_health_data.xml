@@ -8,11 +8,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bloodLayout"
         android:layout_width="match_parent"
-        android:layout_height="182dp"
+        android:layout_height="@dimen/dp_173"
         android:layout_marginStart="13dp"
         android:layout_marginTop="17dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/rounded_f6f6f6_8_bg"
+        android:background="@drawable/rounded_ff8147_8_bg"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -40,7 +40,7 @@
             android:id="@+id/bloodBottomStatusLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="@dimen/dp_5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -49,7 +49,8 @@
                 android:id="@+id/bloodHighIv"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
-                android:src="@drawable/oval_orange_f18937"
+                android:src="@drawable/oval_white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,7 +71,8 @@
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_marginStart="25dp"
-                android:src="@drawable/oval_blue_5bc2ff"
+                android:src="@drawable/oval_blue_5e95ff"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/bloodHighTv"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,10 +112,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/heartLayout"
         android:layout_width="match_parent"
-        android:layout_height="173dp"
+        android:layout_height="@dimen/dp_173"
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
+        android:paddingBottom="@dimen/dp_24"
         android:background="@drawable/rounded_6ecdff_8_bg"
         app:layout_constraintTop_toBottomOf="@id/bloodLayout">
 
@@ -161,7 +164,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tempLayout"
         android:layout_width="match_parent"
-        android:layout_height="213dp"
+        android:layout_height="@dimen/dp_173"
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
@@ -173,7 +176,7 @@
             android:layout_width="21dp"
             android:layout_height="21dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/icon_home_temp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -189,55 +192,21 @@
             app:layout_constraintStart_toEndOf="@id/tempIv"
             app:layout_constraintTop_toTopOf="@id/tempIv" />
 
-        <TextView
-            android:id="@+id/tempStatusTv"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="11dp"
-            android:background="@drawable/rounded_66ffffff_14_bg"
-            android:gravity="center"
-            android:textColor="@color/color666666"
-            android:textSize="@dimen/sp_12"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tempBottomStatusLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            app:layout_constraintBottom_toTopOf="@id/tempStatusTv"
+            android:layout_marginBottom="@dimen/dp_4"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/tempSmallIv"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:src="@drawable/oval_orange_ffad29"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tempSmallTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/app_main_health_mild"
-                android:textColor="@color/color333333"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintBottom_toBottomOf="@id/tempSmallIv"
-                app:layout_constraintStart_toEndOf="@id/tempSmallIv"
-                app:layout_constraintTop_toTopOf="@id/tempSmallIv" />
 
             <ImageView
                 android:id="@+id/tempNormalIv"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
-                android:layout_marginStart="25dp"
                 android:src="@drawable/oval_white"
-                app:layout_constraintStart_toEndOf="@id/tempSmallTv"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -296,7 +265,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sleepLayout"
         android:layout_width="match_parent"
-        android:layout_height="202dp"
+        android:layout_height="@dimen/dp_173"
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
@@ -317,29 +286,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="@string/app_main_health_sleep"
+            android:text="@string/app_main_health_sleep_minute"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@id/sleepIv"
             app:layout_constraintStart_toEndOf="@id/sleepIv"
             app:layout_constraintTop_toTopOf="@id/sleepIv" />
+
         <TextView
+            android:id="@+id/sleepTimeTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/sleepIv"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="@id/sleepIv"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:textSize="@dimen/sp_12"
-            android:textColor="@color/white"
-            android:id="@+id/sleepTimeTv"
-            />
+            app:layout_constraintTop_toTopOf="@id/sleepIv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/sleepBottomStatusLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="@dimen/dp_4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -430,10 +399,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sportLayout"
         android:layout_width="match_parent"
-        android:layout_height="173dp"
+        android:layout_height="@dimen/dp_173"
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
+        android:paddingBottom="@dimen/dp_24"
         android:background="@drawable/rounded_71d19b_8_bg"
         app:layout_constraintTop_toBottomOf="@id/sleepLayout">
 

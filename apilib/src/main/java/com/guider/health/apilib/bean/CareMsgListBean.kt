@@ -3,7 +3,7 @@ package com.guider.health.apilib.bean
 data class CareMsgListBean(
     val adviceContent: String,
     val adviceType: String,
-    val createTime: String,
+    val createTime: String?,
     val doctorAccountId: Int,
     val id: Int,
     val names: String,

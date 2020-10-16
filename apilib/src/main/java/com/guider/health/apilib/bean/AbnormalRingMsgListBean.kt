@@ -2,7 +2,7 @@ package com.guider.health.apilib.bean
 
 data class AbnormalRingMsgListBean(
         val accountId: Int,
-        val createTime: Any,
+        val createTime: String?,
         val dataType: String,
         val deviceTypeName: Any,
         val healthDataId: Int,

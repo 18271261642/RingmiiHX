@@ -49,7 +49,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/dp_92"
+        android:layout_marginBottom="@dimen/dp_93"
         android:id="@+id/contentTv"
         android:textColor="@color/color333333"
         android:textSize="@dimen/sp_13"
@@ -69,5 +69,24 @@
         android:textColor="@color/color333333"
         android:textSize="@dimen/sp_27"
         android:text="@string/app_guide_page1_title"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp_33"
+        android:paddingEnd="@dimen/dp_33"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dp_27"
+        android:background="@drawable/bg_round_home_msg_22"
+        android:text="@string/app_start_to_experience"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
+        android:id="@+id/entryApp"
+        android:visibility="gone"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,6 +21,7 @@
     <string name="app_main_health_heart_rate">心率</string>
     <string name="app_main_health_body_temp">體溫</string>
     <string name="app_main_health_sleep">睡眠</string>
+    <string name="app_main_health_sleep_minute">睡眠活動(分鐘)</string>
     <string name="app_main_health_sport">運動</string>
     <string name="app_main_health_high_pressure">高壓</string>
     <string name="app_main_health_low_pressure">低壓</string>
@@ -46,12 +47,15 @@
     <string name="app_main_map_history_record">歷史記錄</string>
     <string name="app_main_map_send_instructions">發送指令</string>
     <string name="app_main_map_address_history">尋址歷史</string>
-    <string name="app_main_map_send_success">發送成功</string>
+    <string name="app_main_map_addressing_success">尋址成功</string>
+    <string name="app_main_map_addressing_fail">尋址失敗</string>
+    <string name="app_main_send_success">發送成功</string>
+    <string name="app_main_send_fail">發送失敗</string>
     <string name="app_main_map_location_permission_hint">使用地圖服務需要定位權限</string>
     <string name="app_main_map_permission_error">獲取定位失敗，無法實現定位服務</string>
-    <string name="app_main_medicine_suggest_hint">%s%s 建議</string>
+    <string name="app_main_medicine_suggest_hint">%s 建議:</string>
     <string name="app_main_medicine_manual_measuring">手動測量</string>
-    <string name="app_main_medicine_chart_title">最近七次%s趨勢圖</string>
+    <string name="app_main_medicine_chart_title">最近七次趨勢圖</string>
     <string name="app_main_medicine_suggest_sugar_high">建議少食多餐，注意飲食控制，加強運動鍛鍊，按時服藥！若血糖監測持續較高，建議及時就醫！</string>
     <string name="app_main_medicine_suggest_sugar_low">隨身攜帶一些如餅乾、糖塊、巧克力或含糖的飲料和水，及時補充糖和水分，加強運動鍛鍊</string>
     <string name="app_main_medicine_suggest_sugar_normal">建議繼續保持！加強運動鍛鍊，保持良好的生活習慣，保持日常愉快心情。</string>
@@ -207,4 +211,10 @@
     <string name="app_Erase_remind">擦除提醒</string>
     <string name="app_sos_alarm">SOS 報警</string>
     <string name="app_electronic_fence_alarm">電子圍欄報警</string>
+    <string name="app_data_request_error">數據請求錯誤</string>
+    <string name="app_start_to_experience">開始體驗</string>
+    <string name="app_save">保存</string>
+    <string name="app_delete">刪除</string>
+    <string name="app_add">添加</string>
+    <string name="app_addressing_in_progress">尋址進行中…</string>
 </resources>

@@ -3,6 +3,7 @@ package com.guider.gps.view.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -32,6 +33,7 @@ import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.SystemMsgBean
 import com.guider.health.apilib.bean.UserInfo
+import com.guider.health.apilib.enums.SystemMsgType
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -111,6 +113,7 @@ class MainActivity : BaseActivity() {
             override fun onClickItem(position: Int) {
 //                toastShort(resources.getString(R.string.app_main_bind_device))
                 //如果是相同的位置，则不需要重新加载数据
+                if (StringUtil.isEmpty(bindDeviceList[position].deviceCode)) return
                 if (bindPosition == position) return
                 bindDeviceList[bindPosition].isSelected = 0
                 drawAdapter.notifyItemChanged(bindPosition)
@@ -242,6 +245,9 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
+            bindDeviceList = bindDeviceList.filter {
+                StringUtil.isNotBlankAndEmpty(it.deviceCode)
+            } as ArrayList<UserInfo>
             breaking@ for (i in bindDeviceList.indices) {
                 if (bindDeviceList[i].accountId == bindAccountId) {
                     bindDeviceList[i].isSelected = 1
@@ -283,27 +289,40 @@ class MainActivity : BaseActivity() {
                         bindListBean?.userInfos?.forEach {
                             if (it.accountId == accountId) {
                                 it.relationShip = it.name
+                                //当前登录账号的设备号为空
+                                if (StringUtil.isEmpty(it.deviceCode)) {
+                                    CommonUtils.logOutClearMMKV()
+                                    val intent = Intent(mContext, LoginActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                            Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(intent)
+                                    finish()
+                                    return@launch
+                                }
                                 return@breaking
                             }
                         }
                     }
-                    breaking@ for (i in bindListBean?.userInfos!!.indices) {
-                        if (bindListBean?.userInfos!![i].accountId == bindAccountId) {
-                            bindListBean?.userInfos!![i].isSelected = 1
+                    bindDeviceList.clear()
+                    bindDeviceList.addAll(bindListBean?.userInfos!!)
+                    bindDeviceList = bindDeviceList.filter {
+                        StringUtil.isNotBlankAndEmpty(it.deviceCode)
+                    } as ArrayList<UserInfo>
+                    breaking@ for (i in bindDeviceList.indices) {
+                        if (bindDeviceList[i].accountId == bindAccountId) {
+                            bindDeviceList[i].isSelected = 1
                             bindPosition = i
                             if (bingAccountName !=
-                                    bindListBean?.userInfos!![i].relationShip) {
-                                pageTitle = bindListBean?.userInfos!![i].relationShip!!
+                                    bindDeviceList[i].relationShip) {
+                                pageTitle = bindDeviceList[i].relationShip!!
                                 MMKVUtil.saveString(BIND_DEVICE_NAME,
-                                        bindListBean?.userInfos!![i].relationShip!!)
+                                        bindDeviceList[i].relationShip!!)
                                 setTitle(pageTitle,
                                         CommonUtils.getColor(mContext!!, R.color.white))
                             }
                             break@breaking
                         }
                     }
-                    bindDeviceList.clear()
-                    bindDeviceList.addAll(bindListBean?.userInfos!!)
                     drawAdapter.setSourceList(bindDeviceList)
                 }
             } catch (e: Exception) {
@@ -331,11 +350,14 @@ class MainActivity : BaseActivity() {
                         MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
                     if (StringUtil.isNotBlankAndEmpty(firstPosition.testTime))
                         MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
+                    if (StringUtil.isNotBlankAndEmpty(firstPosition.signalType))
+                        MMKVUtil.saveString(LAST_LOCATION_POINT_METHOD, firstPosition.signalType)
                 } else {
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_LAT)
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_LNG)
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_ADDRESS)
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
+                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_METHOD)
                 }
             } catch (e: Exception) {
                 toastShort(e.message!!)
@@ -632,6 +654,7 @@ class MainActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(USER.USERID, 0)
         if (accountId == 0) return
         subscribe = Flowable.interval(0, 10, TimeUnit.SECONDS)
+                .onBackpressureDrop()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -649,11 +672,13 @@ class MainActivity : BaseActivity() {
                         accountId, latestSystemMsgTime)
                 if (!(resultBean is String && resultBean == "null") && resultBean != null) {
                     val bean = ParseJsonData.parseJsonAny<SystemMsgBean>(resultBean)
-                    latestSystemMsgTime = bean.createTime
-                    showSystemMsgDialog("${bean.name},${bean.content}")
+                    if (StringUtil.isNotBlankAndEmpty(bean.createTime))
+                        latestSystemMsgTime = bean.createTime!!
+                    showSystemMsgDialog("${bean.name},${bean.content}", bean.type)
                 }
             } catch (e: Exception) {
-                toastShort(e.message!!)
+                Log.i("systemMsg", e.message!!)
+                toastShort(mContext!!.resources.getString(R.string.app_data_request_error))
             }
         }
     }
@@ -690,8 +715,7 @@ class MainActivity : BaseActivity() {
     /**
      * 显示系统消息的弹窗
      */
-    private fun showSystemMsgDialog(content: String) {
-        toastShort(content)
+    private fun showSystemMsgDialog(content: String, type: SystemMsgType) {
         val dialog = object : DialogHolder(this,
                 R.layout.dialog_system_msg, Gravity.TOP) {
             override fun bindView(dialogView: View) {
@@ -700,12 +724,33 @@ class MainActivity : BaseActivity() {
                 val mDismiss = dialogView.findViewById<ImageView>(R.id.cancelIv)
                 contentTv.text = content
                 watchDetail.setOnClickListener {
-                    val intent = Intent(mContext, RingMsgListActivity::class.java)
-                    intent.putExtra("abnormalMsgUndoNum", abnormalMsgUndoNum)
-                    intent.putExtra("careMsgUndoNum", careMsgUndoNum)
-                    //进入页面需跳转到的指定列表项
-                    intent.putExtra("entryPageIndex", 2)
-                    startActivity(intent)
+                    //判断消息的类型做相应的处理，sos和电子围栏的跳转到定位信息页和运动轨迹页
+                    when (type) {
+                        SystemMsgType.SOS -> {
+                            //跳转到地图页，并且开启定位信息页
+                            homeViewPager.currentItem = 1
+                            MMKVUtil.saveString(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "0")
+                            EventBusUtils.sendStickyEvent(EventBusEvent(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "0"))
+                        }
+                        SystemMsgType.FENCE -> {
+                            //跳转到地图页，并且开启运动轨迹页
+                            homeViewPager.currentItem = 1
+                            MMKVUtil.saveString(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "1")
+                            EventBusUtils.sendStickyEvent(EventBusEvent(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "1"))
+                        }
+                        else -> {
+                            val intent = Intent(mContext, RingMsgListActivity::class.java)
+                            intent.putExtra("abnormalMsgUndoNum", abnormalMsgUndoNum)
+                            intent.putExtra("careMsgUndoNum", careMsgUndoNum)
+                            //进入页面需跳转到的指定列表项
+                            intent.putExtra("entryPageIndex", 2)
+                            startActivity(intent)
+                        }
+                    }
                     dialog?.dismiss()
                 }
                 mDismiss.setOnClickListener {

@@ -76,7 +76,6 @@ class HealthFragment : BaseFragment() {
     override fun initLogic() {
         tabInit()
         tabChangeEvent()
-        rangeShow()
         bloodLayout.setOnClickListener(this)
         tempLayout.setOnClickListener(this)
         heartLayout.setOnClickListener(this)
@@ -101,17 +100,6 @@ class HealthFragment : BaseFragment() {
         tempChart.setOnTouchListener(touchListener)
         sleepChart.setOnTouchListener(touchListener)
         sportChart.setOnTouchListener(touchListener)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun rangeShow() {
-        tempStatusTv.text =
-                "[37.4-38]" +
-                        mActivity.resources.getString(R.string.app_main_health_mild) +
-                        "   [36-37.3]" +
-                        mActivity.resources.getString(R.string.app_main_health_normal) +
-                        "    [>38]" +
-                        mActivity.resources.getString(R.string.app_main_health_error)
     }
 
     private fun tabInit() {
@@ -296,8 +284,9 @@ class HealthFragment : BaseFragment() {
     private fun showSleepTime(list: List<SleepDataListBean>) {
         if (list.size == 1) {
             val startTime = DateUtilKotlin.uTCToLocal(list[0].startTime, TIME_FORMAT_PATTERN8)
+            val endTime = DateUtilKotlin.uTCToLocal(list[0].endTime, TIME_FORMAT_PATTERN8)
             sleepTimeTv.text = mActivity.resources.getString(
-                    R.string.app_main_health_time_sleep, startTime, startTime)
+                    R.string.app_main_health_time_sleep, startTime, endTime)
         } else {
             val startTime = DateUtilKotlin.uTCToLocal(list[0].startTime, TIME_FORMAT_PATTERN8)
             val endTime = DateUtilKotlin.uTCToLocal(
@@ -343,7 +332,7 @@ class HealthFragment : BaseFragment() {
                     val dataArray: Array<Any> = tempDataList.toTypedArray()
                     val aaOptions = initTempLineChart(options, dataArray)
                     aaOptions.yAxis!!.labels(yAxisLabels)
-                    Log.e(TAG, "体温数据的个数为${tempDataList.size}")
+                    Log.i(TAG, "体温数据的个数为${tempDataList.size}")
                     val requestPage: Int
                     if (tempDataList.size > 40) {
                         requestPage = tempDataList.size / 40
@@ -443,7 +432,7 @@ class HealthFragment : BaseFragment() {
         //X轴
         val axisX = Axis()//X轴
         //对x轴，数据和属性的设置
-        axisX.textSize = 9 //设置字体的大小
+        axisX.textSize = 11 //设置字体的大小
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
         axisX.textColor = Color.WHITE //X轴灰色
         val mAxisValues = arrayListOf<AxisValue>()
@@ -460,7 +449,7 @@ class HealthFragment : BaseFragment() {
         //X轴
         val axisX = Axis()//X轴
         //对x轴，数据和属性的设置
-        axisX.textSize = 9 //设置字体的大小
+        axisX.textSize = 11 //设置字体的大小
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
         axisX.textColor = Color.WHITE //X轴白色
         val mAxisValues = arrayListOf<AxisValue>()
@@ -476,7 +465,7 @@ class HealthFragment : BaseFragment() {
     private fun setAxisYShowColumn(data: ColumnChartData) {
         //Y轴
         val axisY = Axis().setHasLines(true)
-        axisY.textSize = 8//设置字体大小
+        axisY.textSize = 11//设置字体大小
         axisY.textColor = Color.WHITE //Y轴灰色
         axisY.maxLabelChars = 4
         data.axisYLeft = axisY //设置Y轴位置 左边
@@ -494,12 +483,8 @@ class HealthFragment : BaseFragment() {
             : AAOptions {
         val zonesArr: Array<Any> = arrayOf(
                 mapOf(
-                        "value" to 37.4,
+                        "value" to 37.5,
                         "color" to "#ffffff"
-                ),
-                mapOf(
-                        "value" to 38,
-                        "color" to "#FFAD29"
                 ),
                 mapOf(
                         "color" to "#E2402B"
@@ -568,9 +553,9 @@ class HealthFragment : BaseFragment() {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(belowBloodAxisPoints)
-                .setColor(ContextCompat.getColor(mActivity, R.color.color5BC2FF))
+                .setColor(ContextCompat.getColor(mActivity, R.color.color5E95FF))
         val line2 = Line(highBloodAxisPoints)
-                .setColor(ContextCompat.getColor(mActivity, R.color.colorF18937))
+                .setColor(ContextCompat.getColor(mActivity, R.color.white))
         if (list.size == 1) {
             line1.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
             line2.setHasLines(false) //是否用直线显示。如果为false 则没有曲线只有点显示
@@ -585,7 +570,7 @@ class HealthFragment : BaseFragment() {
         data.baseValue = Float.NEGATIVE_INFINITY  //设置基准数(大概是数据范围)
         //坐标轴
         setBloodAxisXShow(data, list)
-        setAxisYShow(data, "blood")
+        setAxisYShow(data)
         bloodChart.lineChartData = data
         resetViewport(bloodYMaxValue, bloodChart, belowBloodAxisPoints)
         //创建一个图标视图 大小为控件的最大大小
@@ -595,9 +580,9 @@ class HealthFragment : BaseFragment() {
         //X轴
         val axisX = Axis()//X轴
         //对x轴，数据和属性的设置
-        axisX.textSize = 9 //设置字体的大小
+        axisX.textSize = 11 //设置字体的大小
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
-        axisX.textColor = CommonUtils.getColor(mActivity, R.color.colorF18937)
+        axisX.textColor = CommonUtils.getColor(mActivity, R.color.white)
         val mAxisValues = arrayListOf<AxisValue>()
         if (list.size == 1) {
             mAxisValues.add(AxisValue(0f).setLabel("0"))
@@ -631,12 +616,11 @@ class HealthFragment : BaseFragment() {
         view.postInvalidate()
     }
 
-    private fun setAxisYShow(data: LineChartData, type: String = "") {
+    private fun setAxisYShow(data: LineChartData) {
         //Y轴
         val axisY = Axis().setHasLines(true)
-        axisY.textSize = 8//设置字体大小
-        if (StringUtil.isNotBlankAndEmpty(type)) axisY.textColor = Color.GRAY //X轴灰色
-        else axisY.textColor = Color.WHITE //X轴灰色
+        axisY.textSize = 11//设置字体大小
+        axisY.textColor = Color.WHITE //X轴白色
         axisY.maxLabelChars = 4
         data.axisYLeft = axisY //设置Y轴位置 左边
     }
@@ -645,7 +629,7 @@ class HealthFragment : BaseFragment() {
         //X轴
         val axisX = Axis()//X轴
         //对x轴，数据和属性的设置
-        axisX.textSize = 9 //设置字体的大小
+        axisX.textSize = 11 //设置字体的大小
         axisX.setHasTiltedLabels(false) //x坐标轴字体是斜的显示还是直的，true表示斜的
 //        if (StringUtil.isNotBlankAndEmpty(type))
 //            axisX.textColor = CommonUtils.getColor(mActivity, R.color.colorF18937)

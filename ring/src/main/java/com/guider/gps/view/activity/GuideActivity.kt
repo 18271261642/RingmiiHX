@@ -54,14 +54,18 @@ class GuideActivity : BaseActivity() {
                         ViewPager2.SCROLL_STATE_IDLE -> {
                             if (guideViewPager2.currentItem == generateTextFragments.size - 1
                                     && !flag) {
-                                MMKVUtil.saveBoolean(IS_FIRST_START, true)
-                                dealEnterPageEvent()
+                                fromGuideEntryApp()
                             }
                         }
                     }
                 }
             })
         }
+    }
+
+    fun fromGuideEntryApp() {
+        MMKVUtil.saveBoolean(IS_FIRST_START, true)
+        dealEnterPageEvent()
     }
 
     override fun initLogic() {
