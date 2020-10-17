@@ -51,6 +51,7 @@
     <string name="app_main_map_addressing_fail">尋址失敗</string>
     <string name="app_main_send_success">發送成功</string>
     <string name="app_main_send_fail">發送失敗</string>
+    <string name="app_main_location_send_fail">發送失敗，設備可能處於離線狀態</string>
     <string name="app_main_map_location_permission_hint">使用地圖服務需要定位權限</string>
     <string name="app_main_map_permission_error">獲取定位失敗，無法實現定位服務</string>
     <string name="app_main_medicine_suggest_hint">%s 建議:</string>
@@ -217,4 +218,7 @@
     <string name="app_delete">刪除</string>
     <string name="app_add">添加</string>
     <string name="app_addressing_in_progress">尋址進行中…</string>
+    <string name="app_cancel_the_addressing">取消尋址</string>
+    <string name="app_cancel_the_addressing_success">取消成功</string>
+    <string name="app_main_health_step_unit">(步)</string>
 </resources>

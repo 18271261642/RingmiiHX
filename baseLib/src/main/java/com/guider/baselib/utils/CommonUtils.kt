@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ScrollView
 import androidx.core.content.ContextCompat
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -73,14 +74,13 @@ object CommonUtils {
     }
 
     //计算日期是否符合要求 日期前后
+    @SuppressLint("SimpleDateFormat")
     fun calTimeDateCompareNew(date: String, dateCompare: String): Boolean {
         val format = "yyyy-MM-dd"
-
-        @SuppressLint("SimpleDateFormat")
-        val sdf = SimpleDateFormat(format)
+        val sdf: DateFormat = SimpleDateFormat(format)
         val dayParse = sdf.parse(date)
         val dateCompareParse = sdf.parse(dateCompare)
-        return if (dayParse.time > dateCompareParse.time) {
+        return if (dayParse!!.time > dateCompareParse!!.time) {
             Log.i("DateCompare", "dt1 在dt2前")
             true
         } else {

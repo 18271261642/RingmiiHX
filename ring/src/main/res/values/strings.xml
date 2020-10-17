@@ -51,6 +51,7 @@
     <string name="app_main_map_addressing_fail">Addressing  fail</string>
     <string name="app_main_send_success">Send  success</string>
     <string name="app_main_send_fail">Send Fail</string>
+    <string name="app_main_location_send_fail">The send failed and the device may be offline</string>
     <string name="app_main_map_location_permission_hint">Using the map service requires location permissions</string>
     <string name="app_main_map_permission_error">Location acquisition failed and the location service could not be implemented</string>
     <string name="illegal_coordinate_value" tools:ignore="MissingTranslation">Illegal coordinate value</string>
@@ -218,4 +219,7 @@
     <string name="app_delete">Delete</string>
     <string name="app_add">Add</string>
     <string name="app_addressing_in_progress">Addressing in progress…</string>
+    <string name="app_cancel_the_addressing">Cancel the addressing</string>
+    <string name="app_cancel_the_addressing_success">Cancel success</string>
+    <string name="app_main_health_step_unit">(step)</string>
 </resources>

@@ -13,9 +13,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.request.target.CustomTarget
@@ -110,6 +112,11 @@ class LocationFragment : BaseFragment(),
     private var starPerth: Marker? = null
     private var endPerth: Marker? = null
 
+    //一个临时点的mark标志
+    private var tempMark: Marker? = null
+    private var tempMarkTag = "tempLocationInfo"
+    private var tempLocationBean: UserPositionListBean? = null
+
     private var martTag = "locationInfo"
 
     private var firstLocationLat = 0.0
@@ -143,6 +150,7 @@ class LocationFragment : BaseFragment(),
     private var mDialog2: DialogProgress? = null
     private var subscribe: Disposable? = null
     private var proactivelyAddressingNum = 0
+    private var isStartAnimation = false
 
     override fun initView(rootView: View) {
     }
@@ -199,6 +207,7 @@ class LocationFragment : BaseFragment(),
         resetFunctionLayout()
         when (tab.text.toString()) {
             tabTitleList[0] -> {
+                initTempMark()
                 mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
@@ -228,6 +237,7 @@ class LocationFragment : BaseFragment(),
                 }
             }
             tabTitleList[1] -> {
+                initTempMark()
                 mGoogleMap?.setInfoWindowAdapter(null)
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
@@ -253,6 +263,7 @@ class LocationFragment : BaseFragment(),
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             tabTitleList[2] -> {
+                initTempMark()
                 mGoogleMap?.setInfoWindowAdapter(null)
                 mGoogleMap?.setOnMapClickListener {
                     //手动去编辑电子围栏
@@ -274,7 +285,8 @@ class LocationFragment : BaseFragment(),
                 getElectronicFenceData()
             }
             tabTitleList[3] -> {
-                mGoogleMap!!.setInfoWindowAdapter(null)
+                initTempMark()
+                mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
                 if (selectDateDialog != null) {
                     selectDateDialog?.closeDialog()
                 }
@@ -293,6 +305,31 @@ class LocationFragment : BaseFragment(),
                 mGoogleMap?.clear()
             }
         }
+    }
+
+    private fun initTempMark() {
+        tempMark = null
+        tempLocationBean = null
+        closeLoadAnimation()
+    }
+
+    private fun startLoadAnimation() {
+        closeLoadAnimation()
+        loadingLayout.visibility = View.VISIBLE
+        val anim = AnimationUtils.loadAnimation(context, R.anim.loading_anim)
+        anim.interpolator = LinearInterpolator()
+        anim.repeatCount = Animation.INFINITE
+        iv_loading?.animation = anim
+        iv_loading?.startAnimation(anim)
+        tv_loading.text = mActivity.resources.getString(R.string.app_addressing_in_progress)
+    }
+
+    private fun closeLoadAnimation() {
+        loadingLayout.visibility = View.GONE
+        iv_loading?.clearAnimation()
+        subscribe?.dispose()
+        subscribe = null
+        proactivelyAddressingNum = 0
     }
 
     private fun initElectronicPoint() {
@@ -422,25 +459,36 @@ class LocationFragment : BaseFragment(),
         lifecycleScope.launch {
             try {
                 val resultBean = GuiderApiUtil.getApiService()
-                        .userPosition(accountId, 1, 1, "", "")
+                        .userPosition(accountId, -1, 20,
+                                DateUtilKotlin.localToUTC(startTimeValue)!!,
+                                DateUtilKotlin.localToUTC(endTimeValue)!!)
                 mDialog2?.hideDialog()
                 if (!resultBean.isNullOrEmpty() && resultBean.size > 1) {
                     val firstPosition = resultBean[0]
                     val endPosition = resultBean[resultBean.size - 1]
-                    startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
-                    endDisplayPerth(LatLng(endPosition.lat, endPosition.lng))
                     val latLngList = arrayListOf<LatLng>()
                     resultBean.forEach {
                         latLngList.add(LatLng(it.lat, it.lng))
                     }
+                    mGoogleMap?.clear()
+                    line = null
                     line = PolylineOptions()
                             .color(CommonUtils.getColor(mActivity, R.color.colorF18937))
                             .width(4f)
                             .geodesic(true)
                             .addAll(latLngList)
+                    startDisplayPerth(LatLng(firstPosition.lat, firstPosition.lng))
+                    endDisplayPerth(LatLng(endPosition.lat, endPosition.lng))
                     mGoogleMap?.addPolyline(line)
                     mGoogleMap?.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(latLngList[0], 16.0f))
+                            CameraUpdateFactory.newLatLngZoom(latLngList[0], 14.0f))
+                } else if (!resultBean.isNullOrEmpty() && resultBean.size == 1) {
+                    tempLocationBean = resultBean[0]
+                    if (tempLocationBean == null) return@launch
+                    mGoogleMap?.clear()
+                    val latLng = LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng)
+                    mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f))
+                    startDisplayPerth(latLng, true)
                 }
             } catch (e: Exception) {
                 mDialog2?.hideDialog()
@@ -554,7 +602,8 @@ class LocationFragment : BaseFragment(),
                 val resultBean = GuiderApiUtil.getApiService().setElectronicFence(data)
                 mActivity.dismissDialog()
                 if (resultBean == "true") {
-                    showToast(mActivity.resources.getString(R.string.app_set_success))
+                    ToastUtil.showCenterLong(mActivity,
+                            mActivity.resources.getString(R.string.app_set_success))
                 }
             } catch (e: Exception) {
                 mActivity.dismissDialog()
@@ -643,6 +692,14 @@ class LocationFragment : BaseFragment(),
                     if (accountId == 0) {
                         return
                     }
+                    if (locationNumberSet.text == mActivity.resources.getString(
+                                    R.string.app_cancel_the_addressing)) {
+                        proactivelyAddressingFinish("cancelSuccess")
+                        locationNumberSet.text =
+                                mActivity.resources.getString(
+                                        R.string.app_main_map_send_instructions)
+                        return
+                    }
                     //发起主动寻址
                     initiateActiveAddressing(accountId)
                 } else {
@@ -657,7 +714,7 @@ class LocationFragment : BaseFragment(),
                 } else {
                     intent.putExtra("entryType", "locationHistory")
                 }
-                startActivity(intent)
+                startActivityForResult(intent, HISTORY_RECORD_LOCATION)
             }
             trackEventsDateCalSelectIv -> {
                 searchFrontLayout.visibility = View.GONE
@@ -670,7 +727,7 @@ class LocationFragment : BaseFragment(),
             }
             searchLayout -> {
                 startTimeValue = "${startTimeTv.text} 00:00:00"
-                endTimeValue = "${endTimeTv.text} 00:00:00"
+                endTimeValue = "${endTimeTv.text} 24:00:00"
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventsDateLeft -> {
@@ -774,6 +831,7 @@ class LocationFragment : BaseFragment(),
         }
     }
 
+
     /**
      * 发起主动寻址
      */
@@ -795,7 +853,7 @@ class LocationFragment : BaseFragment(),
                 Log.e(TAG, if (StringUtil.isNotBlankAndEmpty(e.message)) e.message!! else "fail")
                 ToastUtil.showCustomToast(null, mActivity,
                         true,
-                        mActivity.resources.getString(R.string.app_main_send_fail))
+                        mActivity.resources.getString(R.string.app_main_location_send_fail))
             }
         }
     }
@@ -807,10 +865,8 @@ class LocationFragment : BaseFragment(),
         if (subscribe != null && proactivelyAddressingNum < 24) {
             return
         }
-        loadView = LoadingView(mActivity, false,
-                mActivity.resources.getString(R.string.app_addressing_in_progress),
-                false)
-        loadView?.show()
+        startLoadAnimation()
+        locationNumberSet.text = mActivity.resources.getString(R.string.app_cancel_the_addressing)
         val time = DateUtilKotlin.localToUTC(
                 DateUtil.localNowStringByPattern(DEFAULT_TIME_FORMAT_PATTERN))!!
         subscribe = Flowable.interval(0, 5, TimeUnit.SECONDS)
@@ -837,10 +893,12 @@ class LocationFragment : BaseFragment(),
                 val resultBean = GuiderApiUtil.getApiService().proactivelyAddressingData(
                         accountId, time)
                 if (!(resultBean is String && resultBean == "null") && resultBean != null) {
-                    val bean = ParseJsonData.parseJsonAny<UserPositionListBean>(resultBean)
-                    startDisplayPerth(LatLng(bean.lat, bean.lng))
+                    tempLocationBean = ParseJsonData.parseJsonAny<UserPositionListBean>(resultBean)
+                    if (tempLocationBean == null) return@launch
                     mGoogleMap?.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(LatLng(bean.lat, bean.lng), 16.0f))
+                            CameraUpdateFactory.newLatLngZoom(LatLng(tempLocationBean!!.lat,
+                                    tempLocationBean!!.lng), 16.0f))
+                    startDisplayPerth(LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng))
                     proactivelyAddressingFinish("success")
                 }
             } catch (e: Exception) {
@@ -850,12 +908,30 @@ class LocationFragment : BaseFragment(),
     }
 
     private fun proactivelyAddressingFinish(result: String) {
-        subscribe?.dispose()
-        loadView?.dismiss()
-        ToastUtil.showCustomToast(null, mActivity,
-                true, if (result == "success")
-            mActivity.resources.getString(R.string.app_main_map_addressing_success)
-        else mActivity.resources.getString(R.string.app_main_map_addressing_fail))
+        closeLoadAnimation()
+        if (result == "cancelSuccess") {
+            ToastUtil.showCustomToast(null, mActivity,
+                    true,
+                    mActivity.resources.getString(R.string.app_cancel_the_addressing_success)
+            )
+        } else {
+            ToastUtil.showCustomToast(null, mActivity,
+                    true, if (result == "success")
+                mActivity.resources.getString(R.string.app_main_map_addressing_success)
+            else mActivity.resources.getString(R.string.app_main_map_addressing_fail))
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //防止主动寻址进行中未终止
+        closeLoadAnimation()
+        if (locationNumberSet.text == mActivity.resources.getString(
+                        R.string.app_cancel_the_addressing)) {
+            locationNumberSet.text =
+                    mActivity.resources.getString(
+                            R.string.app_main_map_send_instructions)
+        }
     }
 
     /**
@@ -898,6 +974,15 @@ class LocationFragment : BaseFragment(),
             when (requestCode) {
                 LOCATION_FREQUENCY_SET -> {
                     showToast(mActivity.resources.getString(R.string.app_set_success))
+                }
+                HISTORY_RECORD_LOCATION -> {
+                    tempLocationBean =
+                            data.getSerializableExtra("clickLatLng") as UserPositionListBean?
+                    if (tempLocationBean == null) return
+                    mGoogleMap?.clear()
+                    val latLng = LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng)
+                    mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f))
+                    startDisplayPerth(latLng, true)
                 }
             }
         }
@@ -1003,17 +1088,19 @@ class LocationFragment : BaseFragment(),
                         LatLng(latLng.latitude, latLng.longitude)))
         customFourPoint?.tag = customFourMartTag
         customFourPoint?.isDraggable = false //设置不可移动
+        val tempList = arrayListOf<LatLng>()
+        tempList.add(LatLng(customFirstLatLng?.latitude!!,
+                customFirstLatLng?.longitude!!))
+        tempList.add(LatLng(customTwoLatLng?.latitude!!,
+                customTwoLatLng?.longitude!!))
+        tempList.add(LatLng(customThirdLatLng?.latitude!!,
+                customThirdLatLng?.longitude!!))
+        tempList.add(LatLng(customFourLatLng?.latitude!!,
+                customFourLatLng?.longitude!!))
+        val changeMapPointList = MapPolygonSortUtil.changeMapPoint(tempList)
         polygon = PolygonOptions()
                 .fillColor(CommonUtils.getColor(mActivity, R.color.color80F18937))
-                .strokeWidth(1.0f).add(
-                        LatLng(customFirstLatLng?.latitude!!,
-                                customFirstLatLng?.longitude!!),
-                        LatLng(customTwoLatLng?.latitude!!,
-                                customTwoLatLng?.longitude!!),
-                        LatLng(customThirdLatLng?.latitude!!,
-                                customThirdLatLng?.longitude!!),
-                        LatLng(customFourLatLng?.latitude!!,
-                                customFourLatLng?.longitude!!))
+                .strokeWidth(1.0f).addAll(changeMapPointList)
         mGoogleMap?.addPolygon(polygon)
     }
 
@@ -1111,22 +1198,39 @@ class LocationFragment : BaseFragment(),
     /**
      * 设置定位点（开始点）的mark标志
      */
-    private fun startDisplayPerth(latLng: LatLng) {
+    private fun startDisplayPerth(latLng: LatLng, isTempLocation: Boolean = false) {
 //        val transJC02LatLng =
 //                if (BuildConfig.DEBUG && tabPosition == 0) {
 //                    val gps84ToGcj02 =
 //                            MapPositionUtil.gps84_To_Gcj02(latLng.latitude, latLng.longitude)
 //                    LatLng(gps84ToGcj02.lat, gps84ToGcj02.lon)
 //                } else latLng
-        firstLocationLat = latLng.latitude
-        firstLocationLng = latLng.longitude
-        if (tabPosition == 0 || tabPosition == 3) {
-            createCustomMarkIcon()
+        if (tabPosition == 3 || isTempLocation) {
+            createCustomMarkIcon(true)
+        } else {
+            firstLocationLat = latLng.latitude
+            firstLocationLng = latLng.longitude
+            if (tabPosition == 0) {
+                createCustomMarkIcon()
+            }
+            if (tabPosition == 1) {
+                val bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_mark_start_bg)
+                setMarkCustomShow(bitmap)
+            }
         }
-        if (tabPosition == 1) {
-            val bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_mark_start_bg)
-            setMarkCustomShow(bitmap)
-        }
+    }
+
+    private fun setTempMarkCustomShow(bitmap: BitmapDescriptor?) {
+        if (mGoogleMap == null) return
+        if (tempLocationBean == null) return
+        tempMark = mGoogleMap?.addMarker(MarkerOptions()
+                .draggable(false).icon(bitmap).position(
+                        LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng)))
+        tempMark?.tag = tempMarkTag
+        locationFunctionExtend.postDelayed({
+            tempMark?.showInfoWindow()
+        }, 1000)
+        tempMark?.isDraggable = false //设置不可移动
     }
 
     private fun setMarkCustomShow(bitmap: BitmapDescriptor?) {
@@ -1143,7 +1247,7 @@ class LocationFragment : BaseFragment(),
         starPerth?.isDraggable = false //设置不可移动
     }
 
-    private fun createCustomMarkIcon() {
+    private fun createCustomMarkIcon(isTempLocation: Boolean = false) {
         var bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_map_mark_bg_with_head)
         if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(BIND_DEVICE_ACCOUNT_HEADER))) {
             val view = View.inflate(mActivity, R.layout.fragment_google_map_mark_custom, null)
@@ -1155,7 +1259,9 @@ class LocationFragment : BaseFragment(),
                                                      transition: Transition<in Bitmap>?) {
                             userHeaderIv.setImageBitmap(resource)
                             bitmap = BitmapDescriptorFactory.fromBitmap(convertViewToBitmap(view))
-                            setMarkCustomShow(bitmap)
+                            if (isTempLocation) {
+                                setTempMarkCustomShow(bitmap)
+                            } else setMarkCustomShow(bitmap)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {}
@@ -1163,7 +1269,9 @@ class LocationFragment : BaseFragment(),
                     })
 
         } else {
-            setMarkCustomShow(bitmap)
+            if (isTempLocation) {
+                setTempMarkCustomShow(bitmap)
+            } else setMarkCustomShow(bitmap)
         }
     }
 
@@ -1316,16 +1424,27 @@ class LocationFragment : BaseFragment(),
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
-        if (marker?.tag == martTag) {
+        if (marker?.tag == martTag || marker?.tag == tempMarkTag) {
             marker.showInfoWindow()
         }
         return true
     }
 
     override fun onInfoWindowClick(marker: Marker?) {
-        if (marker?.tag == martTag) {
-            showToast("开始导航")
+        if (marker?.tag == martTag || marker?.tag == tempMarkTag) {
             marker.hideInfoWindow()
+            if (marker.tag == martTag) {
+                if (MMKVUtil.containKey(LAST_LOCATION_POINT_LAT)) {
+                    val latLng = LatLng(
+                            MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0),
+                            MMKVUtil.getDouble(LAST_LOCATION_POINT_LNG, 0.0))
+                    MapUtils.startGuide(mActivity, latLng.latitude, latLng.longitude)
+                }
+            } else {
+                if (tempLocationBean == null) return
+                val latLng = LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng)
+                MapUtils.startGuide(mActivity, latLng.latitude, latLng.longitude)
+            }
         }
     }
 
@@ -1342,46 +1461,57 @@ class LocationFragment : BaseFragment(),
             return window
         }
 
-        private fun render(marker: Any, window: View) {
+        private fun render(marker: Marker, window: View) {
             val locationMethodTv = window.findViewById<TextView>(R.id.locationMethodTv)
             val timeTv = window.findViewById<TextView>(R.id.timeTv)
-            if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_TIME))) {
-                val localTime = DateUtilKotlin.uTCToLocal(
-                        MMKVUtil.getString(LAST_LOCATION_POINT_TIME),
+            val martLocationTv = window.findViewById<TextView>(R.id.martLocationTv)
+            if (marker.tag == martTag) {
+                if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_TIME))) {
+                    val localTime = DateUtilKotlin.uTCToLocal(
+                            MMKVUtil.getString(LAST_LOCATION_POINT_TIME),
+                            TIME_FORMAT_PATTERN1)
+                    timeTv.text = localTime
+                }
+
+                if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS))) {
+                    martLocationTv.visibility = View.VISIBLE
+                    val address = MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS)
+                    martLocationTv.text = address
+                } else {
+                    martLocationTv.visibility = View.GONE
+                }
+                if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_METHOD))) {
+                    val method = MMKVUtil.getString(LAST_LOCATION_POINT_METHOD)
+                    locationMethodTv.text = String.format(
+                            this@LocationFragment.mActivity.resources.getString(
+                                    R.string.app_map_location_method_content), method
+                    )
+                } else locationMethodTv.text = String.format(
+                        this@LocationFragment.mActivity.resources.getString(
+                                R.string.app_map_location_method_content), "WIFI"
+                )
+            } else if (marker.tag == tempMarkTag) {
+                val localTime = DateUtilKotlin.uTCToLocal(tempLocationBean?.createTime,
                         TIME_FORMAT_PATTERN1)
                 timeTv.text = localTime
-            }
-            val martLocationTv = window.findViewById<TextView>(R.id.martLocationTv)
-            if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS))) {
-                martLocationTv.visibility = View.VISIBLE
-                val address = MMKVUtil.getString(LAST_LOCATION_POINT_ADDRESS)
-                martLocationTv.text = address
-            } else {
-                martLocationTv.visibility = View.GONE
-            }
-            if (StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(LAST_LOCATION_POINT_METHOD))) {
-                val method = MMKVUtil.getString(LAST_LOCATION_POINT_METHOD)
-                locationMethodTv.text = String.format(
+                val address = tempLocationBean?.addr
+                if (StringUtil.isNotBlankAndEmpty(address)) {
+                    martLocationTv.visibility = View.VISIBLE
+                    martLocationTv.text = address
+                } else {
+                    martLocationTv.visibility = View.GONE
+                }
+                val method = tempLocationBean?.signalType
+                if (StringUtil.isNotBlankAndEmpty(method)) {
+                    locationMethodTv.text = String.format(
+                            this@LocationFragment.mActivity.resources.getString(
+                                    R.string.app_map_location_method_content), method
+                    )
+                } else locationMethodTv.text = String.format(
                         this@LocationFragment.mActivity.resources.getString(
-                                R.string.app_map_location_method_content), method
+                                R.string.app_map_location_method_content), "WIFI"
                 )
-            } else locationMethodTv.text = String.format(
-                    this@LocationFragment.mActivity.resources.getString(
-                            R.string.app_map_location_method_content), "WIFI"
-            )
-            val locationLayout = window.findViewById<ConstraintLayout>(R.id.locationLayout)
-            if (MMKVUtil.containKey(LAST_LOCATION_POINT_LAT)) {
-                val latLng = LatLng(
-                        MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0),
-                        MMKVUtil.getDouble(LAST_LOCATION_POINT_LNG, 0.0))
-                locationLayout.setOnClickListener(object : OnNoDoubleClickListener {
-                    override fun onNoDoubleClick(v: View) {
-                        MapUtils.startGuide(mActivity, latLng.latitude, latLng.longitude)
-                    }
-
-                })
             }
-
         }
 
         override fun getInfoContents(p0: Marker?): View? {
@@ -1442,6 +1572,7 @@ class LocationFragment : BaseFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
+        closeLoadAnimation()
         if (selectDateDialog != null) {
             selectDateDialog?.closeDialog()
         }

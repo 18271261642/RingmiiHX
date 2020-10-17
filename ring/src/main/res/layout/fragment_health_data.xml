@@ -30,12 +30,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:text="@string/app_main_health_blood_pressure"
-            android:textColor="@color/colorF18937"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
+            android:id="@+id/bloodTitle"
             app:layout_constraintBottom_toBottomOf="@id/bloodIv"
             app:layout_constraintStart_toEndOf="@id/bloodIv"
             app:layout_constraintTop_toTopOf="@id/bloodIv" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/white"
+            android:id="@+id/bloodUnit"
+            android:textSize="@dimen/sp_13"
+            android:text="(mmHg)"
+            app:layout_constraintBottom_toBottomOf="@id/bloodIv"
+            app:layout_constraintStart_toEndOf="@id/bloodTitle"
+            app:layout_constraintTop_toTopOf="@id/bloodIv" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bloodBottomStatusLayout"
             android:layout_width="wrap_content"
@@ -93,7 +104,7 @@
             android:id="@+id/bloodChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="5dp"
+            android:layout_margin="5dp"
             app:layout_constraintBottom_toTopOf="@id/bloodBottomStatusLayout"
             app:layout_constraintTop_toBottomOf="@id/bloodIv" />
 
@@ -137,15 +148,27 @@
             android:text="@string/app_main_health_heart_rate"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
+            android:id="@+id/heartTitle"
             app:layout_constraintBottom_toBottomOf="@id/heartIv"
             app:layout_constraintStart_toEndOf="@id/heartIv"
+            app:layout_constraintTop_toTopOf="@id/heartIv" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/white"
+            android:id="@+id/heartUnit"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/heartIv"
+            app:layout_constraintStart_toEndOf="@id/heartTitle"
+            android:text="(bpm)"
             app:layout_constraintTop_toTopOf="@id/heartIv" />
 
         <lecho.lib.hellocharts.view.LineChartView
             android:id="@+id/heartChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="10dp"
+            android:layout_margin="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/heartIv" />
 
@@ -188,10 +211,21 @@
             android:text="@string/app_main_health_body_temp"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
+            android:id="@+id/tempTitle"
             app:layout_constraintBottom_toBottomOf="@id/tempIv"
             app:layout_constraintStart_toEndOf="@id/tempIv"
             app:layout_constraintTop_toTopOf="@id/tempIv" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/white"
+            android:id="@+id/tempUnit"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/tempIv"
+            app:layout_constraintStart_toEndOf="@id/tempTitle"
+            android:text="(℃)"
+            app:layout_constraintTop_toTopOf="@id/tempIv" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tempBottomStatusLayout"
             android:layout_width="wrap_content"
@@ -424,10 +458,21 @@
             android:text="@string/app_main_health_sport"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
+            android:id="@+id/sportTitle"
             app:layout_constraintBottom_toBottomOf="@id/sportIv"
             app:layout_constraintStart_toEndOf="@id/sportIv"
             app:layout_constraintTop_toTopOf="@id/sportIv" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/white"
+            android:id="@+id/sportUnit"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@id/sportIv"
+            app:layout_constraintStart_toEndOf="@id/sportTitle"
+            android:text="@string/app_main_health_step_unit"
+            app:layout_constraintTop_toTopOf="@id/sportIv" />
         <lecho.lib.hellocharts.view.ColumnChartView
             android:id="@+id/sportChart"
             android:layout_width="match_parent"

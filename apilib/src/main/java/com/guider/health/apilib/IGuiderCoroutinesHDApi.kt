@@ -2,6 +2,7 @@ package com.guider.health.apilib
 
 import com.guider.health.apilib.ApiConsts.KEY_API_HOST_HD
 import com.guider.health.apilib.bean.*
+import com.guider.health.apilib.enums.SortType
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -25,7 +26,8 @@ interface IGuiderCoroutinesHDApi {
             @Query("page") page: Int,
             @Query("row") row: Int,
             @Query("startTime") startTime: String? = null,
-            @Query("endTime") endTime: String? = null
+            @Query("endTime") endTime: String? = null,
+            @Query("sort") sort: SortType? = SortType.ASC
     ): List<BloodListBeann>
 
     /**
@@ -79,7 +81,8 @@ interface IGuiderCoroutinesHDApi {
             @Query("page") page: Int,
             @Query("row") row: Int,
             @Query("sTime") startTime: String? = null,
-            @Query("eTime") endTime: String? = null
+            @Query("eTime") endTime: String? = null,
+            @Query("sort") sort: SortType? = SortType.ASC
     ): Any?
 
     /**
@@ -109,7 +112,8 @@ interface IGuiderCoroutinesHDApi {
             @Query("page") page: Int,
             @Query("row") row: Int,
             @Query("startTime") startTime: String? = null,
-            @Query("endTime") endTime: String? = null
+            @Query("endTime") endTime: String? = null,
+            @Query("sort") sort: SortType? = SortType.ASC
     ): List<BloodSugarListBean>
 
     /**

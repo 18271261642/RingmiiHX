@@ -1,5 +1,7 @@
 package com.guider.health.apilib.bean
 
+import java.io.Serializable
+
 data class UserPositionListBean(
         val accountId: Int,
         val addr: String,
@@ -12,4 +14,4 @@ data class UserPositionListBean(
         val testTime: String,
         val type: String,
         val updateTime: String
-)
+):Serializable

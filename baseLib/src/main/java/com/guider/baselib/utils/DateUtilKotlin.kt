@@ -38,6 +38,23 @@ object DateUtilKotlin {
         return DateUtil.dateToString(calendar.time, format)
     }
 
+    /**
+     * Description: 转换时间格式
+     * @param time 时间字符串
+     * @return 指定时间字符串
+     */
+    @SuppressLint("SimpleDateFormat")
+    fun timeFormat(time: String?, format: String): String? {
+        val utcTimeValue = time?.replace("T", " ")
+                ?.replace("Z", "")
+        val sdf = SimpleDateFormat(DEFAULT_TIME_FORMAT_PATTERN)
+        val date = sdf.parse(utcTimeValue!!)
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = date!!
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR))
+        return DateUtil.dateToString(calendar.time, format)
+    }
+
     //获取当前完整的日期和时间
     @SuppressLint("SimpleDateFormat")
     fun getNowDateTime(): String? {

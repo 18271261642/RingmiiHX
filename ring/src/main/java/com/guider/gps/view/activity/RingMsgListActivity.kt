@@ -10,10 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.CommonUtils
-import com.guider.baselib.utils.MMKVUtil
-import com.guider.baselib.utils.USER
-import com.guider.baselib.utils.toastShort
+import com.guider.baselib.utils.*
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
 import com.guider.gps.R
 import com.guider.gps.view.fragment.RingMsgListFragment
@@ -291,6 +288,11 @@ class RingMsgListActivity : BaseActivity() {
                 }
             }
         }
+        //刷新主页的消息红点
+        EventBusUtils.sendEvent(EventBusEvent(
+                EventBusAction.REFRESH_RIGHT_RED_POINT,
+                "${mBadgeCountList[0]}&${mBadgeCountList[1]}"
+        ))
     }
 
     private fun formatBadgeNumber(value: Int): String? {

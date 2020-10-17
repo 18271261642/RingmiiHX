@@ -1,12 +1,12 @@
 package com.guider.gps.view.activity
 
+import android.app.Activity
+import android.content.Intent
+import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.BIND_DEVICE_ACCOUNT_ID
-import com.guider.baselib.utils.MMKVUtil
-import com.guider.baselib.utils.StringUtil
-import com.guider.baselib.utils.toastShort
+import com.guider.baselib.utils.*
 import com.guider.gps.R
 import com.guider.gps.adapter.HistoryRecordListAdapter
 import com.guider.health.apilib.GuiderApiUtil
@@ -45,11 +45,21 @@ class HistoryRecordActivity : BaseActivity() {
 
     override fun initView() {
         historyRecordRv.layoutManager = LinearLayoutManager(this)
+        emptyData.visibility = View.VISIBLE
     }
 
     override fun initLogic() {
         adapter = HistoryRecordListAdapter(mContext!!, historyRecordList)
         historyRecordRv.adapter = adapter
+        adapter.setListener(object : AdapterOnItemClickListener {
+            override fun onClickItem(position: Int) {
+                val intent = Intent()
+                intent.putExtra("clickLatLng", historyRecordList[position])
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+
+        })
         refreshLayout.setOnRefreshListener {
             page = 1
             isRefresh = true
@@ -58,7 +68,7 @@ class HistoryRecordActivity : BaseActivity() {
         refreshLayout.setOnLoadMoreListener {
             page++
             isLoadMore = true
-            getUserLocationHistoryData()
+            getUserLocationHistoryData(false)
         }
         getUserLocationHistoryData()
     }
@@ -80,9 +90,8 @@ class HistoryRecordActivity : BaseActivity() {
                             .getProactivelyAddressingList(accountId, page, 20)
                 }
                 if (isShowLoading) dismissDialog()
-                isRefresh = false
-                isLoadMore = false
                 if (!resultBean.isNullOrEmpty()) {
+                    emptyData.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
                     if (isLoadMore) refreshLayout.finishLoadMore(500)
                     if (resultBean.size < 20) {
@@ -97,6 +106,7 @@ class HistoryRecordActivity : BaseActivity() {
                 } else {
                     if (isRefresh) {
                         refreshLayout.finishRefresh()
+                        emptyData.visibility = View.VISIBLE
                     }
                     if (isLoadMore) {
                         refreshLayout.finishLoadMore()
@@ -107,6 +117,8 @@ class HistoryRecordActivity : BaseActivity() {
                         adapter.setSourceList(historyRecordList)
                     }
                 }
+                isRefresh = false
+                isLoadMore = false
             } catch (e: Exception) {
                 if (isShowLoading) dismissDialog()
                 isRefresh = false

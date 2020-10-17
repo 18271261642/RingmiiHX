@@ -283,13 +283,13 @@ class HealthFragment : BaseFragment() {
 
     private fun showSleepTime(list: List<SleepDataListBean>) {
         if (list.size == 1) {
-            val startTime = DateUtilKotlin.uTCToLocal(list[0].startTime, TIME_FORMAT_PATTERN8)
-            val endTime = DateUtilKotlin.uTCToLocal(list[0].endTime, TIME_FORMAT_PATTERN8)
+            val startTime = DateUtilKotlin.timeFormat(list[0].startTime, TIME_FORMAT_PATTERN8)
+            val endTime = DateUtilKotlin.timeFormat(list[0].endTime, TIME_FORMAT_PATTERN8)
             sleepTimeTv.text = mActivity.resources.getString(
                     R.string.app_main_health_time_sleep, startTime, endTime)
         } else {
-            val startTime = DateUtilKotlin.uTCToLocal(list[0].startTime, TIME_FORMAT_PATTERN8)
-            val endTime = DateUtilKotlin.uTCToLocal(
+            val startTime = DateUtilKotlin.timeFormat(list[0].startTime, TIME_FORMAT_PATTERN8)
+            val endTime = DateUtilKotlin.timeFormat(
                     list[list.size - 1].startTime, TIME_FORMAT_PATTERN8)
             sleepTimeTv.text = mActivity.resources.getString(
                     R.string.app_main_health_time_sleep, startTime, endTime)
@@ -437,8 +437,8 @@ class HealthFragment : BaseFragment() {
         axisX.textColor = Color.WHITE //X轴灰色
         val mAxisValues = arrayListOf<AxisValue>()
         for (i in list.indices) {
-            val label = AxisValue((i).toFloat()).setLabel(
-                    DateUtilKotlin.uTCToLocal(list[i].startTime, TIME_FORMAT_PATTERN8)!!)
+            val timeFormat = DateUtilKotlin.timeFormat(list[i].startTime, TIME_FORMAT_PATTERN8)!!
+            val label = AxisValue((i).toFloat()).setLabel(timeFormat)
             mAxisValues.add(label)
         }
         axisX.values = mAxisValues //设置x轴各个坐标点名称
@@ -853,13 +853,13 @@ class HealthFragment : BaseFragment() {
                         resources.getString(R.string.app_main_health_blood_pressure))
                 startActivity(intent)
             }
-            tempLayout -> {
+            heartLayout -> {
                 val intent = Intent(mActivity, HealthDataListActivity::class.java)
                 intent.putExtra("type",
                         resources.getString(R.string.app_main_health_heart_rate))
                 startActivity(intent)
             }
-            heartLayout -> {
+            tempLayout -> {
                 val intent = Intent(mActivity, HealthDataListActivity::class.java)
                 intent.putExtra("type",
                         resources.getString(R.string.app_main_health_body_temp))

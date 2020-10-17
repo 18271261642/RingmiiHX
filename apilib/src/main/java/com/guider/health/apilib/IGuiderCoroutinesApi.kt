@@ -247,8 +247,8 @@ interface IGuiderCoroutinesApi {
     suspend fun userPosition(@Query("accountId") accountId: Int,
                              @Query("page") page: Int,
                              @Query("row") row: Int,
-                             @Query("startTime") startTime: String,
-                             @Query("endTime") endTime: String): List<UserPositionListBean>
+                             @Query("start") startTime: String,
+                             @Query("end") endTime: String): List<UserPositionListBean>
 
     /**
      * 获取手环设备定位频率设置

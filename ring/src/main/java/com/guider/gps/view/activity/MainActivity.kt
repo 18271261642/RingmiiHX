@@ -756,9 +756,9 @@ class MainActivity : BaseActivity() {
                 mDismiss.setOnClickListener {
                     dialog?.dismiss()
                 }
-                mDismiss.postDelayed({
-                    dialog?.dismiss()
-                }, 3000)
+//                mDismiss.postDelayed({
+//                    dialog?.dismiss()
+//                }, 3000)
             }
         }
         dialog.initView()

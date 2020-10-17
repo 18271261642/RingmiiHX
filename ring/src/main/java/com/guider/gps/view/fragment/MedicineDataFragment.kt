@@ -18,6 +18,7 @@ import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.BloodListBeann
 import com.guider.health.apilib.bean.BloodOxygenListBean
 import com.guider.health.apilib.bean.BloodSugarListBean
+import com.guider.health.apilib.enums.SortType
 import kotlinx.android.synthetic.main.fragment_medicine_data.*
 import kotlinx.coroutines.launch
 import lecho.lib.hellocharts.model.*
@@ -68,7 +69,7 @@ class MedicineDataFragment : BaseFragment() {
             val string = getString(fragmentType)
             medicineType = string!!
         }
-        suggestTitleTv.text =mActivity.resources.getString(R.string.app_health_suggest)
+        suggestTitleTv.text = mActivity.resources.getString(R.string.app_health_suggest)
         chartTitleTv.text = mActivity.resources.getString(R.string.app_main_medicine_chart_title)
         initDataChart()
         answerLayout.setOnClickListener(this)
@@ -110,14 +111,17 @@ class MedicineDataFragment : BaseFragment() {
         when (medicineType) {
             resources.getString(R.string.app_main_health_blood_sugar) -> {
                 dataUnitTv.text = mActivity.resources.getString(R.string.glu_unit_food_2)
+                dataChartUnit.text = mActivity.resources.getString(R.string.glu_unit_food_2)
                 getBloodSugarData()
             }
             resources.getString(R.string.app_main_health_blood_pressure) -> {
                 dataUnitTv.text = Unit().bp
+                dataChartUnit.text = Unit().bp
                 getBloodData()
             }
             resources.getString(R.string.app_main_health_blood_oxygen) -> {
                 dataUnitTv.text = Unit().bloodO2
+                dataChartUnit.text = Unit().bloodO2
                 getBloodOxygenData()
             }
         }
@@ -131,7 +135,7 @@ class MedicineDataFragment : BaseFragment() {
         lifecycleScope.launch {
             try {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodChartData(accountId, 1, 7)
+                        .getHealthBloodChartData(accountId, 1, 7,sort = SortType.DESC)
                 if (!isRefresh) mDialog1?.hideDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     dealBloodSuccessList(resultBean)
@@ -258,8 +262,8 @@ class MedicineDataFragment : BaseFragment() {
                     pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
                 } else {
                     val colorInt =
-                            when (list[i - 1].state2.substring(
-                                    list[i - 1].state2.indexOf(",") + 1)) {
+                            when (list[i - 1].state2.substring(0,
+                                    list[i - 1].state2.indexOf(","))) {
                                 "偏低" -> {
                                     CommonUtils.getColor(mActivity, R.color.colorF18937)
                                 }
@@ -275,8 +279,7 @@ class MedicineDataFragment : BaseFragment() {
         } else {
             for (i in 0 until pointYValues.size) {
                 val colorInt =
-                        when (list[i].state2.substring(
-                                list[i].state2.indexOf(",") + 1)) {
+                        when (list[i].state2.substring(0, list[i].state2.indexOf(","))) {
                             "偏低" -> {
                                 CommonUtils.getColor(mActivity, R.color.colorF18937)
                             }
@@ -324,11 +327,10 @@ class MedicineDataFragment : BaseFragment() {
             }
         } else {
             for (i in 0 until pointYValues.size) {
-
-
+                val substring = list[i].state2.substring(
+                        list[i].state2.indexOf(",") + 1)
                 val colorInt =
-                        when (list[i].state2.substring(
-                                list[i].state2.indexOf(",") + 1)) {
+                        when (substring) {
                             "偏低" -> {
                                 CommonUtils.getColor(mActivity, R.color.colorF18937)
                             }
@@ -351,7 +353,7 @@ class MedicineDataFragment : BaseFragment() {
         lifecycleScope.launch {
             try {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodOxygenData(accountId, 1, 7)
+                        .getHealthBloodOxygenData(accountId, 1, 7,sort = SortType.DESC)
                 if (!isRefresh) mDialog2?.hideDialog()
                 if (resultBean is String && resultBean == "null") {
                     dealBloodOxygenEmptyList()
@@ -495,7 +497,7 @@ class MedicineDataFragment : BaseFragment() {
         lifecycleScope.launch {
             try {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodSugarChartData(accountId, 1, 7)
+                        .getHealthBloodSugarChartData(accountId, 1, 7,sort = SortType.DESC)
                 if (!isRefresh) mDialog3?.hideDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     dealBloodSugarSuccessList(resultBean)
@@ -663,8 +665,8 @@ class MedicineDataFragment : BaseFragment() {
                     pointValues.add(PointValue(i.toFloat(), pointYValues[i]))
                 } else {
                     val colorInt =
-                            when (list[i - 1].state2.substring(
-                                    list[i - 1].state2.indexOf(",") + 1)) {
+                            when (list[i - 1].state2.substring(0,
+                                    list[i - 1].state2.indexOf(","))) {
                                 "偏低" -> {
                                     CommonUtils.getColor(mActivity, R.color.colorF18937)
                                 }
@@ -680,8 +682,8 @@ class MedicineDataFragment : BaseFragment() {
         } else {
             for (i in 0 until pointYValues.size) {
                 val colorInt =
-                        when (list[i].state2.substring(
-                                list[i].state2.indexOf(",") + 1)) {
+                        when (list[i].state2.substring(0,
+                                list[i].state2.indexOf(","))) {
                             "偏低" -> {
                                 CommonUtils.getColor(mActivity, R.color.colorF18937)
                             }

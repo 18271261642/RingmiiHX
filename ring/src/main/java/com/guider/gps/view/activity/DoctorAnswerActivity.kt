@@ -146,7 +146,6 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                         .getAnswerMsgList(1, MMKVUtil.getInt(USER.USERID), page,
                                 20, searchTime)
                 if (!isLoadMore) dismissDialog()
-                isLoadMore = false
                 if (resultBean != null) {
                     if (resultBean.isNullOrEmpty()) {
                         loadDataEmpty()
@@ -171,6 +170,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                 } else {
                     loadDataEmpty()
                 }
+                isLoadMore = false
             } catch (e: Exception) {
                 if (!isLoadMore) dismissDialog()
                 isLoadMore = false

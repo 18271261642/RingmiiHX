@@ -24,5 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
+    <TextView
+        android:id="@+id/emptyData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/app_no_data"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

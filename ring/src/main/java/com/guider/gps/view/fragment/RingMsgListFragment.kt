@@ -182,9 +182,9 @@ class RingMsgListFragment : BaseFragment() {
                     }
                     careAdapter.setSourceList(careMsgList)
                 } else {
-                    emptyData.visibility = View.VISIBLE
                     if (isRefresh) {
                         refreshLayout.finishRefresh()
+                        emptyData.visibility = View.VISIBLE
                     }
                     if (isLoadMore) {
                         refreshLayout.finishLoadMore()
@@ -231,9 +231,9 @@ class RingMsgListFragment : BaseFragment() {
                     }
                     systemAdapter.setSourceList(systemMsgList)
                 } else {
-                    emptyData.visibility = View.VISIBLE
                     if (isRefresh) {
                         refreshLayout.finishRefresh()
+                        emptyData.visibility = View.VISIBLE
                     }
                     if (isLoadMore) {
                         refreshLayout.finishLoadMore()

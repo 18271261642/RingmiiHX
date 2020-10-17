@@ -41,6 +41,16 @@ object ToastUtil {
     }
 
     @SuppressLint("ShowToast")
+    fun showCenterLong(context: Context, text: CharSequence) {
+        if (toast == null) {
+            toast = Toast.makeText(context, text, Toast.LENGTH_LONG)
+        }
+        toast!!.setGravity(Gravity.CENTER,0,0)
+        toast!!.setText(text)
+        toast!!.show()
+    }
+
+    @SuppressLint("ShowToast")
     fun show(context: Context, @StringRes textRes: Int) {
         if (toast == null) {
             toast = Toast.makeText(context, textRes, Toast.LENGTH_SHORT)
