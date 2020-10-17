@@ -1572,7 +1572,7 @@ class LocationFragment : BaseFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        closeLoadAnimation()
+        proactivelyAddressingNum = 0
         if (selectDateDialog != null) {
             selectDateDialog?.closeDialog()
         }
