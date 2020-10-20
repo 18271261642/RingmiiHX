@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -51,7 +53,7 @@ import java.util.Map;
  * Created by Admin
  * Date 2019/3/14
  */
-public class CommDataFragment extends LazyFragment implements  View.OnClickListener{
+public class CommDataFragment extends LazyFragment implements View.OnClickListener {
 
     private static final String TAG = "CommDataFragment";
 
@@ -109,7 +111,7 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
     //血压的数据源
     private List<SparseIntArray> bloodList = new ArrayList<>();
 
-    String filtPath = Environment.getExternalStorageDirectory()+"/DCIM/";
+    String filtPath = Environment.getExternalStorageDirectory() + "/DCIM/";
 
     private int SectectCode = 7;
 
@@ -189,7 +191,7 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
         String bleName = WatchUtils.getSherpBleName(getActivity());
         if (WatchUtils.isEmpty(bleName))
             return;
-        Log.e(TAG,"-------bleName="+bleName);
+        Log.e(TAG, "-------bleName=" + bleName);
 //        if (bleName.equals("B30")
 //                || bleName.equals("Ringmii")
 //                || bleName.equals("B31S")
@@ -213,7 +215,7 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
-        if(isVisible){
+        if (isVisible) {
             setClearStyle(0);
         }
     }
@@ -235,7 +237,6 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
         String userId = (String) SharedPreferencesUtils.readObject(getContext(), Commont.USER_ID_DATA);
 
 
-
     }
 
 
@@ -244,7 +245,7 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
         mValues.clear();
         xStepList.clear();
         //String endDay = WatchUtils.obtainFormatDate(1); //默认昨天
-        String endDay = WatchUtils.obtainAroundDate(WatchUtils.getCurrentDate(),false);
+        String endDay = WatchUtils.obtainAroundDate(WatchUtils.getCurrentDate(), false);
         String startDay;
 
         switch (code) {
@@ -263,14 +264,14 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
 
 
         String bleMac = WatchUtils.getSherpBleMac(getContext());
-        if (!WatchUtils.isEmpty(bleMac)){
+        if (!WatchUtils.isEmpty(bleMac)) {
 
-            Log.e(TAG,"----startDay="+startDay+"--=endDay="+endDay);
+            Log.e(TAG, "----startDay=" + startDay + "--=endDay=" + endDay);
 
             //步数的集合
             List<CommDownloadDb> stepCountDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
                     CommDBManager.COMM_TYPE_STEP, startDay, endDay);
-            new GetJsonDataUtil().writeTxtToFile("step"+code+"="+gson.toJson(stepCountDb),filtPath,"step.json");
+            new GetJsonDataUtil().writeTxtToFile("step" + code + "=" + gson.toJson(stepCountDb), filtPath, "step.json");
             if (stepCountDb != null && !stepCountDb.isEmpty()) {
                 analysisStepData(stepCountDb, code);
             }
@@ -279,7 +280,7 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
             //心率
             List<CommDownloadDb> heartDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
                     CommDBManager.COMM_TYPE_HEART, startDay, endDay);
-            new GetJsonDataUtil().writeTxtToFile("heart"+code+"="+gson.toJson(heartDb),filtPath,"heart.json");
+            new GetJsonDataUtil().writeTxtToFile("heart" + code + "=" + gson.toJson(heartDb), filtPath, "heart.json");
             if (heartDb != null && !heartDb.isEmpty()) {
                 analysisHeartData(heartDb, code);
             }
@@ -698,7 +699,6 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
     }
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -958,7 +958,10 @@ public class CommDataFragment extends LazyFragment implements  View.OnClickListe
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return sleepXList.get((int) value);
+                //增加下标和数组长度对比，防止数组越界
+                if ((int) value <= sleepXList.size() - 1)
+                    return sleepXList.get((int) value);
+                else  return  "";
             }
         });
         xAxis.setEnabled(true);

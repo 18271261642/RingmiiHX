@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -32,7 +34,7 @@ import com.just.agentweb.AgentWebConfig;
 import com.just.agentweb.DefaultWebClient;
 import com.just.agentweb.WebViewClient;
 
-public class WebviewAgent implements IWebviewAgent{
+public class WebviewAgent implements IWebviewAgent {
     private static String TAG = "WebviewAgent";
     private Activity mActivity;
     private Fragment mFragment;
@@ -55,7 +57,7 @@ public class WebviewAgent implements IWebviewAgent{
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    initWebview(mUrl, getAndroidInterface());
+                    initWebView(mUrl, getAndroidInterface());
                     break;
             }
         }
@@ -67,7 +69,7 @@ public class WebviewAgent implements IWebviewAgent{
         mUrl = url;
         mBaseAndroidInterface = baseAndroidInterface;
 
-        initWebview(url, baseAndroidInterface);
+        initWebView(url, baseAndroidInterface);
     }
 
     public WebviewAgent(Fragment fragment, String url, ViewGroup rootView, BaseAndroidInterface baseAndroidInterface) {
@@ -77,7 +79,7 @@ public class WebviewAgent implements IWebviewAgent{
         mBaseAndroidInterface = baseAndroidInterface;
 
         // mEventHandler.sendEmptyMessage(1);
-        initWebview(url, baseAndroidInterface);
+        initWebView(url, baseAndroidInterface);
     }
 
     public void onWebviewShow() {
@@ -102,16 +104,18 @@ public class WebviewAgent implements IWebviewAgent{
     public boolean onBack() {
         return mAgentWeb.back();
     }
-    protected void initWebview(String url, BaseAndroidInterface baseAndroidInterface) {
+
+    protected void initWebView(String url, BaseAndroidInterface baseAndroidInterface) {
         AgentWeb.AgentBuilder builder;
-        if (mActivity  != null)
+        if (mActivity != null)
             builder = AgentWeb.with(mActivity);
-        else
+        else if (mFragment != null)
             builder = AgentWeb.with(mFragment);
+        else return;
 
         mAgentWeb = builder
                 .setAgentWebParent(mRootView, new ViewGroup.LayoutParams(-1, -1))
-                        // new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))// 传入AgentWeb的父控件。
+                // new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))// 传入AgentWeb的父控件。
                 .useDefaultIndicator(-1, 3) // 设置进度条颜色与高度，-1为默认值，高度为2，单位为dp。
                 .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK) // 严格模式 Android 4.2.2 以下会放弃注入对象 ，使用AgentWebView没影响。
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1) // 参数1是错误显示的布局，参数2点击刷新控件ID -1表示点击整个布局都刷新， AgentWeb 3.0.0 加入。

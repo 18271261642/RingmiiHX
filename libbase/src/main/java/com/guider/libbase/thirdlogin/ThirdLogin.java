@@ -152,11 +152,12 @@ public class ThirdLogin {
 
             @Override
             public void onLoginFailure(@Nullable LineLoginResult result) {
-                Log.e(TAG, "onLoginFailure : " + result.toString());
+                Log.e(TAG, "onLoginFailure : "
+                        + (result != null ? result.getErrorData().getMessage() : "fail"));
                 if (result.getResponseCode() == LineApiResponseCode.CANCEL) {
                     showToast("Login cancel");
                 } else {
-                    showToast(result.getErrorData().getMessage());
+                    showToast("Login Fail");
                 }
             }
         });
