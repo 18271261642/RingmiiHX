@@ -156,7 +156,7 @@ class MainActivity : BaseActivity() {
     private fun getWalkTargetData() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService().getUserRingSet(accountId)
                 if (resultBean != null) {
                     MMKVUtil.saveInt(TARGET_STEP, resultBean.walkTarget)
@@ -165,9 +165,7 @@ class MainActivity : BaseActivity() {
                     MMKVUtil.saveBoolean(HR_CHECK, resultBean.hrOpen)
                     MMKVUtil.saveInt(HR_INTERVAL, resultBean.hrInterval)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -189,29 +187,25 @@ class MainActivity : BaseActivity() {
 
     private fun getCareMsgUndoNum(accountId: Int) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getCareMsgUndo(accountId)
                 if (resultBean != null) {
                     careMsgUndoNum = resultBean.toInt()
                     if (careMsgUndoNum != 0) setShowRightPoint(true)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun getAbnormalMsgUndoNum(accountId: Int) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getAbnormalMsgUndo(accountId)
                 if (resultBean != null) {
                     abnormalMsgUndoNum = resultBean.toInt()
                     if (abnormalMsgUndoNum != 0) setShowRightPoint(true)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -277,12 +271,12 @@ class MainActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(USER.USERID, 0)
         val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         val bingAccountName = MMKVUtil.getString(BIND_DEVICE_NAME)
-        if (isShowDialog) showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                if (isShowDialog) showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getGroupBindMember(accountId = accountId)
-                if (isShowDialog) dismissDialog()
                 if (resultBean != null) {
                     bindListBean = resultBean
                     run breaking@{
@@ -297,7 +291,7 @@ class MainActivity : BaseActivity() {
                                             Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(intent)
                                     finish()
-                                    return@launch
+                                    return@resultParse
                                 }
                                 return@breaking
                             }
@@ -325,10 +319,9 @@ class MainActivity : BaseActivity() {
                     }
                     drawAdapter.setSourceList(bindDeviceList)
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 if (isShowDialog) dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -339,7 +332,7 @@ class MainActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (accountId == 0) return
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .userPosition(accountId, 1, 1, "", "")
                 if (!resultBean.isNullOrEmpty() && resultBean.size == 1) {
@@ -359,9 +352,7 @@ class MainActivity : BaseActivity() {
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
                     MMKVUtil.clearByKey(LAST_LOCATION_POINT_METHOD)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -396,7 +387,6 @@ class MainActivity : BaseActivity() {
     }
 
     fun unbindDeviceFromMineFragment(accountId: Int) {
-        showDialog()
         var deviceCode = ""
         bindDeviceList.forEach {
             if (it.accountId == accountId) {
@@ -405,11 +395,13 @@ class MainActivity : BaseActivity() {
             }
         }
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .unBindDeviceWithAccount(accountId, deviceCode)
                 dismissDialog()
-                if (resultBean == null) return@launch
+                if (resultBean == null) return@resultParse
                 toastShort(resources.getString(R.string.app_main_unbind_success))
                 CommonUtils.logOutClearMMKV()
                 val intent = Intent(mContext, LoginActivity::class.java)
@@ -424,10 +416,9 @@ class MainActivity : BaseActivity() {
 //                        EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
 //                        false))
 //                unBindAndEnterAddDevice()
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -540,23 +531,23 @@ class MainActivity : BaseActivity() {
 
     private fun unBindGroupMemberEvent(position: Int) {
         if (bindListBean != null && bindListBean!!.userGroupId != 0) {
-            showDialog()
             val groupId = bindListBean!!.userGroupId
             val accountId = bindDeviceList[position].accountId
             lifecycleScope.launch {
-                try {
+                ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                    showDialog()
+                }, block = {
                     val resultBean = GuiderApiUtil.getApiService()
                             .unBindGroupMember(groupId, accountId)
-                    dismissDialog()
+
                     if (resultBean != null) {
                         bindListBean!!.userGroupId = groupId
                         bindListBean!!.userInfos = resultBean
                         unBindDeviceAdapterShow(position)
                     }
-                } catch (e: Exception) {
+                }, onRequestFinish = {
                     dismissDialog()
-                    toastShort(e.message!!)
-                }
+                })
             }
         }
     }
@@ -667,7 +658,7 @@ class MainActivity : BaseActivity() {
      */
     private fun getLatestSystemMsg(accountId: Int) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService().getSystemMsgLatest(
                         accountId, latestSystemMsgTime)
                 if (!(resultBean is String && resultBean == "null") && resultBean != null) {
@@ -676,10 +667,9 @@ class MainActivity : BaseActivity() {
                         latestSystemMsgTime = bean.createTime!!
                     showSystemMsgDialog("${bean.name},${bean.content}", bean.type)
                 }
-            } catch (e: Exception) {
-                Log.i("systemMsg", e.message!!)
-                toastShort(mContext!!.resources.getString(R.string.app_data_request_error))
-            }
+            }, onError = {
+                Log.i("systemMsg", it.message!!)
+            })
         }
     }
 

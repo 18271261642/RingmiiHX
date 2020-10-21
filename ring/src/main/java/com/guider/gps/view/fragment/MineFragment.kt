@@ -228,13 +228,13 @@ class MineFragment : BaseFragment() {
     }
 
     private fun setTargetStepData(sportValueInt: Int) {
-        mActivity.showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .setWalkTarget(accountId, sportValueInt)
-                mActivity.dismissDialog()
                 if (resultBean != null) {
                     sportValue.text = sportValueInt.toString()
                     MMKVUtil.saveInt(TARGET_STEP, sportValueInt)
@@ -242,10 +242,9 @@ class MineFragment : BaseFragment() {
                             REFRESH_TARGET_STEP, sportValueInt))
                     showToast(mActivity.resources.getString(R.string.app_set_success))
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 mActivity.dismissDialog()
-                showToast(e.message!!)
-            }
+            })
         }
     }
 

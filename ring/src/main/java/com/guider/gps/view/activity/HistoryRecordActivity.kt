@@ -77,11 +77,12 @@ class HistoryRecordActivity : BaseActivity() {
      * 得到用户的定位的历史记录
      */
     private fun getUserLocationHistoryData(isShowLoading: Boolean = true) {
-        if (isShowLoading)
-            showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                if (isShowLoading)
+                    showDialog()
+            }, block = {
                 val resultBean = if (entryType == "locationHistory") {
                     GuiderApiUtil.getApiService()
                             .userPosition(accountId, page, 20, "", "")
@@ -89,7 +90,6 @@ class HistoryRecordActivity : BaseActivity() {
                     GuiderApiUtil.getApiService()
                             .getProactivelyAddressingList(accountId, page, 20)
                 }
-                if (isShowLoading) dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     emptyData.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -117,19 +117,17 @@ class HistoryRecordActivity : BaseActivity() {
                         adapter.setSourceList(historyRecordList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) dismissDialog()
-                isRefresh = false
-                isLoadMore = false
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
-                toastShort(e.message!!)
-            }
+            }, onRequestFinish = {
+                if (isShowLoading) dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+            })
         }
     }
 

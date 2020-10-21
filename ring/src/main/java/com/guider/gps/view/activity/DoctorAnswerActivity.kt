@@ -138,18 +138,18 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     }
 
     private fun getAnswerListData() {
-        if (!isLoadMore)
-            showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                if (!isLoadMore)
+                    showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAnswerMsgList(1, MMKVUtil.getInt(USER.USERID), page,
                                 20, searchTime)
-                if (!isLoadMore) dismissDialog()
                 if (resultBean != null) {
                     if (resultBean.isNullOrEmpty()) {
                         loadDataEmpty()
-                        return@launch
+                        return@resultParse
                     }
                     if (isLoadMore) refresh_immsg.finishRefresh()
                     val tempList = arrayListOf<AnswerListBean>()
@@ -170,13 +170,13 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                 } else {
                     loadDataEmpty()
                 }
-                isLoadMore = false
-            } catch (e: Exception) {
+
+            }, onError = {
+                if (isLoadMore) refreshLayout.finishRefresh()
+            }, onRequestFinish = {
                 if (!isLoadMore) dismissDialog()
                 isLoadMore = false
-                if (isLoadMore) refreshLayout.finishRefresh()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -226,38 +226,38 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     }
 
     private fun uploadPic(pic: String, onSuccess: (url: String) -> Unit, onFail: () -> Unit) {
-        mDialog1 = DialogProgress(mContext!!, null)
-        mDialog1?.showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                mDialog1 = DialogProgress(mContext!!, null)
+                mDialog1?.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadFile(
                         GuiderApiUtil.uploadFile(pic))
-                mDialog1?.hideDialog()
                 if (resultBean != null) {
                     Log.e("上传单张图片", "成功")
                     onSuccess.invoke(resultBean)
                 }
-            } catch (e: Exception) {
-                mDialog1?.hideDialog()
+            }, onError = {
                 Log.e("上传单张图片", "失败")
                 onFail.invoke()
-                toastShort(e.message!!)
-            }
+            }, onRequestFinish = {
+                mDialog1?.hideDialog()
+            })
         }
     }
 
     private fun sendAnswerMsg(type: AnswerMsgType, content: String) {
-        mDialog2 = DialogProgress(mContext!!, null)
-        mDialog2?.showDialog()
         val map = hashMapOf<String, Any>()
         map["content"] = content
         map["fromAccount"] = MMKVUtil.getInt(USER.USERID)
         map["toAccount"] = 1
         map["type"] = type
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                mDialog2 = DialogProgress(mContext!!, null)
+                mDialog2?.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().sendAnswerMsg(map)
-                mDialog2?.hideDialog()
                 if (resultBean != null) {
                     toastShort(mContext!!.resources.getString(R.string.app_send_success))
                     val bean = AnswerListBean(resultBean.accountId, resultBean.content,
@@ -273,10 +273,9 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                     msgAdapter.setSourceList(msgList)
                     msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 mDialog2?.hideDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

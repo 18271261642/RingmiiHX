@@ -94,13 +94,14 @@ class AddNewDeviceActivity : BaseActivity() {
         //第一种type是登录之后或者打开app时绑定新设备
         //第二种type是在首页解绑设备后重新绑定新设备
         if (type == "mine" || type == "unBindAndBindNew") {
-            showDialog()
+
             val accountId = MMKVUtil.getInt(USER.USERID, 0)
             lifecycleScope.launch {
-                try {
+                ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                    showDialog()
+                }, block = {
                     val resultBean = GuiderApiUtil.getApiService()
                             .bindDeviceWithAccount(accountId, code)
-                    dismissDialog()
                     if (resultBean is String && resultBean == "null") {
                         //绑定失败返回null
                         toastShort(mContext!!.resources.getString(R.string.app_bind_fail))
@@ -113,7 +114,7 @@ class AddNewDeviceActivity : BaseActivity() {
                                 it.relationShip = it.name
                                 MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
                                 if (StringUtil.isNotBlankAndEmpty(it.headUrl))
-                                    MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_HEADER,it.headUrl!!)
+                                    MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_HEADER, it.headUrl!!)
                                 if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
                                     if (type == "unBindAndBindNew") {
                                         MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
@@ -134,23 +135,22 @@ class AddNewDeviceActivity : BaseActivity() {
                         }
                         finish()
                     }
-                } catch (e: Exception) {
+                }, onRequestFinish = {
                     dismissDialog()
-                    toastShort(e.message!!)
-                }
+                })
             }
         } else {
-            if (isShowDialog)
-                showDialog()
             val map = hashMapOf<String, Any>()
             map["deviceCode"] = code
             map["relationShip"] = nickName
             map["url"] = header
             map["userGroupId"] = userGroupId.toInt()
             lifecycleScope.launch {
-                try {
+                ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                    if (isShowDialog)
+                        showDialog()
+                }, block = {
                     val resultBean = GuiderApiUtil.getApiService().memberJoinGroup(map)
-                    dismissDialog()
                     if (resultBean != null) {
                         val list = ParseJsonData.parseJsonDataList<UserInfo>(resultBean,
                                 UserInfo::class.java)
@@ -163,10 +163,10 @@ class AddNewDeviceActivity : BaseActivity() {
                             finish()
                         }
                     }
-                } catch (e: Exception) {
-                    dismissDialog()
-                    toastShort(e.message!!)
-                }
+                }, onRequestFinish = {
+                    if (isShowDialog)
+                        dismissDialog()
+                })
             }
         }
     }

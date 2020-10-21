@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
+import com.guider.baselib.R
 import java.net.URISyntaxException
 
 
@@ -28,6 +30,11 @@ object MapUtils {
             isAvilible(context, "com.baidu.BaiduMap") -> {
                 val tempLat = MapPositionUtil.gps84_To_Bd09(latitude, longitude)
                 startNaviBaidu(context, tempLat.lat, tempLat.lon)
+            }
+            else -> {
+                Toast.makeText(context,
+                        context.resources.getString(R.string.app_no_support_guider),
+                        Toast.LENGTH_SHORT).show()
             }
         }
     }

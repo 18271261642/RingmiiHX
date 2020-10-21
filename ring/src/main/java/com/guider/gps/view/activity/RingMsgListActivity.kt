@@ -99,7 +99,7 @@ class RingMsgListActivity : BaseActivity() {
     fun getCareMsgUndoNum() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getCareMsgUndo(accountId)
                 if (resultBean != null) {
                     mBadgeCountList[1] = resultBean.toInt()
@@ -109,16 +109,14 @@ class RingMsgListActivity : BaseActivity() {
                             resetCareMsgUnReadStatus()
                         }, 3000)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     fun getAbnormalMsgUndoNum() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getAbnormalMsgUndo(accountId)
                 if (resultBean != null) {
                     mBadgeCountList[0] = resultBean.toInt()
@@ -128,9 +126,7 @@ class RingMsgListActivity : BaseActivity() {
                             resetAbnormalMsgUnReadStatus()
                         }, 3000)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -138,15 +134,13 @@ class RingMsgListActivity : BaseActivity() {
         if (mBadgeCountList[1] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService().resetCareMsgReadStatus(accountId)
                 if (resultBean == "true") {
                     mBadgeCountList[1] = 0
                     updateCustomTab(1)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
 
     }
@@ -155,16 +149,14 @@ class RingMsgListActivity : BaseActivity() {
         if (mBadgeCountList[0] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .resetAbnormalMsgReadStatus(accountId)
                 if (resultBean != null) {
                     mBadgeCountList[0] = 0
                     updateCustomTab(0)
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

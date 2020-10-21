@@ -13,10 +13,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseFragment
-import com.guider.baselib.utils.IMAGE_CUT_CODE
-import com.guider.baselib.utils.PermissionUtils
-import com.guider.baselib.utils.PhotoCuttingUtil
-import com.guider.baselib.utils.StringUtil
+import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.feifeia3.utils.ToastUtil
@@ -151,9 +148,10 @@ class InputCodeAddDeviceFragment : BaseFragment() {
 
     private fun uploadHeader(deviceCode: String, nickName: String) {
         // 上传头像
-        mActivity.showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadFile(
                         GuiderApiUtil.uploadFile(header))
                 if (resultBean != null) {
@@ -162,11 +160,11 @@ class InputCodeAddDeviceFragment : BaseFragment() {
                     (mActivity as AddNewDeviceActivity).bindNewDeviceWithAccount(
                             deviceCode, nickName, header, false)
                 }
-            } catch (e: Exception) {
-                mActivity.dismissDialog()
+            }, onError = {
                 Log.e("上传头像", "失败")
-                showToast(e.message!!)
-            }
+            }, onRequestFinish = {
+                mActivity.dismissDialog()
+            })
         }
     }
 

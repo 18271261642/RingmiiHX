@@ -388,8 +388,6 @@ class LocationFragment : BaseFragment(),
      * 得到用户最近的定位点
      */
     private fun getUserLocationPointData() {
-        mDialog1 = DialogProgress(mActivity, null)
-        mDialog1?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (accountId == 0) {
             mDialog1?.hideDialog()
@@ -400,10 +398,12 @@ class LocationFragment : BaseFragment(),
             return
         }
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                mDialog1 = DialogProgress(mActivity, null)
+                mDialog1?.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .userPosition(accountId, 1, 1, "", "")
-                mDialog1?.hideDialog()
                 if (!resultBean.isNullOrEmpty() && resultBean.size == 1) {
                     val firstPosition = resultBean[0]
                     mGoogleMap?.animateCamera(
@@ -437,10 +437,9 @@ class LocationFragment : BaseFragment(),
                     val latLng = LatLng(25.0422452, 121.5802603)
                     mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 9.5f))
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 mDialog1?.hideDialog()
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -448,8 +447,6 @@ class LocationFragment : BaseFragment(),
      * 得到用户行动轨迹
      */
     private fun getUserPointLineData(startTimeValue: String, endTimeValue: String) {
-        mDialog2 = DialogProgress(mActivity, null)
-        mDialog2?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (accountId == 0) {
             mDialog2?.hideDialog()
@@ -457,12 +454,14 @@ class LocationFragment : BaseFragment(),
         }
         Log.i("getUserPointDataTime", "start$startTimeValue-----end$endTimeValue")
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                mDialog2 = DialogProgress(mActivity, null)
+                mDialog2?.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .userPosition(accountId, -1, 20,
                                 DateUtilKotlin.localToUTC(startTimeValue)!!,
                                 DateUtilKotlin.localToUTC(endTimeValue)!!)
-                mDialog2?.hideDialog()
                 if (!resultBean.isNullOrEmpty() && resultBean.size > 1) {
                     val firstPosition = resultBean[0]
                     val endPosition = resultBean[resultBean.size - 1]
@@ -484,16 +483,15 @@ class LocationFragment : BaseFragment(),
                             CameraUpdateFactory.newLatLngZoom(latLngList[0], 14.0f))
                 } else if (!resultBean.isNullOrEmpty() && resultBean.size == 1) {
                     tempLocationBean = resultBean[0]
-                    if (tempLocationBean == null) return@launch
+                    if (tempLocationBean == null) return@resultParse
                     mGoogleMap?.clear()
                     val latLng = LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng)
                     mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f))
                     startDisplayPerth(latLng, true)
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 mDialog2?.hideDialog()
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -506,12 +504,12 @@ class LocationFragment : BaseFragment(),
         if (StringUtil.isEmpty(deviceCode)) {
             return
         }
-        mActivity.showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getElectronicFence(deviceCode, accountId)
-                mActivity.dismissDialog()
                 if (resultBean is String && resultBean == "null") {
                     electronicAddLayout.post {
                         showGuideView()
@@ -548,10 +546,9 @@ class LocationFragment : BaseFragment(),
                                 CameraUpdateFactory.newLatLngZoom(customFirstLatLng, 16.0f))
                     }
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 mActivity.dismissDialog()
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -588,7 +585,6 @@ class LocationFragment : BaseFragment(),
         val deviceCode = MMKVUtil.getString(BIND_DEVICE_CODE)
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (StringUtil.isEmpty(deviceCode)) return
-        mActivity.showDialog()
         val data = hashMapOf<String, Any>()
         data["deviceCode"] = deviceCode
         data["accountId"] = accountId
@@ -598,17 +594,17 @@ class LocationFragment : BaseFragment(),
                 ElectronicFenceBean(customThirdLatLng!!.latitude, customThirdLatLng!!.longitude),
                 ElectronicFenceBean(customFourLatLng!!.latitude, customFourLatLng!!.longitude))
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().setElectronicFence(data)
-                mActivity.dismissDialog()
                 if (resultBean == "true") {
                     ToastUtil.showCenterLong(mActivity,
                             mActivity.resources.getString(R.string.app_set_success))
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 mActivity.dismissDialog()
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -736,7 +732,8 @@ class LocationFragment : BaseFragment(),
                 val calTimeFrontDate = CommonUtils.calTimeFrontDay(
                         currentDate, 1, TIME_FORMAT_PATTERN6)
                 //切到了当前日期
-                if (calTimeFrontDate == CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)) {
+                if (StringUtil.isNotBlankAndEmpty(calTimeFrontDate)
+                        && calTimeFrontDate == CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)) {
                     dateSelectTag = false
                 }
                 trackEventsDateValueTv.text = calTimeFrontDate
@@ -755,7 +752,8 @@ class LocationFragment : BaseFragment(),
                         currentDate, -1, TIME_FORMAT_PATTERN6)
                 trackEventsDateValueTv.text = calTimeFrontDate
                 //切到了当前日期
-                if (calTimeFrontDate == CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)) {
+                if (StringUtil.isNotBlankAndEmpty(calTimeFrontDate)
+                        && calTimeFrontDate == CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)) {
                     dateSelectTag = false
                 }
                 val dateString = calTimeFrontDate
@@ -836,11 +834,11 @@ class LocationFragment : BaseFragment(),
      * 发起主动寻址
      */
     private fun initiateActiveAddressing(accountId: Int) {
-        mActivity.showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().initiateActiveAddressing(accountId)
-                mActivity.dismissDialog()
                 if (resultBean == "true") {
                     proactivelyAddressingLoad(accountId)
                 }
@@ -848,13 +846,14 @@ class LocationFragment : BaseFragment(),
                         true, if (resultBean == "true")
                     mActivity.resources.getString(R.string.app_main_send_success)
                 else mActivity.resources.getString(R.string.app_main_send_fail))
-            } catch (e: Exception) {
-                mActivity.dismissDialog()
-                Log.e(TAG, if (StringUtil.isNotBlankAndEmpty(e.message)) e.message!! else "fail")
+            }, onError = {
+                Log.e(TAG, if (StringUtil.isNotBlankAndEmpty(it.message)) it.message!! else "fail")
                 ToastUtil.showCustomToast(null, mActivity,
                         true,
                         mActivity.resources.getString(R.string.app_main_location_send_fail))
-            }
+            }, onRequestFinish = {
+                mActivity.dismissDialog()
+            })
         }
     }
 
@@ -889,21 +888,19 @@ class LocationFragment : BaseFragment(),
             return
         }
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getApiService().proactivelyAddressingData(
                         accountId, time)
                 if (!(resultBean is String && resultBean == "null") && resultBean != null) {
                     tempLocationBean = ParseJsonData.parseJsonAny<UserPositionListBean>(resultBean)
-                    if (tempLocationBean == null) return@launch
+                    if (tempLocationBean == null) return@resultParse
                     mGoogleMap?.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(LatLng(tempLocationBean!!.lat,
                                     tempLocationBean!!.lng), 16.0f))
                     startDisplayPerth(LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng))
                     proactivelyAddressingFinish("success")
                 }
-            } catch (e: Exception) {
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -1433,18 +1430,19 @@ class LocationFragment : BaseFragment(),
     override fun onInfoWindowClick(marker: Marker?) {
         if (marker?.tag == martTag || marker?.tag == tempMarkTag) {
             marker.hideInfoWindow()
+            var latLng: LatLng? = null
             if (marker.tag == martTag) {
                 if (MMKVUtil.containKey(LAST_LOCATION_POINT_LAT)) {
-                    val latLng = LatLng(
+                    latLng = LatLng(
                             MMKVUtil.getDouble(LAST_LOCATION_POINT_LAT, 0.0),
                             MMKVUtil.getDouble(LAST_LOCATION_POINT_LNG, 0.0))
-                    MapUtils.startGuide(mActivity, latLng.latitude, latLng.longitude)
                 }
             } else {
                 if (tempLocationBean == null) return
-                val latLng = LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng)
-                MapUtils.startGuide(mActivity, latLng.latitude, latLng.longitude)
+                latLng = LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng)
             }
+            if (latLng == null) return
+            MapUtils.startGuide(mActivity, latLng.latitude, latLng.longitude)
         }
     }
 

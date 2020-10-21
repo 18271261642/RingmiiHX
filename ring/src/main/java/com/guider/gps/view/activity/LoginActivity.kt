@@ -271,18 +271,19 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     private fun loginEvent() {
         val countryCode = countryTv.text.toString().replace("+", "")
         val passwordValue = MyUtils.md5(passwordEdit.text.toString())
-        showDialog()
+
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val tokenInfo = GuiderApiUtil.getApiService().loginWithPassword(
                         countryCode, phoneValue, passwordValue)
                 if (tokenInfo != null) {
                     loginSuccessEvent(tokenInfo)
                 }
-            } catch (e: Exception) {
+            }, onError = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -299,7 +300,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     private fun getUserInfo(accountId: Int) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService().getUserInfo(
                         accountId)
                 if (resultBean != null) {
@@ -315,19 +316,17 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     //拿到个人信息并保存后去验证是否绑定设备
                     verifyIsBindDevice(accountId)
                 }
-            } catch (e: Exception) {
+            }, onError = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun verifyIsBindDevice(accountId: Int) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService().checkIsBindDevice(
                         accountId)
-                dismissDialog()
                 if (resultBean is String && resultBean == "null") {
                     //未绑定帐号返回null
                     val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
@@ -359,10 +358,9 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     startActivity(intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -429,12 +427,12 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     }
 
     private fun lineLogin(openId: String, header: String, name: String) {
-        showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .lineVerifyLogin(APP_ID_LINE, openId, -1, -1)
-                dismissDialog()
                 if (resultBean != null) {
                     if (resultBean.TokenInfo == null) {
                         //说明没有绑定用户
@@ -449,11 +447,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                         loginSuccessEvent(resultBean.TokenInfo!!)
                     }
                 }
-            } catch (e: Exception) {
-                dismissDialog()
+            }, onError = {
                 isLineLoginFirst = false
-                toastShort(e.message!!)
-            }
+            }, onRequestFinish = {
+                dismissDialog()
+            })
         }
     }
 
@@ -497,12 +495,12 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 if (StringUtil.isNotBlankAndEmpty(header)) header else null
         weChatInfo.unionid = unionid
         weChatInfo.sex = sex
-        showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .weChatLoginToken(weChatInfo)
-                dismissDialog()
                 if (resultBean != null) {
                     //如果返回flag==false，调用第二步绑定手机号
                     if (!resultBean.isFlag) {
@@ -516,10 +514,9 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                         loginSuccessEvent(resultBean.tokenInfo!!)
                     }
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

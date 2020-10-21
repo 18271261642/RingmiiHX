@@ -78,21 +78,21 @@ class PersonInfoActivity : BaseActivity() {
     }
 
     private fun getUserInfoData(accountId: Int) {
-        showDialog()
+
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getUserInfo(accountId)
-                dismissDialog()
                 if (resultBean != null) {
                     personInfoBean = resultBean
                     //拿到个人信息刷新页面
                     dealPersonInfoShow()
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -179,18 +179,18 @@ class PersonInfoActivity : BaseActivity() {
         if (isChangeTag) {
             if (isChangePicTag) {
                 lifecycleScope.launch {
-                    try {
+                    ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                         val resultBean = GuiderApiUtil.getApiService().uploadFile(
                                 GuiderApiUtil.uploadFile(picPath))
                         if (resultBean != null) {
                             Log.e("上传头像", "成功")
+                            Log.e("上传头像", "成功")
                             changePersonInfo(resultBean)
                         }
-                    } catch (e: Exception) {
-                        dismissDialog()
+                    }, onError = {
                         Log.e("上传头像", "失败")
-                        toastShort(e.message!!)
-                    }
+                        dismissDialog()
+                    })
                 }
             } else {
                 changePersonInfo(picPath)
@@ -214,10 +214,9 @@ class PersonInfoActivity : BaseActivity() {
         personInfoBean?.accountId = MMKVUtil.getInt(USER.USERID)
         personInfoBean?.headUrl = header
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!,block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .editUserInfo(personInfoBean)
-                dismissDialog()
                 if (resultBean != null) {
                     //修改成功
                     if (StringUtil.isNotBlankAndEmpty(name))
@@ -231,10 +230,9 @@ class PersonInfoActivity : BaseActivity() {
                     toastShort(mContext!!.resources.getString(
                             R.string.app_person_info_change_fail))
                 }
-            } catch (e: Exception) {
+            },onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

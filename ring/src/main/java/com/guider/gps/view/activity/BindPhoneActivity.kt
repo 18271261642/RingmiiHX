@@ -378,27 +378,23 @@ class BindPhoneActivity : BaseActivity() {
         // 上传头像
         showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadFile(
                         GuiderApiUtil.uploadFile(header))
-                dismissDialog()
                 if (resultBean != null) {
                     Log.e("上传头像", "成功")
                     header = resultBean
                     bindLineToPhone(header, countryCode, passwordValue)
                 }
-            } catch (e: Exception) {
-                dismissDialog()
+            }, onError = {
                 Log.e("上传头像", "失败")
-                toastShort(e.message!!)
-            }
+                dismissDialog()
+            })
         }
     }
 
 
     private fun bindLineToPhone(header: String, countryCode: String, passwordValue: String) {
-        mDialog = DialogProgress(mContext!!, null)
-        mDialog?.showDialog()
         val map = hashMapOf<String, Any?>()
         map["appId"] = appId
         map["areaCode"] = countryCode
@@ -414,16 +410,17 @@ class BindPhoneActivity : BaseActivity() {
         map["openid"] = openId
         map["phone"] = phoneValue
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                mDialog = DialogProgress(mContext!!, null)
+                mDialog?.showDialog()
+            }, block = {
                 val bean = GuiderApiUtil.getApiService()
                         .lineBindLogin(map)
-                mDialog?.hideDialog()
                 if (bean != null)
                     loginSuccessEvent(bean.TokenInfo)
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 mDialog?.hideDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

@@ -26,27 +26,41 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/bloodTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:text="@string/app_main_health_blood_pressure"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
-            android:id="@+id/bloodTitle"
             app:layout_constraintBottom_toBottomOf="@id/bloodIv"
             app:layout_constraintStart_toEndOf="@id/bloodIv"
             app:layout_constraintTop_toTopOf="@id/bloodIv" />
+
         <TextView
+            android:id="@+id/bloodUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:textColor="@color/white"
-            android:id="@+id/bloodUnit"
-            android:textSize="@dimen/sp_13"
             android:text="(mmHg)"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@id/bloodIv"
             app:layout_constraintStart_toEndOf="@id/bloodTitle"
             app:layout_constraintTop_toTopOf="@id/bloodIv" />
+
+        <TextView
+            android:id="@+id/bloodWatchMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/app_watch_more"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toTopOf="@id/bloodChart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bloodBottomStatusLayout"
             android:layout_width="wrap_content"
@@ -127,8 +141,8 @@
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
-        android:paddingBottom="@dimen/dp_24"
         android:background="@drawable/rounded_6ecdff_8_bg"
+        android:paddingBottom="@dimen/dp_24"
         app:layout_constraintTop_toBottomOf="@id/bloodLayout">
 
         <ImageView
@@ -142,27 +156,40 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/heartTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:text="@string/app_main_health_heart_rate"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
-            android:id="@+id/heartTitle"
             app:layout_constraintBottom_toBottomOf="@id/heartIv"
             app:layout_constraintStart_toEndOf="@id/heartIv"
             app:layout_constraintTop_toTopOf="@id/heartIv" />
+
         <TextView
+            android:id="@+id/heartUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
+            android:text="(bpm)"
             android:textColor="@color/white"
-            android:id="@+id/heartUnit"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@id/heartIv"
             app:layout_constraintStart_toEndOf="@id/heartTitle"
-            android:text="(bpm)"
             app:layout_constraintTop_toTopOf="@id/heartIv" />
+
+        <TextView
+            android:id="@+id/heartWatchMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/app_watch_more"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toTopOf="@id/heartChart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <lecho.lib.hellocharts.view.LineChartView
             android:id="@+id/heartChart"
@@ -205,27 +232,41 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tempTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:text="@string/app_main_health_body_temp"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
-            android:id="@+id/tempTitle"
             app:layout_constraintBottom_toBottomOf="@id/tempIv"
             app:layout_constraintStart_toEndOf="@id/tempIv"
             app:layout_constraintTop_toTopOf="@id/tempIv" />
+
         <TextView
+            android:id="@+id/tempUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
+            android:text="(℃)"
             android:textColor="@color/white"
-            android:id="@+id/tempUnit"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@id/tempIv"
             app:layout_constraintStart_toEndOf="@id/tempTitle"
-            android:text="(℃)"
             app:layout_constraintTop_toTopOf="@id/tempIv" />
+
+        <TextView
+            android:id="@+id/tempWatchMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/app_watch_more"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toTopOf="@id/tempChart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tempBottomStatusLayout"
             android:layout_width="wrap_content"
@@ -437,8 +478,8 @@
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
-        android:paddingBottom="@dimen/dp_24"
         android:background="@drawable/rounded_71d19b_8_bg"
+        android:paddingBottom="@dimen/dp_24"
         app:layout_constraintTop_toBottomOf="@id/sleepLayout">
 
         <ImageView
@@ -452,27 +493,41 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/sportTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:text="@string/app_main_health_sport"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
-            android:id="@+id/sportTitle"
             app:layout_constraintBottom_toBottomOf="@id/sportIv"
             app:layout_constraintStart_toEndOf="@id/sportIv"
             app:layout_constraintTop_toTopOf="@id/sportIv" />
+
         <TextView
+            android:id="@+id/sportUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
+            android:text="@string/app_main_health_step_unit"
             android:textColor="@color/white"
-            android:id="@+id/sportUnit"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@id/sportIv"
             app:layout_constraintStart_toEndOf="@id/sportTitle"
-            android:text="@string/app_main_health_step_unit"
             app:layout_constraintTop_toTopOf="@id/sportIv" />
+
+        <TextView
+            android:id="@+id/sportWatchMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/app_watch_more"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toTopOf="@id/sportChart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <lecho.lib.hellocharts.view.ColumnChartView
             android:id="@+id/sportChart"
             android:layout_width="match_parent"

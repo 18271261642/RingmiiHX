@@ -105,7 +105,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
     private fun checkPhone(countryCode: String, phone: String, isExit: Boolean) {
         //如果符合要求弹出提示
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!,block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .checkPhoneIsRegister(countryCode, phone)
                 //true可以用 false不可用
@@ -128,9 +128,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                         startActivityForResult(intent, COMPLETE_INFO)
                     }
                 }
-            } catch (e: Exception) {
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

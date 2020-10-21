@@ -45,7 +45,8 @@ interface IGuiderCoroutinesHDApi {
             @Query("page") page: Int,
             @Query("row") row: Int,
             @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
+            @Query("endTime") endTime: String,
+            @Query("sort") sort: SortType? = SortType.ASC
     ): List<BodyTempListBean>
 
     /**
@@ -63,7 +64,8 @@ interface IGuiderCoroutinesHDApi {
             @Query("page") page: Int,
             @Query("row") row: Int,
             @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
+            @Query("endTime") endTime: String,
+            @Query("sort") sort: SortType? = SortType.ASC
     ): List<HeartRateListBean>
 
     /**
@@ -94,7 +96,8 @@ interface IGuiderCoroutinesHDApi {
     @GET("api/v1/op/healthdata/sleep")
     suspend fun getHealthSleepChartData(
             @Query("accountId") accountId: Int,
-            @Query("startTime") startTime: String
+            @Query("startTime") startTime: String,
+            @Query("sort") sort: SortType? = SortType.ASC
     ): List<SleepDataListBean>
 
     /**
@@ -131,7 +134,8 @@ interface IGuiderCoroutinesHDApi {
             @Query("page") page: Int,
             @Query("row") row: Int,
             @Query("startTime") startTime: String,
-            @Query("endTime") endTime: String
+            @Query("endTime") endTime: String,
+            @Query("sort") sort: SortType? = SortType.ASC
     ): List<SportListBean>
 
     /**

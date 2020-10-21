@@ -26,11 +26,13 @@ import com.guider.health.apilib.bean.*
 import kotlinx.android.synthetic.main.fragment_health_data.*
 import kotlinx.android.synthetic.main.fragment_home_health.*
 import kotlinx.coroutines.launch
+import lecho.lib.hellocharts.gesture.ContainerScrollType
 import lecho.lib.hellocharts.model.*
 import lecho.lib.hellocharts.view.AbstractChartView
 import lecho.lib.hellocharts.view.LineChartView
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 import kotlin.math.abs
 
 
@@ -76,11 +78,11 @@ class HealthFragment : BaseFragment() {
     override fun initLogic() {
         tabInit()
         tabChangeEvent()
-        bloodLayout.setOnClickListener(this)
-        tempLayout.setOnClickListener(this)
-        heartLayout.setOnClickListener(this)
+        bloodWatchMore.setOnClickListener(this)
+        tempWatchMore.setOnClickListener(this)
+        heartWatchMore.setOnClickListener(this)
         sleepLayout.setOnClickListener(this)
-        sportLayout.setOnClickListener(this)
+        sportWatchMore.setOnClickListener(this)
         getAxisLabel()
         initBloodChart()
         initHeartChart()
@@ -227,7 +229,7 @@ class HealthFragment : BaseFragment() {
     private fun getSportData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthSportChartData(accountId, -1, 100,
                                 startTimeValue, endTimeValue)
@@ -253,16 +255,14 @@ class HealthFragment : BaseFragment() {
                     stepNumTv.text = "0"
                     sportNoDataTv.visibility = View.VISIBLE
                 }
-            } catch (e: Exception) {
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
     private fun getSleepData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthSleepChartData(accountId, startTimeValue)
                 if (!resultBean.isNullOrEmpty()) {
@@ -275,9 +275,7 @@ class HealthFragment : BaseFragment() {
                     initSleepChart()
                     sleepNoDataTv.visibility = View.VISIBLE
                 }
-            } catch (e: Exception) {
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -299,7 +297,7 @@ class HealthFragment : BaseFragment() {
     private fun getHeartData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthHeartChartData(accountId, -1, 100,
                                 startTimeValue, endTimeValue)
@@ -311,16 +309,14 @@ class HealthFragment : BaseFragment() {
                     initHeartChart()
                     heartNoDataTv.visibility = View.VISIBLE
                 }
-            } catch (e: Exception) {
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
     private fun getBodyTempData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthTempChartData(accountId,
                                 -1, 9, startTimeValue, endTimeValue)
@@ -330,29 +326,33 @@ class HealthFragment : BaseFragment() {
                     val yAxisLabels = getTempYAxisLabels()
                     val tempDataList = resultBean.map { it.bodyTemp }
                     val dataArray: Array<Any> = tempDataList.toTypedArray()
-                    val aaOptions = initTempLineChart(options, dataArray)
+                    val max = Collections.max(tempDataList)
+                    val min = Collections.min(tempDataList)
+                    Log.i("temp", "$min----$max")
+                    val aaOptions = initTempLineChart(options, dataArray, max, min)
                     aaOptions.yAxis!!.labels(yAxisLabels)
                     Log.i(TAG, "体温数据的个数为${tempDataList.size}")
                     val requestPage: Int
-                    if (tempDataList.size > 40) {
-                        requestPage = tempDataList.size / 40
-                        Log.e(TAG, "需要展示的页数为${requestPage}")
-                        tempChart.contentWidth =
-                                (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
-                    } else if (tempDataList.size in 31..40) {
-                        requestPage = tempDataList.size / 30
-                        Log.e(TAG, "需要展示的页数为${requestPage}")
-                        tempChart.contentWidth =
-                                (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                    when {
+                        tempDataList.size > 40 -> {
+                            requestPage = tempDataList.size / 40
+                            Log.e(TAG, "需要展示的页数为${requestPage}")
+                            tempChart.contentWidth =
+                                    (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                        }
+                        tempDataList.size in 31..40 -> {
+                            requestPage = tempDataList.size / 30
+                            Log.e(TAG, "需要展示的页数为${requestPage}")
+                            tempChart.contentWidth =
+                                    (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                        }
                     }
                     tempChart.aa_drawChartWithChartOptions(aaOptions)
                 } else {
                     initTempChart()
                     tempNoDataTv.visibility = View.VISIBLE
                 }
-            } catch (e: Exception) {
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -361,11 +361,12 @@ class HealthFragment : BaseFragment() {
         if (!isFirstLoadData && !isRefresh) mDialog?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, {
+                if (!isFirstLoadData && !isRefresh) mDialog?.showDialog()
+            }, {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthBloodChartData(
                                 accountId, -1, 100, startTimeValue, endTimeValue)
-                if (!isFirstLoadData && !isRefresh) mDialog?.hideDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     bloodPressureNoDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -379,13 +380,12 @@ class HealthFragment : BaseFragment() {
                     initBloodChart()
                     bloodPressureNoDataTv.visibility = View.VISIBLE
                 }
-                isRefresh = false
-            } catch (e: Exception) {
+            }, {
+                if (isRefresh) refreshLayout.finishRefresh()
+            }, {
                 if (!isFirstLoadData && !isRefresh) mDialog?.hideDialog()
                 isRefresh = false
-                if (isRefresh) refreshLayout.finishRefresh()
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -404,10 +404,16 @@ class HealthFragment : BaseFragment() {
     private fun initSportColumn(columns: ArrayList<Column>, list: List<SportListBean>) {
         val mColumnChartData = ColumnChartData(columns) //设置数据
         mColumnChartData.isStacked = false //设置是否堆叠
-        mColumnChartData.fillRatio = 0.2f//设置柱子宽度 0-1之间
+        if (list.size <= 8)
+            mColumnChartData.fillRatio = 0.5f//设置柱子宽度 0-1之间
+        else mColumnChartData.fillRatio = 0.3f//设置柱子宽度 0-1之间
         //坐标轴
         setSportAxisXShowColumn(mColumnChartData, list)
         setAxisYShowColumn(mColumnChartData)
+        //设置行为属性
+        sportChart.isZoomEnabled = false
+        sportChart.setContainerScrollEnabled(true,
+                ContainerScrollType.HORIZONTAL)
         sportChart.columnChartData = mColumnChartData
         resetViewport(sportYMaxValue, sportChart, list)
     }
@@ -419,11 +425,17 @@ class HealthFragment : BaseFragment() {
     private fun initSleepColumn(columns: ArrayList<Column>, list: List<SleepDataListBean>) {
         val mColumnChartData = ColumnChartData(columns) //设置数据
         mColumnChartData.isStacked = false //设置是否堆叠
-        mColumnChartData.fillRatio = 0.5f//设置柱子宽度 0-1之间
+        if (list.size <= 8)
+            mColumnChartData.fillRatio = 0.5f//设置柱子宽度 0-1之间
+        else mColumnChartData.fillRatio = 0.3f//设置柱子宽度 0-1之间
         //坐标轴
         setSleepAxisXShowColumn(mColumnChartData, list)
         setAxisYShowColumn(mColumnChartData)
         sleepChart.maxZoom = (list.size / 6 + 66).toFloat()//按照柱体数量增加缩放次数
+        //设置行为属性，不支持缩放
+        sleepChart.isZoomEnabled = false
+        sleepChart.setContainerScrollEnabled(true,
+                ContainerScrollType.HORIZONTAL)
         sleepChart.columnChartData = mColumnChartData
         resetViewport(sleepYMaxValue, sleepChart, list)
     }
@@ -479,7 +491,8 @@ class HealthFragment : BaseFragment() {
         tempChart.aa_drawChartWithChartOptions(aaOptions)
     }
 
-    private fun initTempLineChart(category: Array<String>, bodyTempList: Array<Any>)
+    private fun initTempLineChart(category: Array<String>, bodyTempList: Array<Any>,
+                                  max: Double = 0.0, min: Double = 0.0)
             : AAOptions {
         val zonesArr: Array<Any> = arrayOf(
                 mapOf(
@@ -490,6 +503,15 @@ class HealthFragment : BaseFragment() {
                         "color" to "#E2402B"
                 )
         )
+        val yMin: Float
+        val yMax: Float
+        if (max == 0.0 && min == 0.0) {
+            yMin = 35.0f
+            yMax = 40.0f
+        } else {
+            yMin = min.toFloat()
+            yMax = max.toFloat() + 0.2f
+        }
         val aaChartModel = AAChartModel()
                 .chartType(AAChartType.Spline)//图形类型
                 .dataLabelsEnabled(false)
@@ -500,12 +522,14 @@ class HealthFragment : BaseFragment() {
                 .backgroundColor("#5E95FF")
                 .axesTextColor("#ffffff")
                 .axesTextSize(8f)
+                .yAxisMin(yMin)
+                .yAxisMax(yMax)
                 .zoomType(AAChartZoomType.X)
                 .series(
                         if (bodyTempList.isNotEmpty())
                             arrayOf(
                                     AASeriesElement()
-                                            .name("体温")
+                                            .name(mActivity.resources.getString(R.string.app_main_health_body_temp))
                                             .data(bodyTempList)
                                             .fillOpacity(0.5f)
                                             .lineWidth(1f)
@@ -539,6 +563,10 @@ class HealthFragment : BaseFragment() {
         //坐标轴
         setHeartAxisXShow(data, body)
         setAxisYShow(data)
+        //设置行为属性，不支持缩放
+        heartChart.isZoomEnabled = false
+        heartChart.setContainerScrollEnabled(true,
+                ContainerScrollType.HORIZONTAL)
         heartChart.lineChartData = data
         resetViewport(heartYMaxValue, heartChart, heartAxisPoints)
     }
@@ -571,6 +599,10 @@ class HealthFragment : BaseFragment() {
         //坐标轴
         setBloodAxisXShow(data, list)
         setAxisYShow(data)
+        //设置行为属性，不支持缩放
+        bloodChart.isZoomEnabled = false
+        bloodChart.setContainerScrollEnabled(true,
+                ContainerScrollType.HORIZONTAL)
         bloodChart.lineChartData = data
         resetViewport(bloodYMaxValue, bloodChart, belowBloodAxisPoints)
         //创建一个图标视图 大小为控件的最大大小
@@ -662,8 +694,8 @@ class HealthFragment : BaseFragment() {
         line.isFilled = false //是否填充曲线的面积
         line.pointRadius = 2
         line.strokeWidth = 1
-        line.setHasLabels(false) //曲线的数据坐标是否加上备注
-        line.setHasLabelsOnlyForSelected(false)
+//        line.setHasLabels(false) //曲线的数据坐标是否加上备注
+//        line.setHasLabelsOnlyForSelected(false)
         //点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
         line.setHasPoints(true) //是否显示圆点 如果为false 则没有原点只有点显示
         lines.add(line)
@@ -733,18 +765,28 @@ class HealthFragment : BaseFragment() {
                         """
                     function () {
                             var yValue = this.value;
-                            if (yValue >= 40) {
-                                return "40";
-                            } else if (yValue >= 39 && yValue < 40) {
-                                return "39";
-                            } else if (yValue >= 38 && yValue < 39) {
-                                return "38";
-                            } else if (yValue >= 37 && yValue < 38) {
-                                return "37";
-                            } else if (yValue >= 36 && yValue < 37) {
-                                return "36";
+                            if (yValue >= 40.0) {
+                                return "40.0";
+                            }else if (yValue >= 39.5 && yValue < 40.0) {
+                                return "39.5";
+                            } else if (yValue >= 39.0 && yValue < 39.5) {
+                                return "39.0";
+                            } else if (yValue >= 38.5 && yValue < 39.0) {
+                                return "38.5";
+                            }else if (yValue >= 38.0 && yValue < 38.5) {
+                                return "38.0";
+                            } else if (yValue >= 37.5 && yValue < 38.0) {
+                                return "37.5";
+                            }else if (yValue >= 37.0 && yValue < 37.5) {
+                                return "37.0";
+                            } else if (yValue >= 36.5 && yValue < 37.0) {
+                                return "36.5";
+                            } else if (yValue >= 36.0 && yValue < 36.5) {
+                                return "36.0";
+                            }else if (yValue >= 35.5 && yValue < 36.0) {
+                                return "35.5";
                             }else {
-                                return "0";
+                                return "35.0";
                             }
                         }
                 """.trimIndent()
@@ -818,7 +860,7 @@ class HealthFragment : BaseFragment() {
             val column = Column(
                     arrayListOf(SubcolumnValue(subColumnValueData[i], colorIntValue)))
             column.setHasLabels(true) //没有标签
-            column.setHasLabelsOnlyForSelected(true) //点击只放大
+            column.setHasLabelsOnlyForSelected(false) //点击只放大
             columns.add(column)
             if (sportYMaxValue < subColumnValueData[i]) sportYMaxValue = subColumnValueData[i]
         }
@@ -847,19 +889,19 @@ class HealthFragment : BaseFragment() {
 
     override fun onNoDoubleClick(v: View) {
         when (v) {
-            bloodLayout -> {
+            bloodWatchMore -> {
                 val intent = Intent(mActivity, HealthDataListActivity::class.java)
                 intent.putExtra("type",
                         resources.getString(R.string.app_main_health_blood_pressure))
                 startActivity(intent)
             }
-            heartLayout -> {
+            heartWatchMore -> {
                 val intent = Intent(mActivity, HealthDataListActivity::class.java)
                 intent.putExtra("type",
                         resources.getString(R.string.app_main_health_heart_rate))
                 startActivity(intent)
             }
-            tempLayout -> {
+            tempWatchMore -> {
                 val intent = Intent(mActivity, HealthDataListActivity::class.java)
                 intent.putExtra("type",
                         resources.getString(R.string.app_main_health_body_temp))
@@ -871,7 +913,7 @@ class HealthFragment : BaseFragment() {
 //                        resources.getString(R.string.app_main_health_sleep))
 //                startActivity(intent)
             }
-            sportLayout -> {
+            sportWatchMore -> {
                 val intent = Intent(mActivity, HealthDataListActivity::class.java)
                 intent.putExtra("type",
                         resources.getString(R.string.app_main_health_sport))

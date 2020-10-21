@@ -47,19 +47,18 @@ class LocationFrequencySetNewActivity : BaseActivity() {
         if (accountId == 0) {
             return
         }
-        showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().locationFrequencySet(accountId)
-                dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     val frequencySetList = resultBean as ArrayList
                     showFrequencySet(frequencySetList)
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -120,19 +119,18 @@ class LocationFrequencySetNewActivity : BaseActivity() {
                 }, "00:00"
         )
         hashMap["rates"] = arrayListOf(setBean1)
-        showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(hashMap)
-                dismissDialog()
                 if (resultBean != null) {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

@@ -212,7 +212,6 @@
     <string name="app_Erase_remind">擦除提醒</string>
     <string name="app_sos_alarm">SOS 報警</string>
     <string name="app_electronic_fence_alarm">電子圍欄報警</string>
-    <string name="app_data_request_error">數據請求錯誤</string>
     <string name="app_start_to_experience">開始體驗</string>
     <string name="app_save">保存</string>
     <string name="app_delete">刪除</string>
@@ -221,4 +220,5 @@
     <string name="app_cancel_the_addressing">取消尋址</string>
     <string name="app_cancel_the_addressing_success">取消成功</string>
     <string name="app_main_health_step_unit">(步)</string>
+    <string name="app_watch_more">查看更多</string>
 </resources>

@@ -130,27 +130,27 @@ class MedicineDataFragment : BaseFragment() {
 
     private fun getBloodData() {
         mDialog1 = DialogProgress(mActivity, null)
-        if (!isRefresh) mDialog1?.showDialog()
+
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                if (!isRefresh) mDialog1?.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodChartData(accountId, 1, 7,sort = SortType.DESC)
-                if (!isRefresh) mDialog1?.hideDialog()
+                        .getHealthBloodChartData(accountId, 1, 7, sort = SortType.DESC)
+
                 if (!resultBean.isNullOrEmpty()) {
                     dealBloodSuccessList(resultBean)
                 } else {
                     dealBloodEmptyList()
                 }
-                isRefresh = false
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 if (!isRefresh) mDialog1?.hideDialog()
-                isRefresh = false
                 if (isRefresh) {
                     refreshLayout.finishRefresh()
                 }
-                showToast(e.message!!)
-            }
+                isRefresh = false
+            })
         }
     }
 
@@ -348,13 +348,13 @@ class MedicineDataFragment : BaseFragment() {
 
     private fun getBloodOxygenData() {
         mDialog2 = DialogProgress(mActivity, null)
-        if (!isRefresh) mDialog2?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                if (!isRefresh) mDialog2?.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodOxygenData(accountId, 1, 7,sort = SortType.DESC)
-                if (!isRefresh) mDialog2?.hideDialog()
+                        .getHealthBloodOxygenData(accountId, 1, 7, sort = SortType.DESC)
                 if (resultBean is String && resultBean == "null") {
                     dealBloodOxygenEmptyList()
                 } else {
@@ -365,12 +365,10 @@ class MedicineDataFragment : BaseFragment() {
                     }
 
                 }
-                isRefresh = false
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 if (!isRefresh) mDialog2?.hideDialog()
                 isRefresh = false
-                showToast(e.message!!)
-            }
+            })
         }
     }
 
@@ -495,24 +493,21 @@ class MedicineDataFragment : BaseFragment() {
         if (!isRefresh) mDialog3?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodSugarChartData(accountId, 1, 7,sort = SortType.DESC)
-                if (!isRefresh) mDialog3?.hideDialog()
+                        .getHealthBloodSugarChartData(accountId, 1, 7, sort = SortType.DESC)
                 if (!resultBean.isNullOrEmpty()) {
                     dealBloodSugarSuccessList(resultBean)
                 } else {
                     dealBloodSugarEmptyList()
                 }
-                isRefresh = false
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 if (!isRefresh) mDialog3?.hideDialog()
-                isRefresh = false
                 if (isRefresh) {
                     refreshLayout.finishRefresh()
                 }
-                showToast(e.message!!)
-            }
+                isRefresh = false
+            })
         }
     }
 

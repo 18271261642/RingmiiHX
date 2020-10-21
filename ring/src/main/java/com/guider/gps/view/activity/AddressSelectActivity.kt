@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseActivity
+import com.guider.baselib.utils.ApiCoroutinesCallBack
 import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.utils.toastShort
@@ -92,9 +93,11 @@ class AddressSelectActivity : BaseActivity() {
     }
 
     private fun getProvinceAddress() {
-        showDialog()
+
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.PROVINCE, 0)
                 if (!resultBean.isNullOrEmpty()) {
@@ -108,10 +111,9 @@ class AddressSelectActivity : BaseActivity() {
                         }
                     }
                 }
-            } catch (e: Exception) {
+            }, onError = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -140,7 +142,7 @@ class AddressSelectActivity : BaseActivity() {
 
     private fun getCityAddress(parentId: Int) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.CITY, parentId)
                 if (!resultBean.isNullOrEmpty()) {
@@ -154,10 +156,9 @@ class AddressSelectActivity : BaseActivity() {
                         }
                     }
                 }
-            } catch (e: Exception) {
+            }, onError = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -173,10 +174,10 @@ class AddressSelectActivity : BaseActivity() {
 
     private fun getCountieAddress(parentId: Int) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.COUNTIE, parentId)
-                dismissDialog()
+
                 if (!resultBean.isNullOrEmpty()) {
                     run breaking@{
                         resultBean.forEach {
@@ -193,15 +194,13 @@ class AddressSelectActivity : BaseActivity() {
                         }
                     }
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun getAddressCode() {
-        showDialog()
         val province = when {
             provinceValue.contains("省") -> {
                 provinceValue.replace("省", "")
@@ -224,7 +223,9 @@ class AddressSelectActivity : BaseActivity() {
             else -> provinceValue
         }
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.PROVINCE, 0)
                 if (!resultBean.isNullOrEmpty()) {
@@ -238,10 +239,9 @@ class AddressSelectActivity : BaseActivity() {
                         }
                     }
                 }
-            } catch (e: Exception) {
+            }, onError = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -254,7 +254,7 @@ class AddressSelectActivity : BaseActivity() {
             else -> cityValue
         }
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.CITY, parentId)
                 if (!resultBean.isNullOrEmpty()) {
@@ -268,20 +268,18 @@ class AddressSelectActivity : BaseActivity() {
                         }
                     }
                 }
-            } catch (e: Exception) {
+            }, onError = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun getCountieCode(parentId: Int) {
         val countie = countieValue
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.COUNTIE, parentId)
-                dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     run breaking@{
                         resultBean.forEach {
@@ -293,24 +291,23 @@ class AddressSelectActivity : BaseActivity() {
                         }
                     }
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun changeAddressInfo() {
-        showDialog()
         bean?.province = provinceValueInt
         bean?.city = cityValueInt
         bean?.countie = countieValueInt
         bean?.descDetail = detailAddress
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .editUserInfo(bean)
-                dismissDialog()
                 if (resultBean != null) {
                     //修改成功
                     toastShort(mContext!!.resources.getString(
@@ -319,10 +316,9 @@ class AddressSelectActivity : BaseActivity() {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

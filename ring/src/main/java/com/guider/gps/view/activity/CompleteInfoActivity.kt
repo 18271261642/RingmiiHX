@@ -132,19 +132,17 @@ class CompleteInfoActivity : BaseActivity() {
         // 上传头像
         showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadFile(
                         GuiderApiUtil.uploadFile(picPath))
-                dismissDialog()
                 if (resultBean != null) {
                     Log.e("上传头像", "成功")
                     registerEvent(resultBean)
                 }
-            } catch (e: Exception) {
-                dismissDialog()
+            }, onError = {
                 Log.e("上传头像", "失败")
-                toastShort(e.message!!)
-            }
+                dismissDialog()
+            })
         }
     }
 
@@ -161,10 +159,9 @@ class CompleteInfoActivity : BaseActivity() {
                 else "WOMAN"
         map["birthday"] = "${birthday}T00:00:00Z"
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val bean = GuiderApiUtil.getApiService()
                         .register(map)
-                dismissDialog()
                 if (bean != null) {
                     if (StringUtil.isNotBlankAndEmpty(pageEnterType)) {
                         //为设备添加新用户成功
@@ -190,10 +187,9 @@ class CompleteInfoActivity : BaseActivity() {
                         finish()
                     }
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

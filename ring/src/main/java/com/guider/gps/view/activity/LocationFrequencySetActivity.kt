@@ -144,19 +144,19 @@ class LocationFrequencySetActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         hashMap["accountId"] = accountId
         hashMap["rates"] = arrayListOf(setBean1, setBean2, setBean3)
-        showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(hashMap)
                 if (resultBean != null) {
-                    dismissDialog()
+
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -240,19 +240,18 @@ class LocationFrequencySetActivity : BaseActivity() {
         if (accountId == 0) {
             return
         }
-        showDialog()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().locationFrequencySet(accountId)
-                dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     frequencySetList = resultBean as ArrayList
                     showFrequencySet(frequencySetList)
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

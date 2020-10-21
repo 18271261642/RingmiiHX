@@ -160,14 +160,14 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     }
 
     private fun bindNewMemberCheck(phoneValue: String, deviceName: String) {
-        showDialog()
         val groupId = userGroupId.substring(0, userGroupId.lastIndexOf(".")).toInt()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .devicePhoneVerify(
                                 groupId, code, phoneValue, deviceName, countryTv.text.toString())
-                dismissDialog()
                 if (resultBean is String && resultBean == "null") {
                     //返回null手机号未注册
                     toastShort("手机号未注册")
@@ -190,10 +190,9 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                         finish()
                     }
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
@@ -210,14 +209,14 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     }
 
     private fun addMemberToGroup() {
-        showDialog()
         val groupId = userGroupId.substring(0, userGroupId.lastIndexOf(".")).toInt()
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .groupAddMemberDevice(
                                 groupId, accountId.toInt(), deviceNameEdit.text.toString())
-                dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     val bean = CheckBindDeviceBean()
                     bean.userGroupId = userGroupId.toInt()
@@ -227,10 +226,9 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

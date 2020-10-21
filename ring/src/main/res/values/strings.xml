@@ -213,7 +213,6 @@
     <string name="app_Erase_remind">Erase remind</string>
     <string name="app_sos_alarm">SOS alarm</string>
     <string name="app_electronic_fence_alarm">Electronic fence alarm</string>
-    <string name="app_data_request_error">Data request error</string>
     <string name="app_start_to_experience">Start to experience</string>
     <string name="app_save">Save</string>
     <string name="app_delete">Delete</string>
@@ -222,4 +221,5 @@
     <string name="app_cancel_the_addressing">Cancel the addressing</string>
     <string name="app_cancel_the_addressing_success">Cancel success</string>
     <string name="app_main_health_step_unit">(step)</string>
+    <string name="app_watch_more">Watch More</string>
 </resources>

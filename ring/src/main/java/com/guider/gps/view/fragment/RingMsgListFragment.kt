@@ -6,10 +6,7 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseFragment
-import com.guider.baselib.utils.AdapterOnItemClickListener
-import com.guider.baselib.utils.MMKVUtil
-import com.guider.baselib.utils.ParseJsonData
-import com.guider.baselib.utils.USER
+import com.guider.baselib.utils.*
 import com.guider.gps.R
 import com.guider.gps.adapter.AbnormalMsgListAdapter
 import com.guider.gps.adapter.HealthCareMsgListAdapter
@@ -105,10 +102,9 @@ class RingMsgListFragment : BaseFragment() {
 
     private fun getAbnormalMsgListData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getAbnormalMsgList(accountId, -1, page, 20)
-                if (isShowLoading) mActivity.dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     emptyData.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -146,28 +142,25 @@ class RingMsgListFragment : BaseFragment() {
                         abnormalAdapter.setSourceList(abnormalMsgList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) mActivity.dismissDialog()
-                isRefresh = false
-                isLoadMore = false
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
-                showToast(e.message!!)
-            }
+            }, onRequestFinish = {
+                if (isShowLoading) mActivity.dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+            })
         }
     }
 
     private fun getCareMsgListData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getCareMsgList(accountId, page, 20, -1)
-                if (isShowLoading) mActivity.dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     emptyData.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -195,28 +188,25 @@ class RingMsgListFragment : BaseFragment() {
                         careAdapter.setSourceList(careMsgList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) mActivity.dismissDialog()
-                isRefresh = false
-                isLoadMore = false
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
-                showToast(e.message!!)
-            }
+            }, onRequestFinish = {
+                if (isShowLoading) mActivity.dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+            })
         }
     }
 
     private fun getSystemMsgListData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getApiService().getSystemMsgList(
                         accountId, page, 20)
-                if (isShowLoading) mActivity.dismissDialog()
                 if (!resultBean.isNullOrEmpty()) {
                     emptyData.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -244,19 +234,17 @@ class RingMsgListFragment : BaseFragment() {
                         systemAdapter.setSourceList(systemMsgList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) mActivity.dismissDialog()
-                isRefresh = false
-                isLoadMore = false
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
-                showToast(e.message!!)
-            }
+            }, onRequestFinish = {
+                if (isShowLoading) mActivity.dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+            })
         }
     }
 

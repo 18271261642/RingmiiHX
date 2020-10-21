@@ -14,6 +14,7 @@ import com.guider.gps.R
 import com.guider.gps.adapter.HealthDetailListAdapter
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.HealthDataSimpleBean
+import com.guider.health.apilib.enums.SortType
 import kotlinx.android.synthetic.main.activity_health_data_list.*
 import kotlinx.coroutines.launch
 
@@ -102,10 +103,10 @@ class HealthDataListActivity : BaseActivity() {
 
     private fun getBloodPressureData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodChartData(accountId, page, 20, startTime!!, endTime!!)
-                if (isShowLoading) dismissDialog()
+                        .getHealthBloodChartData(
+                                accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
                 if (!resultBean.isNullOrEmpty()) {
                     noDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -143,28 +144,26 @@ class HealthDataListActivity : BaseActivity() {
                         adapter.setSourceList(dataList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) dismissDialog()
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
+            }, onRequestFinish = {
+                if (isShowLoading) dismissDialog()
                 isRefresh = false
                 isLoadMore = false
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun getHeartData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthHeartChartData(accountId, page, 20, startTime!!, endTime!!)
-                if (isShowLoading) dismissDialog()
+                        .getHealthHeartChartData(
+                                accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
                 if (!resultBean.isNullOrEmpty()) {
                     noDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -201,28 +200,26 @@ class HealthDataListActivity : BaseActivity() {
                         adapter.setSourceList(dataList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) dismissDialog()
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
+            }, onRequestFinish = {
+                if (isShowLoading) dismissDialog()
                 isRefresh = false
                 isLoadMore = false
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun getBodyTempData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthTempChartData(accountId, page, 20, startTime!!, endTime!!)
-                if (isShowLoading) dismissDialog()
+                        .getHealthTempChartData(
+                                accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
                 if (!resultBean.isNullOrEmpty()) {
                     noDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -259,28 +256,25 @@ class HealthDataListActivity : BaseActivity() {
                         adapter.setSourceList(dataList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) dismissDialog()
-                isRefresh = false
-                isLoadMore = false
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
-                toastShort(e.message!!)
-            }
+            }, onRequestFinish = {
+                if (isShowLoading) dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+            })
         }
     }
 
     private fun getSleepData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthSleepChartData(accountId,startTime!!)
-                if (isShowLoading) dismissDialog()
+                        .getHealthSleepChartData(accountId, startTime!!, SortType.DESC)
                 if (!resultBean.isNullOrEmpty()) {
                     noDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -316,28 +310,26 @@ class HealthDataListActivity : BaseActivity() {
                         adapter.setSourceList(dataList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) dismissDialog()
-                isRefresh = false
-                isLoadMore = false
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
-                toastShort(e.message!!)
-            }
+            }, onRequestFinish = {
+                if (isShowLoading) dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+            })
         }
     }
 
     private fun getSportData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthSportChartData(accountId, page, 20, startTime!!, endTime!!)
-                if (isShowLoading) dismissDialog()
+                        .getHealthSportChartData(
+                                accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
                 if (!resultBean.isNullOrEmpty()) {
                     noDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -373,19 +365,17 @@ class HealthDataListActivity : BaseActivity() {
                         adapter.setSourceList(dataList)
                     }
                 }
-                isRefresh = false
-                isLoadMore = false
-            } catch (e: Exception) {
-                if (isShowLoading) dismissDialog()
-                isRefresh = false
-                isLoadMore = false
+            }, onError = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
                     refreshLayout.finishLoadMore()
                     page--
                 }
-                toastShort(e.message!!)
-            }
+            }, onRequestFinish = {
+                if (isShowLoading) dismissDialog()
+                isRefresh = false
+                isLoadMore = false
+            })
         }
     }
 

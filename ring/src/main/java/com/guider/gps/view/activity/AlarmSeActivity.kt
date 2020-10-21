@@ -148,44 +148,42 @@ class AlarmSeActivity : BaseActivity() {
     }
 
     private fun commitTempAlarmSet(checked: Boolean) {
-        showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!,onStart = {
+                showDialog()
+            },block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .setBodyTempAlarm(accountId, timeIntervalValue, checked)
-                dismissDialog()
                 if (resultBean != null) {
                     MMKVUtil.saveBoolean(BT_CHECK, checked)
                     MMKVUtil.saveInt(BT_INTERVAL, timeIntervalValue)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            },onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 
     private fun commitHeartAlarmSet(checked: Boolean) {
-        showDialog()
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            try {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .setHeartRateAlarm(accountId, timeIntervalValue, checked)
-                dismissDialog()
                 if (resultBean != null) {
                     MMKVUtil.saveBoolean(HR_CHECK, checked)
                     MMKVUtil.saveInt(HR_INTERVAL, timeIntervalValue)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            }, onRequestFinish = {
                 dismissDialog()
-                toastShort(e.message!!)
-            }
+            })
         }
     }
 

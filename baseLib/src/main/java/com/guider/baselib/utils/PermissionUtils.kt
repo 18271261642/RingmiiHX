@@ -3,13 +3,13 @@ package com.guider.baselib.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import androidx.fragment.app.Fragment
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.NonNull
+import androidx.fragment.app.Fragment
 import com.guider.baselib.base.BaseApplication
 import com.guider.baselib.utils.permissions.RxPermissions
 import com.guider.feifeia3.utils.ToastUtil
@@ -32,16 +32,16 @@ object PermissionUtils {
      * @param onError 失败回调
      */
     @SuppressLint("CheckResult")
-    fun requestPermissionActivity(activity: Activity, perms: Array<String>,hint:String, onSuccess:() -> Unit,
-                                  onError: () -> Unit){
+    fun requestPermissionActivity(activity: Activity, perms: Array<String>, hint: String,
+                                  onSuccess: () -> Unit,
+                                  onError: () -> Unit) {
 
-        if (checkPermissions(activity,perms)){
+        if (checkPermissions(activity, perms)) {
             onSuccess.invoke()
-        }else {
+        } else {
             val rxPermissions = RxPermissions(activity) // where this is an Activity
             rxPermissions.requestEachCombined(*perms)
-                    .subscribe{
-                        permission ->
+                    .subscribe { permission ->
                         run {
                             when {
                                 permission.granted -> // 用户已经同意该权限 !
@@ -79,15 +79,15 @@ object PermissionUtils {
      * @param onError 失败回调
      */
     @SuppressLint("CheckResult")
-    fun requestPermissionFragment(fragment: Fragment, perms: Array<String>, hint: String, onSuccess:() -> Unit,
-                                  onError: () -> Unit){
-        if (checkPermissions(fragment.activity!!,perms)){
+    fun requestPermissionFragment(fragment: Fragment, perms: Array<String>, hint: String,
+                                  onSuccess: () -> Unit,
+                                  onError: () -> Unit) {
+        if (checkPermissions(fragment.activity!!, perms)) {
             onSuccess.invoke()
-        }else {
+        } else {
             val rxPermissions = RxPermissions(fragment.activity!!) // where this is an Fragment instance
             rxPermissions.requestEachCombined(*perms)
-                    .subscribe{
-                        permission ->
+                    .subscribe { permission ->
                         run {
                             when {
                                 permission.granted -> // 用户已经同意该权限 !
