@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -63,6 +64,8 @@ class HealthFragment : BaseFragment() {
     private var isFirstLoadData = true
     private var isRefresh = false
     private var mDialog: DialogProgress? = null
+    private var tempLayoutStartWidth = 0
+    private var tempLayoutStartWidthDp = 0.0f
 
     override fun initView(rootView: View) {
         bloodLayout = rootView.findViewById(R.id.bloodLayout)
@@ -102,6 +105,14 @@ class HealthFragment : BaseFragment() {
         tempChart.setOnTouchListener(touchListener)
         sleepChart.setOnTouchListener(touchListener)
         sportChart.setOnTouchListener(touchListener)
+        tempLayout.viewTreeObserver.addOnPreDrawListener(
+                object : ViewTreeObserver.OnPreDrawListener {
+                    override fun onPreDraw(): Boolean {
+                        tempLayout.viewTreeObserver.removeOnPreDrawListener(this)
+                        tempLayoutStartWidth = tempLayout.width // 获取宽度
+                        return true
+                    }
+                })
     }
 
     private fun tabInit() {
@@ -332,21 +343,46 @@ class HealthFragment : BaseFragment() {
                     val aaOptions = initTempLineChart(options, dataArray, max, min)
                     aaOptions.yAxis!!.labels(yAxisLabels)
                     Log.i(TAG, "体温数据的个数为${tempDataList.size}")
-                    val requestPage: Int
+                    var requestPage: Int
+                    var contentWidth = 0.0f
                     when {
-                        tempDataList.size > 40 -> {
-                            requestPage = tempDataList.size / 40
+                        tempDataList.size > 20 -> {
+                            requestPage = tempDataList.size / 20
+                            val rem = tempDataList.size % 20
+                            if (rem > 0) requestPage += 1
                             Log.e(TAG, "需要展示的页数为${requestPage}")
-                            tempChart.contentWidth =
-                                    (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                            contentWidth =
+                                    ScreenUtils.px2dip(mActivity,
+                                            (ScreenUtils.widthPixels(mActivity) * requestPage)
+                                                    .toFloat()
+                                    ).toFloat()
                         }
-                        tempDataList.size in 31..40 -> {
-                            requestPage = tempDataList.size / 30
+                        tempDataList.size in 11..20 -> {
+                            requestPage = tempDataList.size / 10
+                            val rem = tempDataList.size % 10
+                            if (rem > 0) requestPage += 1
                             Log.e(TAG, "需要展示的页数为${requestPage}")
-                            tempChart.contentWidth =
-                                    (ScreenUtils.widthPixels(mActivity) * requestPage).toFloat()
+                            contentWidth =
+                                    ScreenUtils.px2dip(mActivity,
+                                            (ScreenUtils.widthPixels(mActivity) * requestPage)
+                                                    .toFloat()
+                                    ).toFloat()
+                        }
+                        else -> {
+                            //做临时校验是因为有的手机会出现屏幕缩放动态变化导致尺寸不固定
+                            //开始
+                            val tempWidth = ScreenUtils.px2dip(mActivity,
+                                    tempLayoutStartWidth.toFloat()
+                            ).toFloat()
+                            if (tempLayoutStartWidthDp <= tempWidth) {
+                                tempLayoutStartWidthDp = tempWidth
+                            }
+                            //结束
+                            contentWidth = tempLayoutStartWidthDp
                         }
                     }
+                    Log.e(TAG, "需要展示的宽度为${contentWidth}")
+                    tempChart.contentWidth = contentWidth
                     tempChart.aa_drawChartWithChartOptions(aaOptions)
                 } else {
                     initTempChart()
