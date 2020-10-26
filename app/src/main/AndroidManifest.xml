@@ -202,7 +202,6 @@
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
 

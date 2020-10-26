@@ -32,7 +32,7 @@ object FileDirUtil {
             bitmap: Bitmap,
             displayName: String,
             mimeType: String,
-            compressFormat: Bitmap.CompressFormat, context: Context
+            compressFormat: Bitmap.CompressFormat, context: Context, isShowTip: Boolean = true
     ) {
         val values = ContentValues()
         values.put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
@@ -51,7 +51,8 @@ object FileDirUtil {
             if (outputStream != null) {
                 bitmap.compress(compressFormat, 100, outputStream)
                 outputStream.close()
-                ToastUtil.showToast(context, context.resources.getString(R.string.addPicToAlbum))
+                if (isShowTip)
+                    ToastUtil.showToast(context, context.resources.getString(R.string.addPicToAlbum))
             }
         }
     }

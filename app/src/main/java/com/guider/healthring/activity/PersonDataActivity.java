@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -34,7 +35,8 @@ import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
 import com.guider.health.common.utils.FileDirUtil;
-import com.guider.health.common.utils.PhotoCuttingUtil;
+import com.guider.healthring.siswatch.utils.Base64BitmapUtil;
+import com.guider.healthring.util.PhotoCuttingUtil;
 import com.guider.health.common.utils.StringUtil;
 import com.guider.health.common.views.CircleImageView;
 import com.guider.healthring.Commont;
@@ -421,11 +423,13 @@ public class PersonDataActivity extends WatchBaseActivity
                     }
                     switch (item.getItemId()) {
                         case R.id.take_camera:  //拍照
-                            // getImage(PickerBuilder.SELECT_FROM_CAMERA);
-//                            cameraPic();
-                            PhotoCuttingUtil.INSTANCE.takePhotoZoom2(
-                                    PersonDataActivity.this, 111,
-                                    1, 1);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                PhotoCuttingUtil.INSTANCE.takePhotoZoom2(
+                                        PersonDataActivity.this, 111,
+                                        1, 1);
+                            } else {
+                                cameraPic();
+                            }
                             break;
                         case R.id.take_Album:   //相册选择
 //                            getImage(PickerBuilder.SELECT_FROM_GALLERY);
@@ -434,7 +438,7 @@ public class PersonDataActivity extends WatchBaseActivity
 //                                startActivityForResult(intent,120);
                             PhotoCuttingUtil.INSTANCE.selectPhotoZoom2(
                                     PersonDataActivity.this, 111,
-                                    1, 1);
+                                    1, 1,false);
                             break;
                         case R.id.cancle:
                             break;
@@ -549,43 +553,30 @@ public class PersonDataActivity extends WatchBaseActivity
                     String path = FileDirUtil.INSTANCE.getExternalFileDir(this);
 //                    Log.e(TAG, "----裁剪path=" + path);
                     String name = "output.png";
-                    startActivityForResult(CutForCamera(path, name), 111);
+                    startActivityForResult(CutForCamera(path, name), 112);
+                    break;
+                case 112:
+                    try {
+                        //获取裁剪后的图片，并显示出来
+                        Bitmap bitmap = BitmapFactory.decodeStream(
+                                this.getContentResolver().openInputStream(mCutUri));
+                        headImg.setImageBitmap(bitmap);
+                        uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
+                        //上传盖德后台图片
+                        //Log.e(TAG,"-------")
+                        File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
+                                "cutcamera.png"); //裁剪的保存地址
+                        String displayName = System.currentTimeMillis()+".png";
+                        String mimeType = "image/png";
+                        Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
+                        FileDirUtil.INSTANCE.addBitmapToAlbum(bitmap,displayName,
+                                mimeType,compressFormat,mContext,false);
+                        uploadGuiderPic(cutfile.getPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 111:
-//                    try {
-//                        if (mCutUri != null) {
-//                            //获取裁剪后的图片，并显示出来
-//                            Bitmap bitmap = BitmapFactory.decodeStream(
-//                                    this.getContentResolver().openInputStream(mCutUri));
-//                            //showImg.setImageBitmap(bitmap);
-//                            headImg.setImageBitmap(bitmap);
-////                            RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
-////                                    .skipMemoryCache(true);
-////                            Glide.with(PersonDataActivity.this).
-////                                    load(mCutUri).apply(mRequestOptions).into(headImg);
-//                            // uploadPic(ImageTool.getRealFilePath(PersonDataActivity.this, mCutUri));
-//                            uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
-//
-//
-//                            String finalPhotoName =
-//                                    FileDirUtil.INSTANCE.getExternalFileDir(this)
-//                                            + "/" + "NewBluetoothStrap/headImg" + "_"
-//                                            + new SimpleDateFormat(
-//                                            "yyyyMMdd_HHmmss", Locale.US)
-//                                            .format(new Date(System.currentTimeMillis()))
-//                                            + ".jpg";
-//                            //上传盖德后台图片
-//                            //Log.e(TAG,"-------")
-//                            File flieP = FileOperUtils.saveFiles(bitmap, finalPhotoName);
-//                            uploadGuiderPic(flieP.getPath());
-//
-//                        }
-//
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
                     if (data == null) return;
                     dealHeaderShowAndUpload(data);
                     break;

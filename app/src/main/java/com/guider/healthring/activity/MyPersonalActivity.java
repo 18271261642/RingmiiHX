@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -39,7 +38,9 @@ import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
 import com.guider.health.common.utils.FileDirUtil;
-import com.guider.health.common.utils.PhotoCuttingUtil;
+import com.guider.healthring.siswatch.utils.Base64BitmapUtil;
+import com.guider.healthring.siswatch.utils.FileOperUtils;
+import com.guider.healthring.util.PhotoCuttingUtil;
 import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -54,8 +55,6 @@ import com.guider.healthring.rxandroid.CommonSubscriber;
 import com.guider.healthring.rxandroid.DialogSubscriber;
 import com.guider.healthring.rxandroid.SubscriberOnNextListener;
 import com.guider.healthring.siswatch.WatchBaseActivity;
-import com.guider.healthring.siswatch.utils.Base64BitmapUtil;
-import com.guider.healthring.siswatch.utils.FileOperUtils;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.ImageTool;
 import com.guider.healthring.util.LocalizeTool;
@@ -69,7 +68,6 @@ import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ICustomSettingDataListener;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
 import com.veepoo.protocol.model.settings.CustomSetting;
@@ -442,7 +440,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                                 .permission(Manifest.permission.CAMERA,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                 .onGranted(data -> {
-
+                                    chooseImgForUserHead(); //选择图片来源
                                 })
                                 .onDenied(data -> {
 
@@ -823,10 +821,13 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     }
                     switch (item.getItemId()) {
                         case R.id.take_camera:
-//                            cameraPic();
-                            PhotoCuttingUtil.INSTANCE.takePhotoZoom2(
-                                    MyPersonalActivity.this, 111,
-                                    1, 1);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                PhotoCuttingUtil.INSTANCE.takePhotoZoom2(
+                                        MyPersonalActivity.this, 111,
+                                        1, 1);
+                            } else {
+                                cameraPic();
+                            }
                             break;
                         case R.id.take_Album:   //相册
 //                            getImage();
@@ -835,7 +836,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                             //                                startActivityForResult(intent,120);
                             PhotoCuttingUtil.INSTANCE.selectPhotoZoom2(
                                     MyPersonalActivity.this, 111,
-                                    1, 1);
+                                    1, 1, false);
                             break;
                         case R.id.cancle:
                             break;
@@ -1224,7 +1225,29 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     String path = FileDirUtil.INSTANCE.getExternalFileDir(this);
 //                    Log.e(TAG, "----裁剪path=" + path);
                     String name = "output.png";
-                    startActivityForResult(CutForCamera(path, name), 111);
+                    startActivityForResult(CutForCamera(path, name), 112);
+                    break;
+                case 112:
+                    try {
+                        //获取裁剪后的图片，并显示出来
+                        Bitmap bitmap = BitmapFactory.decodeStream(
+                                this.getContentResolver().openInputStream(mCutUri));
+                        //showImg.setImageBitmap(bitmap);
+                        mineLogoIv.setImageBitmap(bitmap);
+                        uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
+                        //上传盖德后台图片
+                        //Log.e(TAG,"-------")
+                        File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
+                                "cutcamera.png"); //裁剪的保存地址
+                        String displayName = System.currentTimeMillis()+".png";
+                        String mimeType = "image/png";
+                        Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
+                        FileDirUtil.INSTANCE.addBitmapToAlbum(bitmap,displayName,
+                                mimeType,compressFormat,mContext,false);
+                        uploadGuiderPic(cutfile.getPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 111:
 //                    try {

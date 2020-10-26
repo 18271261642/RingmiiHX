@@ -808,7 +808,9 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return xList.get((int) value);
+                if (value < xList.size())
+                    return xList.get((int) value);
+                else return "";
             }
         });
         xAxis.setEnabled(true);
@@ -961,7 +963,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                 //增加下标和数组长度对比，防止数组越界
                 if ((int) value <= sleepXList.size() - 1)
                     return sleepXList.get((int) value);
-                else  return  "";
+                else return "";
             }
         });
         xAxis.setEnabled(true);

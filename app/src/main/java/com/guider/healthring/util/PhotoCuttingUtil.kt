@@ -1,7 +1,7 @@
-package com.guider.health.common.utils
+package com.guider.healthring.util
 
 import android.app.Activity
-import com.guider.health.common.R
+import com.guider.healthring.R
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
 import com.luck.picture.lib.config.PictureMimeType
@@ -96,7 +96,8 @@ object PhotoCuttingUtil {
      * 需要裁剪
      */
     fun selectPhotoZoom2(context: Activity, requestCode: Int,
-                         aspectWidthRatio: Int = 1, aspectHeightRatio: Int = 1) {
+                         aspectWidthRatio: Int = 1, aspectHeightRatio: Int = 1,
+                         isShowCamera: Boolean = true) {
         PictureSelector.create(context)
                 .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
@@ -107,7 +108,7 @@ object PhotoCuttingUtil {
                 .isMaxSelectEnabledMask(true)// 选择数到了最大阀值列表是否启用蒙层效果
                 .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
                 .isPreviewImage(true)// 是否可预览图片
-                .isCamera(true)// 是否显示拍照按钮
+                .isCamera(isShowCamera)// 是否显示拍照按钮
                 .isEnableCrop(true)// 是否裁剪
                 .isCompress(true)// 是否压缩
                 .synOrAsy(true)//同步true或异步false 压缩 默认同步

@@ -260,6 +260,7 @@ dependencies {
     // 上下拉刷新Header,自带经典和贝塞尔雷达,其他样式才加这行
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    api 'com.github.LuckSiege.PictureSelector:picture_library:2.5.9'
 }
 
 android.applicationVariants.all { variant ->
