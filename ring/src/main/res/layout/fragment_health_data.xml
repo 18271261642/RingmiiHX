@@ -38,18 +38,6 @@
             app:layout_constraintTop_toTopOf="@id/bloodIv" />
 
         <TextView
-            android:id="@+id/bloodUnit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="(mmHg)"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="@id/bloodIv"
-            app:layout_constraintStart_toEndOf="@id/bloodTitle"
-            app:layout_constraintTop_toTopOf="@id/bloodIv" />
-
-        <TextView
             android:id="@+id/bloodWatchMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,11 +102,10 @@
                 app:layout_constraintTop_toTopOf="@id/bloodBelowIv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <lecho.lib.hellocharts.view.LineChartView
+        <com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartView
             android:id="@+id/bloodChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="5dp"
             app:layout_constraintBottom_toTopOf="@id/bloodBottomStatusLayout"
             app:layout_constraintTop_toBottomOf="@id/bloodIv" />
 
@@ -168,18 +155,6 @@
             app:layout_constraintTop_toTopOf="@id/heartIv" />
 
         <TextView
-            android:id="@+id/heartUnit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="(bpm)"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="@id/heartIv"
-            app:layout_constraintStart_toEndOf="@id/heartTitle"
-            app:layout_constraintTop_toTopOf="@id/heartIv" />
-
-        <TextView
             android:id="@+id/heartWatchMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -191,11 +166,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <lecho.lib.hellocharts.view.LineChartView
+        <com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartView
             android:id="@+id/heartChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/heartIv" />
 
@@ -241,18 +215,6 @@
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@id/tempIv"
             app:layout_constraintStart_toEndOf="@id/tempIv"
-            app:layout_constraintTop_toTopOf="@id/tempIv" />
-
-        <TextView
-            android:id="@+id/tempUnit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="(℃)"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="@id/tempIv"
-            app:layout_constraintStart_toEndOf="@id/tempTitle"
             app:layout_constraintTop_toTopOf="@id/tempIv" />
 
         <TextView
@@ -361,7 +323,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="@string/app_main_health_sleep_minute"
+            android:text="@string/app_main_health_sleep"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@id/sleepIv"
@@ -451,11 +413,10 @@
                 app:layout_constraintTop_toTopOf="@id/sleepErrorIv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <lecho.lib.hellocharts.view.ColumnChartView
+        <com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartView
             android:id="@+id/sleepChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="5dp"
             app:layout_constraintBottom_toTopOf="@id/sleepBottomStatusLayout"
             app:layout_constraintTop_toBottomOf="@id/sleepIv" />
 
@@ -465,6 +426,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_no_data"
             android:visibility="gone"
+            android:layout_margin="@dimen/dp_5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -505,18 +467,6 @@
             app:layout_constraintTop_toTopOf="@id/sportIv" />
 
         <TextView
-            android:id="@+id/sportUnit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="@string/app_main_health_step_unit"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="@id/sportIv"
-            app:layout_constraintStart_toEndOf="@id/sportTitle"
-            app:layout_constraintTop_toTopOf="@id/sportIv" />
-
-        <TextView
             android:id="@+id/sportWatchMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -528,11 +478,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <lecho.lib.hellocharts.view.ColumnChartView
+        <com.guider.baselib.widget.aAInfographicsLib.aAChartCreator.AAChartView
             android:id="@+id/sportChart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sportIv" />
 

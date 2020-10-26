@@ -63,7 +63,7 @@ class RingMsgListActivity : BaseActivity() {
 
     override fun initView() {
         tabTitles = arrayListOf(
-                resources.getString(R.string.app_msg_error_notify),
+                resources.getString(R.string.app_msg_health_notify),
                 resources.getString(R.string.app_msg_care_info),
                 resources.getString(R.string.app_msg_system_info)
         )

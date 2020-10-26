@@ -78,6 +78,8 @@ class BottomDialogFragment2(private val gravity: Int = Gravity.CENTER,
 
         return dialog
     }
+
+
 }
 
 object MyDialogNew {

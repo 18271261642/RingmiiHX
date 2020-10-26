@@ -171,10 +171,9 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                     loadDataEmpty()
                 }
 
-            }, onError = {
-                if (isLoadMore) refreshLayout.finishRefresh()
             }, onRequestFinish = {
                 if (!isLoadMore) dismissDialog()
+                if (isLoadMore) refreshLayout.finishRefresh()
                 isLoadMore = false
             })
         }

@@ -192,4 +192,14 @@ interface IGuiderCoroutinesHDApi {
     @Headers(RetrofitUrlManager.DOMAIN_NAME_HEADER + KEY_API_HOST_HD)
     @POST("api/v1/healthadvice/read")
     suspend fun resetCareMsgReadStatus(@Query("accountId") accountId: Int): String
+
+    /**
+     * 欧孚指定日期计步数据及运动目标
+     * @param accountId 用户id
+     */
+    @Headers(RetrofitUrlManager.DOMAIN_NAME_HEADER + KEY_API_HOST_HD)
+    @GET("api/v1/op/healthdata/walk")
+    suspend fun sportStepAndTargetStep(@Query("accountId") accountId: Int,
+                                       @Query("startTime") startTime: String):
+            HealthSportAndTargetStepBean?
 }

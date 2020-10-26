@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -64,6 +65,7 @@ class MainActivity : BaseActivity() {
     private var bindPosition = 0
     private var subscribe: Disposable? = null
     private var latestSystemMsgTime = ""
+    private var dialogTagList = arrayListOf<String>()
 
     override fun initImmersion() {
         showBackButton(R.drawable.icon_home_left_menu, this)
@@ -657,7 +659,7 @@ class MainActivity : BaseActivity() {
      * 获取最新的系统消息
      */
     private fun getLatestSystemMsg(accountId: Int) {
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenResumed {
             ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService().getSystemMsgLatest(
                         accountId, latestSystemMsgTime)
@@ -665,7 +667,8 @@ class MainActivity : BaseActivity() {
                     val bean = ParseJsonData.parseJsonAny<SystemMsgBean>(resultBean)
                     if (StringUtil.isNotBlankAndEmpty(bean.createTime))
                         latestSystemMsgTime = bean.createTime!!
-                    showSystemMsgDialog("${bean.name},${bean.content}", bean.type)
+                    showSystemMsgDialog("${bean.name},${bean.content}",
+                            bean.type, bean.id.toString())
                 }
             }, onError = {
                 Log.i("systemMsg", it.message!!)
@@ -705,14 +708,15 @@ class MainActivity : BaseActivity() {
     /**
      * 显示系统消息的弹窗
      */
-    private fun showSystemMsgDialog(content: String, type: SystemMsgType) {
+    private fun showSystemMsgDialog(content: String, type: SystemMsgType, msgId: String) {
         val dialog = object : DialogHolder(this,
-                R.layout.dialog_system_msg, Gravity.TOP) {
+                R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {
             override fun bindView(dialogView: View) {
                 val contentTv = dialogView.findViewById<TextView>(R.id.contentTv)
                 val watchDetail = dialogView.findViewById<TextView>(R.id.watchDetail)
                 val mDismiss = dialogView.findViewById<ImageView>(R.id.cancelIv)
                 contentTv.text = content
+                dialogTagList.add(msgId)
                 watchDetail.setOnClickListener {
                     //判断消息的类型做相应的处理，sos和电子围栏的跳转到定位信息页和运动轨迹页
                     when (type) {
@@ -741,14 +745,17 @@ class MainActivity : BaseActivity() {
                             startActivity(intent)
                         }
                     }
+                    dialogTagList.remove(msgId)
                     dialog?.dismiss()
                 }
                 mDismiss.setOnClickListener {
+                    dialogTagList.remove(msgId)
                     dialog?.dismiss()
                 }
-//                mDismiss.postDelayed({
-//                    dialog?.dismiss()
-//                }, 3000)
+                mDismiss.postDelayed({
+                    dialogTagList.remove(msgId)
+                    dialog?.dismiss()
+                }, 5000)
             }
         }
         dialog.initView()
@@ -841,6 +848,20 @@ class MainActivity : BaseActivity() {
             layoutParams.height = ScreenUtils.dip2px(mContext, 30f)
             layoutParams.width = ScreenUtils.dip2px(mContext, 46f)
             iconView.layoutParams = layoutParams
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //关闭没关闭的dialog,防止dialog的窗体泄露
+        if (!dialogTagList.isNullOrEmpty()) {
+            dialogTagList.forEach {
+                val dialogFragment = supportFragmentManager.findFragmentByTag(it)
+                if (dialogFragment != null && dialogFragment is DialogFragment) {
+                    Log.i("closeDialog","关闭的dialog的fragment的tag为${it}")
+                    dialogFragment.dismiss()
+                }
+            }
         }
     }
 

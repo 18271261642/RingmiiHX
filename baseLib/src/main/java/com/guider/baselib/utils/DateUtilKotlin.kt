@@ -259,4 +259,18 @@ object DateUtilKotlin {
         }
         return timestamp
     }
+
+    //将时间字符串转为时间戳
+    @SuppressLint("SimpleDateFormat")
+    fun getTimestamp(time: String?): Long {
+        var timestamp: Long = 0L
+        try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val longTime = sdf.parse(time).time / 1000
+            timestamp = longTime
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return timestamp
+    }
 }

@@ -21,7 +21,7 @@
     <string name="app_main_health_heart_rate">Heart rate</string>
     <string name="app_main_health_body_temp">Body temperature</string>
     <string name="app_main_health_sleep">Sleep</string>
-    <string name="app_main_health_sleep_minute">Sleep(Minutes)</string>
+    <string name="app_main_health_sleep_minute">Minutes</string>
     <string name="app_main_health_sport">Sport</string>
     <string name="app_main_health_high_pressure">High pressure</string>
     <string name="app_main_health_low_pressure">Low pressure</string>
@@ -94,7 +94,7 @@
     <string name="app_add_device_input_hint">Equipment IMEI code</string>
     <string name="app_next_step">The next step</string>
     <string name="app_msg">Message</string>
-    <string name="app_msg_error_notify">Abnormal</string>
+    <string name="app_msg_health_notify">Health</string>
     <string name="app_msg_care_info">Care</string>
     <string name="app_msg_system_info">System</string>
     <string name="app_msg_item_title">%s measure</string>

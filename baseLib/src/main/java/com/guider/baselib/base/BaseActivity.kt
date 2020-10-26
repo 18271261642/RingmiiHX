@@ -50,6 +50,8 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
     var rightRedPoint: View? = null
     var iv_toolbar_right2: ImageView? = null
 
+    protected var TAG = javaClass.simpleName
+
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

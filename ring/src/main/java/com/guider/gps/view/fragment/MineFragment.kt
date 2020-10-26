@@ -123,6 +123,16 @@ class MineFragment : BaseFragment() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshTargetStep(event: EventBusEvent<Int>) {
+        if (event.code == REFRESH_TARGET_STEP) {
+            if (event.data != 0) {
+                sportValueInt = event.data!!
+                sportValue.text = sportValueInt.toString()
+            }
+        }
+    }
+
     override fun onNoDoubleClick(v: View) {
         when (v) {
             bindLayout -> {

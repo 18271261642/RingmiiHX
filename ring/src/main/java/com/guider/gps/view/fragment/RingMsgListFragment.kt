@@ -61,7 +61,7 @@ class RingMsgListFragment : BaseFragment() {
             getMsgListData(false)
             //刷新数据时刷新未读数和红点
             when (msgListType) {
-                resources.getString(R.string.app_msg_error_notify) -> {
+                resources.getString(R.string.app_msg_health_notify) -> {
                     (mActivity as RingMsgListActivity).getAbnormalMsgUndoNum()
                 }
                 resources.getString(R.string.app_msg_care_info) -> {
@@ -80,7 +80,7 @@ class RingMsgListFragment : BaseFragment() {
     private fun getMsgListData(isShowLoading: Boolean = true) {
         val accountId = MMKVUtil.getInt(USER.USERID)
         when (msgListType) {
-            resources.getString(R.string.app_msg_error_notify) -> {
+            resources.getString(R.string.app_msg_health_notify) -> {
                 if (isShowLoading)
                     mActivity.showDialog()
                 getAbnormalMsgListData(accountId, isShowLoading)
@@ -143,13 +143,15 @@ class RingMsgListFragment : BaseFragment() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) mActivity.dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })
@@ -189,13 +191,15 @@ class RingMsgListFragment : BaseFragment() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) mActivity.dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })
@@ -235,13 +239,15 @@ class RingMsgListFragment : BaseFragment() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) mActivity.dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })
@@ -250,7 +256,7 @@ class RingMsgListFragment : BaseFragment() {
 
     private fun initData(bundle: Bundle, ringMsgListFragment: RingMsgListFragment) {
         when (bundle.getString(ringMsgListFragment.ARG_STR)) {
-            resources.getString(R.string.app_msg_error_notify) -> {
+            resources.getString(R.string.app_msg_health_notify) -> {
                 emptyData.visibility = View.VISIBLE
                 abnormalAdapter = AbnormalMsgListAdapter(mActivity, abnormalMsgList)
                 msgListRv.adapter = abnormalAdapter

@@ -145,13 +145,15 @@ class HealthDataListActivity : BaseActivity() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })
@@ -201,13 +203,15 @@ class HealthDataListActivity : BaseActivity() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })
@@ -257,13 +261,15 @@ class HealthDataListActivity : BaseActivity() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })
@@ -311,13 +317,15 @@ class HealthDataListActivity : BaseActivity() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })
@@ -366,13 +374,15 @@ class HealthDataListActivity : BaseActivity() {
                     }
                 }
             }, onError = {
-                if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
-                    refreshLayout.finishLoadMore()
                     page--
                 }
             }, onRequestFinish = {
                 if (isShowLoading) dismissDialog()
+                if (isRefresh) refreshLayout.finishRefresh()
+                if (isLoadMore) {
+                    refreshLayout.finishLoadMore()
+                }
                 isRefresh = false
                 isLoadMore = false
             })

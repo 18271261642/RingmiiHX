@@ -20,8 +20,8 @@
     <string name="app_main_health_blood_pressure">血压</string>
     <string name="app_main_health_heart_rate">心率</string>
     <string name="app_main_health_body_temp">体温</string>
-    <string name="app_main_health_sleep">睡眠</string>
-    <string name="app_main_health_sleep_minute">睡眠活动(分钟)</string>
+    <string name="app_main_health_sleep">睡眠活动</string>
+    <string name="app_main_health_sleep_minute">分钟</string>
     <string name="app_main_health_sport">运动</string>
     <string name="app_main_health_high_pressure">高压</string>
     <string name="app_main_health_low_pressure">低压</string>
@@ -93,7 +93,7 @@
     <string name="app_add_device_input_hint">设备IMEI码</string>
     <string name="app_next_step">下一步</string>
     <string name="app_msg">消息</string>
-    <string name="app_msg_error_notify">异常提醒</string>
+    <string name="app_msg_health_notify">健康提醒</string>
     <string name="app_msg_care_info">关爱信息</string>
     <string name="app_msg_system_info">系统信息</string>
     <string name="app_msg_item_title">%s 测量</string>
