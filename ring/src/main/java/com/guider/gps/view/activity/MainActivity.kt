@@ -152,7 +152,6 @@ class MainActivity : BaseActivity() {
         getBindDeviceList()
         getWalkTargetData()
         getRingUndoNumData()
-        pollingQueriesSystemMessages()
     }
 
     private fun getWalkTargetData() {
@@ -851,6 +850,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        //调整系统消息的获取时间，避免弹窗一直闪的问题
+        pollingQueriesSystemMessages()
+    }
+
     override fun onPause() {
         super.onPause()
         //关闭没关闭的dialog,防止dialog的窗体泄露
@@ -858,10 +863,15 @@ class MainActivity : BaseActivity() {
             dialogTagList.forEach {
                 val dialogFragment = supportFragmentManager.findFragmentByTag(it)
                 if (dialogFragment != null && dialogFragment is DialogFragment) {
-                    Log.i("closeDialog","关闭的dialog的fragment的tag为${it}")
+                    Log.i("closeDialog", "关闭的dialog的fragment的tag为${it}")
                     dialogFragment.dismiss()
                 }
             }
+        }
+        //熄屏期间暂停循环，避免熄屏后resume时会同一时间同时调取接口造成窗体多次闪烁的现象
+        if (subscribe != null) {
+            subscribe?.dispose()
+            subscribe = null
         }
     }
 

@@ -233,14 +233,18 @@ class HealthFragment : BaseFragment() {
                 if (resultBean != null) {
                     //总步数为一天时间段的步数总和
                     stepNumTv.text = resultBean.step.toString()
-                    targetStepTv.text = resultBean.walkTarget.toString()
+                    targetStepTv.text = String.format(
+                            resources.getString(R.string.app_main_health_target_step),
+                            resultBean.walkTarget)
                     if (accountId == userId) {
                         MMKVUtil.saveInt(TARGET_STEP, resultBean.walkTarget)
                     }
                 } else {
                     initSportChart()
                     stepNumTv.text = "0"
-                    targetStepTv.text = "8000"
+                    targetStepTv.text = String.format(
+                            resources.getString(R.string.app_main_health_target_step),
+                            8000)
                 }
             })
         }
@@ -401,7 +405,7 @@ class HealthFragment : BaseFragment() {
                     initBloodChart()
                     bloodPressureNoDataTv.visibility = View.VISIBLE
                 }
-            }, onRequestFinish ={
+            }, onRequestFinish = {
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (!isFirstLoadData && !isRefresh) mDialog?.hideDialog()
                 isRefresh = false
