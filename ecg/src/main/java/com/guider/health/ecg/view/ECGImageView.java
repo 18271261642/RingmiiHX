@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -36,20 +39,26 @@ import java.util.ArrayList;
 
 public class ECGImageView extends FrameLayout {
 
+    private Context context;
+
     public ECGImageView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_ect_img , this);
+        this.context = context;
+        inflate(context, R.layout.view_ect_img, this);
     }
 
     private OnSaveFinishCall onSaveFinish;
+
     public void setOnSaveFinishCall(OnSaveFinishCall listener) {
         this.onSaveFinish = listener;
     }
 
     public void saveImage() {
-        String fileId = (String) SharedPreferencesUtils.getParam(getContext(), "EcgFileId", "FileId");
+        String fileId = (String) SharedPreferencesUtils.getParam(getContext(),
+                "EcgFileId", "FileId");
         if (StringUtil.isEmpty(fileId)) {
-            openFail(getContext().getString(R.string.ecg_bt_error7)); // "Please upload ECG first."
+            openFail(getContext().getResources().getString(R.string.ecg_bt_error7),
+                    true); // "Please upload ECG first."
             return;
         }
 
@@ -66,11 +75,11 @@ public class ECGImageView extends FrameLayout {
                     // fi檔資料取到buffer，且bytes筆資料
                     buffer = readInputStream(is);
                     bytes = buffer.length;
-
                     _saveImage();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    openFail(getContext().getString(R.string.ecg_file_open_error)); // "心电图文件打开失败");
+                    openFail(getContext().getResources().getString(R.string.ecg_file_open_error),
+                            false); // "心电图文件打开失败");
                 }
             }
         }).start();
@@ -93,20 +102,23 @@ public class ECGImageView extends FrameLayout {
         //把outStream里的数据写入内存
         return outStream.toByteArray();
     }
+
     public boolean _saveImage() {
         // 先确定图片路径
         imagePth = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + File.separator + "ECG" + File.separator + System.currentTimeMillis() +".jpg";
+                + File.separator + "ECG" + File.separator + System.currentTimeMillis() + ".jpg";
 
-        try{
+        try {
 
             // (-100意思) => 100 * 4 = 少400ms
             wv1 = new int[((bytes / 136) << 3) - 100];
             wv2 = new int[((bytes / 136) << 3) - 100];
 
-        }catch (NegativeArraySizeException e){
+        } catch (NegativeArraySizeException e) {
             e.printStackTrace();
-            openFail(getContext().getString(R.string.ecg_file_handle_error)); // "心电图解析失败");
+            openFail(getContext().getResources().getString(R.string.ecg_file_handle_error),
+                    false
+            ); // "心电图解析失败");
             onSaveFinish.onError();
             return false;
         }
@@ -119,32 +131,30 @@ public class ECGImageView extends FrameLayout {
         // 把檔案裡的波1、波2資料分別帶入陣列
 
 
-        for (int i = 0 ; i < bytes ; i = i+8){
+        for (int i = 0; i < bytes; i = i + 8) {
             numI = i % 136;
             // 波1
-            if (-1 < numI && numI < 57){
-                ans = ((int)buffer[i]&0xff) + (((int)buffer[(i+1)]&0xff) << 8);
+            if (-1 < numI && numI < 57) {
+                ans = ((int) buffer[i] & 0xff) + (((int) buffer[(i + 1)] & 0xff) << 8);
                 ans = getStreamLP(ans);
 
                 // 去掉 前 100 * 4 亂數資料
-                if (wave1 > 99){
+                if (wave1 > 99) {
                     wv1[wave1 - 100] = ans;
                 }
                 wave1++;
                 // 波2
-            }
-
-            else if (63 < numI && numI < 121){
-                ans2 = ((int)buffer[i]&0xff) + (((int)buffer[(i+1)]&0xff) << 8);
+            } else if (63 < numI && numI < 121) {
+                ans2 = ((int) buffer[i] & 0xff) + (((int) buffer[(i + 1)] & 0xff) << 8);
                 ans2 = getStreamLP2(ans2);
 
                 // 去掉 前 100 * 4 亂數資料
-                if (wave2 > 99){
+                if (wave2 > 99) {
                     wv2[wave2 - 100] = ans2;
                 }
                 wave2++;
                 // 跳過時間部分
-                if (numI == 120){
+                if (numI == 120) {
                     i = i + 8;
                 }
             }
@@ -152,7 +162,7 @@ public class ECGImageView extends FrameLayout {
 
         // 确保UI线程中制图绘制
         if (getContext() instanceof Activity) {
-            ((Activity)getContext()).runOnUiThread(new Runnable() {
+            ((Activity) getContext()).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     go();
@@ -164,6 +174,7 @@ public class ECGImageView extends FrameLayout {
 
     public interface OnSaveFinishCall {
         void onSaveFinish(String imagePath);
+
         void onError();
     }
 
@@ -260,17 +271,17 @@ public class ECGImageView extends FrameLayout {
 
 
         // 自設網格線
-        LimitLine llx ;
-        for (int i = 0 ; i < 1501 ; i++){
-            llx = new LimitLine(i * 10,"");
-            if (i%5 == 0){
+        LimitLine llx;
+        for (int i = 0; i < 1501; i++) {
+            llx = new LimitLine(i * 10, "");
+            if (i % 5 == 0) {
                 // 網格線粗細
                 llx.setLineWidth(0.3f);
-            }else{
+            } else {
                 // 網格線粗細
                 llx.setLineWidth(0.1f);
             }
-            llx.enableDashedLine(10,0,0);
+            llx.enableDashedLine(10, 0, 0);
             xl.addLimitLine(llx);
         }
 
@@ -341,12 +352,12 @@ public class ECGImageView extends FrameLayout {
 
 
         LimitLine lly;
-        for (int i = 0 ; i < 151 ; i++){
-            lly = new LimitLine(i << 1,"");
-            if (i%5 == 0){
+        for (int i = 0; i < 151; i++) {
+            lly = new LimitLine(i << 1, "");
+            if (i % 5 == 0) {
                 // 網格線粗細
                 lly.setLineWidth(0.3f);
-            }else{
+            } else {
                 // 網格線粗細
                 lly.setLineWidth(0.1f);
             }
@@ -388,14 +399,13 @@ public class ECGImageView extends FrameLayout {
     private void handled() {
 
 
-
         // 大N I
         ArrayList<Entry> valuesI = new ArrayList<>();
-        valuesI.add(new Entry( 0 , 265 ));
-        valuesI.add(new Entry( 20 , 265 ));
-        valuesI.add(new Entry( 20 , 285 ));
-        valuesI.add(new Entry( 70 , 285 ));
-        valuesI.add(new Entry( 70 , ((wv1[0] ) / 11f) + 275f ));
+        valuesI.add(new Entry(0, 265));
+        valuesI.add(new Entry(20, 265));
+        valuesI.add(new Entry(20, 285));
+        valuesI.add(new Entry(70, 285));
+        valuesI.add(new Entry(70, ((wv1[0]) / 11f) + 275f));
 //        valuesI.add(new Entry( 70 , 265 ));
 //        valuesI.add(new Entry( 90 , 265 ));
 
@@ -420,8 +430,8 @@ public class ECGImageView extends FrameLayout {
         int inI = wv1.length >> 1;
         // 波I
         ArrayList<Entry> values = new ArrayList<>();
-        for (int i = 0 ; i < inI ; i++){
-            values.add(new Entry( i + 70, ((wv1[i] ) / 11f) + 275f ));
+        for (int i = 0; i < inI; i++) {
+            values.add(new Entry(i + 70, ((wv1[i]) / 11f) + 275f));
 //            values.add(new Entry( i + 0, ((wv1[i] ) / 11f) + 275f ));
         }
         // 點跟點的連線設定
@@ -442,14 +452,13 @@ public class ECGImageView extends FrameLayout {
         set1.setColor(Color.BLUE);
 
 
-
         // 大N II
         ArrayList<Entry> valuesII = new ArrayList<>();
-        valuesII.add(new Entry( 0 , 215 ));
-        valuesII.add(new Entry( 20 , 215 ));
-        valuesII.add(new Entry( 20 , 235 ));
-        valuesII.add(new Entry( 70 , 235 ));
-        valuesII.add(new Entry( 70 , ((wv2[0] ) / 11f) + 225f ));
+        valuesII.add(new Entry(0, 215));
+        valuesII.add(new Entry(20, 215));
+        valuesII.add(new Entry(20, 235));
+        valuesII.add(new Entry(70, 235));
+        valuesII.add(new Entry(70, ((wv2[0]) / 11f) + 225f));
 //        valuesII.add(new Entry( 70 , 215 ));
 //        valuesII.add(new Entry( 90 , 215 ));
         // 點跟點的連線設定
@@ -471,8 +480,8 @@ public class ECGImageView extends FrameLayout {
 
         // 波II
         ArrayList<Entry> values2 = new ArrayList<>();
-        for (int i = 0 ; i < inI ; i++){
-            values2.add(new Entry(i + 70 , ((wv2[i] ) / 11f) + 225f ));
+        for (int i = 0; i < inI; i++) {
+            values2.add(new Entry(i + 70, ((wv2[i]) / 11f) + 225f));
 //            values2.add(new Entry(i + 0 , ((wv2[i] ) / 11f) + 225f ));
         }
         // 點跟點的連線設定
@@ -493,14 +502,13 @@ public class ECGImageView extends FrameLayout {
         set2.setColor(Color.BLACK);
 
 
-
         // 大N III
         ArrayList<Entry> valuesIII = new ArrayList<>();
-        valuesIII.add(new Entry( 0 , 165 ));
-        valuesIII.add(new Entry( 20 , 165 ));
-        valuesIII.add(new Entry( 20 , 185 ));
-        valuesIII.add(new Entry( 70 , 185 ));
-        valuesIII.add(new Entry( 70 , ((wv2[0] - wv1[0]) / 11f) + 175f  ));
+        valuesIII.add(new Entry(0, 165));
+        valuesIII.add(new Entry(20, 165));
+        valuesIII.add(new Entry(20, 185));
+        valuesIII.add(new Entry(70, 185));
+        valuesIII.add(new Entry(70, ((wv2[0] - wv1[0]) / 11f) + 175f));
 //        valuesIII.add(new Entry( 70 , 165 ));
 //        valuesIII.add(new Entry( 90 , 165 ));
 //        // 點跟點的連線設定
@@ -522,8 +530,8 @@ public class ECGImageView extends FrameLayout {
 
         // 波III  ^L2 - ^L1
         ArrayList<Entry> values3 = new ArrayList<>();
-        for (int i = 0 ; i < inI ; i++){
-            values3.add(new Entry(i + 70, ((wv2[i] - wv1[i]) / 11f) + 175f  ));
+        for (int i = 0; i < inI; i++) {
+            values3.add(new Entry(i + 70, ((wv2[i] - wv1[i]) / 11f) + 175f));
 //            values3.add(new Entry(i + 0, ((wv2[i] - wv1[i]) / 11f) + 175f  ));
         }
         // 點跟點的連線設定
@@ -544,14 +552,13 @@ public class ECGImageView extends FrameLayout {
         set3.setColor(Color.BLUE);
 
 
-
         // 大N aVR
         ArrayList<Entry> valuesR = new ArrayList<>();
-        valuesR.add(new Entry( 0 , 115 ));
-        valuesR.add(new Entry( 20 , 115 ));
-        valuesR.add(new Entry( 20 , 135 ));
-        valuesR.add(new Entry( 70 , 135 ));
-        valuesR.add(new Entry( 70 , ((- (wv1[0]+wv2[0]) >> 1) /11f) +125f  ));
+        valuesR.add(new Entry(0, 115));
+        valuesR.add(new Entry(20, 115));
+        valuesR.add(new Entry(20, 135));
+        valuesR.add(new Entry(70, 135));
+        valuesR.add(new Entry(70, ((-(wv1[0] + wv2[0]) >> 1) / 11f) + 125f));
 //        valuesR.add(new Entry( 70 , 115 ));
 //        valuesR.add(new Entry( 90 , 115 ));
         // 點跟點的連線設定
@@ -573,8 +580,8 @@ public class ECGImageView extends FrameLayout {
 
         // 波4  aVR： -0.5*(^L1+^L2)
         ArrayList<Entry> values4 = new ArrayList<>();
-        for (int i = 0 ; i < inI ; i++){
-            values4.add(new Entry(i + 70 ,  ((- (wv1[i]+wv2[i]) >> 1) /11f) +125f  ));
+        for (int i = 0; i < inI; i++) {
+            values4.add(new Entry(i + 70, ((-(wv1[i] + wv2[i]) >> 1) / 11f) + 125f));
 //            values4.add(new Entry(i + 0 ,  ((- (wv1[i]+wv2[i]) >> 1) /11f) +125f  ));
         }
         // 點跟點的連線設定
@@ -595,14 +602,13 @@ public class ECGImageView extends FrameLayout {
         set4.setColor(Color.BLACK);
 
 
-
         // 大N aVL
         ArrayList<Entry> valuesL = new ArrayList<>();
-        valuesL.add(new Entry( 0 , 65 ));
-        valuesL.add(new Entry( 20 , 65 ));
-        valuesL.add(new Entry( 20 , 85 ));
-        valuesL.add(new Entry( 70 , 85 ));
-        valuesL.add(new Entry( 70 , ((wv1[0] + (- wv2[0] >> 1)) /11f) +75f  ));
+        valuesL.add(new Entry(0, 65));
+        valuesL.add(new Entry(20, 65));
+        valuesL.add(new Entry(20, 85));
+        valuesL.add(new Entry(70, 85));
+        valuesL.add(new Entry(70, ((wv1[0] + (-wv2[0] >> 1)) / 11f) + 75f));
 //        valuesL.add(new Entry( 70 , 65 ));
 //        valuesL.add(new Entry( 90 , 65 ));
         // 點跟點的連線設定
@@ -624,8 +630,8 @@ public class ECGImageView extends FrameLayout {
 
         // 波5  aVL： ^L1 + -0.5*^L2
         ArrayList<Entry> values5 = new ArrayList<>();
-        for (int i = 0 ; i < inI ; i++){
-            values5.add(new Entry(i + 70 ,  ((wv1[i] + (- wv2[i] >> 1)) /11f) +75f  ));
+        for (int i = 0; i < inI; i++) {
+            values5.add(new Entry(i + 70, ((wv1[i] + (-wv2[i] >> 1)) / 11f) + 75f));
 //            values5.add(new Entry(i + 0 ,  ((wv1[i] + (- wv2[i] >> 1)) /11f) +75f  ));
         }
         // 點跟點的連線設定
@@ -646,14 +652,13 @@ public class ECGImageView extends FrameLayout {
         set5.setColor(Color.BLUE);
 
 
-
         // 大N aVF
         ArrayList<Entry> valuesF = new ArrayList<>();
-        valuesF.add(new Entry( 0 , 15 ));
-        valuesF.add(new Entry( 20 , 15 ));
-        valuesF.add(new Entry( 20 , 35 ));
-        valuesF.add(new Entry( 70 , 35 ));
-        valuesF.add(new Entry( 70 , ((wv2[0] + (- wv1[0] >> 1)) /11f) +25f ));
+        valuesF.add(new Entry(0, 15));
+        valuesF.add(new Entry(20, 15));
+        valuesF.add(new Entry(20, 35));
+        valuesF.add(new Entry(70, 35));
+        valuesF.add(new Entry(70, ((wv2[0] + (-wv1[0] >> 1)) / 11f) + 25f));
 //        valuesF.add(new Entry( 70 , 15 ));
 //        valuesF.add(new Entry( 90 , 15 ));
         // 點跟點的連線設定
@@ -675,8 +680,8 @@ public class ECGImageView extends FrameLayout {
 
         // 波6  aVF：  -0.5*^L1 + ^L2
         ArrayList<Entry> values6 = new ArrayList<>();
-        for (int i = 0 ; i < inI ; i++){
-            values6.add(new Entry(i + 70 ,  ((wv2[i] + (- wv1[i] >> 1)) /11f) +25f  ));
+        for (int i = 0; i < inI; i++) {
+            values6.add(new Entry(i + 70, ((wv2[i] + (-wv1[i] >> 1)) / 11f) + 25f));
 //            values6.add(new Entry(i + 0 ,  ((wv2[i] + (- wv1[i] >> 1)) /11f) +25f  ));
         }
         // 點跟點的連線設定
@@ -697,8 +702,8 @@ public class ECGImageView extends FrameLayout {
         set6.setColor(Color.BLACK);
 
 
-        LineData d = new LineData(setI,setII,setIII,setR,setL,setF,
-                set1,set2,set3,set4,set5,set6);
+        LineData d = new LineData(setI, setII, setIII, setR, setL, setF,
+                set1, set2, set3, set4, set5, set6);
         chart.setData(d);
 
     }
@@ -724,7 +729,7 @@ public class ECGImageView extends FrameLayout {
 
         mStreamBuf[0] = NewSample;
 
-        tmp = mStreamBuf[20] + (( - (int) mY[0]));
+        tmp = mStreamBuf[20] + ((-(int) mY[0]));
 
         return tmp;
     }
@@ -749,13 +754,15 @@ public class ECGImageView extends FrameLayout {
 
         mStreamBuf2[0] = NewSample;
 
-        tmp = mStreamBuf2[20] + (( - (int) mY2[0]));
+        tmp = mStreamBuf2[20] + ((-(int) mY2[0]));
 
         return tmp;
     }
 
-    private void openFail(String msg) {
+    private void openFail(String msg, Boolean isMainThread) {
+        if (!isMainThread) Looper.prepare();
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        if (!isMainThread) Looper.loop();
     }
 
     public String getFilePath() {

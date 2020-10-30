@@ -732,13 +732,18 @@ public class NewConnBleHelpService {
         private void saveHalfHourData(OriginHalfHourData data) {
             if (data == null) return;
             String mac = MyApp.getInstance().getMacAddress();
-            //MyLogUtil.e("------sport------" + data.getHalfHourSportDatas());
-            String dateSport = saveSportData(mac, data.getHalfHourSportDatas());
-            //MyLogUtil.e("------sport -time" + dateSport);
-            saveStepData(mac, dateSport, data.getAllStep());
-            saveRateData(mac, data.getHalfHourRateDatas());
-//            Log.d("-------xue", data.getHalfHourBps().toString());
-            saveBpData(mac, data.getHalfHourBps());
+            try {
+                //MyLogUtil.e("------sport------" + data.getHalfHourSportDatas());
+                String dateSport = saveSportData(mac, data.getHalfHourSportDatas());
+                //MyLogUtil.e("------sport -time" + dateSport);
+                saveStepData(mac, dateSport, data.getAllStep());
+                saveRateData(mac, data.getHalfHourRateDatas());
+                //            Log.d("-------xue", data.getHalfHourBps().toString());
+                saveBpData(mac, data.getHalfHourBps());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
+            }
         }
 
         /**
