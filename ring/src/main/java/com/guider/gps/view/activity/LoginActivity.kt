@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
+import com.guider.baselib.utils.USER.AREA_CODE
 import com.guider.baselib.utils.USER.BIRTHDAY
 import com.guider.baselib.utils.USER.COUNTRY_CODE
 import com.guider.baselib.utils.USER.HEADER
@@ -60,6 +61,9 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     private var phoneValue = ""
     private var isLineLoginFirst = false
 
+    //国家英文代号
+    private var countryCodeKey = "CN"
+
     /**
      * Line第三方登陆相关
      */
@@ -100,6 +104,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(COUNTRY_CODE))) {
             countryTv.text = MMKVUtil.getString(COUNTRY_CODE)
         }
+        if (MMKVUtil.containKey(AREA_CODE) &&
+                StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(AREA_CODE))) {
+            countryCodeKey = MMKVUtil.getString(AREA_CODE)
+        }
+        countryTv.tag = countryCodeKey
     }
 
     override fun initLogic() {
@@ -147,9 +156,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
             if (!hasFocus) {
                 if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
                     phoneValue = phoneEdit.text.toString()
-                    val countryCode = countryTv.text.toString().replace(
-                            "+", "")
-                    if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                    val tag =
+                            if (countryTv.tag is String) {
+                                countryTv.tag as String
+                            } else "CN"
+                    if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                         ToastUtil.showCenter(mContext!!,
                                 mContext!!.resources.getString(R.string.app_incorrect_format))
                     }
@@ -198,6 +209,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     intent.putExtra("phone", phoneEdit.text.toString())
                 }
                 intent.putExtra("country", countryTv.text.toString())
+                val tag =
+                        if (countryTv.tag is String) {
+                            countryTv.tag as String
+                        } else "CN"
+                intent.putExtra("countryCode", tag)
                 startActivityForResult(intent, REGISTER)
             }
             loginTv -> {
@@ -206,8 +222,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     toastShort(mContext!!.resources.getString(R.string.app_login_phone_empty))
                     return
                 }
-                val countryCode = countryTv.text.toString().replace("+", "")
-                if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                val tag =
+                        if (countryTv.tag is String) {
+                            countryTv.tag as String
+                        } else "CN"
+                if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                     toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                     return
                 }
@@ -291,6 +310,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         MMKVUtil.saveString(TOKEN, bean.token!!)
         MMKVUtil.saveInt(USERID, bean.accountId)
         MMKVUtil.saveString(COUNTRY_CODE, countryTv.text.toString())
+        val tag =
+                if (countryTv.tag is String) {
+                    countryTv.tag as String
+                } else "CN"
+        MMKVUtil.saveString(AREA_CODE, tag)
         MMKVUtil.saveString(PHONE, phoneValue)
         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
         MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)
@@ -398,6 +422,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     @SuppressLint("SetTextI18n")
                     override fun onClickItem(position: Int) {
                         val code = newList[position].phoneCode.toString()
+                        countryTv.tag = newList[position].phoneAreCode
                         countryTv.text = "+$code"
                         dialog?.dismiss()
                     }

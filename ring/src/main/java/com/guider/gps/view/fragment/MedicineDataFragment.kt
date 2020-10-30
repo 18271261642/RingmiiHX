@@ -99,8 +99,8 @@ class MedicineDataFragment : BaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun refreshHealthData(event: EventBusEvent<String>) {
-        if (event.code == EventBusAction.REFRESH_HEALTH_DATA) {
+    fun refreshMedicineData(event: EventBusEvent<String>) {
+        if (event.code == EventBusAction.REFRESH_USER_DATA) {
             initDataChart()
         }
     }

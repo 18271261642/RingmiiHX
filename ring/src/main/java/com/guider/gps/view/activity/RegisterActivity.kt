@@ -33,7 +33,12 @@ import retrofit2.Response
 class RegisterActivity : BaseActivity(), CustomAdapt {
 
     private var phoneValue = ""
+
+    //国家区号
     private var countryCodeValue = ""
+
+    //国家英文代号
+    private var countryCodeKey = "CN"
 
     //判断是否是从注册页进入还是从绑定设备添加新账号
     private var pageEnterType = ""
@@ -59,6 +64,9 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("pageEnterType"))) {
                 pageEnterType = intent.getStringExtra("pageEnterType")!!
             }
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("countryCode"))) {
+                countryCodeKey = intent.getStringExtra("countryCode")!!
+            }
         }
     }
 
@@ -74,14 +82,17 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 if (!hasFocus) {
                     if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
                         phoneValue = phoneEdit.text.toString()
+                        val tag =
+                                if (countryTv.tag is String) {
+                                    countryTv.tag as String
+                                } else "CN"
                         val countryCode = countryTv.text.toString().replace(
                                 "+", "")
-                        if (!StringUtil.isMobileNumber(countryCode,
-                                        phoneValue)) {
+                        if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                             formatError()
                         } else {
                             //符合要求的手机号去判断是否是已注册的手机号
-                            checkPhone(countryCode, phoneEdit.text.toString(), false)
+                            checkPhone(countryCode, phoneEdit.text.toString(), false,tag)
                         }
                     }
                 }
@@ -89,6 +100,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
         } else {
             editLayout.visibility = View.GONE
         }
+        countryTv.tag = countryCodeKey
     }
 
     private fun formatError() {
@@ -102,10 +114,10 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
         }, 1000)
     }
 
-    private fun checkPhone(countryCode: String, phone: String, isExit: Boolean) {
+    private fun checkPhone(countryCode: String, phone: String, isExit: Boolean, areaCode: String) {
         //如果符合要求弹出提示
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!,block = {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .checkPhoneIsRegister(countryCode, phone)
                 //true可以用 false不可用
@@ -124,6 +136,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                         intent.putExtra("passwd", passwordValue)
                         intent.putExtra("phone", phoneValue)
                         intent.putExtra("telAreaCode", countryCode)
+                        intent.putExtra("areaCode", areaCode)
                         intent.putExtra("pageEnterType", pageEnterType)
                         startActivityForResult(intent, COMPLETE_INFO)
                     }
@@ -184,7 +197,11 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                     toastShort(mContext!!.resources.getString(R.string.app_login_phone_empty))
                     return
                 }
-                if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                val tag =
+                        if (countryTv.tag is String) {
+                            countryTv.tag as String
+                        } else "CN"
+                if (!StringUtil.isMobileNumber(phoneValue,tag)) {
                     toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                     return
                 }
@@ -203,13 +220,14 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 }
                 //如果是绑定其他设备的新注册用户由于不能输入手机号也就不需要再去判断是否注册过
                 if (StringUtil.isEmpty(pageEnterType))
-                    checkPhone(countryCode, phoneValue, true)
+                    checkPhone(countryCode, phoneValue, true, tag)
                 else {
                     val intent = Intent(mContext!!, CompleteInfoActivity::class.java)
                     val passwordValue = MyUtils.md5(passwordEdit.text.toString())
                     intent.putExtra("passwd", passwordValue)
                     intent.putExtra("phone", phoneValue)
                     intent.putExtra("telAreaCode", countryCode)
+                    intent.putExtra("areaCode", tag)
                     intent.putExtra("pageEnterType", pageEnterType)
                     startActivityForResult(intent, COMPLETE_INFO)
                 }
@@ -295,6 +313,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                     override fun onClickItem(position: Int) {
                         val code = newList[position].phoneCode.toString()
                         countryTv.text = "+$code"
+                        countryTv.tag = newList[position].phoneAreCode
                         dialog?.dismiss()
                     }
 

@@ -221,4 +221,15 @@
     <string name="app_cancel_the_addressing_success">取消成功</string>
     <string name="app_main_health_step_unit">(步)</string>
     <string name="app_watch_more">查看更多</string>
+    <string name="app_track_display_mode">軌跡顯示方式</string>
+    <string name="app_path_method_line">畫線</string>
+    <string name="app_path_method_point">描點</string>
+    <string name="app_path_method_point_line">描點且畫線</string>
+    <string name="app_path_method_time_window">時間窗口</string>
+    <string name="app_list">列表</string>
+    <string name="app_location_electronic_edit_hint">請輸入安全區域名稱</string>
+    <string name="app_location_device_account_name_hint">請輸入設備備註名稱</string>
+    <string name="app_preservation_electronic_fence">保存電子圍欄</string>
+    <string name="app_electronic_fence_list">電子圍欄列表</string>
+    <string name="app_edit_device_account_name_title">修改設備備註名稱</string>
 </resources>

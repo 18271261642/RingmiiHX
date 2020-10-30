@@ -338,11 +338,11 @@ class BindPhoneActivity : BaseActivity() {
             return
         }
         val countryCode = countryTv.text.toString().replace("+", "")
-        if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
-            toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
-            return
-        }
-        if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+        val tag =
+                if (countryTv.tag is String) {
+                    countryTv.tag as String
+                } else "CN"
+        if (!StringUtil.isMobileNumber(phoneValue, tag)) {
             toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
             return
         }
@@ -436,6 +436,11 @@ class BindPhoneActivity : BaseActivity() {
         MMKVUtil.saveString(USER.TOKEN, bean.token!!)
         MMKVUtil.saveInt(USER.USERID, bean.accountId)
         MMKVUtil.saveString(USER.COUNTRY_CODE, countryTv.text.toString())
+        val tag =
+                if (countryTv.tag is String) {
+                    countryTv.tag as String
+                } else "CN"
+        MMKVUtil.saveString(USER.AREA_CODE, tag)
         MMKVUtil.saveString(USER.PHONE, phoneValue)
         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
         MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)
@@ -485,6 +490,7 @@ class BindPhoneActivity : BaseActivity() {
                     override fun onClickItem(position: Int) {
                         val code = newList[position].phoneCode.toString()
                         countryTv.text = "+$code"
+                        countryTv.tag = newList[position].phoneAreCode
                         dialog?.dismiss()
                     }
 

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp_45"
+    android:paddingRight="@dimen/dp_45">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_white_4_bg">
+
+        <TextView
+            android:id="@+id/selectDateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_24"
+            android:text="@string/app_main_mine_set"
+            android:textColor="@color/color333333"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_17"
+            android:layout_marginEnd="@dimen/dp_17"
+            app:layout_constraintTop_toBottomOf="@id/selectDateTitle">
+
+            <TextView
+                android:id="@+id/pathMethodTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_track_display_mode"
+                android:textColor="@color/color333333"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pathMethodTitle">
+
+                <ImageView
+                    android:id="@+id/lineSelectIv"
+                    android:layout_width="@dimen/dp_19"
+                    android:layout_height="@dimen/dp_19"
+                    android:src="@drawable/select_path_method"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lineSelectTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:text="@string/app_path_method_line"
+                    android:textColor="@color/color333333"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@id/lineSelectIv"
+                    app:layout_constraintStart_toEndOf="@id/lineSelectIv"
+                    app:layout_constraintTop_toTopOf="@id/lineSelectIv" />
+
+                <ImageView
+                    android:id="@+id/pointSelectIv"
+                    android:layout_width="@dimen/dp_19"
+                    android:layout_height="@dimen/dp_19"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:src="@drawable/select_path_method"
+                    app:layout_constraintStart_toEndOf="@id/lineSelectTv"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pointSelectTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:text="@string/app_path_method_point"
+                    android:textColor="@color/color333333"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@id/pointSelectIv"
+                    app:layout_constraintStart_toEndOf="@id/pointSelectIv"
+                    app:layout_constraintTop_toTopOf="@id/pointSelectIv" />
+
+                <ImageView
+                    android:id="@+id/pointWithLineSelectIv"
+                    android:layout_width="@dimen/dp_19"
+                    android:layout_height="@dimen/dp_19"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:src="@drawable/select_path_method"
+                    app:layout_constraintStart_toEndOf="@id/pointSelectTv"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pointWithLineSelectTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:text="@string/app_path_method_point_line"
+                    android:textColor="@color/color333333"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@id/pointWithLineSelectIv"
+                    app:layout_constraintStart_toEndOf="@id/pointWithLineSelectIv"
+                    app:layout_constraintTop_toTopOf="@id/pointWithLineSelectIv" />
+
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:background="@color/line_grey"
+                    app:layout_constraintTop_toBottomOf="@id/lineSelectIv" />
+
+                <TextView
+                    android:id="@+id/timeWindowTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dp_14"
+                    android:paddingBottom="@dimen/dp_14"
+                    android:text="@string/app_path_method_time_window"
+                    android:textColor="@color/color333333"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line1" />
+
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/timeWindowSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    app:kswAnimationDuration="300"
+                    app:kswBackDrawable="@drawable/ios_back_drawable"
+                    app:kswThumbDrawable="@drawable/ios_thumb_selector"
+                    app:kswThumbMarginBottom="-8dp"
+                    app:kswThumbMarginLeft="-5dp"
+                    app:kswThumbMarginRight="-5dp"
+                    app:kswThumbMarginTop="-2.5dp"
+                    app:kswThumbRangeRatio="1.4"
+                    app:layout_constraintBottom_toBottomOf="@id/timeWindowTv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/timeWindowTv" />
+
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/line_grey"
+                    app:layout_constraintTop_toBottomOf="@id/timeWindowTv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_21"
+            android:paddingBottom="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contentLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cancelLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:background="@drawable/circle_f18937_21_bg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/cancelIv"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/icon_dialog_cancel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/dp_19"
+                    android:text="@string/app_cancel"
+                    android:textColor="@color/colorF18937"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cancelIv"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/confirmLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginStart="@dimen/dp_24"
+                android:background="@drawable/rounded_f18937_21_bg"
+                app:layout_constraintStart_toEndOf="@id/cancelLayout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/confirmIv"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/icon_dialog_confirm"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/dp_19"
+                    android:text="@string/app_confirm"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/confirmIv"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

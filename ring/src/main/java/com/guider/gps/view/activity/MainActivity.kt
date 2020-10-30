@@ -3,11 +3,14 @@ package com.guider.gps.view.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
+import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.HomeLeftDrawMsgAdapter
 import com.guider.gps.view.fragment.HealthFragment
@@ -66,6 +70,8 @@ class MainActivity : BaseActivity() {
     private var subscribe: Disposable? = null
     private var latestSystemMsgTime = ""
     private var dialogTagList = arrayListOf<String>()
+    private var editDialog: DialogHolder? = null
+    private var groupId = 0
 
     override fun initImmersion() {
         showBackButton(R.drawable.icon_home_left_menu, this)
@@ -136,7 +142,7 @@ class MainActivity : BaseActivity() {
                     pageTitle = deviceName
                     setTitle(pageTitle)
                 }
-                EventBusUtils.sendEvent(EventBusEvent(EventBusAction.REFRESH_HEALTH_DATA,
+                EventBusUtils.sendEvent(EventBusEvent(EventBusAction.REFRESH_USER_DATA,
                         "refresh"))
             }
 
@@ -148,10 +154,112 @@ class MainActivity : BaseActivity() {
             }
 
         })
+        drawAdapter.setEditClickListener(object : HomeLeftDrawMsgAdapter.AdapterEditClickListener {
+            override fun onEditItem(position: Int) {
+                if (StringUtil.isEmpty(drawAdapter.mData[position].relationShip)) return
+                editNameDialog(position)
+            }
+
+        })
         msgListRv.adapter = drawAdapter
         getBindDeviceList()
         getWalkTargetData()
         getRingUndoNumData()
+    }
+
+    private fun editNameDialog(position: Int) {
+        if (editDialog == null) {
+            editDialog = object : DialogHolder(this,
+                    R.layout.dialog_device_account_name_edit, Gravity.CENTER), View.OnClickListener {
+                lateinit var deviceNameEdit: EditText
+                lateinit var deviceNameDeleteIv: ImageView
+                override fun bindView(dialogView: View) {
+                    val cancelIv = dialogView.findViewById<ConstraintLayout>(R.id.cancelLayout)
+                    val confirmLayout = dialogView.findViewById<ConstraintLayout>(R.id.confirmLayout)
+                    deviceNameEdit = dialogView.findViewById(R.id.deviceNameEdit)
+                    deviceNameDeleteIv = dialogView.findViewById(R.id.deleteIv)
+                    if (StringUtil.isNotBlankAndEmpty(drawAdapter.mData[position].relationShip)) {
+                        deviceNameDeleteIv.visibility = View.VISIBLE
+                        deviceNameEdit.setText(drawAdapter.mData[position].relationShip)
+                    }
+                    deviceNameEdit.addTextChangedListener(object : TextWatcher {
+                        override fun beforeTextChanged(s: CharSequence?, start: Int,
+                                                       count: Int, after: Int) {
+                        }
+
+                        override fun onTextChanged(s: CharSequence?, start: Int,
+                                                   before: Int, count: Int) {
+                        }
+
+                        override fun afterTextChanged(s: Editable?) {
+                            if (!s.isNullOrEmpty()) {
+                                deviceNameDeleteIv.visibility = View.VISIBLE
+                            } else {
+                                deviceNameDeleteIv.visibility = View.GONE
+                            }
+                        }
+
+                    })
+                    deviceNameDeleteIv.setOnClickListener(this)
+                    cancelIv.setOnClickListener(this)
+                    confirmLayout.setOnClickListener(this)
+                }
+
+                override fun onClick(v: View) {
+                    when (v.id) {
+                        R.id.cancelLayout -> {
+                            dialog?.dismiss()
+                            editDialog = null
+                        }
+                        R.id.confirmLayout -> {
+                            val electronicName = deviceNameEdit.text.toString()
+                            if (StringUtil.isEmpty(electronicName)) return
+                            updateDeviceRelationShip(position, electronicName)
+                        }
+                        R.id.deleteIv -> {
+                            deviceNameEdit.setText("")
+
+                        }
+                    }
+                }
+            }
+            editDialog?.initView()
+            editDialog?.show(true)
+        }
+    }
+
+    private fun updateDeviceRelationShip(position: Int, electronicName: String) {
+        if (bindListBean == null) return
+        val accountId = bindDeviceList[position].accountId
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
+                val resultBean = GuiderApiUtil.getApiService().updateRelationShipData(
+                        bindListBean!!.userGroupId, accountId, electronicName)
+                if (resultBean == "true") {
+                    editDialog?.closeDialog()
+                    editDialog = null
+                    ToastUtil.showCustomToast(null, mContext!!, true,
+                            mContext!!.resources.getString(
+                                    R.string.app_person_info_change_success),
+                            R.drawable.rounded_99000000_5_bg)
+                    bindDeviceList[position].relationShip = electronicName
+                    drawAdapter.notifyDataSetChanged()
+                    //如果当前修改的用户是当前切换的绑定设备的用户的话改存储设备昵称和title
+                    if (bindDeviceList[bindPosition].accountId == accountId) {
+                        MMKVUtil.saveString(BIND_DEVICE_NAME, electronicName)
+                        //我的页面 顶部标题固定为我的其他页面为设备名称
+                        if (homeViewPager.currentItem != 3) {
+                            pageTitle = electronicName
+                            setTitle(pageTitle)
+                        }
+                    }
+                }
+            }, onRequestFinish = {
+                dismissDialog()
+            })
+        }
     }
 
     private fun getWalkTargetData() {
@@ -689,7 +797,7 @@ class MainActivity : BaseActivity() {
                             EventBusAction.REFRESH_MINE_FRAGMENT_UNBIND_SHOW,
                             true))
                     getBindDeviceList()
-                    EventBusUtils.sendEvent(EventBusEvent(EventBusAction.REFRESH_HEALTH_DATA,
+                    EventBusUtils.sendEvent(EventBusEvent(EventBusAction.REFRESH_USER_DATA,
                             "refresh"))
                 }
                 ADD_NEW_MEMBER -> {
@@ -880,6 +988,10 @@ class MainActivity : BaseActivity() {
         if (subscribe != null) {
             subscribe?.dispose()
             subscribe = null
+        }
+        if (editDialog != null) {
+            editDialog?.closeDialog()
+            editDialog = null
         }
     }
 

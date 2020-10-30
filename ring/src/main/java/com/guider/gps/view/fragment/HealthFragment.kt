@@ -140,7 +140,7 @@ class HealthFragment : BaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun refreshHealthData(event: EventBusEvent<String>) {
-        if (event.code == EventBusAction.REFRESH_HEALTH_DATA) {
+        if (event.code == EventBusAction.REFRESH_USER_DATA) {
             getHealthData()
         }
     }

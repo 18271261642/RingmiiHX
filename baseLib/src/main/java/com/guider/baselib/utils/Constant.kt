@@ -62,7 +62,8 @@ object USER {
     const val HEADER = "userHeader"//用户头像
     const val NAME = "userName"//用户头像
     const val TOKEN = "token"//用户token
-    const val COUNTRY_CODE = "country_code"//手机号
+    const val COUNTRY_CODE = "country_code"//国家区号
+    const val AREA_CODE = "area_code"//国家区号
     const val PHONE = "phone"//手机号
     const val BIRTHDAY = "birthday"//生日
     const val OWN_BIND_DEVICE_CODE = "own_bind_device_code"
@@ -92,3 +93,4 @@ const val ADD_NEW_MEMBER = 0x000015
 const val SELECT_ADDRESS = 0x000016
 const val ALARM_SET = 0x000017
 const val HISTORY_RECORD_LOCATION = 0x000018
+const val ELECTRONIC_FENCE_LIST = 0x000019

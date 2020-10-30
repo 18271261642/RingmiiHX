@@ -5,16 +5,14 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.guider.baselib.utils.AdapterOnItemClickListener
-import com.guider.baselib.utils.CommonUtils
-import com.guider.baselib.utils.Spanny
-import com.guider.baselib.utils.StringUtil
+import com.guider.baselib.utils.*
 import com.guider.baselib.widget.BatteryView
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
 import com.guider.health.apilib.bean.UserInfo
+import kotlinx.android.synthetic.main.item_home_draw_msg.view.*
 
 /**
  * 首页左侧抽屉的adapter
@@ -32,6 +30,12 @@ class HomeLeftDrawMsgAdapter(context: Context, dataList: ArrayList<UserInfo>)
 
     fun setLongClickListener(longClickListener: AdapterOnItemLongClickListener) {
         this.longClickListener = longClickListener
+    }
+
+    private var editClickListener: AdapterEditClickListener? = null
+
+    fun setEditClickListener(editClickListener: AdapterEditClickListener) {
+        this.editClickListener = editClickListener
     }
 
     override fun bindData(holder: ViewHolder, data: UserInfo, position: Int) {
@@ -98,9 +102,21 @@ class HomeLeftDrawMsgAdapter(context: Context, dataList: ArrayList<UserInfo>)
             longClickListener?.onClickItem(holder.adapterPosition)
             true
         }
+        if (MMKVUtil.getInt(USER.USERID) != 0 && MMKVUtil.getInt(USER.USERID) == data.accountId) {
+            holder.setViewVisibility(R.id.msgPersonNameIv,View.GONE)
+        } else {
+            holder.setViewVisibility(R.id.msgPersonNameIv,View.VISIBLE)
+            holder.itemView.nameLayout.setOnClickListener {
+                editClickListener?.onEditItem(holder.adapterPosition)
+            }
+        }
     }
 
     interface AdapterOnItemLongClickListener {
         fun onClickItem(position: Int)
+    }
+
+    interface AdapterEditClickListener {
+        fun onEditItem(position: Int)
     }
 }

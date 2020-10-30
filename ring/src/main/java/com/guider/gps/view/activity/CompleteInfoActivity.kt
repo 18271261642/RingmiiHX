@@ -42,6 +42,7 @@ class CompleteInfoActivity : BaseActivity() {
     private var birthday = ""
     private var passwordValue = ""
     private var countryCode = ""
+    private var areaCode = ""
     private var phoneValue = ""
 
     //判断是否是从注册页进入还是从绑定设备添加新账号
@@ -66,6 +67,9 @@ class CompleteInfoActivity : BaseActivity() {
             }
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("telAreaCode"))) {
                 countryCode = intent.getStringExtra("telAreaCode")!!
+            }
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("areaCode"))) {
+                areaCode = intent.getStringExtra("areaCode")!!
             }
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("pageEnterType"))) {
                 pageEnterType = intent.getStringExtra("pageEnterType")!!
@@ -175,6 +179,7 @@ class CompleteInfoActivity : BaseActivity() {
                         MMKVUtil.saveString(USER.TOKEN, bean.token!!)
                         MMKVUtil.saveInt(USER.USERID, bean.accountId)
                         MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
+                        MMKVUtil.saveString(USER.AREA_CODE, areaCode)
                         MMKVUtil.saveString(USER.PHONE, phoneValue)
                         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
                         MMKVUtil.saveInt(EXPIRED_TIME, bean.expired)

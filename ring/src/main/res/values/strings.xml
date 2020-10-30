@@ -222,4 +222,15 @@
     <string name="app_cancel_the_addressing_success">Cancel success</string>
     <string name="app_main_health_step_unit">(step)</string>
     <string name="app_watch_more">Watch More</string>
+    <string name="app_track_display_mode">Track display mode</string>
+    <string name="app_path_method_line">Line</string>
+    <string name="app_path_method_point">Point</string>
+    <string name="app_path_method_point_line">Draw point and line</string>
+    <string name="app_path_method_time_window">Time window</string>
+    <string name="app_list">List</string>
+    <string name="app_location_electronic_edit_hint">Please enter a security area name</string>
+    <string name="app_location_device_account_name_hint">Please enter the equipment remark name</string>
+    <string name="app_preservation_electronic_fence">Preservation electronic fence</string>
+    <string name="app_electronic_fence_list">Electronic fence list</string>
+    <string name="app_edit_device_account_name_title">Modify the equipment remark name</string>
 </resources>

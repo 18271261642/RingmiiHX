@@ -221,19 +221,27 @@ interface IGuiderCoroutinesApi {
                                      @Query("phone") phone: String?): String
 
     /**
-     * 查询设备的电子围栏信息
+     * 获取手环设备电子围栏设置
      * @param deviceCode 设备码
      */
-    @GET("api/v1/opdevice/fence")
-    suspend fun getElectronicFence(@Query("deviceCode") deviceCode: String?,
-                                   @Query("accountId") accountId: Int): Any
+    @GET("api/v2/opdevice/fence")
+    suspend fun getElectronicFence(@Query("accountId") accountId: Int,
+                                   @Query("row") row: Int,
+                                   @Query("isOpen") isOpen: Boolean
+    ): Any
 
     /**
      * 设置设备的电子围栏信息
-     * @param data 设备码+地址围栏信息的latlng列表
      */
-    @POST("api/v1/opdevice/fence")
+    @POST("api/v2/opdevice/fence")
     suspend fun setElectronicFence(@Body data: Any): String
+
+    /**
+     * 设置单个电子围栏开关
+     */
+    @PUT("api/v1/opdevice/fence/open")
+    suspend fun fenceSwitchSet(@Query("fenceId") fenceId: Int,
+                               @Query("isOpen") row: Boolean): String
 
     /**
      * 运动轨迹
@@ -371,4 +379,13 @@ interface IGuiderCoroutinesApi {
                                              @Query("page") page: Int,
                                              @Query("row") row: Int)
             : List<UserPositionListBean>?
+
+    /**
+     * 编辑家人备注
+     */
+    @PUT("api/v1/group/user/relationship")
+    suspend fun updateRelationShipData(@Query("groupId") groupId: Int,
+                                       @Query("accountId") accountId: Int,
+                                       @Query("relationShip") relationShip: String
+    ): Any?
 }

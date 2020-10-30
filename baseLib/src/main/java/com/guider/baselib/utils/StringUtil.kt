@@ -8,7 +8,8 @@ import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.EditText
-import com.guider.baselib.bean.MobileRegularExp
+import com.google.i18n.phonenumbers.NumberParseException
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import java.io.File
 import java.io.FileInputStream
 import java.math.BigInteger
@@ -471,17 +472,26 @@ class StringUtil private constructor() {
             return returnStr
         }
 
-        fun isMobileNumber(nationalCode: String?, mobileNumber: String?): Boolean {
+        fun isMobileNumber(mobileNumber: String?,
+                           countryCode: String? = "CN"): Boolean {
             var isMobileNumber = false
-            for (regularExp in MobileRegularExp.values()) {
-                val pattern = Pattern.compile(regularExp.regularExp)
-                val matcher = pattern.matcher(StringBuilder().append("+${nationalCode}")
-                        .append(mobileNumber).toString())
-                if (matcher.matches()) {
-                    isMobileNumber = true
-                    // 枚举中把最常用的国际区号排在前面可以减少校验开销
-                    break
-                }
+//            for (regularExp in MobileRegularExp.values()) {
+//                val pattern = Pattern.compile(regularExp.regularExp)
+//                val matcher = pattern.matcher(StringBuilder().append("+${nationalCode}")
+//                        .append(mobileNumber).toString())
+//                if (matcher.matches()) {
+//                    isMobileNumber = true
+//                    // 枚举中把最常用的国际区号排在前面可以减少校验开销
+//                    break
+//                }
+//            }
+            // 初始化
+            val phoneUtil = PhoneNumberUtil.getInstance()
+            try {
+                val swissNumberProto = phoneUtil.parse(mobileNumber, countryCode)
+                isMobileNumber = phoneUtil.isValidNumber(swissNumberProto) // returns true
+            } catch (e: NumberParseException) {
+                System.err.println("NumberParseException was thrown: $e")
             }
             return isMobileNumber
         }

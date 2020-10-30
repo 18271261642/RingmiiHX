@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="40dp">
+
     <TextView
+        android:id="@+id/dateTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/dateTv"
         android:paddingStart="14dp"
         android:paddingEnd="0dp"
-        android:textColor="@color/color666666"
-        android:textSize="@dimen/sp_16"
-        />
+        android:textColor="@color/color333333"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
+        android:id="@+id/timeTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dateTv"
         android:layout_marginStart="@dimen/dp_5"
-        android:id="@+id/timeTv"
         android:textColor="@color/color666666"
         android:textSize="@dimen/sp_13"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dateTv"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0_2"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/colorDDDDDD"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <ImageView
+        android:id="@+id/dataStatusIv"
         android:layout_width="9dp"
         android:layout_height="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="13dp"
-        android:id="@+id/dataStatusIv"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
+        android:id="@+id/unitTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/unitTv"
+        android:layout_marginEnd="8dp"
         android:textColor="@color/color999999"
         android:textSize="@dimen/sp_13"
-        app:layout_constraintEnd_toStartOf="@id/dataStatusIv"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="8dp"
-        />
+        app:layout_constraintEnd_toStartOf="@id/dataStatusIv"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/unitTv"
-        app:layout_constraintBaseline_toBaselineOf="@id/unitTv"
-        android:textSize="@dimen/sp_13"
-        android:layout_marginEnd="7dp"
         android:id="@+id/dataBackValue"
-        />
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/dataBackValue"
-        app:layout_constraintBaseline_toBaselineOf="@id/dataBackValue"
+        android:layout_marginEnd="7dp"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBaseline_toBaselineOf="@id/unitTv"
+        app:layout_constraintEnd_toStartOf="@id/unitTv" />
+
+    <TextView
+        android:id="@+id/dataFrontValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/color333333"
         android:textSize="@dimen/sp_13"
-        android:id="@+id/dataFrontValue"
-        />
+        app:layout_constraintBaseline_toBaselineOf="@id/dataBackValue"
+        app:layout_constraintEnd_toStartOf="@id/dataBackValue" />
 </androidx.constraintlayout.widget.ConstraintLayout>

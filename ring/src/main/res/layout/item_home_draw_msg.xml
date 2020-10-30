@@ -17,27 +17,46 @@
 
     <com.guider.baselib.widget.CircleImageView
         android:id="@+id/msgHeadIv"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="14dp"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginStart="@dimen/dp_14"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/msgSelectIv"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/msgPersonName"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/nameLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="5dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/color333333"
-        android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/msgHeadIv"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/msgPersonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color333333"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="@dimen/dp_13"
+            android:layout_marginStart="@dimen/dp_6"
+            android:src="@drawable/icon_device_account_name_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/msgPersonNameIv"
+            app:layout_constraintStart_toEndOf="@id/msgPersonName"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/deviceCodeTv"
@@ -48,7 +67,7 @@
         android:textSize="@dimen/sp_12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/msgRingStatusIv"
-        app:layout_constraintTop_toBottomOf="@id/msgPersonName" />
+        app:layout_constraintTop_toBottomOf="@id/nameLayout" />
 
     <ImageView
         android:id="@+id/msgRingStatusIv"
@@ -57,7 +76,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="@dimen/dp_12"
         android:src="@drawable/oval_green_59d15f"
-        app:layout_constraintStart_toStartOf="@id/msgPersonName"
+        app:layout_constraintStart_toStartOf="@id/nameLayout"
         app:layout_constraintTop_toBottomOf="@id/deviceCodeTv" />
 
     <TextView

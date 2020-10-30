@@ -43,6 +43,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
 
     private var userGroupId = ""
     private var code = ""
+    private var areaCode = "CN"
     private var accountId = ""
 
     override val contentViewResId: Int
@@ -59,6 +60,9 @@ class DeviceBindAddMemberActivity : BaseActivity() {
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("codeValue"))) {
                 code = intent.getStringExtra("codeValue")!!
             }
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("areaCode"))) {
+                areaCode = intent.getStringExtra("areaCode")!!
+            }
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("userGroupId"))) {
                 userGroupId = intent.getStringExtra("userGroupId")!!
             }
@@ -69,6 +73,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     }
 
     override fun initView() {
+        countryTv.tag = areaCode
         if (StringUtil.isNotBlankAndEmpty(accountId)) {
             bindPhoneLayout.visibility = View.GONE
         } else {
@@ -76,9 +81,11 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                 if (!hasFocus) {
                     if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
                         val phoneValue = phoneEdit.text.toString()
-                        val countryCode = countryTv.text.toString().replace(
-                                "+", "")
-                        if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                        val tag =
+                                if (countryTv.tag is String) {
+                                    countryTv.tag as String
+                                } else "CN"
+                        if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                             ToastUtil.showCenter(mContext!!,
                                     mContext!!.resources.getString(R.string.app_incorrect_format))
                         }
@@ -146,8 +153,11 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                         toastShort(mContext!!.resources.getString(R.string.app_login_phone_empty))
                         return
                     }
-                    val countryCode = countryTv.text.toString().replace("+", "")
-                    if (!StringUtil.isMobileNumber(countryCode, phoneValue)) {
+                    val tag =
+                            if (countryTv.tag is String) {
+                                countryTv.tag as String
+                            } else "CN"
+                    if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                         toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                         return
                     }
@@ -267,6 +277,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                     override fun onClickItem(position: Int) {
                         val code = newList[position].phoneCode.toString()
                         countryTv.text = "+$code"
+                        countryTv.tag = newList[position].phoneAreCode
                         dialog?.dismiss()
                     }
 

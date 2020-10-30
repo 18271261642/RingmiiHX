@@ -6,6 +6,7 @@
     android:background="@drawable/rounded_f18937_4_bg"
     android:gravity="center_vertical"
     android:orientation="vertical"
+    android:id="@+id/rootLayout"
     tools:ignore="MissingDefaultResource">
 
     <RelativeLayout

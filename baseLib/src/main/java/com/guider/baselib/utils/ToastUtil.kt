@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -35,7 +36,7 @@ object ToastUtil {
         if (toast == null) {
             toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
         }
-        toast!!.setGravity(Gravity.CENTER,0,0)
+        toast!!.setGravity(Gravity.CENTER, 0, 0)
         toast!!.setText(text)
         toast!!.show()
     }
@@ -45,7 +46,7 @@ object ToastUtil {
         if (toast == null) {
             toast = Toast.makeText(context, text, Toast.LENGTH_LONG)
         }
-        toast!!.setGravity(Gravity.CENTER,0,0)
+        toast!!.setGravity(Gravity.CENTER, 0, 0)
         toast!!.setText(text)
         toast!!.show()
     }
@@ -77,14 +78,19 @@ object ToastUtil {
         longToast!!.show()
     }
 
-    fun showCustomToast(view : View?, context: Context, isShort:Boolean, hintText :String?){
+    fun showCustomToast(view: View?, context: Context, isShort: Boolean, hintText: String?,
+                        viewBackground: Int? = null) {
         val toast = Toast(context)
         var contentView = view
-        if (contentView == null ){
-            contentView = View.inflate(context, R.layout.toast_layout,null)
+        if (contentView == null) {
+            contentView = View.inflate(context, R.layout.toast_layout, null)
+            if (viewBackground != null) {
+                contentView!!.findViewById<LinearLayout>(R.id.rootLayout)
+                        .setBackgroundResource(viewBackground)
+            }
             contentView!!.findViewById<TextView>(R.id.hintText).text = hintText
         }
-        toast.setGravity(Gravity.CENTER,0,0)
+        toast.setGravity(Gravity.CENTER, 0, 0)
         if (isShort) toast.duration = Toast.LENGTH_SHORT
         else toast.duration = Toast.LENGTH_LONG
         toast.view = contentView

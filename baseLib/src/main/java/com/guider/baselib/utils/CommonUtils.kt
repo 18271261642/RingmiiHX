@@ -176,11 +176,18 @@ object CommonUtils {
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.COUNTRY_CODE))) {
             countryCode = MMKVUtil.getString(USER.COUNTRY_CODE)
         }
+        var areaCode = ""
+        if (MMKVUtil.containKey(USER.AREA_CODE) &&
+                StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.AREA_CODE))) {
+            areaCode = MMKVUtil.getString(USER.AREA_CODE)
+        }
         MMKVUtil.clearAll()
         if (StringUtil.isNotBlankAndEmpty(phone))
             MMKVUtil.saveString(USER.PHONE, phone)
         if (StringUtil.isNotBlankAndEmpty(countryCode))
             MMKVUtil.saveString(USER.COUNTRY_CODE, countryCode)
+        if (StringUtil.isNotBlankAndEmpty(areaCode))
+            MMKVUtil.saveString(USER.AREA_CODE, areaCode)
         MMKVUtil.saveBoolean(IS_FIRST_START, true)
     }
 
@@ -216,7 +223,7 @@ object CommonUtils {
         view.layout(0, 0,
                 view.measuredWidth,
                 view.measuredHeight)
-        view.buildDrawingCache()
+        view.buildDrawingCache(true)
         val cacheBitmap: Bitmap = view.drawingCache
         return Bitmap.createBitmap(cacheBitmap)
     }
