@@ -244,6 +244,12 @@ interface IGuiderCoroutinesApi {
                                @Query("isOpen") row: Boolean): String
 
     /**
+     * 设置单个电子围栏开关
+     */
+    @DELETE("api/v1/opdevice/fence")
+    suspend fun deleteFence(@Query("fenceId") fenceId: Int): String
+
+    /**
      * 运动轨迹
      * @param accountId 查询用户的id
      * @param page 页数，查全部的时候为-1

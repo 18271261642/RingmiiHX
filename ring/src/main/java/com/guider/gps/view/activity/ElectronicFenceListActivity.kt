@@ -1,11 +1,16 @@
 package com.guider.gps.view.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.view.Gravity
 import android.view.View
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
+import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.gps.R
 import com.guider.gps.adapter.ElectronicFenceListAdapter
 import com.guider.health.apilib.GuiderApiUtil
@@ -57,14 +62,55 @@ class ElectronicFenceListActivity : BaseActivity() {
 
             override fun deleteItem(position: Int) {
                 if (position > electronicFenceList.size - 1) return
-                deleteBackShowFencePosition = position.toString()
-                electronicFenceList.removeAt(position)
-                adapter.notifyItemRemoved(position)
+                deleteElectronicFence(position)
             }
 
         })
         electronicListRv.adapter = adapter
         getElectronicFenceListData()
+    }
+
+    private fun deleteElectronicFence(position: Int) {
+        val dialog = object : DialogHolder(this,
+                R.layout.dialog_common_with_title, Gravity.CENTER) {
+            @SuppressLint("SetTextI18n")
+            override fun bindView(dialogView: View) {
+                val cancel = dialogView.findViewById<ConstraintLayout>(R.id.cancelLayout)
+                cancel.setOnClickListener {
+                    dialog?.dismiss()
+                }
+                val unBindContentTv = dialogView.findViewById<TextView>(R.id.unBindContentTv)
+                unBindContentTv.text = mContext!!.resources.getString(
+                        R.string.app_main_delete_fence)
+                val selectDateTitle = dialogView.findViewById<TextView>(R.id.selectDateTitle)
+                selectDateTitle.text = mContext!!.resources.getString(
+                        R.string.app_main_delete_electronic_fence_area)
+                val confirm = dialogView.findViewById<ConstraintLayout>(R.id.confirmLayout)
+                confirm.setOnClickListener {
+                    lifecycleScope.launch {
+                        ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                            showDialog()
+                        }, block = {
+                            val resultBean = GuiderApiUtil.getApiService()
+                                    .deleteFence(electronicFenceList[position].id)
+                            if (resultBean == "true") {
+                                deleteBackShowFencePosition = position.toString()
+                                electronicFenceList.removeAt(position)
+                                adapter.notifyItemRemoved(position)
+                                if (electronicFenceList.isNullOrEmpty()) {
+                                    emptyData.visibility = View.VISIBLE
+                                }
+                            }
+                        }, onRequestFinish = {
+                            dismissDialog()
+                            dialog?.dismiss()
+                        })
+                    }
+                }
+            }
+        }
+        dialog.initView()
+        dialog.show(true)
     }
 
     override fun onBackPressed() {
@@ -117,7 +163,7 @@ class ElectronicFenceListActivity : BaseActivity() {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getElectronicFence(accountId, -1, false)
                 if (resultBean is String && resultBean == "null") {
-                    emptyData.visibility = View.GONE
+                    emptyData.visibility = View.VISIBLE
                 } else {
                     val fenceList = ParseJsonData.parseJsonDataList<ElectronicFenceListBean>(
                             resultBean, ElectronicFenceListBean::class.java)

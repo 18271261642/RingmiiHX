@@ -181,7 +181,7 @@ class MineFragment : BaseFragment() {
 
     private fun unBindDialogShow() {
         val dialog = object : DialogHolder(mActivity,
-                R.layout.dialog_mine_unbind, Gravity.CENTER) {
+                R.layout.dialog_common_with_title, Gravity.CENTER) {
             @SuppressLint("SetTextI18n")
             override fun bindView(dialogView: View) {
                 val unBindContentTv = dialogView.findViewById<TextView>(R.id.unBindContentTv)

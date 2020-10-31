@@ -37,6 +37,7 @@
     <string name="app_main_health_query">查詢</string>
     <string name="app_main_bind_device">綁定了 %s 的手環</string>
     <string name="app_main_unbind_device">您確定要解除對%s手環的綁定嗎？</string>
+    <string name="app_main_delete_fence">您確定要刪除此電子圍欄區域嗎?</string>
     <string name="app_main_unbind_success">解綁成功</string>
     <string name="app_exit_hint">再按一次返回鍵退出</string>
     <string name="app_main_map_location_information">位置信息</string>
@@ -78,6 +79,7 @@
     <string name="app_main_mine_heart_rate_set">心率監測週期設置</string>
     <string name="app_main_mine_temp_set">體溫監測週期設置</string>
     <string name="app_main_mine_remove_bind">解除綁定</string>
+    <string name="app_main_delete_electronic_fence_area">刪除電子圍欄區域</string>
     <string name="app_main_mine_version_check">版本檢測</string>
     <string name="app_main_mine_log_out">退出登錄</string>
     <string name="app_main_left_device_list">設備列表</string>

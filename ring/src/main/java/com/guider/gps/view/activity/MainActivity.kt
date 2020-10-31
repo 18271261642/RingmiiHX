@@ -471,7 +471,7 @@ class MainActivity : BaseActivity() {
             return
         }
         val dialog = object : DialogHolder(this,
-                R.layout.dialog_mine_unbind, Gravity.CENTER) {
+                R.layout.dialog_common_with_title, Gravity.CENTER) {
             @SuppressLint("SetTextI18n")
             override fun bindView(dialogView: View) {
                 val cancel = dialogView.findViewById<ConstraintLayout>(R.id.cancelLayout)

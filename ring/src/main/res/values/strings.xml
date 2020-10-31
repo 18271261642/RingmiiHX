@@ -37,6 +37,7 @@
     <string name="app_main_health_query">query</string>
     <string name="app_main_bind_device">bound to %s bracelet</string>
     <string name="app_main_unbind_device">Are you sure you want to unbind %s bracelet?</string>
+    <string name="app_main_delete_fence">Are you sure you want to delete this electronic fence area?</string>
     <string name="app_main_unbind_success">unbind success</string>
     <string name="app_exit_hint">Press the back key again to exit</string>
     <string name="app_main_map_location_information">location information</string>
@@ -79,6 +80,7 @@
     <string name="app_main_mine_heart_rate_set">Heart rate alarm threshold setting</string>
     <string name="app_main_mine_temp_set">Body temperature alarm threshold setting</string>
     <string name="app_main_mine_remove_bind">Remove the binding</string>
+    <string name="app_main_delete_electronic_fence_area">Remove the electronic fence area</string>
     <string name="app_main_mine_version_check">Version checking</string>
     <string name="app_main_mine_log_out">Log out</string>
     <string name="app_main_left_device_list">The equipment list</string>

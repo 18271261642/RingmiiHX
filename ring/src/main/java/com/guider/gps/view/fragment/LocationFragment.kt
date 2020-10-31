@@ -852,11 +852,8 @@ class LocationFragment : BaseFragment(),
             }
             //电子围栏列表
             electronicFenceListLayout -> {
-                //暂时用作列表存在性判断
-                if (customFourPoint != null) {
-                    val intent = Intent(mActivity, ElectronicFenceListActivity::class.java)
-                    startActivityForResult(intent, ELECTRONIC_FENCE_LIST)
-                }
+                val intent = Intent(mActivity, ElectronicFenceListActivity::class.java)
+                startActivityForResult(intent, ELECTRONIC_FENCE_LIST)
             }
         }
     }
