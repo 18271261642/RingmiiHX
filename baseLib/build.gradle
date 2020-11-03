@@ -95,6 +95,7 @@ dependencies {
     api dependencies.livedata_ktx
     api dependencies.viewmodel_ktx
     api dependencies.MagicIndicator
+    api dependencies.arouter
     //集成的module
     api project(':apilib')
     api project(path: ':hellocharts-library')

@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import androidx.multidex.MultiDex
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash
+import com.alibaba.android.arouter.launcher.ARouter
 import com.guider.baselib.utils.MMKV_ROOT
 import com.guider.baselib.utils.MyUtils
 import com.guider.baselib.utils.ProcessUtil
@@ -42,6 +43,13 @@ abstract class BaseApplication : Application() {
         if (BuildConfig.DEBUG) {
             CustomActivityOnCrash.install(this)
         } else initBugly()
+        //ARouter 初始化
+        ARouter.init(this) // 尽可能早，推荐在Application中初始化
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        ARouter.getInstance().destroy()
     }
 
     /**

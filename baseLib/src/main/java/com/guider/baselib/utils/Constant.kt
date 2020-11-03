@@ -72,6 +72,11 @@ object USER {
 //裁剪照片路径
 const val CROP_PATH_NEW = "/guiderGps/crop/image/"
 
+/**
+ * 下面均为跳转路径保存处
+ */
+const val msgList: String = "/ring/RingMsgListActivity"
+
 //activity的resultCode 常量记录
 const val SPORT_STEP_INFO = 0x000001
 const val PERSON_PHONE = 0x000002

@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".AppApplication"
         android:icon="@mipmap/ic_launcher"
@@ -33,27 +34,30 @@
         <service
             android:name=".googleMap.FetchAddressIntentService"
             android:exported="false" />
+        <service android:name=".service.AppSystemMsgService" />
         <!--google-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBStHSiBBid2JNFNtrvOW-G_gSY_XTtMtw" />
+
         <activity
             android:name=".view.activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
-            android:theme="@style/Splash"
-            >
+            android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.LoginActivity"/>
-        <activity android:name="com.guider.gps.view.activity.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
+        <activity android:name=".view.activity.LoginActivity" />
+        <activity
+            android:name="com.guider.gps.view.activity.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.guider.gps.view.activity.AddNewDeviceActivity" />
-        <activity android:name="com.guider.gps.view.activity.RingMsgListActivity" />
+        <activity
+            android:name="com.guider.gps.view.activity.RingMsgListActivity"
+            android:launchMode="singleTop" />
         <activity android:name="com.guider.gps.view.activity.HealthDataListActivity" />
         <activity android:name="com.guider.gps.view.activity.HealthCareMsgDetailActivity" />
         <activity android:name=".view.activity.DoctorAnswerActivity" />
@@ -69,8 +73,8 @@
         <activity android:name=".view.activity.CompleteInfoActivity" />
         <activity
             android:name="com.king.zxing.CaptureActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CaptureTheme"/>
+            android:screenOrientation="fullSensor"
+            android:theme="@style/CaptureTheme" />
         <activity android:name=".view.activity.DeviceBindAddMemberActivity" />
         <activity android:name=".view.activity.AlarmSeActivity" />
         <activity android:name=".view.activity.LocationFrequencySetNewActivity" />

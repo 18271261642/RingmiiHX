@@ -207,8 +207,6 @@
     <string name="app_search_pattern">寻人模式</string>
     <string name="app_time_interval_one_hour">时间间隔：1小时</string>
     <string name="app_time_interval_five_minutes">时间间隔：5分钟</string>
-    <string name="app_hint">提示</string>
-    <string name="app_watch">查看</string>
     <string name="app_bracelet_power_reminder">手环电量提醒</string>
     <string name="app_shutdown_to_remind">关机提醒</string>
     <string name="app_Erase_remind">擦除提醒</string>

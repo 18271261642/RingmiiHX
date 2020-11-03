@@ -208,8 +208,7 @@
     <string name="app_search_pattern">People search pattern</string>
     <string name="app_time_interval_one_hour">Time interval: 1 hour</string>
     <string name="app_time_interval_five_minutes">Time interval: 5 minutes</string>
-    <string name="app_hint">Hint</string>
-    <string name="app_watch">Watch</string>
+
     <string name="app_bracelet_power_reminder">Bracelet power reminder</string>
     <string name="app_shutdown_to_remind">Shutdown to remind</string>
     <string name="app_Erase_remind">Erase remind</string>

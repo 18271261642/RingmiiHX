@@ -30,10 +30,7 @@ import com.guider.gps.R
 import com.guider.gps.adapter.CountryCodeDialogAdapter
 import com.guider.gps.view.line.ILineLogin
 import com.guider.gps.view.line.LineLoginEvent
-import com.guider.health.apilib.ApiCallBack
-import com.guider.health.apilib.ApiUtil
-import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.JsonApi
+import com.guider.health.apilib.*
 import com.guider.health.apilib.bean.AreCodeBean
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.TokenInfo
@@ -262,8 +259,9 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 val intent = Intent(mContext, SimpleCustomWebActivity::class.java)
                 intent.putExtra("pageTitle",
                         mContext?.resources?.getString(R.string.app_login_privacy_policy_clause))
+                val webHost = BuildConfig.WEBDOMAIN
                 intent.putExtra("webUrl",
-                        "http://cmate.guidertech.com/#/open?navbartitle=1")
+                        "${webHost}#/open?navbartitle=1")
                 startActivity(intent)
             }
             //获取国家区号

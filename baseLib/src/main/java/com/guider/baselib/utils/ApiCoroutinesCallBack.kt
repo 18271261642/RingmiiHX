@@ -24,8 +24,14 @@ object ApiCoroutinesCallBack {
             block()
         } catch (e: Exception) {
             onError?.invoke(e)
+            if (e.message == "customErrorMsg") {
+                ToastUtil.show(context,
+                        context.resources.getString(R.string.app_data_request_error))
+            } else {
+                ToastUtil.show(context, e.message.toString())
+            }
             Log.e("GuiderGpsApiError", e.message.toString())
-            ToastUtil.show(context, context.resources.getString(R.string.app_data_request_error))
+
         } finally {
             onRequestFinish?.invoke()
         }

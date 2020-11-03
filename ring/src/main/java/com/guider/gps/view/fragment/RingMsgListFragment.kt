@@ -2,6 +2,7 @@ package com.guider.gps.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +43,7 @@ class RingMsgListFragment : BaseFragment() {
     private var isRefresh = false
     private var isLoadMore = false
     private var msgListType = ""
+    private var isInitComplete = false
 
     override val layoutRes: Int
         get() = R.layout.fragment_ring_msg_list
@@ -50,6 +52,7 @@ class RingMsgListFragment : BaseFragment() {
     }
 
     override fun initLogic() {
+        isInitComplete = true
         msgListRv.layoutManager = LinearLayoutManager(mActivity)
         arguments?.takeIf { it.containsKey(ARG_STR) }?.apply {
             msgListType = getString(ARG_STR)!!
@@ -81,19 +84,13 @@ class RingMsgListFragment : BaseFragment() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         when (msgListType) {
             resources.getString(R.string.app_msg_health_notify) -> {
-                if (isShowLoading)
-                    mActivity.showDialog()
                 getAbnormalMsgListData(accountId, isShowLoading)
             }
             resources.getString(R.string.app_msg_care_info) -> {
-                if (isShowLoading)
-                    mActivity.showDialog()
                 getCareMsgListData(accountId, isShowLoading)
                 (mActivity as RingMsgListActivity).resetCareNum()
             }
             resources.getString(R.string.app_msg_system_info) -> {
-                if (isShowLoading)
-                    mActivity.showDialog()
                 getSystemMsgListData(accountId, isShowLoading)
             }
         }
@@ -102,7 +99,10 @@ class RingMsgListFragment : BaseFragment() {
 
     private fun getAbnormalMsgListData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                if (isShowLoading)
+                    mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getAbnormalMsgList(accountId, -1, page, 20)
                 if (!resultBean.isNullOrEmpty()) {
@@ -160,7 +160,10 @@ class RingMsgListFragment : BaseFragment() {
 
     private fun getCareMsgListData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                if (isShowLoading)
+                    mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getCareMsgList(accountId, page, 20, -1)
                 if (!resultBean.isNullOrEmpty()) {
@@ -206,9 +209,14 @@ class RingMsgListFragment : BaseFragment() {
         }
     }
 
-    private fun getSystemMsgListData(accountId: Int, isShowLoading: Boolean) {
+    fun getSystemMsgListData(accountId: Int, isShowLoading: Boolean) {
+        if (!isInitComplete) return
+        Log.i(TAG,"加载新数据")
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+                if (isShowLoading)
+                    mActivity.showDialog()
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService().getSystemMsgList(
                         accountId, page, 20)
                 if (!resultBean.isNullOrEmpty()) {

@@ -28,8 +28,9 @@ public class ResultGsonResponseConverter<T> implements Converter<ResponseBody, T
             String body = value.string();
             JSONObject json = new JSONObject(body);
             int code = json.optInt("code");
-            if (code < 0)
+            if (code == -1)
                 throw new RuntimeException(json.optString("msg"));
+            else if (code < -1) throw new RuntimeException("customErrorMsg");
 
             String str = json.optString("data");
             if (str != null) {

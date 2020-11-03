@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewStub
@@ -14,12 +15,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.Toolbar
+import com.alibaba.android.arouter.launcher.ARouter
 import com.guider.baselib.R
-import com.guider.baselib.utils.AppManager
-import com.guider.baselib.utils.CommonUtils
-import com.guider.baselib.utils.EventBusUtils
-import com.guider.baselib.utils.OnNoDoubleClickListener
+import com.guider.baselib.utils.*
+import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.dialog.DialogProgress
+import com.guider.health.apilib.enums.SystemMsgType
 import com.gyf.immersionbar.ImmersionBar
 import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 
@@ -42,6 +43,7 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
     var mToolbar: Toolbar? = null
     var mContext: Context? = null
     private var mLoadingDialog: DialogProgress? = null
+    private var systemMsgDialog: DialogHolder? = null
     var commonToolBarId: LinearLayout? = null
     var tv_title: TextView? = null
     var iv_left: ImageView? = null
@@ -124,6 +126,49 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
     fun dismissDialog() {
         if (mLoadingDialog == null) return
         mLoadingDialog?.hideDialog()
+    }
+
+    /**
+     * 显示系统消息的弹窗
+     */
+    fun showSystemMsgDialog(content: String, type: SystemMsgType, msgId: String) {
+        if (systemMsgDialog == null) {
+            systemMsgDialog = object : DialogHolder(this,
+                    R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {
+                override fun bindView(dialogView: View) {
+                    val contentTv = dialogView.findViewById<TextView>(R.id.contentTv)
+                    val watchDetail = dialogView.findViewById<TextView>(R.id.watchDetail)
+                    val mDismiss = dialogView.findViewById<ImageView>(R.id.cancelIv)
+                    contentTv.text = content
+                    //做特殊处理
+//                    if (type == SystemMsgType.SOS){
+//
+//                    }
+                    watchDetail.setOnClickListener {
+                        ARouter.getInstance().build(msgList)
+                                //进入页面需跳转到的指定列表项
+                                .withInt("entryPageIndex", 2)
+                                .navigation()
+                        if (systemMsgDialog != null) {
+                            systemMsgDialog?.closeDialog()
+                            systemMsgDialog = null
+                        }
+                    }
+                    mDismiss.setOnClickListener {
+                        dialog?.dismiss()
+                        if (systemMsgDialog != null) {
+                            systemMsgDialog?.closeDialog()
+                            systemMsgDialog = null
+                        }
+                    }
+//                    mDismiss.postDelayed({
+//                        dialog?.dismiss()
+//                    }, 5000)
+                }
+            }
+            systemMsgDialog?.initView()
+            systemMsgDialog?.show(false)
+        }
     }
 
     /**
@@ -305,6 +350,10 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
         if (mLoadingDialog != null) {
             mLoadingDialog?.hideDialog()
             mLoadingDialog = null
+        }
+        if (systemMsgDialog != null) {
+            systemMsgDialog?.closeDialog()
+            systemMsgDialog = null
         }
         if (openEventBus()) {
             EventBusUtils.unregister(this)

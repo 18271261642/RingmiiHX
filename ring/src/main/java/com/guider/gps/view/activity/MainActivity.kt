@@ -2,7 +2,10 @@ package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,7 +18,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +32,7 @@ import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.HomeLeftDrawMsgAdapter
+import com.guider.gps.service.AppSystemMsgService
 import com.guider.gps.view.fragment.HealthFragment
 import com.guider.gps.view.fragment.LocationFragment
 import com.guider.gps.view.fragment.MedicineFragment
@@ -72,6 +75,8 @@ class MainActivity : BaseActivity() {
     private var dialogTagList = arrayListOf<String>()
     private var editDialog: DialogHolder? = null
     private var groupId = 0
+    var binder: AppSystemMsgService.MyBinder? = null// 定义成全局变量
+    private var myConn: MyConn? = null
 
     override fun initImmersion() {
         showBackButton(R.drawable.icon_home_left_menu, this)
@@ -165,6 +170,12 @@ class MainActivity : BaseActivity() {
         getBindDeviceList()
         getWalkTargetData()
         getRingUndoNumData()
+        openSystemMsgLoopService()
+    }
+
+    private fun openSystemMsgLoopService() {
+        myConn = MyConn()
+        bindService(Intent(mContext!!, AppSystemMsgService::class.java), myConn!!, BIND_AUTO_CREATE)
     }
 
     private fun editNameDialog(position: Int) {
@@ -774,7 +785,7 @@ class MainActivity : BaseActivity() {
                     val bean = ParseJsonData.parseJsonAny<SystemMsgBean>(resultBean)
                     if (StringUtil.isNotBlankAndEmpty(bean.createTime))
                         latestSystemMsgTime = bean.createTime!!
-                    showSystemMsgDialog("${bean.name},${bean.content}",
+                    showMsgDialog("${bean.name},${bean.content}",
                             bean.type, bean.id.toString())
                 }
             }, onError = {
@@ -815,7 +826,7 @@ class MainActivity : BaseActivity() {
     /**
      * 显示系统消息的弹窗
      */
-    private fun showSystemMsgDialog(content: String, type: SystemMsgType, msgId: String) {
+    private fun showMsgDialog(content: String, type: SystemMsgType, msgId: String) {
         val dialog = object : DialogHolder(this,
                 R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {
             override fun bindView(dialogView: View) {
@@ -958,30 +969,30 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        //调整系统消息的获取时间，避免弹窗一直闪的问题
-        pollingQueriesSystemMessages()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        //关闭没关闭的dialog,防止dialog的窗体泄露
-        if (!dialogTagList.isNullOrEmpty()) {
-            dialogTagList.forEach {
-                val dialogFragment = supportFragmentManager.findFragmentByTag(it)
-                if (dialogFragment != null && dialogFragment is DialogFragment) {
-                    Log.i("closeDialog", "关闭的dialog的fragment的tag为${it}")
-                    dialogFragment.dismiss()
-                }
-            }
-        }
-        //熄屏期间暂停循环，避免熄屏后resume时会同一时间同时调取接口造成窗体多次闪烁的现象
-        if (subscribe != null) {
-            subscribe?.dispose()
-            subscribe = null
-        }
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        //调整系统消息的获取时间，避免弹窗一直闪的问题
+//        pollingQueriesSystemMessages()
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        //关闭没关闭的dialog,防止dialog的窗体泄露
+//        if (!dialogTagList.isNullOrEmpty()) {
+//            dialogTagList.forEach {
+//                val dialogFragment = supportFragmentManager.findFragmentByTag(it)
+//                if (dialogFragment != null && dialogFragment is DialogFragment) {
+//                    Log.i("closeDialog", "关闭的dialog的fragment的tag为${it}")
+//                    dialogFragment.dismiss()
+//                }
+//            }
+//        }
+//        //熄屏期间暂停循环，避免熄屏后resume时会同一时间同时调取接口造成窗体多次闪烁的现象
+//        if (subscribe != null) {
+//            subscribe?.dispose()
+//            subscribe = null
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -992,6 +1003,10 @@ class MainActivity : BaseActivity() {
         if (editDialog != null) {
             editDialog?.closeDialog()
             editDialog = null
+        }
+        if (myConn != null) {
+            unbindService(myConn!!)
+            myConn = null
         }
     }
 
@@ -1007,6 +1022,16 @@ class MainActivity : BaseActivity() {
         : FragmentStateAdapter(fragmentActivity) {
         override fun getItemCount(): Int {
             return 4
+        }
+    }
+
+    inner class MyConn : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            binder = service as AppSystemMsgService.MyBinder
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+
         }
     }
 }

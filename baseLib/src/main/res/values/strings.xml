@@ -1418,4 +1418,6 @@
     <string name="app_sunday">Sunday</string>
     <string name="app_no_support_guider">Navigation is not supported</string>
     <string name="app_data_request_error">Data request error</string>
+    <string name="app_hint">Hint</string>
+    <string name="app_watch">Watch</string>
 </resources>

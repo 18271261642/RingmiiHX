@@ -2,6 +2,8 @@ package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -9,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
@@ -29,6 +32,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgePagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.badge.BadgeRule
 
+@Route(path = msgList)
 class RingMsgListActivity : BaseActivity() {
 
     private var tabTitles = arrayListOf<String>()
@@ -36,11 +40,12 @@ class RingMsgListActivity : BaseActivity() {
     private var abnormalMsgUndoNum = 0
     private var careMsgUndoNum = 0
 
-    //进入页面需跳转到的指定列表项
+    //进入页面需跳转到的指定列表项c
     private var entryPageIndex = 0
     private var badgeTextView1: TextView? = null
     private var badgeTextView2: TextView? = null
     private var badgeTextView3: TextView? = null
+    private var fragments = mutableListOf<Fragment>()
 
     override val contentViewResId: Int
         get() = R.layout.activity_msg_list
@@ -71,9 +76,10 @@ class RingMsgListActivity : BaseActivity() {
 
     override fun initLogic() {
         msgViewpager.apply {
+            fragments = generateTextFragments(tabTitles)
             adapter = FragmentLazyStateAdapterViewPager2(
                     this@RingMsgListActivity,
-                    fragments = generateTextFragments(tabTitles))
+                    fragments = fragments)
         }
         initMagicIndicator1()
         if (entryPageIndex != 0) msgViewpager.currentItem = entryPageIndex
@@ -87,6 +93,25 @@ class RingMsgListActivity : BaseActivity() {
             msgTabLayout.postDelayed({
                 resetAbnormalMsgUnReadStatus()
             }, 3000)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.i(TAG, "重新加载而非重建")
+        if (intent != null) {
+            if (intent.getIntExtra("entryPageIndex", 0) != 0) {
+                entryPageIndex = intent.getIntExtra("entryPageIndex", 0)
+                if (entryPageIndex == 2) {
+                    Log.i(TAG, "重新加载系统消息页面")
+                    msgViewpager.currentItem = 2
+                    if (!fragments.isNullOrEmpty()) {
+                        val accountId = MMKVUtil.getInt(USER.USERID)
+                        (fragments[2] as RingMsgListFragment).getSystemMsgListData(
+                                accountId, false)
+                    }
+                }
+            }
+        }
     }
 
     fun resetCareNum() {

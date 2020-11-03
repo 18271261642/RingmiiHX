@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 def rootGradle = rootProject.ext.android
@@ -18,6 +19,11 @@ android {
         versionCode rootGradle.codeVersion
         versionName rootGradle.appVersion
         multiDexEnabled true
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
     }
     signingConfigs {
         debug {
@@ -82,6 +88,8 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api project(':baseLib')
+    def dependencies = rootProject.ext.dependencies
+    kapt dependencies.arouter_compiler
 }
 
 android.applicationVariants.all { variant ->

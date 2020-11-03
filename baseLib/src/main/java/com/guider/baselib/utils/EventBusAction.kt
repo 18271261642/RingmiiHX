@@ -12,4 +12,5 @@ object EventBusAction {
     const val REFRESH_LATEST_GROUP_DATA = "refresh_latest_group_data"
     const val ENTRY_LOCATION_WITH_TYPE = "entry_location_with_type"
     const val DELETE_FENCE_REFRESH_FENCE_DATA = "delete_fence_refresh_fence_data"
+    const val REFRESH_SYSTEM_MSG = "refresh_system_msg"
 }
