@@ -388,18 +388,15 @@ public class B31DeviceActivity extends WatchBaseActivity
                     if (MyCommandManager.DEVICENAME != null) {
                         MyCommandManager.DEVICENAME = null;
                         MyCommandManager.ADDRESS = null;
-                        MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                            @Override
-                            public void onResponse(int state) {
-                                if (state == -1) {
-                                    SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLENAME, null);
-                                    SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
-                                    SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                                    MyApp.getInstance().setMacAddress(null);// 清空全局
-                                    startActivity(NewSearchActivity.class);
-                                    finish();
+                        MyApp.getInstance().getVpOperateManager().disconnectWatch(state -> {
+                            if (state == -1) {
+                                SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLENAME, null);
+                                SharedPreferencesUtils.saveObject(B31DeviceActivity.this, Commont.BLEMAC, null);
+                                SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                                MyApp.getInstance().setMacAddress(null);// 清空全局
+                                startActivity(NewSearchActivity.class);
+                                finish();
 
-                                }
                             }
                         });
                     } else {

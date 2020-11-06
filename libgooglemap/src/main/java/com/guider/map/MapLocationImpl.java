@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -53,13 +54,16 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
     private IOnLocation mIOnLocation;
 
     private ExecutorService mThreadPoolExecutor;
+
     @Override
     public boolean start(Context context, int maxTryCnt, IOnLocation iOnLocation) {
         mContext = context;
         mIOnLocation = iOnLocation;
         mMaxTryCnt = maxTryCnt;
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return false;
         }
 
@@ -118,12 +122,7 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
             if (location == null) return;
             // mLastLocation = location;
 
-            mThreadPoolExecutor.submit(new Runnable() {
-                @Override
-                public void run() {
-                    setAddress(location);
-                }
-            });
+            mThreadPoolExecutor.submit(() -> setAddress(location));
         }
     };
 
@@ -131,7 +130,8 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
         try {
             // -105.037613,40.813819
             // 116.413384,39.910925
-            List<Address> addresses = mGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            List<Address> addresses = mGeocoder.getFromLocation(location.getLatitude(),
+                    location.getLongitude(), 1);
             if (addresses != null && addresses.size() > 0) {
                 String locality = hadnle(addresses.get(0).getCountryName())
                         + hadnle(addresses.get(0).getAdminArea())
@@ -160,9 +160,11 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
             // -105.037613,40.813819
             // 116.413384,39.910925
             GeocodingApiRequest request = GeocodingApi
-                    .reverseGeocode(mGeoApicontext, new LatLng(location.getLatitude(), location.getLongitude()))
+                    .reverseGeocode(mGeoApicontext,
+                            new LatLng(location.getLatitude(),
+                                    location.getLongitude()))
                     .language(Locale.getDefault().getLanguage());
-            GeocodingResult [] results = request.await();
+            GeocodingResult[] results = request.await();
             if (results != null && results.length > 0) {
                 String locality = hadnle(results[0].toString());
                 Log.i(TAG, locality);
@@ -179,6 +181,7 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
     private String hadnle(String addr) {
         return addr == null ? "" : addr;
     }
+
     @Override
     public double getCurrLng() {
         return mLng;
@@ -190,7 +193,7 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
     }
 
     @Override
-    public String getAddr()  {
+    public String getAddr() {
         return mAddr;
     }
 
@@ -199,7 +202,22 @@ public class MapLocationImpl implements IMapLocation, GoogleApiClient.Connection
         if (mGoogleApiClient != null) {
             mTryCnt = 0;
             isConnected = 2;
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, locationListener);
+            if (ActivityCompat.checkSelfPermission(mContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(mContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                    mLocationRequest, locationListener);
         }
     }
 

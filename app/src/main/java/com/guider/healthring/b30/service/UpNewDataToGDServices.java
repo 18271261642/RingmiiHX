@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -39,9 +40,11 @@ import com.veepoo.protocol.model.datas.SportData;
 import com.veepoo.protocol.model.datas.TimeData;
 import com.veepoo.protocol.util.HrvScoreUtil;
 import com.veepoo.protocol.util.Spo2hOriginUtil;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.litepal.LitePal;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BREATH;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HEART;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_LOWSPO2H;
@@ -57,11 +61,9 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SLEEP;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
 
 
-
 public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpNewDataToGDServices";
     private final String Base_Url = BuildConfig.APIURL + "api/v1/";//http://api.guiderhealth.com/
-
 
 
     /**
@@ -101,18 +103,17 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     //    private String phone, wechartJson;
     private TypeUserDatas typeUserDatas;
 
-    private String userId = (String) SharedPreferencesUtils.readObject(MyApp.getContext(),Commont.USER_ID_DATA);
+    private String userId = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), Commont.USER_ID_DATA);
 
     //血氧的集合
     private List<Spo2hOriginData> spo2hOriginDataList = new ArrayList<>();
     //血氧的map
-    List<Map<String,String>> oxyMapList = new ArrayList<>();
+    List<Map<String, String>> oxyMapList = new ArrayList<>();
 
     //hrv的集合
     private List<HRVOriginData> hrvOriginDataList = new ArrayList<>();
     //hrv的map
-    List<Map<String,Object>> hrvMapList = new ArrayList<>();
-
+    List<Map<String, Object>> hrvMapList = new ArrayList<>();
 
 
     // 方法1：onPreExecute（）
@@ -121,14 +122,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         deviceCode = (String) SharedPreferencesUtils.readObject(MyApp.getInstance(), Commont.BLEMAC);
-        Log.e(TAG,"-------onPreExecute--mac="+deviceCode);
-        if(deviceCode == null)
+        Log.e(TAG, "-------onPreExecute--mac=" + deviceCode);
+        if (deviceCode == null)
             return;
         String userDetailedData = (String) SharedPreferencesUtils.readObject(MyApp.getContext(),
                 "UserDetailedData");
         if (!WatchUtils.isEmpty(userDetailedData)) {
             typeUserDatas = new Gson().fromJson(userDetailedData, TypeUserDatas.class);
-            Log.e(TAG,"-------onPreExecute--typeUserDatas="+typeUserDatas);
+            Log.e(TAG, "-------onPreExecute--typeUserDatas=" + typeUserDatas);
         }
 
 //        phone = "" + (String) SharedPreferencesUtils.readObject(MyApp.getContext(), "phoneNumber");
@@ -140,11 +141,11 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     // 注：必须复写，从而自定义线程任务
     @Override
     protected Void doInBackground(Void... voids) {
-        Log.e(TAG,"--------doInBackground="+isCancelled());
+        Log.e(TAG, "--------doInBackground=" + isCancelled());
         // Task被取消了，马上退出循环
         if (isCancelled()) return null;
 
-        if (Commont.isDebug)Log.e(TAG, "-------上传开始啦");
+        if (Commont.isDebug) Log.e(TAG, "-------上传开始啦");
         // 可调用publishProgress（）显示进度, 之后将执行onProgressUpdate（）
 //        publishProgress();
         try {
@@ -203,7 +204,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
                 //bpData = instance.findNotUploadDataGD(deviceCode, B30HalfHourDao.TYPE_BP);
 
-                bpData = instance.findGDThreeDaysData(deviceCode,B30HalfHourDao.TYPE_BP);
+                bpData = instance.findGDThreeDaysData(deviceCode, B30HalfHourDao.TYPE_BP);
 
                 String where = "bleMac = ? and dateStr = ?";
                 //HRV
@@ -215,24 +216,24 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 spo2List = LitePal.where(where, deviceCode, WatchUtils.obtainFormatDate(0)).find(B31Spo2hBean.class);
 
                 if (sportData != null && !sportData.isEmpty())
-                    if (Commont.isDebug)Log.e(TAG, "未上传数据条数 运动: " + sportData.size());
+                    if (Commont.isDebug) Log.e(TAG, "未上传数据条数 运动: " + sportData.size());
 
                 if (sleepData != null && !sleepData.isEmpty())
-                    if (Commont.isDebug)Log.e(TAG, "未上传数据条数 睡眠: " + sleepData.size());
+                    if (Commont.isDebug) Log.e(TAG, "未上传数据条数 睡眠: " + sleepData.size());
 
                 if (rateData != null && !rateData.isEmpty())
-                    if (Commont.isDebug)Log.e(TAG, "未上传数据条数 心率: " + rateData.size());
+                    if (Commont.isDebug) Log.e(TAG, "未上传数据条数 心率: " + rateData.size());
 
                 if (bpData != null && !bpData.isEmpty())
-                    if (Commont.isDebug)Log.e(TAG, "未上传数据条数 血压: " + bpData.size());
+                    if (Commont.isDebug) Log.e(TAG, "未上传数据条数 血压: " + bpData.size());
 
 
                 if (hrvList != null && !hrvList.isEmpty())
-                    if (Commont.isDebug)Log.e(TAG, "未上传数据条数 HRV: " + hrvList.size());
+                    if (Commont.isDebug) Log.e(TAG, "未上传数据条数 HRV: " + hrvList.size());
 
 
                 if (spo2List != null && !spo2List.isEmpty())
-                    if (Commont.isDebug)Log.e(TAG, "未上传数据条数 SPO2: " + spo2List.size());
+                    if (Commont.isDebug) Log.e(TAG, "未上传数据条数 SPO2: " + spo2List.size());
 
                 if ((sportData != null && !sportData.isEmpty())
                         || (sleepData != null && !sleepData.isEmpty())
@@ -241,15 +242,16 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
                         || (hrvList != null && !hrvList.isEmpty())
                         || (spo2List != null && !spo2List.isEmpty())) {
-                    if (Commont.isDebug)Log.e(TAG, "数据库中存在数据------开始登陆账户-----去上传==（运动->睡眠->心率->血压->HRV->SPO2）");
+                    if (Commont.isDebug)
+                        Log.e(TAG, "数据库中存在数据------开始登陆账户-----去上传==（运动->睡眠->心率->血压->HRV->SPO2）");
 
                     //登陆到盖得后台
 
-                    long guiderId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
-                    if(guiderId != 0){
+                    long guiderId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                    if (guiderId != 0) {
                         accountId = guiderId;
                         bindDevices(guiderId);
-                    }else{
+                    } else {
                         loginGdServices();
                     }
 
@@ -258,7 +260,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     onCancelled();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -278,8 +280,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             }
         }
         if (typeUserDatas == null) return;
-        String typeData = typeUserDatas.getTypeData()+"--str="+typeUserDatas.getDataJson();
-        Log.e(TAG,"----typeData="+typeData+typeData.equals("LOGION_PHONE"));
+        String typeData = typeUserDatas.getTypeData() + "--str=" + typeUserDatas.getDataJson();
+        Log.e(TAG, "----typeData=" + typeData + typeData.equals("LOGION_PHONE"));
 
         String phoneType = "LOGION_PHONE";
 
@@ -288,12 +290,12 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             String dataJson = typeUserDatas.getDataJson();
             BlueUser blueUser = new Gson().fromJson(dataJson, BlueUser.class);
             String phone = blueUser.getPhone();
-            Log.e(TAG,"-----phone="+phone);
-           // params.put("phone", phone);
-            if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆参数：" + params.toString());
+            Log.e(TAG, "-----phone=" + phone);
+            // params.put("phone", phone);
+            if (Commont.isDebug) Log.e(TAG, "游客注册或者登陆参数：" + params.toString());
             String loginUrl = Base_Url + "login/onlyphone?phone=" + phone;
-            Log.e(TAG,"-------手机号登录的url="+loginUrl);
-            OkHttpTool.getInstance().doRequest(loginUrl,null, "1", loginHttpResult,false);
+            Log.e(TAG, "-------手机号登录的url=" + loginUrl);
+            OkHttpTool.getInstance().doRequest(loginUrl, null, "1", loginHttpResult, false);
         } else {
             /**
              * {
@@ -307,19 +309,19 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
              */
 
             String dataJson = typeUserDatas.getDataJson();
-            Log.e(TAG,"-------dataJson="+dataJson);
+            Log.e(TAG, "-------dataJson=" + dataJson);
             WXUserBean wxUserBean = new Gson().fromJson(dataJson, WXUserBean.class);
-            Log.e(TAG,"------wxUserBean="+wxUserBean.toString());
+            Log.e(TAG, "------wxUserBean=" + wxUserBean.toString());
             params.put("appId", wxUserBean.getOpenid() + "");
             params.put("headimgurl", wxUserBean.getHeadimgurl() + "");
             params.put("nickname", wxUserBean.getNickname() + "");
             params.put("openid", wxUserBean.getOpenid());
-            params.put("sex", (wxUserBean.getSex().equals("M")?1:0)+"");
+            params.put("sex", (wxUserBean.getSex().equals("M") ? 1 : 0) + "");
             params.put("unionid", wxUserBean.getUnionid() + "");
-            if (Commont.isDebug)Log.e(TAG, "222游客注册或者登陆参数：" + params.toString());
+            if (Commont.isDebug) Log.e(TAG, "222游客注册或者登陆参数：" + params.toString());
             JSONObject json = new JSONObject(params);
 
-            if (Commont.isDebug)Log.e(TAG, "====  json  " + json.toString());
+            if (Commont.isDebug) Log.e(TAG, "====  json  " + json.toString());
             OkHttpTool.getInstance().doRequest(Base_Url + "/login/wachat",
                     json.toString(), this, loginHttpResult);
         }
@@ -334,7 +336,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
 
             if (!WatchUtils.isEmpty(result)) {
-                if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆上传返回" + result);
+                if (Commont.isDebug) Log.e(TAG, "游客注册或者登陆上传返回" + result);
 
                 ResultVoNew resultVo = null;
                 try {
@@ -353,10 +355,10 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         if (dataBean != null) {
                             accountId = dataBean.getAccountId();
 
-                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", (long)accountId);
+                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", (long) accountId);
                             String token = dataBean.getToken();
                             SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", accountId);
-                            if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆成功：开始上传步数");
+                            if (Commont.isDebug) Log.e(TAG, "游客注册或者登陆成功：开始上传步数");
                             MyApp.isLogin = true;
                             SharedPreferencesUtils.setParam(MyApp.getInstance(), "UpGdServices", B18iUtils.getSystemDataStart());
 
@@ -371,7 +373,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         } else {
                             MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
 
-                            if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                            if (Commont.isDebug) Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
                             Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
                             MyApp.getInstance().sendBroadcast(intent);
                             onCancelled();
@@ -381,7 +383,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     } else {
                         MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
 
-                        if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                        if (Commont.isDebug) Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
                         Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
                         MyApp.getInstance().sendBroadcast(intent);
                         onCancelled();
@@ -389,7 +391,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 } else {
                     MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
 
-                    if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                    if (Commont.isDebug) Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
                     Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
                     MyApp.getInstance().sendBroadcast(intent);
                     onCancelled();
@@ -398,7 +400,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             } else {
                 MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
 
-                if (Commont.isDebug)Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
+                if (Commont.isDebug) Log.e(TAG, "游客注册或者登陆失败---上传返回" + result);
                 Intent intent = new Intent("com.example.bozhilun.android.b30.service.UploadServiceGD");
                 MyApp.getInstance().sendBroadcast(intent);
                 onCancelled();
@@ -442,16 +444,17 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             User blueUser = new Gson().fromJson(dataJson, User.class);
             String birthday = blueUser.getBirthday();
             String image = blueUser.getImage();
-            String nickName = blueUser.getNickName() == null ? blueUser.getNickname():blueUser.getNickName();
+            String nickName = blueUser.getNickName() == null ? blueUser.getNickname() : blueUser.getNickName();
             String sex = blueUser.getSex();
             String weight = blueUser.getWeight();
             String phone = blueUser.getPhone();
             String height = blueUser.getHeight();
-            if (Commont.isDebug)Log.d(TAG, "=======WX= " + accountId + " == " + blueUser.toString());
+            if (Commont.isDebug)
+                Log.d(TAG, "=======WX= " + accountId + " == " + blueUser.toString());
             params.put("accountId", accountId);
             params.put("addr", "");
 //            params.put("birthday", "1988-12-02T00:00:00Z");//生日
-            params.put("birthday", WatchUtils.isEmpty(birthday) ? "":(birthday + "T00:00:00Z"));//生日
+            params.put("birthday", WatchUtils.isEmpty(birthday) ? "" : (birthday + "T00:00:00Z"));//生日
             params.put("cardId", "");//身份证号
             if ("M".equals(sex)) {
                 params.put("gender", "MAN");//性别
@@ -492,7 +495,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             String headimgurl = wxUserBean.getHeadimgurl();
             String nickname = wxUserBean.getNickname();
 
-            if (Commont.isDebug)Log.d(TAG, "=======WX= " + accountId + " == " + wxUserBean.toString());
+            if (Commont.isDebug)
+                Log.d(TAG, "=======WX= " + accountId + " == " + wxUserBean.toString());
 
             params.put("accountId", accountId);
             params.put("addr", "");
@@ -521,7 +525,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 if (!WatchUtils.isEmpty(result)) {
                     BaseResultVoNew baseResultVoNew = new Gson().fromJson(result, BaseResultVoNew.class);
                     if (baseResultVoNew.getCode() == 0) {
-                        if (Commont.isDebug)Log.d(TAG, "=======同步用户信息= " + result);
+                        if (Commont.isDebug) Log.d(TAG, "=======同步用户信息= " + result);
                         bindDevices(accountId);
                     }
                 }
@@ -549,23 +553,23 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             public void onResult(String result) {
                 try {
                     if (!WatchUtils.isEmpty(result)) {
-                        Log.e(TAG,"------bindDevices--="+result);
-                        if(result.contains("Unable"))
+                        Log.e(TAG, "------bindDevices--=" + result);
+                        if (result.contains("Unable"))
                             return;
                         BaseResultVoNew baseResultVoNew = new Gson().fromJson(result, BaseResultVoNew.class);
-                        if (Commont.isDebug)Log.d(TAG, "=======绑定该设备A= " + result);
+                        if (Commont.isDebug) Log.d(TAG, "=======绑定该设备A= " + result);
                         if (baseResultVoNew.getCode() == 0 || baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
-                            if (Commont.isDebug)Log.d(TAG, "=======绑定该设备= " + result);
+                            if (Commont.isDebug) Log.d(TAG, "=======绑定该设备= " + result);
                             //并发一起上传
                             findUnUpdataToservices();
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
-        },false);
+        }, false);
     }
 
 
@@ -629,30 +633,31 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
 
     //上传血压数据
-    private void uploadGDBloodData(){
-        if(bpData == null || bpData.isEmpty())
+    private void uploadGDBloodData() {
+        if (bpData == null || bpData.isEmpty())
             return;
-        Log.e(TAG,"------上传的血压天数="+bpData.size()+"天");
-        List<Map<String,Object>> bloodListMap = new ArrayList<>();
-        for(B30HalfHourDB bloodDb : bpData){
-            if(bloodDb.getDate().equals(WatchUtils.getCurrentDate()) || bloodDb.getUpload() != 1){
+        Log.e(TAG, "------上传的血压天数=" + bpData.size() + "天");
+        List<Map<String, Object>> bloodListMap = new ArrayList<>();
+        for (B30HalfHourDB bloodDb : bpData) {
+            if (bloodDb.getDate().equals(WatchUtils.getCurrentDate()) || bloodDb.getUpload() != 1) {
                 String bloodStr = bloodDb.getOriginData();
-                List<HalfHourBpData> hourBpDataList  = gson.fromJson(bloodStr,new TypeToken<List<HalfHourBpData>>(){}.getType());
-                for(HalfHourBpData bpDB : hourBpDataList){
+                List<HalfHourBpData> hourBpDataList = gson.fromJson(bloodStr, new TypeToken<List<HalfHourBpData>>() {
+                }.getType());
+                for (HalfHourBpData bpDB : hourBpDataList) {
                     TimeData timeData = bpDB.getTime();
                     Date dateStart = W30BasicUtils.stringToDate(timeData.getDateAndClockForSleepSecond(), "yyyy-MM-dd HH:mm:ss");
-                    Map<String,Object> bpMap = new HashMap<>();
-                    bpMap.put("accountId",accountId);
-                    bpMap.put("sbp",bpDB.getHighValue());
-                    bpMap.put("dbp",bpDB.getLowValue());//
-                    bpMap.put("testTime",WatchUtils.getISO8601Timestamp(dateStart));
-                    bpMap.put("deviceCode",deviceCode);
+                    Map<String, Object> bpMap = new HashMap<>();
+                    bpMap.put("accountId", accountId);
+                    bpMap.put("sbp", bpDB.getHighValue());
+                    bpMap.put("dbp", bpDB.getLowValue());//
+                    bpMap.put("testTime", WatchUtils.getISO8601Timestamp(dateStart));
+                    bpMap.put("deviceCode", deviceCode);
                     bloodListMap.add(bpMap);
                 }
             }
         }
 
-        if(bloodListMap.isEmpty())
+        if (bloodListMap.isEmpty())
             return;
         String bloodParams = gson.toJson(bloodListMap);
         //Log.e(TAG,"--------上传血压的参数="+bloodParams);
@@ -665,17 +670,17 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         OkHttpTool.getInstance().doRequest(bloodUrl, bloodParams, "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
-                Log.e(TAG,"------血压上传返回="+result);
-                if(WatchUtils.isEmpty(result))
+                Log.e(TAG, "------血压上传返回=" + result);
+                if (WatchUtils.isEmpty(result))
                     return;
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    if(!jsonObject.has("code"))
+                    if (!jsonObject.has("code"))
                         return;
-                    if(jsonObject.getInt("code") == 0){
+                    if (jsonObject.getInt("code") == 0) {
                         updateBloodStatus(bpData);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -686,71 +691,67 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
     //修改血压
     private void updateBloodStatus(List<B30HalfHourDB> bpDatas) {
-        for(int i = 0;i<bpDatas.size();i++){
+        for (int i = 0; i < bpDatas.size(); i++) {
             String dateStr = bpDatas.get(i).getDate();
-            if(!dateStr.equals(WatchUtils.getCurrentDate())){
+            if (!dateStr.equals(WatchUtils.getCurrentDate())) {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("upload",1);
-                int bloodCode = LitePal.updateAll(B30HalfHourDB.class,contentValues,"address = ? and type = ? and date = ?",
-                        deviceCode,B30HalfHourDao.TYPE_BP,dateStr);
-                Log.e(TAG,"-----血压修改="+bloodCode);
+                contentValues.put("upload", 1);
+                int bloodCode = LitePal.updateAll(B30HalfHourDB.class, contentValues, "address = ? and type = ? and date = ?",
+                        deviceCode, B30HalfHourDao.TYPE_BP, dateStr);
+                Log.e(TAG, "-----血压修改=" + bloodCode);
             }
         }
     }
 
 
     /**
-     *
-     *    [
-     *      {"accountId":accountId,
-     *       "hb":80,
-     *       "testTime":"2019-09-19:00:00"
-     *      },
-     *
-     *      {
-     *          "accountId":accountId,
-     *          "hb":80,
-     *          "testTime":"2019-09-19:00:30"
-     *      }，
-     *      {
-     *        "accountId":accountId,
-     *          "hb":80,
-     *          "testTime":"2019-09-18 00:00"
-     *
-     *      },
-     *      {
-     *      "accountId":accountId,
-     *          "hb":80,
-     *          "testTime":"2019-09-18 00:30"
-     *      }
-     *    ]
-     *
-     *
-     *
-     *
+     * [
+     * {"accountId":accountId,
+     * "hb":80,
+     * "testTime":"2019-09-19:00:00"
+     * },
+     * <p>
+     * {
+     * "accountId":accountId,
+     * "hb":80,
+     * "testTime":"2019-09-19:00:30"
+     * }，
+     * {
+     * "accountId":accountId,
+     * "hb":80,
+     * "testTime":"2019-09-18 00:00"
+     * <p>
+     * },
+     * {
+     * "accountId":accountId,
+     * "hb":80,
+     * "testTime":"2019-09-18 00:30"
+     * }
+     * ]
      */
 
     //上传心率
-    private void uploadGDHeartData(){
-        if(rateData == null || rateData.isEmpty())
+    private void uploadGDHeartData() {
+        if (rateData == null || rateData.isEmpty())
             return;
-        Log.e(TAG,"------心率的天数="+rateData.size()+"天");
-        List<Map<String,Object>> heartListMap = new ArrayList<>();
-        for(B30HalfHourDB heartdb : rateData){
-            if(heartdb.getDate().equals(WatchUtils.getCurrentDate()) || heartdb.getUpload() !=1){
+        Log.e(TAG, "------心率的天数=" + rateData.size() + "天");
+        List<Map<String, Object>> heartListMap = new ArrayList<>();
+        for (B30HalfHourDB heartdb : rateData) {
+            if (heartdb.getDate().equals(WatchUtils.getCurrentDate()) || heartdb.getUpload() != 1) {
 
                 String heartStr = heartdb.getOriginData();
                 //Log.e(TAG,"-----心率="+heartdb.toString());
 
-                List<HalfHourRateData> hourRateDataList = gson.fromJson(heartStr,new TypeToken<List<HalfHourRateData>>(){}.getType());
-                for(HalfHourRateData hb : hourRateDataList){
-                    Map<String,Object> heartMap = new HashMap<>();
+                List<HalfHourRateData> hourRateDataList = gson.fromJson(heartStr, new TypeToken<List<HalfHourRateData>>() {
+                }.getType());
+                for (HalfHourRateData hb : hourRateDataList) {
+                    Map<String, Object> heartMap = new HashMap<>();
                     TimeData timeData = hb.getTime();
                     Date dateStart = W30BasicUtils.stringToDate(timeData.getDateAndClockForSleepSecond(), "yyyy-MM-dd HH:mm:ss");
-                    heartMap.put("accountId",accountId);
-                    heartMap.put("hb",hb.getRateValue());
-                    heartMap.put("testTime",WatchUtils.getISO8601Timestamp(dateStart));
-                    heartMap.put("deviceCode",deviceCode);
+                    heartMap.put("accountId", accountId);
+                    heartMap.put("hb", hb.getRateValue());
+                    heartMap.put("testTime", WatchUtils.getISO8601Timestamp(dateStart));
+                    heartMap.put("deviceCode", deviceCode);
                     heartListMap.add(heartMap);
                 }
 
@@ -758,10 +759,10 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
         }
 
-        if(heartListMap.isEmpty())
+        if (heartListMap.isEmpty())
             return;
         String heartParams = gson.toJson(heartListMap);
-       // Log.e(TAG,"-------心率参数="+heartParams);
+        // Log.e(TAG,"-------心率参数="+heartParams);
 
 //        new GetJsonDataUtil().writeTxtToFile("心率参数:"+WatchUtils.getCurrentDate1()+heartParams,
 //                Environment.getExternalStorageDirectory()+"/DCIM/","heartBloodParams.json");
@@ -770,19 +771,19 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         OkHttpTool.getInstance().doRequest(heartUrl, heartParams, "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
-                Log.e(TAG,"--------心率上传返回="+result);
+                Log.e(TAG, "--------心率上传返回=" + result);
 //                new GetJsonDataUtil().writeTxtToFile("心率上传返回:"+WatchUtils.getCurrentDate1()+result,
 //                        Environment.getExternalStorageDirectory()+"/DCIM/","heartBloodParams.json");
-                if(WatchUtils.isEmpty(result))
+                if (WatchUtils.isEmpty(result))
                     return;
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    if(!jsonObject.has("code"))
+                    if (!jsonObject.has("code"))
                         return;
-                    if(jsonObject.getInt("code") == 0){
+                    if (jsonObject.getInt("code") == 0) {
                         updateHeartStatus(rateData);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -792,14 +793,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
     //修改去除当天的血压标识，已上传
     private void updateHeartStatus(List<B30HalfHourDB> rateDatas) {
-        for(int i = 0;i<rateDatas.size();i++){
+        for (int i = 0; i < rateDatas.size(); i++) {
             String dateStr = rateDatas.get(i).getDate();
-            if(!dateStr.equals(WatchUtils.getCurrentDate())){
+            if (!dateStr.equals(WatchUtils.getCurrentDate())) {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("upload",1);
-                int heartCode = LitePal.updateAll(B30HalfHourDB.class,contentValues,"address = ? and type = ? and date = ?",
-                        deviceCode,B30HalfHourDao.TYPE_RATE,dateStr);
-                Log.e(TAG,"-----心率修改="+heartCode);
+                contentValues.put("upload", 1);
+                int heartCode = LitePal.updateAll(B30HalfHourDB.class, contentValues, "address = ? and type = ? and date = ?",
+                        deviceCode, B30HalfHourDao.TYPE_RATE, dateStr);
+                Log.e(TAG, "-----心率修改=" + heartCode);
             }
         }
 
@@ -808,14 +809,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
     //上传睡眠
     private void uploadGDSleepData() {
-        if(sleepData == null || sleepData.isEmpty())
+        if (sleepData == null || sleepData.isEmpty())
             return;
-        Log.e(TAG,"------上传睡眠的天数="+sleepData.size()+"天");
+        Log.e(TAG, "------上传睡眠的天数=" + sleepData.size() + "天");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         try {
-            List<Map<String,Object>> sleepListMap = new ArrayList<>();
+            List<Map<String, Object>> sleepListMap = new ArrayList<>();
             for (B30HalfHourDB sleepDb : sleepData) {
-                if(sleepDb.getDate().equals(WatchUtils.getCurrentDate()) || sleepDb.getUpload() != 1){
+                if (sleepDb.getDate().equals(WatchUtils.getCurrentDate()) || sleepDb.getUpload() != 1) {
                     SleepData sleepDataStr = gson.fromJson(sleepDb.getOriginData(), SleepData.class);
                     Map<String, Object> sleepMap = new HashMap<>();
                     sleepMap.put("accountId", accountId);
@@ -826,33 +827,33 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     Date dateStr = sdf.parse(sleepDataStr.getSleepDown().getDateAndClockForSleepSecond());
                     sleepMap.put("goSleepTime", WatchUtils.getISO8601Timestamp(new Date(dateStr.getTime())));
 
-                    sleepMap.put("wakeUpTime",WatchUtils.getISO8601Timestamp(new Date(wakeDate.getTime())));
-                    sleepMap.put("deepSleepTime",sleepDataStr.getDeepSleepTime());
-                    sleepMap.put("lowSleepTime",sleepDataStr.getLowSleepTime());
-                    sleepMap.put("state",String.valueOf(sleepDataStr.getSleepQulity()));
-                    sleepMap.put("deviceCode",deviceCode);
+                    sleepMap.put("wakeUpTime", WatchUtils.getISO8601Timestamp(new Date(wakeDate.getTime())));
+                    sleepMap.put("deepSleepTime", sleepDataStr.getDeepSleepTime());
+                    sleepMap.put("lowSleepTime", sleepDataStr.getLowSleepTime());
+                    sleepMap.put("state", String.valueOf(sleepDataStr.getSleepQulity()));
+                    sleepMap.put("deviceCode", deviceCode);
                     sleepListMap.add(sleepMap);
                 }
 
             }
             String sleepUrl = Commont.SLEEP_QUALITY_URL;
-            if(sleepListMap.isEmpty())
+            if (sleepListMap.isEmpty())
                 return;
             //Log.e(TAG,"--------睡眠参数="+gson.toJson(sleepListMap));
             OkHttpTool.getInstance().doRequest(sleepUrl, gson.toJson(sleepListMap), "", new OkHttpTool.HttpResult() {
                 @Override
                 public void onResult(String result) {
-                    Log.e(TAG,"--------睡眠上传="+result);
-                    if(WatchUtils.isEmpty(result))
+                    Log.e(TAG, "--------睡眠上传=" + result);
+                    if (WatchUtils.isEmpty(result))
                         return;
                     try {
                         JSONObject jsonObject = new JSONObject(result);
-                        if(!jsonObject.has("code"))
+                        if (!jsonObject.has("code"))
                             return;
-                        if(jsonObject.getInt("code") == 0){
+                        if (jsonObject.getInt("code") == 0) {
                             updateSleepStatus(sleepData);
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -867,14 +868,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
     //修改睡眠
     private void updateSleepStatus(List<B30HalfHourDB> sleepDatas) {
-        for(int i = 0;i<sleepDatas.size();i++){
+        for (int i = 0; i < sleepDatas.size(); i++) {
             String dateStr = sleepDatas.get(i).getDate();
-            if(!dateStr.equals(WatchUtils.getCurrentDate())){
+            if (!dateStr.equals(WatchUtils.getCurrentDate())) {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("upload",1);
-                int sleepCode = LitePal.updateAll(B30HalfHourDB.class,contentValues,"address = ? and type = ? and date = ?",
-                        deviceCode,B30HalfHourDao.TYPE_SLEEP,dateStr);
-                Log.e(TAG,"-----睡眠修改="+sleepCode);
+                contentValues.put("upload", 1);
+                int sleepCode = LitePal.updateAll(B30HalfHourDB.class, contentValues, "address = ? and type = ? and date = ?",
+                        deviceCode, B30HalfHourDao.TYPE_SLEEP, dateStr);
+                Log.e(TAG, "-----睡眠修改=" + sleepCode);
             }
         }
 
@@ -884,28 +885,29 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
     //统一上传接口
     private void uploadRingData() {
-        if(hrvOriginDataList.isEmpty() && hrvMapList.isEmpty())
+        if (hrvOriginDataList.isEmpty() && hrvMapList.isEmpty())
             return;
         //总的结果
-        Map<String,Object> allResultMap = new HashMap<>();
-        allResultMap.put("accountId",accountId);
-        allResultMap.put("deviceCode",deviceCode);
-        allResultMap.put("testTime",WatchUtils.getCurrentDate());
+        Map<String, Object> allResultMap = new HashMap<>();
+        allResultMap.put("accountId", accountId);
+        allResultMap.put("deviceCode", deviceCode);
+        allResultMap.put("testTime", WatchUtils.getCurrentDate());
         //运动
-        Map<String,Object> sportDataMap = new HashMap<>();
+        Map<String, Object> sportDataMap = new HashMap<>();
 
-        List<B30HalfHourDB> sportGDList = B30HalfHourDao.getInstance().findGDTodayData(deviceCode,B30HalfHourDao.TYPE_SPORT);
-        if(sportGDList == null || sportGDList.isEmpty())return;
-        String orginStr = sportGDList.get(sportGDList.size()-1).getOriginData();
+        List<B30HalfHourDB> sportGDList = B30HalfHourDao.getInstance().findGDTodayData(deviceCode, B30HalfHourDao.TYPE_SPORT);
+        if (sportGDList == null || sportGDList.isEmpty()) return;
+        String orginStr = sportGDList.get(sportGDList.size() - 1).getOriginData();
 
-       // Log.e(TAG,"--------运动="+orginStr);
+        // Log.e(TAG,"--------运动="+orginStr);
         List<HalfHourSportData> halfHourSportData = new Gson().fromJson(orginStr,
-                new TypeToken<List<HalfHourSportData>>(){}.getType());
+                new TypeToken<List<HalfHourSportData>>() {
+                }.getType());
 
-        List<Map<String,Object>> sportList = new ArrayList<>();
-        for(HalfHourSportData hSport : halfHourSportData){
-            if(hSport.getDate().equals(WatchUtils.getCurrentDate())){
-                Map<String,Object> sMap = new HashMap<>();
+        List<Map<String, Object>> sportList = new ArrayList<>();
+        for (HalfHourSportData hSport : halfHourSportData) {
+            if (hSport.getDate().equals(WatchUtils.getCurrentDate())) {
+                Map<String, Object> sMap = new HashMap<>();
 
                 TimeData timeData = hSport.getTime();
 
@@ -914,56 +916,55 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 Date dateStart = W30BasicUtils.stringToDate(spo2Dates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
                 String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
 
-                sMap.put("stepValue",hSport.getStepValue());
-                sMap.put("disValue",hSport.getDisValue());
-                sMap.put("calValue",hSport.getCalValue());
-                sMap.put("testTime",iso8601Timestamp);
+                sMap.put("stepValue", hSport.getStepValue());
+                sMap.put("disValue", hSport.getDisValue());
+                sMap.put("calValue", hSport.getCalValue());
+                sMap.put("testTime", iso8601Timestamp);
                 sportList.add(sMap);
             }
 
 
         }
 
-        sportDataMap.put("data",sportList);
-        String step_detail = B30HalfHourDao.getInstance().findOriginData(deviceCode,WatchUtils.getCurrentDate(),B30HalfHourDao.TYPE_STEP_DETAIL);
-        if(WatchUtils.isEmpty(step_detail)){
-            sportDataMap.put("totalStep",0);
-            sportDataMap.put("totalDis",0.0);
-            sportDataMap.put("totalCal",0.0);
-        }else{
-            SportData sportData = gson.fromJson(step_detail,SportData.class);
-            sportDataMap.put("totalStep",sportData.getStep());
-            sportDataMap.put("totalDis",sportData.getDis());
-            sportDataMap.put("totalCal",sportData.getKcal());
+        sportDataMap.put("data", sportList);
+        String step_detail = B30HalfHourDao.getInstance().findOriginData(deviceCode, WatchUtils.getCurrentDate(), B30HalfHourDao.TYPE_STEP_DETAIL);
+        if (WatchUtils.isEmpty(step_detail)) {
+            sportDataMap.put("totalStep", 0);
+            sportDataMap.put("totalDis", 0.0);
+            sportDataMap.put("totalCal", 0.0);
+        } else {
+            SportData sportData = gson.fromJson(step_detail, SportData.class);
+            sportDataMap.put("totalStep", sportData.getStep());
+            sportDataMap.put("totalDis", sportData.getDis());
+            sportDataMap.put("totalCal", sportData.getKcal());
 
         }
 
 
-
-        allResultMap.put("sport",sportDataMap);
+        allResultMap.put("sport", sportDataMap);
 
 
         //Log.e(TAG,"---------allMap="+allResultMap.get("sport").toString());
 
         //hrv
-        if(!hrvOriginDataList.isEmpty() && !hrvMapList.isEmpty()){
+        if (!hrvOriginDataList.isEmpty() && !hrvMapList.isEmpty()) {
             //心脏健康指数
             HrvScoreUtil hrvScoreUtil = new HrvScoreUtil();
             int heartSocre = hrvScoreUtil.getSocre(hrvOriginDataList);
 
-            Map<String,Object> hrvTempMap = new HashMap<>();
-            hrvTempMap.put("data",hrvMapList);
+            Map<String, Object> hrvTempMap = new HashMap<>();
+            hrvTempMap.put("data", hrvMapList);
 
-            hrvTempMap.put("hrvIndex",heartSocre);
+            hrvTempMap.put("hrvIndex", heartSocre);
 
-            allResultMap.put("hrv",hrvTempMap);
-        }else{
-            allResultMap.put("hrv","");
+            allResultMap.put("hrv", hrvTempMap);
+        } else {
+            allResultMap.put("hrv", "");
         }
 
         //spo2
-        if(!spo2hOriginDataList.isEmpty() && !oxyMapList.isEmpty()){
-            Map<String,Object> spo2TempMap = new HashMap<>();
+        if (!spo2hOriginDataList.isEmpty() && !oxyMapList.isEmpty()) {
+            Map<String, Object> spo2TempMap = new HashMap<>();
             Spo2hOriginUtil spo2hOriginUtil = new Spo2hOriginUtil(spo2hOriginDataList);
             //获取低氧数据[最大，最小，平均]       *参考：取低氧最大值，大于20，则显示偏高，其他显示正常
             int[] onedayDataArrLowSpo2h = spo2hOriginUtil.getOnedayDataArr(TYPE_LOWSPO2H);
@@ -982,52 +983,52 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             DecimalFormat decimalFormat = new DecimalFormat("#");    //保留两位小数
 
 
-            for(Map<String,Float> stopMap : rateStopList){
-                Log.e(TAG,"------stopMap="+stopMap.toString());
+            for (Map<String, Float> stopMap : rateStopList) {
+                Log.e(TAG, "------stopMap=" + stopMap.toString());
             }
 
-            List<Map<String,Object>> rateMapList = new ArrayList<>();
+            List<Map<String, Object>> rateMapList = new ArrayList<>();
 
-            for(Map<String,Float> mp : rateStopList){
-               float timeStr = mp.get("time");
-               float valueStr = mp.get("value");
-               Log.e(TAG,"-=----timeStr="+timeStr+"--="+valueStr+"--="+(timeStr != 0 ));
-               if(valueStr != 0){
-                   int timeInt = (int) timeStr;
+            for (Map<String, Float> mp : rateStopList) {
+                float timeStr = mp.get("time");
+                float valueStr = mp.get("value");
+                Log.e(TAG, "-=----timeStr=" + timeStr + "--=" + valueStr + "--=" + (timeStr != 0));
+                if (valueStr != 0) {
+                    int timeInt = (int) timeStr;
 
-                   //小时
-                   int hour = (int) Math.floor(timeInt / 60);
-                   //分钟
-                   int mine = timeInt % 60;
+                    //小时
+                    int hour = (int) Math.floor(timeInt / 60);
+                    //分钟
+                    int mine = timeInt % 60;
 
-                   Map<String,Object> timeMap = new HashMap<>();
-                   timeMap.put("time","0" + hour + ":" + (mine == 0 ? "0" + mine : mine));
-                   timeMap.put("value",valueStr + "");
-                   Log.e(TAG,"-----timeMap="+timeMap.toString());
-                   rateMapList.add(timeMap);
-               }
+                    Map<String, Object> timeMap = new HashMap<>();
+                    timeMap.put("time", "0" + hour + ":" + (mine == 0 ? "0" + mine : mine));
+                    timeMap.put("value", valueStr + "");
+                    Log.e(TAG, "-----timeMap=" + timeMap.toString());
+                    rateMapList.add(timeMap);
+                }
             }
 
 
             int osahs = spo2hOriginUtil.getIsHypoxia();
-            Log.e(TAG,"---osahs="+osahs);
-            spo2TempMap.put("OSAHS",osahs);
-            spo2TempMap.put("onedayDataArrLowSpo2h",onedayDataArrLowSpo2h);
-            spo2TempMap.put("onedayDataArrLowBreath",onedayDataArrLowBreath);
-            spo2TempMap.put("onedayDataArrSleep",onedayDataArrSleep);
-            spo2TempMap.put("onedayDataArrHeart",onedayDataArrHeart);
-            spo2TempMap.put("onedayDataArrSpo2h",onedayDataArrSpo2h);
-            spo2TempMap.put("tmpLt",rateMapList);
-            spo2TempMap.put("data",oxyMapList);//oxyMapList
+            Log.e(TAG, "---osahs=" + osahs);
+            spo2TempMap.put("OSAHS", osahs);
+            spo2TempMap.put("onedayDataArrLowSpo2h", onedayDataArrLowSpo2h);
+            spo2TempMap.put("onedayDataArrLowBreath", onedayDataArrLowBreath);
+            spo2TempMap.put("onedayDataArrSleep", onedayDataArrSleep);
+            spo2TempMap.put("onedayDataArrHeart", onedayDataArrHeart);
+            spo2TempMap.put("onedayDataArrSpo2h", onedayDataArrSpo2h);
+            spo2TempMap.put("tmpLt", rateMapList);
+            spo2TempMap.put("data", oxyMapList);//oxyMapList
 
-            allResultMap.put("spo2",spo2TempMap);
-        }else{
-            allResultMap.put("spo2","");
+            allResultMap.put("spo2", spo2TempMap);
+        } else {
+            allResultMap.put("spo2", "");
         }
         String allParmas = gson.toJson(allResultMap);
 
-        String filePath = Environment.getExternalStorageDirectory()+"/DCIM/";
-        new GetJsonDataUtil().writeTxtToFile(WatchUtils.getCurrentDate1()+allParmas,filePath,"ringData.json");
+        String filePath = Environment.getExternalStorageDirectory() + "/DCIM/";
+        new GetJsonDataUtil().writeTxtToFile(WatchUtils.getCurrentDate1() + allParmas, filePath, "ringData.json");
 
 
         //String allUrl = "http://apihd.guiderhealth.com/api/v1/ringdata";
@@ -1035,7 +1036,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         OkHttpTool.getInstance().doRequest(allUrl, allParmas, "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
-                Log.e(TAG,"--------所有上传返回="+result);
+                Log.e(TAG, "--------所有上传返回=" + result);
 
             }
         });
@@ -1050,9 +1051,10 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private void getStepUpToServices() {
 
         if (sportData != null && !sportData.isEmpty()) {
-            if (Commont.isDebug)Log.e(TAG, "一共有 " + sportData.size() + " 天运动数据");
+            if (Commont.isDebug) Log.e(TAG, "一共有 " + sportData.size() + " 天运动数据");
             for (int i = (sportData.size() - 1); i >= 0; i--) {
-                if (Commont.isDebug)Log.e(TAG, "第 " + i + " 天前的运动数据   日期是：" + sportData.get(i).getDate());
+                if (Commont.isDebug)
+                    Log.e(TAG, "第 " + i + " 天前的运动数据   日期是：" + sportData.get(i).getDate());
                 String date = sportData.get(i).getDate();
                 String originData = sportData.get(i).getOriginData();
                 if (!WatchUtils.isEmpty(originData) && !WatchUtils.isEmpty(date)) {
@@ -1060,13 +1062,13 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     setUpSport(date, originData, i);
                 } else {
                     if (i == 0) {
-                        if (Commont.isDebug)Log.e(TAG, "运动数据异常");
+                        if (Commont.isDebug) Log.e(TAG, "运动数据异常");
                         upSport = true;
                     }
                 }
             }
         } else {
-            if (Commont.isDebug)Log.e(TAG, "没有运动数据");
+            if (Commont.isDebug) Log.e(TAG, "没有运动数据");
             upSport = true;
         }
     }
@@ -1077,22 +1079,23 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
      */
     private void getSleepUpToServices() {
         if (sleepData != null && !sleepData.isEmpty()) {
-            if (Commont.isDebug)Log.e(TAG, "一共有 " + sleepData.size() + " 天睡眠数据");
+            if (Commont.isDebug) Log.e(TAG, "一共有 " + sleepData.size() + " 天睡眠数据");
             for (int i = (sleepData.size() - 1); i >= 0; i--) {
                 String date = sleepData.get(i).getDate();
                 String originData = sleepData.get(i).getOriginData();
-                if (Commont.isDebug)Log.e(TAG, "第 " + i + " 天前的睡眠数据   日期是：" + sleepData.get(i).getDate());
+                if (Commont.isDebug)
+                    Log.e(TAG, "第 " + i + " 天前的睡眠数据   日期是：" + sleepData.get(i).getDate());
                 if (!WatchUtils.isEmpty(originData) && !WatchUtils.isEmpty(date)) {
                     //为倒序，i == 0  最后一个为今天，今天的数据要做处理
                     setUpSleep(date, originData, i);
                 } else {
                     if (i == 0) {
-                        if (Commont.isDebug)Log.e(TAG, "睡眠数据异常");
+                        if (Commont.isDebug) Log.e(TAG, "睡眠数据异常");
                     }
                 }
             }
         } else {
-            if (Commont.isDebug)Log.e(TAG, "没有睡眠数据");
+            if (Commont.isDebug) Log.e(TAG, "没有睡眠数据");
         }
 
 //        if (sleepData != null && !sleepData.isEmpty()) {
@@ -1122,11 +1125,12 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private void getHeartUpToServices() {
 
         if (rateData != null && !rateData.isEmpty()) {
-            if (Commont.isDebug)Log.e(TAG, "一共有 " + rateData.size() + " 天心率数据");
+            if (Commont.isDebug) Log.e(TAG, "一共有 " + rateData.size() + " 天心率数据");
             for (int i = (rateData.size() - 1); i >= 0; i--) {
                 String date = rateData.get(i).getDate();
                 String originData = rateData.get(i).getOriginData();
-                if (Commont.isDebug)Log.e(TAG, "第 " + i + " 天前的心率数据   日期是：" + rateData.get(i).getDate());
+                if (Commont.isDebug)
+                    Log.e(TAG, "第 " + i + " 天前的心率数据   日期是：" + rateData.get(i).getDate());
                 if (!WatchUtils.isEmpty(originData) && !WatchUtils.isEmpty(date)) {
                     //为倒序，i == 0  最后一个为今天，今天的数据要做处理
                     if (i == 0) setUpHeart(date, originData, true);
@@ -1134,13 +1138,13 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 } else {
                     if (i == 0) {
                         upHeart = true;
-                        if (Commont.isDebug)Log.e(TAG, "心率数据异常");
+                        if (Commont.isDebug) Log.e(TAG, "心率数据异常");
                     }
                 }
             }
         } else {
             upHeart = true;
-            if (Commont.isDebug)Log.e(TAG, "没有心率数据");
+            if (Commont.isDebug) Log.e(TAG, "没有心率数据");
         }
     }
 
@@ -1151,23 +1155,24 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private void getBpUpToServices() {
 
         if (bpData != null && !bpData.isEmpty()) {
-            if (Commont.isDebug)Log.e(TAG, "一共有 " + bpData.size() + " 天血压数据");
+            if (Commont.isDebug) Log.e(TAG, "一共有 " + bpData.size() + " 天血压数据");
             for (int i = (bpData.size() - 1); i >= 0; i--) {
                 String date = bpData.get(i).getDate();
                 String originData = bpData.get(i).getOriginData();
-                if (Commont.isDebug)Log.e(TAG, "第 " + i + " 天前的血压数据   日期是：" + bpData.get(i).getDate());
+                if (Commont.isDebug)
+                    Log.e(TAG, "第 " + i + " 天前的血压数据   日期是：" + bpData.get(i).getDate());
                 if (!WatchUtils.isEmpty(originData) && !WatchUtils.isEmpty(date)) {
                     //为倒序，i == 0  最后一个为今天，今天的数据要做处理
                     setUpBp(date, originData, i);
                 } else {
                     if (i == 0) {
                         upBool = true;
-                        if (Commont.isDebug)Log.e(TAG, "血压数据异常");
+                        if (Commont.isDebug) Log.e(TAG, "血压数据异常");
                     }
                 }
             }
         } else {
-            if (Commont.isDebug)Log.e(TAG, "血压没有数据1");
+            if (Commont.isDebug) Log.e(TAG, "血压没有数据1");
             upBool = true;
         }
     }
@@ -1179,82 +1184,84 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private void getHrvToServices() {
         hrvOriginDataList.clear();
         hrvMapList.clear();
-        if(hrvList == null || hrvList.isEmpty())
+        if (hrvList == null || hrvList.isEmpty())
             return;
-        Log.e(TAG,"----------hrv大小="+hrvList.size());
-        List<Map<String,Object>> list = new ArrayList<>();
-            for(B31HRVBean b31HRVBean : hrvList){
-                String hrvDataStr = b31HRVBean.getHrvDataStr();
-                HRVOriginData hrvOriginData = new Gson().fromJson(hrvDataStr, HRVOriginData.class);
-                if(hrvOriginData.getDate().equals(WatchUtils.getCurrentDate())){
-                    hrvOriginDataList.add(hrvOriginData);
-                }
+        Log.e(TAG, "----------hrv大小=" + hrvList.size());
+        Log.e(TAG, "----------hrv第一个=" + hrvList.get(0).toString());
+        Log.e(TAG, "----------hrv最后一个=" + hrvList.get(hrvList.size() - 1).toString());
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (B31HRVBean b31HRVBean : hrvList) {
+            String hrvDataStr = b31HRVBean.getHrvDataStr();
+            HRVOriginData hrvOriginData = new Gson().fromJson(hrvDataStr, HRVOriginData.class);
+            if (hrvOriginData.getDate().equals(WatchUtils.getCurrentDate())) {
+                hrvOriginDataList.add(hrvOriginData);
+            }
 
-                TimeData timeData = hrvOriginData.getmTime();
-                String hrvDates = timeData.getDateAndClockForSleepSecond();//obtainDate(timeData);
+            TimeData timeData = hrvOriginData.getmTime();
+            String hrvDates = timeData.getDateAndClockForSleepSecond();//obtainDate(timeData);
 
-                Date dateStart = W30BasicUtils.stringToDate(hrvDates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
-                String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
-               // Log.e(TAG,"-------testTime="+iso8601Timestamp);
+            Date dateStart = W30BasicUtils.stringToDate(hrvDates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+            String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
+            // Log.e(TAG,"-------testTime="+iso8601Timestamp);
 
-                Map<String,Object> hrMap = new HashMap<>();
-                hrMap.put("hrvValue",hrvOriginData.getHrvValue());
-                hrMap.put("testTime",iso8601Timestamp);
-                hrvMapList.add(hrMap);
+            Map<String, Object> hrMap = new HashMap<>();
+            hrMap.put("hrvValue", hrvOriginData.getHrvValue());
+            hrMap.put("testTime", iso8601Timestamp);
+            hrvMapList.add(hrMap);
 
-                //Log.e(TAG,"---b31Hrv="+b31HRVBean.toString());
-                if(!b31HRVBean.isUpdata()){
-                    int hrvValue = hrvOriginData.getHrvValue();
-                    String rate = hrvOriginData.getRate();
-                    if (WatchUtils.isEmpty(rate)) return;
-                    int[] hrvDatas = null;
-                    if (rate.length() - 2 != 0) {
-                        hrvDatas = new int[rate.length() - 2];
-                        for (int i = 1; i < rate.length() - 1; i++) {
-                            char ch = rate.charAt(i);
-                            hrvDatas[i - 1] = ch;
-                        }
+            //Log.e(TAG,"---b31Hrv="+b31HRVBean.toString());
+            if (!b31HRVBean.isUpdata()) {
+                int hrvValue = hrvOriginData.getHrvValue();
+                String rate = hrvOriginData.getRate();
+                if (WatchUtils.isEmpty(rate)) return;
+                int[] hrvDatas = null;
+                if (rate.length() - 2 != 0) {
+                    hrvDatas = new int[rate.length() - 2];
+                    for (int i = 1; i < rate.length() - 1; i++) {
+                        char ch = rate.charAt(i);
+                        hrvDatas[i - 1] = ch;
                     }
-
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("accountId", accountId);
-                    params.put("deviceCode", deviceCode);
-                    params.put("hrvData", hrvDatas);
-                    params.put("hrvIndex", hrvValue);
-                    params.put("state", "");
-                    params.put("createTime", "");
-                    //testTime  =   2019-06-20 17-00-00
-                    //2019-06-20T08:40:41Z
-
-                    params.put("testTime", iso8601Timestamp);
-                   // JSONObject json = new JSONObject(params);
-                    list.add(params);
-
                 }
+
+                Map<String, Object> params = new HashMap<>();
+                params.put("accountId", accountId);
+                params.put("deviceCode", deviceCode);
+                params.put("hrvData", hrvDatas);
+                params.put("hrvIndex", hrvValue);
+                params.put("state", "");
+                params.put("createTime", "");
+                //testTime  =   2019-06-20 17-00-00
+                //2019-06-20T08:40:41Z
+
+                params.put("testTime", iso8601Timestamp);
+                // JSONObject json = new JSONObject(params);
+                list.add(params);
+
+            }
 
 
         }
 
-       if(list.isEmpty())
-           return;
-       // Log.e(TAG,"--------hrv参数="+new Gson().toJson(list));
+        if (list.isEmpty())
+            return;
+        // Log.e(TAG,"--------hrv参数="+new Gson().toJson(list));
         //String upPatch = "http://apihd.guiderhealth.com/api/v1/hrv";
         String upPatch = Commont.HRV_URL;
         OkHttpTool.getInstance().doRequest(upPatch, new Gson().toJson(list), this, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
                 if (!WatchUtils.isEmpty(result)) {
-                    if (Commont.isDebug)Log.e(TAG, "最后HRV传返回啊: " + result);
+                    if (Commont.isDebug) Log.e(TAG, "最后HRV传返回啊: " + result);
                     try {
                         JSONObject jsonObject = new JSONObject(result);
-                        if(jsonObject.has("code")){
-                            if(jsonObject.getInt("code") == 0){
+                        if (jsonObject.has("code")) {
+                            if (jsonObject.getInt("code") == 0) {
                                 //上传成功，修改状态
                                 //LitePal.updateAsync()
                                 updateLoadStatus(hrvList);
                             }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -1276,12 +1283,12 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 //                hrvBean.getBleMac(),hrvBean.getDateStr());
 //        Log.e(TAG,"-------hrv修改="+code);
 
-        for(B31HRVBean hrvBean : hrvLists){
+        for (B31HRVBean hrvBean : hrvLists) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put("isUpdata",true);
-            int code = LitePal.updateAll(B31HRVBean.class,contentValues,"bleMac = ? and dateStr = ?",
-                   hrvBean.getBleMac(),hrvBean.getDateStr());
-            Log.e(TAG,"-------hrv修改="+code);
+            contentValues.put("isUpdata", true);
+            int code = LitePal.updateAll(B31HRVBean.class, contentValues, "bleMac = ? and dateStr = ?",
+                    hrvBean.getBleMac(), hrvBean.getDateStr());
+//            Log.e(TAG,"-------hrv修改="+code);
         }
     }
 
@@ -1292,118 +1299,112 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private void getSpo2ToServices() {
         spo2hOriginDataList.clear();
         oxyMapList.clear();
-        if(spo2List == null || spo2List.isEmpty())return;
-        Log.e(TAG,"------spo2的大小="+spo2List.size());
+        if (spo2List == null || spo2List.isEmpty()) return;
+        Log.e(TAG, "------spo2的大小=" + spo2List.size());
 
         //血氧的集合
-        List<Map<String,String>> oxygenValueList = new ArrayList<>();
+        List<Map<String, String>> oxygenValueList = new ArrayList<>();
         //呼吸暂停的集合
-        List<Map<String,String>> apneaResultList = new ArrayList<>();
+        List<Map<String, String>> apneaResultList = new ArrayList<>();
         //呼吸率的集合
-        List<Map<String,String>> respirationRateList = new ArrayList<>();
+        List<Map<String, String>> respirationRateList = new ArrayList<>();
         //心脏负荷的集合
-        List<Map<String,String>> cardiacLoadList = new ArrayList<>();
+        List<Map<String, String>> cardiacLoadList = new ArrayList<>();
 
         //睡眠活动
-        List<Map<String,String>> sleepActivityList = new ArrayList<>();
+        List<Map<String, String>> sleepActivityList = new ArrayList<>();
 
 
-        for(B31Spo2hBean b31Spo2hBean : spo2List){
+        for (B31Spo2hBean b31Spo2hBean : spo2List) {
 //            if(b31Spo2hBean.isUpdata())
 //                return;
             //Log.e(TAG,"------spo2="+b31Spo2hBean.toString());
 
             Spo2hOriginData spo2hOriginData = new Gson().fromJson(b31Spo2hBean.getSpo2hOriginData(), Spo2hOriginData.class);
-            if(spo2hOriginData.getDate().equals(WatchUtils.getCurrentDate())){
+            if (spo2hOriginData.getDate().equals(WatchUtils.getCurrentDate())) {
                 spo2hOriginDataList.add(spo2hOriginData);
             }
 
             TimeData timeData = spo2hOriginData.getmTime();
             String spo2Dates = timeData.getDateAndClockForSleepSecond();
 
-            Date dateStart = W30BasicUtils.stringToDate(spo2Dates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+            Date dateStart = W30BasicUtils.stringToDate(spo2Dates.replace(":",
+                    "-"), "yyyy-MM-dd HH-mm-ss");
             String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
 
             //血氧
-            Map<String,String> oxyMap = new HashMap<>();
-            oxyMap.put("accountId",accountId+"");
-            oxyMap.put("bo",spo2hOriginData.getOxygenValue()+"");
-            oxyMap.put("testTime",iso8601Timestamp);
-            oxyMap.put("deviceCode",deviceCode);
+            Map<String, String> oxyMap = new HashMap<>();
+            oxyMap.put("accountId", accountId + "");
+            oxyMap.put("bo", spo2hOriginData.getOxygenValue() + "");
+            oxyMap.put("testTime", iso8601Timestamp);
+            oxyMap.put("deviceCode", deviceCode);
             oxygenValueList.add(oxyMap);
 
 
-            Map<String,String> tmpoxyMap = new HashMap<>();
-            tmpoxyMap.put("testTime",iso8601Timestamp);
-            tmpoxyMap.put("oxygenValue",spo2hOriginData.getOxygenValue()+"");
+            Map<String, String> tmpoxyMap = new HashMap<>();
+            tmpoxyMap.put("testTime", iso8601Timestamp);
+            tmpoxyMap.put("oxygenValue", spo2hOriginData.getOxygenValue() + "");
             oxyMapList.add(tmpoxyMap);
 
 
-
-
             //呼吸暂停
-            Map<String,String> apneaResultMap = new HashMap<>();
-            apneaResultMap.put("accountId",accountId+"");
-            apneaResultMap.put("breathpause",spo2hOriginData.getApneaResult()+"");
-            apneaResultMap.put("avg","0");
-            apneaResultMap.put("testTime",iso8601Timestamp);
-            apneaResultMap.put("deviceCode",deviceCode);
+            Map<String, String> apneaResultMap = new HashMap<>();
+            apneaResultMap.put("accountId", accountId + "");
+            apneaResultMap.put("breathpause", spo2hOriginData.getApneaResult() + "");
+            apneaResultMap.put("avg", "0");
+            apneaResultMap.put("testTime", iso8601Timestamp);
+            apneaResultMap.put("deviceCode", deviceCode);
             apneaResultList.add(apneaResultMap);
 
 
             //呼吸率
-            Map<String,String> respirationRateMap = new HashMap<>();
-            respirationRateMap.put("accountId",accountId+"");
-            respirationRateMap.put("value",spo2hOriginData.getRespirationRate()+"");
-            respirationRateMap.put("testTime",iso8601Timestamp);
-            respirationRateMap.put("deviceCode",deviceCode);
+            Map<String, String> respirationRateMap = new HashMap<>();
+            respirationRateMap.put("accountId", accountId + "");
+            respirationRateMap.put("value", spo2hOriginData.getRespirationRate() + "");
+            respirationRateMap.put("testTime", iso8601Timestamp);
+            respirationRateMap.put("deviceCode", deviceCode);
             respirationRateList.add(respirationRateMap);
 
 
             //心脏负荷
-            Map<String,String> cardiacLoadMap = new HashMap<>();
-            cardiacLoadMap.put("accountId",accountId+"");
-            cardiacLoadMap.put("value","0");
-            cardiacLoadMap.put("testTime",iso8601Timestamp);
-            cardiacLoadMap.put("deviceCode",deviceCode);
+            Map<String, String> cardiacLoadMap = new HashMap<>();
+            cardiacLoadMap.put("accountId", accountId + "");
+            cardiacLoadMap.put("value", "0");
+            cardiacLoadMap.put("testTime", iso8601Timestamp);
+            cardiacLoadMap.put("deviceCode", deviceCode);
             cardiacLoadList.add(cardiacLoadMap);
 
 
             //睡眠活动
-            Map<String,String> sleepActivityMap = new HashMap<>();
-            sleepActivityMap.put("accountId",accountId+"");
-            sleepActivityMap.put("bo",spo2hOriginData.getOxygenValue()+"");
-            sleepActivityMap.put("heartBeat",spo2hOriginData.getHeartValue()+"");
-            sleepActivityMap.put("breathPause",spo2hOriginData.getApneaResult()+"");
-            sleepActivityMap.put("hypoxiaTime",spo2hOriginData.getHypoxiaTime()+"");
-            sleepActivityMap.put("heartLoad",spo2hOriginData.getCardiacLoad()+"");
-            sleepActivityMap.put("sleepActivity",spo2hOriginData.getSportValue()+"");
-            sleepActivityMap.put("respirationRate",spo2hOriginData.getRespirationRate()+"");
-            sleepActivityMap.put("deviceCode",deviceCode);
-            sleepActivityMap.put("osahs","normal");
-            sleepActivityMap.put("testTime",iso8601Timestamp);
+            Map<String, String> sleepActivityMap = new HashMap<>();
+            sleepActivityMap.put("accountId", accountId + "");
+            sleepActivityMap.put("bo", spo2hOriginData.getOxygenValue() + "");
+            sleepActivityMap.put("heartBeat", spo2hOriginData.getHeartValue() + "");
+            sleepActivityMap.put("breathPause", spo2hOriginData.getApneaResult() + "");
+            sleepActivityMap.put("hypoxiaTime", spo2hOriginData.getHypoxiaTime() + "");
+            sleepActivityMap.put("heartLoad", spo2hOriginData.getCardiacLoad() + "");
+            sleepActivityMap.put("sleepActivity", spo2hOriginData.getSportValue() + "");
+            sleepActivityMap.put("respirationRate", spo2hOriginData.getRespirationRate() + "");
+            sleepActivityMap.put("deviceCode", deviceCode);
+            sleepActivityMap.put("osahs", "normal");
+            sleepActivityMap.put("testTime", iso8601Timestamp);
             sleepActivityList.add(sleepActivityMap);
-
 
 
         }
 
 
         //血氧
-        String oxyUrl =  Commont.GAI_DE_BASE_URL+"bloodoxygen";
+        String oxyUrl = Commont.GAI_DE_BASE_URL + "bloodoxygen";
         //String oxyUrl = Commont.BLOOD_OXY_URL;
 
-        OkHttpTool.getInstance().doRequest(oxyUrl, new Gson().toJson(oxygenValueList), "", new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG,"-------血氧上传="+result);
-            }
-        });
+        OkHttpTool.getInstance().doRequest(oxyUrl, new Gson().toJson(oxygenValueList),
+                "", result -> Log.e(TAG, "-------血氧上传=" + result));
 
-        if(apneaResultList.isEmpty())
+        if (apneaResultList.isEmpty())
             return;
         //呼吸暂停
-        String apneaResultUrl =  Commont.GAI_DE_BASE_URL+"breathpause";
+        String apneaResultUrl = Commont.GAI_DE_BASE_URL + "breathpause";
 
         String apneStr = new Gson().toJson(apneaResultList);
 
@@ -1413,56 +1414,47 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         OkHttpTool.getInstance().doRequest(apneaResultUrl, apneStr, "", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
-                Log.e(TAG,"--------呼吸暂停="+result);
+                Log.e(TAG, "--------呼吸暂停=" + result);
             }
         });
 
-        if(respirationRateList.isEmpty())
+        if (respirationRateList.isEmpty())
             return;
         //呼吸率
-        final String respirationRateUrl =  Commont.GAI_DE_BASE_URL+"breathe";
-        OkHttpTool.getInstance().doRequest(respirationRateUrl, new Gson().toJson(respirationRateList), "", new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG,"-------呼吸率="+result);
-            }
-        });
+        final String respirationRateUrl = Commont.GAI_DE_BASE_URL + "breathe";
+        OkHttpTool.getInstance().doRequest(respirationRateUrl,
+                new Gson().toJson(respirationRateList),
+                "", result -> Log.e(TAG, "-------呼吸率=" + result));
 
-        if(cardiacLoadList.isEmpty())
+        if (cardiacLoadList.isEmpty())
             return;
         //心脏负荷
-        String cardiacLoadUrl =  Commont.GAI_DE_BASE_URL+"heartload";
-        OkHttpTool.getInstance().doRequest(cardiacLoadUrl, new Gson().toJson(cardiacLoadList), "", new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG,"------心脏负荷="+result);
-            }
-        });
+        String cardiacLoadUrl = Commont.GAI_DE_BASE_URL + "heartload";
+        OkHttpTool.getInstance().doRequest(cardiacLoadUrl, new Gson().toJson(cardiacLoadList),
+                "", result -> Log.e(TAG, "------心脏负荷=" + result));
 
-        if(sleepActivityList.isEmpty())
+        if (sleepActivityList.isEmpty())
             return;
         //睡眠活动
-        String sleepActivityUrl = Commont.GAI_DE_BASE_URL+"sleepactivity";
+        String sleepActivityUrl = Commont.GAI_DE_BASE_URL + "sleepactivity";
 
 
-        OkHttpTool.getInstance().doRequest(sleepActivityUrl, new Gson().toJson(sleepActivityList), "", new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG,"-------睡眠活动="+result);
-                if(WatchUtils.isEmpty(result))
-                    return;
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    if(!jsonObject.has("code"))
+        OkHttpTool.getInstance().doRequest(sleepActivityUrl, new Gson().toJson(sleepActivityList),
+                "", result -> {
+                    Log.e(TAG, "-------睡眠活动=" + result);
+                    if (WatchUtils.isEmpty(result))
                         return;
-                    if(jsonObject.getInt("code") == 0){
-                        updateSpo2Data(spo2List);
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (!jsonObject.has("code"))
+                            return;
+                        if (jsonObject.getInt("code") == 0) {
+                            updateSpo2Data(spo2List);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
+                });
 
 
 //
@@ -1504,10 +1496,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 //        });
 
 
-
-
-
-
 //
 //        if (spo2List != null && !spo2List.isEmpty()) {
 //            if (Commont.isDebug)Log.e(TAG, "一共有 " + spo2List.size() + " 条SPO2数据");
@@ -1540,10 +1528,10 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     }
 
     private void updateSpo2Data(List<B31Spo2hBean> spo2Lists) {
-        for(B31Spo2hBean b31Spo2hBean : spo2Lists){
+        for (B31Spo2hBean b31Spo2hBean : spo2Lists) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put("isUpdata",true);
-            LitePal.updateAll(B31Spo2hBean.class,contentValues,"bleMac = ? and dateStr = ?",b31Spo2hBean.getBleMac(),b31Spo2hBean.getDateStr());
+            contentValues.put("isUpdata", true);
+            LitePal.updateAll(B31Spo2hBean.class, contentValues, "bleMac = ? and dateStr = ?", b31Spo2hBean.getBleMac(), b31Spo2hBean.getDateStr());
 
         }
     }
@@ -1608,7 +1596,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     TimeData time = halfHourSportData.getTime();
                     //返回时分
                     String stepDate = getTimeStr(time);
-                    Date dateStart = W30BasicUtils.stringToDate(time.getDateAndClockForSleepSecond().replace(":","-"), "yyyy-MM-dd HH-mm-ss");
+                    Date dateStart = W30BasicUtils.stringToDate(time.getDateAndClockForSleepSecond().replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
                     String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
                     //Log.e(TAG,"-------时间="+time.getDateAndClockForSleepSecond().replace(":","-")+"----转换="+iso8601Timestamp);
                     /**
@@ -1623,7 +1611,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                      *   }
                      * ]
                      */
-                    if (stepValue>0){
+                    if (stepValue > 0) {
                         Map<String, Object> params = new HashMap<>();
                         params.put("accountId", accountId);
                         params.put("createTime", WatchUtils.getISO8601Timestamp(new Date()));
@@ -1645,14 +1633,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             //String upStepPatch = "http://apihd.guiderhealth.com/api/v1/walkrecord";
 
 
-            Log.e(TAG,"-----步数上传数组="+jsonArray.toString());
+            Log.e(TAG, "-----步数上传数组=" + jsonArray.toString());
 
             if (postion == 0) {//这里天数是按照倒序排的，0 = 今天
                 OkHttpTool.getInstance().doRequest(upStepPatch, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
                     @Override
                     public void onResult(String result) {
                         if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug)Log.e(TAG, "sport- 最后步数上传返回啊: " + result);
+                            if (Commont.isDebug) Log.e(TAG, "sport- 最后步数上传返回啊: " + result);
                             //是否是 最后一天最后第二条
                             upSport = true;
                         } else {
@@ -1664,9 +1652,9 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 OkHttpTool.getInstance().doRequest(upStepPatch, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
                     @Override
                     public void onResult(String result) {
-                        if (Commont.isDebug)Log.e(TAG, "sport- 步数上传返回: " + result);
+                        if (Commont.isDebug) Log.e(TAG, "sport- 步数上传返回: " + result);
                         if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug)Log.e(TAG, "sport- 步数上传返回: " + result);
+                            if (Commont.isDebug) Log.e(TAG, "sport- 步数上传返回: " + result);
                         } else {
                             MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
                         }
@@ -1907,7 +1895,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     if (!WatchUtils.isEmpty(result)) {
                         //最后一天最后一条
                         if (postion == 0) {
-                            if (Commont.isDebug)Log.e(TAG, "sleep- 最后睡眠上传返回" + result);
+                            if (Commont.isDebug) Log.e(TAG, "sleep- 最后睡眠上传返回" + result);
                             upSleep = true;
                         }
                     } else {
@@ -2024,7 +2012,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                      *   }
                      * ]
                      */
-                    if (rateValue>0){
+                    if (rateValue > 0) {
                         params.put("accountId", accountId);
 //                        params.put("createTime", WatchUtils.getISO8601Timestamp(new Date()));
 //                        params.put("deviceCode", deviceCode);
@@ -2052,7 +2040,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         @Override
                         public void onResult(String result) {
                             if (!WatchUtils.isEmpty(result)) {
-                                if (Commont.isDebug)Log.e(TAG, "最后心率上传返回啊: " + result);
+                                if (Commont.isDebug) Log.e(TAG, "最后心率上传返回啊: " + result);
                                 upHeart = true;
                             } else {
                                 MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
@@ -2064,7 +2052,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         @Override
                         public void onResult(String result) {
                             if (!WatchUtils.isEmpty(result)) {
-                                if (Commont.isDebug)Log.e(TAG, "心率上传返回: " + result);
+                                if (Commont.isDebug) Log.e(TAG, "心率上传返回: " + result);
                             } else {
                                 MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
                             }
@@ -2215,7 +2203,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                      *   }
                      * ]
                      */
-                    if (lowValue>0&&highValue>0){
+                    if (lowValue > 0 && highValue > 0) {
                         params.put("accountId", accountId);
                         params.put("createTime", WatchUtils.getISO8601Timestamp(new Date()));
                         params.put("deviceCode", deviceCode);
@@ -2243,7 +2231,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         public void onResult(String result) {
                             if (!WatchUtils.isEmpty(result)) {
                                 upBool = true;
-                                if (Commont.isDebug)Log.e(TAG, " 最后血压上传返回啊: " + result);
+                                if (Commont.isDebug) Log.e(TAG, " 最后血压上传返回啊: " + result);
                             }
                         }
                     });
@@ -2252,7 +2240,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         @Override
                         public void onResult(String result) {
                             if (!WatchUtils.isEmpty(result)) {
-                                if (Commont.isDebug)Log.e(TAG, "血压上传返回: " + result);
+                                if (Commont.isDebug) Log.e(TAG, "血压上传返回: " + result);
                             }
                         }
                     });
@@ -2385,7 +2373,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 @Override
                 public void onResult(String result) {
                     if (!WatchUtils.isEmpty(result)) {
-                        if (Commont.isDebug)Log.e(TAG, "最后心HRV传返回啊: " + result);
+                        if (Commont.isDebug) Log.e(TAG, "最后心HRV传返回啊: " + result);
                         upHrv = true;
                     } else {
                         MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
@@ -2397,7 +2385,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 @Override
                 public void onResult(String result) {
                     if (!WatchUtils.isEmpty(result)) {
-                        if (Commont.isDebug)Log.e(TAG, "HRV上传返回啊: " + result);
+                        if (Commont.isDebug) Log.e(TAG, "HRV上传返回啊: " + result);
                     } else {
                         MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
                     }
@@ -2423,7 +2411,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         String spo2Dates = obtainDate(timeData);
         int oxygenValue = spo2hOriginData1.getOxygenValue();
 
-        if (oxygenValue>0){
+        if (oxygenValue > 0) {
             Map<String, Object> params = new HashMap<>();
             params.put("accountId", accountId);
             params.put("deviceCode", deviceCode);
@@ -2448,7 +2436,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     @Override
                     public void onResult(String result) {
                         if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug)Log.e(TAG, "最后SPO2上传返回啊: " + result);
+                            if (Commont.isDebug) Log.e(TAG, "最后SPO2上传返回啊: " + result);
                             upSpo2 = true;
                         } else {
                             MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
@@ -2460,7 +2448,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     @Override
                     public void onResult(String result) {
                         if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug)Log.e(TAG, "SPO2上传返回啊: " + result);
+                            if (Commont.isDebug) Log.e(TAG, "SPO2上传返回啊: " + result);
                         } else {
                             MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
                         }

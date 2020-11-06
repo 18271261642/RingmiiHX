@@ -599,20 +599,12 @@ public class B31RecordFragment extends LazyFragment
                 b31HomeSwipeRefreshLayout.setEnableRefresh(false);
 
 
-            b31HomeSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-                @Override
-                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                    getBleMsgData();
-                }
-            });
+            b31HomeSwipeRefreshLayout.setOnRefreshListener(refreshLayout -> getBleMsgData());
         }
 
-        b30TopDateTv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startActivity(new Intent(getmContext(), InternalTestActivity.class));
-                return true;
-            }
+        b30TopDateTv.setOnLongClickListener(v -> {
+            startActivity(new Intent(getmContext(), InternalTestActivity.class));
+            return true;
         });
 
     }
@@ -854,7 +846,7 @@ public class B31RecordFragment extends LazyFragment
          * 连接的成功时只读取昨天一天的数据，刷新时再读取前3天的数据
          */
         String date = mLocalTool.getUpdateDate();// 最后更新总数据的日期
-//        Log.e(TAG, "-----最后更新总数据的日期--date=" + date);
+        Log.e(TAG, "-----最后更新总数据的日期--date=" + date);
         if (WatchUtils.isEmpty(date))
             date = WatchUtils.obtainFormatDate(1);  //如果是空的话表示第一次读取
         long delayMillis = 60 * 1000;// 默认超时时间
@@ -1030,19 +1022,16 @@ public class B31RecordFragment extends LazyFragment
             step = 0 + "";
         int stepLocal = 0;
         try {
-            stepLocal = Integer.valueOf(step);
+            stepLocal = Integer.parseInt(step);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         defaultSteps = stepLocal;
         if (getActivity() != null && !getActivity().isFinishing() && b31ProgressBar != null) {
             final int finalStepLocal = stepLocal;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    b31ProgressBar.setMaxValue(goalStep);
-                    b31ProgressBar.setValue(finalStepLocal);
-                }
+            getActivity().runOnUiThread(() -> {
+                b31ProgressBar.setMaxValue(goalStep);
+                b31ProgressBar.setValue(finalStepLocal);
             });
 
         }

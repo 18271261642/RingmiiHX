@@ -56,12 +56,7 @@ public class ReadHRVAnSpo2DatatService extends IntentService {
                     final Map<String,List<B31HRVBean>> resultHrvMap = (Map<String, List<B31HRVBean>>) msg.obj;
                     if(resultHrvMap == null || resultHrvMap.isEmpty())
                         return;
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            saveHRVToDBServer(resultHrvMap);
-                        }
-                    }).start();
+                    new Thread(() -> saveHRVToDBServer(resultHrvMap)).start();
                     break;
                 case 999:   //血氧
                     final Map<String,List<B31Spo2hBean>> resultMap = (Map<String, List<B31Spo2hBean>>) msg.obj;

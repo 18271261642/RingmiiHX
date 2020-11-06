@@ -24,6 +24,8 @@ android {
             if (rootProject.googlePlay) { // 国际版
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+//                buildConfigField("String", "APIURL", '"https://apihealth.mcu.edu.tw/"')
+//                buildConfigField("String", "APIHDURL", '"https://apihdhealth.mcu.edu.tw/"')
                 println "apilib -- Package Google Play Bundle Release . . ."
             } else { // 大陆版
                 buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')

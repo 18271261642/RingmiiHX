@@ -293,31 +293,28 @@ public class NewB30ConnStateService extends Service {
 
     //监听查找手机
     private void findPhoneListenerData() {
-        MyApp.getInstance().getVpOperateManager().settingFindPhoneListener(new IFindPhonelistener() {
-            @Override
-            public void findPhone() {
+        MyApp.getInstance().getVpOperateManager().settingFindPhoneListener(() -> {
+            try {
+                mVibrator = (Vibrator) MyApp.getContext().getSystemService(Service.VIBRATOR_SERVICE);
+                mMediaPlayer = new MediaPlayer();
+                AssetFileDescriptor file = MyApp.getContext().getResources().openRawResourceFd(R.raw.music);
                 try {
-                    mVibrator = (Vibrator) MyApp.getContext().getSystemService(Service.VIBRATOR_SERVICE);
-                    mMediaPlayer = new MediaPlayer();
-                    AssetFileDescriptor file = MyApp.getContext().getResources().openRawResourceFd(R.raw.music);
-                    try {
-                        mMediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(),
-                                file.getLength());
-                        mMediaPlayer.prepare();
-                        file.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    mMediaPlayer.setVolume(0.5f, 0.5f);
-                    mMediaPlayer.setLooping(false);
-                    mMediaPlayer.start();
-                    if (mVibrator.hasVibrator()) {
-                        //想设置震动大小可以通过改变pattern来设定，如果开启时间太短，震动效果可能感觉不到
-                        mVibrator.vibrate(new long[]{500, 1000, 500, 1000}, -1);//查找手机是调用系统震动
-                    }
-                } catch (Exception e) {
+                    mMediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(),
+                            file.getLength());
+                    mMediaPlayer.prepare();
+                    file.close();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+                mMediaPlayer.setVolume(0.5f, 0.5f);
+                mMediaPlayer.setLooping(false);
+                mMediaPlayer.start();
+                if (mVibrator.hasVibrator()) {
+                    //想设置震动大小可以通过改变pattern来设定，如果开启时间太短，震动效果可能感觉不到
+                    mVibrator.vibrate(new long[]{500, 1000, 500, 1000}, -1);//查找手机是调用系统震动
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

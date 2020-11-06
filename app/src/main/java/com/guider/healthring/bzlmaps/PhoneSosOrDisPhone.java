@@ -13,7 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.guider.health.apilib.BuildConfig;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.siswatch.utils.PhoneUtils;
@@ -146,16 +146,20 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone, IOnLocation {
             params.put("deviceCode",bleMac == null ? "00" : bleMac);
             params.put("lng",lng);
             params.put("lat",lat);
+            if (BuildConfig.GOOGLEPLAY){
+                params.put("pointType",PhoneSosMapPointType.BASE);
+            }else  {
+                params.put("pointType",PhoneSosMapPointType.AMAP);
+            }
+            params.put("signalType",PhoneSosSingalType.GPS);
+            params.put("warnType",PhoneSosWarnType.SOS);
             String url = BuildConfig.APIURL + "api/v1/sos/position"; // http://api.guiderhealth.com/
             String parStr = new Gson().toJson(params);
             Log.e("位置","----------参数="+parStr);
-            OkHttpTool.getInstance().doRequest(url, parStr, null, new OkHttpTool.HttpResult() {
-                @Override
-                public void onResult(String result) {
-                    Log.e("位置","---------位置上传返回="+result);
-                    if(mIMapLocation != null)
-                        mIMapLocation.stop();
-                }
+            OkHttpTool.getInstance().doRequest(url, parStr, null, result -> {
+                Log.e("位置","---------位置上传返回="+result);
+                if(mIMapLocation != null)
+                    mIMapLocation.stop();
             });
 
 

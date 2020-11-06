@@ -240,10 +240,8 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
         if (upDataToGDServicesNew != null && upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
             upDataToGDServicesNew.cancel(true); // 如果Task还在运行，则先取消它
             upDataToGDServicesNew = null;
-            upDataToGDServicesNew = new UpNewDataToGDServices();
-        } else {
-            upDataToGDServicesNew = new UpNewDataToGDServices();
         }
+        upDataToGDServicesNew = new UpNewDataToGDServices();
         upDataToGDServicesNew.execute();
     }
 

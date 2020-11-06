@@ -7,6 +7,7 @@ buildscript {
     }
     repositories {
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        google()
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         // maven { url 'https://maven.aliyun.com/repository/jcenter' }
@@ -15,7 +16,6 @@ buildscript {
         // maven { url 'https://maven.aliyun.com/repository/snapshots' }
         mavenCentral()
         jcenter()
-        google()
         maven { url "https://jitpack.io" }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
@@ -23,7 +23,7 @@ buildscript {
         //
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:4.2.0-alpha16'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
@@ -38,6 +38,7 @@ buildscript {
 allprojects {
     repositories {
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        google()
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         // maven { url 'https://maven.aliyun.com/repository/jcenter' }
@@ -46,7 +47,6 @@ allprojects {
         // maven { url 'https://maven.aliyun.com/repository/snapshots' }
         jcenter()
         mavenCentral()
-        google()
         maven { url "https://jitpack.io" }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
@@ -55,8 +55,8 @@ allprojects {
     }
 
     ext {
-        codeVersion = 224
-        appVersion = "2.6.2"
+        codeVersion = 225
+        appVersion = "2.6.3"
         googlePlay = true
     }
 

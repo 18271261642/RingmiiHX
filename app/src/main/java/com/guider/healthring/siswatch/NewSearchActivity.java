@@ -212,18 +212,10 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                 .runtime()
                 .permission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .rationale(rational)
-                .onGranted(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
+                .onGranted(data -> {
 
-                    }
-                }).onDenied(new Action<List<String>>() {
-            @Override
-            public void onAction(List<String> data) {
-                ToastUtil.showToast(NewSearchActivity.this,
-                        "已拒绝权限,可能无法搜索到蓝牙设备！");
-            }
-        }).start();
+                }).onDenied(data -> ToastUtil.showToast(NewSearchActivity.this,
+                        "已拒绝权限,可能无法搜索到蓝牙设备！")).start();
 
 
     }
@@ -282,21 +274,15 @@ public class NewSearchActivity extends GetUserInfoActivity implements
 
             //扫描设备，默认扫描时间为10秒
             swipeRefresh.setRefreshing(true);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+            handler.postDelayed(() -> {
 
-                }
             }, 2000);
             getPhonePairDevice();   //获取手机配对的设备
             bluetoothAdapter.startLeScan(leScanCallback);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Message message = new Message();
-                    message.what = STOP_SCANNER_DEVICE_CODE;
-                    handler.sendMessage(message);
-                }
+            handler.postDelayed(() -> {
+                Message message = new Message();
+                message.what = STOP_SCANNER_DEVICE_CODE;
+                handler.sendMessage(message);
             }, BLUE_VISIABLE_TIME_CODE);
         } else {
             if (swipeRefresh != null)
@@ -391,11 +377,10 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_TURNON_BLUE_CODE) {    //打开蓝牙返回
             if (resultCode == GET_OPENBLUE_SUCCESS_CODE) {  //打开蓝牙返回
-                scanBlueDevice(true);
             } else {  //点击取消 0    //取消后强制打开
                 bluetoothAdapter.enable();
-                scanBlueDevice(true);
             }
+            scanBlueDevice(true);
         }
     }
 
@@ -605,11 +590,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
             public void cusDialogCancle() {
                 cusInputDialogView.dismiss();
                 //断开连接
-                MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                    @Override
-                    public void onResponse(int i) {
+                MyApp.getInstance().getVpOperateManager().disconnectWatch(i -> {
 
-                    }
                 });
                 //刷新搜索界面
                 handler.sendEmptyMessage(777);

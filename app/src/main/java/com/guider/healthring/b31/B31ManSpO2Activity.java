@@ -140,15 +140,13 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
             b31MeaureSpo2ProgressView.stopAnim();
             b31MeaureSpo2ProgressView.setScheduleDuring(4 * 1000);
             b31MeaureSpo2ProgressView.setProgress(100);
-            MyApp.getInstance().getVpOperateManager().startDetectSPO2H(iBleWriteResponse, new ISpo2hDataListener() {
-                @Override
-                public void onSpO2HADataChange(Spo2hData spo2hData) {
-                    Log.e(TAG, "----------spo2hData=" + spo2hData.toString());
-                    Message message = handler.obtainMessage();
-                    message.what = 1001;
-                    message.obj = spo2hData;
-                    handler.sendMessage(message);
-                }
+            MyApp.getInstance().getVpOperateManager().startDetectSPO2H(iBleWriteResponse,
+                    spo2hData -> {
+                Log.e(TAG, "----------spo2hData=" + spo2hData.toString());
+                Message message = handler.obtainMessage();
+                message.what = 1001;
+                message.obj = spo2hData;
+                handler.sendMessage(message);
             });
 
         } else {  //停止测量

@@ -419,7 +419,7 @@ public class B31SwitchActivity extends WatchBaseActivity
         CustomSetting customSetting = new CustomSetting(true, isSystem, is24Hour, isAutomaticHeart,
                 isAutomaticBoold, isOpenSportRemain, isOpenVoiceBpHeart, isOpenFindPhoneUI, isOpenStopWatch, isOpenSpo2hLowRemind,
                 isOpenWearDetectSkin, isOpenAutoInCall, isOpenAutoHRV, isOpenDisconnectRemind, isOpenSOS);
-        //Log.e(TAG, "-----新设置的值啊---customSetting=" + customSetting.toString());
+        Log.e(TAG, "-----新设置的值啊---customSetting=" + customSetting.toString());
 
         MyApp.getInstance().getVpOperateManager().changeCustomSetting(iBleWriteResponse,
                 customSettingData -> {

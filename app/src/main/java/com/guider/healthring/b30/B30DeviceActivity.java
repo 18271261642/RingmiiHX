@@ -375,6 +375,7 @@ public class B30DeviceActivity extends WatchBaseActivity
                     SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameOne", "");//SOS 联系人 电话  1
                     SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameTwo", "");//SOS 联系人 电话  2
                     SharedPreferencesUtils.setParam(B30DeviceActivity.this, "NameThree", "");//SOS 联系人 电话  3
+                    Log.e(TAG,"断开连接的时间------"+WatchUtils.obtainFormatDate(1));
                     new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
                             .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
                     startActivity(NewSearchActivity.class);

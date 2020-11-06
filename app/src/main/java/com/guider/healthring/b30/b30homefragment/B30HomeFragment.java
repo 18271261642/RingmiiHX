@@ -1086,21 +1086,18 @@ public class B30HomeFragment extends LazyFragment
     private void getBleMsgData() {
         if (runnable == null)
             mHandler.removeCallbacks(runnable);
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                SharedPreferencesUtils.setParam(mContext, "saveDate", System.currentTimeMillis() / 1000 + "");
-                connBleHelpService.getDeviceMsgData();
-                String date = mLocalTool.getUpdateDate();// 最后更新总数据的日期
-                long delayMillis = 20 * 1000;// 默认超时时间
-                if (date.equals(WatchUtils.obtainFormatDate(0))) {
-                    connBleHelpService.readAllHealthData(true);// 只刷新今天数据
-                } else {
-                    connBleHelpService.readAllHealthData(false);// 刷新三天数据
-                    delayMillis = 40 * 1000;
-                }
-                mHandler.sendEmptyMessageDelayed(1001, delayMillis);
+        runnable = () -> {
+            SharedPreferencesUtils.setParam(mContext, "saveDate", System.currentTimeMillis() / 1000 + "");
+            connBleHelpService.getDeviceMsgData();
+            String date = mLocalTool.getUpdateDate();// 最后更新总数据的日期
+            long delayMillis = 20 * 1000;// 默认超时时间
+            if (date.equals(WatchUtils.obtainFormatDate(0))) {
+                connBleHelpService.readAllHealthData(true);// 只刷新今天数据
+            } else {
+                connBleHelpService.readAllHealthData(false);// 刷新三天数据
+                delayMillis = 40 * 1000;
             }
+            mHandler.sendEmptyMessageDelayed(1001, delayMillis);
         };
         mHandler.post(runnable);
 

@@ -18,6 +18,7 @@ import com.guider.healthring.commdbserver.CommCalUtils;
 import com.guider.healthring.commdbserver.CommDBManager;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.LocalizeTool;
+import com.guider.healthring.util.MyLogUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.google.gson.Gson;
 import com.veepoo.protocol.VPOperateManager;
@@ -487,6 +488,7 @@ public class NewConnBleHelpService {
 
         // 获取步数
         MyApp.getInstance().getVpOperateManager().readSportStep(bleWriteResponse, sportData -> {
+            Log.e(TAG, "运动的步数为" + sportData.toString());
             B30HalfHourDao b30HalfHourDao = B30HalfHourDao.getInstance();
             B30HalfHourDB b30HalfHourDB = new B30HalfHourDB();
             b30HalfHourDB.setDate(WatchUtils.getCurrentDate());
@@ -525,7 +527,7 @@ public class NewConnBleHelpService {
      * @param today true_只加载今天数据 false_加载三天
      */
     public void readAllHealthData(boolean today) {
-//        Log.e(TAG, "====== 是否只加载今天 " + today + "====是否在刷新中 " + isGETDATAS);
+        Log.e(TAG, "====== 是否只加载今天 " + today + "====是否在刷新中 " + isGETDATAS);
         try {
             if (!isGETDATAS) {
                 if (upDataToGDServices != null &&
@@ -560,7 +562,7 @@ public class NewConnBleHelpService {
         // 注：根据需求复写
         @Override
         protected void onPreExecute() {
-//            Log.e("-------AAA--", "异步初始化了 " + isGETDATAS);
+            Log.e("-------AAA--", "异步初始化了 " + today);
             sleepMap.clear();
             vpOperateManager = MyApp.getInstance().getVpOperateManager();
         }
@@ -577,7 +579,7 @@ public class NewConnBleHelpService {
 //        publishProgress();
             try {
                 isGETDATAS = true;
-
+                Log.e(TAG, "-------开始读取睡眠-----");
                 MyApp.getInstance().getVpOperateManager().readAllHealthData(
                         new IAllHealthDataListener() {
                             @Override
@@ -587,7 +589,7 @@ public class NewConnBleHelpService {
 
                             @Override
                             public void onSleepDataChange(SleepData sleepData) {
-//                        Log.e(TAG, "---------睡眠原始返回数据=" + sleepData.toString());
+                                Log.e(TAG, "---------睡眠原始返回数据=" + sleepData.toString());
                                 // 睡眠数据返回,会有多条数据
                                 saveSleepData(sleepData);
                             }
@@ -595,7 +597,7 @@ public class NewConnBleHelpService {
                             @Override
                             public void onReadSleepComplete() {
                                 // 读取睡眠数据结束
-//                        Log.e(TAG, "----------睡眠数据读取结束------=" + sleepMap.size());
+                                Log.e(TAG, "----------睡眠数据读取结束------=" + sleepMap.size());
                                 handler.sendEmptyMessage(1001);
                             }
 
@@ -609,7 +611,9 @@ public class NewConnBleHelpService {
                                     OriginHalfHourData originHalfHourData) {
                                 // 多少天就有多少条数据
                                 // 30分钟原始数据的回调，来自5分钟的原始数据，只是在内部进行了数据处理
-//                        MyLogUtil.d("----------", originHalfHourData.toString());
+                                Log.e(TAG,
+                                        "-------30分钟原始数据的回调-----" + originHalfHourData.toString());
+//                        MyLogUtil.e("----------", originHalfHourData.toString());
                                 saveHalfHourData(originHalfHourData);
                             }
 
@@ -673,12 +677,12 @@ public class NewConnBleHelpService {
          */
         private void saveSleepData(SleepData sleepData) {
             if (sleepData == null) return;
-//            Log.e("-------设备睡眠数据---", gson.toJson(sleepData) + "");
+            Log.e("-------设备睡眠数据---", gson.toJson(sleepData) + "");
             if (sleepMap.get(sleepData.getDate()) == null) {
                 sleepMap.put(sleepData.getDate(), sleepData);
             } else {
                 //sleepMap.put(sleepData.getDate(),sleepData);
-//                Log.e(TAG, "---------sleepMap=" + sleepMap.toString());
+                Log.e(TAG, "---------sleepMap=" + sleepMap.toString());
                 if (sleepMap.get(sleepData.getDate()).getDate().equals(sleepData.getDate())) {  //同一天的
                     if (!sleepMap.get(sleepData.getDate()).getSleepLine().equals(sleepData.getSleepLine())) {
                         //map 中已经保存的
@@ -710,7 +714,8 @@ public class NewConnBleHelpService {
                             stringBuffer.append("2");
                         }
                         //所有睡眠时间
-                        resultSlee.setAllSleepTime(Integer.valueOf(tempSleepData.getAllSleepTime()) + Integer.valueOf(sleepData.getAllSleepTime()) + sleepStatus * 5);
+                        resultSlee.setAllSleepTime(tempSleepData.getAllSleepTime()
+                                + sleepData.getAllSleepTime() + sleepStatus * 5);
                         resultSlee.setSleepLine(WatchUtils.comPariDateDetail(time1, time2) ?
                                 (tempSleepData.getSleepLine() + stringBuffer + "" + sleepData.getSleepLine()) :
                                 (sleepData.getSleepLine() + stringBuffer + "" + tempSleepData.getSleepLine()));
@@ -911,11 +916,8 @@ public class NewConnBleHelpService {
         this.connBleHelpListener = connBleHelpListener;
     }
 
-    private IBleWriteResponse bleWriteResponse = new IBleWriteResponse() {
-        @Override
-        public void onResponse(int i) {
-//            Log.e(TAG, "------bleWriteResponse=" + i);
-        }
+    private IBleWriteResponse bleWriteResponse = i -> {
+            Log.e(TAG, "------bleWriteResponse=" + i);
     };
 
 

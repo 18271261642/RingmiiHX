@@ -33,9 +33,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.guider.health.apilib.BuildConfig;
 import com.guider.health.apilib.enums.Gender;
 import com.guider.health.common.utils.JsonUtil;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.CustomMade;
 import com.guider.healthring.MyApp;
@@ -388,7 +388,9 @@ public class LoginActivity extends WatchBaseActivity
             case R.id.privacyTv:    //隐私政策
                 // startActivity(PrivacyActivity.class);
                 Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
-                intent.putExtra("url", "http://cmate.guidertech.com/#/open");
+////                String webMainUrl = "https://camtehealth.mcu.edu.tw/";
+//                String webMainUrl ="http://cmate.guidertech.com/";
+                intent.putExtra("url", BuildConfig.CMATEWEBDOMAIN+"#/open");
                 startActivity(intent);
                 break;
             case R.id.line_iv: // LINE 登陆

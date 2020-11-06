@@ -883,7 +883,9 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return xlt.get((int) value);
+                if (value < xlt.size())
+                    return xlt.get((int) value);
+                else return "";
             }
         });
         xAxis.setEnabled(true);
