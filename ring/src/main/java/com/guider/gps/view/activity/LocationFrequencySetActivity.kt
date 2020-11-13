@@ -1,7 +1,6 @@
 package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.view.Gravity
 import android.view.View
 import androidx.core.widget.addTextChangedListener
@@ -144,20 +143,20 @@ class LocationFrequencySetActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         hashMap["accountId"] = accountId
         hashMap["rates"] = arrayListOf(setBean1, setBean2, setBean3)
-        lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
-                showDialog()
-            }, block = {
-                val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(hashMap)
-                if (resultBean != null) {
-
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
-                }
-            }, onRequestFinish = {
-                dismissDialog()
-            })
-        }
+//        lifecycleScope.launch {
+//            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+//                showDialog()
+//            }, block = {
+//                val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(hashMap)
+//                if (resultBean != null) {
+//
+//                    setResult(Activity.RESULT_OK, intent)
+//                    finish()
+//                }
+//            }, onRequestFinish = {
+//                dismissDialog()
+//            })
+//        }
     }
 
     private fun onTimePicker(time: String, onSelectTime: (hour: String, minute: String) -> Unit) {
@@ -245,9 +244,10 @@ class LocationFrequencySetActivity : BaseActivity() {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService().locationFrequencySet(accountId)
-                if (!resultBean.isNullOrEmpty()) {
-                    frequencySetList = resultBean as ArrayList
-                    showFrequencySet(frequencySetList)
+                if (resultBean!="null") {
+                    val frequencySetList = ParseJsonData.parseJsonDataList<FrequencySetBean>(
+                            resultBean,FrequencySetBean::class.java)
+                    showFrequencySet(frequencySetList as ArrayList<FrequencySetBean>)
                 }
             }, onRequestFinish = {
                 dismissDialog()

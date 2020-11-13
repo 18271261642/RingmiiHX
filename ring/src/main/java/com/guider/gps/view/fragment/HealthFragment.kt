@@ -235,7 +235,11 @@ class HealthFragment : BaseFragment() {
                     stepNumTv.text = resultBean.step.toString()
                     targetStepTv.text = String.format(
                             resources.getString(R.string.app_main_health_target_step),
-                            resultBean.walkTarget)
+                            if (resultBean.walkTarget != 0) {
+                                resultBean.walkTarget
+                            } else {
+                                8000
+                            })
                     if (accountId == userId) {
                         MMKVUtil.saveInt(TARGET_STEP, resultBean.walkTarget)
                     }
@@ -254,9 +258,21 @@ class HealthFragment : BaseFragment() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
             ApiCoroutinesCallBack.resultParse(mActivity, block = {
-                val resultBean = GuiderApiUtil.getHDApiService()
+                var resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthSportChartData(accountId, -1, 100,
                                 startTimeValue, endTimeValue)
+                var maximum = 24
+                if (dateType == 0) {
+                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
+                }
+                if (resultBean.size > 24) {
+                    val tempList = arrayListOf<SportListBean>()
+                    val indexList = getSamplingIndexList(resultBean, maximum)
+                    for (i in indexList.indices) {
+                        tempList.add(resultBean[indexList[i]])
+                    }
+                    resultBean = tempList
+                }
                 if (!resultBean.isNullOrEmpty()) {
                     sportNoDataTv.visibility = View.GONE
                     val options = getSportXAxisLabels(resultBean)
@@ -334,9 +350,21 @@ class HealthFragment : BaseFragment() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
             ApiCoroutinesCallBack.resultParse(mActivity, block = {
-                val resultBean = GuiderApiUtil.getHDApiService()
+                var resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthHeartChartData(accountId, -1, 100,
                                 startTimeValue, endTimeValue)
+                var maximum = 24
+                if (dateType == 0) {
+                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
+                }
+                if (resultBean.size > 24) {
+                    val tempList = arrayListOf<HeartRateListBean>()
+                    val indexList = getSamplingIndexList(resultBean, maximum)
+                    for (i in indexList.indices) {
+                        tempList.add(resultBean[indexList[i]])
+                    }
+                    resultBean = tempList
+                }
                 if (!resultBean.isNullOrEmpty()) {
                     heartNoDataTv.visibility = View.GONE
                     val options = getHeartXAxisLabels(resultBean)
@@ -356,9 +384,21 @@ class HealthFragment : BaseFragment() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
             ApiCoroutinesCallBack.resultParse(mActivity, block = {
-                val resultBean = GuiderApiUtil.getHDApiService()
+                var resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthTempChartData(accountId,
                                 -1, 9, startTimeValue, endTimeValue)
+                var maximum = 24
+                if (dateType == 0) {
+                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
+                }
+                if (resultBean.size > 24) {
+                    val tempList = arrayListOf<BodyTempListBean>()
+                    val indexList = getSamplingIndexList(resultBean, maximum)
+                    for (i in indexList.indices) {
+                        tempList.add(resultBean[indexList[i]])
+                    }
+                    resultBean = tempList
+                }
                 if (!resultBean.isNullOrEmpty()) {
                     tempNoDataTv.visibility = View.GONE
                     val options = getTempXAxisLabels(resultBean)
@@ -385,9 +425,21 @@ class HealthFragment : BaseFragment() {
             ApiCoroutinesCallBack.resultParse(mActivity, {
                 if (!isFirstLoadData && !isRefresh) mDialog?.showDialog()
             }, block = {
-                val resultBean = GuiderApiUtil.getHDApiService()
+                var resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthBloodChartData(
                                 accountId, -1, 100, startTimeValue, endTimeValue)
+                var maximum = 24
+                if (dateType == 0) {
+                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
+                }
+                if (resultBean.size > 24) {
+                    val tempList = arrayListOf<BloodListBeann>()
+                    val indexList = getSamplingIndexList(resultBean, maximum)
+                    for (i in indexList.indices) {
+                        tempList.add(resultBean[indexList[i]])
+                    }
+                    resultBean = tempList
+                }
                 if (!resultBean.isNullOrEmpty()) {
                     bloodPressureNoDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
@@ -411,6 +463,28 @@ class HealthFragment : BaseFragment() {
                 isRefresh = false
             })
         }
+    }
+
+    /**
+     * 取均值的index数组
+     */
+    private fun getSamplingIndexList(resultBean: List<Any>, maximum: Int): ArrayList<Int> {
+        val ceil = resultBean.size / maximum
+        var num = (resultBean.size / ceil)
+        if (num > maximum) num = maximum
+        Log.i(TAG, "集合的大小为${resultBean.size}")
+        Log.i(TAG, "数据采样的数字间隔为$ceil")
+        Log.i(TAG, "数据采样的最大数为$maximum")
+        val indexList = arrayListOf<Int>()
+        for (i in 0 until num) {
+            val tempIndex = if (i == num - 1 && i * ceil < resultBean.size - 1) {
+                resultBean.size - 1
+            } else i * ceil
+            indexList.add(tempIndex)
+        }
+        Log.i(TAG, "取值的index数组为$indexList")
+        Log.i(TAG, "取值的index数组的大小为${indexList.size}")
+        return indexList
     }
 
     override fun onDestroy() {
@@ -465,11 +539,6 @@ class HealthFragment : BaseFragment() {
         val options = AAOptionsConstructor.configureChartOptions(aaChartModel)
         options.plotOptions?.column?.groupPadding = 0.2f
         options.yAxis!!.tickPositions(array)
-        var ceil = ceil((category.size / 9).toDouble())
-        if (ceil != 1.0 && category.size > 18) {
-            ceil += 1
-        }
-        options.xAxis!!.tickInterval = ceil.toInt()
         return options
     }
 
@@ -522,9 +591,7 @@ class HealthFragment : BaseFragment() {
                 )
         val options = AAOptionsConstructor.configureChartOptions(aaChartModel)
         options.plotOptions?.column?.groupPadding = 0.2f
-//        options.yAxis!!.lineWidth = 0.5f
-        val ceil = ceil((category.size / 9).toDouble())
-        options.xAxis!!.tickInterval = ceil.toInt()
+//        options.yAxis!!.lineWidth = 0.5
         return options
     }
 
@@ -595,11 +662,6 @@ class HealthFragment : BaseFragment() {
                 )
         val aaOptions = AAOptionsConstructor.configureChartOptions(aaChartModel)
         aaOptions.yAxis!!.tickPositions(getTempYAxisLabels())
-        var ceil = ceil((category.size / 9).toDouble())
-        if (ceil != 1.0 && category.size > 18) {
-            ceil += 1
-        }
-        aaOptions.xAxis!!.tickInterval = ceil.toInt()
         return aaOptions
     }
 
@@ -651,11 +713,6 @@ class HealthFragment : BaseFragment() {
                 )
         val aaOptions = AAOptionsConstructor.configureChartOptions(aaChartModel)
         aaOptions.yAxis!!.tickPositions(getHeartYAxisLabels())
-        var ceil = ceil((category.size / 9).toDouble())
-        if (ceil != 1.0 && category.size > 18) {
-            ceil += 1
-        }
-        aaOptions.xAxis!!.tickInterval = ceil.toInt()
         return aaOptions
     }
 
@@ -716,11 +773,11 @@ class HealthFragment : BaseFragment() {
                 )
         val aaOptions = AAOptionsConstructor.configureChartOptions(aaChartModel)
         aaOptions.yAxis!!.tickPositions(getBloodYAxisLabels())
-        var ceil = ceil((category.size / 9).toDouble())
-        if (ceil != 1.0 && category.size > 18) {
-            ceil += 1
-        }
-        aaOptions.xAxis!!.tickInterval = ceil.toInt()
+//        var ceil = ceil((category.size / 9).toDouble())
+//        if (ceil != 1.0 && category.size > 18) {
+//            ceil += 1
+//        }
+//        aaOptions.xAxis!!.tickInterval = ceil.toInt()
         return aaOptions
     }
 

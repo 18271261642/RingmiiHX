@@ -46,6 +46,7 @@
     <string name="app_main_map_proactively_addressing">主动寻址</string>
     <string name="app_main_map_positioning_frequency_setting">定位频率设置</string>
     <string name="app_main_map_history_record">历史记录</string>
+    <string name="app_main_map_history">历史</string>
     <string name="app_main_map_send_instructions">发送指令</string>
     <string name="app_main_map_address_history">寻址历史</string>
     <string name="app_main_map_addressing_success">寻址成功</string>
@@ -198,6 +199,7 @@
     <string name="app_health_suggest">健康建议</string>
     <string name="app_phone_register">该手机号已注册</string>
     <string name="app_set_success">设置成功</string>
+    <string name="app_set_location_search_person_success">“寻人模式”设置成功，手环此时比 “一般模式”时的功耗大。</string>
     <string name="app_electronic_hint">请选择足够的电子围栏点</string>
     <string name="app_hour">小时</string>
     <string name="app_minute">分钟</string>
@@ -205,8 +207,8 @@
     <string name="app_minute_simple">分钟</string>
     <string name="app_general_pattern">一般模式</string>
     <string name="app_search_pattern">寻人模式</string>
-    <string name="app_time_interval_one_hour">时间间隔：1小时</string>
-    <string name="app_time_interval_five_minutes">时间间隔：5分钟</string>
+    <string name="app_time_interval_one_hour">间隔1小时</string>
+    <string name="app_time_interval_five_minutes">间隔5分钟</string>
     <string name="app_bracelet_power_reminder">手环电量提醒</string>
     <string name="app_shutdown_to_remind">关机提醒</string>
     <string name="app_Erase_remind">擦除提醒</string>
@@ -232,4 +234,8 @@
     <string name="app_preservation_electronic_fence">保存电子围栏</string>
     <string name="app_electronic_fence_list">电子围栏列表</string>
     <string name="app_edit_device_account_name_title">修改设备备注名称</string>
+    <string name="app_watch_more_history_msg">查看更多历史消息</string>
+    <string name="app_loading">正在加载...</string>
+    <string name="app_no_more_history">没有更多历史消息</string>
+    <string name="app_get_latest_news">获取最新消息</string>
 </resources>

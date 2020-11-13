@@ -23,7 +23,7 @@ public class ResultGsonResponseConverter<T> implements Converter<ResponseBody, T
     }
 
     @Override
-    public T convert(ResponseBody value) throws IOException {
+    public T convert(ResponseBody value) {
         try {
             String body = value.string();
             JSONObject json = new JSONObject(body);
@@ -33,7 +33,7 @@ public class ResultGsonResponseConverter<T> implements Converter<ResponseBody, T
             else if (code < -1) throw new RuntimeException("customErrorMsg");
 
             String str = json.optString("data");
-            if (str != null) {
+            if (!str.isEmpty()) {
                 if (!str.trim().startsWith("{") && !str.trim().startsWith("[")) {
                     return (T) str;
                 }

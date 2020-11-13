@@ -14,7 +14,7 @@
 
     <application
         android:name=".AppApplication"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:resizeableActivity="false"
         android:supportsRtl="true"
@@ -39,6 +39,17 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBStHSiBBid2JNFNtrvOW-G_gSY_XTtMtw" />
+        <!--google推送-->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="${applicationId}" />
+        <service
+            android:name=".service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".view.activity.SplashActivity"
@@ -79,10 +90,17 @@
         <activity android:name=".view.activity.AlarmSeActivity" />
         <activity android:name=".view.activity.LocationFrequencySetNewActivity" />
         <activity android:name=".view.activity.ElectronicFenceListActivity" />
+        <activity android:name=".view.fragment.DoctorListActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+        <receiver android:name=".receiver.NotificationClickReceiver"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+               <action android:name="notification_clicked" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

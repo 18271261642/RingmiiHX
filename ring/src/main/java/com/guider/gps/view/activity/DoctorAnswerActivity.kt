@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseActivity
+import com.guider.baselib.base.BaseApplication
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.feifeia3.utils.ToastUtil
@@ -31,8 +32,7 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.scwang.smart.refresh.header.ClassicsHeader
 import kotlinx.android.synthetic.main.activity_doctor_answer.*
-import kotlinx.android.synthetic.main.activity_doctor_answer.msgListRv
-import kotlinx.android.synthetic.main.fragment_ring_msg_list.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -42,19 +42,6 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
 
     override val contentViewResId: Int
         get() = R.layout.activity_doctor_answer
-
-    companion object {
-        init {
-            ClassicsHeader.REFRESH_HEADER_PULLING = "查看更多历史消息"
-            ClassicsHeader.REFRESH_HEADER_REFRESHING = "正在加载..."
-            ClassicsHeader.REFRESH_HEADER_LOADING = ""
-            ClassicsHeader.REFRESH_HEADER_RELEASE = ""
-            ClassicsHeader.REFRESH_HEADER_FINISH = ""
-            ClassicsHeader.REFRESH_HEADER_FAILED = "没有更多历史消息"
-            ClassicsHeader.REFRESH_HEADER_SECONDARY = ""
-            ClassicsHeader.REFRESH_HEADER_UPDATE = ""
-        }
-    }
 
     private var isOpenMoreTag = false
     private lateinit var msgAdapter: AnswerListAdapter
@@ -69,12 +56,46 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     private var mDialog1: DialogProgress? = null
     private var mDialog2: DialogProgress? = null
 
+    //聊天医生的accountId
+    private var receiveAccountId = 0
+    private var doctorName = ""
+
+    //定时器
+    val DELAY_TIME: Long = 1_000 * 5
+
+    companion object {
+        init {
+            ClassicsHeader.REFRESH_HEADER_PULLING = BaseApplication.guiderHealthContext
+                    .resources.getString(
+                            R.string.app_watch_more_history_msg)
+            ClassicsHeader.REFRESH_HEADER_REFRESHING = BaseApplication.guiderHealthContext
+                    .resources.getString(
+                            R.string.app_loading)
+            ClassicsHeader.REFRESH_HEADER_LOADING = ""
+            ClassicsHeader.REFRESH_HEADER_RELEASE = ""
+            ClassicsHeader.REFRESH_HEADER_FINISH = ""
+            ClassicsHeader.REFRESH_HEADER_FAILED = BaseApplication.guiderHealthContext
+                    .resources.getString(
+                            R.string.app_no_more_history)
+            ClassicsHeader.REFRESH_HEADER_SECONDARY = ""
+            ClassicsHeader.REFRESH_HEADER_UPDATE = ""
+        }
+    }
+
     override fun openEventBus(): Boolean {
         return false
     }
 
     override fun initImmersion() {
-        setTitle(resources.getString(R.string.app_main_medicine_doctors_consultation))
+        if (intent != null) {
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("title"))) {
+                doctorName = intent.getStringExtra("title")!!
+                setTitle(doctorName)
+            } else {
+                setTitle(resources.getString(R.string.app_main_medicine_doctors_consultation))
+            }
+            receiveAccountId = intent.getIntExtra("accountId", 0)
+        }
         showBackButton(R.drawable.ic_back_white)
     }
 
@@ -134,7 +155,46 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
         }
         refresh_immsg.setEnableAutoLoadMore(false)
         getAnswerListData()
+        loopGetLatestAnswerMsg()
         send.setOnClickListener(this)
+    }
+
+    private fun loopGetLatestAnswerMsg() {
+        val accountId = MMKVUtil.getInt(USER.USERID, 0)
+        if (accountId == 0) return
+        var num = 1
+        lifecycleScope.launch {
+            while (true) {
+                delay(DELAY_TIME)
+                Log.i(TAG, "轮询获取咨询消息执行了${num++}次")
+                addLatestLoopNews()
+            }
+        }
+    }
+
+    /**
+     * 添加最新的轮询消息
+     */
+    private suspend fun addLatestLoopNews() {
+        ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            val tempTime = DateUtilKotlin.localToUTC(
+                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+            val resultBean = GuiderApiUtil.getApiService()
+                    .getAnswerMsgList(receiveAccountId, MMKVUtil.getInt(USER.USERID),
+                            false,
+                            20,
+                            tempTime)
+            if (!resultBean.isNullOrEmpty()) {
+                val tempList = arrayListOf<AnswerListBean>()
+                for (key in resultBean.keys) {
+                    //遍历取出key，再遍历map取出value。
+                    resultBean[key]?.let { tempList.addAll(it) }
+                }
+                msgList.addAll(tempList)
+                msgAdapter.setSourceList(msgList)
+                msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
+            }
+        })
     }
 
     private fun getAnswerListData() {
@@ -144,7 +204,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                     showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
-                        .getAnswerMsgList(1, MMKVUtil.getInt(USER.USERID), page,
+                        .getAnswerMsgList(receiveAccountId, MMKVUtil.getInt(USER.USERID), page,
                                 20, searchTime)
                 if (resultBean != null) {
                     if (resultBean.isNullOrEmpty()) {
@@ -173,7 +233,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
 
             }, onRequestFinish = {
                 if (!isLoadMore) dismissDialog()
-                if (isLoadMore) refreshLayout.finishRefresh()
+                if (isLoadMore) refresh_immsg.finishRefresh()
                 isLoadMore = false
             })
         }
@@ -248,8 +308,8 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     private fun sendAnswerMsg(type: AnswerMsgType, content: String) {
         val map = hashMapOf<String, Any>()
         map["content"] = content
-        map["fromAccount"] = MMKVUtil.getInt(USER.USERID)
-        map["toAccount"] = 1
+        map["fromAccount"] = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID, 0)
+        map["toAccount"] = receiveAccountId
         map["type"] = type
         lifecycleScope.launch {
             ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {

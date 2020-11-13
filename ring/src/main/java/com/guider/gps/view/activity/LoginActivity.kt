@@ -26,11 +26,15 @@ import com.guider.baselib.utils.USER.TOKEN
 import com.guider.baselib.utils.USER.USERID
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.feifeia3.utils.ToastUtil
+import com.guider.gps.BuildConfig.WEBDOMAIN
 import com.guider.gps.R
 import com.guider.gps.adapter.CountryCodeDialogAdapter
 import com.guider.gps.view.line.ILineLogin
 import com.guider.gps.view.line.LineLoginEvent
-import com.guider.health.apilib.*
+import com.guider.health.apilib.ApiCallBack
+import com.guider.health.apilib.ApiUtil
+import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.TokenInfo
@@ -59,7 +63,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     private var isLineLoginFirst = false
 
     //国家英文代号
-    private var countryCodeKey = "CN"
+    private var countryCodeKey = "TW"
 
     /**
      * Line第三方登陆相关
@@ -259,7 +263,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 val intent = Intent(mContext, SimpleCustomWebActivity::class.java)
                 intent.putExtra("pageTitle",
                         mContext?.resources?.getString(R.string.app_login_privacy_policy_clause))
-                val webHost = BuildConfig.WEBDOMAIN
+                val webHost = WEBDOMAIN
                 intent.putExtra("webUrl",
                         "${webHost}#/open?navbartitle=1")
                 startActivity(intent)
@@ -311,7 +315,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "CN"
+                } else "TW"
         MMKVUtil.saveString(AREA_CODE, tag)
         MMKVUtil.saveString(PHONE, phoneValue)
         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)

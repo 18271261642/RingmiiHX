@@ -98,13 +98,7 @@ dependencies {
     api dependencies.arouter
     //集成的module
     api project(':apilib')
-    api project(path: ':hellocharts-library')
+    api project(':hellocharts-library')
     api project(':citypickerview')
-    if (rootGradle.googlePlay) {
-        println "Add lib libbuglygoogle"
-        api project(':libbuglygoogle')
-    } else {
-        println "Add lib libbuglycn"
-        api project(':libbuglycn')
-    }
+    api project(':libbuglygoogle')
 }

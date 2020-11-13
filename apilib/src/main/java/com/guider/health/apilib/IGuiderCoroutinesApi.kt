@@ -2,6 +2,7 @@ package com.guider.health.apilib
 
 import com.guider.health.apilib.bean.*
 import com.guider.health.apilib.enums.AddressType
+import com.guider.health.apilib.enums.PositionType
 import com.guider.health.apilib.model.WechatUserInfo
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -269,15 +270,15 @@ interface IGuiderCoroutinesApi {
      * @param deviceCode 设备码
      */
     @GET("api/v1/opdevice/optionrate")
-    suspend fun locationFrequencySet(@Query("accountId") accountId: Int?):
-            List<FrequencySetBean>
+    suspend fun locationFrequencySet(@Query("accountId") accountId: Int?): Any
 
     /**
      * 设置手环设备定位频率
      * @param body 设备码+频率的设置数组
      */
-    @POST("api/v1/opdevice/optionrate")
-    suspend fun setLocationFrequency(@Body body: Any): Any?
+    @GET("api/v1/opdevice/option/mode")
+    suspend fun setLocationFrequency(@Query("accountId") accountId: Int,
+                                     @Query("mode") mode: PositionType): Any
 
     /**
      * 发送咨询聊天内容
@@ -305,18 +306,18 @@ interface IGuiderCoroutinesApi {
     suspend fun getWalkTarget(@Query("accountId") accountId: Int): String
 
     /**
-     * 获取用户设置的运动目标
+     * 设置用户的运动目标
      */
-    @POST("api/v1/opdevice/walktarget")
+    @POST("api/v2/opdevice/walktarget")
     suspend fun setWalkTarget(@Query("accountId") accountId: Int,
                               @Query("walkTarget") walkTarget: Int
-    ): Any?
+    ): String?
 
     /**
-     * 获取用户手环设置
+     * 获取用户设置的运动目标
      */
-    @GET("api/v1/opdevice/setdetail")
-    suspend fun getUserRingSet(@Query("accountId") accountId: Int): RingSetBean?
+    @GET("api/v2/opdevice/walktarget")
+    suspend fun getUserTargetStep(@Query("accountId") accountId: Int): String
 
     /**
      * 设置手环心率测量间隔
@@ -394,4 +395,10 @@ interface IGuiderCoroutinesApi {
                                        @Query("accountId") accountId: Int,
                                        @Query("relationShip") relationShip: String
     ): Any?
+
+    /**
+     * 获取用户关联的医生列表
+     */
+    @GET("api/v1/user/doctors")
+    suspend fun getDoctorListData(@Query("accountId") accountId: Int): List<DoctorListBean>
 }

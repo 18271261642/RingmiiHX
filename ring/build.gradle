@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 def rootGradle = rootProject.ext.android
@@ -52,6 +53,7 @@ android {
             pseudoLocalesEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.relealse
+            buildConfigField("String", "WEBDOMAIN", '"http://cmate.guidertech.com/"')
         }
 
         debug {
@@ -64,6 +66,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
 //            versionNameSuffix "_debug_${getTime()}"
+            buildConfigField("String", "WEBDOMAIN", '"http://cmate.guidertech.com/"')
         }
     }
     compileOptions {
@@ -90,6 +93,12 @@ dependencies {
     api project(':baseLib')
     def dependencies = rootProject.ext.dependencies
     kapt dependencies.arouter_compiler
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    // Add the dependency for the Firebase SDK for Google Analytics
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 }
 
 android.applicationVariants.all { variant ->

@@ -62,6 +62,15 @@ object DateUtilKotlin {
         return sdf.format(Date())
     }
 
+    //获取当前完整的日期和时间
+    @SuppressLint("SimpleDateFormat")
+    fun getNowHourTime(): Int? {
+        val sdf = SimpleDateFormat("HH:mm")
+        val format = sdf.format(Date())
+        val hour = format.substring(0, format.indexOf(":"))
+        return hour.toInt()
+    }
+
     //获取当前日期
     @SuppressLint("SimpleDateFormat")
     fun getNowDate(): String {

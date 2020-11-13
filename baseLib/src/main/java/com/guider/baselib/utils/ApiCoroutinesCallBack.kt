@@ -3,6 +3,7 @@ package com.guider.baselib.utils
 import android.content.Context
 import android.util.Log
 import com.guider.baselib.R
+import com.guider.baselib.base.BaseApplication
 import com.guider.feifeia3.utils.ToastUtil
 
 /**
@@ -15,7 +16,7 @@ import com.guider.feifeia3.utils.ToastUtil
  */
 object ApiCoroutinesCallBack {
 
-    suspend fun resultParse(context: Context, onStart: (() -> Unit)? = null,
+    suspend fun resultParse(context: Context?=null, onStart: (() -> Unit)? = null,
                             block: suspend () -> Unit,
                             onError: ((Throwable) -> Unit)? = null,
                             onRequestFinish: (() -> Unit)? = null) {
@@ -24,14 +25,20 @@ object ApiCoroutinesCallBack {
             block()
         } catch (e: Exception) {
             onError?.invoke(e)
-            if (e.message == "customErrorMsg") {
-                ToastUtil.show(context,
-                        context.resources.getString(R.string.app_data_request_error))
-            } else {
-                ToastUtil.show(context, e.message.toString())
+            if (e is RuntimeException){
+                if (e.message == "customErrorMsg") {
+                    ToastUtil.show(BaseApplication.guiderHealthContext,
+                            BaseApplication.guiderHealthContext
+                                    .resources.getString(R.string.app_data_request_error))
+                } else {
+                    ToastUtil.show(BaseApplication.guiderHealthContext, e.message.toString())
+                }
+            }else {
+                ToastUtil.show(BaseApplication.guiderHealthContext,
+                        BaseApplication.guiderHealthContext
+                                .resources.getString(R.string.app_data_request_error))
             }
             Log.e("GuiderGpsApiError", e.message.toString())
-
         } finally {
             onRequestFinish?.invoke()
         }

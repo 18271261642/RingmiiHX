@@ -79,7 +79,8 @@ object ToastUtil {
     }
 
     fun showCustomToast(view: View?, context: Context, isShort: Boolean, hintText: String?,
-                        viewBackground: Int? = null) {
+                        viewBackground: Int? = null,
+                        gravity: Int = Gravity.CENTER, yOff: Int = 0) {
         val toast = Toast(context)
         var contentView = view
         if (contentView == null) {
@@ -90,7 +91,7 @@ object ToastUtil {
             }
             contentView!!.findViewById<TextView>(R.id.hintText).text = hintText
         }
-        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.setGravity(gravity, 0, yOff)
         if (isShort) toast.duration = Toast.LENGTH_SHORT
         else toast.duration = Toast.LENGTH_LONG
         toast.view = contentView

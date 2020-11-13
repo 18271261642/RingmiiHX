@@ -13,7 +13,6 @@ import com.guider.baselib.device.Unit
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
-import com.guider.gps.view.activity.DoctorAnswerActivity
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.BloodListBeann
 import com.guider.health.apilib.bean.BloodOxygenListBean
@@ -85,7 +84,7 @@ class MedicineDataFragment : BaseFragment() {
     override fun onNoDoubleClick(v: View) {
         when (v) {
             answerLayout -> {
-                val intent = Intent(mActivity, DoctorAnswerActivity::class.java)
+                val intent = Intent(mActivity, DoctorListActivity::class.java)
                 startActivity(intent)
             }
             measure -> {
@@ -562,7 +561,7 @@ class MedicineDataFragment : BaseFragment() {
                 suggestContentTv.text = "${title}${content}"
             }
         }
-        val iUnit: IUnit = UnitUtil.getIUnit(mActivity)
+        val iUnit: IUnit = UnitUtil.getIUnit()
         val value: Double = iUnit.getGluShowValue(
                 resultBean[0].bs, 2)
         dataValueTv.text = value.toString()
@@ -646,7 +645,7 @@ class MedicineDataFragment : BaseFragment() {
     private fun getBloodSugarAxisPoints(list: List<BloodSugarListBean>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
-        val iUnit: IUnit = UnitUtil.getIUnit(mActivity)
+        val iUnit: IUnit = UnitUtil.getIUnit()
         if (list.size == 1) {
             pointYValues.add(0f)
         }

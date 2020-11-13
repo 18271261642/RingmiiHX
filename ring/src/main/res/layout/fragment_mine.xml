@@ -119,6 +119,7 @@
             android:layout_marginEnd="@dimen/dp_14"
             app:cardCornerRadius="4dp"
             app:cardElevation="3dp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/sportLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -179,6 +180,7 @@
             android:layout_marginEnd="@dimen/dp_14"
             app:cardCornerRadius="4dp"
             app:cardElevation="3dp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/heartLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout

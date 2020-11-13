@@ -22,39 +22,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (andr.googlePlay) { // 国际版
-                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
-                buildConfigField("String", "WEBDOMAIN", '"http://cmate.guidertech.com/"')
-//                buildConfigField("String", "APIURL", '"http://api_health.mcu.edu.tw/"')
-//                buildConfigField("String", "APIHDURL", '"http://apihd_health.mcu.edu.tw/"')
-//                buildConfigField("String", "WEBDOMAIN", '"http://camte_health.mcu.edu.tw/"')
-                println "apilib -- Package Google Play Bundle Release . . ."
-            } else { // 大陆版
-                buildConfigField("String", "APIURL", '"http://api.guiderhealth.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guiderhealth.com/"')
-                buildConfigField("String", "WEBDOMAIN", '"http://cmate.guidertech.com/"')
-                println "apilib -- Package CN Bundle Release . . ."
-            }
+            buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+//                buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
+//                buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (andr.googlePlay) { // 国际版
-                //temp
-//                buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
-//                buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
-                //debug
-                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
-                buildConfigField("String", "WEBDOMAIN", '"http://cmate.guidertech.com/"')
-            } else { // 大陆版
-                buildConfigField("String", "APIURL", '"http://api.guiderhealth.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guiderhealth.com/"')
-                buildConfigField("String", "WEBDOMAIN", '"http://cmate.guidertech.com/"')
-                // buildConfigField("String", "APIURL", '"http://192.168.1.180:8082/"')
-                // buildConfigField("String", "APIHDURL", '"http://192.168.1.180:8083/"')
-            }
+            //temp
+            buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
+            buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
+            //debug
+//                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
+//                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
         }
     }
 

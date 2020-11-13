@@ -55,8 +55,11 @@ class UserInfo : Parcelable {
     var isSelected = 0
     var relationShip: String? = null
     var deviceCode: String? = null
-    var electricity: Int? = 0
+    var electricity: Int = 0
     var deviceState: String? = ""
+    var deviceMode:String? = "COMMON"
+    //手环信号强度
+    var rssi:Int = 0
     override fun describeContents(): Int {
         return 0
     }
@@ -88,13 +91,13 @@ class UserInfo : Parcelable {
         dest.writeInt(isSelected)
         dest.writeString(relationShip)
         dest.writeString(deviceCode)
-        dest.writeInt(if (electricity == null) {
-            0
-        } else electricity!!)
+        dest.writeInt(electricity)
         dest.writeString(deviceState)
+        dest.writeString(deviceMode)
+        dest.writeInt(rssi)
     }
 
-    constructor() {}
+    constructor()
     protected constructor(`in`: Parcel) {
         accountId = `in`.readInt()
         addr = `in`.readString()
@@ -124,6 +127,8 @@ class UserInfo : Parcelable {
         deviceCode = `in`.readString()
         electricity = `in`.readInt()
         deviceState = `in`.readString()
+        deviceMode = `in`.readString()
+        rssi = `in`.readInt()
     }
 
     companion object {

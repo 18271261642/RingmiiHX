@@ -198,7 +198,7 @@ interface IGuiderCoroutinesHDApi {
      * @param accountId 用户id
      */
     @Headers(RetrofitUrlManager.DOMAIN_NAME_HEADER + KEY_API_HOST_HD)
-    @GET("api/v1/op/healthdata/walk")
+    @GET("api/v2/op/healthdata/walk")
     suspend fun sportStepAndTargetStep(@Query("accountId") accountId: Int,
                                        @Query("startTime") startTime: String):
             HealthSportAndTargetStepBean?

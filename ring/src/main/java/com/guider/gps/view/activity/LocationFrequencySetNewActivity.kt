@@ -1,6 +1,5 @@
 package com.guider.gps.view.activity
 
-import android.app.Activity
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseActivity
@@ -52,9 +51,10 @@ class LocationFrequencySetNewActivity : BaseActivity() {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService().locationFrequencySet(accountId)
-                if (!resultBean.isNullOrEmpty()) {
-                    val frequencySetList = resultBean as ArrayList
-                    showFrequencySet(frequencySetList)
+                if (resultBean!="null") {
+                    val frequencySetList = ParseJsonData.parseJsonDataList<FrequencySetBean>(
+                            resultBean,FrequencySetBean::class.java)
+                    showFrequencySet(frequencySetList as ArrayList<FrequencySetBean>)
                 }
             }, onRequestFinish = {
                 dismissDialog()
@@ -119,19 +119,19 @@ class LocationFrequencySetNewActivity : BaseActivity() {
                 }, "00:00"
         )
         hashMap["rates"] = arrayListOf(setBean1)
-        lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
-                showDialog()
-            }, block = {
-                val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(hashMap)
-                if (resultBean != null) {
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
-                }
-            }, onRequestFinish = {
-                dismissDialog()
-            })
-        }
+//        lifecycleScope.launch {
+//            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+//                showDialog()
+//            }, block = {
+//                val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(hashMap)
+//                if (resultBean != null) {
+//                    setResult(Activity.RESULT_OK, intent)
+//                    finish()
+//                }
+//            }, onRequestFinish = {
+//                dismissDialog()
+//            })
+//        }
     }
 
     override fun showToolBar(): Boolean {

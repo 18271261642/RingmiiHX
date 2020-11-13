@@ -43,7 +43,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                             String.format(mContext.resources.getString(
                                     R.string.app_msg_item_title), mContext.resources.getString(
                                     R.string.app_main_health_blood_sugar)))
-                    val iUnit: IUnit = UnitUtil.getIUnit(mContext)
+                    val iUnit: IUnit = UnitUtil.getIUnit()
                     val value: Double = iUnit.getGluShowValue(data.dataBean!!.bs, 2)
                     val list = arrayListOf(SimpleWithTypeBean(
                             mContext.resources.getString(R.string.app_main_health_blood_sugar),

@@ -3,9 +3,8 @@ ext {
             compileSdkVersion: 29,
             minSdkVersion    : 19,
             targetSdkVersion : 29,
-            codeVersion      : 11,
-            appVersion       : "1.7.0",
-            googlePlay       : true
+            codeVersion      : 12,
+            appVersion       : "1.8.0"
     ]
 
     supportLibVersion = '1.1.0'

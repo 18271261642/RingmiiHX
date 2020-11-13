@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/homeMsgLayout"
-    android:layout_width="@dimen/dp_278"
+    android:layout_width="@dimen/dp_240"
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="@color/white"

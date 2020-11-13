@@ -2,9 +2,11 @@ package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,8 +26,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
@@ -41,6 +45,7 @@ import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.SystemMsgBean
 import com.guider.health.apilib.bean.UserInfo
+import com.guider.health.apilib.enums.PositionType
 import com.guider.health.apilib.enums.SystemMsgType
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
@@ -51,6 +56,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -74,7 +80,6 @@ class MainActivity : BaseActivity() {
     private var latestSystemMsgTime = ""
     private var dialogTagList = arrayListOf<String>()
     private var editDialog: DialogHolder? = null
-    private var groupId = 0
     var binder: AppSystemMsgService.MyBinder? = null// 定义成全局变量
     private var myConn: MyConn? = null
 
@@ -168,9 +173,30 @@ class MainActivity : BaseActivity() {
         })
         msgListRv.adapter = drawAdapter
         getBindDeviceList()
-        getWalkTargetData()
         getRingUndoNumData()
         openSystemMsgLoopService()
+        initGoogleFirebaseMessage()
+    }
+
+    /**
+     * 初始化谷歌服务
+     */
+    private fun initGoogleFirebaseMessage() {
+        val activityManager: ActivityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            Log.i(TAG,
+                    "onCreate: activityManager.isBackgroundRestricted() = " +
+                            "${activityManager.isBackgroundRestricted}")
+        }
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            // Get new FCM registration token
+            val token = task.result
+            Log.i(TAG, "谷歌推送的token为$token")
+        })
     }
 
     private fun openSystemMsgLoopService() {
@@ -273,22 +299,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun getWalkTargetData() {
-        val accountId = MMKVUtil.getInt(USER.USERID)
-        lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
-                val resultBean = GuiderApiUtil.getApiService().getUserRingSet(accountId)
-                if (resultBean != null) {
-                    MMKVUtil.saveInt(TARGET_STEP, resultBean.walkTarget)
-                    MMKVUtil.saveBoolean(BT_CHECK, resultBean.btOpen)
-                    MMKVUtil.saveInt(BT_INTERVAL, resultBean.btInterval)
-                    MMKVUtil.saveBoolean(HR_CHECK, resultBean.hrOpen)
-                    MMKVUtil.saveInt(HR_INTERVAL, resultBean.hrInterval)
-                }
-            })
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun refreshBindDeviceList(event: EventBusEvent<CheckBindDeviceBean>) {
         if (event.code == EventBusAction.REFRESH_DEVICE_MEMBER_LIST) {
@@ -373,16 +383,27 @@ class MainActivity : BaseActivity() {
                 }
             }
             drawAdapter.setSourceList(bindDeviceList)
+            storageAccountPositionType()
         } else {
             getLatestGroupData(true)
         }
+    }
+
+    private fun storageAccountPositionType() {
+        //存储用户的定位模式
+        val dataMap = hashMapOf<String, Boolean>()
+        bindDeviceList.map {
+            dataMap[it.accountId.toString()] = it.deviceMode == PositionType.FINDER.name
+        }
+        val toJson = GsonUtil.toJson(dataMap)
+        MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_POSITION_SEARCH_PERSON, toJson)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun refreshLatestGroupData(event: EventBusEvent<Boolean>) {
         if (event.code == EventBusAction.REFRESH_LATEST_GROUP_DATA) {
             if (event.data!!) {
-                getLatestGroupData(true)
+                getLatestGroupData(false)
             }
         }
     }
@@ -438,6 +459,7 @@ class MainActivity : BaseActivity() {
                         }
                     }
                     drawAdapter.setSourceList(bindDeviceList)
+                    storageAccountPositionType()
                 }
             }, onRequestFinish = {
                 if (isShowDialog) dismissDialog()
@@ -455,23 +477,21 @@ class MainActivity : BaseActivity() {
             ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .userPosition(accountId, 1, 1, "", "")
+                var dataMap = hashMapOf<String, Any>()
+                if (MMKVUtil.containKey(BIND_DEVICE_LAST_LOCATION)) {
+                    val json = MMKVUtil.getString(BIND_DEVICE_LAST_LOCATION)
+                    dataMap = GsonUtil.fromJson(json)
+                }
                 if (!resultBean.isNullOrEmpty() && resultBean.size == 1) {
                     val firstPosition = resultBean[0]
-                    MMKVUtil.saveDouble(LAST_LOCATION_POINT_LAT, firstPosition.lat)
-                    MMKVUtil.saveDouble(LAST_LOCATION_POINT_LNG, firstPosition.lng)
-                    if (StringUtil.isNotBlankAndEmpty(firstPosition.addr))
-                        MMKVUtil.saveString(LAST_LOCATION_POINT_ADDRESS, firstPosition.addr)
-                    if (StringUtil.isNotBlankAndEmpty(firstPosition.testTime))
-                        MMKVUtil.saveString(LAST_LOCATION_POINT_TIME, firstPosition.testTime)
-                    if (StringUtil.isNotBlankAndEmpty(firstPosition.signalType))
-                        MMKVUtil.saveString(LAST_LOCATION_POINT_METHOD, firstPosition.signalType)
+                    dataMap[accountId.toString()] = firstPosition
                 } else {
-                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_LAT)
-                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_LNG)
-                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_ADDRESS)
-                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_TIME)
-                    MMKVUtil.clearByKey(LAST_LOCATION_POINT_METHOD)
+                    if (dataMap.containsKey(accountId.toString())) {
+                        dataMap.remove(accountId.toString())
+                    }
                 }
+                val toJson = GsonUtil.toJson(dataMap)
+                MMKVUtil.saveString(BIND_DEVICE_LAST_LOCATION, toJson)
             })
         }
     }

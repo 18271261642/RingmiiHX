@@ -439,7 +439,7 @@ class BindPhoneActivity : BaseActivity() {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "CN"
+                } else "TW"
         MMKVUtil.saveString(USER.AREA_CODE, tag)
         MMKVUtil.saveString(USER.PHONE, phoneValue)
         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)

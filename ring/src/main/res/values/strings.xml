@@ -46,6 +46,7 @@
     <string name="app_main_map_proactively_addressing">Proactively addressing</string>
     <string name="app_main_map_positioning_frequency_setting">Positioning frequency setting</string>
     <string name="app_main_map_history_record">History record</string>
+    <string name="app_main_map_history">History</string>
     <string name="app_main_map_send_instructions">Send instructions</string>
     <string name="app_main_map_address_history">Addressing the history</string>
     <string name="app_main_map_addressing_success">Addressing  success</string>
@@ -199,6 +200,7 @@
     <string name="app_health_suggest">Health Suggest</string>
     <string name="app_phone_register">The phone number has been registered</string>
     <string name="app_set_success">Set Success</string>
+    <string name="app_set_location_search_person_success">The "search mode" is set successfully, and the bracelet consumes more power than the "general mode".</string>
     <string name="app_electronic_hint">Please select enough electronic fence points</string>
     <string name="app_hour">Hour</string>
     <string name="app_minute">minute</string>
@@ -206,8 +208,8 @@
     <string name="app_minute_simple">m</string>
     <string name="app_general_pattern">General pattern</string>
     <string name="app_search_pattern">People search pattern</string>
-    <string name="app_time_interval_one_hour">Time interval: 1 hour</string>
-    <string name="app_time_interval_five_minutes">Time interval: 5 minutes</string>
+    <string name="app_time_interval_one_hour">Interval 1 hour</string>
+    <string name="app_time_interval_five_minutes">Interval 5 minutes</string>
 
     <string name="app_bracelet_power_reminder">Bracelet power reminder</string>
     <string name="app_shutdown_to_remind">Shutdown to remind</string>
@@ -234,4 +236,8 @@
     <string name="app_preservation_electronic_fence">Preservation electronic fence</string>
     <string name="app_electronic_fence_list">Electronic fence list</string>
     <string name="app_edit_device_account_name_title">Modify the equipment remark name</string>
+    <string name="app_watch_more_history_msg">See more historical messages</string>
+    <string name="app_loading">Being loaded ...</string>
+    <string name="app_no_more_history">No more history</string>
+    <string name="app_get_latest_news">Get the latest news</string>
 </resources>

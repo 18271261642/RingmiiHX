@@ -82,6 +82,12 @@ class RingMsgListActivity : BaseActivity() {
                     fragments = fragments)
         }
         initMagicIndicator1()
+        //从通知栏点击进入
+        if (MMKVUtil.containKey(NOTIFICATION_CLICK_ENTER)
+                && MMKVUtil.getInt(NOTIFICATION_CLICK_ENTER) == 2){
+            MMKVUtil.clearByKey(NOTIFICATION_CLICK_ENTER)
+            entryPageIndex = 2
+        }
         if (entryPageIndex != 0) msgViewpager.currentItem = entryPageIndex
         mBadgeCountList.add(abnormalMsgUndoNum)
         mBadgeCountList.add(careMsgUndoNum)

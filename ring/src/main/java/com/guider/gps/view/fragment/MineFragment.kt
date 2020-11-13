@@ -41,6 +41,20 @@ class MineFragment : BaseFragment() {
         topLayout.setOnClickListener(this)
         sportLayout.setOnClickListener(this)
         loginOutLayout.setOnClickListener(this)
+        getWalkTargetData()
+    }
+
+    private fun getWalkTargetData() {
+        val accountId = MMKVUtil.getInt(USER.USERID)
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+                val resultBean = GuiderApiUtil.getApiService().getUserTargetStep(accountId)
+                if (resultBean != "null") {
+                    MMKVUtil.saveInt(TARGET_STEP, resultBean.toInt())
+                    ringSetShow()
+                }
+            })
+        }
     }
 
     private fun ringSetShow() {
@@ -56,10 +70,12 @@ class MineFragment : BaseFragment() {
             //说明是没有绑定的设备 是绑定
             bindTv.text = mActivity.resources.getString(R.string.app_device_bind)
         }
-        sportValue.text = sportValueInt.toString()
-        setTempAndHeartShow()
-        heartLayout.setOnClickListener(this)
-        tempSetLayout.setOnClickListener(this)
+        sportValue.text = String.format(
+                resources.getString(R.string.app_main_health_target_step),
+                sportValueInt)
+//        setTempAndHeartShow()
+//        heartLayout.setOnClickListener(this)
+//        tempSetLayout.setOnClickListener(this)
     }
 
     @SuppressLint("SetTextI18n")
@@ -128,7 +144,9 @@ class MineFragment : BaseFragment() {
         if (event.code == REFRESH_TARGET_STEP) {
             if (event.data != 0) {
                 sportValueInt = event.data!!
-                sportValue.text = sportValueInt.toString()
+                sportValue.text = String.format(
+                        resources.getString(R.string.app_main_health_target_step),
+                        sportValueInt)
             }
         }
     }
@@ -245,8 +263,10 @@ class MineFragment : BaseFragment() {
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .setWalkTarget(accountId, sportValueInt)
-                if (resultBean != null) {
-                    sportValue.text = sportValueInt.toString()
+                if (resultBean == "true") {
+                    sportValue.text = String.format(
+                            resources.getString(R.string.app_main_health_target_step),
+                            sportValueInt)
                     MMKVUtil.saveInt(TARGET_STEP, sportValueInt)
                     EventBusUtils.sendEvent(EventBusEvent(
                             REFRESH_TARGET_STEP, sportValueInt))

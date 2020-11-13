@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "516646533253",
+    "firebase_url": "https://guidergps.firebaseio.com",
+    "project_id": "guidergps",
+    "storage_bucket": "guidergps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516646533253:android:0a0054725e7fb135f2d1ec",
+        "android_client_info": {
+          "package_name": "com.guider.gps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516646533253-2nh6f8vsfhgj7a0akt2bk9neij1b60fv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ1MCH2roiQeb6u5GseWLW2A6aKF07MtY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516646533253-2nh6f8vsfhgj7a0akt2bk9neij1b60fv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

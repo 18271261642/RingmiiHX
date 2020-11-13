@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.guider.gps.widget.ChildClickableConstrainLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/eventDealLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/locationTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_42"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabIndicatorHeight="@dimen/dp_2"
+        app:tabTextAppearance="@style/CustomTabLayoutTextSizeStyle" />
+    <!--右下角操作按钮区-->
+    <include
+        layout="@layout/include_loaction_bottom_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:layout_marginBottom="@dimen/dp_110"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!--定位-->
+    <include
+        layout="@layout/include_location_position_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/locationTabLayout" />
+    <!--运动轨迹-->
+    <include
+        layout="@layout/include_location_track_event_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/locationTabLayout" />
+    <!--电子围栏-->
+    <include
+        layout="@layout/include_location_electronic_fence_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locationTabLayout" />
+    <!--主动寻址-->
+    <include
+        layout="@layout/include_location_proactively_addressing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locationTabLayout" />
+    <!--主动寻址的load动画部分-->
+    <include
+        layout="@layout/include_location_loading_proactively_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</com.guider.gps.widget.ChildClickableConstrainLayout>
