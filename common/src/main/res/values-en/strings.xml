@@ -340,4 +340,5 @@
         
     <string name="wwk_title4">Measurement result</string>
     <string name="addPicToAlbum">Add image to gallery successfully</string>
+    <string name="app_permission_notification_ring">Permissions need to be enabled to get bracelet notifications</string>
 </resources>

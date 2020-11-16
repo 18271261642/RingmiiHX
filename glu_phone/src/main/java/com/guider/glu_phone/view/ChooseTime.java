@@ -123,7 +123,7 @@ public class ChooseTime extends GlocoseFragment {
                 String input_glu = gluEdit.getText().toString().trim();
                 if (!TextUtils.isEmpty(input_glu)) {
                     // 单位处理
-                    IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+                    IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
                     double value = iUnit.getGluRealValue(Double.parseDouble(input_glu),
                             2);
                     BodyIndex.getInstance().setValue((float) value);

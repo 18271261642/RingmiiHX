@@ -206,7 +206,7 @@ class HealthResultShowActivity : WatchBaseActivity(), OnNoDoubleClickListener {
                                         when (titleOldPosition) {
                                             0 -> {
                                                 // 根据国别处理血糖单位
-                                                val iUnit = UnitUtil.getIUnit(mContext)
+                                                val iUnit = UnitUtil.getIUnit()
                                                 val value = iUnit.getGluShowValue(
                                                         it.body()!![0].bs, 2)
                                                 latest_value.text = value.toString()

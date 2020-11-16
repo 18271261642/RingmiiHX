@@ -13,7 +13,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
+
 import androidx.annotation.Nullable;
+
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -45,6 +47,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.guider.healthring.util.SharedPreferencesUtils.isOpenNotificationPermission;
+
 /**
  * Created by Administrator on 2018/8/13.
  */
@@ -52,7 +56,7 @@ import java.util.List;
 /**
  * B30消息提醒页面
  */
-public class B30MessAlertActivity extends WatchBaseActivity implements  View.OnClickListener{
+public class B30MessAlertActivity extends WatchBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "B30MessAlertActivity";
 
@@ -231,144 +235,142 @@ public class B30MessAlertActivity extends WatchBaseActivity implements  View.OnC
             telephonyManager.listen(customPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
     }
+
     private void readSocialMsg() {
         if (MyCommandManager.DEVICENAME != null) {
-            MyApp.getInstance().getVpOperateManager().readSocialMsg(iBleWriteResponse, new ISocialMsgDataListener() {
-                @Override
-                public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
-                    Log.e(TAG, "----读取=" + functionSocailMsgData.toString() + functionSocailMsgData.getPhone() + EFunctionStatus.SUPPORT_OPEN);
+            MyApp.getInstance().getVpOperateManager().readSocialMsg(iBleWriteResponse, functionSocailMsgData -> {
+                Log.e(TAG, "----读取=" + functionSocailMsgData.toString() + functionSocailMsgData.getPhone() + EFunctionStatus.SUPPORT_OPEN);
 
-                    if (functionSocailMsgData.getSkype() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30SkypeTogg.setChecked(true);
+                if (functionSocailMsgData.getSkype() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30SkypeTogg.setChecked(true);
 //                        isSkype = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSkype,true );
-                    } else {
-                        b30SkypeTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSkype, true);
+                } else {
+                    b30SkypeTogg.setChecked(false);
 //                        isSkype = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSkype,false );
-                    }
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSkype, false);
+                }
 
-                    if (functionSocailMsgData.getWhats() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30WhatsAppTogg.setChecked(true);
+                if (functionSocailMsgData.getWhats() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30WhatsAppTogg.setChecked(true);
 //                        isWhats = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWhatsApp, true);
-                    } else {
-                        b30WhatsAppTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWhatsApp, true);
+                } else {
+                    b30WhatsAppTogg.setChecked(false);
 //                        isWhats = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWhatsApp, false);
-                    }
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWhatsApp, false);
+                }
 
-                    if (functionSocailMsgData.getFacebook() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30FacebookTogg.setChecked(true);
+                if (functionSocailMsgData.getFacebook() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30FacebookTogg.setChecked(true);
 //                        isFaceBook = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISFacebook, true);
-                    } else {
-                        b30FacebookTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISFacebook, true);
+                } else {
+                    b30FacebookTogg.setChecked(false);
 //                        isFaceBook = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISFacebook, false);
-                    }
-                    if (functionSocailMsgData.getLinkin() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30LinkedTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISFacebook, false);
+                }
+                if (functionSocailMsgData.getLinkin() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30LinkedTogg.setChecked(true);
 //                        isLinkin = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLinkendln, true);
-                    } else {
-                        b30LinkedTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLinkendln, true);
+                } else {
+                    b30LinkedTogg.setChecked(false);
 //                        isLinkin = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLinkendln, false);
-                    }
-                    if (functionSocailMsgData.getTwitter() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30TwitterTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLinkendln, false);
+                }
+                if (functionSocailMsgData.getTwitter() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30TwitterTogg.setChecked(true);
 //                        isTwitter = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISTwitter, true);
-                    } else {
-                        b30TwitterTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISTwitter, true);
+                } else {
+                    b30TwitterTogg.setChecked(false);
 //                        isTwitter = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISTwitter, false);
-                    }
-                    //viber
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISTwitter, false);
+                }
+                //viber
 
 
-                    if (functionSocailMsgData.getLine() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30LineTogg.setChecked(true);
+                if (functionSocailMsgData.getLine() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30LineTogg.setChecked(true);
 //                        isLine = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLINE, true);
-                    } else {
-                        b30LineTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLINE, true);
+                } else {
+                    b30LineTogg.setChecked(false);
 //                        isLine = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLINE, false);
-                    }
-                    if (functionSocailMsgData.getWechat() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30WechatTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLINE, false);
+                }
+                if (functionSocailMsgData.getWechat() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30WechatTogg.setChecked(true);
 //                        isWeChat = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWechart, true);
-                    } else {
-                        b30WechatTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWechart, true);
+                } else {
+                    b30WechatTogg.setChecked(false);
 //                        isWeChat = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWechart, false);
-                    }
-                    if (functionSocailMsgData.getQq() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30QQTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWechart, false);
+                }
+                if (functionSocailMsgData.getQq() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30QQTogg.setChecked(true);
 //                        isQQ = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISQQ, true);
-                    } else {
-                        b30QQTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISQQ, true);
+                } else {
+                    b30QQTogg.setChecked(false);
 //                        isQQ = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISQQ, false);
-                    }
-                    if (functionSocailMsgData.getMsg() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30MessageTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISQQ, false);
+                }
+                if (functionSocailMsgData.getMsg() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30MessageTogg.setChecked(true);
 //                        isMsg = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISMsm, true);
-                    } else {
-                        b30MessageTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISMsm, true);
+                } else {
+                    b30MessageTogg.setChecked(false);
 //                        isMsg = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISMsm, false);
-                    }
-                    if (functionSocailMsgData.getPhone() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30PhoneTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISMsm, false);
+                }
+                if (functionSocailMsgData.getPhone() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30PhoneTogg.setChecked(true);
 //                        isOpenPhone = true;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISPhone, true);
-                    } else {
-                        b30PhoneTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISPhone, true);
+                } else {
+                    b30PhoneTogg.setChecked(false);
 //                        isOpenPhone = false;
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISPhone, false);
-                    }
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISPhone, false);
+                }
 
-                    if (functionSocailMsgData.getInstagram() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30InstagramTogg.setChecked(true);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISInstagram, true);
-                    } else {
-                        b30InstagramTogg.setChecked(false);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISInstagram, false);
-                    }
+                if (functionSocailMsgData.getInstagram() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30InstagramTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISInstagram, true);
+                } else {
+                    b30InstagramTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISInstagram, false);
+                }
 
-                    if (functionSocailMsgData.getGmail() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30GmailTogg.setChecked(true);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISGmail, true);
-                    } else if (functionSocailMsgData.getGmail() == EFunctionStatus.UNSUPPORT) {
-                        google_gmail.setVisibility(View.GONE);
-                        google_gmail_line.setVisibility(View.GONE);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISGmail, false);
-                    } else {
-                        b30GmailTogg.setChecked(false);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISGmail, false);
-                    }
+                if (functionSocailMsgData.getGmail() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30GmailTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISGmail, true);
+                } else if (functionSocailMsgData.getGmail() == EFunctionStatus.UNSUPPORT) {
+                    google_gmail.setVisibility(View.GONE);
+                    google_gmail_line.setVisibility(View.GONE);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISGmail, false);
+                } else {
+                    b30GmailTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISGmail, false);
+                }
 
-                    if (functionSocailMsgData.getSnapchat() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30SnapchartTogg.setChecked(true);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSnapchart, true);
-                    } else {
-                        b30SnapchartTogg.setChecked(false);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSnapchart, false);
-                    }
+                if (functionSocailMsgData.getSnapchat() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30SnapchartTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSnapchart, true);
+                } else {
+                    b30SnapchartTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSnapchart, false);
+                }
 
-                    if (functionSocailMsgData.getOther() == EFunctionStatus.SUPPORT_OPEN) {
-                        b30OhterTogg.setChecked(true);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISOhter, true);
-                    } else {
-                        b30OhterTogg.setChecked(false);
-                        SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISOhter, false);
-                    }
+                if (functionSocailMsgData.getOther() == EFunctionStatus.SUPPORT_OPEN) {
+                    b30OhterTogg.setChecked(true);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISOhter, true);
+                } else {
+                    b30OhterTogg.setChecked(false);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISOhter, false);
                 }
             });
         }
@@ -705,24 +707,21 @@ public class B30MessAlertActivity extends WatchBaseActivity implements  View.OnC
         } else {
             socailMsgData.setOther(EFunctionStatus.SUPPORT_CLOSE);
         }
-
         Log.e(TAG, "-------------socailMsgData=" + socailMsgData.toString());
-
-        MyApp.getInstance().getVpOperateManager().settingSocialMsg(iBleWriteResponse, new ISocialMsgDataListener() {
-            @Override
-            public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
-                Log.d(TAG, "-----设置-=" + functionSocailMsgData.toString());
-            }
-        }, socailMsgData);
-
+        if (socailMsgData.getWechat() != EFunctionStatus.SUPPORT_OPEN &&
+                socailMsgData.getLine() != EFunctionStatus.SUPPORT_OPEN) {
+            SharedPreferencesUtils.setParam(mContext, isOpenNotificationPermission,
+                    false);
+        } else SharedPreferencesUtils.setParam(mContext, isOpenNotificationPermission,
+                true);
+        MyApp.getInstance().getVpOperateManager().settingSocialMsg(iBleWriteResponse,
+                functionSocailMsgData -> Log.d(TAG,
+                        "-----设置-=" + functionSocailMsgData.toString()), socailMsgData);
     }
 
 
-    private IBleWriteResponse iBleWriteResponse = new IBleWriteResponse() {
-        @Override
-        public void onResponse(int i) {
+    private IBleWriteResponse iBleWriteResponse = i -> {
 
-        }
     };
 
     public boolean isSupportOpen(EFunctionStatus data, FunctionSocailMsgData functionSocailMsgData) {

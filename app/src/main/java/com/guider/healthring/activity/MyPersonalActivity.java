@@ -339,17 +339,9 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         AndPermission.with(MyPersonalActivity.this)
                 .runtime()
                 .permission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .onGranted(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
-
-                    }
+                .onGranted(data -> {
                 })
-                .onDenied(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
-
-                    }
+                .onDenied(data -> {
                 }).start();
 
     }

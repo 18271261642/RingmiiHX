@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.util.Log;
 
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -125,7 +126,7 @@ public class LaunchActivity extends WatchBaseActivity {
         String userId = (String) SharedPreferencesUtils.readObject(LaunchActivity.this, "userId");
         Log.e(TAG,"----userId="+userId);
         //判断有没有登录
-        if (!WatchUtils.isEmpty(userId)) {
+        if (!StringUtil.isEmpty(userId)) {
             String btooth = (String) SharedPreferencesUtils.readObject(LaunchActivity.this, "mylanya");
             if (!WatchUtils.isEmpty(btooth) ) {
                 if ("B30".equals(btooth)) {
@@ -140,9 +141,9 @@ public class LaunchActivity extends WatchBaseActivity {
             } else {
                 startActivity(new Intent(this, NewSearchActivity.class));
             }
-            finish();
         } else {
             startActivity(new Intent(this, LoginActivity.class));
         }
+        finish();
     }
 }

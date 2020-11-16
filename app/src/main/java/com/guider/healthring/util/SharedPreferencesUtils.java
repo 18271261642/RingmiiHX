@@ -49,6 +49,7 @@ public class SharedPreferencesUtils {
     public static final String DEVICEADDRESS = "strap_mine_deviceaddress";
 
     public static final String isLanguageTime = "is_language_time";
+    public static final String isOpenNotificationPermission = "is_Open_Notification_Permission";
 
 
     public static void saveProgess(int progess,Context context){

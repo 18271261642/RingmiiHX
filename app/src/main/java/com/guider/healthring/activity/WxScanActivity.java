@@ -1,5 +1,6 @@
 package com.guider.healthring.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -109,8 +110,10 @@ public class WxScanActivity extends AppCompatActivity implements View.OnClickLis
     private void toNext() {
         Intent intent = new Intent(this, NewSearchActivity.class);
         startActivity(intent);
+        finish();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onLongClick(View v) {
         switch (v.getId()) {

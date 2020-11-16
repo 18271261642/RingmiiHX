@@ -107,17 +107,23 @@ public class PersonDataActivity extends WatchBaseActivity
     private ArrayList<String> weightList;
 
     private Uri mCutUri;
-    private String picPath="";
+    private String picPath = "";
 
     private RequestPressent requestPressent;
     //盖德用户实体类
     private GuiderUserInfo guiderUserInfo = new GuiderUserInfo();
+    private String phone;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_persondata);
+        if (getIntent() != null) {
+            if (StringUtil.isEmpty(getIntent().getStringExtra("phone"))) {
+                phone = getIntent().getStringExtra("phone");
+            }
+        }
         initViewIds();
         initViews();
 
@@ -155,6 +161,7 @@ public class PersonDataActivity extends WatchBaseActivity
         tvTitle.setText(R.string.mine_data);
         manIconview.switchState();
         sexVal = "M";
+        guiderUserInfo.setGender("MAN");
         heightList = new ArrayList<>();
         weightList = new ArrayList<>();
         for (int i = 120; i < 231; i++) {
@@ -169,64 +176,52 @@ public class PersonDataActivity extends WatchBaseActivity
         AndPermission.with(PersonDataActivity.this)
                 .runtime()
                 .permission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .onDenied(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
+                .onDenied(data -> {
 
-                    }
                 })
-                .onDenied(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
+                .onDenied(data -> {
 
-                    }
                 })
-                .rationale(new Rationale<List<String>>() {
-                    @Override
-                    public void showRationale(Context context, List<String> data, RequestExecutor executor) {
+                .rationale((context, data, executor) -> {
 
-                    }
                 }).start();
 
-        subscriberOnNextListener = new SubscriberOnNextListener<String>() {
-            @Override
-            public void onNext(String result) {
+        subscriberOnNextListener = result -> {
 //                Log.e("PersonDataActivity", "--result--" + result);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    String resultCode = jsonObject.getString("resultCode");
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String resultCode = jsonObject.getString("resultCode");
 
 //                    Log.e("PersonDataActivity", "------result----" + resultCode + "---" + jsonObject.getString("resultCode"));
 
-                    if ("001".equals(resultCode)) {
-                        if (isSubmit) {
+                if ("001".equals(resultCode)) {
+                    if (isSubmit) {
 //                            Log.e("PersonDataActivity", "----333------");
-                            userInfo.setNickName(nickName);
-                            userInfo.setSex(sexVal);
-                            userInfo.setBirthday(brithdayVal);
-                            userInfo.setHeight(height);
-                            userInfo.setWeight(weight);
-                            startActivity(new Intent(PersonDataActivity.this, NewSearchActivity.class));
-                            finish();
-                        } else {
+                        userInfo.setNickName(nickName);
+                        userInfo.setSex(sexVal);
+                        userInfo.setBirthday(brithdayVal);
+                        userInfo.setHeight(height);
+                        userInfo.setWeight(weight);
+                        startActivity(new Intent(PersonDataActivity.this, NewSearchActivity.class));
+                        finish();
+                    } else {
 //                            Log.e("PersonDataActivity", "----444------");
-                            String imageUrl = jsonObject.optString("url");
-                            userInfo.setImage(imageUrl);// .error(R.mipmap.touxiang)
+                        String imageUrl = jsonObject.optString("url");
+                        userInfo.setImage(imageUrl);// .error(R.mipmap.touxiang)
 //                            //   .error(R.drawable.piece_dot)
 //                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                                    .centerCrop()
-                            RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
-                                    .skipMemoryCache(true);
-                            Glide.with(PersonDataActivity.this).load(imageUrl)
-                                    .apply(mRequestOptions)
-                                    .into(headImg);
-                        }
-                    } else {
-                        ToastUtil.showShort(PersonDataActivity.this, getString(R.string.submit_fail));
+                        RequestOptions mRequestOptions = RequestOptions.circleCropTransform().diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .skipMemoryCache(true);
+                        Glide.with(PersonDataActivity.this).load(imageUrl)
+                                .apply(mRequestOptions)
+                                .into(headImg);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.submit_fail));
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         };
 
@@ -293,7 +288,7 @@ public class PersonDataActivity extends WatchBaseActivity
                     public void onProCityPickCompleted(String profession) {
                         height = profession;
                         heightvalTv.setText(height);
-                        guiderUserInfo.setWeight(Integer.valueOf(StringUtils.substringBefore(profession, "cm").trim()));
+                        guiderUserInfo.setHeight(Integer.parseInt(StringUtils.substringBefore(profession, "cm").trim()));
 
                     }
                 }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
@@ -313,7 +308,7 @@ public class PersonDataActivity extends WatchBaseActivity
                     public void onProCityPickCompleted(String profession) {
                         weight = profession;
                         weightvalTv.setText(profession);
-                        guiderUserInfo.setWeight(Integer.valueOf(StringUtils.substringBefore(profession, "kg").trim()));
+                        guiderUserInfo.setWeight(Integer.parseInt(StringUtils.substringBefore(profession, "kg").trim()));
                     }
                 }).textConfirm(getResources().getString(R.string.confirm)) //text of confirm button
                         .textCancel(getResources().getString(R.string.cancle)) //text of cancel button
@@ -348,26 +343,8 @@ public class PersonDataActivity extends WatchBaseActivity
                     ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_weight));
                     return;
                 }
-                submitGuiderUserInfoData();
+                submitGuiderUserInfoData(uName);
                 //完成
-
-                submitPersonData(uName, birthTxt, heightTxt, weightTxt);
-
-
-//                //完成
-//                nickName = codeEt.getText().toString();
-//                if (TextUtils.isEmpty(nickName)) {
-//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.write_nickname));
-//                } else if (TextUtils.isEmpty(brithdayVal)) {
-//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_brithday));
-//                } else if (TextUtils.isEmpty(height)) {
-//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_height));
-//                } else if (TextUtils.isEmpty(weight)) {
-//                    ToastUtil.showShort(PersonDataActivity.this, getString(R.string.select_weight));
-//                } else {
-//
-//
-//                }
                 break;
             case R.id.man_iconview:
                 sexVal = "M";
@@ -389,22 +366,26 @@ public class PersonDataActivity extends WatchBaseActivity
     }
 
     //提交盖德编辑用户信息接口
-    private void submitGuiderUserInfoData() {
+    private void submitGuiderUserInfoData(String uName) {
         try {
-            long guiderAccountId = (long) SharedPreferencesUtils.getParam(this, "accountIdGD", 0L);
+            long guiderAccountId = (long) SharedPreferencesUtils.getParam(
+                    mContext, "accountIdGD", 0L);
             if (guiderAccountId == 0)
                 return;
+            Log.e("登录的userId", guiderAccountId + "");
             guiderUserInfo.setAccountId((int) guiderAccountId);
             guiderUserInfo.setAddr("");
             guiderUserInfo.setCardId("");
-
             String birthdarStr = brithdayvalTv.getText().toString();
             guiderUserInfo.setBirthday(birthdarStr + "T00:00:00Z");
+            guiderUserInfo.setName(uName);
+            guiderUserInfo.setPhone(phone);
             String userUrl = BuildConfig.APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
             if (requestPressent != null) {
+                showLoadingDialog("");
                 //Log.e(TAG,"-------盖德参数="+new Gson().toJson(guiderUserInfo));
-                requestPressent.getRequestPutJsonObject(12, userUrl, this, new Gson().toJson(guiderUserInfo), 12);
-
+                requestPressent.getRequestPutJsonObject(12, userUrl, this,
+                        new Gson().toJson(guiderUserInfo), 12);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -438,7 +419,7 @@ public class PersonDataActivity extends WatchBaseActivity
 //                                startActivityForResult(intent,120);
                             PhotoCuttingUtil.INSTANCE.selectPhotoZoom2(
                                     PersonDataActivity.this, 111,
-                                    1, 1,false);
+                                    1, 1, false);
                             break;
                         case R.id.cancle:
                             break;
@@ -485,7 +466,7 @@ public class PersonDataActivity extends WatchBaseActivity
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         String data = jsonObject.getString("data");
-                        if (data == null)
+                        if (StringUtil.isEmpty(data))
                             return;
 //                        guiderUserInfo.setHeadUrl(data);    //用户的头像地址
 //                        updateGuiderUserInfo(guiderUserInfo);
@@ -566,11 +547,11 @@ public class PersonDataActivity extends WatchBaseActivity
                         //Log.e(TAG,"-------")
                         File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
                                 "cutcamera.png"); //裁剪的保存地址
-                        String displayName = System.currentTimeMillis()+".png";
+                        String displayName = System.currentTimeMillis() + ".png";
                         String mimeType = "image/png";
                         Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
-                        FileDirUtil.INSTANCE.addBitmapToAlbum(bitmap,displayName,
-                                mimeType,compressFormat,mContext,false);
+                        FileDirUtil.INSTANCE.addBitmapToAlbum(bitmap, displayName,
+                                mimeType, compressFormat, mContext, false);
                         uploadGuiderPic(cutfile.getPath());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -886,9 +867,23 @@ public class PersonDataActivity extends WatchBaseActivity
                 case 0x02:  //完善用户信息
                     analysisUserStr(jsonObject);
                     break;
+                case 12:
+                    if (WatchUtils.isNetRequestSuccess(object.toString(), 0)) {
+                        String uName = codeEt.getText().toString();
+                        String birthTxt = brithdayvalTv.getText().toString();
+                        String heightTxt = heightvalTv.getText().toString();
+                        String weightTxt = weightvalTv.getText().toString();
+                        submitPersonData(uName, birthTxt, heightTxt, weightTxt);
+                    } else {
+                        Log.e("完善信息页的盖德错误", jsonObject.getString("msg"));
+                        ToastUtil.showToast(PersonDataActivity.this,
+                                jsonObject.getString("msg"));
+                        hideLoadingDialog();
+                    }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            hideLoadingDialog();
         }
     }
 
@@ -906,17 +901,23 @@ public class PersonDataActivity extends WatchBaseActivity
     //完善用户信息
     private void analysisUserStr(JSONObject jsonObject) {
         try {
-            if (!jsonObject.has("code"))
+            if (!jsonObject.has("code")) {
+                hideLoadingDialog();
                 return;
+            }
             if (jsonObject.getInt("code") == 200) {
                 ToastUtil.showToast(PersonDataActivity.this, getResources().getString(R.string.modify_success));
                 startActivity(NewSearchActivity.class);
+                hideLoadingDialog();
                 finish();
             } else {
-                ToastUtil.showToast(PersonDataActivity.this, jsonObject.getString("data"));
+                ToastUtil.showToast(PersonDataActivity.this,
+                        jsonObject.getString("data"));
+                hideLoadingDialog();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            hideLoadingDialog();
         }
     }
 }

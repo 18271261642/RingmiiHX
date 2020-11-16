@@ -260,7 +260,7 @@ public class B30DeviceActivity extends WatchBaseActivity
                                  */
                                 if (AndPermission.hasAlwaysDeniedPermission(MyApp.getContext(), data)) {
                                     //true，弹窗再次向用户索取权限
-                                    showSettingDialog(MyApp.getContext(), data);
+                                    showSettingDialog(mContext, data);
                                 }
                             }
                         }).start();

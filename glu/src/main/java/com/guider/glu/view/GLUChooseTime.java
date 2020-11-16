@@ -111,7 +111,7 @@ public class GLUChooseTime extends GLUFragment {
                 DeviceInit.DEV_GLU));
 
         // 根据国别处理单位
-        IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+        IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
         // 异常单选框
         TextView tvGluUnit = view.findViewById(R.id.glu_abnormal_textview);
         String unit = iUnit.getGluShowValue(7, 2) + "";
@@ -224,7 +224,7 @@ public class GLUChooseTime extends GLUFragment {
         showDialog();
         GLUServiceManager.getInstance().getNonbsSet(new WeakReference<>(_mActivity), (code, re) -> {
             if (code == 0) {
-                IUnit iUnit1 = UnitUtil.getIUnit(_mActivity);
+                IUnit iUnit1 = UnitUtil.INSTANCE.getIUnit();
                 double value = iUnit1.getGluShowValue(BodyIndex.getInstance().getValue(), 2);
                 input_glu_value.setText(value + "");
                 String diabetesType = BodyIndex.getInstance().getDiabetesType();
@@ -466,7 +466,7 @@ public class GLUChooseTime extends GLUFragment {
                 }
 
                 // 单位处理
-                IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+                IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
                 double value = iUnit.getGluRealValue(Double.parseDouble(input_glu), 2);
                 BodyIndex.getInstance().setValue((float) value);
                 BodyIndex.getInstance().setId(UserManager.getInstance().getId());

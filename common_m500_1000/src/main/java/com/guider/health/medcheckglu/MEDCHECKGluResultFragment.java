@@ -50,7 +50,7 @@ public class MEDCHECKGluResultFragment extends BaseFragment {
     @SuppressLint("SetTextI18n")
     private void initBodyView() {
         TextView tvResult = view.findViewById(R.id.tv_fora_glu_reslut);
-        IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+        IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
         double value = iUnit.getGluShowValue(MEDCHECKGlucose.getMEDCHECKGluInstance().getGlucose(),
                 2);
         tvResult.setText(String.format(getResources().getString(R.string.medcheck_glu_reult_format),

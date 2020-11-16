@@ -68,7 +68,7 @@ public class ViewHolderOfForaGlu extends BaseResultViewHolder {
         if (hasData()) {
             Glucose instance = ForaGlucose.getForaGluInstance();
             // Unit unit = new Unit();
-            IUnit iUnit = UnitUtil.getIUnit(mContext);
+            IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
             TooLazyToWrite.setTextView(view, R.id.fora_glu, iUnit.getGluShowValue(instance.getGlucose(), 2) +  iUnit.getGluUnit());
 
             // TooLazyToWrite.setTextView(view, R.id.fora_glu, instance.getGlucose() +  unit.bloodSugar);

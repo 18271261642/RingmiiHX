@@ -1,13 +1,16 @@
 package com.guider.healthring.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
+
 import android.telephony.TelephonyManager;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -32,9 +35,11 @@ import com.guider.healthring.util.Common;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.w30s.W30SHomeActivity;
 import com.google.gson.Gson;
+import com.guider.libbase.util.Log;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEServices;
 import com.suchengkeji.android.w30sblelibrary.utils.SharedPreferenceUtil;
 import com.yanzhenjie.permission.AndPermission;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,31 +56,33 @@ public class GuideActivity extends BaseActivity {
     private static final int READ_MSG_CODE = 1002;
 
 
-
+    @SuppressLint("WrongConstant")
     @Override
     protected void initViews() {
 
         try {
             boolean serviceRunning = W30SBLEServices.isServiceRunning(this, "com.suchengkeji.android.w30sblelibrary.W30SBLEServices");
 //            Log.e("--------调试-", "-GuideActivity-onStart--" + serviceRunning);
-            if (!serviceRunning){MyApp.getmW30SBLEManage().openW30SBLEServices();}
+            if (!serviceRunning) {
+                MyApp.getmW30SBLEManage().openW30SBLEServices();
+            }
         } catch (Exception e) {
             e.getMessage();
         }
 
         //B30目标步数 默认8000
-        int goalStep = (int) SharedPreferencesUtils.getParam(MyApp.getContext(),"b30Goal",0);
-        if(goalStep==0){
-            SharedPreferencesUtils.setParam(MyApp.getContext(),"b30Goal",8000);
+        int goalStep = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "b30Goal", 0);
+        if (goalStep == 0) {
+            SharedPreferencesUtils.setParam(MyApp.getContext(), "b30Goal", 8000);
         }
-        String b30SleepGoal = (String) SharedPreferencesUtils.getParam(MyApp.getContext(),"b30SleepGoal","");
-        if(WatchUtils.isEmpty(b30SleepGoal)){
-            SharedPreferencesUtils.setParam(MyApp.getContext(),"b30SleepGoal","8.0");
+        String b30SleepGoal = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), "b30SleepGoal", "");
+        if (WatchUtils.isEmpty(b30SleepGoal)) {
+            SharedPreferencesUtils.setParam(MyApp.getContext(), "b30SleepGoal", "8.0");
         }
         //B30的默认密码
-        String b30Pwd = (String) SharedPreferencesUtils.getParam(MyApp.getContext(),Commont.DEVICESCODE,"");
-        if(WatchUtils.isEmpty(b30Pwd)){
-            SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.DEVICESCODE,"0000");
+        String b30Pwd = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.DEVICESCODE, "");
+        if (WatchUtils.isEmpty(b30Pwd)) {
+            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
         }
         //SharedPreferencesUtils.saveObject(MyApp.getContext(),"mylanya","W06X");
         String isFirst = (String) SharedPreferencesUtils.getParam(GuideActivity.this, "msgfirst", "");
@@ -93,10 +100,10 @@ public class GuideActivity extends BaseActivity {
         }
         //初始化H8消息提醒功能
         SharedPreferencesUtils.setParam(GuideActivity.this, "msgfirst", "isfirst");
-        //申请读取通讯录的权限
+        //申请读取电话状态的权限
         AndPermission.with(GuideActivity.this)
                 .runtime()
-                .permission(Manifest.permission.READ_CONTACTS, Manifest.permission.READ_PHONE_STATE,
+                .permission(Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.WRITE_SETTINGS)
                 .start();
         switchLoginUser();
@@ -105,11 +112,9 @@ public class GuideActivity extends BaseActivity {
         HomeAdapter adapter = new HomeAdapter();
         adapter.setData(pageList);
         viewPager.setAdapter(adapter);
-
-
     }
 
-    private void switchLoginUser(){
+    private void switchLoginUser() {
         String isFirstData = (String) SharedPreferencesUtils.getParam(GuideActivity.this, "isFirst", "");
         if (!WatchUtils.isEmpty(isFirstData) && "on".equals(isFirstData)) {   //不是第一次进入
             try {
@@ -124,34 +129,33 @@ public class GuideActivity extends BaseActivity {
 
                 }
                 //判断有没有登录
+
                 if (null != SharedPreferencesUtils.readObject(GuideActivity.this, "userId")) {
+                    String userId = (String) SharedPreferencesUtils.readObject(GuideActivity.this, "userId");
 //                    Log.e("GuideActivity", "--------蓝牙---" + SharedPreferencesUtils.readObject(GuideActivity.this, "mylanya"));
                     String btooth = (String) SharedPreferencesUtils.readObject(GuideActivity.this, "mylanya");
                     String w30sbtooth = (String) SharedPreferenceUtil.get(GuideActivity.this, "mylanya", "");
                     if (!WatchUtils.isEmpty(btooth) || !WatchUtils.isEmpty(w30sbtooth)) {
                         if ("bozlun".equals(btooth)) {    //H8 手表
                             startActivity(new Intent(GuideActivity.this, WatchHomeActivity.class));
-                        }
-                        else if ("W06X".equals(btooth)) {   // H9 手表
+                        } else if ("W06X".equals(btooth)) {   // H9 手表
                             startActivity(new Intent(GuideActivity.this, H9HomeActivity.class));
-                        }
-                        else if ("W30".equals(w30sbtooth) || "w30".equals(w30sbtooth)) {
+                        } else if ("W30".equals(w30sbtooth) || "w30".equals(w30sbtooth)) {
                             startActivity(new Intent(GuideActivity.this, W30SHomeActivity.class));
-                        }else if("B30".equals(btooth)||"Ringmii".equals(btooth)){
+                        } else if ("B30".equals(btooth) || "Ringmii".equals(btooth)) {
                             startActivity(new Intent(GuideActivity.this, B30HomeActivity.class));
-                        }else if ("500S".equals(btooth)||"B31".equals(btooth)) {
+                        } else if ("500S".equals(btooth) || "B31".equals(btooth)) {
                             startActivity(new Intent(GuideActivity.this, B31HomeActivity.class));
-                        }
-                        else {
+                        } else {
                             startActivity(new Intent(GuideActivity.this, NewSearchActivity.class));
                         }
                     } else {
                         startActivity(new Intent(GuideActivity.this, NewSearchActivity.class));
                     }
-                    finish();
                 } else {
                     startActivity(new Intent(GuideActivity.this, LoginActivity.class));
                 }
+                finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -172,13 +176,10 @@ public class GuideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewPager = findViewById(R.id.viewPager);
-        viewPager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferencesUtils.setParam(GuideActivity.this, "isFirst", "on");
-                startActivity(new Intent(GuideActivity.this, LoginActivity.class));
-                finish();
-            }
+        viewPager.setOnClickListener(v -> {
+            SharedPreferencesUtils.setParam(GuideActivity.this, "isFirst", "on");
+            startActivity(new Intent(GuideActivity.this, LoginActivity.class));
+            finish();
         });
         // 获得activity的Window对象，设置其属性
 //        Window mWindow = getWindow();
@@ -207,7 +208,7 @@ public class GuideActivity extends BaseActivity {
     }
 
     private final int[] imageIds = {R.mipmap.image_guide_one, R.mipmap.image_guide_two
-            ,R.mipmap.image_guide_three};
+            , R.mipmap.image_guide_three};
 
     @NonNull
     private List<View> createPageList() {
@@ -226,7 +227,7 @@ public class GuideActivity extends BaseActivity {
             opt.inPurgeable = true;
             opt.inInputShareable = true;
             InputStream is = getResources().openRawResource(
-                    imageIds[i] );
+                    imageIds[i]);
             Bitmap bm = BitmapFactory.decodeStream(is, null, opt);
             BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
             image.setBackgroundDrawable(bd);
@@ -241,17 +242,14 @@ public class GuideActivity extends BaseActivity {
 
 
     private View createPageViews(ImageView drawable, final int index) {
-        View contentView = LayoutInflater.from(this).inflate(R.layout.banner_guide, null,false);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.banner_guide, null, false);
         RelativeLayout activity_guide = (RelativeLayout) contentView.findViewById(R.id.activity_guide);
         if (index == 2) {
-            activity_guide.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SharedPreferenceUtil.put(GuideActivity.this, "w30sunit", true);
-                    SharedPreferencesUtils.setParam(GuideActivity.this, "isFirst", "on");
-                    startActivity(new Intent(GuideActivity.this, LoginActivity.class));
-                    finish();
-                }
+            activity_guide.setOnClickListener(v -> {
+                SharedPreferenceUtil.put(GuideActivity.this, "w30sunit", true);
+                SharedPreferencesUtils.setParam(GuideActivity.this, "isFirst", "on");
+                startActivity(new Intent(GuideActivity.this, LoginActivity.class));
+                finish();
             });
         }
         activity_guide.addView(drawable);

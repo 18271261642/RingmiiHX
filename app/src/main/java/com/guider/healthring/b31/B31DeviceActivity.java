@@ -177,26 +177,18 @@ public class B31DeviceActivity extends WatchBaseActivity
                         .runtime()
                         .permission(Permission.Group.CAMERA, Permission.Group.STORAGE)
                         .rationale(this)//添加拒绝权限回调
-                        .onGranted(new Action<List<String>>() {
-                            @Override
-                            public void onAction(List<String> data) {
-                                startActivity(W30sCameraActivity.class);
-                            }
-                        })
-                        .onDenied(new Action<List<String>>() {
-                            @Override
-                            public void onAction(List<String> data) {
-                                /**
-                                 * 当用户没有允许该权限时，回调该方法
-                                 */
-                                Toast.makeText(MyApp.getContext(), getString(R.string.string_no_permission), Toast.LENGTH_SHORT).show();
-                                /**
-                                 * 判断用户是否点击了禁止后不再询问，AndPermission.hasAlwaysDeniedPermission(MainActivity.this, data)
-                                 */
-                                if (AndPermission.hasAlwaysDeniedPermission(MyApp.getContext(), data)) {
-                                    //true，弹窗再次向用户索取权限
-                                    showSettingDialog(MyApp.getContext(), data);
-                                }
+                        .onGranted(data -> startActivity(W30sCameraActivity.class))
+                        .onDenied(data -> {
+                            /**
+                             * 当用户没有允许该权限时，回调该方法
+                             */
+                            Toast.makeText(MyApp.getContext(), getString(R.string.string_no_permission), Toast.LENGTH_SHORT).show();
+                            /**
+                             * 判断用户是否点击了禁止后不再询问，AndPermission.hasAlwaysDeniedPermission(MainActivity.this, data)
+                             */
+                            if (AndPermission.hasAlwaysDeniedPermission(MyApp.getContext(), data)) {
+                                //true，弹窗再次向用户索取权限
+                                showSettingDialog(mContext, data);
                             }
                         }).start();
 
@@ -349,16 +341,8 @@ public class B31DeviceActivity extends WatchBaseActivity
                 .setCancelable(false)
                 .setTitle(getResources().getString(R.string.prompt))
                 .setMessage(message)
-                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setPermission();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancle), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+                .setPositiveButton(getResources().getString(R.string.confirm), (dialog, which) -> setPermission())
+                .setNegativeButton(getResources().getString(R.string.cancle), (dialog, which) -> {
                 })
                 .show();
     }

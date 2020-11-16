@@ -20,11 +20,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
-import android.util.Log;
 
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -36,14 +35,10 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.inuker.bluetooth.library.BluetoothClient;
 import com.inuker.bluetooth.library.Code;
 import com.inuker.bluetooth.library.Constants;
-import com.inuker.bluetooth.library.model.BleGattProfile;
 import com.inuker.bluetooth.library.search.SearchRequest;
 import com.inuker.bluetooth.library.search.SearchResult;
 import com.inuker.bluetooth.library.search.response.SearchResponse;
 import com.veepoo.protocol.listener.base.IABleConnectStatusListener;
-import com.veepoo.protocol.listener.base.IConnectResponse;
-import com.veepoo.protocol.listener.base.INotifyResponse;
-import com.veepoo.protocol.listener.data.IFindPhonelistener;
 
 import java.io.IOException;
 

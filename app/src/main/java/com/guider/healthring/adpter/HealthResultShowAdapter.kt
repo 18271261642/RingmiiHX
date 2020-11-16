@@ -41,7 +41,7 @@ class HealthResultShowAdapter(context: Context, dataList: ArrayList<HeartMeasure
         }
         when (typeValue) {
             0 -> {
-                val iUnit = UnitUtil.getIUnit(mContext)
+                val iUnit = UnitUtil.getIUnit()
                 val value = iUnit.getGluShowValue(data.bs, 2)
                 holder.setText(R.id.itemValueText, "${value}${unitValue}")
             }

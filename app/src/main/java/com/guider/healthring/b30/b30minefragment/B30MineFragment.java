@@ -56,6 +56,7 @@ import com.veepoo.protocol.model.settings.CustomSettingData;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -164,10 +165,12 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
     //获取盖德的用户信息
     private void getGadiDeUserInfoData() {
         try {
-            long accountId = (long) SharedPreferencesUtils.getParam(getContext(), "accountIdGD", 0L);
+            long accountId = (long) SharedPreferencesUtils.getParam(
+                    Objects.requireNonNull(getContext()), "accountIdGD", 0L);
             if (accountId == 0)
                 return;
             // http://api.guiderhealth.com/
+            Log.e("登录的userId",accountId+"");
             String guiderUrl = BuildConfig.APIURL + "api/v1/userinfo?accountId=" + accountId;
             if (requestPressent != null) {
                 requestPressent.getRequestJSONObjectGet(11, guiderUrl, getContext(), 11);
@@ -416,24 +419,20 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
                 () -> {
                     unbindDevices();
                     if (MyCommandManager.DEVICENAME != null) {
-                        MyApp.getInstance().getVpOperateManager().disconnectWatch(new IBleWriteResponse() {
-                            @Override
-                            public void onResponse(int state) {
-                                if (state == -1) {
-                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
-                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
-                                    MyApp.getInstance().setMacAddress(null);// 清空全局的
-                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
-                                    SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
-                                    SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
-                                    SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                                    getActivity().finish();
-                                }
+                        MyApp.getInstance().getVpOperateManager().disconnectWatch(state -> {
+                            if (state == -1) {
+                                SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
+                                SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
+                                MyApp.getInstance().setMacAddress(null);// 清空全局的
+                                SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
+                                SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
+                                SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
+                                SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                getActivity().finish();
                             }
                         });
                     } else {
-                        MyCommandManager.DEVICENAME = null;
                         MyCommandManager.ADDRESS = null;
                         SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
                         SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");

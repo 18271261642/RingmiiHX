@@ -30,7 +30,7 @@ android {
     compileSdkVersion andr.compileSdkVersion
     defaultConfig {
         multiDexEnabled true
-        applicationId "com.guider.healthringx"
+//        applicationId "com.guider.mcuband"
         minSdkVersion andr.minSdkVersion
         targetSdkVersion andr.targetSdkVersion
         versionCode rootProject.ext.codeVersion
@@ -59,8 +59,10 @@ android {
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
 
             if (rootProject.googlePlay) { // 国际版
-                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+//                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
+//                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+                buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
+                buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
                 buildConfigField("String", "WEBDOMAIN", '"http://app.guidertech.com/"')
                 buildConfigField("String", "CMATEWEBDOMAIN", '"http://cmate.guidertech.com/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
@@ -151,6 +153,7 @@ android {
         // HEALTH 0 运动， 1 横板健康， 2 竖版无创
         // 盖德默认应用
         app_guider {
+            applicationId "com.guider.healthringx"
             manifestPlaceholders = [
                     app_name: "@string/the_app_name",
                     channel: "app_guider",
@@ -163,6 +166,7 @@ android {
 
         // 盖德添加健康应用
         app_guider_health {
+            applicationId "com.guider.healthringx"
             manifestPlaceholders = [
                     app_name: "@string/the_app_name",
                     channel: "app_guider_health",
@@ -175,6 +179,7 @@ android {
 
         // Vigori Mate 第三方兼容，健康改为竖版无创
         app_vigori_mate  {
+            applicationId "com.guider.healthringx"
             manifestPlaceholders = [
                     app_name: "Vigori Mate",
                     channel: "app_vigori_mate",
@@ -183,6 +188,18 @@ android {
             ]
             buildConfigField("int", "HEALTH", "2")
             buildConfigField("String", "MAC", '"11:11:11:11:11:13"')
+        }
+        // mcu手環
+        app_guider_mcu {
+            applicationId "com.guider.mcuband"
+            manifestPlaceholders = [
+                    app_name: "mcu手環",
+                    channel: "app_guider_mcu",
+                    app_icon: "@drawable/icon_mcu",
+                    running_label: "@string/btn_health"
+            ]
+            buildConfigField("int", "HEALTH", "1")
+            buildConfigField("String", "MAC", '"11:11:11:11:11:15"')
         }
     }
 }

@@ -1,23 +1,22 @@
 package com.guider.healthring.activity;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.guider.healthring.Commont;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.R;
 import com.guider.healthring.base.BaseActivity;
-import com.guider.healthring.net.OkHttpObservable;
-import com.guider.healthring.rxandroid.DialogSubscriber;
-import com.guider.healthring.rxandroid.SubscriberOnNextListener;
-import com.guider.healthring.util.Common;
+import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Md5Util;
+import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
-import com.guider.healthring.util.URLs;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,33 +33,12 @@ public class ModifyPasswordActivity extends BaseActivity {
     EditText oldPassword;
     EditText newPassword;
     EditText confrimPassword;
-
-    private DialogSubscriber dialogSubscriber;
-    private SubscriberOnNextListener<String> subscriberOnNextListener;
+    private Dialog dialog;
 
     @Override
     protected void initViews() {
         initViewIds();
         tvTitle.setText(R.string.modify_password);
-        subscriberOnNextListener = new SubscriberOnNextListener<String>() {
-            @Override
-            public void onNext(String result) {
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    if(!jsonObject.has("code"))
-                        return;
-                    if(jsonObject.getInt("code") == 200){
-                        ToastUtil.showShort(ModifyPasswordActivity.this, getString(R.string.modify_success));
-                        finish();
-                    }else{
-                        ToastUtil.showToast(ModifyPasswordActivity.this,jsonObject.getString("msg"));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
     }
 
     private void initViewIds() {
@@ -89,7 +67,7 @@ public class ModifyPasswordActivity extends BaseActivity {
             ToastUtil.showShort(this, getString(R.string.input_confirm_password));
         } else if (!newPass.equals(confrimPass)) {
             ToastUtil.showShort(this, getString(R.string.new_dif_confirm));
-        } else if (oldPass.length() < 6||newPass.length() < 6) {
+        } else if (oldPass.length() < 6 || newPass.length() < 6) {
             ToastUtil.showShort(this, getResources().getString(R.string.not_b_less));
         } else {
             modifyPersonData(oldPass, confrimPass);
@@ -103,15 +81,73 @@ public class ModifyPasswordActivity extends BaseActivity {
     }
 
     private void modifyPersonData(String oldePwd, String newPwd) {
-        Gson gson = new Gson();
-        HashMap<String, Object> map = new HashMap<>();
-        String userId = (String) SharedPreferencesUtils.readObject(ModifyPasswordActivity.this, Commont.USER_ID_DATA);
-        map.put("userId", userId);
-        map.put("oldePwd", Md5Util.Md532(oldePwd));
+        HashMap<String, String> map = new HashMap<>();
+        long accountId = (long) SharedPreferencesUtils.getParam(
+                ModifyPasswordActivity.this, "accountIdGD", 0L);
+        if (accountId == 0)
+            return;
+        map.put("accountId", accountId + "");
+        map.put("oldPwd", Md5Util.Md532(oldePwd));
+        map.put("confirmPwd", Md5Util.Md532(newPwd));
         map.put("newPwd", Md5Util.Md532(newPwd));
-        String mapjson = gson.toJson(map);
-        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, ModifyPasswordActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber, Commont.FRIEND_BASE_URL + URLs.xiugaipassword, mapjson);
+        String editPassUrl = BuildConfig.APIURL + "api/v1/account/pwd";
+        showLoadingDialog("");
+        OkHttpTool.getInstance().doRequest(editPassUrl, map, "1", result -> {
+            Log.e("ModifyPasswordActivity", "-------修改密码=" + result);
+            runOnUiThread(() -> {
+                if (WatchUtils.isNetRequestSuccess(result, 0)) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (!jsonObject.has("code")) {
+                            hideLoadingDialog();
+                            return;
+                        }
+                        if (jsonObject.getInt("code") == 0
+                                && jsonObject.getBoolean("data")) {
+                            ToastUtil.showShort(ModifyPasswordActivity.this,
+                                    getString(R.string.modify_success));
+                            finish();
+                        } else {
+                            ToastUtil.showToast(ModifyPasswordActivity.this,
+                                    jsonObject.getString("msg"));
+                        }
+                        hideLoadingDialog();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        hideLoadingDialog();
+                    }
+                } else hideLoadingDialog();
+            });
+        }, false);
     }
 
+    @SuppressLint("SetTextI18n")
+    public void showLoadingDialog(String msg) {
+        if (dialog == null) {
+            dialog = new Dialog(ModifyPasswordActivity.this, R.style.CustomProgressDialog);
+            dialog.setContentView(R.layout.pro_dialog_layout_view);
+            TextView tv = dialog.getWindow().findViewById(R.id.progress_tv);
+            tv.setText(msg + "");
+            dialog.setCancelable(true);
+        } else {
+            dialog.setContentView(R.layout.pro_dialog_layout_view);
+            dialog.setCancelable(true);
+            TextView tv = dialog.getWindow().findViewById(R.id.progress_tv);
+            tv.setText(msg + "");
+        }
+        dialog.show();
+        // mHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIALOG, 30 * 1000);
+    }
+
+
+    public void hideLoadingDialog() {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideLoadingDialog();
+    }
 }

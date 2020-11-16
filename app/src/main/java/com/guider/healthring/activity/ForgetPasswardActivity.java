@@ -118,36 +118,34 @@ public class ForgetPasswardActivity extends BaseActivity
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
 
-        subscriberOnNextListener = new SubscriberOnNextListener<String>() {
-            @Override
-            public void onNext(String result) {
-                //Loaddialog.getInstance().dissLoading();
-                Gson gson = new Gson();
-                try {
-                    if (WatchUtils.isEmpty(result)) return;
-                    Log.e("======", result);
-                    JSONObject jsonObject = new JSONObject(result);
-                    String loginResult = jsonObject.getString("resultCode");
-                    if ("001".equals(loginResult)) {
-                        Toast.makeText(ForgetPasswardActivity.this, getResources().getString(R.string.change_password), Toast.LENGTH_SHORT).show();
-                  /*      BlueUser userInfo = gson.fromJson(jsonObject.getString("userInfo").toString(), BlueUser.class);
-                        MyLogUtil.i("msg", "-userInfo-" + userInfo.toString());
-                        B18iCommon.userInfo = userInfo;
-                        B18iCommon.customer_id = userInfo.getUserId();
-                        MobclickAgent.onProfileSignIn(B18iCommon.customer_id);
-                        String pass = password.getText().toString();
-                        String usernametxt = username.getText().toString();
-                        userInfo.setPassword(Md5Util.Md532(pass));
+        subscriberOnNextListener = result -> {
+            //Loaddialog.getInstance().dissLoading();
+            try {
+                if (WatchUtils.isEmpty(result)) return;
+                Log.e("======", result);
+                JSONObject jsonObject = new JSONObject(result);
+                String loginResult = jsonObject.getString("resultCode");
+                if ("001".equals(loginResult)) {
+                    Toast.makeText(ForgetPasswardActivity.this,
+                            getResources().getString(R.string.change_password),
+                            Toast.LENGTH_SHORT).show();
+              /*      BlueUser userInfo = gson.fromJson(jsonObject.getString("userInfo").toString(), BlueUser.class);
+                    MyLogUtil.i("msg", "-userInfo-" + userInfo.toString());
+                    B18iCommon.userInfo = userInfo;
+                    B18iCommon.customer_id = userInfo.getUserId();
+                    MobclickAgent.onProfileSignIn(B18iCommon.customer_id);
+                    String pass = password.getText().toString();
+                    String usernametxt = username.getText().toString();
+                    userInfo.setPassword(Md5Util.Md532(pass));
 
 
-                        MyApp.getApplication().getDaoSession().getBlueUserDao().insertOrReplace(userInfo);
-                        SharedPreferencesUtils.setParam(ForgetPasswardActivity.this, SharedPreferencesUtils.CUSTOMER_ID, B18iCommon.customer_id);
-                        SharedPreferencesUtils.setParam(ForgetPasswardActivity.this, SharedPreferencesUtils.CUSTOMER_PASSWORD, pass);*/
-                        finish();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    MyApp.getApplication().getDaoSession().getBlueUserDao().insertOrReplace(userInfo);
+                    SharedPreferencesUtils.setParam(ForgetPasswardActivity.this, SharedPreferencesUtils.CUSTOMER_ID, B18iCommon.customer_id);
+                    SharedPreferencesUtils.setParam(ForgetPasswardActivity.this, SharedPreferencesUtils.CUSTOMER_PASSWORD, pass);*/
+                    finish();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         };
     }

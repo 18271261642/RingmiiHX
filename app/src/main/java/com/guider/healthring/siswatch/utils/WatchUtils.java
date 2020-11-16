@@ -91,7 +91,7 @@ public class WatchUtils {
     //卡路里的常量
     public static double kcalcanstanc = 65.4;  //计算卡路里常量
 
-    // 字符串的非空
+    // 字符串是否为空
     public static boolean isEmpty(String input) {
         if (input == null || "".equals(input) || "null".equals(input))
             return true;

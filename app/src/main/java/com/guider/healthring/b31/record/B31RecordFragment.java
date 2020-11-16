@@ -2,9 +2,11 @@ package com.guider.healthring.b31.record;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -15,11 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +25,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -80,9 +82,9 @@ import com.guider.healthring.util.Constant;
 import com.guider.healthring.util.LocalizeTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.widget.WaveProgress;
+import com.guider.libbase.other.impl.BaseOnDialogClick;
+import com.guider.libbase.util.DialogUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.model.datas.HRVOriginData;
 import com.veepoo.protocol.model.datas.HalfHourBpData;
@@ -108,6 +110,7 @@ import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_SPO2H;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIN_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIN_SPO2H;
+import static com.guider.healthring.util.SharedPreferencesUtils.isOpenNotificationPermission;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BEATH_BREAK;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HRV;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
@@ -246,6 +249,7 @@ public class B31RecordFragment extends LazyFragment
 
     //血压的集合map，key : 时间；value : 血压值map
     private List<Map<String, Map<Integer, Integer>>> resultBpMapList;
+    private AlertDialog alertDialog;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -391,6 +395,38 @@ public class B31RecordFragment extends LazyFragment
                     "save_curr_time", System.currentTimeMillis() / 1000 + "");
 
         //setGuiderBemo();
+    }
+
+    private void isNotificationServiceEnable() {
+        //首先去判断手环的微信和line推送开关是否开启
+        Boolean isOpenNotificationRingSwitch = true;
+        if (SharedPreferencesUtils.getParam(mContext, isOpenNotificationPermission,
+                true) != null) {
+            isOpenNotificationRingSwitch = (Boolean) SharedPreferencesUtils.getParam(
+                    mContext, isOpenNotificationPermission,
+                    true);
+        }
+        //再去判断是否获取了系统的推送开关权限
+        if (!NotificationManagerCompat.getEnabledListenerPackages(mContext).contains(
+                mContext.getPackageName())
+                && isOpenNotificationRingSwitch) {
+            alertDialog = null;
+            alertDialog = DialogUtil.showConfirmDialog(mContext, (ViewGroup) null,
+                    mContext.getResources().getString(R.string.app_permission_notification_ring),
+                    new BaseOnDialogClick() {
+                        @Override
+                        public void onConfirm(DialogInterface dialogInterface, View view) {
+                            startActivity(new Intent(
+                                    "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                            super.onConfirm(dialogInterface, view);
+                        }
+
+                        @Override
+                        public void onCancle(DialogInterface dialogInterface, View view) {
+                            super.onCancle(dialogInterface, view);
+                        }
+                    }, true);
+        }
     }
 
     @SuppressLint("WrongConstant")
@@ -558,7 +594,8 @@ public class B31RecordFragment extends LazyFragment
         resultBpMapList = new ArrayList<>();
 
         initSpo2hUtil();
-
+        //3s后获取通知权限
+        b31HomeHrvChart.postDelayed(this::isNotificationServiceEnable, 3000);
         //updatePageData();
     }
 
@@ -736,6 +773,10 @@ public class B31RecordFragment extends LazyFragment
         super.onDestroy();
         if (broadcastReceiver != null)
             mContext.unregisterReceiver(broadcastReceiver);
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
     }
 
     @Override

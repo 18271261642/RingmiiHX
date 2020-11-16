@@ -155,7 +155,7 @@ public class MeasureResult extends GlocoseFragment{
             });
 
             // 根据国别处理血糖单位
-            IUnit iUnit = UnitUtil.getIUnit(this._mActivity);
+            IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
             double value = iUnit.getGluShowValue(Glucose.getInstance().getGlucose(), 2);
             ((TextView) view.findViewById(R.id.glu_result)).setText(value + ""); // 值
             ((TextView) view.findViewById(R.id.glu_result_danwei)).setText(iUnit.getGluUnit()); // 单位

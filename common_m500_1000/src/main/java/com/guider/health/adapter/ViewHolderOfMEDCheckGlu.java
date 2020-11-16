@@ -57,7 +57,7 @@ public class ViewHolderOfMEDCheckGlu extends BaseResultViewHolder {
     void setResult(Object result) {
         if (hasData()) {
             Glucose instance = MEDCHECKGlucose.getMEDCHECKGluInstance();
-            IUnit iUnit = UnitUtil.getIUnit(mContext);
+            IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
             TooLazyToWrite.setTextView(view, R.id.fora_glu, iUnit.getGluShowValue(
                     instance.getGlucose(), 2) +  iUnit.getGluUnit());
 

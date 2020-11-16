@@ -260,4 +260,7 @@ public interface IGuiderApi {
 
     @GET("api/v1/wechat/qr")
     Call<String> createWXQr(@Query("appId") String appId, @Query("expireSeconds") long expireSeconds, @Query("sceneStr") String sceneStr);
+    //修改手环登录密码
+    @PUT("api/v1/bandpwd")
+    Call<String> backupOldPwd(@Query("accountId") int accountId , @Query("bandPwd") String bandPwd);
 }

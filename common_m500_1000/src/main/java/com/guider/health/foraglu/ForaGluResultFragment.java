@@ -68,7 +68,7 @@ public class ForaGluResultFragment extends BaseFragment {
     private void initBodyView() {
         // 结果展示
         TextView tvResult = view.findViewById(R.id.tv_fora_glu_reslut);
-        IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+        IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
         double value = iUnit.getGluShowValue(ForaGlucose.getForaGluInstance().getGlucose(), 2);
         tvResult.setText(String.format(getResources().getString(R.string.fora_glu_reult_format), value) + iUnit.getGluUnit());
         // 默认随机

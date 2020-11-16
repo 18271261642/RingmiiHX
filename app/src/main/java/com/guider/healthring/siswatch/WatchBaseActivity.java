@@ -106,19 +106,18 @@ public class WatchBaseActivity extends AppCompatActivity {
     public void showLoadingDialog(String msg) {
 
         if (dialog == null) {
-            dialog = new Dialog(WatchBaseActivity.this, R.style.CustomProgressDialog);
+            dialog = new Dialog(watchBaseActivity, R.style.CustomProgressDialog);
             dialog.setContentView(R.layout.pro_dialog_layout_view);
-            TextView tv = (TextView) dialog.getWindow().findViewById(R.id.progress_tv);
+            TextView tv = dialog.getWindow().findViewById(R.id.progress_tv);
             tv.setText(msg + "");
             dialog.setCancelable(true);
-            dialog.show();
         } else {
             dialog.setContentView(R.layout.pro_dialog_layout_view);
             dialog.setCancelable(true);
-            TextView tv = (TextView) dialog.getWindow().findViewById(R.id.progress_tv);
+            TextView tv = dialog.getWindow().findViewById(R.id.progress_tv);
             tv.setText(msg + "");
-            dialog.show();
         }
+        dialog.show();
         // mHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIALOG, 30 * 1000);
     }
 

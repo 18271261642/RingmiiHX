@@ -256,7 +256,7 @@ public class GLUStartMeasureAndShowResult extends GLUFragment {
                 Glucose.getInstance().setIndexOxygen(results.get(1));
             }
 
-            IUnit iUnit = UnitUtil.getIUnit(_mActivity);
+            IUnit iUnit = UnitUtil.INSTANCE.getIUnit();
             double value = iUnit.getGluShowValue(GLUServiceManager.getInstance().getGlucoseResult(), 2);
             showGLUDialog( value+ "");
         } catch (Exception e) {

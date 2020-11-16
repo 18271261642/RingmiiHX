@@ -23,12 +23,12 @@ import com.guider.libbase.other.impl.BaseOnDialogClick;
  */
 public class DialogUtil
 {
-    public static void showConfirmDialog(Context context, ViewGroup viewRoot,
+    public static AlertDialog showConfirmDialog(Context context, ViewGroup viewRoot,
                                          final String msg,
                                          final IOnDialogClick iOnDialogClick,
                                          final boolean dismissAfterConfirm)
     {
-        showBaseDialog(context, viewRoot, R.layout.dialog_content_confirm,
+        return showBaseDialog(context, viewRoot, R.layout.dialog_content_confirm,
                 "提示",
                 "取消",
                 "确定",
@@ -72,14 +72,14 @@ public class DialogUtil
                 true);
     }
 
-    public static void showConfirmDialog(Context context, ViewGroup viewRoot,
+    public static AlertDialog showConfirmDialog(Context context, ViewGroup viewRoot,
                                          String  title,
                                          final String msg,
                                          String cancle, String confirm,
                                          final IOnDialogClick iOnDialogClick,
                                          final boolean dismissAfterConfirm)
     {
-        showBaseDialog(context, viewRoot, R.layout.dialog_content_confirm,
+        return showBaseDialog(context, viewRoot, R.layout.dialog_content_confirm,
                 title,
                 cancle,
                 confirm,
@@ -196,14 +196,14 @@ public class DialogUtil
                 dismissAfterConfirm);
     }
 
-    public static void showBaseDialog(Context context, ViewGroup viewRoot,
+    public static AlertDialog showBaseDialog(Context context, ViewGroup viewRoot,
                                          int contentLayoutId,
                                          String  title,
                                          String cancle, String confirm,
                                         final IOnDialogClick iOnDialogClick,
                                         final boolean dismissAfterConfirm)
     {
-        showBaseDialog(context, viewRoot, R.layout.dialog_base,
+        return showBaseDialog(context, viewRoot, R.layout.dialog_base,
                 R.id.llayout_root, contentLayoutId,
                 title, R.id.tview_title,
                 cancle, R.id.button_cancle,
@@ -212,13 +212,13 @@ public class DialogUtil
                 dismissAfterConfirm);
     }
 
-    public static void showConfirmDialog(Context context,
+    public static AlertDialog showConfirmDialog(Context context,
                                       String title,
                                       String confirm,
                                       final IOnDialogClick iOnDialogClick,
                                       final boolean dismissAfterConfirm)
     {
-        showBaseDialog(context, null, R.layout.dialog_confirm,
+        return showBaseDialog(context, null, R.layout.dialog_confirm,
                 R.id.llayout_root, R.layout.dialog_content_confirm,
                 title, R.id.tview_title,
                 "", -1,
@@ -254,7 +254,7 @@ public class DialogUtil
      * @param iOnDialogClick view点击的回调
      * @param dismissAfterConfirm 点击确认是否要dismiss
      */
-    private static void showBaseDialog(Context context, ViewGroup viewRoot,
+    private static AlertDialog showBaseDialog(Context context, ViewGroup viewRoot,
                                          int customViewId, int contentViewRoot,
                                          int contentViewId,
                                          String  title, int tviewTitleId,
@@ -310,5 +310,6 @@ public class DialogUtil
         }
 
         alertDialog.show();
+        return alertDialog;
     }
 }
