@@ -16,13 +16,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,20 +53,25 @@ import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.view.CusInputDialogView;
 import com.guider.healthring.widget.BottomSelectView;
 import com.guider.healthring.widget.NoScrollViewPager;
+import com.guider.libbase.other.impl.BaseOnDialogClick;
+import com.guider.libbase.util.DialogUtil;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.guider.healthring.util.SharedPreferencesUtils.isOpenNotificationPermission;
 
 /**
  * B31的主activity
  * Created by Admin
  * Date 2018/12/17
  */
-public class B31HomeActivity extends WatchBaseActivity implements  Rationale<List<String>> {
+public class B31HomeActivity extends WatchBaseActivity implements Rationale<List<String>> {
 
     private static final String TAG = "B31HomeActivity";
 
@@ -74,6 +84,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
     //列设备验证密码提示框
     private CusInputDialogView cusInputDialogView;
     private SendSMSBroadCast sendSMSBroadCast = null;
+    private AlertDialog alertDialog;
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -125,6 +136,39 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
         //注册广播接收者的对象
         this.registerReceiver(sendSMSBroadCast, mIntentFilter);
         MyApp.getInstance().getVpOperateManager().settingDeviceControlPhone(MyApp.phoneSosOrDisPhone);
+        b31ViewPager.postDelayed(this::isNotificationServiceEnable, 3000);
+    }
+
+    private void isNotificationServiceEnable() {
+        //首先去判断手环的微信和line推送开关是否开启
+        Boolean isOpenNotificationRingSwitch = true;
+        if (SharedPreferencesUtils.getParam(mContext, isOpenNotificationPermission,
+                true) != null) {
+            isOpenNotificationRingSwitch = (Boolean) SharedPreferencesUtils.getParam(
+                    mContext, isOpenNotificationPermission,
+                    true);
+        }
+        //再去判断是否获取了系统的推送开关权限
+        if (!NotificationManagerCompat.getEnabledListenerPackages(mContext).contains(
+                mContext.getPackageName())
+                && isOpenNotificationRingSwitch && MyCommandManager.DEVICENAME != null) {
+            if (alertDialog == null)
+                alertDialog = DialogUtil.showConfirmDialog(mContext, (ViewGroup) null,
+                        mContext.getResources().getString(R.string.app_permission_notification_ring),
+                        new BaseOnDialogClick() {
+                            @Override
+                            public void onConfirm(DialogInterface dialogInterface, View view) {
+                                startActivity(new Intent(
+                                        "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                                super.onConfirm(dialogInterface, view);
+                            }
+
+                            @Override
+                            public void onCancle(DialogInterface dialogInterface, View view) {
+                                super.onCancle(dialogInterface, view);
+                            }
+                        }, true);
+        }
     }
 
     private void initViewIds() {
@@ -173,7 +217,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
                     break;
                 case R.id.t3:  //开跑
                     switch (BuildConfig.HEALTH) {
-                        case 0 : // 运动
+                        case 0: // 运动
                             b31ViewPager.setCurrentItem(2, false);
                             break;
                         case 1: // 横板健康
@@ -225,7 +269,7 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
      * 启动上传数据的服务
      */
     public void startUploadDate() {
-        Log.e(TAG,"----------开始上传B31的服务-----");
+        Log.e(TAG, "----------开始上传B31的服务-----");
 //        if (!MyApp.getInstance().isUploadDateGDNew()) {
 //            //上传到新的额服务器
 //            if (upDataToGDServicesNew != null && upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
@@ -257,6 +301,10 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
         if (cusInputDialogView != null)
             cusInputDialogView.cancel();
         if (sendSMSBroadCast != null) unregisterReceiver(sendSMSBroadCast);
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
     }
 
     @Override
@@ -335,13 +383,12 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
     }
 
 
-
     //获取Do not disturb权限,才可进行音量操作
-    private void getDoNotDisturb(){
+    private void getDoNotDisturb() {
         NotificationManager notificationManager =
                 (NotificationManager) MyApp.getInstance().
                         getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        if(notificationManager == null)
+        if (notificationManager == null)
             return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                 && !notificationManager.isNotificationPolicyAccessGranted()) {
@@ -354,7 +401,6 @@ public class B31HomeActivity extends WatchBaseActivity implements  Rationale<Lis
         }
 
     }
-
 
 
     // GPSGoogleUtils instance;

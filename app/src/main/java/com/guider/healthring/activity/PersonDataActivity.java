@@ -242,7 +242,7 @@ public class PersonDataActivity extends WatchBaseActivity
 
     }
 
-    @SuppressLint("WrongConstant")
+    @SuppressLint({"WrongConstant", "NonConstantResourceId"})
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

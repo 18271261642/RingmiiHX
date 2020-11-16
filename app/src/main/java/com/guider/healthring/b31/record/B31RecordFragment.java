@@ -249,7 +249,7 @@ public class B31RecordFragment extends LazyFragment
 
     //血压的集合map，key : 时间；value : 血压值map
     private List<Map<String, Map<Integer, Integer>>> resultBpMapList;
-    private AlertDialog alertDialog;
+
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -397,37 +397,6 @@ public class B31RecordFragment extends LazyFragment
         //setGuiderBemo();
     }
 
-    private void isNotificationServiceEnable() {
-        //首先去判断手环的微信和line推送开关是否开启
-        Boolean isOpenNotificationRingSwitch = true;
-        if (SharedPreferencesUtils.getParam(mContext, isOpenNotificationPermission,
-                true) != null) {
-            isOpenNotificationRingSwitch = (Boolean) SharedPreferencesUtils.getParam(
-                    mContext, isOpenNotificationPermission,
-                    true);
-        }
-        //再去判断是否获取了系统的推送开关权限
-        if (!NotificationManagerCompat.getEnabledListenerPackages(mContext).contains(
-                mContext.getPackageName())
-                && isOpenNotificationRingSwitch) {
-            alertDialog = null;
-            alertDialog = DialogUtil.showConfirmDialog(mContext, (ViewGroup) null,
-                    mContext.getResources().getString(R.string.app_permission_notification_ring),
-                    new BaseOnDialogClick() {
-                        @Override
-                        public void onConfirm(DialogInterface dialogInterface, View view) {
-                            startActivity(new Intent(
-                                    "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                            super.onConfirm(dialogInterface, view);
-                        }
-
-                        @Override
-                        public void onCancle(DialogInterface dialogInterface, View view) {
-                            super.onCancle(dialogInterface, view);
-                        }
-                    }, true);
-        }
-    }
 
     @SuppressLint("WrongConstant")
     private void setGuiderBemo() {
@@ -594,8 +563,6 @@ public class B31RecordFragment extends LazyFragment
         resultBpMapList = new ArrayList<>();
 
         initSpo2hUtil();
-        //3s后获取通知权限
-        b31HomeHrvChart.postDelayed(this::isNotificationServiceEnable, 3000);
         //updatePageData();
     }
 
@@ -773,10 +740,6 @@ public class B31RecordFragment extends LazyFragment
         super.onDestroy();
         if (broadcastReceiver != null)
             mContext.unregisterReceiver(broadcastReceiver);
-        if (alertDialog != null) {
-            alertDialog.dismiss();
-            alertDialog = null;
-        }
     }
 
     @Override

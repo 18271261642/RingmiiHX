@@ -59,10 +59,10 @@ android {
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
 
             if (rootProject.googlePlay) { // 国际版
-//                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-//                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
-                buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
-                buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
+                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
+                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+//                buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
+//                buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
                 buildConfigField("String", "WEBDOMAIN", '"http://app.guidertech.com/"')
                 buildConfigField("String", "CMATEWEBDOMAIN", '"http://cmate.guidertech.com/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")

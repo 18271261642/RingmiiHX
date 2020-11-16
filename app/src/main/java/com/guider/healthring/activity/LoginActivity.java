@@ -12,8 +12,6 @@ import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 
 import android.util.Log;
@@ -29,19 +27,14 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.guider.health.apilib.ApiCallBack;
-import com.guider.health.apilib.ApiConsts;
-import com.guider.health.apilib.ApiUtil;
-import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.apilib.enums.Gender;
 import com.guider.health.common.utils.JsonUtil;
-import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.CustomMade;
@@ -64,7 +57,6 @@ import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
 import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.util.WxScanUtil;
-import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.view.PromptDialog;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
@@ -74,7 +66,6 @@ import com.guider.libbase.activity.WebviewActivity;
 import com.guider.libbase.thirdlogin.ThirdLogin;
 import com.guider.libbase.thirdlogin.line.ILineLogin;
 import com.linecorp.linesdk.LoginDelegate;
-import com.orhanobut.logger.Logger;
 import com.tencent.connect.common.Constants;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -87,9 +78,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by thinkpad on 2017/3/3.
@@ -121,7 +109,6 @@ public class LoginActivity extends WatchBaseActivity
     RelativeLayout qqIv;
     RelativeLayout weixinIv;
     RelativeLayout lineIv;
-    TextView tv_phone_head;
     private static final String TAG = "LoginActivity";
     private DialogSubscriber dialogSubscriber;
     private SubscriberOnNextListener<String> subscriberOnNextListener;
@@ -137,7 +124,6 @@ public class LoginActivity extends WatchBaseActivity
 
     private TextView userinfo_tv;
     private SinaUserInfo userInfo;
-    private PhoneAreaCodeView phoneAreaCodeView;
 
 
     private BluetoothAdapter bluetoothAdapter;
@@ -149,11 +135,6 @@ public class LoginActivity extends WatchBaseActivity
 
     private ThirdLogin mThirdLogin;
     private WXEntryActivityAdapter mWXEntryActivityAdapter;
-    //验证密码是否是初始密码123456，变量控制减少调用次数
-    private Boolean passwordIsInit = false;
-    private Boolean passwordGuiderIsInit = false;
-    //guider备份的 手环方的密码
-    private String bandPwd = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +164,6 @@ public class LoginActivity extends WatchBaseActivity
         usernameInput = findViewById(R.id.username_input_logon);
         password = findViewById(R.id.password_logon);
         textinputPassword = findViewById(R.id.textinput_password);
-        tv_phone_head = findViewById(R.id.tv_phone_head);
         weiboIv = findViewById(R.id.xinlang_iv);
         qqIv = findViewById(R.id.qq_iv);
         weixinIv = findViewById(R.id.weixin_iv);
@@ -198,7 +178,6 @@ public class LoginActivity extends WatchBaseActivity
         loginVisitorTv.setOnClickListener(this);
         findViewById(R.id.privacyTv).setOnClickListener(this);
         lineIv.setOnClickListener(this);
-        tv_phone_head.setOnClickListener(this);
     }
 
 
@@ -311,9 +290,7 @@ public class LoginActivity extends WatchBaseActivity
             return;
         }
         switch (view.getId()) {
-            case R.id.tv_phone_head:    //选择区号
-                choosePhoneArea();
-                break;
+
             case R.id.register_btn://注册
                 startActivity(new Intent(LoginActivity.this,
                         RegisterActivity2.class));
@@ -324,14 +301,12 @@ public class LoginActivity extends WatchBaseActivity
                 break;
             case R.id.login_btn:
                 boolean lauage = VerifyUtil.isZh(LoginActivity.this);
+
                 //登录时判断
                 String pass = password.getText().toString();
                 String usernametxt = username.getText().toString();
                 if (!WatchUtils.isEmpty(usernametxt) && !WatchUtils.isEmpty(pass)) {
-                    passwordIsInit = pass.equals("123456");
-                    passwordGuiderIsInit = pass.equals("123456");
-                    showLoadingDialog("");
-                    loginGuider(usernametxt, pass);
+                    loginRemote(usernametxt, pass);
                 } else {
                     ToastUtil.showToast(this, getResources().getString(R.string.string_login_toast));
                 }
@@ -401,6 +376,7 @@ public class LoginActivity extends WatchBaseActivity
                                 LoginActivity.this);
                         OkHttpObservable.getInstance().getData(dialogSubscriber,
                                 URLs.HTTPs + URLs.logon, mapjson);
+
                         SharedPreferences userSettings = getSharedPreferences(
                                 "Login_id", 0);
                         SharedPreferences.Editor editor = userSettings.edit();
@@ -414,13 +390,13 @@ public class LoginActivity extends WatchBaseActivity
                 Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
 ////                String webMainUrl = "https://camtehealth.mcu.edu.tw/";
 //                String webMainUrl ="http://cmate.guidertech.com/";
-                intent.putExtra("url", BuildConfig.CMATEWEBDOMAIN + "#/open");
+                intent.putExtra("url", BuildConfig.CMATEWEBDOMAIN+"#/open");
                 startActivity(intent);
                 break;
             case R.id.line_iv: // LINE 登陆
                 // 用户信息可以做自己的操作
-//                String lineId = "1653887386";
-                String lineId = "1655217015";
+                String lineId = "1653887386";
+//                String lineId = "1655217015";
                 mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line),
                         lineId, null, this::registerRingUser, () -> {
                             startActivity(NewSearchActivity.class);
@@ -428,17 +404,6 @@ public class LoginActivity extends WatchBaseActivity
                         });
                 break;
         }
-    }
-
-    //选择区号
-    @SuppressLint("SetTextI18n")
-    private void choosePhoneArea() {
-        phoneAreaCodeView = new PhoneAreaCodeView(LoginActivity.this);
-        phoneAreaCodeView.show();
-        phoneAreaCodeView.setPhoneAreaClickListener(areCodeBean -> {
-            phoneAreaCodeView.dismiss();
-            tv_phone_head.setText("+" + areCodeBean.getPhoneCode());
-        });
     }
 
     // 注册到手环方平台
@@ -497,7 +462,7 @@ public class LoginActivity extends WatchBaseActivity
         Gson gson = new Gson();
         HashMap<String, Object> map = new HashMap<>();
         map.put("phone", uName);
-        map.put("pwd", uPwd);
+        map.put("pwd", Md5Util.Md532(uPwd));
         String mapjson = gson.toJson(map);
         Log.e("msg", "-mapjson-" + mapjson);
         if (requestPressent != null) {
@@ -507,18 +472,15 @@ public class LoginActivity extends WatchBaseActivity
         }
     }
 
-    private void loginGuider(String uName, String passwordValue) {
+    private void loginGuider(String uName) {
         //登录到盖德后台
-        String code = tv_phone_head.getText().toString().replace("+", "");
-        String pass = Md5Util.Md532(passwordValue);
         String loginUrl = BuildConfig.APIURL +
-                "api/v1/login/phonewithpasswd?telAreaCode=" + code
-                + "&phone=" + uName + "&passwd=" + pass; // http://api.guiderhealth.com/
+                "api/v1/login/onlyphone?phone=" + uName; // http://api.guiderhealth.com/
         Log.e(TAG, "-------手机号登录的url=" + loginUrl);
         OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {
-            Log.e(TAG, "-------手机号登录到盖德=" + result);
-            try {
-                if (WatchUtils.isNetRequestSuccess(result, 0)) {
+            Log.e(TAG, "-------手机号录到盖德=" + result);
+            if (WatchUtils.isNetRequestSuccess(result, 0)) {
+                try {
                     JSONObject jsonObject = new JSONObject(result);
                     if (jsonObject.has("data")) {
                         JSONObject dataJsonObject = jsonObject.getJSONObject("data");
@@ -526,43 +488,28 @@ public class LoginActivity extends WatchBaseActivity
                         SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
                         String token = dataJsonObject.getString("token");
                         SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", token);
-                        //处理备份密码的过程
-                        if (dataJsonObject.has("bandPwd")) {
-                            String otherBindPwd = dataJsonObject.getString("bandPwd");
-                            if (!StringUtil.isEmpty(otherBindPwd)) {
-                                bandPwd = otherBindPwd;
-                                loginRemote(uName, bandPwd);
-                            }else {
-                                String passEditValue = password.getText().toString();
-                                bandPwd = "";
-                                loginRemote(uName, Md5Util.Md532(passEditValue));
+                        WxScanUtil.handle(LoginActivity.this, accountId, new WxScanUtil.IWxScan() {
+                            @Override
+                            public void onError() {
+                                startActivity(NewSearchActivity.class);
+                                finish();
                             }
-                        } else {
-                            String passEditValue = password.getText().toString();
-                            bandPwd = "";
-                            loginRemote(uName, Md5Util.Md532(passEditValue));
-                        }
-                    } else hideLoadingDialog();
-                } else if (WatchUtils.isNetRequestSuccess(result, -1)
-                        && !passwordGuiderIsInit) {
-                    againTryLoginGuider();
-                } else {
-                    hideLoadingDialog();
-                    ToastUtil.showToast(mContext, jsonObject.getString("msg"));
+
+                            @Override
+                            public void onOk() {
+                                Intent intent = new Intent(LoginActivity.this, WxScanActivity.class);
+                                intent.putExtra("accountId", accountId);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                hideLoadingDialog();
             }
         }, false);
-    }
-
-    private void againTryLoginGuider() {
-        passwordGuiderIsInit = true;
-        String usernametxt = username.getText().toString();
-        if (!StringUtil.isEmpty(usernametxt)) {
-            loginGuider(usernametxt, "123456");
-        }
     }
 
     public LoginDelegate getLoginDelegate() {
@@ -612,36 +559,42 @@ public class LoginActivity extends WatchBaseActivity
                         e.printStackTrace();
                     }
                     JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(Request.Method.POST, URLs.HTTPs + URLs.disanfang, jsonObject,
-                            response -> {
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
 //                                    Log.e(TAG, "--------微博登录返回-=" + response.toString());
 //                                    Log.d("eeeee", response.toString());
-                                String shuzhu = response.optString("userInfo");
-                                if (response.optString("resultCode").equals("001")) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(shuzhu);
-                                        String userId = jsonObject.getString("userId");
-                                        Gson gson = new Gson();
-                                        BlueUser userInfo = gson.fromJson(shuzhu, BlueUser.class);
-                                        Common.userInfo = userInfo;
-                                        Common.customer_id = userId;
-                                        //保存userid
-                                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userId", userInfo.getUserId());
-                                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userInfo);
-                                        //startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                        startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                                        SharedPreferences userSettings = getSharedPreferences("Login_id", 0);
-                                        SharedPreferences.Editor editor = userSettings.edit();
-                                        editor.putInt("id", 1);
-                                        editor.apply();
+                                    String shuzhu = response.optString("userInfo").toString();
+                                    if (response.optString("resultCode").toString().equals("001")) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(shuzhu);
+                                            String userId = jsonObject.getString("userId");
+                                            Gson gson = new Gson();
+                                            BlueUser userInfo = gson.fromJson(shuzhu, BlueUser.class);
+                                            Common.userInfo = userInfo;
+                                            Common.customer_id = userId;
+                                            //保存userid
+                                            SharedPreferencesUtils.saveObject(LoginActivity.this, "userId", userInfo.getUserId());
+                                            SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userInfo);
+                                            //startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
+                                            SharedPreferences userSettings = getSharedPreferences("Login_id", 0);
+                                            SharedPreferences.Editor editor = userSettings.edit();
+                                            editor.putInt("id", 1);
+                                            editor.commit();
 
-                                        finish();
-                                    } catch (Exception E) {
-                                        E.printStackTrace();
+                                            finish();
+                                        } catch (Exception E) {
+                                            E.printStackTrace();
+                                        }
                                     }
                                 }
-                            }, error -> {
-                        //                            Log.e("LoginActivity", "---sina--error--" + error.getMessage());
-                        Toast.makeText(LoginActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+//                            Log.e("LoginActivity", "---sina--error--" + error.getMessage());
+                            Toast.makeText(LoginActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
+                        }
                     }) {
                         @Override
                         public Map<String, String> getHeaders() {
@@ -703,26 +656,20 @@ public class LoginActivity extends WatchBaseActivity
 
     @Override
     public void successData(int what, Object object, int daystag) {
-        if (object == null) {
-            hideLoadingDialog();
+        if (object == null)
             return;
-        }
-        if (object.toString().contains("<html>")) {
-            hideLoadingDialog();
+        if (object.toString().contains("<html>"))
             return;
-        }
         if (what == 0x01) {  //手机号登录
             loginForUserPhone(object.toString(), daystag);
         } else if (mWXEntryActivityAdapter != null) { // 兼容老的微信登陆绑定手机号代码，暂时
-            hideLoadingDialog();
             mWXEntryActivityAdapter.successData(what, object, daystag);
         }
     }
 
     @Override
     public void failedData(int what, Throwable e) {
-        Log.e(TAG, "登录错误-------" + e.getMessage());
-        hideLoadingDialog();
+
     }
 
     @Override
@@ -737,12 +684,12 @@ public class LoginActivity extends WatchBaseActivity
             JSONObject jsonObject = new JSONObject(result);
             if (!jsonObject.has("code"))
                 return;
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
+            if (jsonObject.getInt("code") == 200) {
                 String userStr = jsonObject.getString("data");
-                if (!StringUtil.isEmpty(userStr)) {
+                if (userStr != null) {
                     UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
                     Common.customer_id = userInfoBean.getUserid();
+
                     // 保存userid
                     SharedPreferencesUtils.saveObject(LoginActivity.this,
                             Commont.USER_ID_DATA, userInfoBean.getUserid());
@@ -750,79 +697,17 @@ public class LoginActivity extends WatchBaseActivity
                             "userInfo", userStr);
                     SharedPreferencesUtils.saveObject(LoginActivity.this,
                             Commont.USER_INFO_DATA, userStr);
-                    long accountId = (long) SharedPreferencesUtils.getParam(mContext,
-                            "accountIdGD", 0L);
-                    if (accountId == 0L) return;
-                    int accountValue = Integer.parseInt(String.valueOf(accountId));
-                    if (StringUtil.isEmpty(bandPwd)) {
-                        backupPassword(accountValue);
-                    } else {
-                        toNextEvent(accountId);
-                    }
+
+                    String usernametxt = username.getText().toString();
+                    loginGuider(usernametxt);
                 }
 
             } else {
-                //密码错误,进行二次校验
-                if (code == 5001 && !passwordIsInit) {
-                    Log.i(TAG, "手环方密码二次校验");
-                    String usernametxt = username.getText().toString();
-                    if (!WatchUtils.isEmpty(usernametxt)) {
-                        passwordIsInit = true;
-                        loginRemote(usernametxt, Md5Util.Md532("123456"));
-                    } else {
-                        ToastUtil.showToast(this, getResources()
-                                .getString(R.string.string_login_toast));
-                    }
-                } else {
-                    ToastUtil.showToast(LoginActivity.this,
-                            jsonObject.getString("msg") +
-                                    jsonObject.getString("data"));
-                    hideLoadingDialog();
-                }
+                ToastUtil.showToast(LoginActivity.this,
+                        jsonObject.getString("msg") + jsonObject.getString("data"));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            hideLoadingDialog();
         }
-    }
-
-    private void toNextEvent(Long accountValue) {
-        WxScanUtil.handle(LoginActivity.this, accountValue,
-                new WxScanUtil.IWxScan() {
-                    @Override
-                    public void onError() {
-                        startActivity(NewSearchActivity.class);
-                        finish();
-                    }
-
-                    @Override
-                    public void onOk() {
-                        Intent intent = new Intent(LoginActivity.this,
-                                WxScanActivity.class);
-                        intent.putExtra("accountId", accountValue);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-    }
-
-    private void backupPassword(int accountValue) {
-        String pass = Md5Util.Md532(password.getText().toString());
-        ApiUtil.createApi(IGuiderApi.class, false)
-                .backupOldPwd(accountValue, pass)
-                .enqueue(new ApiCallBack<String>() {
-                    @Override
-                    public void onApiResponse(Call<String> call, Response<String> response) {
-                        if (response.body() != null && response.body().equals("true")) {
-                            toNextEvent((long) accountValue);
-                        }
-                    }
-
-                    @Override
-                    public void onRequestFinish() {
-                        super.onRequestFinish();
-                        hideLoadingDialog();
-                    }
-                });
     }
 }

@@ -38,10 +38,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             if (rootProject.googlePlay) { // 国际版
-//                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-//                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
-                 buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
-                 buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
+                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
+                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+//                 buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
+//                 buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
                 println "apilib -- Package Google Play Bundle Debug . . ."
             } else { // 大陆版
                 buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')

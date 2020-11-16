@@ -3,6 +3,13 @@ package com.guider.healthring.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+
+import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.appcompat.widget.Toolbar;
+
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -13,31 +20,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.guider.health.apilib.ApiCallBack;
-import com.guider.health.apilib.ApiUtil;
-import com.guider.health.apilib.IGuiderApi;
-import com.guider.health.common.utils.StringUtil;
-import com.guider.healthring.BuildConfig;
+import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.ConnectManages;
 import com.guider.healthring.adpter.PhoneAdapter;
+import com.guider.healthring.bean.AreCodeBean;
 import com.guider.healthring.bean.BlueUser;
 import com.guider.healthring.bean.UserInfoBean;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Common;
 import com.guider.healthring.util.Md5Util;
-import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
@@ -53,12 +53,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import retrofit2.Call;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * Created by thinkpad on 2017/3/4.
@@ -164,7 +163,12 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
         registerAgreement.append(spanStatement);
         registerAgreement.setMovementMethod(LinkMovementMethod.getInstance());
         toolbar.setNavigationIcon(R.mipmap.backs);
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
     }
@@ -227,13 +231,13 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                     if (WatchUtils.isEmpty(phoneStr)
                             || WatchUtils.isEmpty(phonePwd))
                         return;
-                    registerForNoCode(phoneStr);
+                    registerForNoCode(phoneStr, phonePwd);
                 } else {
                     if (WatchUtils.isEmpty(phoneStr)
                             || WatchUtils.isEmpty(phoneCode)
                             || WatchUtils.isEmpty(phonePwd))
                         return;
-                    registerRemote(phoneStr, phoneCode);
+                    registerRemote(phoneStr, phoneCode, phonePwd);
                 }
                 break;
         }
@@ -243,22 +247,24 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
      * 手机号+密码注册，不需要验证码
      *
      * @param phoneStr 手机号
+     * @param phonePwd 密码
      */
-    private void registerForNoCode(String phoneStr) {
+    private void registerForNoCode(String phoneStr, String phonePwd) {
         try {
             Gson gson = new Gson();
             HashMap<String, Object> map = new HashMap<>();
             map.put("phone", phoneStr);
-            map.put("pwd", Md5Util.Md532("123456"));
+            map.put("pwd", Md5Util.Md532(phonePwd));
             map.put("status", "0");
             map.put("type", "0");
             String mapjson = gson.toJson(map);
             Log.e("msg", "-mapjson-" + mapjson);
             if (requestPressent != null) {
-                showLoadingDialog("");
                 requestPressent.getRequestJSONObject(0x02,
                         Commont.FRIEND_BASE_URL + URLs.myHTTPs,
                         RegisterActivity2.this, mapjson, 2);
+                //注册盖德账号
+                registerGuiderAccount();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,11 +286,11 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
 
 
     //提交注册信息
-    private void registerRemote(String phoneStr, String verCode) {
+    private void registerRemote(String phoneStr, String verCode, String pwd) {
         Gson gson = new Gson();
         HashMap<String, Object> map = new HashMap<>();
         map.put("phone", phoneStr);
-        map.put("pwd", Md5Util.Md532("123456"));
+        map.put("pwd", Md5Util.Md532(pwd));
         map.put("code", verCode);
         map.put("status", "0");
         map.put("type", "0");
@@ -294,6 +300,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
             requestPressent.getRequestJSONObject(0x02,
                     Commont.FRIEND_BASE_URL + URLs.myHTTPs,
                     RegisterActivity2.this, mapjson, 2);
+            registerGuiderAccount();
         }
 
     }
@@ -343,70 +350,14 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
     //注册盖德的账号
     private void registerGuiderAccount() {
         String phoneStr = username.getText().toString();
-        String code = tv_phone_head.getText().toString().replace("+", "");
-        String phonePwd = password.getText().toString();
-        String pass = Md5Util.Md532(phonePwd);
-        if (!StringUtil.isEmpty(phoneStr)) {
-            String loginUrl = BuildConfig.APIURL +
-                    "api/v1/register/phonewithpasswd?telAreaCode=" + code
-                    + "&phone=" + phoneStr + "&passwd=" + pass;
-            OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {
-                Log.e(TAG, "-------盖德注册" + result);
-                if (WatchUtils.isNetRequestSuccess(result, 0)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (WatchUtils.isNetRequestSuccess(jsonObject.toString(), 0)) {
-                            try {
-                                if (jsonObject.has("data")) {
-                                    JSONObject dataJsonObject = jsonObject.getJSONObject("data");
-                                    long accountId = dataJsonObject.getLong("accountId");
-                                    SharedPreferencesUtils.setParam(MyApp.getInstance(),
-                                            "accountIdGD", accountId);
-                                    String token = dataJsonObject.getString("token");
-                                    SharedPreferencesUtils.setParam(MyApp.getInstance(),
-                                            "tokenGD", accountId);
-                                    Log.e("登录的userId", accountId + "");
-                                    backupPassword(Integer.parseInt(String.valueOf(accountId)));
-                                } else hideLoadingDialog();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                hideLoadingDialog();
-                            }
-                        } else ToastUtil.showToast(mContext, jsonObject.getString("msg"));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        hideLoadingDialog();
-                    }
-                }
-            }, false);
+        if (requestPressent != null && WatchUtils.isEmpty(phoneStr)) {
+            String loginUrl = BuildConfig.APIURL + "api/v1/login/onlyphone?phone="
+                    + phoneStr; // http://api.guiderhealth.com/
+            requestPressent.getRequestJSONObject(1001, loginUrl,
+                    RegisterActivity2.this, 1);
+            //http://api.guiderhealth.com/api/v1/phonecode?phone=
         }
 
-    }
-
-    private void backupPassword(int accountValue) {
-        String pass = Md5Util.Md532(password.getText().toString());
-        ApiUtil.createApi(IGuiderApi.class, false)
-                .backupOldPwd(accountValue, pass)
-                .enqueue(new ApiCallBack<String>() {
-                    @Override
-                    public void onApiResponse(Call<String> call, Response<String> response) {
-                        if (response.body() != null && response.body().equals("true")) {
-                            String phone = username.getText().toString();
-                            Intent intent = new Intent(
-                                    RegisterActivity2.this,
-                                    PersonDataActivity.class);
-                            intent.putExtra("phone",phone);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-
-                    @Override
-                    public void onRequestFinish() {
-                        super.onRequestFinish();
-                        hideLoadingDialog();
-                    }
-                });
     }
 
 
@@ -418,6 +369,8 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
     @Override
     public void successData(int what, Object object, int daystag) {
         Log.e(TAG, "----------what=" + what + "--=obj=" + object.toString());
+        if (object == null)
+            return;
         if (object.toString().contains("<html>"))
             return;
         try {
@@ -431,10 +384,26 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                 case 0x02:  //注册返回
                     analysisRegiData(jsonObject);
                     break;
+                case 1001:  //注册盖德返回
+                    if (WatchUtils.isNetRequestSuccess(object.toString(), 0)) {
+                        try {
+                            if (jsonObject.has("data")) {
+                                JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+                                long accountId = dataJsonObject.getLong("accountId");
+                                SharedPreferencesUtils.setParam(MyApp.getInstance(),
+                                        "accountIdGD", accountId);
+                                String token = dataJsonObject.getString("token");
+                                SharedPreferencesUtils.setParam(MyApp.getInstance(),
+                                        "tokenGD", accountId);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            hideLoadingDialog();
         }
 
 
@@ -484,10 +453,8 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
     //提交注册返回
     private void analysisRegiData(JSONObject jsonObject) {
         try {
-            if (!jsonObject.has("code")) {
-                hideLoadingDialog();
+            if (!jsonObject.has("code"))
                 return;
-            }
             if (jsonObject.getInt("code") == 200) {
                 String data = jsonObject.getString("data");
                 UserInfoBean userInfoBean = new Gson().fromJson(data, UserInfoBean.class);
@@ -496,8 +463,13 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                     SharedPreferencesUtils.saveObject(
                             RegisterActivity2.this,
                             Commont.USER_ID_DATA, userInfoBean.getUserid());
+                    String phone =  username.getText().toString().trim(); //手机号
+                    Intent intent = new Intent(
+                            RegisterActivity2.this, PersonDataActivity.class);
+                    intent.putExtra("phone",phone);
+                    startActivity(intent);
+                    finish();
                 }
-                registerGuiderAccount();
             } else {
                 String msg = jsonObject.getString("msg");
                 if (msg.equals("用户已被注册") && jsonObject.getInt("code") == 5000) {
@@ -505,11 +477,9 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                     tvTitle.postDelayed(this::finish, 1000);
                 }
                 ToastUtil.showToast(RegisterActivity2.this, msg);
-                hideLoadingDialog();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            hideLoadingDialog();
         }
     }
 
