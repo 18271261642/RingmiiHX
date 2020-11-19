@@ -227,4 +227,16 @@ object CommonUtils {
         val cacheBitmap: Bitmap = view.drawingCache
         return Bitmap.createBitmap(cacheBitmap)
     }
+
+    inline fun <reified T> toBean(map: Map<*, *>?): T? {
+        var bean: T? = null
+        try {
+            val toJson = GsonUtil.toJson(map)
+            bean = ParseJsonData.parseJsonAny<T>(toJson)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return bean
+    }
+
 }

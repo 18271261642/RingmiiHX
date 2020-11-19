@@ -26,7 +26,7 @@ class CheckBindDeviceBean : Parcelable {
     constructor() {}
     protected constructor(`in`: Parcel) {
         userGroupId = `in`.readInt()
-        userInfos = `in`.createTypedArrayList(UserInfo.CREATOR) as List<UserInfo>
+        userInfos = `in`.createTypedArrayList(UserInfo.CREATOR) as List<UserInfo>?
     }
 
     companion object {

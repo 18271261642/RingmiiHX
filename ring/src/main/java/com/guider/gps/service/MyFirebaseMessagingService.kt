@@ -28,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * is initially generated so this is where you would retrieve the token.
      */
     override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
+        Log.i(TAG, "Refreshed token: $token")
         super.onNewToken(token)
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
@@ -37,22 +37,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // (developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-//        Log.d(TAG, "From: ${remoteMessage.from}")
 
         // Check if message contains a data payload.
         if (!remoteMessage.data.isNullOrEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-
-//            if (/* Check if data needs to be processed by long running job */ true) {
-//                // For long-running tasks (10 seconds or more) use WorkManager.
-//                scheduleJob()
-//            } else {
-//                // Handle message within 10 seconds
-//                handleNow()
+            Log.i(TAG, "Message data payload: ${remoteMessage.data}")
+//            if (CommonUtils.toBean<PushMessageBean>(remoteMessage.data) != null) {
+//                val pushMessageBean = CommonUtils.toBean<PushMessageBean>(remoteMessage.data)
 //            }
-//            handleMsg(remoteMessage.data)
         }
 
         // Check if message contains a notification payload.
@@ -72,7 +63,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                                     R.string.app_name))
                     .setContentText(it.body)
                     .setAutoCancel(true)
-            builder.setContentIntent(clickInstallIntent(context,notificationId))
+            builder.setContentIntent(clickInstallIntent(context, notificationId))
             val notification = builder.build()
             notificationManager.notify(notificationId, notification)
         }

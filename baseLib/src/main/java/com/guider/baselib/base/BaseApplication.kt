@@ -42,7 +42,8 @@ abstract class BaseApplication : Application() {
         init()
         if (BuildConfig.DEBUG) {
             CustomActivityOnCrash.install(this)
-        } else initBugly()
+        } else
+            initBugly()
         //ARouter 初始化
         ARouter.init(this) // 尽可能早，推荐在Application中初始化
     }

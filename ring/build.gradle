@@ -124,12 +124,6 @@ android.applicationVariants.all { variant ->
                 def today = new Date().format('yyyyMMddHHmm');
                 fileName = fileName.replace(tail, "-${today}${tail}")
             }
-
-            if (rootGradle.googlePlay) {
-                fileName = fileName.replace(tail, "-GooglePlay${tail}")
-            } else {
-                fileName = fileName.replace(tail, "-CN${tail}")
-            }
             outputFileName = fileName
         }
     }

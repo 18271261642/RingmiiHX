@@ -144,6 +144,6 @@ abstract class DialogHolder(protected val activity: AppCompatActivity,
     }
 
     fun closeDialog() {
-        dialog?.dismiss()
+        dialog?.dismissAllowingStateLoss()
     }
 }

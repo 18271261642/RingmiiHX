@@ -74,13 +74,13 @@ class HomeLeftDrawMsgAdapter(context: Context, dataList: ArrayList<UserInfo>)
                     holder.setViewVisibility(R.id.batteryLayout, View.VISIBLE)
                     holder.setViewVisibility(R.id.rssiIv, View.VISIBLE)
                     when (data.rssi) {
-                        0, 10 -> {
+                        in 0..10 -> {
                             holder.setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_1)
                         }
-                        30 -> {
+                        in 11..30 -> {
                             holder.setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_2)
                         }
-                        60 -> {
+                        in 31..60 -> {
                             holder.setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_3)
                         }
                         else -> {

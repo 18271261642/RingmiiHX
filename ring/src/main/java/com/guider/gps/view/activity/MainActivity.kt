@@ -43,21 +43,15 @@ import com.guider.gps.view.fragment.MedicineFragment
 import com.guider.gps.view.fragment.MineFragment
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.CheckBindDeviceBean
-import com.guider.health.apilib.bean.SystemMsgBean
 import com.guider.health.apilib.bean.UserInfo
 import com.guider.health.apilib.enums.PositionType
 import com.guider.health.apilib.enums.SystemMsgType
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home_draw_layout.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity : BaseActivity() {
@@ -76,7 +70,6 @@ class MainActivity : BaseActivity() {
     private var abnormalMsgUndoNum = 0
     private var careMsgUndoNum = 0
     private var bindPosition = 0
-    private var subscribe: Disposable? = null
     private var latestSystemMsgTime = ""
     private var dialogTagList = arrayListOf<String>()
     private var editDialog: DialogHolder? = null
@@ -781,39 +774,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun pollingQueriesSystemMessages() {
-        val accountId = MMKVUtil.getInt(USER.USERID, 0)
-        if (accountId == 0) return
-        subscribe = Flowable.interval(0, 10, TimeUnit.SECONDS)
-                .onBackpressureDrop()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    getLatestSystemMsg(accountId)
-                }
-    }
-
-    /**
-     * 获取最新的系统消息
-     */
-    private fun getLatestSystemMsg(accountId: Int) {
-        lifecycleScope.launchWhenResumed {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
-                val resultBean = GuiderApiUtil.getApiService().getSystemMsgLatest(
-                        accountId, latestSystemMsgTime)
-                if (!(resultBean is String && resultBean == "null") && resultBean != null) {
-                    val bean = ParseJsonData.parseJsonAny<SystemMsgBean>(resultBean)
-                    if (StringUtil.isNotBlankAndEmpty(bean.createTime))
-                        latestSystemMsgTime = bean.createTime!!
-                    showMsgDialog("${bean.name},${bean.content}",
-                            bean.type, bean.id.toString())
-                }
-            }, onError = {
-                Log.i("systemMsg", it.message!!)
-            })
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
@@ -989,37 +949,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        //调整系统消息的获取时间，避免弹窗一直闪的问题
-//        pollingQueriesSystemMessages()
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        //关闭没关闭的dialog,防止dialog的窗体泄露
-//        if (!dialogTagList.isNullOrEmpty()) {
-//            dialogTagList.forEach {
-//                val dialogFragment = supportFragmentManager.findFragmentByTag(it)
-//                if (dialogFragment != null && dialogFragment is DialogFragment) {
-//                    Log.i("closeDialog", "关闭的dialog的fragment的tag为${it}")
-//                    dialogFragment.dismiss()
-//                }
-//            }
-//        }
-//        //熄屏期间暂停循环，避免熄屏后resume时会同一时间同时调取接口造成窗体多次闪烁的现象
-//        if (subscribe != null) {
-//            subscribe?.dispose()
-//            subscribe = null
-//        }
-//    }
-
     override fun onDestroy() {
         super.onDestroy()
-        if (subscribe != null) {
-            subscribe?.dispose()
-            subscribe = null
-        }
         if (editDialog != null) {
             editDialog?.closeDialog()
             editDialog = null
