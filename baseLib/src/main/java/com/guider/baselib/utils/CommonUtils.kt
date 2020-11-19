@@ -238,5 +238,4 @@ object CommonUtils {
         }
         return bean
     }
-
 }

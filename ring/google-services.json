@@ -1,35 +1,42 @@
 {
   "project_info": {
-    "project_number": "516646533253",
-    "firebase_url": "https://guidergps.firebaseio.com",
-    "project_id": "guidergps",
-    "storage_bucket": "guidergps.appspot.com"
+    "project_number": "793738449889",
+    "firebase_url": "https://guidergps-2b0f4.firebaseio.com",
+    "project_id": "guidergps-2b0f4",
+    "storage_bucket": "guidergps-2b0f4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:516646533253:android:0a0054725e7fb135f2d1ec",
+        "mobilesdk_app_id": "1:793738449889:android:1322068127af40dc6bb8a0",
         "android_client_info": {
           "package_name": "com.guider.gps"
         }
       },
       "oauth_client": [
         {
-          "client_id": "516646533253-2nh6f8vsfhgj7a0akt2bk9neij1b60fv.apps.googleusercontent.com",
+          "client_id": "793738449889-m2fcssukbrnj3cnonqoafs7frh8stok8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBZ1MCH2roiQeb6u5GseWLW2A6aKF07MtY"
+          "current_key": "AIzaSyDo9vkUcLcX6ePbnu_Tjgt3jdczq_s9wRo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "516646533253-2nh6f8vsfhgj7a0akt2bk9neij1b60fv.apps.googleusercontent.com",
+              "client_id": "793738449889-m2fcssukbrnj3cnonqoafs7frh8stok8.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "793738449889-r4nrggvt2pjk337usan7rktgsmapreie.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.guider.gps"
+              }
             }
           ]
         }

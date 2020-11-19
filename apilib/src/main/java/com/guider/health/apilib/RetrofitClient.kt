@@ -56,7 +56,7 @@ class RetrofitClient private constructor() {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             builder.addInterceptor(loggingInterceptor)
         }
-        val requestHead = RequestHead(mContext)
+        val requestHead = RequestHead()
         builder.addInterceptor(requestHead)
         return builder.build()
     }

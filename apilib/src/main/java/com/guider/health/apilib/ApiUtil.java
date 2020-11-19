@@ -61,7 +61,7 @@ public class ApiUtil {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(loggingInterceptor);
         }
-        RequestHead requestHead = new RequestHead(context);
+        RequestHead requestHead = new RequestHead();
         mHeaders = requestHead.getHeaders();
         builder.addInterceptor(requestHead);
         mOkHttpClient = builder.build();
@@ -82,7 +82,7 @@ public class ApiUtil {
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .writeTimeout(5, TimeUnit.MINUTES);
         if (needFormat)
-            builder.addInterceptor(new RequestHead(context));
+            builder.addInterceptor(new RequestHead());
         if (!needFormat) {
             return new Retrofit.Builder()
                     .baseUrl(url)
@@ -129,7 +129,7 @@ public class ApiUtil {
                 .connectTimeout(timmeout, TimeUnit.SECONDS)
                 .writeTimeout(timmeout * 2, TimeUnit.SECONDS);
         if (needFormat)
-            builder.addInterceptor(new RequestHead(context));
+            builder.addInterceptor(new RequestHead());
         if (!needFormat) {
             return new Retrofit.Builder()
                     .baseUrl(url)

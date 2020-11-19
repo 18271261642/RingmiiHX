@@ -538,7 +538,8 @@ class HealthFragment : BaseFragment() {
                 )
         val options = AAOptionsConstructor.configureChartOptions(aaChartModel)
         options.plotOptions?.column?.groupPadding = 0.2f
-        options.yAxis!!.tickPositions(array)
+        options.yAxis!!.gridLineColor("#FFFFFF4D").tickPositions(array)
+        options.xAxis!!.lineColor("#FFFFFF4D")
         return options
     }
 
@@ -591,6 +592,8 @@ class HealthFragment : BaseFragment() {
                 )
         val options = AAOptionsConstructor.configureChartOptions(aaChartModel)
         options.plotOptions?.column?.groupPadding = 0.2f
+        options.yAxis!!.gridLineColor("#FFFFFF4D")
+        options.xAxis!!.lineColor("#FFFFFF4D")
 //        options.yAxis!!.lineWidth = 0.5
         return options
     }
@@ -661,7 +664,8 @@ class HealthFragment : BaseFragment() {
                         else arrayOf()
                 )
         val aaOptions = AAOptionsConstructor.configureChartOptions(aaChartModel)
-        aaOptions.yAxis!!.tickPositions(getTempYAxisLabels())
+        aaOptions.yAxis!!.gridLineColor("#FFFFFF4D").tickPositions(getTempYAxisLabels())
+        aaOptions.xAxis!!.lineColor("#FFFFFF4D")
         return aaOptions
     }
 
@@ -712,7 +716,8 @@ class HealthFragment : BaseFragment() {
                         else arrayOf()
                 )
         val aaOptions = AAOptionsConstructor.configureChartOptions(aaChartModel)
-        aaOptions.yAxis!!.tickPositions(getHeartYAxisLabels())
+        aaOptions.yAxis!!.gridLineColor("#FFFFFF4D").tickPositions(getHeartYAxisLabels())
+        aaOptions.xAxis!!.lineColor("#FFFFFF4D")
         return aaOptions
     }
 
@@ -772,7 +777,8 @@ class HealthFragment : BaseFragment() {
                         else arrayOf()
                 )
         val aaOptions = AAOptionsConstructor.configureChartOptions(aaChartModel)
-        aaOptions.yAxis!!.tickPositions(getBloodYAxisLabels())
+        aaOptions.yAxis!!.gridLineColor("#FFFFFF4D").tickPositions(getBloodYAxisLabels())
+        aaOptions.xAxis!!.lineColor("#FFFFFF4D")
 //        var ceil = ceil((category.size / 9).toDouble())
 //        if (ceil != 1.0 && category.size > 18) {
 //            ceil += 1

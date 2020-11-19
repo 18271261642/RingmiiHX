@@ -276,25 +276,7 @@ class LocationFragment : BaseFragment(),
                 historyRecord.text =
                         resources.getString(R.string.app_main_map_history_record)
                 mGoogleMap?.clear()
-                var dataMap = hashMapOf<String, Any>()
-                if (MMKVUtil.containKey(BIND_DEVICE_LAST_LOCATION)) {
-                    val json = MMKVUtil.getString(BIND_DEVICE_LAST_LOCATION)
-                    dataMap = GsonUtil.fromJson(json)
-                }
-                val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
-                if (accountId != 0) {
-                    if (dataMap.containsKey(accountId.toString())) {
-                        latestUserPositionListBean =
-                                ParseJsonData.parseJsonAny<UserPositionListBean>(
-                                        dataMap[accountId.toString()]!!)
-                        val latLng = LatLng(latestUserPositionListBean!!.lat,
-                                latestUserPositionListBean!!.lng)
-                        startDisplayPerth(latLng)
-                        mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f))
-                    } else {
-                        getUserLocationPointData()
-                    }
-                }
+                getUserLocationPointData()
             }
             tabTitleList[1] -> {
                 initFunctionShowAndDealEvent()

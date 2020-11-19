@@ -590,6 +590,9 @@ class MedicineDataFragment : BaseFragment() {
         //坐标轴
         setAxisXShow(data)
         setAxisYShow(data)
+        //禁止缩放和滚动
+        dataChart.isInteractive = false
+        dataChart.isScrollEnabled = false
         dataChart.lineChartData = data
         resetViewport(dataChart, yMaxValue)
     }
