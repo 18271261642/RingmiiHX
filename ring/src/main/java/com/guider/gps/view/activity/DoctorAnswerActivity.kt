@@ -25,6 +25,7 @@ import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.AnswerListAdapter
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.AnswerListBean
 import com.guider.health.apilib.enums.AnswerMsgType
 import com.luck.picture.lib.PictureSelector

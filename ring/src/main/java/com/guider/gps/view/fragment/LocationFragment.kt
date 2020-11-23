@@ -51,7 +51,9 @@ import com.guider.gps.bean.LocationPathShowMethodEnum
 import com.guider.gps.bean.WithSelectBaseBean
 import com.guider.gps.view.activity.ElectronicFenceListActivity
 import com.guider.gps.view.activity.HistoryRecordActivity
+import com.guider.health.apilib.utils.GsonUtil
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.ElectronicFenceBean
 import com.guider.health.apilib.bean.ElectronicFenceListBean
 import com.guider.health.apilib.bean.UserPositionListBean

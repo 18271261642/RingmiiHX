@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.guider.baselib.base.BaseApplication
 import com.guider.baselib.utils.*
 import com.guider.feifeia3.utils.ToastUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.joinutech.ddbeslibrary.bean.WXAccessTokenEntity
 import com.joinutech.ddbeslibrary.bean.WXBaseRespEntity
 import com.joinutech.ddbeslibrary.bean.WXUserInfo

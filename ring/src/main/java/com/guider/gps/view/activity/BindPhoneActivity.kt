@@ -31,6 +31,7 @@ import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
 import com.guider.health.apilib.bean.TokenInfo
+import com.guider.health.apilib.utils.MMKVUtil
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia

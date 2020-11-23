@@ -1,7 +1,6 @@
 package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
 import android.text.Editable
@@ -35,10 +34,9 @@ import com.guider.health.apilib.ApiCallBack
 import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.JsonApi
-import com.guider.health.apilib.bean.AreCodeBean
-import com.guider.health.apilib.bean.CheckBindDeviceBean
-import com.guider.health.apilib.bean.TokenInfo
-import com.guider.health.apilib.bean.WeChatInfo
+import com.guider.health.apilib.bean.*
+import com.guider.health.apilib.utils.ApiLibUtil.setTokenCache
+import com.guider.health.apilib.utils.MMKVUtil
 import com.linecorp.linesdk.LoginDelegate
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
@@ -308,6 +306,22 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         }
     }
 
+    private fun loginSuccessEvent(bean: TokenBean) {
+        MMKVUtil.saveString(TOKEN, bean.token!!)
+        MMKVUtil.saveInt(USERID, bean.accountId)
+        MMKVUtil.saveString(COUNTRY_CODE, countryTv.text.toString())
+        val tag =
+                if (countryTv.tag is String) {
+                    countryTv.tag as String
+                } else "TW"
+        MMKVUtil.saveString(AREA_CODE, tag)
+        MMKVUtil.saveString(PHONE, phoneValue)
+        //保存token的信息用来之后的刷新token使用
+        setTokenCache(bean)
+        //拿到登录的token后去拿个人信息
+        getUserInfo(bean.accountId)
+    }
+
     private fun loginSuccessEvent(bean: TokenInfo) {
         MMKVUtil.saveString(TOKEN, bean.token!!)
         MMKVUtil.saveInt(USERID, bean.accountId)
@@ -554,7 +568,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
             // Login result is consumed.
             return
         }
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == RESULT_OK && data != null) {
             when (requestCode) {
                 REGISTER -> {
                     Log.i("登录页", "注册成功，判断账号和设备的绑定")

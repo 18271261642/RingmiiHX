@@ -18,6 +18,7 @@ import com.guider.gps.R
 import com.guider.gps.view.activity.HealthDataListActivity
 import com.guider.gps.view.activity.MainActivity
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.*
 import kotlinx.android.synthetic.main.fragment_health_data.*
 import kotlinx.android.synthetic.main.fragment_home_health.*

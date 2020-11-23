@@ -1,4 +1,4 @@
-package com.guider.baselib.utils
+package com.guider.health.apilib.utils
 
 import com.tencent.mmkv.MMKV
 import java.lang.reflect.Type

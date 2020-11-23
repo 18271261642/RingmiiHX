@@ -18,6 +18,7 @@ import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPa
 import com.guider.gps.R
 import com.guider.gps.view.fragment.RingMsgListFragment
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_msg_list.*
 import kotlinx.coroutines.launch
 import net.lucode.hackware.magicindicator.buildins.UIUtil

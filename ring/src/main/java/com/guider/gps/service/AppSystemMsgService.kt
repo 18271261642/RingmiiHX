@@ -17,6 +17,7 @@ import com.guider.baselib.utils.*
 import com.guider.gps.BuildConfig
 import com.guider.gps.R
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.SystemMsgBean
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -14,6 +14,7 @@ import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.gps.R
 import com.guider.gps.adapter.ElectronicFenceListAdapter
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.ElectronicFenceListBean
 import kotlinx.android.synthetic.main.activity_electronic_fence_list.*
 import kotlinx.coroutines.launch

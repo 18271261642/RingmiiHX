@@ -5,10 +5,7 @@ package com.guider.gps.bean
  */
 data class PushMessageBean(
     val accountId: Int,
-    val content: String,
-    val dbp: Int,
-    val imei: String,
-    val name: String,
-    val sbp: Int,
-    val type: Int
+    val key:String,
+    val dataId:Int,
+    val type: String
 )

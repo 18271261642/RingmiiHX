@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.AdapterOnItemClickListener
 import com.guider.baselib.utils.BIND_DEVICE_ACCOUNT_ID
-import com.guider.baselib.utils.MMKVUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.DoctorListAdapter
 import com.guider.gps.view.activity.DoctorAnswerActivity

@@ -10,6 +10,7 @@ import com.guider.baselib.utils.*
 import com.guider.gps.R
 import com.guider.gps.adapter.HistoryRecordListAdapter
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.UserPositionListBean
 import kotlinx.android.synthetic.main.activity_history_record.*
 import kotlinx.coroutines.launch

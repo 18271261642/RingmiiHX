@@ -6,7 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.CommonUtils.logOutClearMMKV
 import com.guider.baselib.utils.IS_FIRST_START
-import com.guider.baselib.utils.MMKVUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.baselib.utils.USER
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
 import com.guider.gps.R

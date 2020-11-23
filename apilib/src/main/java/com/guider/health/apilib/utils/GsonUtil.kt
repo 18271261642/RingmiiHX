@@ -1,4 +1,4 @@
-package com.guider.baselib.utils
+package com.guider.health.apilib.utils
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

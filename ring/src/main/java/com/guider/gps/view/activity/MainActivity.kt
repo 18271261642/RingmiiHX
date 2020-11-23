@@ -46,6 +46,8 @@ import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
 import com.guider.health.apilib.enums.PositionType
 import com.guider.health.apilib.enums.SystemMsgType
+import com.guider.health.apilib.utils.GsonUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_home_draw_layout.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
@@ -862,7 +864,6 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("WrongConstant")
     override fun onBackPressed() {
-        super.onBackPressed()
         if (homeDrawLayout.isDrawerOpen(Gravity.START)) {
             homeDrawLayout.closeDrawer(Gravity.START)
         }

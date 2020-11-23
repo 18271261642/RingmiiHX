@@ -15,6 +15,7 @@ import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.base.BaseApplication
 import com.guider.gps.BuildConfig
 import com.guider.gps.R
+import com.guider.gps.bean.PushMessageBean
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -37,12 +38,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-
+        val pushMessageBean: PushMessageBean? = null
         // Check if message contains a data payload.
         if (!remoteMessage.data.isNullOrEmpty()) {
             Log.i(TAG, "Message data payload: ${remoteMessage.data}")
 //            if (CommonUtils.toBean<PushMessageBean>(remoteMessage.data) != null) {
-//                val pushMessageBean = CommonUtils.toBean<PushMessageBean>(remoteMessage.data)
+//                pushMessageBean = CommonUtils.toBean<PushMessageBean>(remoteMessage.data)
 //            }
         }
 
@@ -51,7 +52,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Log.i(TAG, "Message Notification Body: ${it.body}")
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             createChannel(notificationManager)
-            val notificationId = 0x1234
+            val notificationId = pushMessageBean?.key?.hashCode() ?: 0x1234
             val context = (BaseActivity.getForegroundActivity() as BaseActivity).mContext!!
             val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             builder.setSmallIcon(R.mipmap.icon)
@@ -77,6 +78,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val name = "guiderGps"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+            //默认全部
+            mChannel.enableVibration(true)
+            mChannel.vibrationPattern = longArrayOf(100, 200, 300)
+            mChannel.enableLights(true)
+            mChannel.setShowBadge(true) //是否显示角标
             notificationManager.createNotificationChannel(mChannel)
         }
     }

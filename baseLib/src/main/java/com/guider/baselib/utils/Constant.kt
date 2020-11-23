@@ -60,6 +60,7 @@ object USER {
     const val HEADER = "userHeader"//用户头像
     const val NAME = "userName"//用户头像
     const val TOKEN = "token"//用户token
+    const val TOKEN_CACHE = "token_cache"
     const val COUNTRY_CODE = "country_code"//国家区号
     const val AREA_CODE = "area_code"//国家区号
     const val PHONE = "phone"//手机号

@@ -11,6 +11,7 @@ import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.UserInfo
 import com.guider.health.apilib.enums.PositionType
 import kotlinx.android.synthetic.main.item_home_draw_msg.view.*

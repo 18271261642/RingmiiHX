@@ -15,6 +15,7 @@ import com.guider.gps.view.fragment.InputCodeAddDeviceFragment
 import com.guider.gps.view.fragment.ScanCodeAddDeviceFragment
 import com.guider.health.apilib.BuildConfig
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
 import com.king.zxing.Intents

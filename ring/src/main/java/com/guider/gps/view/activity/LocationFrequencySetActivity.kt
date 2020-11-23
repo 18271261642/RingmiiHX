@@ -10,6 +10,7 @@ import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.gps.R
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.FrequencySetBean
 import kotlinx.android.synthetic.main.activity_location_frequency_set.*
 import kotlinx.coroutines.launch

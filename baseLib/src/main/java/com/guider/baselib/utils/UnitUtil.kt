@@ -4,7 +4,7 @@ import com.guider.baselib.device.IUnit
 import com.guider.baselib.device.UnitCN
 import com.guider.baselib.device.UnitImpl
 import com.guider.baselib.device.UnitTW
-import com.guider.health.apilib.LanguageUtil.getCurrentLanguage
+import com.guider.health.apilib.utils.ApiLibUtil.getCurrentLanguage
 
 object UnitUtil {
     fun getIUnit(): IUnit {

@@ -15,6 +15,7 @@ import com.guider.gps.adapter.SystemMsgListAdapter
 import com.guider.gps.view.activity.HealthCareMsgDetailActivity
 import com.guider.gps.view.activity.RingMsgListActivity
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.AbnormalRingMsgListBean
 import com.guider.health.apilib.bean.CareMsgListBean
 import com.guider.health.apilib.bean.HealthDataSimpleBean

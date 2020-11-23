@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import com.guider.baselib.utils.BIND_DEVICE_ACCOUNT_ID
 import com.guider.baselib.utils.DateUtilKotlin
-import com.guider.baselib.utils.MMKVUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter

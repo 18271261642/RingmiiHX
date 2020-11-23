@@ -11,6 +11,7 @@ import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
 import com.guider.gps.bean.SimpleWithTypeBean
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.AbnormalRingMsgListBean
 
 class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingMsgListBean>)

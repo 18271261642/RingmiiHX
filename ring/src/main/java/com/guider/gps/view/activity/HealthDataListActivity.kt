@@ -13,6 +13,7 @@ import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.HealthDetailListAdapter
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.HealthDataSimpleBean
 import com.guider.health.apilib.enums.SortType
 import kotlinx.android.synthetic.main.activity_health_data_list.*

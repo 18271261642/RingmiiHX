@@ -3,7 +3,7 @@ package com.guider.health.apilib.bean
 import android.os.Parcel
 import android.os.Parcelable
 
-class TokenInfo : Parcelable {
+open class TokenInfo protected constructor(`in`: Parcel) : Parcelable {
     /**
      * token : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1MzciLCJwYXNzd2QiOiJlMTBhZGMzOTQ5YmE1OWFiYmU1NmUwNTdmMjBmODgzZSIsImlkIjo1MzcsImV4cCI6MTU2NTUzMTcwNywiaWF0IjoxNTY1NTI0NTA3LCJqdGkiOiJmODI0MTRmYi1kYzczLTQ5MWUtOTE2OS04ZDA2ZDliM2EyMjcifQ.xUOAn8-wHqes8dwQzm992xcpH9v37_BPdm3w3CJL8xM
      * refreshToken : AS0YjOekBcPvlKPq4ou6zJ1j8XnEagT8
@@ -25,8 +25,7 @@ class TokenInfo : Parcelable {
         dest.writeInt(expired)
     }
 
-    constructor() {}
-    protected constructor(`in`: Parcel) {
+    init {
         token = `in`.readString()
         refreshToken = `in`.readString()
         accountId = `in`.readInt()

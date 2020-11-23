@@ -5,6 +5,7 @@ import com.guider.health.apilib.enums.AddressType
 import com.guider.health.apilib.enums.PositionType
 import com.guider.health.apilib.model.WechatUserInfo
 import okhttp3.MultipartBody
+import retrofit2.Call
 import retrofit2.http.*
 
 /**
@@ -24,6 +25,11 @@ interface IGuiderCoroutinesApi {
     @POST("upload/file")
     suspend fun uploadFile(@Part requestBody: MultipartBody.Part?): String?
 
+    /**线程内刷新token*/
+    @POST("api/v1/refreshtoken")
+    fun refreshTokenCall(@Header("token") token: String,
+                         @Body refreshToken: String): Call<TokenBean>?
+
     /**
      * 用户名密码登录
      *
@@ -35,7 +41,7 @@ interface IGuiderCoroutinesApi {
     @POST("api/v1/login/phonewithpasswd")
     suspend fun loginWithPassword(@Query("telAreaCode") telAreaCode: String?,
                                   @Query("phone") phone: String?,
-                                  @Query("passwd") passwd: String?): TokenInfo?
+                                  @Query("passwd") passwd: String?): TokenBean?
 
     /**
      * 注册

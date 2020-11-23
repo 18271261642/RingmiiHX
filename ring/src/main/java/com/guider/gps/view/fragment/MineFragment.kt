@@ -17,6 +17,7 @@ import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.gps.R
 import com.guider.gps.view.activity.*
 import com.guider.health.apilib.GuiderApiUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.fragment_mine.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
