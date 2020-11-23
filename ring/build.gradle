@@ -99,6 +99,7 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation("io.coil-kt:coil:1.0.0")
 }
 
 android.applicationVariants.all { variant ->

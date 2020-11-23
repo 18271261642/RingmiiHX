@@ -54,6 +54,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.ref.WeakReference
 import java.util.*
 
 
@@ -221,7 +222,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openSystemMsgLoopService() {
-        myConn = MyConn()
+        myConn = MyConn(WeakReference(this))
         bindService(Intent(mContext!!, AppSystemMsgService::class.java), myConn!!, BIND_AUTO_CREATE)
     }
 
@@ -985,6 +986,7 @@ class MainActivity : BaseActivity() {
         if (myConn != null) {
             unbindService(myConn!!)
             myConn = null
+            binder = null
         }
     }
 
@@ -1003,9 +1005,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    inner class MyConn : ServiceConnection {
+    class MyConn(ref: WeakReference<MainActivity>) : ServiceConnection {
+
+        private var activity: MainActivity? = ref.get()
+
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            binder = service as AppSystemMsgService.MyBinder
+            activity?.binder = service as AppSystemMsgService.MyBinder
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {

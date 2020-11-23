@@ -9,6 +9,7 @@ import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.AndroidBug5497Workaround
 import com.guider.baselib.utils.StringUtil
 import com.guider.gps.R
+import java.lang.ref.WeakReference
 
 /**
  * @Package: com.guider.gps.view.activity
@@ -103,14 +104,18 @@ class SimpleCustomWebActivity : BaseActivity() {
                 isSuccess = false
             }
         }
-        webView?.addJavascriptInterface(CustomJsInterface(), "GuiderGps")
+        webView?.addJavascriptInterface(CustomJsInterface(WeakReference(this)),
+                "GuiderGps")
         webView?.loadUrl(webUrl)
     }
 
-    inner class CustomJsInterface {
+    class CustomJsInterface(ref: WeakReference<SimpleCustomWebActivity>) {
+
+        private var activity: SimpleCustomWebActivity? = ref.get()
+
         @JavascriptInterface
         fun goBack() {
-            finish()
+            activity?.finish()
         }
     }
 

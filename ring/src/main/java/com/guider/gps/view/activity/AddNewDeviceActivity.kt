@@ -15,9 +15,9 @@ import com.guider.gps.view.fragment.InputCodeAddDeviceFragment
 import com.guider.gps.view.fragment.ScanCodeAddDeviceFragment
 import com.guider.health.apilib.BuildConfig
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
+import com.guider.health.apilib.utils.MMKVUtil
 import com.king.zxing.Intents
 import kotlinx.android.synthetic.main.activity_add_new_device.*
 import kotlinx.coroutines.launch
@@ -28,8 +28,8 @@ class AddNewDeviceActivity : BaseActivity() {
     override val contentViewResId: Int
         get() = R.layout.activity_add_new_device
 
-    private var fragments = mutableListOf<Fragment>()
-    private var tabTitleList = arrayListOf<String>()
+    private var fragments: MutableList<Fragment>? = mutableListOf()
+    private var tabTitleList: ArrayList<String>? = arrayListOf()
     private var userGroupId = ""
 
     //主要用来判断是自己绑定设备还是绑定其他人的设备
@@ -61,27 +61,27 @@ class AddNewDeviceActivity : BaseActivity() {
                 CommonUtils.getColor(mContext!!, R.color.color333333))
         // 设置下划线跟文本宽度一致
         newDeviceTabLayout.isTabIndicatorFullWidth = true
-        fragments.add(ScanCodeAddDeviceFragment.newInstance())
-        fragments.add(InputCodeAddDeviceFragment.newInstance(type))
+        fragments?.add(ScanCodeAddDeviceFragment.newInstance())
+        fragments?.add(InputCodeAddDeviceFragment.newInstance(type))
         newDeviceViewPager.apply {
             adapter = DeviceViewPagerAdapter(
                     this@AddNewDeviceActivity.supportFragmentManager,
-                    fragments = fragments, titles = tabTitleList)
+                    innerFragments = fragments!!, innerTitles = tabTitleList!!)
         }
-        newDeviceViewPager.offscreenPageLimit = fragments.size
+        newDeviceViewPager.offscreenPageLimit = fragments?.size ?: 0
         newDeviceTabLayout.setupWithViewPager(newDeviceViewPager)
     }
 
-    inner class DeviceViewPagerAdapter(fragmentManager: FragmentManager,
-                                       private val fragments: MutableList<Fragment>,
-                                       private val titles: MutableList<String>) :
+    class DeviceViewPagerAdapter(fragmentManager: FragmentManager,
+                                 private val innerFragments: MutableList<Fragment>,
+                                 private val innerTitles: MutableList<String>) :
             FragmentPagerAdapter(fragmentManager) {
 
-        override fun getItem(position: Int) = fragments[position]
+        override fun getItem(position: Int) = innerFragments[position]
 
-        override fun getCount() = fragments.size
+        override fun getCount() = innerFragments.size
 
-        override fun getPageTitle(position: Int) = titles[position]
+        override fun getPageTitle(position: Int) = innerTitles[position]
 
     }
 
@@ -184,16 +184,25 @@ class AddNewDeviceActivity : BaseActivity() {
                             ToastUtil.showCenter(mContext!!,
                                     mContext!!.resources.getString(R.string.app_incorrect_format))
                         } else {
+                            if (fragments == null) return
                             newDeviceViewPager.currentItem = 1
-                            (fragments[1] as InputCodeAddDeviceFragment).refreshCodeShow(result!!)
+                            (fragments!![1] as InputCodeAddDeviceFragment).refreshCodeShow(result!!)
                         }
                     }
                 }
                 IMAGE_CUT_CODE -> {
-                    (fragments[1] as InputCodeAddDeviceFragment).selectPicCallBack(data)
+                    if (fragments == null) return
+                    (fragments!![1] as InputCodeAddDeviceFragment).selectPicCallBack(data)
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        //取消相关变量
+        fragments = null
+        tabTitleList = null
+        super.onDestroy()
     }
 
     override fun initLogic() {

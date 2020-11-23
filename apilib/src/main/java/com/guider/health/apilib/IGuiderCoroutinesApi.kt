@@ -89,7 +89,6 @@ interface IGuiderCoroutinesApi {
      * @param phone 手机号
      * @param code 验证码
      * @param wechatAppId 微信的APPID
-     * @param sence 实体类
      * @return
      */
     @POST("api/v2/wechat/bind/phone/token")
@@ -230,7 +229,6 @@ interface IGuiderCoroutinesApi {
 
     /**
      * 获取手环设备电子围栏设置
-     * @param deviceCode 设备码
      */
     @GET("api/v2/opdevice/fence")
     suspend fun getElectronicFence(@Query("accountId") accountId: Int,
@@ -274,14 +272,12 @@ interface IGuiderCoroutinesApi {
 
     /**
      * 获取手环设备定位频率设置
-     * @param deviceCode 设备码
      */
     @GET("api/v1/opdevice/optionrate")
     suspend fun locationFrequencySet(@Query("accountId") accountId: Int?): Any
 
     /**
      * 设置手环设备定位频率
-     * @param body 设备码+频率的设置数组
      */
     @GET("api/v1/opdevice/option/mode")
     suspend fun setLocationFrequency(@Query("accountId") accountId: Int,
@@ -305,12 +301,6 @@ interface IGuiderCoroutinesApi {
                                  @Query("row") row: Int,
                                  @Query("currDate") currDate: String
     ): Map<String, List<AnswerListBean>>?
-
-    /**
-     * 获取用户设置的运动目标
-     */
-    @GET("api/v1/opdevice/walktarget")
-    suspend fun getWalkTarget(@Query("accountId") accountId: Int): String
 
     /**
      * 设置用户的运动目标
@@ -419,7 +409,7 @@ interface IGuiderCoroutinesApi {
                                 @Query("token") token: String): Any?
 
     /**
-     * 获取用户关联的医生列表
+     * 用户注销消息推送
      */
     @GET("api/v1/user/doctors")
     suspend fun deletePushToken(@Query("accountId") accountId: Int,

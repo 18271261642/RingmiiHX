@@ -51,13 +51,13 @@ import com.guider.gps.bean.LocationPathShowMethodEnum
 import com.guider.gps.bean.WithSelectBaseBean
 import com.guider.gps.view.activity.ElectronicFenceListActivity
 import com.guider.gps.view.activity.HistoryRecordActivity
-import com.guider.health.apilib.utils.GsonUtil
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.ElectronicFenceBean
 import com.guider.health.apilib.bean.ElectronicFenceListBean
 import com.guider.health.apilib.bean.UserPositionListBean
 import com.guider.health.apilib.enums.PositionType
+import com.guider.health.apilib.utils.GsonUtil
+import com.guider.health.apilib.utils.MMKVUtil
 import com.kyleduo.switchbutton.SwitchButton
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Flowable
@@ -73,6 +73,7 @@ import kotlinx.android.synthetic.main.include_location_track_event_layout.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.asin
@@ -263,7 +264,8 @@ class LocationFragment : BaseFragment(),
             tabTitleList[0] -> {
                 initFunctionShowAndDealEvent()
                 locationPositionLayout.visibility = View.VISIBLE
-                mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+                mGoogleMap?.setInfoWindowAdapter(
+                        CustomInfoWindowAdapter(WeakReference(this)))
                 closeShowDialog()
                 if (loadView != null) {
                     loadView?.dismiss()
@@ -284,7 +286,8 @@ class LocationFragment : BaseFragment(),
                 initFunctionShowAndDealEvent()
                 mapPathSetLayout.visibility = View.VISIBLE
                 mapPathSetLayout.setOnClickListener(this)
-                mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+                mGoogleMap?.setInfoWindowAdapter(
+                        CustomInfoWindowAdapter(WeakReference(this)))
                 mGoogleMap?.clear()
                 closeShowDialog()
                 initElectronicPoint()
@@ -400,12 +403,14 @@ class LocationFragment : BaseFragment(),
             mGoogleMap?.clear()
             when (tabPosition) {
                 0 -> {
-                    mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+                    mGoogleMap?.setInfoWindowAdapter(
+                            CustomInfoWindowAdapter(WeakReference(this)))
                     getUserLocationPointData()
                     getPositionMethodSet()
                 }
                 1 -> {
-                    mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+                    mGoogleMap?.setInfoWindowAdapter(
+                            CustomInfoWindowAdapter(WeakReference(this)))
                     initTrackTimeSelect()
                     getUserPointLineData(startTimeValue, endTimeValue)
                 }
@@ -1349,7 +1354,8 @@ class LocationFragment : BaseFragment(),
         uiSettings.isCompassEnabled = false //设置是否显示指南针
         uiSettings.isZoomControlsEnabled = true//缩放控件
         mGoogleMap?.isTrafficEnabled = true
-        mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+        mGoogleMap?.setInfoWindowAdapter(
+                CustomInfoWindowAdapter(WeakReference(this)))
         mGoogleMap?.setOnMarkerClickListener(this)
         mGoogleMap?.setOnInfoWindowClickListener(this)
         mLocationRequest = LocationRequest()
@@ -1813,19 +1819,24 @@ class LocationFragment : BaseFragment(),
     /**
      * 自定义的地图信息弹窗
      */
-    internal inner class CustomInfoWindowAdapter : GoogleMap.InfoWindowAdapter {
+    class CustomInfoWindowAdapter(ref: WeakReference<LocationFragment>)
+        : GoogleMap.InfoWindowAdapter {
 
-        private val guiderInfoWindow: View = mActivity.layoutInflater.inflate(
+        private var fragment: LocationFragment? = ref.get()
+
+        private val guiderInfoWindow: View? = fragment?.mActivity?.layoutInflater?.inflate(
                 R.layout.custom_map_mark_info, null)
 
-        private val pathPointWindow: View = mActivity.layoutInflater.inflate(
+        private val pathPointWindow: View? = fragment?.mActivity?.layoutInflater?.inflate(
                 R.layout.path_point_map_mark_info, null)
 
-        override fun getInfoWindow(marker: Marker): View {
-            return if (marker.tag == martTag || marker.tag == tempMarkTag) {
+        override fun getInfoWindow(marker: Marker): View? {
+            if (fragment == null) return null
+            return if (marker.tag == fragment?.martTag || marker.tag == fragment?.tempMarkTag) {
                 render(marker, guiderInfoWindow)
                 guiderInfoWindow
-            } else if (marker.tag is String && (marker.tag as String).contains(pathPointMarkTag)) {
+            } else if (marker.tag is String &&
+                    (marker.tag as String).contains(fragment!!.pathPointMarkTag)) {
                 render(marker, pathPointWindow)
                 pathPointWindow
             } else {
@@ -1834,7 +1845,8 @@ class LocationFragment : BaseFragment(),
             }
         }
 
-        private fun render(marker: Marker, window: View) {
+        private fun render(marker: Marker, window: View?) {
+            if (window == null) return
             if (window == guiderInfoWindow) {
                 guiderInfoShowEvent(window, marker)
             } else if (window == pathPointWindow) {
@@ -1843,7 +1855,7 @@ class LocationFragment : BaseFragment(),
         }
 
         private fun pathPointShowEvent(window: View, marker: Marker) {
-            val pointTime = (marker.tag as String).replace(pathPointMarkTag, "")
+            val pointTime = (marker.tag as String).replace(fragment!!.pathPointMarkTag, "")
             val pointTimeTv = window.findViewById<TextView>(R.id.pointTimeTv)
             pointTimeTv.text = pointTime
         }
@@ -1852,50 +1864,50 @@ class LocationFragment : BaseFragment(),
             val locationMethodTv = window.findViewById<TextView>(R.id.locationMethodTv)
             val timeTv = window.findViewById<TextView>(R.id.timeTv)
             val martLocationTv = window.findViewById<TextView>(R.id.martLocationTv)
-            if (marker.tag == martTag) {
-                if (latestUserPositionListBean == null) return
-                if (StringUtil.isNotBlankAndEmpty(latestUserPositionListBean!!.testTime)) {
+            if (marker.tag == fragment?.martTag) {
+                if (fragment?.latestUserPositionListBean == null) return
+                if (StringUtil.isNotBlankAndEmpty(fragment?.latestUserPositionListBean!!.testTime)) {
                     val localTime = DateUtilKotlin.uTCToLocal(
-                            latestUserPositionListBean!!.testTime,
+                            fragment?.latestUserPositionListBean!!.testTime,
                             TIME_FORMAT_PATTERN1)
                     timeTv.text = localTime
                 }
 
-                if (StringUtil.isNotBlankAndEmpty(latestUserPositionListBean!!.addr)) {
+                if (StringUtil.isNotBlankAndEmpty(fragment?.latestUserPositionListBean!!.addr)) {
                     martLocationTv.visibility = View.VISIBLE
-                    martLocationTv.text = latestUserPositionListBean!!.addr
+                    martLocationTv.text = fragment?.latestUserPositionListBean!!.addr
                 } else {
                     martLocationTv.visibility = View.GONE
                 }
-                if (StringUtil.isNotBlankAndEmpty(latestUserPositionListBean!!.signalType)) {
+                if (StringUtil.isNotBlankAndEmpty(fragment?.latestUserPositionListBean?.signalType)) {
                     locationMethodTv.text = String.format(
-                            this@LocationFragment.mActivity.resources.getString(
+                            fragment!!.mActivity.resources.getString(
                                     R.string.app_map_location_method_content),
-                            latestUserPositionListBean!!.signalType
+                            fragment?.latestUserPositionListBean?.signalType
                     )
                 } else locationMethodTv.text = String.format(
-                        this@LocationFragment.mActivity.resources.getString(
+                        fragment!!.mActivity.resources.getString(
                                 R.string.app_map_location_method_content), "WIFI"
                 )
-            } else if (marker.tag == tempMarkTag) {
-                val localTime = DateUtilKotlin.uTCToLocal(tempLocationBean?.createTime,
+            } else if (marker.tag == fragment?.tempMarkTag) {
+                val localTime = DateUtilKotlin.uTCToLocal(fragment?.tempLocationBean?.createTime,
                         TIME_FORMAT_PATTERN1)
                 timeTv.text = localTime
-                val address = tempLocationBean?.addr
+                val address = fragment?.tempLocationBean?.addr
                 if (StringUtil.isNotBlankAndEmpty(address)) {
                     martLocationTv.visibility = View.VISIBLE
                     martLocationTv.text = address
                 } else {
                     martLocationTv.visibility = View.GONE
                 }
-                val method = tempLocationBean?.signalType
+                val method = fragment?.tempLocationBean?.signalType
                 if (StringUtil.isNotBlankAndEmpty(method)) {
                     locationMethodTv.text = String.format(
-                            this@LocationFragment.mActivity.resources.getString(
+                            fragment!!.mActivity.resources.getString(
                                     R.string.app_map_location_method_content), method
                     )
                 } else locationMethodTv.text = String.format(
-                        this@LocationFragment.mActivity.resources.getString(
+                        fragment!!.mActivity.resources.getString(
                                 R.string.app_map_location_method_content), "WIFI"
                 )
             }
