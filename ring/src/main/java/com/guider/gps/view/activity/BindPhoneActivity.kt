@@ -342,7 +342,7 @@ class BindPhoneActivity : BaseActivity() {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "CN"
+                } else "TW"
         if (!StringUtil.isMobileNumber(phoneValue, tag)) {
             toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
             return

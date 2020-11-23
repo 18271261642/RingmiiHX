@@ -13,6 +13,9 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.base.BaseApplication
+import com.guider.baselib.utils.EventBusAction.REFRESH_NEW_PUSH_TOKEN
+import com.guider.baselib.utils.EventBusEvent
+import com.guider.baselib.utils.EventBusUtils
 import com.guider.gps.BuildConfig
 import com.guider.gps.R
 import com.guider.gps.bean.PushMessageBean
@@ -34,7 +37,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-//        sendRegistrationToServer(token)
+        EventBusUtils.sendEvent(EventBusEvent(REFRESH_NEW_PUSH_TOKEN, token))
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

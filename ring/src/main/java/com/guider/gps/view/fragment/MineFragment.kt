@@ -3,6 +3,7 @@ package com.guider.gps.view.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -42,6 +43,7 @@ class MineFragment : BaseFragment() {
         topLayout.setOnClickListener(this)
         sportLayout.setOnClickListener(this)
         loginOutLayout.setOnClickListener(this)
+        passwordLayout.setOnClickListener(this)
         getWalkTargetData()
     }
 
@@ -178,12 +180,8 @@ class MineFragment : BaseFragment() {
                 startActivityForResult(intent, SPORT_STEP_INFO)
             }
             loginOutLayout -> {
-                logOutClearMMKV()
-                val intent = Intent(mActivity, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                        Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                mActivity.finish()
+                //退出登录需要先删除服务器存储的token
+                deleteToken()
             }
             heartLayout -> {
                 val intent = Intent(mActivity, AlarmSeActivity::class.java)
@@ -195,7 +193,34 @@ class MineFragment : BaseFragment() {
                 intent.putExtra("enterType", "temp")
                 startActivityForResult(intent, ALARM_SET)
             }
+            passwordLayout -> {
+                val intent = Intent(mActivity, ChangePasswordActivity::class.java)
+                startActivity(intent)
+            }
         }
+    }
+
+    private fun deleteToken() {
+        if (MMKVUtil.getInt(USER.USERID) == 0) return
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+                val resultBean = GuiderApiUtil.getApiService().deletePushToken(
+                        MMKVUtil.getInt(USER.USERID), "ANDROID")
+                if (resultBean != null) {
+                    Log.i(TAG, "删除pushToken成功")
+                    loginOutEvent()
+                }
+            })
+        }
+    }
+
+    private fun loginOutEvent() {
+        logOutClearMMKV()
+        val intent = Intent(mActivity, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        mActivity.finish()
     }
 
     private fun unBindDialogShow() {

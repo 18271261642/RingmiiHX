@@ -473,7 +473,7 @@ class StringUtil private constructor() {
         }
 
         fun isMobileNumber(mobileNumber: String?,
-                           countryCode: String? = "CN"): Boolean {
+                           countryCode: String? = "TW"): Boolean {
             var isMobileNumber = false
 //            for (regularExp in MobileRegularExp.values()) {
 //                val pattern = Pattern.compile(regularExp.regularExp)

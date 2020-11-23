@@ -92,6 +92,9 @@
         <activity android:name=".view.activity.LocationFrequencySetNewActivity" />
         <activity android:name=".view.activity.ElectronicFenceListActivity" />
         <activity android:name=".view.fragment.DoctorListActivity" />
+        <activity android:name=".view.activity.ForgotPasswordActivity" />
+        <activity android:name=".view.activity.ResetPasswordActivity" />
+        <activity android:name=".view.activity.ChangePasswordActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

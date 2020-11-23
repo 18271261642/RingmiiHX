@@ -94,10 +94,20 @@
                 android:layout_marginEnd="@dimen/dp_20"
                 android:src="@drawable/icon_password_show_close"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/passwordEdit"
+                app:layout_constraintBottom_toBottomOf="@id/passwordIv"
                 app:layout_constraintEnd_toEndOf="@id/passwordEdit"
-                app:layout_constraintTop_toTopOf="@id/passwordEdit" />
-
+                app:layout_constraintTop_toTopOf="@id/passwordIv" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forgotPasswordTv"
+                app:layout_constraintEnd_toStartOf="@id/passwordShowIv"
+                app:layout_constraintBaseline_toBaselineOf="@id/passwordEdit"
+                android:textColor="@color/color999999"
+                android:textSize="@dimen/sp_13"
+                android:text="@string/app_forgot_password"
+                android:layout_marginEnd="@dimen/dp_10"
+                />
             <View
                 android:id="@+id/passwordLine"
                 android:layout_width="match_parent"

@@ -45,6 +45,7 @@ import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
 import com.guider.health.apilib.enums.PositionType
+import com.guider.health.apilib.enums.PushNationType
 import com.guider.health.apilib.enums.SystemMsgType
 import com.guider.health.apilib.utils.GsonUtil
 import com.guider.health.apilib.utils.MMKVUtil
@@ -191,7 +192,32 @@ class MainActivity : BaseActivity() {
             // Get new FCM registration token
             val token = task.result
             Log.i(TAG, "谷歌推送的token为$token")
+            uploadToken(token)
         })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshPushToken(event: EventBusEvent<String>) {
+        if (event.code == EventBusAction.REFRESH_NEW_PUSH_TOKEN) {
+            if (StringUtil.isNotBlankAndEmpty(event.data)) {
+                uploadToken(event.data)
+            }
+        }
+    }
+
+    private fun uploadToken(token: String?) {
+        if (StringUtil.isEmpty(token)) return
+        if (MMKVUtil.getInt(USER.USERID) == 0) return
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+                val resultBean = GuiderApiUtil.getApiService().uploadPushToken(
+                        MMKVUtil.getInt(USER.USERID), PushNationType.ZH_TW,
+                        "ANDROID", token!!)
+                if (resultBean != null) {
+                    Log.i(TAG, "设置pushToken成功")
+                }
+            })
+        }
     }
 
     private fun openSystemMsgLoopService() {

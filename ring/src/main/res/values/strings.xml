@@ -81,6 +81,7 @@
     <string name="app_main_mine_heart_rate_set">Heart rate alarm threshold setting</string>
     <string name="app_main_mine_temp_set">Body temperature alarm threshold setting</string>
     <string name="app_main_mine_remove_bind">Remove the binding</string>
+    <string name="app_main_mine_change_password">Change password</string>
     <string name="app_main_delete_electronic_fence_area">Remove the electronic fence area</string>
     <string name="app_main_mine_version_check">Version checking</string>
     <string name="app_main_mine_log_out">Log out</string>
@@ -159,7 +160,9 @@
     <string name="app_login_and">and</string>
     <string name="app_login_phone_empty">The cell phone number is empty</string>
     <string name="app_phone_illegal">Cell phone Numbers are illegal</string>
-    <string name="app_login_password_empty">The cell phone number is empty</string>
+    <string name="app_login_password_empty">Password is empty</string>
+    <string name="app_verification_code_empty">Verification code is empty</string>
+    <string name="app_password_format_error">Incorrect password format</string>
     <string name="app_device_nickName_empty">The device nickname is empty</string>
     <string name="app_register_password_different">The two passwords are different</string>
     <string name="app_guide_page1_title">Accurate positioning and safety protection</string>
@@ -237,7 +240,16 @@
     <string name="app_electronic_fence_list">Electronic fence list</string>
     <string name="app_edit_device_account_name_title">Modify the equipment remark name</string>
     <string name="app_watch_more_history_msg">See more historical messages</string>
-    <string name="app_loading">Being loaded ...</string>
+    <string name="app_loading">Being loaded …</string>
     <string name="app_no_more_history">No more history</string>
+    <string name="app_forgot_password">Forgot password</string>
     <string name="app_get_latest_news">Get the latest news</string>
+    <string name="app_line_code_hint">Please enter the verification code you received from LINE</string>
+    <string name="app_send_verify_code">Send verification code</string>
+    <string name="app_retry_send">To resend%ds</string>
+    <string name="app_confirm_new">Confirm</string>
+    <string name="app_password_hint">Password should be no less than 6 characters, including Numbers, upper and lower case letters</string>
+    <string name="app_old_password_hint">Please enter your old password</string>
+    <string name="app_please_entry_new_password">Please enter a new password</string>
+    <string name="app_please_entry_new_password_again">Please enter your new password again</string>
 </resources>

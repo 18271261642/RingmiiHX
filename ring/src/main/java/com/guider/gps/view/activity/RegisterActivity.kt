@@ -38,7 +38,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
     private var countryCodeValue = ""
 
     //国家英文代号
-    private var countryCodeKey = "CN"
+    private var countryCodeKey = "TW"
 
     //判断是否是从注册页进入还是从绑定设备添加新账号
     private var pageEnterType = ""
@@ -85,7 +85,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                         val tag =
                                 if (countryTv.tag is String) {
                                     countryTv.tag as String
-                                } else "CN"
+                                } else "TW"
                         val countryCode = countryTv.text.toString().replace(
                                 "+", "")
                         if (!StringUtil.isMobileNumber(phoneValue, tag)) {
@@ -200,7 +200,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "CN"
+                        } else "TW"
                 if (!StringUtil.isMobileNumber(phoneValue,tag)) {
                     toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                     return
@@ -211,6 +211,14 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 }
                 if (StringUtil.isEmpty(againPasswordEdit.text.toString())) {
                     toastShort(mContext!!.resources.getString(R.string.app_login_password_empty))
+                    return
+                }
+                if (passwordEdit.text.toString().length<6){
+                    toastShort(mContext!!.resources.getString(R.string.app_password_format_error))
+                    return
+                }
+                if (againPasswordEdit.text.toString().length<6){
+                    toastShort(mContext!!.resources.getString(R.string.app_password_format_error))
                     return
                 }
                 if (againPasswordEdit.text.toString() != passwordEdit.text.toString()) {

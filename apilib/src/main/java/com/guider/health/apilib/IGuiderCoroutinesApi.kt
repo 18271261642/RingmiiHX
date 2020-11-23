@@ -3,6 +3,7 @@ package com.guider.health.apilib
 import com.guider.health.apilib.bean.*
 import com.guider.health.apilib.enums.AddressType
 import com.guider.health.apilib.enums.PositionType
+import com.guider.health.apilib.enums.PushNationType
 import com.guider.health.apilib.model.WechatUserInfo
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -407,4 +408,20 @@ interface IGuiderCoroutinesApi {
      */
     @GET("api/v1/user/doctors")
     suspend fun getDoctorListData(@Query("accountId") accountId: Int): List<DoctorListBean>
+
+    /**
+     * 更新用户firebase token
+     */
+    @GET("api/v1/user/doctors")
+    suspend fun uploadPushToken(@Query("accountId") accountId: Int,
+                                @Query("nationality") pushNationType: PushNationType,
+                                @Query("type") type: String,
+                                @Query("token") token: String): Any?
+
+    /**
+     * 获取用户关联的医生列表
+     */
+    @GET("api/v1/user/doctors")
+    suspend fun deletePushToken(@Query("accountId") accountId: Int,
+                                @Query("type") type: String): Any?
 }

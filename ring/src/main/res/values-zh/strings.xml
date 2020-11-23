@@ -159,6 +159,8 @@
     <string name="app_complete_birthday_empty">生日未填写</string>
     <string name="app_phone_illegal">手机号码不合法</string>
     <string name="app_login_password_empty">密码为空</string>
+    <string name="app_verification_code_empty">验证码为空</string>
+    <string name="app_password_format_error">密码格式不正确</string>
     <string name="app_register_password_different">两次输入的密码不同</string>
     <string name="app_guide_page1_title">精准定位，安全守护</string>
     <string name="app_guide_page1_content">实时位置检测，电子围栏，sos报警，让爱不失联</string>
@@ -235,7 +237,17 @@
     <string name="app_electronic_fence_list">电子围栏列表</string>
     <string name="app_edit_device_account_name_title">修改设备备注名称</string>
     <string name="app_watch_more_history_msg">查看更多历史消息</string>
-    <string name="app_loading">正在加载...</string>
+    <string name="app_loading">正在加载…</string>
+    <string name="app_forgot_password">忘记密码</string>
     <string name="app_no_more_history">没有更多历史消息</string>
     <string name="app_get_latest_news">获取最新消息</string>
+    <string name="app_line_code_hint">请输入从LINE收到的验证码</string>
+    <string name="app_send_verify_code">发送验证码</string>
+    <string name="app_retry_send">重新发送%ds</string>
+    <string name="app_confirm_new">确认</string>
+    <string name="app_password_hint">密码需不少于6位，数字、英文大小写字母均可</string>
+    <string name="app_main_mine_change_password">修改密码</string>
+    <string name="app_old_password_hint">请输入旧密码</string>
+    <string name="app_please_entry_new_password">请输入新密码</string>
+    <string name="app_please_entry_new_password_again">请再次输入新密码</string>
 </resources>

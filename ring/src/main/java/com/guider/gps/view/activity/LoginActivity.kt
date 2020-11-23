@@ -117,6 +117,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 //        weChatIv.setOnClickListener(this)
         lineIv.setOnClickListener(this)
         textTv.setOnClickListener(this)
+        forgotPasswordTv.setOnClickListener(this)
         val spanny = Spanny()
                 .append(mContext!!.resources.getString(R.string.app_login_to_sing_agree),
                         ForegroundColorSpan(
@@ -158,7 +159,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     val tag =
                             if (countryTv.tag is String) {
                                 countryTv.tag as String
-                            } else "CN"
+                            } else "TW"
                     if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                         ToastUtil.showCenter(mContext!!,
                                 mContext!!.resources.getString(R.string.app_incorrect_format))
@@ -211,7 +212,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "CN"
+                        } else "TW"
                 intent.putExtra("countryCode", tag)
                 startActivityForResult(intent, REGISTER)
             }
@@ -224,13 +225,17 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "CN"
+                        } else "TW"
                 if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                     toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                     return
                 }
                 if (StringUtil.isEmpty(passwordEdit.text.toString())) {
                     toastShort(mContext!!.resources.getString(R.string.app_login_password_empty))
+                    return
+                }
+                if (passwordEdit.text.toString().length < 6) {
+                    toastShort(mContext!!.resources.getString(R.string.app_password_format_error))
                     return
                 }
                 loginEvent()
@@ -283,6 +288,19 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     passwordEdit.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                     passwordEdit.setSelection(passwordEdit.text.length)
                 }
+            }
+            forgotPasswordTv -> {
+                val intent = Intent(mContext, ForgotPasswordActivity::class.java)
+                if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
+                    intent.putExtra("phone", phoneEdit.text.toString())
+                }
+                intent.putExtra("country", countryTv.text.toString())
+                val tag =
+                        if (countryTv.tag is String) {
+                            countryTv.tag as String
+                        } else "TW"
+                intent.putExtra("countryCode", tag)
+                startActivity(intent)
             }
         }
     }
