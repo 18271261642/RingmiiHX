@@ -1312,7 +1312,7 @@
 
     <string name="guider_band">GuiderBand</string>
     <string name="guider_band_desc">Bringing HealthCare Closer to You!</string>
-
+    <string name="mcu_band_desc">Bringing HealthCare Closer to You!</string>
     <string name="data_detail">Detailed Data</string>
 
     <string name="shake_photos">Shake photos</string>

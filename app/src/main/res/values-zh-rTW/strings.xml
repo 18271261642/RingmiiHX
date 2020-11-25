@@ -1316,7 +1316,7 @@
 
     <string name="guider_band">蓋德手環</string>
     <string name="guider_band_desc">蓋德手環 喚動新生活</string>
-
+    <string name="mcu_band_desc">MCU手環 喚動新生活</string>
     <string name="data_detail">詳細數據</string>
 
     <string name="shake_photos">搖搖拍照</string>

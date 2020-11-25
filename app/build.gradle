@@ -41,10 +41,9 @@ android {
         ]
 
 
-
         ndk {
-           // abiFilters 'armeabi','armeabi-v7a', 'x86','x86_64','arm64-v8a'
-              abiFilters  'armeabi', 'armeabi-v7a','arm64-v8a'
+            // abiFilters 'armeabi','armeabi-v7a', 'x86','x86_64','arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
         }
     }
 
@@ -57,8 +56,13 @@ android {
             shrinkResources false
             // 区分是否是国际版本
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
-
-            if (rootProject.googlePlay) { // 国际版
+            if (rootProject.isMcu) {
+                buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
+                buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
+                buildConfigField("String", "WEBDOMAIN", '"https://apphealth.mcu.edu.tw/"')
+                buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
+                buildConfigField("boolean", "SOSISOPENTAG", "false")
+            } else if (rootProject.googlePlay) { // 国际版
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
 //                buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
@@ -86,16 +90,17 @@ android {
             signingConfig signingConfigs.release
             // 区分是否是国际版本
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
-
-            if (rootProject.googlePlay) { // 国际版
+            if (rootProject.isMcu) {
+                buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
+                buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
+                buildConfigField("String", "WEBDOMAIN", '"https://apphealth.mcu.edu.tw/"')
+                buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
+                buildConfigField("boolean", "SOSISOPENTAG", "false")
+            } else if (rootProject.googlePlay) { // 国际版
                 buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
                 buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
                 buildConfigField("String", "WEBDOMAIN", '"http://app.guidertech.com/"')
                 buildConfigField("String", "CMATEWEBDOMAIN", '"http://cmate.guidertech.com/"')
-//                buildConfigField("String", "APIURL", '"https://apihealth.mcu.edu.tw/"')
-//                buildConfigField("String", "APIHDURL", '"https://apihdhealth.mcu.edu.tw/"')
-//                buildConfigField("String", "WEBDOMAIN", '"https://apphealth.mcu.edu.tw/"')
-//                buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
                 println "app -- Package Google Play Bundle Release . . ."
             } else { // 大陆版
@@ -115,7 +120,7 @@ android {
     }
     repositories {
         flatDir {
-            dirs 'libs',"../bpm1000/libs","../common_m500_1000/libs"
+            dirs 'libs', "../bpm1000/libs", "../common_m500_1000/libs"
         }
     }
 
@@ -132,6 +137,10 @@ android {
             assets {
                 srcDirs 'src/main/assets'
             }
+        }
+
+        app_guider_mcu {
+            res.srcDirs = ['src/main/res-mcu']
         }
     }
 
@@ -155,51 +164,55 @@ android {
         app_guider {
             applicationId "com.guider.healthringx"
             manifestPlaceholders = [
-                    app_name: "@string/the_app_name",
-                    channel: "app_guider",
-                    app_icon: "@drawable/ic_gaide_launch",
+                    app_name     : "@string/the_app_name",
+                    channel      : "app_guider",
+                    app_icon     : "@drawable/ic_gaide_launch",
                     running_label: "@string/running"
             ]
             buildConfigField("int", "HEALTH", "0")
             buildConfigField("String", "MAC", '"11:11:11:11:11:12"')
+            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
         }
 
         // 盖德添加健康应用
         app_guider_health {
             applicationId "com.guider.healthringx"
             manifestPlaceholders = [
-                    app_name: "@string/the_app_name",
-                    channel: "app_guider_health",
-                    app_icon: "@drawable/ic_gaide_launch",
+                    app_name     : "@string/the_app_name",
+                    channel      : "app_guider_health",
+                    app_icon     : "@drawable/ic_gaide_launch",
                     running_label: "@string/btn_health"
             ]
             buildConfigField("int", "HEALTH", "1")
             buildConfigField("String", "MAC", '"11:11:11:11:11:14"')
+            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
         }
 
         // Vigori Mate 第三方兼容，健康改为竖版无创
-        app_vigori_mate  {
+        app_vigori_mate {
             applicationId "com.guider.healthringx"
             manifestPlaceholders = [
-                    app_name: "Vigori Mate",
-                    channel: "app_vigori_mate",
-                    app_icon: "@drawable/ic_vigori_icon",
+                    app_name     : "Vigori Mate",
+                    channel      : "app_vigori_mate",
+                    app_icon     : "@drawable/ic_vigori_icon",
                     running_label: "@string/btn_health"
             ]
             buildConfigField("int", "HEALTH", "2")
             buildConfigField("String", "MAC", '"11:11:11:11:11:13"')
+            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
         }
         // mcu手環
         app_guider_mcu {
-            applicationId "com.guider.mcuband"
+            applicationId "com.mcu.healthringx"
             manifestPlaceholders = [
-                    app_name: "mcu手環",
-                    channel: "app_guider_mcu",
-                    app_icon: "@drawable/icon_mcu",
+                    app_name     : "MCU手環",
+                    channel      : "app_guider_mcu",
+                    app_icon     : "@drawable/icon_mcu",
                     running_label: "@string/btn_health"
             ]
             buildConfigField("int", "HEALTH", "1")
             buildConfigField("String", "MAC", '"11:11:11:11:11:15"')
+            buildConfigField("String", "LINE_APP_ID", '"1655271017"')
         }
     }
 }

@@ -1356,7 +1356,7 @@
 
     <string name="guider_band">盖德手环</string>
     <string name="guider_band_desc">盖德手环 唤动新生活</string>
-
+    <string name="mcu_band_desc">MCU手环 唤动新生活</string>
     <string name="wx_scan">微信 扫一扫</string>
     <string name="wx_scan_long_click">长按微信二维码保存</string>
     <string name="wx_scan_tips">打开微信“扫一扫”,扫描二维码进入[盖德健康]关注页面,或微信添加好友选择公众号搜索“盖德健康”公众号并关注，随时关注您</string>

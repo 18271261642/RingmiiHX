@@ -6,12 +6,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import android.util.Log;
 
 import com.guider.health.common.utils.StringUtil;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -54,8 +56,16 @@ public class LaunchActivity extends WatchBaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //将window的背景图设置为空
+        getWindow().setBackgroundDrawable(null);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_layout);
+        TextView descTv = findViewById(R.id.tv_gb_desc);
+        if (BuildConfig.APPLICATION_ID.contains("mcu")) {
+            descTv.setText(mContext.getResources().getString(R.string.mcu_band_desc));
+        } else {
+            descTv.setText(mContext.getResources().getString(R.string.guider_band_desc));
+        }
         initData();
 
 //        String currPack = getPackageName();
@@ -124,16 +134,16 @@ public class LaunchActivity extends WatchBaseActivity {
     //判断进入的页面
     private void switchLoginUser() {
         String userId = (String) SharedPreferencesUtils.readObject(LaunchActivity.this, "userId");
-        Log.e(TAG,"----userId="+userId);
+        Log.e(TAG, "----userId=" + userId);
         //判断有没有登录
         if (!StringUtil.isEmpty(userId)) {
             String btooth = (String) SharedPreferencesUtils.readObject(LaunchActivity.this, "mylanya");
-            if (!WatchUtils.isEmpty(btooth) ) {
+            if (!WatchUtils.isEmpty(btooth)) {
                 if ("B30".equals(btooth)) {
                     startActivity(new Intent(this, B30HomeActivity.class));
                 } else if ("Ringmii".equals(btooth)) {
                     startActivity(new Intent(this, B30HomeActivity.class));
-                } else if ("500S".equals(btooth)||"B31".equals(btooth)) {
+                } else if ("500S".equals(btooth) || "B31".equals(btooth)) {
                     startActivity(new Intent(this, B31HomeActivity.class));
                 } else {
                     startActivity(new Intent(this, NewSearchActivity.class));

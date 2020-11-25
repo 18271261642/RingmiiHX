@@ -103,30 +103,30 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
             //手机号
             final String phoeCodes = wxBindPhoneCodeEdit.getText().toString();
             //验证码
-            String phoeVerCode = wxBindPhoneVerCodeEdit.getText().toString();
+//            String phoeVerCode = wxBindPhoneVerCodeEdit.getText().toString();
 
             if (StringUtil.isEmpty(phoeCodes) || StringUtil.isEmpty(areaCode)) {
                 showToast(this, R.string.input_name);
                 return;
             }
-            if (StringUtil.isEmpty(phoeVerCode)) {
-                showToast(this, R.string.input_code);
-                return;
-            }
+//            if (StringUtil.isEmpty(phoeVerCode)) {
+//                showToast(this, R.string.input_code);
+//                return;
+//            }
 
-            final String finalAreaCode = areaCode;
-            SmsMob.submitVerifyCode(areaCode, phoeCodes, phoeVerCode, new SmsMob.SmsCodeVerifyListener() {
-                @Override
-                public void onResult(int result) {
-
-                    if (result != 0) {
-                        if (result == 457) {//手机号格式不对
-                            wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
-                            wxBindGetVerCodeBtn.setClickable(true);
-                            ToastUtil.showShort(BindPhoneV2Activity.this, getResources().getString(R.string.format_is_wrong));
-                        }
-                        return;
-                    }
+//            final String finalAreaCode = areaCode;
+//            SmsMob.submitVerifyCode(areaCode, phoeCodes, phoeVerCode, new SmsMob.SmsCodeVerifyListener() {
+//                @Override
+//                public void onResult(int result) {
+//
+//                    if (result != 0) {
+//                        if (result == 457) {//手机号格式不对
+//                            wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
+//                            wxBindGetVerCodeBtn.setClickable(true);
+//                            ToastUtil.showShort(BindPhoneV2Activity.this, getResources().getString(R.string.format_is_wrong));
+//                        }
+//                        return;
+//                    }
 
                     // 注册
                     IGuiderApi iGuiderApi = ApiUtil.createApi(IGuiderApi.class);
@@ -141,7 +141,7 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
                     param.setHeadimgurl(headUrl);
                     param.setGender(Gender.MAN);
                     param.setPhone(phoeCodes);
-                    param.setAreaCode(finalAreaCode);
+                    param.setAreaCode(areaCode);
                     iGuiderApi.bindPhoneAndLogin(param).enqueue(new ApiCallBack<BeanOfWecaht>() {
                         @Override
                         public void onApiResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
@@ -162,8 +162,8 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
                             finish();
                         }
                     });
-                }
-            });
+//                }
+//            });
         }
     }
 

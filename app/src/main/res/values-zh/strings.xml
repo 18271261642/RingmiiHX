@@ -1355,7 +1355,7 @@
 
     <string name="guider_band">盖德手环</string>
     <string name="guider_band_desc">盖德手环 唤动新生活</string>
-
+    <string name="mcu_band_desc">MCU手环 唤动新生活</string>
     <string name="data_detail">详细数据</string>
 
     <string name="shake_photos">摇摇拍照</string>

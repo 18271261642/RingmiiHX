@@ -122,30 +122,39 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity
                 //手机号
                 String phoeCodes = wxBindPhoneCodeEdit.getText().toString();
                 //验证码
-                String phoeVerCode = wxBindPhoneVerCodeEdit.getText().toString();
+//                String phoeVerCode = wxBindPhoneVerCodeEdit.getText().toString();
                 if (WatchUtils.isEmpty(phoeCodes)) {
                     ToastUtil.showToast(this, getResources().getString(R.string.input_name));
                     return;
                 }
-                if (WatchUtils.isEmpty(phoeVerCode)) {
-                    ToastUtil.showToast(this, getResources().getString(R.string.input_code));
-                    return;
-                }
+//                if (WatchUtils.isEmpty(phoeVerCode)) {
+//                    ToastUtil.showToast(this, getResources().getString(R.string.input_code));
+//                    return;
+//                }
 
-                subWxBindData(phoeCodes, phoeVerCode);
+                subWxBindData(phoeCodes);
                 break;
         }
     }
 
 
     //提交绑定信息
-    private void subWxBindData(String phoeCodes, String phoeVerCode) {
+    private void subWxBindData(String phoeCodes) {
         // 提交验证码，其中的code表示验证码，如“1357”
-        SMSSDK.submitVerificationCode(
-                StringUtils.substringAfter(
-                        wxBindPhoneCodeTv.getText().toString(), "+").trim(),
-                phoeCodes, phoeVerCode);
-
+//        SMSSDK.submitVerificationCode(
+//                StringUtils.substringAfter(
+//                        wxBindPhoneCodeTv.getText().toString(), "+").trim(),
+//                phoeCodes, phoeVerCode);
+        String bindUrl = BuildConfig.APIURL +
+                "api/v2/wechat/bind/phone/token?phone=" + phoeCodes + "&code=";
+        // http://api.guiderhealth.com/
+        if (!StringUtil.isEmpty(wxStr)) {
+            WxBindStr wxBindStr = new Gson().fromJson(wxStr, WxBindStr.class);
+            //Log.e(TAG, "--------wx=" + wxBindStr.toString());
+            requestPressent.getRequestJSONObject(1002, bindUrl,
+                    GuiderWxBindPhoneActivity.this,
+                    new Gson().toJson(wxBindStr), 2);
+        }
     }
 
     //获取验证码
@@ -172,119 +181,116 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity
             msg.arg1 = event;
             msg.arg2 = result;
             msg.obj = data;
-            new Handler(Looper.getMainLooper(), new Handler.Callback() {
-                @Override
-                public boolean handleMessage(Message msg) {
-                    int event = msg.arg1;
-                    int result = msg.arg2;
-                    Object data = msg.obj;
+            new Handler(Looper.getMainLooper(), msg1 -> {
+                int event1 = msg1.arg1;
+                int result1 = msg1.arg2;
+                Object data1 = msg1.obj;
 
-                    Log.e(TAG, "-------event=" + event + "---result=" + result +
-                            "---data=" + data.toString());
+                Log.e(TAG, "-------event=" + event1 + "---result=" + result1 +
+                        "---data=" + data1.toString());
 
 
-                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                        if (result == SMSSDK.RESULT_COMPLETE) {
-                            // TODO 处理成功得到验证码的结果
-                            // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
+                if (event1 == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                    if (result1 == SMSSDK.RESULT_COMPLETE) {
+                        // TODO 处理成功得到验证码的结果
+                        // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
 //                                                Log.e("===验证码", "完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达  " + data.toString());
 
-                        } else {
-                            if (!WatchUtils.isEmpty(data.toString()) && data.toString()
-                                    .contains("java.lang.Throwable:")) {
-                                String res =
-                                        data.toString().
-                                                replace("java.lang.Throwable:",
-                                                        "").trim();
+                    } else {
+                        if (!WatchUtils.isEmpty(data1.toString()) && data1.toString()
+                                .contains("java.lang.Throwable:")) {
+                            String res =
+                                    data1.toString().
+                                            replace("java.lang.Throwable:",
+                                                    "").trim();
 //                                                    Log.e("===验证码", "处理错误的结果  " + res);
-                                if (!WatchUtils.isEmpty(res)) {
-                                    CodeBean codeBean = new Gson().fromJson(res, CodeBean.class);
-                                    if (codeBean != null) {
-                                        int status = codeBean.getStatus();
-                                        if (status == 603) {//手机号错
-                                            ToastUtil.showLong(
-                                                    GuiderWxBindPhoneActivity.this,
-                                                    getResources()
-                                                            .getString(R.string.string_phone_er));
-                                        } else if (status == 468) {//验证码错
-                                            ToastUtil.showLong(
-                                                    GuiderWxBindPhoneActivity.this,
-                                                    getResources().getString(R.string.yonghuzdffhej));
-                                        } else if (status == 457) {//手机号格式不对
-                                            //username.setText("");
-                                            wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
-                                            wxBindGetVerCodeBtn.setClickable(true);
-                                            ToastUtil.showShort(
-                                                    GuiderWxBindPhoneActivity.this,
-                                                    getResources()
-                                                            .getString(R.string.format_is_wrong));
-                                        } else {
-                                            ToastUtil.showLong(
-                                                    GuiderWxBindPhoneActivity.this,
-                                                    codeBean.getError());
-                                        }
+                            if (!WatchUtils.isEmpty(res)) {
+                                CodeBean codeBean = new Gson().fromJson(res, CodeBean.class);
+                                if (codeBean != null) {
+                                    int status = codeBean.getStatus();
+                                    if (status == 603) {//手机号错
+                                        ToastUtil.showLong(
+                                                GuiderWxBindPhoneActivity.this,
+                                                getResources()
+                                                        .getString(R.string.string_phone_er));
+                                    } else if (status == 468) {//验证码错
+                                        ToastUtil.showLong(
+                                                GuiderWxBindPhoneActivity.this,
+                                                getResources().getString(R.string.yonghuzdffhej));
+                                    } else if (status == 457) {//手机号格式不对
+                                        //username.setText("");
+                                        wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
+                                        wxBindGetVerCodeBtn.setClickable(true);
+                                        ToastUtil.showShort(
+                                                GuiderWxBindPhoneActivity.this,
+                                                getResources()
+                                                        .getString(R.string.format_is_wrong));
+                                    } else {
+                                        ToastUtil.showLong(
+                                                GuiderWxBindPhoneActivity.this,
+                                                codeBean.getError());
                                     }
                                 }
                             }
-                            // TODO 处理错误的结果
-                            ((Throwable) data).printStackTrace();
                         }
-                    } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                        if (result == SMSSDK.RESULT_COMPLETE) {
-                            // TODO 处理验证码验证通过的结果
-                            Log.e("===验证码", "处理验证码验证通过的结果  " + data.toString());
-                            //手机号
-                            String phoeCodes = wxBindPhoneCodeEdit.getText().toString();
-
-                            String bindUrl = BuildConfig.APIURL +
-                                    "api/v2/wechat/bind/phone/token?phone=" + phoeCodes + "&code=";
-                            // http://api.guiderhealth.com/
-                            if (!StringUtil.isEmpty(wxStr)) {
-                                WxBindStr wxBindStr = new Gson().fromJson(wxStr, WxBindStr.class);
-                                //Log.e(TAG, "--------wx=" + wxBindStr.toString());
-                                requestPressent.getRequestJSONObject(1002, bindUrl,
-                                        GuiderWxBindPhoneActivity.this,
-                                        new Gson().toJson(wxBindStr), 2);
-                            }
-                        } else {
-                            if (!WatchUtils.isEmpty(data.toString()) &&
-                                    data.toString().contains("java.lang.Throwable:")) {
-                                String res = data.toString()
-                                        .replace("java.lang.Throwable:", "")
-                                        .trim();
-//                                                    Log.e("===验证码", "处理错误的结果2  " + res);
-                                if (!WatchUtils.isEmpty(res)) {
-                                    CodeBean codeBean = new Gson().fromJson(res, CodeBean.class);
-                                    if (codeBean != null) {
-                                        int status = codeBean.getStatus();
-//                                                            Log.e("===验证码", "处理错误的结果2  " + status);
-                                        if (status == 468) {//验证码错
-                                            ToastUtil.showLong(
-                                                    GuiderWxBindPhoneActivity.this,
-                                                    getResources().getString(R.string.yonghuzdffhej));
-                                        } else if (status == 457) {//手机号格式不对
-                                            // username.setText("");
-                                            wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
-                                            wxBindGetVerCodeBtn.setClickable(true);
-                                            ToastUtil.showShort(
-                                                    GuiderWxBindPhoneActivity.this,
-                                                    getResources().getString(R.string.format_is_wrong));
-                                        } else {
-                                            ToastUtil.showLong(
-                                                    GuiderWxBindPhoneActivity.this,
-                                                    codeBean.getError());
-                                        }
-                                    }
-                                }
-                            }
-                            // TODO 处理错误的结果
-                            ((Throwable) data).printStackTrace();
-                        }
+                        // TODO 处理错误的结果
+                        ((Throwable) data1).printStackTrace();
                     }
-//                                        Log.e("===验证码", "其他接口的返回结果也类似  " + event);
-                    // TODO 其他接口的返回结果也类似，根据event判断当前数据属于哪个接口
-                    return false;
+                } else if (event1 == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                    if (result1 == SMSSDK.RESULT_COMPLETE) {
+                        // TODO 处理验证码验证通过的结果
+                        Log.e("===验证码", "处理验证码验证通过的结果  " + data1.toString());
+                        //手机号
+                        String phoeCodes = wxBindPhoneCodeEdit.getText().toString();
+
+                        String bindUrl = BuildConfig.APIURL +
+                                "api/v2/wechat/bind/phone/token?phone=" + phoeCodes + "&code=";
+                        // http://api.guiderhealth.com/
+                        if (!StringUtil.isEmpty(wxStr)) {
+                            WxBindStr wxBindStr = new Gson().fromJson(wxStr, WxBindStr.class);
+                            //Log.e(TAG, "--------wx=" + wxBindStr.toString());
+                            requestPressent.getRequestJSONObject(1002, bindUrl,
+                                    GuiderWxBindPhoneActivity.this,
+                                    new Gson().toJson(wxBindStr), 2);
+                        }
+                    } else {
+                        if (!WatchUtils.isEmpty(data1.toString()) &&
+                                data1.toString().contains("java.lang.Throwable:")) {
+                            String res = data1.toString()
+                                    .replace("java.lang.Throwable:", "")
+                                    .trim();
+//                                                    Log.e("===验证码", "处理错误的结果2  " + res);
+                            if (!WatchUtils.isEmpty(res)) {
+                                CodeBean codeBean = new Gson().fromJson(res, CodeBean.class);
+                                if (codeBean != null) {
+                                    int status = codeBean.getStatus();
+//                                                            Log.e("===验证码", "处理错误的结果2  " + status);
+                                    if (status == 468) {//验证码错
+                                        ToastUtil.showLong(
+                                                GuiderWxBindPhoneActivity.this,
+                                                getResources().getString(R.string.yonghuzdffhej));
+                                    } else if (status == 457) {//手机号格式不对
+                                        // username.setText("");
+                                        wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
+                                        wxBindGetVerCodeBtn.setClickable(true);
+                                        ToastUtil.showShort(
+                                                GuiderWxBindPhoneActivity.this,
+                                                getResources().getString(R.string.format_is_wrong));
+                                    } else {
+                                        ToastUtil.showLong(
+                                                GuiderWxBindPhoneActivity.this,
+                                                codeBean.getError());
+                                    }
+                                }
+                            }
+                        }
+                        // TODO 处理错误的结果
+                        ((Throwable) data1).printStackTrace();
+                    }
                 }
+//                                        Log.e("===验证码", "其他接口的返回结果也类似  " + event);
+                // TODO 其他接口的返回结果也类似，根据event判断当前数据属于哪个接口
+                return false;
             }).sendMessage(msg);
         }
     };

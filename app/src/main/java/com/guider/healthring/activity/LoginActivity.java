@@ -174,7 +174,11 @@ public class LoginActivity extends WatchBaseActivity
         findViewById(R.id.forget_tv).setOnClickListener(this);
         findViewById(R.id.login_btn).setOnClickListener(this);
         qqIv.setOnClickListener(this);
-        weixinIv.setOnClickListener(this);
+        if (BuildConfig.GOOGLEPLAY) {
+            weixinIv.setVisibility(View.GONE);
+        } else {
+            weixinIv.setOnClickListener(this);
+        }
         loginVisitorTv.setOnClickListener(this);
         findViewById(R.id.privacyTv).setOnClickListener(this);
         lineIv.setOnClickListener(this);
@@ -390,13 +394,12 @@ public class LoginActivity extends WatchBaseActivity
                 Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
 ////                String webMainUrl = "https://camtehealth.mcu.edu.tw/";
 //                String webMainUrl ="http://cmate.guidertech.com/";
-                intent.putExtra("url", BuildConfig.CMATEWEBDOMAIN+"#/open");
+                intent.putExtra("url", BuildConfig.CMATEWEBDOMAIN + "#/open");
                 startActivity(intent);
                 break;
             case R.id.line_iv: // LINE 登陆
                 // 用户信息可以做自己的操作
-                String lineId = "1653887386";
-//                String lineId = "1655217015";
+                String lineId = BuildConfig.LINE_APP_ID;
                 mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line),
                         lineId, null, this::registerRingUser, () -> {
                             startActivity(NewSearchActivity.class);

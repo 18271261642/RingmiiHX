@@ -11,12 +11,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
+
 import androidx.multidex.MultiDex;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
+
 import com.afa.tourism.greendao.gen.DaoMaster;
 import com.afa.tourism.greendao.gen.DaoSession;
 import com.android.volley.RequestQueue;
@@ -36,12 +39,23 @@ import com.mob.MobSDK;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
+
 import org.litepal.LitePalApplication;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 
 /**
@@ -77,6 +91,7 @@ public class MyApp extends LitePalApplication {
     public static PhoneSosOrDisPhone phoneSosOrDisPhone;
 
     private IMapLocation mIMapLocation;
+
     static {
         phoneSosOrDisPhone = new PhoneSosOrDisPhone();
     }
@@ -128,11 +143,11 @@ public class MyApp extends LitePalApplication {
             cce.printStackTrace();
             int strAccountId = (int) SharedPreferencesUtils.getParam(getApplicationContext(), "accountIdGD", 0);
             if (strAccountId != 0)
-                SharedPreferencesUtils.setParam(getApplicationContext(), "accountIdGD", (long)strAccountId);
+                SharedPreferencesUtils.setParam(getApplicationContext(), "accountIdGD", (long) strAccountId);
         }
 
         MyUtils.setMacAddress(BuildConfig.MAC); // 模拟手环APP
-        ApiUtil.init(getApplication() , MyUtils.getMacAddress());
+        ApiUtil.init(getApplication(), MyUtils.getMacAddress());
         Commont.GAI_DE_BASE_URL = BuildConfig.APIHDURL + "api/v1/";
         MyUtils.application = getApplication();
         super.onCreate();
@@ -182,11 +197,9 @@ public class MyApp extends LitePalApplication {
                 Log.i("SHA", new BigInteger(1, md.digest()).toString(16));
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        } catch (PackageManager.NameNotFoundException e) {
-        } catch (NoSuchAlgorithmException e) {
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException ignored) {
         }
     }
-
 
 
     public static B30DataServer getB30DataServer() {
@@ -194,7 +207,7 @@ public class MyApp extends LitePalApplication {
     }
 
     //B30的服务
-    public  NewB30ConnStateService getB30ConnStateService() {
+    public NewB30ConnStateService getB30ConnStateService() {
         if (b30ConnStateService == null) {
             startB30Server();
         }
@@ -230,8 +243,6 @@ public class MyApp extends LitePalApplication {
         }
         return vpOperateManager;
     }
-
-
 
 
     @Override

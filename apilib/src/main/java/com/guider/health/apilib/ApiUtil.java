@@ -1,13 +1,29 @@
 package com.guider.health.apilib;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509ExtendedTrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -69,6 +85,77 @@ public class ApiUtil {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(loggingInterceptor);
         }
+//        X509TrustManager manager;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+//            manager = new X509ExtendedTrustManager() {
+//                @Override
+//                public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) {
+//
+//                }
+//
+//                @Override
+//                public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) {
+//
+//                }
+//
+//                @Override
+//                public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {
+//
+//                }
+//
+//                @Override
+//                public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {
+//
+//                }
+//
+//                public X509Certificate[] getAcceptedIssuers() {
+//                    return new X509Certificate[0];
+//                }
+//
+//                @Override
+//                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+//                }
+//
+//                @Override
+//                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+//                }
+//            };
+//        } else {
+//            manager = new X509TrustManager() {
+//                public X509Certificate[] getAcceptedIssuers() {
+//                    return new X509Certificate[0];
+//                }
+//
+//                @Override
+//                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+//                }
+//
+//                @Override
+//                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+//                }
+//            };
+//
+//        }
+//        TrustManager[] trustAllCerts = new TrustManager[]{manager};
+//        SSLContext sc;
+//        try {
+//            sc = SSLContext.getInstance("TLS");
+//            // trustAllCerts信任所有的证书
+//            sc.init(null, trustAllCerts, new SecureRandom());
+//            //忽略ssl证书,android10及以上的版本就不用了
+////            if (Build.VERSION.SDK_INT < 29) {
+//                builder.sslSocketFactory(sc.getSocketFactory(),manager);
+////            }
+//            builder.hostnameVerifier(new HostnameVerifier() {
+//                @SuppressLint("BadHostnameVerifier")
+//                @Override
+//                public boolean verify(String hostname, SSLSession session) {
+//                    return true;
+//                }
+//            });
+//        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+//            e.printStackTrace();
+//        }
         builder.readTimeout(5, TimeUnit.MINUTES)
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .writeTimeout(5, TimeUnit.MINUTES);
@@ -174,7 +261,7 @@ public class ApiUtil {
         return createApi(ApiConsts.API_RING, clz, false, false);
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 

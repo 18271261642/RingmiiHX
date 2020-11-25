@@ -138,7 +138,7 @@
         <activity
             android:name="com.guider.healthring.activity.LaunchActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
