@@ -477,7 +477,7 @@ public class LoginActivity extends WatchBaseActivity
 
     private void loginGuider(String uName) {
         //登录到盖德后台
-        String loginUrl = BuildConfig.APIURL +
+        String loginUrl = com.guider.health.apilib.BuildConfig.APIURL +
                 "api/v1/login/onlyphone?phone=" + uName; // http://api.guiderhealth.com/
         Log.e(TAG, "-------手机号登录的url=" + loginUrl);
         OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {

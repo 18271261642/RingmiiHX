@@ -171,7 +171,7 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
                 return;
             // http://api.guiderhealth.com/
             Log.e("登录的userId",accountId+"");
-            String guiderUrl = BuildConfig.APIURL + "api/v1/userinfo?accountId=" + accountId;
+            String guiderUrl = com.guider.health.apilib.BuildConfig.APIURL + "api/v1/userinfo?accountId=" + accountId;
             if (requestPressent != null) {
                 requestPressent.getRequestJSONObjectGet(11, guiderUrl, getContext(), 11);
             }
@@ -478,7 +478,7 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
     /**
      * 解绑设备 http://47.92.218.150:8082/
      */
-    private final String Base_Url = BuildConfig.APIURL + "api/v1/";
+    private final String Base_Url = com.guider.health.apilib.BuildConfig.APIURL + "api/v1/";
 
     void unbindDevices() {
         long accountIdGD = (long) SharedPreferencesUtils.getParam(MyApp.getInstance(), "accountIdGD", 0L);

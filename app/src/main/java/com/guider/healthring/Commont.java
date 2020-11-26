@@ -1,5 +1,7 @@
 package com.guider.healthring;
 
+import com.guider.health.apilib.BuildConfig;
+
 /**
  * sp---key
  */
