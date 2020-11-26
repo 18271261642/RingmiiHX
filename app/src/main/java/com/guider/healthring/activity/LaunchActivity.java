@@ -56,9 +56,8 @@ public class LaunchActivity extends WatchBaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //将window的背景图设置为空
-        getWindow().setBackgroundDrawable(null);
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Splash);
         setContentView(R.layout.activity_launch_layout);
         TextView descTv = findViewById(R.id.tv_gb_desc);
         if (BuildConfig.APPLICATION_ID.contains("mcu")) {
