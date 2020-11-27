@@ -66,7 +66,7 @@ class AppSystemMsgService : LifecycleService() {
         }
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         return MyBinder(WeakReference(this))
     }
@@ -86,7 +86,7 @@ class AppSystemMsgService : LifecycleService() {
         val DELAY_TIME: Long = 1_000 * 10
 
         init {
-            loopGetLatestSystemMsg()
+//            loopGetLatestSystemMsg()
         }
 
         private fun loopGetLatestSystemMsg() {

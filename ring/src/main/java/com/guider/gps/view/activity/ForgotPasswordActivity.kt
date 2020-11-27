@@ -2,11 +2,13 @@ package com.guider.gps.view.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +24,8 @@ import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
 import kotlinx.android.synthetic.main.activity_forgot_password.*
+import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.include_password_edit.*
 import kotlinx.android.synthetic.main.include_phone_edit_layout.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -96,8 +100,32 @@ class ForgotPasswordActivity : BaseActivity() {
                 sendCodeTv.setBackgroundResource(R.drawable.rounded_ddddd_22_bg)
             }
         })
+        viewModel.loading.observe(this, {
+            if (it) showDialog()
+            else dismissDialog()
+        })
+        viewModel.sendCodeResult.observe(this, {
+            if (it) {
+                toastShort(mContext!!.resources.getString(R.string.app_main_send_success))
+            } else {
+                toastShort(mContext!!.resources.getString(R.string.app_main_send_fail))
+            }
+        })
+        viewModel.nextDataResult.observe(this, {
+            if (it) {
+                val intent = Intent(mContext, ResetPasswordActivity::class.java)
+                intent.putExtra("phone", phoneEdit.text.toString())
+                intent.putExtra("country",
+                        countryTv.text.toString().replace("+", ""))
+                intent.putExtra("title",
+                        mContext!!.resources.getString(R.string.app_forgot_password))
+                seconds = 0
+                startActivityForResult(intent, RESET_PASSWORD)
+            }
+        })
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initLogic() {
         if (StringUtil.isNotBlankAndEmpty(phoneValue)) {
             phoneEdit.setText(phoneValue)
@@ -187,6 +215,7 @@ class ForgotPasswordActivity : BaseActivity() {
                 sendCodeEvent()
             }
             nextStep -> {
+                phoneValue = phoneEdit.text.toString()
                 if (StringUtil.isEmpty(phoneValue)) {
                     toastShort(mContext!!.resources.getString(R.string.app_login_phone_empty))
                     return
@@ -203,18 +232,24 @@ class ForgotPasswordActivity : BaseActivity() {
                     toastShort(mContext!!.resources.getString(R.string.app_verification_code_empty))
                     return
                 }
-                if (phoneEdit.text.toString() == "18810212859"
-                        && lineCodeEdit.text.toString() == "123456") {
-                    toastShort("成功")
-                    val intent = Intent(mContext, ResetPasswordActivity::class.java)
-                    intent.putExtra("phone", phoneEdit.text.toString())
-                    intent.putExtra("country", countryTv.text.toString())
-                    intent.putExtra("title",
-                            mContext!!.resources.getString(R.string.app_forgot_password))
-                    seconds = 0
-                    startActivityForResult(intent, RESET_PASSWORD)
-                }
+                hideKeyboard(v)
+                viewModel.entryNext(
+                        countryTv.text.toString().replace("+", ""),
+                        phoneValue, lineCodeEdit.text.toString()
+                )
             }
+        }
+    }
+
+    private fun hideKeyboard(view: View) {
+        try {
+            if (phoneEdit.isFocused) phoneEdit.clearFocus()
+            if (lineCodeEdit.isFocused) lineCodeEdit.clearFocus()
+            val imm: InputMethodManager = view.context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -228,7 +263,17 @@ class ForgotPasswordActivity : BaseActivity() {
     }
 
     private fun sendCodeEvent() {
+        phoneValue = phoneEdit.text.toString()
+        val tag =
+                if (countryTv.tag is String) {
+                    countryTv.tag as String
+                } else "TW"
+        if (!StringUtil.isMobileNumber(phoneValue, tag)) {
+            toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
+            return
+        }
         if (sendCodeStatus == "send") {
+            viewModel.sendCode(phoneValue)
             seconds = 60
             sendCodeStatus = "receive"
             sendCodeTv.setTextColor(CommonUtils.getColor(mContext!!, R.color.colorF28A38))

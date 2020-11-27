@@ -2,6 +2,10 @@ package com.guider.gps.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.guider.baselib.utils.ApiCoroutinesCallBack
+import com.guider.health.apilib.GuiderApiUtil
+import kotlinx.coroutines.launch
 
 /**
  * @Package: com.guider.gps.viewModel
@@ -15,7 +19,9 @@ class ForgotPasswordViewModel : ViewModel() {
 
     var isNextStepAvailable = MutableLiveData<Boolean>()
     var isSendCodeAvailable = MutableLiveData<Boolean>()
-    var nextDataResult = MutableLiveData<String>()
+    var nextDataResult = MutableLiveData<Boolean>()
+    var sendCodeResult = MutableLiveData<Boolean>()
+    var loading = MutableLiveData<Boolean>()
 
     fun setNextStepAvailable(flag: Boolean) {
         isNextStepAvailable.postValue(flag)
@@ -25,8 +31,30 @@ class ForgotPasswordViewModel : ViewModel() {
         isSendCodeAvailable.postValue(flag)
     }
 
-    fun entryNext() {
+    fun sendCode(phone: String) {
+        viewModelScope.launch {
+            ApiCoroutinesCallBack.resultParse(onStart = {
+                loading.postValue(true)
+            }, block = {
+                val result = GuiderApiUtil.getApiService().sendLineCode(phone)
+                sendCodeResult.postValue(result == "true")
+            }, onRequestFinish = {
+                loading.postValue(false)
+            })
+        }
+    }
 
+    fun entryNext(telAreaCode: String, phoneNum: String, code: String) {
+        viewModelScope.launch {
+            ApiCoroutinesCallBack.resultParse(onStart = {
+                loading.postValue(true)
+            }, block = {
+                val result = GuiderApiUtil.getApiService().verifyCode(telAreaCode, phoneNum, code)
+                nextDataResult.postValue(result == "true")
+            }, onRequestFinish = {
+                loading.postValue(false)
+            })
+        }
     }
 
 }

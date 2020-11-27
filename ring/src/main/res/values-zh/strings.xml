@@ -209,7 +209,7 @@
     <string name="app_minute_simple">分钟</string>
     <string name="app_general_pattern">一般模式</string>
     <string name="app_search_pattern">寻人模式</string>
-    <string name="app_time_interval_one_hour">间隔1小时</string>
+    <string name="app_time_interval_30_minutes">间隔30分钟</string>
     <string name="app_time_interval_five_minutes">间隔5分钟</string>
     <string name="app_bracelet_power_reminder">手环电量提醒</string>
     <string name="app_shutdown_to_remind">关机提醒</string>
@@ -250,4 +250,5 @@
     <string name="app_old_password_hint">请输入旧密码</string>
     <string name="app_please_entry_new_password">请输入新密码</string>
     <string name="app_please_entry_new_password_again">请再次输入新密码</string>
+    <string name="app_forgot_password_success">密码重置成功，请重新登录</string>
 </resources>

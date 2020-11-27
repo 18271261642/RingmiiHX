@@ -3,8 +3,8 @@ ext {
             compileSdkVersion: 29,
             minSdkVersion    : 19,
             targetSdkVersion : 29,
-            codeVersion      : 13,
-            appVersion       : "1.8.0"
+            codeVersion      : 14,
+            appVersion       : "1.9.0"
     ]
 
     supportLibVersion = '1.1.0'
@@ -55,6 +55,7 @@ ext {
     MagicIndicator = "1.7.0"
     arouter = "1.5.0"
     arouter_compiler = "1.2.2"
+    url_manager = "1.4.0"
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
             material              : "com.google.android.material:material:$material",
@@ -119,5 +120,6 @@ ext {
             //Arouter
             arouter               : "com.alibaba:arouter-api:$arouter",
             arouter_compiler      : "com.alibaba:arouter-compiler:$arouter_compiler",
+            url_manager           : "me.jessyan:retrofit-url-manager:$url_manager",
     ]
 }

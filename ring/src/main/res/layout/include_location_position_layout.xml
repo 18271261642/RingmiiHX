@@ -36,9 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_1"
-            android:textSize="@dimen/sp_12"
             android:text="@string/app_time_interval_five_minutes"
             android:textColor="@drawable/select_location_position_content_text"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchPersonTitle" />
@@ -72,9 +72,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_1"
-            android:textSize="@dimen/sp_12"
-            android:text="@string/app_time_interval_one_hour"
+            android:text="@string/app_time_interval_30_minutes"
             android:textColor="@drawable/select_location_position_content_text"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/normalTitle" />

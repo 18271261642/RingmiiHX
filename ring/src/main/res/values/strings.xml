@@ -211,7 +211,7 @@
     <string name="app_minute_simple">m</string>
     <string name="app_general_pattern">General pattern</string>
     <string name="app_search_pattern">People search pattern</string>
-    <string name="app_time_interval_one_hour">Interval 1 hour</string>
+    <string name="app_time_interval_30_minutes">Interval 30 minutes</string>
     <string name="app_time_interval_five_minutes">Interval 5 minutes</string>
 
     <string name="app_bracelet_power_reminder">Bracelet power reminder</string>
@@ -252,4 +252,5 @@
     <string name="app_old_password_hint">Please enter your old password</string>
     <string name="app_please_entry_new_password">Please enter a new password</string>
     <string name="app_please_entry_new_password_again">Please enter your new password again</string>
+    <string name="app_forgot_password_success">Password reset successful, please log in again</string>
 </resources>

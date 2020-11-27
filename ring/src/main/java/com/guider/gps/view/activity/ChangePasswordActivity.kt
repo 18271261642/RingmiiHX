@@ -1,18 +1,19 @@
 package com.guider.gps.view.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import com.guider.baselib.base.BaseActivity
-import com.guider.baselib.utils.CommonUtils
-import com.guider.baselib.utils.RESET_PASSWORD
-import com.guider.baselib.utils.StringUtil
-import com.guider.baselib.utils.toastShort
+import com.guider.baselib.utils.*
 import com.guider.gps.R
 import com.guider.gps.viewModel.ChangePasswordViewModel
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_change_password.*
 import kotlinx.android.synthetic.main.include_password_edit.*
 
@@ -43,6 +44,10 @@ class ChangePasswordActivity : BaseActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this)[ChangePasswordViewModel::class.java]
+        viewModel.loading.observe(this, {
+            if (it) showDialog()
+            else dismissDialog()
+        })
         viewModel.isConfirmAvailable.observe(this, {
             nextStep.isClickable = it
             if (it) {
@@ -51,6 +56,15 @@ class ChangePasswordActivity : BaseActivity() {
             } else {
                 nextStep.setBackgroundResource(R.drawable.rounded_ddddd_22_bg)
                 nextStep.setTextColor(CommonUtils.getColor(mContext!!, R.color.white))
+            }
+        })
+        viewModel.nextDataResult.observe(this, {
+            if (it) {
+                val intent = Intent(mContext, ResetPasswordActivity::class.java)
+                intent.putExtra("title",
+                        mContext!!.resources.getString(R.string.app_main_mine_change_password))
+                intent.putExtra("pwd", passwordEdit.text.toString())
+                startActivityForResult(intent, RESET_PASSWORD)
             }
         })
     }
@@ -77,16 +91,37 @@ class ChangePasswordActivity : BaseActivity() {
         when (v) {
             nextStep -> {
                 if (!checkPasswordAvailable(true)) return
-                if (passwordEdit.text.toString() == "123456") {
-                    toastShort("验证成功")
-                    val intent = Intent(mContext, ResetPasswordActivity::class.java)
-                    intent.putExtra("title",
-                            mContext!!.resources.getString(R.string.app_main_mine_change_password))
-                    startActivityForResult(intent, RESET_PASSWORD)
+                hideKeyboard(v)
+                viewModel.entryNext(passwordEdit.text.toString(), MMKVUtil.getInt(USER.USERID))
+            }
+            passwordShowIv -> {
+                if (passwordShowIv.isSelected) {
+                    passwordShowIv.isSelected = false
+                    passwordShowIv.setImageResource(R.drawable.icon_password_show_close)
+                    passwordEdit.inputType =
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
+                    passwordEdit.setSelection(passwordEdit.text.length)
+                } else {
+                    passwordShowIv.isSelected = true
+                    passwordShowIv.setImageResource(R.drawable.icon_password_show_open)
+                    passwordEdit.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    passwordEdit.setSelection(passwordEdit.text.length)
                 }
             }
         }
     }
+
+    private fun hideKeyboard(view: View) {
+        try {
+            if (passwordEdit.isFocused) passwordEdit.clearFocus()
+            val imm: InputMethodManager = view.context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

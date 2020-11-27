@@ -1,17 +1,21 @@
 package com.guider.gps.view.activity
 
 import android.app.Activity
+import android.content.Context
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.StringUtil
+import com.guider.baselib.utils.USER
 import com.guider.baselib.utils.toastShort
 import com.guider.gps.R
 import com.guider.gps.viewModel.ResetPasswordViewModel
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_register.againPasswordEdit
 import kotlinx.android.synthetic.main.activity_register.againPasswordShowIv
 import kotlinx.android.synthetic.main.activity_reset_password.*
@@ -31,6 +35,7 @@ class ResetPasswordActivity : BaseActivity() {
 
     //国家区号
     private var countryCodeValue = ""
+    private var pwd = ""
     private lateinit var viewModel: ResetPasswordViewModel
 
     override val contentViewResId: Int
@@ -44,6 +49,9 @@ class ResetPasswordActivity : BaseActivity() {
             }
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("country"))) {
                 countryCodeValue = intent.getStringExtra("country")!!
+            }
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("pwd"))) {
+                pwd = intent.getStringExtra("pwd")!!
             }
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("title"))) {
                 setTitle(intent.getStringExtra("title")!!)
@@ -72,6 +80,26 @@ class ResetPasswordActivity : BaseActivity() {
             } else {
                 confirmTv.setBackgroundResource(R.drawable.rounded_ddddd_22_bg)
                 confirmTv.setTextColor(CommonUtils.getColor(mContext!!, R.color.white))
+            }
+        })
+        viewModel.loading.observe(this, {
+            if (it) showDialog()
+            else dismissDialog()
+        })
+        viewModel.nextDataResult.observe(this, {
+            if (it) {
+                //修改密码直接返回，忘记密码的话提示并延时返回
+                if (StringUtil.isNotBlankAndEmpty(pwd)) {
+                    toastShort(mContext!!.resources.getString(
+                            R.string.app_person_info_change_success))
+                } else {
+                    toastShort(mContext!!.resources.getString(R.string.app_forgot_password_success))
+
+                }
+                confirmTv.postDelayed({
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }, 1500)
             }
         })
     }
@@ -140,10 +168,33 @@ class ResetPasswordActivity : BaseActivity() {
             }
             confirmTv -> {
                 if (!checkPasswordAvailable(true)) return
-                toastShort("验证成功")
-                setResult(Activity.RESULT_OK, intent)
-                finish()
+                hideKeyboard(v)
+                if (StringUtil.isNotBlankAndEmpty(pwd)) {
+                    if (MMKVUtil.getInt(USER.USERID) == 0) return
+                    //修改密码
+                    viewModel.changePassword(
+                            pwd,
+                            againPasswordEdit.text.toString(),
+                            passwordEdit.text.toString(),
+                            MMKVUtil.getInt(USER.USERID))
+                } else {
+                    //忘记密码
+                    viewModel.forgotPassword(countryCodeValue, phoneValue,
+                            passwordEdit.text.toString())
+                }
             }
+        }
+    }
+
+    private fun hideKeyboard(view: View) {
+        try {
+            if (passwordEdit.isFocused) passwordEdit.clearFocus()
+            if (againPasswordEdit.isFocused) againPasswordEdit.clearFocus()
+            val imm: InputMethodManager = view.context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

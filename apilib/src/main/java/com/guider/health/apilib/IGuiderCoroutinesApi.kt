@@ -414,4 +414,42 @@ interface IGuiderCoroutinesApi {
     @GET("api/v1/user/doctors")
     suspend fun deletePushToken(@Query("accountId") accountId: Int,
                                 @Query("type") type: String): Any?
+
+    /**
+     * 获取短信验证码,通过line
+     */
+    @GET("api/v1/phonecode/line")
+    suspend fun sendLineCode(@Query("phone") phone: String): Any?
+
+    /**
+     * 验证手机号验证码是否正确
+     */
+    @PUT("api/v1/account/phonecode/verify")
+    suspend fun verifyCode(@Query("telAreaCode") telAreaCode: String,
+                           @Query("phoneNum") phoneNum: String,
+                           @Query("code") code: String): String
+
+    /**
+     * 验证指定用户原密码输入是否正确
+     */
+    @PUT("api/v1/account/pwd/verify")
+    suspend fun verifyOldPassword(@Query("pwd") pwd: String,
+                                  @Query("accountId") accountId: Int): String
+
+    /**
+     * 通过原密码修改密码
+     */
+    @POST("api/v1/account/pwd")
+    suspend fun changePassword(@Body body: Any): String?
+
+    /**
+     * 直接修改登录帐号密码
+     */
+    @PUT("api/v1/account/pwd/bandpwd")
+    suspend fun forgotPassword(
+            @Query("telAreaCode") telAreaCode: String,
+            @Query("phoneNum") phoneNum: String,
+            @Query("pwd") pwd: String,
+            @Query("bandPwd") bandPwd: String,
+    ): Any?
 }
