@@ -1,10 +1,14 @@
 package com.guider.libbase.thirdlogin;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +48,8 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
     EditText wxBindPhoneCodeEdit;
     // @BindView(R.id.wxBindSubBtn)
     Button wxBindSubBtn;
+
+    private Dialog dialog;
 
     private PhoneAreaCodeView phoneAreaCodeView;
 
@@ -128,40 +134,50 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
 //                        return;
 //                    }
 
-                    // 注册
-                    IGuiderApi iGuiderApi = ApiUtil.createApi(IGuiderApi.class);
-                    ParamThirdUserAccount param = new ParamThirdUserAccount();
-                    final String appId = getIntent().getStringExtra("appId");
-                    final String openId = getIntent().getStringExtra("openId");
-                    final String nickName = getIntent().getStringExtra("nickName");
-                    final String headUrl = getIntent().getStringExtra("headUrl");
-                    param.setAppId(appId);
-                    param.setOpenid(openId);
-                    param.setNickname(nickName);
-                    param.setHeadimgurl(headUrl);
-                    param.setGender(Gender.MAN);
-                    param.setPhone(phoeCodes);
-                    param.setAreaCode(areaCode);
-                    iGuiderApi.bindPhoneAndLogin(param).enqueue(new ApiCallBack<BeanOfWecaht>() {
-                        @Override
-                        public void onApiResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
-                            BeanOfWecaht info = response.body();
+            // 注册
+            IGuiderApi iGuiderApi = ApiUtil.createApi(IGuiderApi.class);
+            ParamThirdUserAccount param = new ParamThirdUserAccount();
+            final String appId = getIntent().getStringExtra("appId");
+            final String openId = getIntent().getStringExtra("openId");
+            final String nickName = getIntent().getStringExtra("nickName");
+            final String headUrl = getIntent().getStringExtra("headUrl");
+            param.setAppId(appId);
+            param.setOpenid(openId);
+            param.setNickname(nickName);
+            param.setHeadimgurl(headUrl);
+            param.setGender(Gender.MAN);
+            param.setPhone(phoeCodes);
+            param.setAreaCode(areaCode);
+            showLoadingDialog("");
+            iGuiderApi.bindPhoneAndLogin(param).enqueue(new ApiCallBack<BeanOfWecaht>() {
+                @Override
+                public void onApiResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
+                    BeanOfWecaht info = response.body();
+                    if (info != null) {
+                        // 跳转
+                        long accountId = info.getTokenInfo().getAccountId();
+                        SharedPreferencesUtils.setParam(BindPhoneV2Activity.this,
+                                "accountIdGD", accountId);
+                        ToastUtil.showToast(BindPhoneV2Activity.this,
+                                getResources().getString(R.string.bind_phone_success));
 
-                            // 跳转
-                            long accountId = info.getTokenInfo().getAccountId();
-                            SharedPreferencesUtils.setParam(BindPhoneV2Activity.this, "accountIdGD", accountId);
-                            ToastUtil.showToast(BindPhoneV2Activity.this, getResources().getString(R.string.bind_phone_success));
+                        final HashMap<String, Object> map = new HashMap<>();
+                        map.put("appId", appId);
+                        map.put("openId", openId);
+                        map.put("nickName", nickName);
+                        map.put("headUrl", headUrl);
+                        ThirdLogin.mIThirdLoginCallback.onUserInfo(map);
+                        ThirdLogin.mCompelet.run();
+                        finish();
+                    }
+                }
 
-                            final HashMap<String, Object> map = new HashMap<>();
-                            map.put("appId", appId);
-                            map.put("openId", openId);
-                            map.put("nickName", nickName);
-                            map.put("headUrl", headUrl);
-                            ThirdLogin.mIThirdLoginCallback.onUserInfo(map);
-                            ThirdLogin.mCompelet.run();
-                            finish();
-                        }
-                    });
+                @Override
+                public void onRequestFinish() {
+                    super.onRequestFinish();
+                    hideLoadingDialog();
+                }
+            });
 //                }
 //            });
         }
@@ -173,12 +189,47 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
             phoneAreaCodeView = new PhoneAreaCodeView(BindPhoneV2Activity.this);
         phoneAreaCodeView.show();
         phoneAreaCodeView.setPhoneAreaClickListener(new PhoneAreaCodeView.PhoneAreaClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void chooseAreaCode(AreaCode areCodeBean) {
                 wxBindPhoneCodeTv.setText("+" + areCodeBean.getPhoneCode());
                 phoneAreaCodeView.dismiss();
             }
         });
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void showLoadingDialog(String msg) {
+        if (dialog == null) {
+            dialog = new Dialog(this, R.style.CustomProgressDialog);
+            dialog.setContentView(R.layout.pro_dialog_layout_view);
+            TextView tv = dialog.getWindow().findViewById(R.id.progress_tv);
+            tv.setText(msg + "");
+            dialog.setCancelable(true);
+        } else {
+            dialog.setContentView(R.layout.pro_dialog_layout_view);
+            dialog.setCancelable(true);
+            TextView tv = dialog.getWindow().findViewById(R.id.progress_tv);
+            tv.setText(msg + "");
+        }
+        dialog.show();
+        // mHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIALOG, 30 * 1000);
+    }
+
+    public void hideLoadingDialog() {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (dialog != null) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            dialog = null;
+        }
     }
 
     private void showToast(Context context, int rcId) {
@@ -194,6 +245,7 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
             super(millisInFuture, countDownInterval);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onTick(long millisUntilFinished) {
             wxBindGetVerCodeBtn.setClickable(false);
