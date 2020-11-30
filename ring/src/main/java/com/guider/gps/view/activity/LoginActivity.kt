@@ -111,14 +111,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     }
 
     override fun initLogic() {
-        registerTv.setOnClickListener(this)
-        noAccountTv.setOnClickListener(this)
-        loginTv.setOnClickListener(this)
-//        weChatIv.setOnClickListener(this)
-        lineIv.setOnClickListener(this)
-        textTv.setOnClickListener(this)
-        forgotPasswordTv.setOnClickListener(this)
-        val spanny = Spanny()
+        val policySpanny = Spanny()
                 .append(mContext!!.resources.getString(R.string.app_login_to_sing_agree),
                         ForegroundColorSpan(
                                 CommonUtils.getColor(mContext!!, R.color.color999999))
@@ -133,8 +126,29 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 .append(mContext!!.resources.getString(R.string.app_login_privacy_policy_clause),
                         ForegroundColorSpan(
                                 CommonUtils.getColor(mContext!!, R.color.colorF18A2E)))
-        textTv.text = spanny
+        policyTextTv.text = policySpanny
+        val registerSpanny = Spanny()
+                .append(mContext!!.resources.getString(R.string.app_login_no_account),
+                        ForegroundColorSpan(
+                                CommonUtils.getColor(mContext!!, R.color.color999999))
+                )
+                .append(mContext!!.resources.getString(R.string.app_login_register_now),
+                        ForegroundColorSpan(
+                                CommonUtils.getColor(mContext!!, R.color.colorF18C32)))
+        registerTv.text = registerSpanny
+        editEvent()
         countryCodeLayout.setOnClickListener(this)
+        passwordShowIv.setOnClickListener(this)
+        registerTv.setOnClickListener(this)
+        loginTv.setOnClickListener(this)
+//        weChatIv.setOnClickListener(this)
+        touristsNodeTv.setOnClickListener(this)
+        lineIv.setOnClickListener(this)
+        policyTextTv.setOnClickListener(this)
+        forgotPasswordTv.setOnClickListener(this)
+    }
+
+    private fun editEvent() {
         passwordEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -151,7 +165,6 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
             }
 
         })
-        passwordShowIv.setOnClickListener(this)
         phoneEdit.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
@@ -203,7 +216,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     override fun onNoDoubleClick(v: View) {
         when (v) {
-            registerTv, noAccountTv -> {
+            registerTv -> {
                 val intent = Intent(mContext, RegisterActivity::class.java)
                 if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())) {
                     intent.putExtra("phone", phoneEdit.text.toString())
@@ -262,7 +275,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     }
                 }
             }
-            textTv -> {
+            policyTextTv -> {
                 val intent = Intent(mContext, SimpleCustomWebActivity::class.java)
                 intent.putExtra("pageTitle",
                         mContext?.resources?.getString(R.string.app_login_privacy_policy_clause))
@@ -301,6 +314,13 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                         } else "TW"
                 intent.putExtra("countryCode", tag)
                 startActivity(intent)
+            }
+            touristsNodeTv -> {
+                //游客模式
+                MMKVUtil.saveBoolean(TOURISTS_MODE, true)
+                val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
+                intent.putExtra("type", "mine")
+                startActivityForResult(intent, ADD_NEW_DEVICE)
             }
         }
     }
@@ -597,6 +617,9 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     Log.i("第三方登录", "第三方绑定成功，判断账号和设备的绑定")
                     val accountId = MMKVUtil.getInt(USERID)
                     verifyIsBindDevice(accountId)
+                }
+                ADD_NEW_DEVICE -> {
+                    finish()
                 }
             }
         }

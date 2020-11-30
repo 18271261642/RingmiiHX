@@ -13,12 +13,13 @@ import com.guider.baselib.device.Unit
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
+import com.guider.gps.view.activity.MainActivity
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.BloodListBeann
 import com.guider.health.apilib.bean.BloodOxygenListBean
 import com.guider.health.apilib.bean.BloodSugarListBean
 import com.guider.health.apilib.enums.SortType
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.fragment_medicine_data.*
 import kotlinx.coroutines.launch
 import lecho.lib.hellocharts.model.*
@@ -85,8 +86,13 @@ class MedicineDataFragment : BaseFragment() {
     override fun onNoDoubleClick(v: View) {
         when (v) {
             answerLayout -> {
-                val intent = Intent(mActivity, DoctorListActivity::class.java)
-                startActivity(intent)
+                //区分是否是游客登录
+                if (MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE)) {
+                    (mActivity as MainActivity).touristsEvent()
+                } else {
+                    val intent = Intent(mActivity, DoctorListActivity::class.java)
+                    startActivity(intent)
+                }
             }
             measure -> {
                 showToast("相关功能开发中，敬请期待...")

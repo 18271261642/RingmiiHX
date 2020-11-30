@@ -53,6 +53,7 @@ const val HR_INTERVAL = "hrInterval"
 const val BT_CHECK = "btOpen"
 const val BT_INTERVAL = "btInterval"
 const val NOTIFICATION_CLICK_ENTER = "notification_click_enter"
+const val TOURISTS_MODE = "Tourists mode"
 
 object USER {
     //个人信息页缓存相关

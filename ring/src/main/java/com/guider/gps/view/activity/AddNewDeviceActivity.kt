@@ -95,50 +95,60 @@ class AddNewDeviceActivity : BaseActivity() {
         //第一种type是登录之后或者打开app时绑定新设备
         //第二种type是在首页解绑设备后重新绑定新设备
         if (type == "mine" || type == "unBindAndBindNew") {
-
-            val accountId = MMKVUtil.getInt(USER.USERID, 0)
-            lifecycleScope.launch {
-                ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
-                    showDialog()
-                }, block = {
-                    val resultBean = GuiderApiUtil.getApiService()
-                            .bindDeviceWithAccount(accountId, code)
-                    if (resultBean is String && resultBean == "null") {
-                        //绑定失败返回null
-                        toastShort(mContext!!.resources.getString(R.string.app_bind_fail))
-                    } else {
-                        val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
-                                resultBean)
-                        MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
-                        bean.userInfos?.forEach {
-                            if (it.accountId == accountId) {
-                                it.relationShip = it.name
-                                MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
-                                if (StringUtil.isNotBlankAndEmpty(it.headUrl))
-                                    MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_HEADER, it.headUrl!!)
-                                if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
-                                    if (type == "unBindAndBindNew") {
-                                        MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
-                                    } else {
-                                        MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE, it.deviceCode!!)
+            if (MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE)) {
+                val intent = Intent(mContext!!, MainActivity::class.java)
+                intent.putExtra("bindListBean", "bean")
+                startActivity(intent)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            } else {
+                val accountId = MMKVUtil.getInt(USER.USERID, 0)
+                lifecycleScope.launch {
+                    ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                        showDialog()
+                    }, block = {
+                        val resultBean = GuiderApiUtil.getApiService()
+                                .bindDeviceWithAccount(accountId, code)
+                        if (resultBean is String && resultBean == "null") {
+                            //绑定失败返回null
+                            toastShort(mContext!!.resources.getString(R.string.app_bind_fail))
+                        } else {
+                            val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
+                                    resultBean)
+                            MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, accountId)
+                            bean.userInfos?.forEach {
+                                if (it.accountId == accountId) {
+                                    it.relationShip = it.name
+                                    MMKVUtil.saveString(BIND_DEVICE_NAME, it.name!!)
+                                    if (StringUtil.isNotBlankAndEmpty(it.headUrl))
+                                        MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_HEADER,
+                                                it.headUrl!!)
+                                    if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
+                                        if (type == "unBindAndBindNew") {
+                                            MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                        } else {
+                                            MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE,
+                                                    it.deviceCode!!)
+                                        }
                                     }
                                 }
                             }
-                        }
-                        if (type == "unBindAndBindNew") {
-                            val intent = Intent()
-                            intent.putExtra("bindListBean", bean)
+                            val intent: Intent
+                            if (type == "unBindAndBindNew") {
+                                intent = Intent()
+                                intent.putExtra("bindListBean", bean)
+                            } else {
+                                intent = Intent(mContext!!, MainActivity::class.java)
+                                intent.putExtra("bindListBean", bean)
+                                startActivity(intent)
+                            }
                             setResult(Activity.RESULT_OK, intent)
-                        } else {
-                            val intent = Intent(mContext!!, MainActivity::class.java)
-                            intent.putExtra("bindListBean", bean)
-                            startActivity(intent)
+                            finish()
                         }
-                        finish()
-                    }
-                }, onRequestFinish = {
-                    dismissDialog()
-                })
+                    }, onRequestFinish = {
+                        dismissDialog()
+                    })
+                }
             }
         } else {
             val map = hashMapOf<String, Any>()

@@ -1,6 +1,7 @@
 package com.guider.gps.bean
 
 import com.guider.health.apilib.enums.PushMsgType
+import java.io.Serializable
 
 /**
  * 推送消息附件信息的bean类
@@ -10,4 +11,4 @@ data class PushMessageBean(
     val key:String,
     val dataId:Int,
     val type: PushMsgType
-)
+):Serializable

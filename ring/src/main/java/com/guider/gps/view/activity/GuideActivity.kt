@@ -6,11 +6,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.CommonUtils.logOutClearMMKV
 import com.guider.baselib.utils.IS_FIRST_START
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.baselib.utils.USER
 import com.guider.baselib.widget.viewpageradapter.FragmentLazyStateAdapterViewPager2
 import com.guider.gps.R
 import com.guider.gps.view.fragment.GuideFragment
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_guide.*
 
 /**
@@ -27,6 +27,7 @@ class GuideActivity : BaseActivity() {
         get() = R.layout.activity_guide
 
     private val tabList = arrayListOf("page1", "page2", "page3")
+    private var isHaveNewMsg = false
     var flag = false
 
     override fun openEventBus(): Boolean {
@@ -35,6 +36,11 @@ class GuideActivity : BaseActivity() {
 
     override fun initImmersion() {
         whiteStatusBarBlackFont()
+        if (intent != null) {
+            if (intent.getBooleanExtra("news",false)) {
+                isHaveNewMsg = true
+            }
+        }
     }
 
     override fun initView() {
@@ -84,7 +90,11 @@ class GuideActivity : BaseActivity() {
 //                startActivity(intent)
                 logOutClearMMKV()
                 startActivity(Intent(this, LoginActivity::class.java))
-            } else startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                if (isHaveNewMsg) intent.putExtra("news", isHaveNewMsg)
+                startActivity(intent)
+            }
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }

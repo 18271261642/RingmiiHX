@@ -20,7 +20,7 @@ import com.guider.baselib.R
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.dialog.DialogProgress
-import com.guider.health.apilib.enums.SystemMsgType
+import com.guider.health.apilib.enums.PushMsgType
 import com.gyf.immersionbar.ImmersionBar
 import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 
@@ -131,7 +131,11 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
     /**
      * 显示系统消息的弹窗
      */
-    fun showSystemMsgDialog(content: String, type: SystemMsgType, msgId: String) {
+    fun showSystemMsgDialog(content: String, type: PushMsgType, msgId: String) {
+        if (systemMsgDialog != null) {
+            systemMsgDialog?.closeDialog()
+            systemMsgDialog = null
+        }
         if (systemMsgDialog == null) {
             systemMsgDialog = object : DialogHolder(this,
                     R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {

@@ -452,4 +452,11 @@ interface IGuiderCoroutinesApi {
             @Query("pwd") pwd: String,
             @Query("bandPwd") bandPwd: String,
     ): Any?
+
+    /**
+     * 获取用户已绑定的平台类型
+     */
+    @GET("api/v1/accountthird/type")
+    suspend fun getThirdStatusData(@Query("accountId") accountId: Int): Any
+
 }

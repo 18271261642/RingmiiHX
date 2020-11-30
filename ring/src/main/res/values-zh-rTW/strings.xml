@@ -148,6 +148,7 @@
     <string name="app_login">登錄</string>
     <string name="app_login_register_now">立即註冊</string>
     <string name="app_login_no_account">還沒有賬號？</string>
+    <string name="app_login_tourists_mode">遊客模式</string>
     <string name="app_login_to_sing_agree">點擊登錄即表示同意</string>
     <string name="app_login_user_service_agreement">用戶服務協議</string>
     <string name="app_login_privacy_policy_clause">隱私政策條款</string>
@@ -234,6 +235,7 @@
     <string name="app_location_electronic_edit_hint">請輸入安全區域名稱</string>
     <string name="app_location_device_account_name_hint">請輸入設備備註名稱</string>
     <string name="app_preservation_electronic_fence">保存電子圍欄</string>
+    <string name="app_tourists_mode_register">使用此服務，請先綁定手機號完成賬號註冊</string>
     <string name="app_electronic_fence_list">電子圍欄列表</string>
     <string name="app_edit_device_account_name_title">修改設備備註名稱</string>
     <string name="app_watch_more_history_msg">查看更多歷史消息</string>
@@ -251,4 +253,8 @@
     <string name="app_please_entry_new_password">請輸入新密碼</string>
     <string name="app_please_entry_new_password_again">請再次輸入新密碼</string>
     <string name="app_forgot_password_success">密碼重置成功，請重新登錄</string>
+    <string name="app_third_account_bind">第三方賬號綁定</string>
+    <string name="app_account_bind">賬號綁定</string>
+    <string name="app_bind">綁定</string>
+    <string name="app_unbind">解綁</string>
 </resources>

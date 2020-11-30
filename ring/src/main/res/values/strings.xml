@@ -150,6 +150,7 @@
     <string name="app_login">Login</string>
     <string name="app_login_register_now">Register now</string>
     <string name="app_login_no_account">No account yet?</string>
+    <string name="app_login_tourists_mode">Tourists mode</string>
     <string name="app_complete_name_empty">The name is empty</string>
     <string name="app_complete_header_empty">Avatar not set</string>
     <string name="app_complete_sex_empty">Gender not filled in</string>
@@ -237,6 +238,7 @@
     <string name="app_location_electronic_edit_hint">Please enter a security area name</string>
     <string name="app_location_device_account_name_hint">Please enter the equipment remark name</string>
     <string name="app_preservation_electronic_fence">Preservation electronic fence</string>
+    <string name="app_tourists_mode_register">To use this service, please first bind your mobile phone number to complete account registration</string>
     <string name="app_electronic_fence_list">Electronic fence list</string>
     <string name="app_edit_device_account_name_title">Modify the equipment remark name</string>
     <string name="app_watch_more_history_msg">See more historical messages</string>
@@ -253,4 +255,8 @@
     <string name="app_please_entry_new_password">Please enter a new password</string>
     <string name="app_please_entry_new_password_again">Please enter your new password again</string>
     <string name="app_forgot_password_success">Password reset successful, please log in again</string>
+    <string name="app_third_account_bind">Third-party account binding</string>
+    <string name="app_account_bind">Account binding</string>
+    <string name="app_bind">Bind</string>
+    <string name="app_unbind">UnBundling</string>
 </resources>

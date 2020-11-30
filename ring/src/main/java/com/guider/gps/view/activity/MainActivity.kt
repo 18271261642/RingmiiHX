@@ -3,11 +3,8 @@ package com.guider.gps.view.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Build
-import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -26,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.alibaba.android.arouter.launcher.ARouter
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,7 +34,7 @@ import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.HomeLeftDrawMsgAdapter
-import com.guider.gps.service.AppSystemMsgService
+import com.guider.gps.util.TouristsEventUtil
 import com.guider.gps.view.fragment.HealthFragment
 import com.guider.gps.view.fragment.LocationFragment
 import com.guider.gps.view.fragment.MedicineFragment
@@ -51,10 +49,10 @@ import com.guider.health.apilib.utils.GsonUtil
 import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_home_draw_layout.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.include_phone_edit_layout.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.lang.ref.WeakReference
 import java.util.*
 
 
@@ -77,15 +75,37 @@ class MainActivity : BaseActivity() {
     private var latestSystemMsgTime = ""
     private var dialogTagList = arrayListOf<String>()
     private var editDialog: DialogHolder? = null
-    var binder: AppSystemMsgService.MyBinder? = null// 定义成全局变量
-    private var myConn: MyConn? = null
+    private var toursitsModeRegisterDialog: DialogHolder? = null
+    private var isHaveNewMsg = false
 
     override fun initImmersion() {
         showBackButton(R.drawable.icon_home_left_menu, this)
         setRightImage2(R.drawable.ic_home_msg, this)
+        intentEvent()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        intentEvent()
+    }
+
+    private fun intentEvent() {
         if (intent != null) {
             if (intent.getParcelableExtra<CheckBindDeviceBean?>("bindListBean") != null) {
-                bindListBean = intent.getParcelableExtra("bindListBean")
+                //防止程序中途进入的话，修改值
+                if (bindListBean == null)
+                    bindListBean = intent.getParcelableExtra("bindListBean")
+            }
+            if (intent.getBooleanExtra("news", false)) {
+                isHaveNewMsg = true
+            }
+            //由推送的消息进入
+            if (isHaveNewMsg) {
+                ARouter.getInstance().build(msgList)
+                        //进入页面需跳转到的指定列表项
+                        .withInt("entryPageIndex", 2)
+                        .navigation()
             }
         }
     }
@@ -171,7 +191,6 @@ class MainActivity : BaseActivity() {
         msgListRv.adapter = drawAdapter
         getBindDeviceList()
         getRingUndoNumData()
-        openSystemMsgLoopService()
         initGoogleFirebaseMessage()
     }
 
@@ -219,11 +238,6 @@ class MainActivity : BaseActivity() {
                 }
             })
         }
-    }
-
-    private fun openSystemMsgLoopService() {
-        myConn = MyConn(WeakReference(this))
-        bindService(Intent(mContext!!, AppSystemMsgService::class.java), myConn!!, BIND_AUTO_CREATE)
     }
 
     private fun editNameDialog(position: Int) {
@@ -789,10 +803,15 @@ class MainActivity : BaseActivity() {
                 homeDrawLayout.openDrawer(Gravity.START)
             }
             addDeviceLayout -> {
-                val intent = Intent(mContext, AddNewDeviceActivity::class.java)
-                intent.putExtra("type", "family")
-                intent.putExtra("userGroupId", bindListBean?.userGroupId.toString())
-                startActivityForResult(intent, ADD_NEW_MEMBER)
+                //区分是否是游客登录
+                if (MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE)) {
+                    touristsEvent()
+                } else {
+                    val intent = Intent(mContext, AddNewDeviceActivity::class.java)
+                    intent.putExtra("type", "family")
+                    intent.putExtra("userGroupId", bindListBean?.userGroupId.toString())
+                    startActivityForResult(intent, ADD_NEW_MEMBER)
+                }
             }
             iv_toolbar_right2 -> {
                 val intent = Intent(mContext, RingMsgListActivity::class.java)
@@ -801,6 +820,20 @@ class MainActivity : BaseActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    /**
+     * 游客登录的操作
+     */
+    fun touristsEvent() {
+        toursitsModeRegisterDialog = TouristsEventUtil.generateTouristsDialog(
+                this, R.layout.dialog_tourists_mode) {
+            //进入注册页面完成账户注册
+            val intent = Intent(mContext, RegisterActivity::class.java)
+            startActivityForResult(intent, REGISTER)
+        }
+        toursitsModeRegisterDialog?.initView()
+        toursitsModeRegisterDialog?.show(true)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -826,6 +859,11 @@ class MainActivity : BaseActivity() {
                                     "bindListBean") != null) {
                         bindListBean = data.getParcelableExtra("bindListBean")
                     }
+                    getBindDeviceList()
+                }
+                REGISTER -> {
+                    Log.i(TAG, "游客注册成功，重新刷新数据")
+                    bindListBean = null
                     getBindDeviceList()
                 }
             }
@@ -983,11 +1021,6 @@ class MainActivity : BaseActivity() {
             editDialog?.closeDialog()
             editDialog = null
         }
-        if (myConn != null) {
-            unbindService(myConn!!)
-            myConn = null
-            binder = null
-        }
     }
 
     override fun showToolBar(): Boolean {
@@ -1005,16 +1038,4 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    class MyConn(ref: WeakReference<MainActivity>) : ServiceConnection {
-
-        private var activity: MainActivity? = ref.get()
-
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            activity?.binder = service as AppSystemMsgService.MyBinder
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-
-        }
-    }
 }

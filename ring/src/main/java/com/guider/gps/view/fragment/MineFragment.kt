@@ -44,6 +44,7 @@ class MineFragment : BaseFragment() {
         sportLayout.setOnClickListener(this)
         loginOutLayout.setOnClickListener(this)
         passwordLayout.setOnClickListener(this)
+        thirdAccountBindLayout.setOnClickListener(this)
         getWalkTargetData()
     }
 
@@ -195,6 +196,10 @@ class MineFragment : BaseFragment() {
             }
             passwordLayout -> {
                 val intent = Intent(mActivity, ChangePasswordActivity::class.java)
+                startActivity(intent)
+            }
+            thirdAccountBindLayout -> {
+                val intent = Intent(mActivity, ThirdAccountBindActivity::class.java)
                 startActivity(intent)
             }
         }

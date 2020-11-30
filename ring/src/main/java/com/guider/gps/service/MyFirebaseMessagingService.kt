@@ -22,6 +22,7 @@ import com.guider.baselib.utils.EventBusUtils
 import com.guider.gps.BuildConfig
 import com.guider.gps.R
 import com.guider.gps.bean.PushMessageBean
+import com.guider.health.apilib.enums.PushMsgType
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -79,6 +80,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             builder.setContentIntent(clickInstallIntent(context, notificationId))
             val notification = builder.build()
             notificationManager.notify(notificationId, notification)
+            ((BaseActivity.getForegroundActivity()) as BaseActivity)
+                    .showSystemMsgDialog(it.body ?: "",
+                            pushMessageBean?.type ?: PushMsgType.TAKEOFF,
+                            notificationId.toString())
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM

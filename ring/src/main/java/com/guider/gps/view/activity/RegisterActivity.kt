@@ -106,11 +106,11 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
     private fun formatError() {
         ToastUtil.showCenter(mContext!!,
                 mContext!!.resources.getString(R.string.app_incorrect_format))
-        textTv.visibility = View.VISIBLE
-        textTv.text = mContext!!.resources.getString(
+        policyTextTv.visibility = View.VISIBLE
+        policyTextTv.text = mContext!!.resources.getString(
                 R.string.app_incorrect_format)
-        textTv.postDelayed({
-            textTv.visibility = View.GONE
+        policyTextTv.postDelayed({
+            policyTextTv.visibility = View.GONE
         }, 1000)
     }
 
@@ -124,10 +124,10 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 if (resultBean == "false") {
                     ToastUtil.showCenter(mContext!!,
                             mContext!!.resources.getString(R.string.app_phone_register))
-                    textTv.visibility = View.VISIBLE
-                    textTv.text = mContext!!.resources.getString(R.string.app_phone_register)
-                    textTv.postDelayed({
-                        textTv.visibility = View.GONE
+                    policyTextTv.visibility = View.VISIBLE
+                    policyTextTv.text = mContext!!.resources.getString(R.string.app_phone_register)
+                    policyTextTv.postDelayed({
+                        policyTextTv.visibility = View.GONE
                     }, 1000)
                 } else {
                     if (isExit) {

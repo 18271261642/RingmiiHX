@@ -148,6 +148,7 @@
     <string name="app_login">登录</string>
     <string name="app_login_register_now">立即注册</string>
     <string name="app_login_no_account">还没有账号？</string>
+    <string name="app_login_tourists_mode">游客模式</string>
     <string name="app_login_to_sing_agree">点击登录即表示同意</string>
     <string name="app_login_user_service_agreement">用户服务协议</string>
     <string name="app_login_privacy_policy_clause">隐私政策条款</string>
@@ -234,6 +235,7 @@
     <string name="app_location_electronic_edit_hint">请输入安全区域名称</string>
     <string name="app_location_device_account_name_hint">请输入设备备注名称</string>
     <string name="app_preservation_electronic_fence">保存电子围栏</string>
+    <string name="app_tourists_mode_register">使用此服务，请先绑定手机号完成账号注册</string>
     <string name="app_electronic_fence_list">电子围栏列表</string>
     <string name="app_edit_device_account_name_title">修改设备备注名称</string>
     <string name="app_watch_more_history_msg">查看更多历史消息</string>
@@ -251,4 +253,8 @@
     <string name="app_please_entry_new_password">请输入新密码</string>
     <string name="app_please_entry_new_password_again">请再次输入新密码</string>
     <string name="app_forgot_password_success">密码重置成功，请重新登录</string>
+    <string name="app_third_account_bind">第三方账号绑定</string>
+    <string name="app_account_bind">账号绑定</string>
+    <string name="app_bind">绑定</string>
+    <string name="app_unbind">解绑</string>
 </resources>

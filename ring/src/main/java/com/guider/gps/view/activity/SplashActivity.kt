@@ -2,6 +2,7 @@ package com.guider.gps.view.activity
 
 import android.content.Intent
 import com.guider.baselib.base.BaseActivity
+import com.guider.baselib.utils.StringUtil
 import com.guider.gps.R
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -15,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_splash.*
  */
 class SplashActivity : BaseActivity() {
 
+    private var isHaveNewMsg = false
+
     override val contentViewResId: Int
         get() = R.layout.activity_splash
 
@@ -24,12 +27,19 @@ class SplashActivity : BaseActivity() {
 
     override fun initImmersion() {
         whiteStatusBarBlackFont()
+        if (intent != null) {
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("key"))) {
+                isHaveNewMsg = true
+            }
+        }
     }
 
     override fun initView() {
         setTheme(R.style.Splash)
         companyInfo.postDelayed({
-            startActivity(Intent(this, GuideActivity::class.java))
+            val intent = Intent(this, GuideActivity::class.java)
+            if (isHaveNewMsg) intent.putExtra("news", isHaveNewMsg)
+            startActivity(intent)
             finish()
         }, 300)
     }

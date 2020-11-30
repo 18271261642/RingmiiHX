@@ -18,6 +18,7 @@ import com.guider.gps.BuildConfig
 import com.guider.gps.R
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.SystemMsgBean
+import com.guider.health.apilib.enums.PushMsgType
 import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -115,7 +116,7 @@ class AppSystemMsgService : LifecycleService() {
                         service?.latestSystemMsgTime = bean.createTime!!
                     ((BaseActivity.getForegroundActivity()) as BaseActivity)
                             .showSystemMsgDialog("${bean.name},${bean.content}",
-                                    bean.type, bean.id.toString())
+                                    PushMsgType.SOS, bean.id.toString())
                 }
             }, onError = {
                 Log.i(service?.TAG, it.message!!)

@@ -76,7 +76,7 @@
 
 
     <TextView
-        android:id="@+id/textTv"
+        android:id="@+id/policyTextTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_9"
@@ -101,5 +101,5 @@
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="@id/againPasswordLine"
         app:layout_constraintStart_toStartOf="@id/againPasswordLine"
-        app:layout_constraintTop_toBottomOf="@id/textTv" />
+        app:layout_constraintTop_toBottomOf="@id/policyTextTv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

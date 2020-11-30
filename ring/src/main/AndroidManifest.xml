@@ -65,7 +65,9 @@
         <activity android:name=".view.activity.LoginActivity" />
         <activity
             android:name="com.guider.gps.view.activity.MainActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTask"
+            />
         <activity android:name="com.guider.gps.view.activity.AddNewDeviceActivity" />
         <activity
             android:name="com.guider.gps.view.activity.RingMsgListActivity"
@@ -95,6 +97,7 @@
         <activity android:name=".view.activity.ForgotPasswordActivity" />
         <activity android:name=".view.activity.ResetPasswordActivity" />
         <activity android:name=".view.activity.ChangePasswordActivity" />
+        <activity android:name=".view.activity.ThirdAccountBindActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
