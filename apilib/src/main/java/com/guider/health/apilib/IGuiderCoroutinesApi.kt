@@ -402,7 +402,7 @@ interface IGuiderCoroutinesApi {
     /**
      * 更新用户firebase token
      */
-    @GET("api/v1/user/doctors")
+    @GET("api/v1/sendmessage/token")
     suspend fun uploadPushToken(@Query("accountId") accountId: Int,
                                 @Query("nationality") pushNationType: PushNationType,
                                 @Query("type") type: String,
@@ -411,7 +411,7 @@ interface IGuiderCoroutinesApi {
     /**
      * 用户注销消息推送
      */
-    @GET("api/v1/user/doctors")
+    @DELETE("api/v1/sendmessage/user")
     suspend fun deletePushToken(@Query("accountId") accountId: Int,
                                 @Query("type") type: String): Any?
 

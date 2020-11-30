@@ -7,7 +7,7 @@
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headLayout"
-        android:layout_width="@dimen/dp_54"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_14"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +24,8 @@
 
         <View
             android:id="@+id/distanceView"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dp_48"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_height="@dimen/dp_3"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,8 +50,8 @@
             android:paddingTop="@dimen/dp_1"
             android:paddingEnd="@dimen/dp_4"
             android:paddingBottom="@dimen/dp_1"
-            android:text="寻人模式"
             android:textColor="@color/white"
+            android:text="@string/app_search_pattern"
             android:textSize="@dimen/sp_10"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"

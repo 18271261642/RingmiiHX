@@ -1,5 +1,6 @@
 package com.guider.gps.service
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,11 +9,13 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.base.BaseApplication
+import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.EventBusAction.REFRESH_NEW_PUSH_TOKEN
 import com.guider.baselib.utils.EventBusEvent
 import com.guider.baselib.utils.EventBusUtils
@@ -41,23 +44,28 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        val pushMessageBean: PushMessageBean? = null
+        var pushMessageBean: PushMessageBean? = null
         // Check if message contains a data payload.
         if (!remoteMessage.data.isNullOrEmpty()) {
             Log.i(TAG, "Message data payload: ${remoteMessage.data}")
-//            if (CommonUtils.toBean<PushMessageBean>(remoteMessage.data) != null) {
-//                pushMessageBean = CommonUtils.toBean<PushMessageBean>(remoteMessage.data)
-//            }
+            if (CommonUtils.toBean<PushMessageBean>(remoteMessage.data) != null) {
+                pushMessageBean = CommonUtils.toBean<PushMessageBean>(remoteMessage.data)
+            }
         }
 
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.i(TAG, "Message Notification Body: ${it.body}")
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            createChannel(notificationManager)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createChannel(notificationManager)
+            }
             val notificationId = pushMessageBean?.key?.hashCode() ?: 0x1234
             val context = (BaseActivity.getForegroundActivity() as BaseActivity).mContext!!
             val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                builder.setOnlyAlertOnce(true)
+            } else builder.setDefaults(Notification.DEFAULT_ALL)
             builder.setSmallIcon(R.mipmap.icon)
                     .setLargeIcon((BitmapFactory.decodeResource(
                             BaseApplication.guiderHealthContext.resources,
@@ -67,6 +75,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                                     R.string.app_name))
                     .setContentText(it.body)
                     .setAutoCancel(true)
+                    .setWhen(System.currentTimeMillis())
             builder.setContentIntent(clickInstallIntent(context, notificationId))
             val notification = builder.build()
             notificationManager.notify(notificationId, notification)
@@ -76,18 +85,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel(notificationManager: NotificationManager) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "guiderGps"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
-            //默认全部
-            mChannel.enableVibration(true)
-            mChannel.vibrationPattern = longArrayOf(100, 200, 300)
-            mChannel.enableLights(true)
-            mChannel.setShowBadge(true) //是否显示角标
-            notificationManager.createNotificationChannel(mChannel)
-        }
+        val name = "guiderGps"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+        //默认全部
+        mChannel.enableVibration(true)
+        mChannel.vibrationPattern = longArrayOf(100, 200, 300)
+        mChannel.enableLights(true)
+        mChannel.setShowBadge(true) //是否显示角标
+        notificationManager.createNotificationChannel(mChannel)
     }
 
     /**
