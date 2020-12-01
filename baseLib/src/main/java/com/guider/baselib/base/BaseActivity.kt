@@ -115,6 +115,8 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
      * @Description: 显示进度条
      */
     fun showDialog() {
+        //预防activity消失弹出dialog
+        if (this.isFinishing) return
         mLoadingDialog = DialogProgress(mContext!!, null)
         mLoadingDialog?.showDialog()
     }
@@ -136,7 +138,7 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
             systemMsgDialog?.closeDialog()
             systemMsgDialog = null
         }
-        if (systemMsgDialog == null) {
+        if (systemMsgDialog == null && !this.isFinishing) {
             systemMsgDialog = object : DialogHolder(this,
                     R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {
                 override fun bindView(dialogView: View) {

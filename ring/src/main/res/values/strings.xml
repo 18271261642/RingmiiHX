@@ -259,4 +259,6 @@
     <string name="app_account_bind">Account binding</string>
     <string name="app_bind">Bind</string>
     <string name="app_unbind">UnBundling</string>
+    <string name="app_search_person_mode_content">Do you want to switch to "search mode"?</string>
+    <string name="app_search_person_mode_title">The locating frequency of the search mode is 5 minutes per time, and the power consumption of the bracelet increases in this mode.</string>
 </resources>

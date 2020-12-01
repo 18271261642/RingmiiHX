@@ -137,6 +137,8 @@ abstract class DialogHolder(protected val activity: AppCompatActivity,
     fun show(outSizeEnable: Boolean = true,
              onDismissListener: DialogInterface.OnDismissListener? = null) {
 //        dialog = BottomDialogUtil.showBottomDialog(context, dialogView, gravity)
+        //预防activity消失弹出dialog
+        if (activity.isFinishing) return
         dialog = MyDialogNew.showDialog(activity, view = dialogView,
                 gravity = gravity, outSizeEnable = outSizeEnable,
                 onDismissListener = onDismissListener, tag = tag)

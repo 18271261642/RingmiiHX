@@ -257,4 +257,6 @@
     <string name="app_account_bind">賬號綁定</string>
     <string name="app_bind">綁定</string>
     <string name="app_unbind">解綁</string>
+    <string name="app_search_person_mode_title">尋人模式的定位頻率爲5分鐘/次，且手環在此模式中功耗增大。</string>
+    <string name="app_search_person_mode_content">確認是否切換爲“尋人模式”？</string>
 </resources>

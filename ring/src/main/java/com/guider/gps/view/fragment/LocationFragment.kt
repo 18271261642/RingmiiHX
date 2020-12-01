@@ -76,10 +76,6 @@ import org.greenrobot.eventbus.ThreadMode
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.asin
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
 
 
 class LocationFragment : BaseFragment(),
@@ -178,7 +174,7 @@ class LocationFragment : BaseFragment(),
     private var fenceBean: ElectronicFenceListBean? = null
     private var searchPersonFlag = false
     private var latestUserPositionListBean: UserPositionListBean? = null
-
+    private var personModeConfirmDialog: DialogHolder? = null
 
     override fun initView(rootView: View) {
     }
@@ -677,28 +673,6 @@ class LocationFragment : BaseFragment(),
     }
 
     /**
-     * 确认电子围栏的显示或者取消已设置的信息
-     */
-    private fun confirmElectronicShow() {
-        electronicAddLayout.isSelected = false
-        electronicAddIv.isSelected = false
-        electronicAddTv.isSelected = false
-        customFirstPoint?.remove()
-        customTwoPoint?.remove()
-        customThirdPoint?.remove()
-        customFourPoint?.remove()
-        electronicDeleteLayout.isSelected = false
-        electronicSetHint.visibility = View.GONE
-        electronicDeleteIv.isSelected = false
-        electronicDeleteTv.isSelected = false
-        electronicCommitLayout.isSelected = false
-        electronicCommitIv.isSelected = false
-        electronicCommitTv.isSelected = true
-        customElectronicFencePointNum = 0
-        mGoogleMap?.setOnMapClickListener {}
-    }
-
-    /**
      * 初始化活动轨迹的时间列表的adapter
      */
     private fun initTrackEventTimeAdapter() {
@@ -772,7 +746,7 @@ class LocationFragment : BaseFragment(),
             searchPersonLayout -> {
                 //已经是寻人模式，就不需要再去设置了
                 if (searchPersonFlag) return
-                commitPositionMethodSet()
+                confirmSelectPersonDialog()
             }
             normalLayout -> {
                 //已经是一般模式，就不需要再去设置了
@@ -912,6 +886,34 @@ class LocationFragment : BaseFragment(),
         }
     }
 
+    private fun confirmSelectPersonDialog() {
+        personModeConfirmDialog = object : DialogHolder(mActivity,
+                R.layout.dialog_search_person_mode_confirm, Gravity.CENTER), View.OnClickListener {
+            override fun bindView(dialogView: View) {
+                val cancelTv = dialogView.findViewById<TextView>(R.id.cancelLayout)
+                val confirmTv = dialogView.findViewById<TextView>(R.id.confirmLayout)
+                cancelTv.setOnClickListener(this)
+                confirmTv.setOnClickListener(this)
+            }
+
+            override fun onClick(v: View) {
+                when (v.id) {
+                    R.id.cancelLayout -> {
+                        dialog?.dismiss()
+                        personModeConfirmDialog = null
+                    }
+                    R.id.confirmLayout -> {
+                        dialog?.dismiss()
+                        personModeConfirmDialog = null
+                        commitPositionMethodSet()
+                    }
+                }
+            }
+        }
+        personModeConfirmDialog?.initView()
+        personModeConfirmDialog?.show(true)
+    }
+
     /**
      * 恢复初始的轨迹时间选择
      */
@@ -945,7 +947,7 @@ class LocationFragment : BaseFragment(),
             ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
                 mActivity.showDialog()
             }, block = {
-                val resultBean = GuiderApiUtil.getApiService().setLocationFrequency(
+                GuiderApiUtil.getApiService().setLocationFrequency(
                         accountId, positionType)
                 showPositionMethod()
                 if (searchPersonFlag) {
@@ -1713,55 +1715,6 @@ class LocationFragment : BaseFragment(),
     override fun onConnectionSuspended(p0: Int) {}
 
     /**
-     * 地图两点之间的距离的算法
-     */
-    private fun calculateLineDistance(var0: LatLng?, var1: LatLng?): Float {
-        return if (var0 != null && var1 != null) {
-            try {
-                val var2 = 0.01745329251994329
-                var var4 = var0.longitude
-                var var6 = var0.latitude
-                var var8 = var1.longitude
-                var var10 = var1.latitude
-                var4 *= 0.01745329251994329
-                var6 *= 0.01745329251994329
-                var8 *= 0.01745329251994329
-                var10 *= 0.01745329251994329
-                val var12 = sin(var4)
-                val var14 = sin(var6)
-                val var16 = cos(var4)
-                val var18 = cos(var6)
-                val var20 = sin(var8)
-                val var22 = sin(var10)
-                val var24 = cos(var8)
-                val var26 = cos(var10)
-                val var28 = DoubleArray(3)
-                val var29 = DoubleArray(3)
-                var28[0] = var18 * var16
-                var28[1] = var18 * var12
-                var28[2] = var14
-                var29[0] = var26 * var24
-                var29[1] = var26 * var20
-                var29[2] = var22
-                val var30 = sqrt((var28[0] - var29[0]) * (var28[0] - var29[0]) +
-                        (var28[1] - var29[1]) * (var28[1] - var29[1]) +
-                        (var28[2] - var29[2]) * (var28[2] - var29[2]))
-                (asin(var30 / 2.0) * 1.27420015798544E7).toFloat()
-            } catch (var32: Throwable) {
-                var32.printStackTrace()
-                0.0f
-            }
-        } else {
-            try {
-                throw Exception(mActivity.resources.getString(R.string.illegal_coordinate_value))
-            } catch (var33: java.lang.Exception) {
-                var33.printStackTrace()
-                0.0f
-            }
-        }
-    }
-
-    /**
      * 逆地理编码 得到地址
      * @param context
      * @param latitude
@@ -1769,9 +1722,9 @@ class LocationFragment : BaseFragment(),
      * @return
      */
     private fun getAddress(context: Context, latitude: Double, longitude: Double): String {
-        val geoCoder = Geocoder(context, Locale.getDefault());
+        val geoCoder = Geocoder(context, Locale.getDefault())
         try {
-            val address = geoCoder.getFromLocation(latitude, longitude, 1);
+            val address = geoCoder.getFromLocation(latitude, longitude, 1)
             Log.i("位置", "得到位置当前" + address + "'\n"
                     + "经度：" + address[0].longitude + "\n"
                     + "纬度：" + address[0].latitude + "\n"
@@ -1779,12 +1732,12 @@ class LocationFragment : BaseFragment(),
                     + "城市：" + address[0].locality + "\n"
                     + "名称：" + address[0].getAddressLine(1) + "\n"
                     + "街道：" + address[0].getAddressLine(0)
-            );
+            )
             return address[0].getAddressLine(0) + "  " +
-                    address[0].locality + " " + address[0].countryName;
+                    address[0].locality + " " + address[0].countryName
         } catch (e: Exception) {
-            e.printStackTrace();
-            return "未知";
+            e.printStackTrace()
+            return "未知"
         }
     }
 
@@ -1819,6 +1772,7 @@ class LocationFragment : BaseFragment(),
     /**
      * 自定义的地图信息弹窗
      */
+    @SuppressLint("InflateParams")
     class CustomInfoWindowAdapter(ref: WeakReference<LocationFragment>)
         : GoogleMap.InfoWindowAdapter {
 
@@ -2009,6 +1963,10 @@ class LocationFragment : BaseFragment(),
         if (electronicSaveDialog != null) {
             electronicSaveDialog?.closeDialog()
             electronicSaveDialog = null
+        }
+        if (personModeConfirmDialog != null) {
+            personModeConfirmDialog?.closeDialog()
+            personModeConfirmDialog = null
         }
     }
 
