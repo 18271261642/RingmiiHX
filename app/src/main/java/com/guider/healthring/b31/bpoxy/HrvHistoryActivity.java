@@ -3,8 +3,10 @@ package com.guider.healthring.b31.bpoxy;
 
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.b31.bpoxy.markview.SPMarkerView;
 import com.guider.healthring.b31.bpoxy.util.ChartViewUtil;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIDDLE_HRV;
@@ -118,25 +122,30 @@ public class HrvHistoryActivity extends WatchBaseActivity {
 
 
     private void showResult(List<HRVOriginData> originHRVList) {
-        HrvScoreUtil hrvScoreUtil = new HrvScoreUtil();
-        double[] lorenData = hrvScoreUtil.getLorenData(originHRVList);
-        if (lorenData == null || lorenData.length < 1500) {
-            return;
-        }
-        int[] bufferdata = new int[lorenData.length];
-        for (int i = 0; i < bufferdata.length; i++) {
-            bufferdata[i] = (int) lorenData[i];
-        }
-        int[] result = null;
         try {
-            result = mJNIChange.hrvAnalysisReport(bufferdata, bufferdata.length);
+            double[] lorenData = HrvScoreUtil.getLorenData(originHRVList);
+            if (lorenData == null || lorenData.length < 1500) {
+                return;
+            }
+            int[] bufferdata = new int[lorenData.length];
+            for (int i = 0; i < bufferdata.length; i++) {
+                bufferdata[i] = (int) lorenData[i];
+            }
+            int[] result = null;
+            try {
+                result = mJNIChange.hrvAnalysisReport(bufferdata, bufferdata.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (result == null) {
+                return;
+            }
+            updateList(result);
         } catch (Exception e) {
             e.printStackTrace();
+            if (!StringUtil.isEmpty(e.getMessage()))
+                Log.e(TAG, "查询报错----" + e.getMessage());
         }
-        if (result == null) {
-            return;
-        }
-        updateList(result);
     }
 
     private void updateList(int[] result) {

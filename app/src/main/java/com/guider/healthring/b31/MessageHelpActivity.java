@@ -190,7 +190,7 @@ public class MessageHelpActivity extends WatchBaseActivity implements View.OnCli
 
     //获取相关权限
     private void getContactsPermission(String...permission){
-        AndPermission.with(this)
+        AndPermission.with(mContext)
                 .runtime()
                 .permission(permission)
                 .rationale(new Rationale<List<String>>() {
@@ -212,7 +212,7 @@ public class MessageHelpActivity extends WatchBaseActivity implements View.OnCli
      */
     private void openPermission() {
 
-        AndPermission.with(this).runtime().setting().start(1);
+        AndPermission.with(mContext).runtime().setting().start(1);
     }
 
     @Override

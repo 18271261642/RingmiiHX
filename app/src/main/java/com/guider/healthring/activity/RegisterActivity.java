@@ -288,7 +288,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                                                 SharedPreferences.Editor editor = mySharedPre.edit();
                                                                 //用putString的方法保存数据
                                                                 editor.putString("userId", MYusrid);
-                                                                editor.commit();
+                                                                editor.apply();
                                                                 SharedPreferencesUtils.saveObject(RegisterActivity.this, "userId", MYusrid);
                                                                 SharedPreferencesUtils.saveObject(RegisterActivity.this, "userInfo", shuzhu);
                                                                 //Toast.makeText(RegisterActivity.this, R.string.tijiao, Toast.LENGTH_SHORT).show();

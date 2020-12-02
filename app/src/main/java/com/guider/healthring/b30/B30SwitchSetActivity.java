@@ -666,7 +666,7 @@ public class B30SwitchSetActivity extends WatchBaseActivity implements View.OnCl
     //检查是否有震动的权限
     private void checkViberPerminess() {
         if (!AndPermission.hasPermissions(B30SwitchSetActivity.this, Manifest.permission.VIBRATE)) {
-            AndPermission.with(B30SwitchSetActivity.this)
+            AndPermission.with(mContext)
                     .runtime()
                     .permission(Manifest.permission.VIBRATE)
                     .rationale(new Rationale<List<String>>() {

@@ -417,7 +417,7 @@ public class B30HomeActivity extends WatchBaseActivity implements Rationale<List
      * Set permissions.
      */
     private void setPermission() {
-        AndPermission.with(this).runtime().setting().start(1);
+        AndPermission.with(mContext).runtime().setting().start(1);
     }
 
     @Override

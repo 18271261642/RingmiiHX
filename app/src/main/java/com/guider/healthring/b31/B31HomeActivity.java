@@ -136,7 +136,7 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
         //注册广播接收者的对象
         this.registerReceiver(sendSMSBroadCast, mIntentFilter);
         MyApp.getInstance().getVpOperateManager().settingDeviceControlPhone(MyApp.phoneSosOrDisPhone);
-        b31ViewPager.postDelayed(this::isNotificationServiceEnable, 3000);
+        b31ViewPager.postDelayed(this::isNotificationServiceEnable, 500);
     }
 
     private void isNotificationServiceEnable() {
@@ -152,7 +152,8 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
         if (!NotificationManagerCompat.getEnabledListenerPackages(mContext).contains(
                 mContext.getPackageName())
                 && isOpenNotificationRingSwitch && MyCommandManager.DEVICENAME != null) {
-            if (alertDialog == null)
+            //activity运行时才有必要弹出dialog
+            if (alertDialog == null && !this.isFinishing())
                 alertDialog = DialogUtil.showConfirmDialog(mContext, (ViewGroup) null,
                         mContext.getResources().getString(R.string.app_permission_notification_ring),
                         new BaseOnDialogClick() {
@@ -415,7 +416,7 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
     @SuppressLint({"MissingPermission", "WrongConstant"})
     protected void call(final String tel) {
 
-        AndPermission.with(B31HomeActivity.this)
+        AndPermission.with(mContext)
                 .runtime()
                 .permission(
                         Manifest.permission.CALL_PHONE,

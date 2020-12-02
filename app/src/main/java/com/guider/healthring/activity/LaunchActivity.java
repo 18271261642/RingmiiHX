@@ -132,20 +132,25 @@ public class LaunchActivity extends WatchBaseActivity {
 
     //判断进入的页面
     private void switchLoginUser() {
-        String userId = (String) SharedPreferencesUtils.readObject(LaunchActivity.this, "userId");
-        Log.e(TAG, "----userId=" + userId);
+        Long accountIdGD = (Long) SharedPreferencesUtils.getParam(LaunchActivity.this,
+                "accountIdGD", 0L);
+        Log.e(TAG, "----accountIdGD=" + accountIdGD);
         //判断有没有登录
-        if (!StringUtil.isEmpty(userId)) {
+        if (accountIdGD != 0L) {
             String btooth = (String) SharedPreferencesUtils.readObject(LaunchActivity.this, "mylanya");
             if (!WatchUtils.isEmpty(btooth)) {
-                if ("B30".equals(btooth)) {
-                    startActivity(new Intent(this, B30HomeActivity.class));
-                } else if ("Ringmii".equals(btooth)) {
-                    startActivity(new Intent(this, B30HomeActivity.class));
-                } else if ("500S".equals(btooth) || "B31".equals(btooth)) {
-                    startActivity(new Intent(this, B31HomeActivity.class));
-                } else {
-                    startActivity(new Intent(this, NewSearchActivity.class));
+                switch (btooth) {
+                    case "B30":
+                    case "Ringmii":
+                        startActivity(new Intent(this, B30HomeActivity.class));
+                        break;
+                    case "500S":
+                    case "B31":
+                        startActivity(new Intent(this, B31HomeActivity.class));
+                        break;
+                    default:
+                        startActivity(new Intent(this, NewSearchActivity.class));
+                        break;
                 }
             } else {
                 startActivity(new Intent(this, NewSearchActivity.class));

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rela_layout_title"
+    style="@style/ClubToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_45"
+    android:background="@color/new_colorAccent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="7dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/size_20"
+            android:src="@mipmap/back2x" />
+
+        <TextView
+            android:id="@+id/bar_titles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/sp_20" />
+        <TextView
+            android:id="@+id/right_commit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:text="@string/string_tijiao"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/sp_15" />
+    </RelativeLayout>
+
+
+</androidx.appcompat.widget.Toolbar>

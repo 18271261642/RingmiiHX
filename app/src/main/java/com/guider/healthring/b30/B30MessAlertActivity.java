@@ -1,6 +1,7 @@
 package com.guider.healthring.b30;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -166,9 +167,10 @@ public class B30MessAlertActivity extends WatchBaseActivity implements View.OnCl
 
 
     //申请电话权限
+    @SuppressLint("WrongConstant")
     private void requestPermiss() {
-        if (!AndPermission.hasPermissions(B30MessAlertActivity.this, new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CALL_LOG})) {
-            AndPermission.with(B30MessAlertActivity.this)
+        if (!AndPermission.hasPermissions(B30MessAlertActivity.this, Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CALL_LOG)) {
+            AndPermission.with(mContext)
                     .runtime()
                     .permission(Manifest.permission.CALL_PHONE,
                             Manifest.permission.READ_PHONE_STATE,
@@ -184,10 +186,9 @@ public class B30MessAlertActivity extends WatchBaseActivity implements View.OnCl
                     .start();
         }
 
-        if (!AndPermission.hasPermissions(B30MessAlertActivity.this, new String[]{
-                Manifest.permission.READ_SMS,
-                Manifest.permission.READ_CONTACTS})) {
-            AndPermission.with(B30MessAlertActivity.this)
+        if (!AndPermission.hasPermissions(B30MessAlertActivity.this, Manifest.permission.READ_SMS,
+                Manifest.permission.READ_CONTACTS)) {
+            AndPermission.with(mContext)
                     .runtime()
                     .permission(
                             Manifest.permission.READ_SMS,

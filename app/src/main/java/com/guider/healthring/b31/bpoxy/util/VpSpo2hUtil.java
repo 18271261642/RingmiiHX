@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.b31.bpoxy.markview.SPMarkerView;
 import com.github.mikephil.charting.charts.LineChart;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_BREATH;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HEART;
@@ -153,7 +155,13 @@ public class VpSpo2hUtil {
             return;
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         //获取低氧数据[最大，最小，平均]       *参考：取低氧最大值，大于20，则显示偏高，其他显示正常
         int[] onedayDataArrLowSpo2h = spo2hOriginUtil.getOnedayDataArr(TYPE_LOWSPO2H);
@@ -186,7 +194,13 @@ public class VpSpo2hUtil {
             return;
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         List<Map<String, Float>> apneaList = spo2hOriginUtil.getApneaList();
         for (int i = 0; i < apneaList.size(); i++) {
@@ -209,7 +223,13 @@ public class VpSpo2hUtil {
             return "--";
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         int osahs = spo2hOriginUtil.getIsHypoxia();
         if (osahs >= 3) {
@@ -235,7 +255,13 @@ public class VpSpo2hUtil {
             return;
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         //获取处理完的低氧数据
         List<Map<String, Float>> tenMinuteDataLowSpo2h = spo2hOriginUtil.getTenMinuteData(TYPE_LOWSPO2H);
@@ -252,7 +278,13 @@ public class VpSpo2hUtil {
             return;
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         //获取处理完的呼吸率数据
         List<Map<String, Float>> tenMinuteDataBreath = spo2hOriginUtil.getTenMinuteData(TYPE_BREATH);
@@ -269,7 +301,13 @@ public class VpSpo2hUtil {
             return;
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         //获取处理完的睡眠数据
         List<Map<String, Float>> tenMinuteDataSleep = spo2hOriginUtil.getTenMinuteData(TYPE_SLEEP);
@@ -288,7 +326,13 @@ public class VpSpo2hUtil {
             return;
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         //获取处理完的心脏负荷数据
         List<Map<String, Float>> tenMinuteDataHeart = spo2hOriginUtil.getTenMinuteData(TYPE_HEART);
@@ -307,7 +351,13 @@ public class VpSpo2hUtil {
             return;
         }
         if (spo2hOriginUtil == null) {
-            spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            try {
+                spo2hOriginUtil = new Spo2hOriginUtil(moringData);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "获取工具类报错----" + e.getMessage());
+            }
         }
         //获取处理完的血氧数据
         List<Map<String, Float>> tenMinuteDataBreathBreak = spo2hOriginUtil.getTenMinuteData(TYPE_BEATH_BREAK);

@@ -119,7 +119,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textColor">@color/new_colorAccent</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/sp_13</item>
     </style>
 
     <style name="MyTextView">

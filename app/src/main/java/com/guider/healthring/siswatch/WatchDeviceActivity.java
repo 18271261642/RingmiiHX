@@ -434,7 +434,7 @@ public class WatchDeviceActivity extends WatchBaseActivity
                     watchMessageCallphoneSwitch.setChecked(true);
                     SharedPreferencesUtils.setParam(WatchDeviceActivity.this, "laidianphone", "on");
                 }else{
-                    AndPermission.with(WatchDeviceActivity.this)
+                    AndPermission.with(mContext)
                             .runtime()
                             .permission(Manifest.permission.READ_PHONE_STATE,
                                     Manifest.permission.WRITE_SETTINGS)

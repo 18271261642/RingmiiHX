@@ -109,8 +109,8 @@ public class WebviewAgent implements IWebviewAgent {
         AgentWeb.AgentBuilder builder;
         if (mActivity != null)
             builder = AgentWeb.with(mActivity);
-        else if (mFragment != null)
-            builder = AgentWeb.with(mFragment);
+        else if (mFragment != null && mFragment.getActivity() != null)
+            builder = AgentWeb.with(mFragment.getActivity());
         else return;
 
         mAgentWeb = builder

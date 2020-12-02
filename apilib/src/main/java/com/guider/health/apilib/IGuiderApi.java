@@ -2,6 +2,7 @@ package com.guider.health.apilib;
 
 import com.guider.health.apilib.model.BeanOfWecaht;
 import com.guider.health.apilib.model.CardInfo;
+import com.guider.health.apilib.model.ChangeWithBanPasswordBean;
 import com.guider.health.apilib.model.Devices;
 import com.guider.health.apilib.model.DoctorInfo;
 import com.guider.health.apilib.model.HasWechatId;
@@ -53,6 +54,7 @@ public interface IGuiderApi {
 
     /**
      * 获取当前PAD所属机构的AppId
+     *
      * @param mac
      * @return
      */
@@ -61,17 +63,17 @@ public interface IGuiderApi {
 
     /**
      * 微信登录
-     *
-     *                          JSONObject jsonObject = new JSONObject();
-     *                         //HashMap<String, Object> request = new HashMap<>();
-     *                         jsonObject.put("appId", "wx1971c8a28a09ad4b");
-     *                         jsonObject.put("headimgurl", data.get("iconurl"));
-     *                         jsonObject.put("nickname", data.get("name"));
-     *                         jsonObject.put("openid", data.get("openid"));
-     *
-     *                         int gender = data.get("gender").equals("男") ? 0 : 1;
-     *                         jsonObject.put("sex", gender);
-     *                         jsonObject.put("unionid", data.get("unionid"));
+     * <p>
+     * JSONObject jsonObject = new JSONObject();
+     * //HashMap<String, Object> request = new HashMap<>();
+     * jsonObject.put("appId", "wx1971c8a28a09ad4b");
+     * jsonObject.put("headimgurl", data.get("iconurl"));
+     * jsonObject.put("nickname", data.get("name"));
+     * jsonObject.put("openid", data.get("openid"));
+     * <p>
+     * int gender = data.get("gender").equals("男") ? 0 : 1;
+     * jsonObject.put("sex", gender);
+     * jsonObject.put("unionid", data.get("unionid"));
      */
     @POST("api/v2/third/login/wachat/tokeninfo")
     Call<BeanOfWecaht> wechatLoginToken(@Body() WechatInfo paramWechatUserInfo);
@@ -79,6 +81,7 @@ public interface IGuiderApi {
 
     /**
      * 在需要关注微信公众号的时候轮询监测用户是否已经关注了公众号
+     *
      * @param sence
      * @return
      */
@@ -159,8 +162,10 @@ public interface IGuiderApi {
      */
     @PUT("api/v1/usersimpleinfo")
     Call<String> simpUserInfo(@Body() UserInfo userInfo);
+
     @PUT("api/v1/usersimpleinfo")
     Call<SimpleUserInfo> editSimpUserInfo(@Body() SimpleUserInfo userInfo);
+
     /**
      * 获取用户信息
      *
@@ -193,6 +198,7 @@ public interface IGuiderApi {
 
     /**
      * 绑定手机号获取验证码 4位
+     *
      * @return
      */
     @GET("api/v1/bind/sendcode")
@@ -200,6 +206,7 @@ public interface IGuiderApi {
 
     /**
      * 登录获取验证码 6位
+     *
      * @return
      */
     @GET("api/v1/phonecode")
@@ -207,8 +214,10 @@ public interface IGuiderApi {
 
 
     /*------------------------------------医生端------------------------------------*/
+
     /**
      * 获取民族列表
+     *
      * @return
      */
     @GET("api/v1/consts?parentSortId=1")
@@ -234,13 +243,13 @@ public interface IGuiderApi {
 
     /**
      * 解除与该用户的关系
+     *
      * @return
      */
     @DELETE("api/v1/doctor/{accountId}/user")
     Call<String> deleteUser(@Path("accountId") int accountId, @Query("userAccountId") int userAccountId);
 
     /**
-     *
      * @param appId
      * @param openId
      * @return
@@ -248,6 +257,7 @@ public interface IGuiderApi {
     @GET("api/v1/accountthird/verify/login")
     Call<BeanOfWecaht> verifyThirdAccount(@Query("appId") String appId, @Query("openId") String openId,
                                           @Query("groupId") long groupId, @Query("doctorAccountId") long doctorAccountId);
+
     @POST("api/v1/accountthird/phone/login")
     Call<BeanOfWecaht> bindPhoneAndLogin(@Body ParamThirdUserAccount param);
 
@@ -260,7 +270,37 @@ public interface IGuiderApi {
 
     @GET("api/v1/wechat/qr")
     Call<String> createWXQr(@Query("appId") String appId, @Query("expireSeconds") long expireSeconds, @Query("sceneStr") String sceneStr);
+
     //修改手环登录密码
     @PUT("api/v1/bandpwd")
-    Call<String> backupOldPwd(@Query("accountId") int accountId , @Query("bandPwd") String bandPwd);
+    Call<String> backupOldPwd(@Query("accountId") int accountId, @Query("bandPwd") String bandPwd);
+
+    //直接修改登录帐号密码，并保存手环密码，返回tokeninfo
+    @PUT("api/v1/account/pwd/bandpwd")
+    Call<ChangeWithBanPasswordBean> changeWithBackupPassword(@Query("telAreaCode") String telAreaCode,
+                                                             @Query("phoneNum") String phoneNum,
+                                                             @Query("pwd") String pwd,
+                                                             @Query("bandPwd") String bandPwd);
+
+    /**
+     * 获取短信验证码,通过line
+     *
+     * @param phone 手机号
+     * @return 是否发送成功
+     */
+    @GET("api/v1/phonecode/line")
+    Call<String> sendLineCode(@Query("phone") String phone);
+
+    /**
+     * 验证手机号验证码是否正确
+     *
+     * @param telAreaCode 区号
+     * @param phoneNum    手机号
+     * @param code        验证码
+     * @return 是否校验验证码成功
+     */
+    @PUT("api/v1/account/phonecode/verify")
+    Call<String> verifyLineCode(@Query("telAreaCode") String telAreaCode,
+                                @Query("phoneNum") String phoneNum,
+                                @Query("code") String code);
 }

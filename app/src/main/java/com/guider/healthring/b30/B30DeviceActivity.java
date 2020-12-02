@@ -235,7 +235,7 @@ public class B30DeviceActivity extends WatchBaseActivity
                 break;
             case R.id.b30DevicePtoRel:  //拍照
 
-                AndPermission.with(this)
+                AndPermission.with(mContext)
                         .runtime()
                         .permission(Permission.Group.CAMERA)
                         .rationale(this)//添加拒绝权限回调
@@ -416,7 +416,7 @@ public class B30DeviceActivity extends WatchBaseActivity
      * Set permissions.
      */
     private void setPermission() {
-        AndPermission.with(this).runtime().setting().start(1);
+        AndPermission.with(mContext).runtime().setting().start(1);
     }
 
     @Override

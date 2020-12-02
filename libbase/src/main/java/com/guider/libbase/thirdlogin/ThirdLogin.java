@@ -29,6 +29,7 @@ import com.mob.OperationCallback;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 import cn.sharesdk.framework.Platform;
@@ -85,7 +86,7 @@ public class ThirdLogin {
         thidLogin("Line", appId, false, thirdLoginCallback, new HandleOriginUserInfo() {
             @Override
             public HashMap<String, Object> handle(HashMap<String, Object> hashMap) {
-                return handleFields(hashMap, appId, "userId", "displayName", "pictureUrl");
+                return handleFields(hashMap, appId);
             }
         });
     }
@@ -141,10 +142,8 @@ public class ThirdLogin {
                     onUserInfo(appId, ret, thirdLoginCallback, new HandleOriginUserInfo() {
                         @Override
                         public HashMap<String, Object> handle(HashMap<String, Object> hashMap) {
-                            return handleFields(hashMap, appId,
-                                    "userId",
-                                    "displayName",
-                                    "pictureUrl");
+                            return handleFields(hashMap, appId
+                            );
                         }
                     });
                 }
@@ -239,8 +238,8 @@ public class ThirdLogin {
                 .enqueue(new ApiCallBack<BeanOfWecaht>() {
                     @Override
                     public void onResponse(Call<BeanOfWecaht> call, Response<BeanOfWecaht> response) {
+                        if (response.body() == null) return;
                         BeanOfWecaht info = response.body();
-
                         if (info.getTokenInfo() == null) { // 需要跳转到手机号绑定页面
                             Intent intent = new Intent(mContext, BindPhoneV2Activity.class);
                             String nickName = map.get("nickName").toString();
@@ -266,13 +265,12 @@ public class ThirdLogin {
     }
 
     private HashMap<String, Object> handleFields(HashMap<String, Object> hashMap,
-                                                 String appId, String openIdNameField,
-                                                 String nickNameField, String headUrlField) {
+                                                 String appId) {
         final HashMap<String, Object> map = new HashMap<>();
         map.put("appId", appId);
-        final String openId = hashMap.get(openIdNameField).toString();
-        String nickName = hashMap.get(nickNameField).toString();
-        String headUrl = hashMap.containsKey(headUrlField) ? hashMap.get(headUrlField).toString() : "";
+        final String openId = hashMap.get("userId").toString();
+        String nickName = hashMap.get("displayName").toString();
+        String headUrl = hashMap.containsKey("pictureUrl") ? hashMap.get("pictureUrl").toString() : "";
         map.put("openId", openId);
         map.put("nickName", nickName);
         map.put("headUrl", headUrl);

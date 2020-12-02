@@ -52,18 +52,15 @@ public class SharedPreferencesUtils {
     public static final String isOpenNotificationPermission = "is_Open_Notification_Permission";
 
 
-    public static void saveProgess(int progess,Context context){
+    public static void saveProgess(int progess, Context context) {
         SharedPreferences sp = context.getSharedPreferences("proValue", Context.MODE_PRIVATE);
         //获取到edit对象
         SharedPreferences.Editor edit = sp.edit();
         //通过editor对象写入数据
-        edit.putInt("progess",progess);
+        edit.putInt("progess", progess);
         //提交数据存入到xml文件中
-        edit.commit();
+        edit.apply();
     }
-
-
-
 
 
     /**
@@ -91,8 +88,17 @@ public class SharedPreferencesUtils {
             editor.putLong(key, (Long) object);
         }
 
-        editor.commit();
+        editor.apply();
         return type;
+    }
+
+    public static Boolean removeParam(Context context, String key) {
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        if (sp.contains(key)) {
+            editor.remove(key);
+            return editor.commit();
+        } else return false;
     }
 
 
@@ -125,7 +131,7 @@ public class SharedPreferencesUtils {
 
     public static void saveObject(Context context, String key, Object obj) {
         try {
-            Log.i("shardePresss", "write--"+key + "---" + obj);
+            Log.i("shardePresss", "write--" + key + "---" + obj);
             // 保存对象
             SharedPreferences.Editor sharedata = context.getSharedPreferences(FILE_NAME, 0).edit();
             //先将序列化结果写到byte缓存中，其实就分配一个内存空间
@@ -137,7 +143,7 @@ public class SharedPreferencesUtils {
             String bytesToHexString = bytesToHexString(bos.toByteArray());
             //保存该16进制数组
             sharedata.putString(key, bytesToHexString);
-            sharedata.commit();
+            sharedata.apply();
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("Share", "保存obj失败");
@@ -154,7 +160,7 @@ public class SharedPreferencesUtils {
     public static Object readObject(Context context, String key) {
         try {
             if (FILE_NAME == null) return null;
-            Log.i("shardePresss", "read--"+key);
+            Log.i("shardePresss", "read--" + key);
             SharedPreferences sharedata = context.getSharedPreferences(FILE_NAME, 0);
             if (sharedata.contains(key)) {
                 String string = sharedata.getString(key, "");
@@ -170,13 +176,7 @@ public class SharedPreferencesUtils {
                     return readObject;
                 }
             }
-        } catch (StreamCorruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -266,7 +266,7 @@ public class SharedPreferencesUtils {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, mJsonArray.toString());
-        editor.commit();
+        editor.apply();
     }
 
     public static List<HashMap<String, String>> getUserInfo(Context context, String key) {

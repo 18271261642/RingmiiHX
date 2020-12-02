@@ -434,7 +434,7 @@ public class HellpEditActivity extends WatchBaseActivity
      * Set permissions.
      */
     private void setPermission() {
-        AndPermission.with(this).runtime().setting().start(4);
+        AndPermission.with(mContext).runtime().setting().start(4);
     }
 
 
@@ -617,7 +617,7 @@ public class HellpEditActivity extends WatchBaseActivity
 
     //获取相关权限
     private void getContactsPermission(String... permission) {
-        AndPermission.with(this)
+        AndPermission.with(mContext)
                 .runtime()
                 .permission(permission)
                 .rationale((context, data, executor) -> executor.execute()).onGranted(data -> {

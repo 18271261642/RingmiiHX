@@ -285,5 +285,6 @@
         
     <string name="wwk_title4">測量結果</string>
     <string name="addPicToAlbum">添加圖片到圖庫成功</string>
+    <string name="app_line_code_hint">請輸入從LINE收到的驗證碼</string>
     <string name="app_permission_notification_ring">獲取手環通知提醒需要開啓相關權限</string>
 </resources>

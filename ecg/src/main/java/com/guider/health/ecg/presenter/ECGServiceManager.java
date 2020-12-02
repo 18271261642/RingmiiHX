@@ -224,7 +224,7 @@ public class ECGServiceManager {
                         public void result(String result) {
                             Log.i("haix_ecg", "lp41+++++++++++++++++++++: " + result);
                             JSONObject jsonObject = JSONObject.parseObject(result);
-                            String statusCode = null;
+                            String statusCode;
                             statusCode = jsonObject.getString("StatusCode");
                             if ("01".equals(statusCode)) {
 

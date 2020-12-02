@@ -101,7 +101,7 @@ public class GuideActivity extends BaseActivity {
         //初始化H8消息提醒功能
         SharedPreferencesUtils.setParam(GuideActivity.this, "msgfirst", "isfirst");
         //申请读取电话状态的权限
-        AndPermission.with(GuideActivity.this)
+        AndPermission.with(baseActivity)
                 .runtime()
                 .permission(Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.WRITE_SETTINGS)
@@ -129,9 +129,9 @@ public class GuideActivity extends BaseActivity {
 
                 }
                 //判断有没有登录
-
                 if (null != SharedPreferencesUtils.readObject(GuideActivity.this, "userId")) {
                     String userId = (String) SharedPreferencesUtils.readObject(GuideActivity.this, "userId");
+                    Log.i(GuideActivity.this.getClass().getSimpleName(),"userId -------"+userId);
 //                    Log.e("GuideActivity", "--------蓝牙---" + SharedPreferencesUtils.readObject(GuideActivity.this, "mylanya"));
                     String btooth = (String) SharedPreferencesUtils.readObject(GuideActivity.this, "mylanya");
                     String w30sbtooth = (String) SharedPreferenceUtil.get(GuideActivity.this, "mylanya", "");

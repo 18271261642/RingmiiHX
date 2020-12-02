@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -56,6 +57,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.guider.healthring.b31.bpoxy.enums.EnumGlossary.BREATH;
 import static com.guider.healthring.b31.bpoxy.enums.EnumGlossary.BREATHBREAK;
@@ -501,8 +503,13 @@ public class B31BpOxyAnysisActivity extends WatchBaseActivity implements View.On
 
     private void showSpo2Desc(List<Spo2hOriginData> list) {
         breathStopList.clear();
-        spo2hOriginUtil = new Spo2hOriginUtil(list);
-
+        try {
+            spo2hOriginUtil = new Spo2hOriginUtil(list);
+        }catch (Exception e){
+            e.printStackTrace();
+            if (!StringUtil.isEmpty(e.getMessage()))
+                Log.e(TAG, "查询报错----" + e.getMessage());
+        }
         Log.e(TAG,"------osah="+spo2hOriginUtil.getIsHypoxia());
 
         //OSAHS程度

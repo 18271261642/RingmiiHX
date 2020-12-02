@@ -43,6 +43,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -105,6 +106,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_SPO2H;
@@ -812,7 +814,7 @@ public class B31RecordFragment extends LazyFragment
             case R.id.block_lowspo2h:   //低氧时间
                 startToSpo2Detail("4", getResources().getString(R.string.vpspo2h_toptitle_lowspo2h));
                 break;
-            case R.id.homeFastLin:
+            case R.id.homeFastLin://设置页面
                 if (MyCommandManager.DEVICENAME != null) {
                     startActivity(new Intent(getmContext(), B31DeviceActivity.class));
                 } else {
@@ -1123,30 +1125,30 @@ public class B31RecordFragment extends LazyFragment
         tmpHRVlist.clear();
         try {
             Thread thread = new Thread(() -> {//bleMac = ? and
+                try {
+                    String where = "bleMac = ? and dateStr = ?";
+                    List<B31HRVBean> reList = LitePal.where(where, mac, day).find(B31HRVBean.class);
+                    if (reList == null || reList.isEmpty()) {
+                        Message message = handler.obtainMessage();
+                        message.what = 1113;
+                        message.obj = tmpHRVlist;
+                        handler.sendMessage(message);
+                        return;
+                    }
+                    for (B31HRVBean hrvBean : reList) {
+//                        Log.e(TAG,"----------hrvBean="+hrvBean.toString());
+                        tmpHRVlist.add(gson.fromJson(hrvBean.getHrvDataStr(), HRVOriginData.class));
+                    }
 
-                String where = "bleMac = ? and dateStr = ?";
-                List<B31HRVBean> reList = LitePal.where(where, mac, day).find(B31HRVBean.class);
-                if (reList == null || reList.isEmpty()) {
                     Message message = handler.obtainMessage();
                     message.what = 1113;
                     message.obj = tmpHRVlist;
                     handler.sendMessage(message);
-                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                for (B31HRVBean hrvBean : reList) {
-//                        Log.e(TAG,"----------hrvBean="+hrvBean.toString());
-                    tmpHRVlist.add(gson.fromJson(hrvBean.getHrvDataStr(), HRVOriginData.class));
-                }
-
-                Message message = handler.obtainMessage();
-                message.what = 1113;
-                message.obj = tmpHRVlist;
-                handler.sendMessage(message);
-
             });
             thread.start();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1245,8 +1247,9 @@ public class B31RecordFragment extends LazyFragment
             }
         } catch (Exception e) {
             e.printStackTrace();
+            if (!StringUtil.isEmpty(e.getMessage()))
+                Log.e(TAG, "查询报错----" + e.getMessage());
         }
-
     }
 
 

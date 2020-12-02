@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.b31.bpoxy.Spo2SecondDialogView;
 import com.guider.healthring.b31.bpoxy.markview.SPMarkerView;
@@ -50,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIDDLE_HRV;
@@ -60,7 +64,7 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HRV;
  * Created by Admin
  * Date 2018/12/19
  */
-public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnClickListener{
+public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "B31HrvDetailActivity";
     ImageView hrvReferMarkviewImg;
@@ -114,7 +118,7 @@ public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnCl
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Log.e(TAG,"-----msg="+msg.what);
+            Log.e(TAG, "-----msg=" + msg.what);
             switch (msg.what) {
                 case 1001:
                     List<HRVOriginData> resultHrv = (List<HRVOriginData>) msg.obj;
@@ -198,26 +202,30 @@ public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnCl
         }
         lorenzListDescripe.setVisibility(View.VISIBLE);
         hrvNoLeroDescTv.setVisibility(View.GONE);
-
-        HrvScoreUtil hrvScoreUtil = new HrvScoreUtil();
-        double[] lorenData = hrvScoreUtil.getLorenData(originHRVList);
-        if (lorenData == null || lorenData.length < 1500) {
-            return;
-        }
-        int[] bufferdata = new int[lorenData.length];
-        for (int i = 0; i < bufferdata.length; i++) {
-            bufferdata[i] = (int) lorenData[i];
-        }
-        int[] result = null;
         try {
-            result = mJNIChange.hrvAnalysisReport(bufferdata, bufferdata.length);
+            double[] lorenData = HrvScoreUtil.getLorenData(originHRVList);
+            if (lorenData == null || lorenData.length < 1500) {
+                return;
+            }
+            int[] bufferdata = new int[lorenData.length];
+            for (int i = 0; i < bufferdata.length; i++) {
+                bufferdata[i] = (int) lorenData[i];
+            }
+            int[] result = null;
+            try {
+                result = mJNIChange.hrvAnalysisReport(bufferdata, bufferdata.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (result == null) {
+                return;
+            }
+            updateList(result);
         } catch (Exception e) {
             e.printStackTrace();
+            if (!StringUtil.isEmpty(e.getMessage()))
+                Log.e(TAG, "查询报错----" + e.getMessage());
         }
-        if (result == null) {
-            return;
-        }
-        updateList(result);
     }
 
 
@@ -294,7 +302,7 @@ public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnCl
         commArrowDate.setText(currDay);
         tmpHRVlist.clear();
         final String mac = WatchUtils.getSherpBleMac(B31HrvDetailActivity.this);
-        if(WatchUtils.isEmpty(mac))
+        if (WatchUtils.isEmpty(mac))
             return;
         showLoadingDialog("Loading...");
 
@@ -304,7 +312,7 @@ public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnCl
 
                 try {
                     String where = "bleMac = ? and dateStr = ?";
-                    List<B31HRVBean> reList = LitePal.where(where, mac,currDay).find(B31HRVBean.class);
+                    List<B31HRVBean> reList = LitePal.where(where, mac, currDay).find(B31HRVBean.class);
                     if (reList == null || reList.isEmpty()) {
                         Message message = handler.obtainMessage();
                         message.what = 1002;
@@ -321,7 +329,7 @@ public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnCl
                     message.what = 1001;
                     message.obj = tmpHRVlist;
                     handler.sendMessage(message);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -394,47 +402,47 @@ public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnCl
                 break;
             case R.id.hrvType1:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_1),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_1),R.drawable.hrv_gradivew_1_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_1), R.drawable.hrv_gradivew_1_big);
                 break;
             case R.id.hrvType2:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_2),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_2),R.drawable.hrv_gradivew_2_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_2), R.drawable.hrv_gradivew_2_big);
                 break;
             case R.id.hrvType3:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_3),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_3),R.drawable.hrv_gradivew_3_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_3), R.drawable.hrv_gradivew_3_big);
                 break;
             case R.id.hrvType4:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_4),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_4),R.drawable.hrv_gradivew_4_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_4), R.drawable.hrv_gradivew_4_big);
                 break;
             case R.id.hrvType5:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_5),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_5),R.drawable.hrv_gradivew_5_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_5), R.drawable.hrv_gradivew_5_big);
                 break;
             case R.id.hrvType6:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_6),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_6),R.drawable.hrv_gradivew_6_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_6), R.drawable.hrv_gradivew_6_big);
                 break;
             case R.id.hrvType7:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_7),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_7),R.drawable.hrv_gradivew_7_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_7), R.drawable.hrv_gradivew_7_big);
                 break;
             case R.id.hrvType8:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_8),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_8),R.drawable.hrv_gradivew_8_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_8), R.drawable.hrv_gradivew_8_big);
                 break;
             case R.id.hrvType9:
                 showHrvDescDialog(getResources().getString(R.string.vphrv_lorentz_chart_9),
-                        getResources().getString(R.string.vphrv_lorentz_chart_des_9),R.drawable.hrv_gradivew_9_big);
+                        getResources().getString(R.string.vphrv_lorentz_chart_des_9), R.drawable.hrv_gradivew_9_big);
                 break;
         }
     }
 
-    private void showHrvDescDialog(String titleId,String descTxt, int drawable) {
-        if(hrvDescDialogView == null){
+    private void showHrvDescDialog(String titleId, String descTxt, int drawable) {
+        if (hrvDescDialogView == null) {
             hrvDescDialogView = new HrvDescDialogView(B31HrvDetailActivity.this);
-        }else{
+        } else {
             hrvDescDialogView.cancel();
             hrvDescDialogView = new HrvDescDialogView(B31HrvDetailActivity.this);
         }
@@ -535,10 +543,10 @@ public class B31HrvDetailActivity extends WatchBaseActivity implements View.OnCl
     private HrvListDataAdapter.HrvItemClickListener hrvItemClickListener = new HrvListDataAdapter.HrvItemClickListener() {
         @Override
         public void hrvItemClick(int position) {
-            if(spo2SecondDialogView == null){
+            if (spo2SecondDialogView == null) {
                 spo2SecondDialogView = new Spo2SecondDialogView(B31HrvDetailActivity.this);
             }
-            List<Map<String,Float>> lt = mHrvOriginUtil.getDetailList(listMap.size()-position-1);
+            List<Map<String, Float>> lt = mHrvOriginUtil.getDetailList(listMap.size() - position - 1);
             spo2SecondDialogView.show();
             spo2SecondDialogView.setSpo2Type(555);
             spo2SecondDialogView.setMapList(lt);

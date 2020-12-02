@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -137,7 +138,6 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         initViewIds();
         //启动B30的服务
         MyApp.startB30Server();
-
         initViews();
         h9DataOper();
         initData();
@@ -208,42 +208,34 @@ public class NewSearchActivity extends GetUserInfoActivity implements
 
     @SuppressLint("WrongConstant")
     private void verticalPermission() {
-        AndPermission.with(NewSearchActivity.this)
+        if (rational == null) return;
+        AndPermission.with(mContext)
                 .runtime()
                 .permission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .rationale(rational)
                 .onGranted(data -> {
 
                 }).onDenied(data -> ToastUtil.showToast(NewSearchActivity.this,
-                        "已拒绝权限,可能无法搜索到蓝牙设备！")).start();
+                "已拒绝权限,可能无法搜索到蓝牙设备！")).start();
 
 
     }
 
 
     //当权限被拒绝时提醒用户再次授权
-    private Rationale rational = new Rationale() {
-        @SuppressLint("WrongConstant")
-        @Override
-        public void showRationale(Context context, Object data, RequestExecutor executor) {
-            executor.execute();
-            AndPermission.with(NewSearchActivity.this)
-                    .runtime()
-                    .permission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    .onGranted(new Action<List<String>>() {
-                        @Override
-                        public void onAction(List<String> data) {
+    @SuppressLint("WrongConstant")
+    private Rationale rational = (context, data, executor) -> {
+        executor.execute();
+        AndPermission.with(mContext)
+                .runtime()
+                .permission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .onGranted(data1 -> {
 
-                        }
-                    })
-                    .onDenied(new Action<List<String>>() {
-                        @Override
-                        public void onAction(List<String> data) {
-                            //AndPermission.with(NewSearchActivity.this).runtime().setting().
-                        }
-                    })
-                    .start();
-        }
+                })
+                .onDenied(data12 -> {
+                    //AndPermission.with(NewSearchActivity.this).runtime().setting().
+                })
+                .start();
     };
 
 
@@ -298,8 +290,6 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         //获取已配对设备
         @SuppressLint("MissingPermission") Object[] lstDevice =
                 bluetoothAdapter.getBondedDevices().toArray();
-        if (lstDevice == null)
-            return;
         for (Object o : lstDevice) {
             BluetoothDevice bluetoothDevice = (BluetoothDevice) o;
             if (bluetoothDevice == null)
@@ -351,8 +341,9 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                 NewSearchActivity.this).scanIntFilter()); //注册广播
         //H8BleManagerInstance.getH8BleManagerInstance();
         //跑马灯效果
-        searchAlertTv.setSelected(true);
-        newSearchTitleTv.setText(getResources().getString(R.string.search_device));
+        if (searchAlertTv != null)
+            searchAlertTv.setSelected(true);
+        newSearchTitleTv.setText(mContext.getResources().getString(R.string.search_device));
         //设置RecyclerView相关
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         searchRecycler.setLayoutManager(linearLayoutManager);
@@ -601,24 +592,24 @@ public class NewSearchActivity extends GetUserInfoActivity implements
             public void cusDialogSureData(String data) {
                 MyApp.getInstance().getB30ConnStateService().continuteConn(data,
                         new VerB30PwdListener() {
-                    @Override
-                    public void verPwdFailed() {
+                            @Override
+                            public void verPwdFailed() {
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
 //                                ToastUtil.showCusToast(NewSearchActivity.this,getResources().getString(R.string.miamacuo));
 //                            }
 //                        });
-                        ToastUtil.showShort(NewSearchActivity.this,
-                                getResources().getString(R.string.miamacuo));
-                        // ToastUtil.showLong(NewSearchActivity.this, getResources().getString(R.string.miamacuo));
-                    }
+                                ToastUtil.showShort(NewSearchActivity.this,
+                                        getResources().getString(R.string.miamacuo));
+                                // ToastUtil.showLong(NewSearchActivity.this, getResources().getString(R.string.miamacuo));
+                            }
 
-                    @Override
-                    public void verPwdSucc() {
-                        cusInputDialogView.dismiss();
-                    }
-                });
+                            @Override
+                            public void verPwdSucc() {
+                                cusInputDialogView.dismiss();
+                            }
+                        });
             }
         });
 

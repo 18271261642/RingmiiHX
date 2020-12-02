@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guider.health.common.core.LocaleUtil;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.b31.model.B31Spo2hBean;
 import com.guider.healthring.siswatch.WatchBaseActivity;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 展示血氧的每个图表的详细数据
@@ -162,13 +166,18 @@ public class ShowSpo2DetailActivity extends WatchBaseActivity implements  View.O
     //展示结果
     private void showResultDesc(List<Spo2hOriginData> resultList, int tag) {
         resultListMap.clear();
-        spo2hOriginUtil = new Spo2hOriginUtil(resultList);
-        //获取每10分钟的数据
-        List<Map<String, Float>> tenMinuteData = spo2hOriginUtil.getTenMinuteData(getSpo2Type(tag));
-        resultListMap.addAll(tenMinuteData);
-        showSpo2DetailAdapter.setSpowTag(tag);
-        showSpo2DetailAdapter.notifyDataSetChanged();
-
+        try {
+            spo2hOriginUtil = new Spo2hOriginUtil(resultList);
+            //获取每10分钟的数据
+            List<Map<String, Float>> tenMinuteData = spo2hOriginUtil.getTenMinuteData(getSpo2Type(tag));
+            resultListMap.addAll(tenMinuteData);
+            showSpo2DetailAdapter.setSpowTag(tag);
+            showSpo2DetailAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+            if (!StringUtil.isEmpty(e.getMessage()))
+            Log.e(TAG, "查询报错----" + e.getMessage());
+        }
     }
 
     @SuppressLint("SetTextI18n")

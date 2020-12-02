@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.view.CusExpandableListView;
 import com.guider.healthring.b31.GlossaryExpandableListAdapter;
@@ -47,6 +48,8 @@ import org.litepal.LitePal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import static com.guider.healthring.b31.bpoxy.enums.EnumGlossary.HEART;
 
 /**
@@ -285,13 +288,18 @@ public class ShowB31SingleDescActivity extends WatchBaseActivity implements View
     //展示结果
     private void showResultDesc(List<Spo2hOriginData> resultList, int tag) {
         resultListMap.clear();
-        spo2hOriginUtil = new Spo2hOriginUtil(resultList);
-        //获取每10分钟的数据
-        List<Map<String, Float>> tenMinuteData = spo2hOriginUtil.getTenMinuteData(getSpo2Type(tag));
-        resultListMap.addAll(tenMinuteData);
-        showSpo2DetailAdapter.setSpowTag(tag);
-        showSpo2DetailAdapter.notifyDataSetChanged();
-
+        try {
+            spo2hOriginUtil = new Spo2hOriginUtil(resultList);
+            //获取每10分钟的数据
+            List<Map<String, Float>> tenMinuteData = spo2hOriginUtil.getTenMinuteData(getSpo2Type(tag));
+            resultListMap.addAll(tenMinuteData);
+            showSpo2DetailAdapter.setSpowTag(tag);
+            showSpo2DetailAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
+            if (!StringUtil.isEmpty(e.getMessage()))
+                Log.e(TAG, "查询报错----" + e.getMessage());
+        }
     }
 
     private void initTipTv() {

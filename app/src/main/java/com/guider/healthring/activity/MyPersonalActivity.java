@@ -336,7 +336,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         };
 
 
-        AndPermission.with(MyPersonalActivity.this)
+        AndPermission.with(mContext)
                 .runtime()
                 .permission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .onGranted(data -> {
@@ -427,7 +427,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         chooseImgForUserHead(); //选择图片来源
                     } else {
-                        AndPermission.with(MyPersonalActivity.this)
+                        AndPermission.with(mContext)
                                 .runtime()
                                 .permission(Manifest.permission.CAMERA,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE)

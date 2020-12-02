@@ -203,7 +203,7 @@ public class W30SReminderActivity extends WatchBaseActivity
                 if (!AndPermission.hasPermissions(W30SReminderActivity.this, new String[]{
 //                        Manifest.permission.READ_SMS,
                         Manifest.permission.READ_CONTACTS})) {
-                    AndPermission.with(W30SReminderActivity.this)
+                    AndPermission.with(mContext)
                             .runtime()
                             .permission(
 //                                    Manifest.permission.READ_SMS,
@@ -214,7 +214,7 @@ public class W30SReminderActivity extends WatchBaseActivity
                 break;
             case R.id.switch_Phone:     //来电
                 if (!AndPermission.hasPermissions(W30SReminderActivity.this, new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE})) {
-                    AndPermission.with(W30SReminderActivity.this)
+                    AndPermission.with(mContext)
                             .runtime()
                             .permission(Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CONTACTS)
                             .rationale(new Rationale<List<String>>() {

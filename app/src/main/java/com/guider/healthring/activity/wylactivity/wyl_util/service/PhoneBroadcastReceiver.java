@@ -1,6 +1,7 @@
 package com.guider.healthring.activity.wylactivity.wyl_util.service;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -43,7 +44,7 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 
 
     String phoneNumber = "";
-    private String bleName ;
+    private String bleName;
 
     public PhoneBroadcastReceiver() {
         super();
@@ -64,7 +65,7 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
         if (action == null)
             return;
         //未连接设备的状态
-        if(MyCommandManager.DEVICENAME == null)
+        if (MyCommandManager.DEVICENAME == null)
             return;
         //呼入电话
         if (action.equals(TelephonyManager.ACTION_PHONE_STATE_CHANGED) || action.equals("android.intent.action.PHONE_STATE")) {
@@ -102,7 +103,7 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
 
                     //维亿魄系列
                     if (WatchUtils.isVPBleDevice(bleName)) {   //B30手环
-                        sendPhoneAlertData(phoneNumber, "B30");
+                        sendPhoneAlertData(phoneNumber, "B30", context);
                     }
                 }
 
@@ -121,13 +122,15 @@ public class PhoneBroadcastReceiver extends BroadcastReceiver {
     }
 
     // 发送电话号码
-    private void sendPhoneAlertData(String phoneNumber, String tag) {
+    @SuppressLint("WrongConstant")
+    private void sendPhoneAlertData(String phoneNumber, String tag, Context context) {
         if (BuildConfig.GOOGLEPLAY)
             getPhoneContacts(phoneNumber, tag);
         else {
             //判断是否有读取联系人和通讯录的权限
-            if (!AndPermission.hasPermissions(MyApp.getContext(), Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG)) {
-                AndPermission.with(MyApp.getContext()).runtime().permission(Manifest.permission.READ_CONTACTS,
+            if (!AndPermission.hasPermissions(context,
+                    Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG)) {
+                AndPermission.with(context).runtime().permission(Manifest.permission.READ_CONTACTS,
                         Manifest.permission.READ_CALL_LOG).start();
             } else {
                 getPhoneContacts(phoneNumber, tag);

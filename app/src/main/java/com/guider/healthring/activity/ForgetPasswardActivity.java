@@ -4,10 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import com.google.android.material.textfield.TextInputLayout;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,32 +13,34 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.guider.healthring.Commont;
+import com.guider.health.apilib.ApiCallBack;
+import com.guider.health.apilib.ApiUtil;
+import com.guider.health.apilib.IGuiderApi;
+import com.guider.health.apilib.model.ChangeWithBanPasswordBean;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.base.BaseActivity;
 import com.guider.healthring.bean.AreCodeBean;
-import com.guider.healthring.rxandroid.DialogSubscriber;
-import com.guider.healthring.rxandroid.SubscriberOnNextListener;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Md5Util;
 import com.guider.healthring.util.ToastUtil;
-import com.guider.healthring.util.URLs;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 
-import org.apache.commons.lang.StringUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import cn.smssdk.SMSSDK;
+import retrofit2.Call;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -53,7 +52,7 @@ import rx.functions.Func1;
  */
 
 public class ForgetPasswardActivity extends BaseActivity
-        implements RequestView,View.OnClickListener {
+        implements RequestView, View.OnClickListener {
 
     TextView tvTitle;
     //区号
@@ -62,17 +61,14 @@ public class ForgetPasswardActivity extends BaseActivity
     EditText username;//用户名
     EditText password;//密码
     Button sendBtn;//发送按钮
-    EditText yuanzhengma;//验证码
+    EditText codeEdit;//验证码
     TextInputLayout textInputLayoutname;
     TextView forget_pwd_user_text;
     TextView forget_pwd_email_text;
     View forget_pwd_user_line;
     View forget_pwd_email_line;
 
-    private JSONObject jsonObject;
-    private DialogSubscriber dialogSubscriber;
     private Subscriber subscriber;
-    private SubscriberOnNextListener<String> subscriberOnNextListener;
 
     /**
      * true_邮箱找回 false_手机找回
@@ -118,36 +114,6 @@ public class ForgetPasswardActivity extends BaseActivity
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
 
-        subscriberOnNextListener = result -> {
-            //Loaddialog.getInstance().dissLoading();
-            try {
-                if (WatchUtils.isEmpty(result)) return;
-                Log.e("======", result);
-                JSONObject jsonObject = new JSONObject(result);
-                String loginResult = jsonObject.getString("resultCode");
-                if ("001".equals(loginResult)) {
-                    Toast.makeText(ForgetPasswardActivity.this,
-                            getResources().getString(R.string.change_password),
-                            Toast.LENGTH_SHORT).show();
-              /*      BlueUser userInfo = gson.fromJson(jsonObject.getString("userInfo").toString(), BlueUser.class);
-                    MyLogUtil.i("msg", "-userInfo-" + userInfo.toString());
-                    B18iCommon.userInfo = userInfo;
-                    B18iCommon.customer_id = userInfo.getUserId();
-                    MobclickAgent.onProfileSignIn(B18iCommon.customer_id);
-                    String pass = password.getText().toString();
-                    String usernametxt = username.getText().toString();
-                    userInfo.setPassword(Md5Util.Md532(pass));
-
-
-                    MyApp.getApplication().getDaoSession().getBlueUserDao().insertOrReplace(userInfo);
-                    SharedPreferencesUtils.setParam(ForgetPasswardActivity.this, SharedPreferencesUtils.CUSTOMER_ID, B18iCommon.customer_id);
-                    SharedPreferencesUtils.setParam(ForgetPasswardActivity.this, SharedPreferencesUtils.CUSTOMER_PASSWORD, pass);*/
-                    finish();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        };
     }
 
     private void initViewIds() {
@@ -157,7 +123,7 @@ public class ForgetPasswardActivity extends BaseActivity
         username = findViewById(R.id.username_forget);
         password = findViewById(R.id.password_forget);
         sendBtn = findViewById(R.id.send_btn_forget);
-        yuanzhengma = findViewById(R.id.code_et_forget);
+        codeEdit = findViewById(R.id.code_et_forget);
         textInputLayoutname = findViewById(R.id.username_input_forget);
         forget_pwd_user_text = findViewById(R.id.forget_pwd_user_text);
         forget_pwd_email_text = findViewById(R.id.forget_pwd_email_text);
@@ -173,31 +139,30 @@ public class ForgetPasswardActivity extends BaseActivity
     private void initData() {
         colorBlue = ContextCompat.getColor(this, R.color.new_colorAccent);
         colorBlack = ContextCompat.getColor(this, R.color.black_9);
-        leftDrawable = getResources().getDrawable(R.mipmap.yonghuming_dianji);
+        leftDrawable = ContextCompat.getDrawable(this, R.mipmap.yonghuming_dianji);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.send_btn_forget:  //获取验证码
                 String phoneStr = username.getText().toString();
-                if(WatchUtils.isEmpty(phoneStr))
+                if (WatchUtils.isEmpty(phoneStr))
                     return;
-                initTime();
                 getPhoneVerCode(phoneStr);
                 break;
             case R.id.login_btn__forget:    //提交
-
                 String phoneStr2 = username.getText().toString();    //手机号
                 String pwdStr = password.getText().toString();  //密码
-                String verCodeStr = yuanzhengma.getText().toString();   //验证码
-                if(WatchUtils.isEmpty(phoneStr2) || WatchUtils.isEmpty(pwdStr) || WatchUtils.isEmpty(verCodeStr))
+                String verCodeStr = codeEdit.getText().toString();   //验证码
+                if (WatchUtils.isEmpty(phoneStr2) || WatchUtils.isEmpty(pwdStr) || WatchUtils.isEmpty(verCodeStr))
                     return;
-                if(pwdStr.length()<6){
-                    ToastUtil.showToast(ForgetPasswardActivity.this,getResources().getString(R.string.not_b_less));
+                if (pwdStr.length() < 6) {
+                    ToastUtil.showToast(ForgetPasswardActivity.this, getResources().getString(R.string.not_b_less));
                     return;
                 }
-                submitUpdatePwd(phoneStr2,pwdStr,verCodeStr);
+                submitUpdatePwd(phoneStr2, pwdStr, verCodeStr);
 
                 break;
             case R.id.tv_phone_head:    //选择区号
@@ -214,29 +179,89 @@ public class ForgetPasswardActivity extends BaseActivity
 
     //提交
     private void submitUpdatePwd(String phoneStr2, String pwdStr, String verCodeStr) {
-        //提交
-        if(requestPressent != null){
-            String subUrl = Commont.FRIEND_BASE_URL + URLs.SUB_GET_BACK_PWD_URL;
-            Map<String,String> maps = new HashMap<>();
-            maps.put("phone",phoneStr2);
-            maps.put("code",verCodeStr);
-            maps.put("pwd",Md5Util.Md532(pwdStr));
-            requestPressent.getRequestJSONObject(0x02,subUrl,
-                    ForgetPasswardActivity.this,new Gson().toJson(maps),2);
-        }
+//        //提交
+//        if (requestPressent != null) {
+//            String subUrl = Commont.FRIEND_BASE_URL + URLs.SUB_GET_BACK_PWD_URL;
+//            Map<String, String> maps = new HashMap<>();
+//            maps.put("phone", phoneStr2);
+//            maps.put("code", verCodeStr);
+//            maps.put("pwd", Md5Util.Md532(pwdStr));
+//            requestPressent.getRequestJSONObject(0x02, subUrl,
+//                    ForgetPasswardActivity.this, new Gson().toJson(maps), 2);
+//        }
+        showLoadingDialog("");
+        String pCode = tv_phone_head.getText().toString();
+        String replace = pCode.replace("+", "");
+        ApiUtil.createApi(IGuiderApi.class, false)
+                .verifyLineCode(replace, phoneStr2, verCodeStr)
+                .enqueue(new ApiCallBack<String>() {
+                    @Override
+                    public void onApiResponse(Call<String> call, Response<String> response) {
+                        if (response.body() != null && response.body().equals("true")) {
+                            forgotPassword(phoneStr2, replace, pwdStr);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        super.onFailure(call, t);
+                        closeLoadingDialog();
+                    }
+                });
+    }
+
+    private void forgotPassword(String phoneStr2, String countryCode, String pwdStr) {
+        String pass = Md5Util.Md532(pwdStr);
+        ApiUtil.createApi(IGuiderApi.class, false)
+                .changeWithBackupPassword(countryCode, phoneStr2, pass, "")
+                .enqueue(new ApiCallBack<ChangeWithBanPasswordBean>() {
+                    @Override
+                    public void onApiResponse(Call<ChangeWithBanPasswordBean> call,
+                                              Response<ChangeWithBanPasswordBean> response) {
+                        if (response.body() != null) {
+                            ToastUtil.showToast(ForgetPasswardActivity.this,
+                                    ForgetPasswardActivity.this.getResources()
+                                            .getString(R.string.change_password));
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onRequestFinish() {
+                        super.onRequestFinish();
+                        closeLoadingDialog();
+                    }
+                });
     }
 
 
     //获取验证码
     private void getPhoneVerCode(String phoneStr) {
-        String pCode = tv_phone_head.getText().toString();
-        if(requestPressent != null){
-            String url = Commont.FRIEND_BASE_URL + URLs.GET_BACK_PWD_PHOE_CODE_URL;
-            Map<String,String> mps = new HashMap<>();
-            mps.put("phone",WatchUtils.removeStr(phoneStr));
-            mps.put("code",StringUtils.substringAfter(pCode,"+"));
-            requestPressent.getRequestJSONObject(0x01,url,ForgetPasswardActivity.this,new Gson().toJson(mps),1);
-        }
+//        String pCode = tv_phone_head.getText().toString();
+//        if(requestPressent != null){
+//            String url = Commont.FRIEND_BASE_URL + URLs.GET_BACK_PWD_PHOE_CODE_URL;
+//            Map<String,String> mps = new HashMap<>();
+//            mps.put("phone",WatchUtils.removeStr(phoneStr));
+//            mps.put("code",StringUtils.substringAfter(pCode,"+"));
+//            requestPressent.getRequestJSONObject(0x01,url,ForgetPasswardActivity.this,new Gson().toJson(mps),1);
+//        }
+        showLoadingDialog("");
+        ApiUtil.createApi(IGuiderApi.class, false)
+                .sendLineCode(phoneStr)
+                .enqueue(new ApiCallBack<String>() {
+                    @Override
+                    public void onApiResponse(Call<String> call, Response<String> response) {
+                        if (response.body() != null && response.body().equals("true")) {
+                            initTime();
+                        }
+                    }
+
+                    @Override
+                    public void onRequestFinish() {
+                        super.onRequestFinish();
+                        closeLoadingDialog();
+                    }
+                });
     }
 
     //选择区号
@@ -403,12 +428,9 @@ public class ForgetPasswardActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-        if(requestPressent != null)
+        if (requestPressent != null)
             requestPressent.detach();
     }
-
-
-
 
     @Override
     public void showLoadDialog(int what) {
@@ -417,24 +439,24 @@ public class ForgetPasswardActivity extends BaseActivity
 
     @Override
     public void successData(int what, Object object, int daystag) {
-        if(object == null)
+        if (object == null)
             return;
         try {
             JSONObject jsonObject = new JSONObject(object.toString());
             int code = jsonObject.getInt("code");
-            if(what == 0x01){   //获取手机号验证码
-                ToastUtil.showToast(ForgetPasswardActivity.this,jsonObject.getString("data"));
+            if (what == 0x01) {   //获取手机号验证码
+                ToastUtil.showToast(ForgetPasswardActivity.this, jsonObject.getString("data"));
             }
-            if(what == 0x02){
-                if(code == 200){   //提交成功
+            if (what == 0x02) {
+                if (code == 200) {   //提交成功
                     ToastUtil.showToast(ForgetPasswardActivity.this, getResources().getString(R.string.change_password));
                     finish();
-                }else{
-                    ToastUtil.showToast(ForgetPasswardActivity.this,jsonObject.getString("msg"));
+                } else {
+                    ToastUtil.showToast(ForgetPasswardActivity.this, jsonObject.getString("msg"));
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

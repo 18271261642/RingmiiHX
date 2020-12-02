@@ -173,7 +173,7 @@ public class PersonDataActivity extends WatchBaseActivity
 
         //请求打开相机的权限
 
-        AndPermission.with(PersonDataActivity.this)
+        AndPermission.with(mContext)
                 .runtime()
                 .permission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .onDenied(data -> {
@@ -242,7 +242,7 @@ public class PersonDataActivity extends WatchBaseActivity
 
     }
 
-    @SuppressLint({"WrongConstant", "NonConstantResourceId"})
+    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -251,7 +251,7 @@ public class PersonDataActivity extends WatchBaseActivity
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     chooseHeadImg();
                 } else {
-                    AndPermission.with(PersonDataActivity.this)
+                    AndPermission.with(mContext)
                             .runtime()
                             .permission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             .onGranted(data -> chooseHeadImg())

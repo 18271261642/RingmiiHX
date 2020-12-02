@@ -22,6 +22,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
+import com.guider.health.apilib.ApiCallBack;
+import com.guider.health.apilib.ApiUtil;
+import com.guider.health.apilib.IGuiderApi;
+import com.guider.health.apilib.model.UserInfo;
 import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
@@ -58,6 +62,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 
 /**
  * Created by Administrator on 2018/7/20.
@@ -66,7 +73,7 @@ import java.util.Objects;
 /**
  * B30 我的界面
  */
-public class B30MineFragment extends LazyFragment implements RequestView, View.OnClickListener {
+public class B30MineFragment extends LazyFragment implements View.OnClickListener {
     private static final String TAG = "B30MineFragment";
     View b30MineView;
 
@@ -136,21 +143,15 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
         if (getActivity() != null) {
             mLocalTool = new LocalizeTool(getActivity());
 //            readCustomSetting();// 读取手环的自定义配置(是否打开公制)
-
-            requestPressent = new RequestPressent();
-            requestPressent.attach(this);
-
-
+            getGadiDeUserInfoData();
             sportGoalList = new ArrayList<>();
             sleepGoalList = new ArrayList<>();
             for (int i = 1000; i <= 64000; i += 1000) {
                 sportGoalList.add(i + "");
             }
-
             for (int i = 1; i < 48; i++) {
                 sleepGoalList.add(WatchUtils.mul(Double.valueOf(i), 0.5) + "");
             }
-
             //显示运动目标和睡眠目标
             int b30SportGoal = (int) SharedPreferencesUtils.getParam(getActivity(), "b30Goal", 0);
             b30MineSportGoalTv.setText(b30SportGoal + "");
@@ -164,21 +165,25 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
 
     //获取盖德的用户信息
     private void getGadiDeUserInfoData() {
-        try {
-            long accountId = (long) SharedPreferencesUtils.getParam(
-                    Objects.requireNonNull(getContext()), "accountIdGD", 0L);
-            if (accountId == 0)
-                return;
-            // http://api.guiderhealth.com/
-            Log.e("登录的userId",accountId+"");
-            String guiderUrl = com.guider.health.apilib.BuildConfig.APIURL + "api/v1/userinfo?accountId=" + accountId;
-            if (requestPressent != null) {
-                requestPressent.getRequestJSONObjectGet(11, guiderUrl, getContext(), 11);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        long accountId = 0;
+        if (SharedPreferencesUtils.getParam(
+                MyApp.context, "accountIdGD", 0L) != null) {
+            accountId = (long) SharedPreferencesUtils.getParam(
+                    MyApp.context, "accountIdGD", 0L);
         }
-
+        if (accountId == 0)
+            return;
+        Log.e("登录的userId", accountId + "");
+        ApiUtil.createApi(IGuiderApi.class, false)
+                .getUserInfo(String.valueOf(accountId))
+                .enqueue(new ApiCallBack<UserInfo>() {
+                    @Override
+                    public void onApiResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                        if (response.body() != null) {
+                            showGaideUserInfo(response.body());
+                        }
+                    }
+                });
     }
 
     private void initViews() {
@@ -211,21 +216,6 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
 
         }
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getGadiDeUserInfoData();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (requestPressent != null) {
-            requestPressent.detach();
-        }
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -405,11 +395,8 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
     }
 
 
-    private IBleWriteResponse iBleWriteResponse = new IBleWriteResponse() {
-        @Override
-        public void onResponse(int i) {
+    private IBleWriteResponse iBleWriteResponse = i -> {
 
-        }
     };
 
 
@@ -662,57 +649,17 @@ public class B30MineFragment extends LazyFragment implements RequestView, View.O
         });
     }
 
-    @Override
-    public void showLoadDialog(int what) {
-
-    }
-
-    @Override
-    public void successData(int what, Object object, int daystag) {
-        if (object == null)
-            return;
-        if (what == 11) {
-            showGaideUserInfo(object.toString());
+    private void showGaideUserInfo(UserInfo guiderUserInfo) {
+        //头像
+        //mineLogoIv
+        String hearUrl = guiderUserInfo.getHeadUrl();
+        if (hearUrl != null) {
+            RequestOptions mRequestOptions = RequestOptions.circleCropTransform();
+            Glide.with(this).load(hearUrl).apply(mRequestOptions).into(b30UserImageHead);//头像
         }
+        // 用户名
+        String name = guiderUserInfo.getName();
+        b30UserNameTv.setText(name);
     }
-
-    @Override
-    public void failedData(int what, Throwable e) {
-
-    }
-
-    @Override
-    public void closeLoadDialog(int what) {
-
-    }
-
-    private void showGaideUserInfo(String userStr) {
-        if (WatchUtils.isNetRequestSuccess(userStr, 0)) {
-            try {
-                JSONObject jsonObject = new JSONObject(userStr);
-                String dataStr = jsonObject.getString("data");
-                GuiderUserInfo guiderUserInfo = gson.fromJson(dataStr, GuiderUserInfo.class);
-                if (guiderUserInfo == null)
-                    return;
-
-                //头像
-                //mineLogoIv
-                String hearUrl = guiderUserInfo.getHeadUrl();
-                if (hearUrl != null) {
-                    RequestOptions mRequestOptions = RequestOptions.circleCropTransform();
-                    Glide.with(this).load(hearUrl).apply(mRequestOptions).into(b30UserImageHead);//头像
-                }
-                // 用户名
-                String name = guiderUserInfo.getName();
-                b30UserNameTv.setText(name);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
-    }
-
 
 }

@@ -226,7 +226,7 @@ public class W30SSettingActivity extends WatchBaseActivity implements  View.OnCl
                                         if(AndPermission.hasPermissions(W30SSettingActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                                             startActivity(NewW30sFirmwareUpgrade.class);
                                         }else{
-                                            AndPermission.with(W30SSettingActivity.this)
+                                            AndPermission.with(mContext)
                                                     .runtime()
                                                     .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                                     .onGranted(new Action<List<String>>() {
@@ -275,7 +275,7 @@ public class W30SSettingActivity extends WatchBaseActivity implements  View.OnCl
                     //startActivity(NewW30sCameraActivity.class);
                     startActivity(W30sCameraActivity.class);
                 }else{
-                    AndPermission.with(this)
+                    AndPermission.with(mContext)
                             .runtime()
                             .permission(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
                             .rationale(rationale)
@@ -505,7 +505,7 @@ public class W30SSettingActivity extends WatchBaseActivity implements  View.OnCl
     private Rationale rationale = new Rationale() {
         @Override
         public void showRationale(Context context, Object data, RequestExecutor executor) {
-            AndPermission.with(W30SSettingActivity.this).runtime().setting().start(1);
+            AndPermission.with(mContext).runtime().setting().start(1);
             executor.execute();
         }
     };

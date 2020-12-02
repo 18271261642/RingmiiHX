@@ -28,9 +28,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getContentViewId();
 
     private MyApp myApp;
-    private BaseActivity baseActivity;
+    public BaseActivity baseActivity;
 
-    private Dialog dialog; //进度条
+    private Dialog dialog; //进度条w
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -42,11 +42,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         setStatusBarColor();
         toolbar = findViewById(R.id.toolbar);
         setupToolbar();
+        baseActivity = this;
         initViews();
         if (myApp == null) {
             myApp = (MyApp) getApplication();
         }
-        baseActivity = this;
         addActivity();
     }
 

@@ -1075,8 +1075,8 @@
     <string name="submit_fail">Data submission failed</string>
     <string name="write_nickname">Please fill in the user name</string>
     <string name="new_dif_confirm">The new password is not consistent with the confirmation password</string>
-    <string name="forget_password">Forgotten password?</string>
-    <string name="send_code">Send verification code</string>
+    <string name="forget_password">Forgotten Password?</string>
+    <string name="send_code">Send Verification Code</string>
 
     <string name="yonghuzdffhej">Verification code error</string>
     <string name="yonghuzhej">The number has been registered, please change!</string>

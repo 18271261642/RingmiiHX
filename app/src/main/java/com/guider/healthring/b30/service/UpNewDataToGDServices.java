@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.guider.health.apilib.BuildConfig;
+import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.B18I.b18iutils.B18iUtils;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -53,6 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BREATH;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HEART;
@@ -964,64 +966,70 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
         //spo2
         if (!spo2hOriginDataList.isEmpty() && !oxyMapList.isEmpty()) {
-            Map<String, Object> spo2TempMap = new HashMap<>();
-            Spo2hOriginUtil spo2hOriginUtil = new Spo2hOriginUtil(spo2hOriginDataList);
-            //获取低氧数据[最大，最小，平均]       *参考：取低氧最大值，大于20，则显示偏高，其他显示正常
-            int[] onedayDataArrLowSpo2h = spo2hOriginUtil.getOnedayDataArr(TYPE_LOWSPO2H);
-            //获取呼吸率数据[最大，最小，平均]     *参考：取呼吸率最大值，低于18，则显示偏低，其他显示正常
-            int[] onedayDataArrLowBreath = spo2hOriginUtil.getOnedayDataArr(TYPE_BREATH);
-            //获取睡眠数据[最大，最小，平均]       *参考：取睡眠活动荷最大值，大于70，则显示偏高，其他显示正常
-            int[] onedayDataArrSleep = spo2hOriginUtil.getOnedayDataArr(TYPE_SLEEP);
-            //获取心脏负荷数据[最大，最小，平均]   *参考：取心脏负荷最大值，大于40，则显示偏高，其他显示正常
-            int[] onedayDataArrHeart = spo2hOriginUtil.getOnedayDataArr(TYPE_HEART);
-            //获取血氧数据[最大，最小，平均]       *参考：取血氧最小值，低于95，则显示偏低，其他显示正常
-            int[] onedayDataArrSpo2h = spo2hOriginUtil.getOnedayDataArr(TYPE_SPO2H);
+            try{
+                Map<String, Object> spo2TempMap = new HashMap<>();
+                Spo2hOriginUtil spo2hOriginUtil = new Spo2hOriginUtil(spo2hOriginDataList);
+                //获取低氧数据[最大，最小，平均]       *参考：取低氧最大值，大于20，则显示偏高，其他显示正常
+                int[] onedayDataArrLowSpo2h = spo2hOriginUtil.getOnedayDataArr(TYPE_LOWSPO2H);
+                //获取呼吸率数据[最大，最小，平均]     *参考：取呼吸率最大值，低于18，则显示偏低，其他显示正常
+                int[] onedayDataArrLowBreath = spo2hOriginUtil.getOnedayDataArr(TYPE_BREATH);
+                //获取睡眠数据[最大，最小，平均]       *参考：取睡眠活动荷最大值，大于70，则显示偏高，其他显示正常
+                int[] onedayDataArrSleep = spo2hOriginUtil.getOnedayDataArr(TYPE_SLEEP);
+                //获取心脏负荷数据[最大，最小，平均]   *参考：取心脏负荷最大值，大于40，则显示偏高，其他显示正常
+                int[] onedayDataArrHeart = spo2hOriginUtil.getOnedayDataArr(TYPE_HEART);
+                //获取血氧数据[最大，最小，平均]       *参考：取血氧最小值，低于95，则显示偏低，其他显示正常
+                int[] onedayDataArrSpo2h = spo2hOriginUtil.getOnedayDataArr(TYPE_SPO2H);
 
 
-            //呼吸暂停
-            List<Map<String, Float>> rateStopList = spo2hOriginUtil.getApneaList();
-            DecimalFormat decimalFormat = new DecimalFormat("#");    //保留两位小数
+                //呼吸暂停
+                List<Map<String, Float>> rateStopList = spo2hOriginUtil.getApneaList();
+                DecimalFormat decimalFormat = new DecimalFormat("#");    //保留两位小数
 
 
-            for (Map<String, Float> stopMap : rateStopList) {
-                Log.e(TAG, "------stopMap=" + stopMap.toString());
-            }
-
-            List<Map<String, Object>> rateMapList = new ArrayList<>();
-
-            for (Map<String, Float> mp : rateStopList) {
-                float timeStr = mp.get("time");
-                float valueStr = mp.get("value");
-                Log.e(TAG, "-=----timeStr=" + timeStr + "--=" + valueStr + "--=" + (timeStr != 0));
-                if (valueStr != 0) {
-                    int timeInt = (int) timeStr;
-
-                    //小时
-                    int hour = (int) Math.floor(timeInt / 60);
-                    //分钟
-                    int mine = timeInt % 60;
-
-                    Map<String, Object> timeMap = new HashMap<>();
-                    timeMap.put("time", "0" + hour + ":" + (mine == 0 ? "0" + mine : mine));
-                    timeMap.put("value", valueStr + "");
-                    Log.e(TAG, "-----timeMap=" + timeMap.toString());
-                    rateMapList.add(timeMap);
+                for (Map<String, Float> stopMap : rateStopList) {
+                    Log.e(TAG, "------stopMap=" + stopMap.toString());
                 }
+
+                List<Map<String, Object>> rateMapList = new ArrayList<>();
+
+                for (Map<String, Float> mp : rateStopList) {
+                    float timeStr = mp.get("time");
+                    float valueStr = mp.get("value");
+                    Log.e(TAG, "-=----timeStr=" + timeStr + "--=" + valueStr + "--=" + (timeStr != 0));
+                    if (valueStr != 0) {
+                        int timeInt = (int) timeStr;
+
+                        //小时
+                        int hour = (int) Math.floor(timeInt / 60);
+                        //分钟
+                        int mine = timeInt % 60;
+
+                        Map<String, Object> timeMap = new HashMap<>();
+                        timeMap.put("time", "0" + hour + ":" + (mine == 0 ? "0" + mine : mine));
+                        timeMap.put("value", valueStr + "");
+                        Log.e(TAG, "-----timeMap=" + timeMap.toString());
+                        rateMapList.add(timeMap);
+                    }
+                }
+
+
+                int osahs = spo2hOriginUtil.getIsHypoxia();
+                Log.e(TAG, "---osahs=" + osahs);
+                spo2TempMap.put("OSAHS", osahs);
+                spo2TempMap.put("onedayDataArrLowSpo2h", onedayDataArrLowSpo2h);
+                spo2TempMap.put("onedayDataArrLowBreath", onedayDataArrLowBreath);
+                spo2TempMap.put("onedayDataArrSleep", onedayDataArrSleep);
+                spo2TempMap.put("onedayDataArrHeart", onedayDataArrHeart);
+                spo2TempMap.put("onedayDataArrSpo2h", onedayDataArrSpo2h);
+                spo2TempMap.put("tmpLt", rateMapList);
+                spo2TempMap.put("data", oxyMapList);//oxyMapList
+
+                allResultMap.put("spo2", spo2TempMap);
+            }catch (Exception e){
+                e.printStackTrace();
+                if (!StringUtil.isEmpty(e.getMessage()))
+                    Log.e(TAG, "查询报错----" + e.getMessage());
             }
-
-
-            int osahs = spo2hOriginUtil.getIsHypoxia();
-            Log.e(TAG, "---osahs=" + osahs);
-            spo2TempMap.put("OSAHS", osahs);
-            spo2TempMap.put("onedayDataArrLowSpo2h", onedayDataArrLowSpo2h);
-            spo2TempMap.put("onedayDataArrLowBreath", onedayDataArrLowBreath);
-            spo2TempMap.put("onedayDataArrSleep", onedayDataArrSleep);
-            spo2TempMap.put("onedayDataArrHeart", onedayDataArrHeart);
-            spo2TempMap.put("onedayDataArrSpo2h", onedayDataArrSpo2h);
-            spo2TempMap.put("tmpLt", rateMapList);
-            spo2TempMap.put("data", oxyMapList);//oxyMapList
-
-            allResultMap.put("spo2", spo2TempMap);
         } else {
             allResultMap.put("spo2", "");
         }
