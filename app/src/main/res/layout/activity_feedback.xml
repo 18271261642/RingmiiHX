@@ -57,13 +57,14 @@
             android:id="@+id/leave_phone_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/size_15"
+            android:layout_margin="@dimen/dp_15"
             android:background="@null"
+            android:ellipsize="end"
             android:hint="@string/leave_phone"
-            android:inputType="textMultiLine"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/sp_15" />
 
     </androidx.cardview.widget.CardView>
 

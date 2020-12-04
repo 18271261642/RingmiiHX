@@ -287,4 +287,6 @@
     <string name="addPicToAlbum">添加圖片到圖庫成功</string>
     <string name="app_line_code_hint">請輸入從LINE收到的驗證碼</string>
     <string name="app_permission_notification_ring">獲取手環通知提醒需要開啓相關權限</string>
+    <string name="app_send_email_hint">此郵件來自 %sApp 用戶反饋</string>
+    <string name="app_user_feedback">用戶反饋</string>
 </resources>

@@ -747,11 +747,11 @@ public class LoginActivity extends WatchBaseActivity
                         if (StringUtil.isEmpty(bandPwd)) {
                             backupPassword(accountValue);
                         } else {
+                            hideLoadingDialog();
                             toNextEvent(accountId);
                         }
                     }
-                }
-
+                } else hideLoadingDialog();
             } else {
                 //密码错误,进行二次校验
                 if (code == 5001 && !passwordIsInit) {
@@ -763,6 +763,7 @@ public class LoginActivity extends WatchBaseActivity
                     } else {
                         ToastUtil.showToast(this, getResources()
                                 .getString(R.string.string_login_toast));
+                        hideLoadingDialog();
                     }
                 } else {
                     if (bandPwd.equals("changPassword")) {

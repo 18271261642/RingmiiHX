@@ -58,4 +58,6 @@
     <string name="addPicToAlbum">添加图片到图库成功</string>
     <string name="app_line_code_hint">请输入从LINE收到的验证码</string>
     <string name="app_permission_notification_ring">获取手环通知提醒需要开启相关权限</string>
+    <string name="app_send_email_hint">此邮件来自 %sApp 用户反馈</string>
+    <string name="app_user_feedback">用户反馈</string>
 </resources>

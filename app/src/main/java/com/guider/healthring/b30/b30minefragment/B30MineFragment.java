@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.guider.health.apilib.ApiCallBack;
@@ -38,7 +37,6 @@ import com.guider.healthring.b30.B30SysSettingActivity;
 import com.guider.healthring.b30.bean.BaseResultVoNew;
 import com.guider.healthring.b31.BemoSwitchActivity;
 import com.guider.healthring.b31.bpoxy.ReadHRVSoDataForDevices;
-import com.guider.healthring.bean.GuiderUserInfo;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.LazyFragment;
 import com.guider.healthring.siswatch.NewSearchActivity;
@@ -49,7 +47,6 @@ import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
-import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.guider.libbase.activity.WebviewActivity;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.ICustomSettingDataListener;
@@ -57,10 +54,7 @@ import com.veepoo.protocol.model.enums.EFunctionStatus;
 import com.veepoo.protocol.model.settings.CustomSetting;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -273,21 +267,22 @@ public class B30MineFragment extends LazyFragment implements View.OnClickListene
             case R.id.bemoRel:
                 startActivity(new Intent(getActivity(), BemoSwitchActivity.class));
             case R.id.rl_family: // 我的家人 https://app.guiderhealth.com/
-                startWebviewActivity(BuildConfig.WEBDOMAIN + "#/family");
+                startWebViewActivity(BuildConfig.WEBDOMAIN + "#/family");
                 break;
             case R.id.rl_sos: // https://app.guiderhealth.com/
-                startWebviewActivity(BuildConfig.WEBDOMAIN + "#/friend/sos");
+                startWebViewActivity(BuildConfig.WEBDOMAIN + "#/friend/sos");
                 break;
         }
     }
 
 
-    private void startWebviewActivity(String url) {
+    @SuppressLint("DefaultLocale")
+    private void startWebViewActivity(String url) {
         long accountId = (long) SharedPreferencesUtils.getParam(getContext(), "accountIdGD", 0L);
         String token = (String) SharedPreferencesUtils.getParam(getContext(), "tokenGD", "1");
         Intent intent = new Intent(getContext(), WebviewActivity.class);
-        intent.putExtra("url", String.format("%s?accountId=%d&token=%s", url, accountId, token));
-        Log.i(TAG, "startWebviewActivity url :" + url);
+        intent.putExtra("url", url + "?accountId=" + accountId + "&token=" + token);
+        Log.i(TAG, "Web url :" + url);
         startActivity(intent);
     }
 

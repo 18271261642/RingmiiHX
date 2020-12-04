@@ -342,4 +342,6 @@
     <string name="addPicToAlbum">Add image to gallery successfully</string>
     <string name="app_line_code_hint">Please enter the verification code you received from LINE</string>
     <string name="app_permission_notification_ring">Permissions need to be enabled to get bracelet notifications</string>
+    <string name="app_send_email_hint">This email is from %s App User feedback</string>
+    <string name="app_user_feedback">User feedback</string>
 </resources>
