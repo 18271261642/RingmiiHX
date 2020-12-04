@@ -40,7 +40,6 @@ android {
             keyPassword "GuiderHealth.com"
             storeFile file("./guider.jks")
             v1SigningEnabled true
-
             v2SigningEnabled true
         }
     }

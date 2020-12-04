@@ -55,6 +55,8 @@
     <string name="app_main_send_fail">发送失败</string>
     <string name="app_main_location_send_fail">发送失败，设备可能处于离线状态</string>
     <string name="app_main_map_location_permission_hint">使用地图服务需要定位权限</string>
+    <string name="app_location_permission">位置</string>
+    <string name="app_camera_permission">相机</string>
     <string name="app_main_map_permission_error">获取定位失败，无法实现定位服务</string>
     <string name="app_main_medicine_suggest_hint">%s 建议:</string>
     <string name="app_main_medicine_manual_measuring">手动测量</string>
@@ -136,8 +138,6 @@
     <string name="app_person_info_district_information">地区信息</string>
     <string name="app_person_info_street_information">街道门牌信息</string>
     <string name="app_please_select">请选择</string>
-    <string name="app_confirm">确定</string>
-    <string name="app_cancel">取消</string>
     <string name="app_select_date">选择日期</string>
     <string name="app_map_location_method_content">%s 定位</string>
     <string name="app_map_track_time_hour">近%dh</string>
@@ -149,6 +149,7 @@
     <string name="app_login_register_now">立即注册</string>
     <string name="app_login_no_account">还没有账号？</string>
     <string name="app_login_tourists_mode">游客模式</string>
+    <string name="app_tourists">游客</string>
     <string name="app_login_to_sing_agree">点击登录即表示同意</string>
     <string name="app_login_user_service_agreement">用户服务协议</string>
     <string name="app_login_privacy_policy_clause">隐私政策条款</string>
@@ -253,10 +254,11 @@
     <string name="app_please_entry_new_password">请输入新密码</string>
     <string name="app_please_entry_new_password_again">请再次输入新密码</string>
     <string name="app_forgot_password_success">密码重置成功，请重新登录</string>
-    <string name="app_third_account_bind">第三方账号绑定</string>
     <string name="app_account_bind">账号绑定</string>
     <string name="app_bind">绑定</string>
     <string name="app_unbind">解绑</string>
     <string name="app_search_person_mode_title">寻人模式的定位频率为5分钟/次，且手环在此模式中功耗增大。</string>
     <string name="app_search_person_mode_content">确认是否切换为“寻人模式”？</string>
+    <string name="app_phone_state_permission">手机信息</string>
+    <string name="app_line_account_error_hint">此LINE账号已被其他账号绑定，请关联其他账号</string>
 </resources>

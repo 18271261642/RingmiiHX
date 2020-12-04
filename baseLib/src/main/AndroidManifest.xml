@@ -12,7 +12,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--android10开始不能通过此权限获取IMEI-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
         android:usesCleartextTraffic="true"
         android:resizeableActivity="false"

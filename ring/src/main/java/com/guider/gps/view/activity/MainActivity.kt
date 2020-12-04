@@ -30,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
+import com.guider.baselib.utils.EventBusAction.REFRESH_CURRENT_LOGIN_ACCOUNT_INFO
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
@@ -75,7 +76,7 @@ class MainActivity : BaseActivity() {
     private var latestSystemMsgTime = ""
     private var dialogTagList = arrayListOf<String>()
     private var editDialog: DialogHolder? = null
-    private var toursitsModeRegisterDialog: DialogHolder? = null
+    private var touristsModeRegisterDialog: DialogHolder? = null
     private var isHaveNewMsg = false
 
     override fun initImmersion() {
@@ -401,6 +402,10 @@ class MainActivity : BaseActivity() {
                 bindListBean?.userInfos?.forEach {
                     if (it.accountId == accountId) {
                         it.relationShip = it.name
+                        if (StringUtil.isNotBlankAndEmpty(it.headUrl))
+                            MMKVUtil.saveString(USER.HEADER, it.headUrl!!)
+                        if (StringUtil.isNotBlankAndEmpty(it.relationShip))
+                            MMKVUtil.saveString(USER.NAME, it.relationShip!!)
                         return@breaking
                     }
                 }
@@ -460,6 +465,12 @@ class MainActivity : BaseActivity() {
                         bindListBean?.userInfos?.forEach {
                             if (it.accountId == accountId) {
                                 it.relationShip = it.name
+                                if (StringUtil.isNotBlankAndEmpty(it.headUrl))
+                                    MMKVUtil.saveString(USER.HEADER, it.headUrl!!)
+                                if (StringUtil.isNotBlankAndEmpty(it.relationShip))
+                                    MMKVUtil.saveString(USER.NAME, it.relationShip!!)
+                                EventBusUtils.sendEvent(EventBusEvent(
+                                        REFRESH_CURRENT_LOGIN_ACCOUNT_INFO, true))
                                 //当前登录账号的设备号为空
                                 if (StringUtil.isEmpty(it.deviceCode)) {
                                     CommonUtils.logOutClearMMKV()
@@ -469,6 +480,12 @@ class MainActivity : BaseActivity() {
                                     startActivity(intent)
                                     finish()
                                     return@resultParse
+                                }
+                                //多加一层验证是否是游客模式
+                                if (StringUtil.isNotBlankAndEmpty(it.phone)
+                                        && !it.phone!!.contains("vis")) {
+                                    //说明已经是非游客，已经注册了账号
+                                    MMKVUtil.saveBoolean(TOURISTS_MODE, false)
                                 }
                                 return@breaking
                             }
@@ -488,8 +505,9 @@ class MainActivity : BaseActivity() {
                                 pageTitle = bindDeviceList[i].relationShip!!
                                 MMKVUtil.saveString(BIND_DEVICE_NAME,
                                         bindDeviceList[i].relationShip!!)
-                                setTitle(pageTitle,
-                                        CommonUtils.getColor(mContext!!, R.color.white))
+                                if (homeViewPager.currentItem != 3)
+                                    setTitle(pageTitle,
+                                            CommonUtils.getColor(mContext!!, R.color.white))
                             }
                             break@breaking
                         }
@@ -826,14 +844,14 @@ class MainActivity : BaseActivity() {
      * 游客登录的操作
      */
     fun touristsEvent() {
-        toursitsModeRegisterDialog = TouristsEventUtil.generateTouristsDialog(
+        touristsModeRegisterDialog = TouristsEventUtil.generateTouristsDialog(
                 this, R.layout.dialog_tourists_mode) {
-            //进入注册页面完成账户注册
-            val intent = Intent(mContext, RegisterActivity::class.java)
-            startActivityForResult(intent, REGISTER)
+            //进入账户绑定页面
+            val intent = Intent(mContext, AccountBindActivity::class.java)
+            startActivityForResult(intent, ACCOUNT_BIND)
         }
-        toursitsModeRegisterDialog?.initView()
-        toursitsModeRegisterDialog?.show(true)
+        touristsModeRegisterDialog?.initView()
+        touristsModeRegisterDialog?.show(true)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -861,10 +879,9 @@ class MainActivity : BaseActivity() {
                     }
                     getBindDeviceList()
                 }
-                REGISTER -> {
-                    Log.i(TAG, "游客注册成功，重新刷新数据")
-                    bindListBean = null
-                    getBindDeviceList()
+                ACCOUNT_BIND -> {
+                    Log.i(TAG, "游客绑定手机账号成功，重新刷新数据")
+                    getLatestGroupData(true)
                 }
             }
         }
@@ -1020,6 +1037,10 @@ class MainActivity : BaseActivity() {
         if (editDialog != null) {
             editDialog?.closeDialog()
             editDialog = null
+        }
+        if (touristsModeRegisterDialog != null) {
+            touristsModeRegisterDialog?.closeDialog()
+            touristsModeRegisterDialog = null
         }
     }
 

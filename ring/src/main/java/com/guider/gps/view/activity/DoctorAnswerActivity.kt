@@ -25,9 +25,9 @@ import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.AnswerListAdapter
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.AnswerListBean
 import com.guider.health.apilib.enums.AnswerMsgType
+import com.guider.health.apilib.utils.MMKVUtil
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
@@ -355,7 +355,10 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     private fun requestPhonePermission() {
         val perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-        PermissionUtils.requestPermissionActivity(this, perms, "照相机权限", {
+        PermissionUtils.requestPermissionActivity(this, perms,
+                mContext!!.resources.getString(R.string.app_camera_permission),
+                mContext!!.resources.getString(
+                        R.string.app_request_permission_camera), {
             doThings()
         }, {
             ToastUtil.show(mContext!!,

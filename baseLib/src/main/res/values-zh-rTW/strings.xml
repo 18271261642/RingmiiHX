@@ -1449,4 +1449,9 @@
     <string name="app_data_request_error">數據請求錯誤</string>
     <string name="app_hint">提示</string>
     <string name="app_watch">查看</string>
+    <string name="app_refuse_hint_permission">您已經拒絕%s權限，要使用需要去設置中開啓</string>
+    <string name="app_confirm">確定</string>
+    <string name="app_cancel">取消</string>
+    <string name="app_allow">允許</string>
+    <string name="app_deny">拒絕</string>
 </resources>

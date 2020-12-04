@@ -153,7 +153,7 @@ class CompleteInfoActivity : BaseActivity() {
 
     private fun registerEvent(headerUrl: String) {
         val map = hashMapOf<String, Any>()
-        map["passwd"] = passwordValue
+        map["passwd"] = MyUtils.md5(passwordValue)
         map["phone"] = phoneValue
         map["telAreaCode"] = countryCode
         map["headUrl"] = headerUrl
@@ -211,23 +211,28 @@ class CompleteInfoActivity : BaseActivity() {
         var monthInt = timeValue.substring(
                 timeValue.indexOf('-') + 1,
                 timeValue.lastIndexOf('-')).toInt()
+        var isChange = false
         val dialog = object : DialogHolder(this,
                 R.layout.dialog_persondate_bottom_layout, Gravity.BOTTOM) {
             override fun bindView(dialogView: View) {
                 val confirmIv = dialogView.findViewById<ImageView>(R.id.confirmIv)
                 val mDatePicker = dialogView.findViewById<android.widget.DatePicker>(R.id.datePicker)
                 mDatePicker.init(yearInt, monthInt - 1, dayInt) { _, year, monthOfYear, dayOfMonth ->
+                    isChange = true
                     yearInt = year
                     monthInt = monthOfYear
                     dayInt = dayOfMonth
                 }
                 //月份返回的是少1的数
                 confirmIv.setOnClickListener {
-                    var mMonthNew: String = (monthInt + 1).toString()
+                    var mMonthNew: String = monthInt.toString()
+                    if (isChange && StringUtil.isNotBlankAndEmpty(birthday)) {
+                        mMonthNew = (monthInt + 1).toString()
+                    }
                     if (monthInt + 1 < 10) {
                         mMonthNew = "0$mMonthNew"
                     }
-                    var mDayNew: String = (dayInt).toString()
+                    var mDayNew: String = dayInt.toString()
                     if (dayInt < 10) {
                         mDayNew = "0$dayInt"
                     }
@@ -311,10 +316,13 @@ class CompleteInfoActivity : BaseActivity() {
     private fun requestPhonePermission() {
         val perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-        PermissionUtils.requestPermissionActivity(this, perms, "照相机权限", {
+        PermissionUtils.requestPermissionActivity(this, perms,
+                mContext!!.resources.getString(R.string.app_main_map_location_permission_hint), mContext!!.resources.getString(
+                R.string.app_request_permission_camera), {
             doThings()
         }, {
-            ToastUtil.show(mContext!!, "拍照/选取图片需要您授权读写及照相机权限")
+            ToastUtil.show(mContext!!, mContext!!.resources.getString(
+                    R.string.app_request_permission_camera))
         })
     }
 

@@ -12,4 +12,5 @@ object EventBusAction {
     const val REFRESH_LATEST_GROUP_DATA = "refresh_latest_group_data"
     const val ENTRY_LOCATION_WITH_TYPE = "entry_location_with_type"
     const val REFRESH_NEW_PUSH_TOKEN = "refresh_new_push_token"
+    const val REFRESH_CURRENT_LOGIN_ACCOUNT_INFO = "refresh_current_login_account_info"
 }

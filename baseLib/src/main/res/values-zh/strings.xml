@@ -922,4 +922,9 @@
     <string name="app_data_request_error">数据请求错误</string>
     <string name="app_hint">提示</string>
     <string name="app_watch">查看</string>
+    <string name="app_refuse_hint_permission">您已经拒绝%s权限，要使用需要去设置中开启</string>
+    <string name="app_confirm">确定</string>
+    <string name="app_cancel">取消</string>
+    <string name="app_allow">允许</string>
+    <string name="app_deny">拒绝</string>
 </resources>

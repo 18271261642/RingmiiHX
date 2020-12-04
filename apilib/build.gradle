@@ -31,11 +31,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //temp
-//            buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
-//            buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
+            buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
+            buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
             //debug
-                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+//                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
+//                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
         }
     }
 

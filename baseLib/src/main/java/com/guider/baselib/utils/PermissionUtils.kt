@@ -1,18 +1,16 @@
 package com.guider.baselib.utils
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.net.Uri
 import android.os.Build
-import android.provider.Settings
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
+import com.guider.baselib.R
+import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.base.BaseApplication
-import com.guider.baselib.utils.permissions.RxPermissions
-import com.guider.feifeia3.utils.ToastUtil
+import com.permissionx.guolindev.PermissionX
 
 /**
  * Description 权限Util
@@ -20,8 +18,6 @@ import com.guider.feifeia3.utils.ToastUtil
  * Date 2018/6/23 17:10
  */
 object PermissionUtils {
-
-    private const val SETTINGS_REQ_CODE = 16061
 
     /**
      * activity中请求权限
@@ -32,41 +28,51 @@ object PermissionUtils {
      * @param onError 失败回调
      */
     @SuppressLint("CheckResult")
-    fun requestPermissionActivity(activity: Activity, perms: Array<String>, hint: String,
+    fun requestPermissionActivity(activity: BaseActivity, perms: Array<String>, hint: String,
+                                  requestHint: String = "",
                                   onSuccess: () -> Unit,
-                                  onError: () -> Unit) {
+                                  onError: () -> Unit, isRequestGiveReason: Boolean = true) {
 
         if (checkPermissions(activity, perms)) {
             onSuccess.invoke()
         } else {
-            val rxPermissions = RxPermissions(activity) // where this is an Activity
-            rxPermissions.requestEachCombined(*perms)
-                    .subscribe { permission ->
-                        run {
-                            when {
-                                permission.granted -> // 用户已经同意该权限 !
-                                    onSuccess.invoke()
-                                permission.shouldShowRequestPermissionRationale -> {
-                                    // At least one denied permission without ask never again
-                                    // 用户拒绝了该权限，没有选中『不再询问』
-                                    // （Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
-                                    onError.invoke()
-                                }
-                                else -> {
-                                    // At least one denied permission with ask never again
-                                    // 用户拒绝了该权限，并且选中『不再询问』
-                                    // Need to go to the settings
-                                    ToastUtil.show(BaseApplication.guiderHealthContext,
-                                            "您已经拒绝${hint}权限，要使用需要去设置中开启")
-                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                    val uri = Uri.fromParts("package",
-                                            activity.packageName, null)
-                                    intent.data = uri
-                                    startAppSettingsScreen(activity, intent)
-                                }
-                            }
-                        }
-                    }
+            val permissions = PermissionX.init(activity)
+                    .permissions(*perms)
+            if (isRequestGiveReason) {
+                permissions.explainReasonBeforeRequest()
+                // 给出用户请求的原因
+                permissions.onExplainRequestReason { scope, deniedList ->
+                    scope.showRequestReasonDialog(deniedList, requestHint,
+                            BaseApplication.guiderHealthContext.resources
+                            .getString(R.string.app_allow),
+                            BaseApplication.guiderHealthContext.resources
+                            .getString(R.string.app_deny))
+                }
+            }
+            // 用户拒绝了该权限，并且选中『不再询问』
+            permissions.onForwardToSettings { scope, deniedList ->
+                val refuseHints = String.format(
+                        BaseApplication.guiderHealthContext.resources
+                                .getString(R.string.app_refuse_hint_permission),
+                        hint)
+                scope.showForwardToSettingsDialog(deniedList,
+                        refuseHints,
+                        BaseApplication.guiderHealthContext.resources
+                                .getString(R.string.app_confirm),
+                        BaseApplication.guiderHealthContext.resources
+                                .getString(R.string.app_cancel))
+            }
+            permissions.request { allGranted, _, deniedList ->
+                if (allGranted) {
+                    // 用户已经同意该权限 !
+                    onSuccess.invoke()
+                } else {
+                    // 用户拒绝了该权限，没有选中『不再询问』
+                    Log.i(PermissionUtils.javaClass.simpleName,
+                            "用户拒绝的权限为$deniedList")
+                    onError.invoke()
+                }
+            }
         }
     }
 
@@ -80,47 +86,46 @@ object PermissionUtils {
      */
     @SuppressLint("CheckResult")
     fun requestPermissionFragment(fragment: Fragment, perms: Array<String>, hint: String,
+                                  requestHint: String,
                                   onSuccess: () -> Unit,
                                   onError: () -> Unit) {
         if (checkPermissions(fragment.activity!!, perms)) {
             onSuccess.invoke()
         } else {
-            val rxPermissions = RxPermissions(fragment.activity!!) // where this is an Fragment instance
-            rxPermissions.requestEachCombined(*perms)
-                    .subscribe { permission ->
-                        run {
-                            when {
-                                permission.granted -> // 用户已经同意该权限 !
-                                    onSuccess.invoke()
-                                permission.shouldShowRequestPermissionRationale -> {
-                                    // At least one denied permission without ask never again
-                                    // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,
-                                    // 那么下次再次启动时，还会提示请求权限的对话框
-                                    onError.invoke()
-                                }
-                                else -> {
-                                    // At least one denied permission with ask never again
-                                    // 用户拒绝了该权限，并且选中『不再询问』
-                                    // Need to go to the settings
-                                    ToastUtil.show(
-                                            BaseApplication.guiderHealthContext,
-                                            "您已经拒绝${hint}权限，继续使用需要去设置中开启")
-                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                    val uri = Uri.fromParts("package",
-                                            fragment.activity!!.packageName, null)
-                                    intent.data = uri
-                                    startAppSettingsScreen(fragment.activity!!, intent)
-                                }
-                            }
+            PermissionX.init(fragment)
+                    .permissions(*perms)
+                    .explainReasonBeforeRequest()
+                    // 给出用户请求的原因
+                    .onExplainRequestReason { scope, deniedList ->
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            val customDialog = CustomPermissionDialogFragment(requestHint, deniedList)
+                            scope.showRequestReasonDialog(customDialog)
                         }
                     }
-        }
-    }
-
-    private fun startAppSettingsScreen(`object`: Any, intent: Intent) {
-        when (`object`) {
-            is Activity -> `object`.startActivityForResult(intent, SETTINGS_REQ_CODE)
-            is Fragment -> `object`.startActivityForResult(intent, SETTINGS_REQ_CODE)
+                    // 用户拒绝了该权限，并且选中『不再询问』
+                    .onForwardToSettings { scope, deniedList ->
+                        val refuseHints = String.format(
+                                BaseApplication.guiderHealthContext.resources
+                                        .getString(R.string.app_refuse_hint_permission),
+                                hint)
+                        scope.showForwardToSettingsDialog(deniedList,
+                                refuseHints,
+                                BaseApplication.guiderHealthContext.resources
+                                        .getString(R.string.app_confirm),
+                                BaseApplication.guiderHealthContext.resources
+                                        .getString(R.string.app_cancel))
+                    }
+                    .request { allGranted, _, deniedList ->
+                        if (allGranted) {
+                            // 用户已经同意该权限 !
+                            onSuccess.invoke()
+                        } else {
+                            // 用户拒绝了该权限，没有选中『不再询问』
+                            Log.i(PermissionUtils.javaClass.simpleName,
+                                    "用户拒绝的权限为$deniedList")
+                            onError.invoke()
+                        }
+                    }
         }
     }
 

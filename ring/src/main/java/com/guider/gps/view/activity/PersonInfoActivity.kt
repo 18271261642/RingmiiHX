@@ -20,8 +20,8 @@ import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.UserInfo
+import com.guider.health.apilib.utils.MMKVUtil
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
@@ -215,7 +215,7 @@ class PersonInfoActivity : BaseActivity() {
         personInfoBean?.accountId = MMKVUtil.getInt(USER.USERID)
         personInfoBean?.headUrl = header
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!,block = {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .editUserInfo(personInfoBean)
                 if (resultBean != null) {
@@ -231,7 +231,7 @@ class PersonInfoActivity : BaseActivity() {
                     toastShort(mContext!!.resources.getString(
                             R.string.app_person_info_change_fail))
                 }
-            },onRequestFinish = {
+            }, onRequestFinish = {
                 dismissDialog()
             })
         }
@@ -266,30 +266,33 @@ class PersonInfoActivity : BaseActivity() {
         var monthInt = timeValue.substring(
                 timeValue.indexOf('-') + 1,
                 timeValue.lastIndexOf('-')).toInt()
+        var isChange = false
         val dialog = object : DialogHolder(this,
                 R.layout.dialog_persondate_bottom_layout, Gravity.BOTTOM) {
             override fun bindView(dialogView: View) {
                 val confirmIv = dialogView.findViewById<ImageView>(R.id.confirmIv)
                 val mDatePicker = dialogView.findViewById<android.widget.DatePicker>(R.id.datePicker)
                 mDatePicker.init(yearInt, monthInt - 1, dayInt) { _, year, monthOfYear, dayOfMonth ->
+                    isChange = true
                     yearInt = year
                     monthInt = monthOfYear
                     dayInt = dayOfMonth
                 }
                 //月份返回的是少1的数
                 confirmIv.setOnClickListener {
-                    var mMonthNew: String = (monthInt + 1).toString()
+                    var mMonthNew: String = monthInt.toString()
+                    if (isChange && StringUtil.isNotBlankAndEmpty(birthday)) {
+                        mMonthNew = (monthInt + 1).toString()
+                    }
                     if (monthInt + 1 < 10) {
                         mMonthNew = "0$mMonthNew"
                     }
-                    var mDayNew: String = (dayInt).toString()
+                    var mDayNew: String = dayInt.toString()
                     if (dayInt < 10) {
                         mDayNew = "0$dayInt"
                     }
                     birthday = "$yearInt-$mMonthNew-$mDayNew"
                     birthdayTv.text = birthday
-                    MMKVUtil.saveString(USER.BIRTHDAY, birthday)
-                    isChangeTag = true
                     dialog?.dismiss()
                 }
             }
@@ -367,7 +370,10 @@ class PersonInfoActivity : BaseActivity() {
     private fun requestPhonePermission() {
         val perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-        PermissionUtils.requestPermissionActivity(this, perms, "照相机权限", {
+        PermissionUtils.requestPermissionActivity(this, perms,
+                mContext!!.resources.getString(R.string.app_camera_permission),
+                mContext!!.resources.getString(
+                        R.string.app_request_permission_camera),  {
             doThings()
         }, {
             ToastUtil.show(mContext!!,

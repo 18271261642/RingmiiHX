@@ -23,6 +23,7 @@
                 android:layout_marginTop="@dimen/dp_19"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="@dimen/dp_0_5"
+                android:src="@drawable/icon_default_user"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -233,7 +234,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/thirdAccountBindLayout"
+            android:id="@+id/accountBindLayout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="@dimen/dp_14"
@@ -248,7 +249,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/thirdAccountBindIV"
+                    android:id="@+id/accountBindIV"
                     android:layout_width="@dimen/dp_21"
                     android:layout_height="@dimen/dp_21"
                     android:layout_marginStart="@dimen/dp_14"
@@ -258,15 +259,15 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/thirdAccountBindTv"
+                    android:id="@+id/accountBindTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="9dp"
-                    android:text="@string/app_third_account_bind"
+                    android:text="@string/app_account_bind"
                     android:textColor="@color/color333333"
                     android:textSize="@dimen/sp_13"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/thirdAccountBindIV"
+                    app:layout_constraintStart_toEndOf="@id/accountBindIV"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
@@ -289,7 +290,7 @@
             android:layout_marginEnd="@dimen/dp_14"
             app:cardCornerRadius="4dp"
             app:cardElevation="3dp"
-            app:layout_constraintTop_toBottomOf="@id/thirdAccountBindLayout">
+            app:layout_constraintTop_toBottomOf="@id/accountBindLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

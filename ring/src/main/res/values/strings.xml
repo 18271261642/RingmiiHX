@@ -55,6 +55,8 @@
     <string name="app_main_send_fail">Send Fail</string>
     <string name="app_main_location_send_fail">The send failed and the device may be offline</string>
     <string name="app_main_map_location_permission_hint">Using the map service requires location permissions</string>
+    <string name="app_location_permission">Location</string>
+    <string name="app_camera_permission">Camera</string>
     <string name="app_main_map_permission_error">Location acquisition failed and the location service could not be implemented</string>
     <string name="illegal_coordinate_value" tools:ignore="MissingTranslation">Illegal coordinate value</string>
     <string name="app_main_medicine_suggest_hint">%s suggest:</string>
@@ -138,8 +140,7 @@
     <string name="app_person_info_district_information">Regional information</string>
     <string name="app_person_info_street_information">Street number information</string>
     <string name="app_please_select">Please select</string>
-    <string name="app_confirm">Confirm</string>
-    <string name="app_cancel">Cancel</string>
+
     <string name="app_select_date">Select Date</string>
     <string name="app_map_location_method_content">%s Positioning</string>
     <string name="app_map_track_time_hour">nearly%dh</string>
@@ -150,6 +151,7 @@
     <string name="app_login">Login</string>
     <string name="app_login_register_now">Register now</string>
     <string name="app_login_no_account">No account yet?</string>
+    <string name="app_tourists">Tourists</string>
     <string name="app_login_tourists_mode">Tourists mode</string>
     <string name="app_complete_name_empty">The name is empty</string>
     <string name="app_complete_header_empty">Avatar not set</string>
@@ -255,10 +257,11 @@
     <string name="app_please_entry_new_password">Please enter a new password</string>
     <string name="app_please_entry_new_password_again">Please enter your new password again</string>
     <string name="app_forgot_password_success">Password reset successful, please log in again</string>
-    <string name="app_third_account_bind">Third-party account binding</string>
     <string name="app_account_bind">Account binding</string>
     <string name="app_bind">Bind</string>
     <string name="app_unbind">UnBundling</string>
     <string name="app_search_person_mode_content">Do you want to switch to "search mode"?</string>
     <string name="app_search_person_mode_title">The locating frequency of the search mode is 5 minutes per time, and the power consumption of the bracelet increases in this mode.</string>
+    <string name="app_phone_state_permission">Phone information</string>
+    <string name="app_line_account_error_hint">This LINE account has been bound by another account, please associate it with another account</string>
 </resources>

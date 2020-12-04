@@ -59,10 +59,6 @@ import com.guider.health.apilib.enums.PositionType
 import com.guider.health.apilib.utils.GsonUtil
 import com.guider.health.apilib.utils.MMKVUtil
 import com.kyleduo.switchbutton.SwitchButton
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.include_loaction_bottom_layout.*
 import kotlinx.android.synthetic.main.include_location_electronic_fence_layout.*
 import kotlinx.android.synthetic.main.include_location_fragment_deal_layout.*
@@ -70,12 +66,12 @@ import kotlinx.android.synthetic.main.include_location_loading_proactively_addre
 import kotlinx.android.synthetic.main.include_location_position_layout.*
 import kotlinx.android.synthetic.main.include_location_proactively_addressing.*
 import kotlinx.android.synthetic.main.include_location_track_event_layout.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.ref.WeakReference
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class LocationFragment : BaseFragment(),
@@ -161,7 +157,6 @@ class LocationFragment : BaseFragment(),
     private var endTimeValue = ""
     private var mDialog1: DialogProgress? = null
     private var mDialog2: DialogProgress? = null
-    private var subscribe: Disposable? = null
     private var proactivelyAddressingNum = 0
 
     //路径的显示方式(默认是画线)
@@ -361,8 +356,6 @@ class LocationFragment : BaseFragment(),
     private fun closeLoadAnimation() {
         loadingLayout.visibility = View.GONE
         iv_loading?.clearAnimation()
-        subscribe?.dispose()
-        subscribe = null
         proactivelyAddressingNum = 0
     }
 
@@ -738,6 +731,10 @@ class LocationFragment : BaseFragment(),
                     locationNumberSet.text =
                             mActivity.resources.getString(
                                     R.string.app_main_map_send_instructions)
+                    return
+                }
+                //正在寻址过程中
+                if (proactivelyAddressingNum != 0) {
                     return
                 }
                 //发起主动寻址
@@ -1172,32 +1169,30 @@ class LocationFragment : BaseFragment(),
      * 轮询主动寻址
      */
     private fun proactivelyAddressingLoad(accountId: Int) {
-        if (subscribe != null && proactivelyAddressingNum < 24) {
-            return
-        }
         startLoadAnimation()
         locationNumberSet.text = mActivity.resources.getString(R.string.app_cancel_the_addressing)
         val time = DateUtilKotlin.localToUTC(
                 DateUtil.localNowStringByPattern(DEFAULT_TIME_FORMAT_PATTERN))!!
-        subscribe = Flowable.interval(0, 5, TimeUnit.SECONDS)
-                .onBackpressureDrop()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+        lifecycleScope.launch {
+            while (true) {
+                delay(1_000 * 5)
+                ++proactivelyAddressingNum
+                Log.i(TAG, "轮询主动寻址执行了${proactivelyAddressingNum}次")
+                if (proactivelyAddressingNum > 24) {
+                    //如果2分钟还没有寻址成功，则结束寻址
+                    proactivelyAddressingFinish("fail")
+                    return@launch
+                } else {
                     proactivelyAddressing(accountId, time)
                 }
+            }
+        }
     }
 
     /**
      * 主动寻址
      */
     private fun proactivelyAddressing(accountId: Int, time: String) {
-        ++proactivelyAddressingNum
-        //如果2分钟还没有寻址成功，则结束寻址
-        if (proactivelyAddressingNum == 24) {
-            proactivelyAddressingFinish("fail")
-            return
-        }
         lifecycleScope.launch {
             ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getApiService().proactivelyAddressingData(
@@ -1211,6 +1206,9 @@ class LocationFragment : BaseFragment(),
                     startDisplayPerth(LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng))
                     proactivelyAddressingFinish("success")
                 }
+            }, onRequestFinish = {
+                //寻址结束后寻址次数归0便于下一次寻址开始
+                proactivelyAddressingNum = 0
             })
         }
     }
@@ -1479,7 +1477,8 @@ class LocationFragment : BaseFragment(),
         val perms = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION)
         PermissionUtils.requestPermissionFragment(this, perms,
-                resources.getString(R.string.app_main_map_location_permission_hint), {
+                mActivity.resources.getString(R.string.app_location_permission),
+                mActivity.resources.getString(R.string.app_main_map_location_permission_hint), {
             //初始化地图的定位服务
             updateLocationUI()
         }, {
@@ -1923,16 +1922,12 @@ class LocationFragment : BaseFragment(),
         if (mGoogleApiClient != null) mGoogleApiClient?.disconnect()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         proactivelyAddressingNum = 0
         closeShowDialog()
         if (loadView != null) {
             loadView?.dismiss()
-        }
-        if (subscribe != null) {
-            subscribe?.dispose()
-            subscribe = null
         }
         isStart = false
         if (mGoogleApiClient != null) {

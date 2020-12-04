@@ -51,7 +51,7 @@ class ForgotPasswordActivity : BaseActivity() {
     private var countryCodeValue = ""
 
     //国家英文代号
-    private var countryCodeKey = "TW"
+    private var countryCodeKey = DEFAULT_COUNTRY_CODE
     private var sendCodeStatus = "send"
     private var seconds = 60
 
@@ -137,7 +137,7 @@ class ForgotPasswordActivity : BaseActivity() {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "TW"
+                } else DEFAULT_COUNTRY_CODE
         if (StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())
                 && StringUtil.isMobileNumber(phoneEdit.text.toString(), tag)) {
             viewModel.setSendCodeAvailable(true)
@@ -173,7 +173,7 @@ class ForgotPasswordActivity : BaseActivity() {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "TW"
+                } else DEFAULT_COUNTRY_CODE
         if (s != null && StringUtil.isNotBlankAndEmpty(s.toString())
                 && StringUtil.isNotBlankAndEmpty(phoneEdit.text.toString())
                 && StringUtil.isMobileNumber(phoneEdit.text.toString(), tag)
@@ -189,7 +189,7 @@ class ForgotPasswordActivity : BaseActivity() {
             val tag =
                     if (countryTv.tag is String) {
                         countryTv.tag as String
-                    } else "TW"
+                    } else DEFAULT_COUNTRY_CODE
             if (StringUtil.isMobileNumber(s.toString(), tag)) {
                 viewModel.setSendCodeAvailable(true)
                 if (StringUtil.isNotBlankAndEmpty(lineCodeEdit.text.toString())) {
@@ -223,7 +223,7 @@ class ForgotPasswordActivity : BaseActivity() {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "TW"
+                        } else DEFAULT_COUNTRY_CODE
                 if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                     toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                     return
@@ -267,7 +267,7 @@ class ForgotPasswordActivity : BaseActivity() {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "TW"
+                } else DEFAULT_COUNTRY_CODE
         if (!StringUtil.isMobileNumber(phoneValue, tag)) {
             toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
             return

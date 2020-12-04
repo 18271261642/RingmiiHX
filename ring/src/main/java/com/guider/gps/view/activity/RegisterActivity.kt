@@ -38,7 +38,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
     private var countryCodeValue = ""
 
     //国家英文代号
-    private var countryCodeKey = "TW"
+    private var countryCodeKey = DEFAULT_COUNTRY_CODE
 
     //判断是否是从注册页进入还是从绑定设备添加新账号
     private var pageEnterType = ""
@@ -85,14 +85,14 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                         val tag =
                                 if (countryTv.tag is String) {
                                     countryTv.tag as String
-                                } else "TW"
+                                } else DEFAULT_COUNTRY_CODE
                         val countryCode = countryTv.text.toString().replace(
                                 "+", "")
                         if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                             formatError()
                         } else {
                             //符合要求的手机号去判断是否是已注册的手机号
-                            checkPhone(countryCode, phoneEdit.text.toString(), false,tag)
+                            checkPhone(countryCode, phoneEdit.text.toString(), false, tag)
                         }
                     }
                 }
@@ -132,7 +132,7 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 } else {
                     if (isExit) {
                         val intent = Intent(mContext!!, CompleteInfoActivity::class.java)
-                        val passwordValue = MyUtils.md5(passwordEdit.text.toString())
+                        val passwordValue = passwordEdit.text.toString()
                         intent.putExtra("passwd", passwordValue)
                         intent.putExtra("phone", phoneValue)
                         intent.putExtra("telAreaCode", countryCode)
@@ -200,8 +200,8 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "TW"
-                if (!StringUtil.isMobileNumber(phoneValue,tag)) {
+                        } else DEFAULT_COUNTRY_CODE
+                if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                     toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                     return
                 }
@@ -213,11 +213,11 @@ class RegisterActivity : BaseActivity(), CustomAdapt {
                     toastShort(mContext!!.resources.getString(R.string.app_login_password_empty))
                     return
                 }
-                if (passwordEdit.text.toString().length<6){
+                if (passwordEdit.text.toString().length < 6) {
                     toastShort(mContext!!.resources.getString(R.string.app_password_format_error))
                     return
                 }
-                if (againPasswordEdit.text.toString().length<6){
+                if (againPasswordEdit.text.toString().length < 6) {
                     toastShort(mContext!!.resources.getString(R.string.app_password_format_error))
                     return
                 }

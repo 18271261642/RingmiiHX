@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/text_black</item>
         <item name="colorPrimaryDark">@color/text_black</item>
         <item name="colorAccent">@color/bar_grey</item>
     </style>
+
     <style name="Splash" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@drawable/shape_splash</item>
     </style>
 </resources>

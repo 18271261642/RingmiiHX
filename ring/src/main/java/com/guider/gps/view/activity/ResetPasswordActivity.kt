@@ -94,7 +94,6 @@ class ResetPasswordActivity : BaseActivity() {
                             R.string.app_person_info_change_success))
                 } else {
                     toastShort(mContext!!.resources.getString(R.string.app_forgot_password_success))
-
                 }
                 confirmTv.postDelayed({
                     setResult(Activity.RESULT_OK, intent)

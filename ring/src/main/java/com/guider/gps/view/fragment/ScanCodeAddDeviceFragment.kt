@@ -37,7 +37,11 @@ class ScanCodeAddDeviceFragment : BaseFragment() {
         when (v) {
             scanCodeTv -> {
                 val perms = arrayOf(Manifest.permission.CAMERA)
-                PermissionUtils.requestPermissionFragment(this, perms, "照相机权限", {
+                PermissionUtils.requestPermissionFragment(this, perms,
+                        mActivity.resources.getString(
+                                R.string.app_main_map_location_permission_hint),
+                        mActivity.resources.getString(
+                                R.string.app_request_permission_camera),  {
                     //有权限
                     startScan(CaptureActivity::class.java,
                             mActivity.resources.getString(R.string.app_add_device_scan_code))

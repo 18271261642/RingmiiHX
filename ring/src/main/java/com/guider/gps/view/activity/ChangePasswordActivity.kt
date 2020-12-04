@@ -92,7 +92,8 @@ class ChangePasswordActivity : BaseActivity() {
             nextStep -> {
                 if (!checkPasswordAvailable(true)) return
                 hideKeyboard(v)
-                viewModel.entryNext(passwordEdit.text.toString(), MMKVUtil.getInt(USER.USERID))
+                viewModel.entryNext(passwordEdit.text.toString(),
+                        MMKVUtil.getInt(USER.USERID))
             }
             passwordShowIv -> {
                 if (passwordShowIv.isSelected) {

@@ -459,4 +459,41 @@ interface IGuiderCoroutinesApi {
     @GET("api/v1/accountthird/type")
     suspend fun getThirdStatusData(@Query("accountId") accountId: Int): Any
 
+    /**
+     * 游客登录
+     */
+    @GET("api/v1/visitor/login")
+    suspend fun touristsLogin(@Query("mac") mac: String): TokenBean?
+
+    /**
+     * 游客帐号绑定手机号
+     * @param data
+     * @return
+     */
+    @POST("api/v1/visitor/bindphone")
+    suspend fun bindTouristsToPhone(@Body data: Any?): String
+
+    /**
+     * 校验openid是否为新账号
+     */
+    @GET("api/v1/accountthird/verify/new")
+    suspend fun checkLineAccountIsNewAccount(@Query("appId") appId: String,
+                                             @Query("openId") openId: String): String
+
+    /**
+     * 游客绑定line
+     * @param data
+     * @return
+     */
+    @POST("api/v1/visitor/bindline")
+    suspend fun bindTouristsLineToPhone(@Body data: Any?): String
+
+    /**
+     * 用户解绑line
+     * @param data
+     * @return
+     */
+    @DELETE("api/v1/accountthird/line/unbind")
+    suspend fun unBindLine(@Query("appId") appId: String,
+                           @Query("accountId") accountId: Int): String
 }

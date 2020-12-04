@@ -36,6 +36,10 @@ val APP_SECRET_WX = "5e94ec8b5939cbad04fae4139b9bdf1d"
 val APP_ID_LINE = "1654871917"
 
 /**
+ * 默认国家区号
+ */
+val DEFAULT_COUNTRY_CODE = "TW"
+/**
  * 常用MMKV的key常量
  * */
 const val BIND_DEVICE_NAME = "bind_device_name"
@@ -53,7 +57,8 @@ const val HR_INTERVAL = "hrInterval"
 const val BT_CHECK = "btOpen"
 const val BT_INTERVAL = "btInterval"
 const val NOTIFICATION_CLICK_ENTER = "notification_click_enter"
-const val TOURISTS_MODE = "Tourists mode"
+const val TOURISTS_MODE = "Tourists_mode"
+const val PHONE_IMEI_CODE = "Phone_imei_code"
 
 object USER {
     //个人信息页缓存相关
@@ -100,3 +105,4 @@ const val ALARM_SET = 0x000017
 const val HISTORY_RECORD_LOCATION = 0x000018
 const val ELECTRONIC_FENCE_LIST = 0x000019
 const val RESET_PASSWORD = 0x000020
+const val ACCOUNT_BIND = 0x000021

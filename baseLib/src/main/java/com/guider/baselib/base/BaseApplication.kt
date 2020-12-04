@@ -15,6 +15,10 @@ import com.guider.health.apilib.BuildConfig
 import com.guider.health.apilib.GuiderApiUtil
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSize
 import me.jessyan.autosize.AutoSizeConfig
 
@@ -22,6 +26,7 @@ import me.jessyan.autosize.AutoSizeConfig
 abstract class BaseApplication : Application() {
 
     val TAG = BaseApplication.javaClass.simpleName
+
 
     @SuppressLint("RestrictedApi")
     override fun onCreate() {
@@ -32,8 +37,19 @@ abstract class BaseApplication : Application() {
             Log.i("Application", "不是主进程，不再执行初始化application")
             return
         }
-        //MMKV初始化
         MMKV_ROOT = MMKV.initialize(guiderHealthContext)
+        asyncInitSdk()
+    }
+
+    private fun asyncInitSdk() {
+        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+            initSdk()
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun initSdk() {
+        //MMKV初始化
         MyUtils.setMacAddress("11:11:11:11:11:26")
         ApiUtil.init(guiderHealthContext, MyUtils.getMacAddress())
         GuiderApiUtil.setContextAndMac(guiderHealthContext, MyUtils.getMacAddress())
@@ -41,7 +57,7 @@ abstract class BaseApplication : Application() {
         MyUtils.application = this
         init()
         if (BuildConfig.DEBUG) {
-            CustomActivityOnCrash.install(this)
+            CustomActivityOnCrash.install(guiderHealthContext)
         } else
             initBugly()
         //ARouter 初始化
@@ -75,6 +91,7 @@ abstract class BaseApplication : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
+        applicationTime = System.currentTimeMillis()
         MultiDex.install(this)
     }
 
@@ -82,6 +99,7 @@ abstract class BaseApplication : Application() {
         // 获取到主线程的上下文
         @SuppressLint("StaticFieldLeak")
         lateinit var guiderHealthContext: Context
+        var applicationTime = 0L
     }
 
     private fun isMainProcess(): Boolean {

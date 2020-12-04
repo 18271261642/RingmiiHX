@@ -3,6 +3,7 @@ package com.guider.gps.view.activity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.*
 import android.widget.ProgressBar
 import com.guider.baselib.base.BaseActivity
@@ -124,6 +125,16 @@ class SimpleCustomWebActivity : BaseActivity() {
             webView!!.goBack()
         }
         super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        val parent = webView?.parent
+        if (parent is ViewGroup) {
+            parent.removeView(webView)
+        }
+        webView?.destroy()
+        webView = null
+        super.onDestroy()
     }
 
     override fun showToolBar(): Boolean {

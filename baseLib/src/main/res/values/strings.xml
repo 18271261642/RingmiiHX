@@ -1420,4 +1420,9 @@
     <string name="app_data_request_error">Data request error</string>
     <string name="app_hint">Hint</string>
     <string name="app_watch">Watch</string>
+    <string name="app_refuse_hint_permission">You have denied %s permission to use the need to enable in Settings</string>
+    <string name="app_confirm">Confirm</string>
+    <string name="app_cancel">Cancel</string>
+    <string name="app_allow">Allow</string>
+    <string name="app_deny">Deny</string>
 </resources>

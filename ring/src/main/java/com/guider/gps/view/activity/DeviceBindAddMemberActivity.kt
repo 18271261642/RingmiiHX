@@ -43,7 +43,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
 
     private var userGroupId = ""
     private var code = ""
-    private var areaCode = "TW"
+    private var areaCode = DEFAULT_COUNTRY_CODE
     private var accountId = ""
 
     override val contentViewResId: Int
@@ -84,7 +84,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                         val tag =
                                 if (countryTv.tag is String) {
                                     countryTv.tag as String
-                                } else "TW"
+                                } else DEFAULT_COUNTRY_CODE
                         if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                             ToastUtil.showCenter(mContext!!,
                                     mContext!!.resources.getString(R.string.app_incorrect_format))
@@ -156,7 +156,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
                     val tag =
                             if (countryTv.tag is String) {
                                 countryTv.tag as String
-                            } else "TW"
+                            } else DEFAULT_COUNTRY_CODE
                     if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                         toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                         return

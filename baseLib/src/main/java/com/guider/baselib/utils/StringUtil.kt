@@ -473,7 +473,7 @@ class StringUtil private constructor() {
         }
 
         fun isMobileNumber(mobileNumber: String?,
-                           countryCode: String? = "TW"): Boolean {
+                           countryCode: String? = DEFAULT_COUNTRY_CODE): Boolean {
             var isMobileNumber = false
 //            for (regularExp in MobileRegularExp.values()) {
 //                val pattern = Pattern.compile(regularExp.regularExp)
@@ -494,6 +494,15 @@ class StringUtil private constructor() {
                 System.err.println("NumberParseException was thrown: $e")
             }
             return isMobileNumber
+        }
+
+        fun showHidePhoneNumber(phone: String): String {
+            if (phone.length <= 6) return phone
+            return if (phone.length < 8) {
+                phone.replace(phone.substring(phone.length - 6, phone.length - 4), "**")
+            } else {
+                phone.replace(phone.substring(phone.length - 8, phone.length - 4), "****")
+            }
         }
     }
 }

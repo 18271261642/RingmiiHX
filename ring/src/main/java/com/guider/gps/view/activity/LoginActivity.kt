@@ -1,8 +1,10 @@
 package com.guider.gps.view.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
+import android.os.Build
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -61,7 +63,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     private var isLineLoginFirst = false
 
     //国家英文代号
-    private var countryCodeKey = "TW"
+    private var countryCodeKey = DEFAULT_COUNTRY_CODE
 
     /**
      * Line第三方登陆相关
@@ -172,7 +174,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     val tag =
                             if (countryTv.tag is String) {
                                 countryTv.tag as String
-                            } else "TW"
+                            } else DEFAULT_COUNTRY_CODE
                     if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                         ToastUtil.showCenter(mContext!!,
                                 mContext!!.resources.getString(R.string.app_incorrect_format))
@@ -225,7 +227,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "TW"
+                        } else DEFAULT_COUNTRY_CODE
                 intent.putExtra("countryCode", tag)
                 startActivityForResult(intent, REGISTER)
             }
@@ -238,7 +240,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "TW"
+                        } else DEFAULT_COUNTRY_CODE
                 if (!StringUtil.isMobileNumber(phoneValue, tag)) {
                     toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
                     return
@@ -311,17 +313,105 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 val tag =
                         if (countryTv.tag is String) {
                             countryTv.tag as String
-                        } else "TW"
+                        } else DEFAULT_COUNTRY_CODE
                 intent.putExtra("countryCode", tag)
                 startActivity(intent)
             }
             touristsNodeTv -> {
                 //游客模式
-                MMKVUtil.saveBoolean(TOURISTS_MODE, true)
-                val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
-                intent.putExtra("type", "mine")
-                startActivityForResult(intent, ADD_NEW_DEVICE)
+                getImeiCode()
             }
+        }
+    }
+
+    private fun getImeiCode() {
+        var imei = ""
+        if (MMKVUtil.containKey(PHONE_IMEI_CODE)
+                && StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(PHONE_IMEI_CODE))) {
+            imei = MMKVUtil.getString(PHONE_IMEI_CODE)
+            Log.i(TAG, "存储的IMEI的值为$imei")
+        } else {
+            if (Build.VERSION.SDK_INT >= 29) run {
+                imei = DeviceIdUtil.getDeviceId(mContext!!, false)
+            } else {
+                val perms = arrayOf(Manifest.permission.READ_PHONE_STATE)
+                PermissionUtils.requestPermissionActivity(this, perms,
+                        hint = mContext!!.resources.getString(R.string.app_phone_state_permission), onSuccess = {
+                    imei = DeviceIdUtil.getDeviceId(mContext!!)
+                }, onError = {
+                    imei = DeviceIdUtil.getDeviceId(mContext!!, false)
+                }, isRequestGiveReason = false)
+            }
+            MMKVUtil.saveString(PHONE_IMEI_CODE, imei)
+            Log.i(TAG, "新存储的IMEI的值为$imei")
+        }
+        touristsLogin(imei)
+    }
+
+    private fun touristsLogin(imei: String) {
+        if (StringUtil.isEmpty(imei)) return
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
+                val tokenInfo = GuiderApiUtil.getApiService().touristsLogin(imei)
+                if (tokenInfo != null) {
+                    touristsVerifyIsBindDevice(tokenInfo)
+                }
+            }, onError = {
+                dismissDialog()
+            })
+        }
+    }
+
+    private fun touristsVerifyIsBindDevice(tokenBean: TokenBean) {
+        MMKVUtil.saveString(TOKEN, tokenBean.token!!)
+        MMKVUtil.saveInt(USERID, tokenBean.accountId)
+        MMKVUtil.saveBoolean(TOURISTS_MODE, true)
+        //保存token的信息用来之后的刷新token使用
+        setTokenCache(tokenBean)
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+                val resultBean = GuiderApiUtil.getApiService().checkIsBindDevice(
+                        tokenBean.accountId)
+                if (resultBean is String && resultBean == "null") {
+                    //未绑定手环返回null
+                    val intent = Intent(mContext!!, AddNewDeviceActivity::class.java)
+                    intent.putExtra("type", "mine")
+                    startActivityForResult(intent, ADD_NEW_DEVICE)
+                } else {
+                    val bean = ParseJsonData.parseJsonAny<CheckBindDeviceBean>(
+                            resultBean)
+                    val intent = Intent(mContext!!, MainActivity::class.java)
+                    MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, tokenBean.accountId)
+                    kotlin.run breaking@{
+                        bean.userInfos?.forEach {
+                            if (it.accountId == tokenBean.accountId) {
+                                it.relationShip = it.name
+                                MMKVUtil.saveString(BIND_DEVICE_NAME, it.name ?: "")
+                                if (StringUtil.isNotBlankAndEmpty(it.headUrl))
+                                    MMKVUtil.saveString(BIND_DEVICE_ACCOUNT_HEADER, it.headUrl!!)
+                                if (StringUtil.isNotBlankAndEmpty(it.deviceCode)) {
+                                    MMKVUtil.saveString(BIND_DEVICE_CODE, it.deviceCode!!)
+                                    MMKVUtil.saveString(USER.OWN_BIND_DEVICE_CODE,
+                                            it.deviceCode!!)
+                                }
+                                if (StringUtil.isNotBlankAndEmpty(it.phone)
+                                        && !it.phone!!.contains("vis")) {
+                                    //说明已经是非游客，已经注册了账号
+                                    MMKVUtil.saveBoolean(TOURISTS_MODE, false)
+                                }
+                                return@breaking
+                            }
+                        }
+                    }
+                    intent.putExtra("bindListBean", bean)
+                    startActivity(intent)
+                    finish()
+                }
+            }, onRequestFinish = {
+                dismissDialog()
+            })
         }
     }
 
@@ -351,7 +441,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "TW"
+                } else DEFAULT_COUNTRY_CODE
         MMKVUtil.saveString(AREA_CODE, tag)
         MMKVUtil.saveString(PHONE, phoneValue)
         //保存token的信息用来之后的刷新token使用
@@ -367,7 +457,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "TW"
+                } else DEFAULT_COUNTRY_CODE
         MMKVUtil.saveString(AREA_CODE, tag)
         MMKVUtil.saveString(PHONE, phoneValue)
         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
@@ -520,6 +610,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                         intent.putExtra("appId", APP_ID_LINE)
                         intent.putExtra("header", header)
                         intent.putExtra("name", name)
+                        intent.putExtra("bindType", "LINE")
                         startActivityForResult(intent, BIND_PHONE)
                     } else {
                         //绑定了用户成功登录
@@ -571,7 +662,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         weChatInfo.openid = openId
         weChatInfo.nickname = wxName
         weChatInfo.headimgurl =
-                if (StringUtil.isNotBlankAndEmpty(header)) header else null
+                if (StringUtil.isNotBlankAndEmpty(header)) header else ""
         weChatInfo.unionid = unionid
         weChatInfo.sex = sex
         lifecycleScope.launch {
@@ -585,8 +676,11 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                     if (!resultBean.isFlag) {
                         //说明没有绑定用户
                         val intent = Intent(mContext!!, BindPhoneActivity::class.java)
-                        intent.putExtra("weChatInfo", weChatInfo)
-                        intent.putExtra("type", "weChat")
+                        intent.putExtra("openId", openId)
+                        intent.putExtra("appId", APP_ID_WX)
+                        intent.putExtra("header", header)
+                        intent.putExtra("name", wxName)
+                        intent.putExtra("bindType", "WeChat")
                         startActivityForResult(intent, BIND_PHONE)
                     } else {
                         //绑定了用户成功登录

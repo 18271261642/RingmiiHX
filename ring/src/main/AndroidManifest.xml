@@ -3,15 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.guider.gps">
 
-    <!--网络权限-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--位置权限-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--读写SD卡-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <application
         android:name=".AppApplication"
         android:icon="@mipmap/icon"
@@ -83,7 +74,9 @@
         <activity android:name=".view.activity.RegisterActivity" />
         <activity android:name=".view.activity.GuideActivity" />
         <activity android:name=".view.activity.SimpleCustomWebActivity" />
-        <activity android:name=".view.activity.BindPhoneActivity" />
+        <activity android:name=".view.activity.BindPhoneActivity"
+            android:launchMode="singleTop"
+            />
         <activity android:name=".view.activity.CompleteInfoActivity" />
         <activity
             android:name="com.king.zxing.CaptureActivity"
@@ -97,7 +90,9 @@
         <activity android:name=".view.activity.ForgotPasswordActivity" />
         <activity android:name=".view.activity.ResetPasswordActivity" />
         <activity android:name=".view.activity.ChangePasswordActivity" />
-        <activity android:name=".view.activity.ThirdAccountBindActivity" />
+        <activity android:name=".view.activity.AccountBindActivity"
+            android:launchMode="singleTop"
+            />
 
         <uses-library
             android:name="org.apache.http.legacy"

@@ -198,9 +198,13 @@ class InputCodeAddDeviceFragment : BaseFragment() {
     private fun requestPhonePermission() {
         val perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-        PermissionUtils.requestPermissionFragment(this, perms, "照相机权限", {
-            doThings()
-        }, {
+        PermissionUtils.requestPermissionFragment(this, perms,
+                mActivity.resources.getString(R.string.app_camera_permission),
+                mActivity.resources.getString(
+                        R.string.app_request_permission_camera),
+                {
+                    doThings()
+                }, {
             ToastUtil.show(mActivity, mActivity.resources.getString(
                     R.string.app_request_permission_camera))
         })

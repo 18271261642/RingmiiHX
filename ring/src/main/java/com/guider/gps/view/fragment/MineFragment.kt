@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
 import com.guider.baselib.utils.CommonUtils.logOutClearMMKV
+import com.guider.baselib.utils.EventBusAction.REFRESH_CURRENT_LOGIN_ACCOUNT_INFO
 import com.guider.baselib.utils.EventBusAction.REFRESH_TARGET_STEP
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
@@ -36,7 +37,10 @@ class MineFragment : BaseFragment() {
     }
 
     override fun initLogic() {
-        refreshHeaderAndName()
+        //区分是否是游客登录
+        if (MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE)) {
+            nameTv.text = mActivity.resources.getString(R.string.app_tourists)
+        } else refreshHeaderAndName()
         ringSetShow()
         versionValue.text = CommonUtils.getPKgVersionName(mActivity)
         bindLayout.setOnClickListener(this)
@@ -44,7 +48,7 @@ class MineFragment : BaseFragment() {
         sportLayout.setOnClickListener(this)
         loginOutLayout.setOnClickListener(this)
         passwordLayout.setOnClickListener(this)
-        thirdAccountBindLayout.setOnClickListener(this)
+        accountBindLayout.setOnClickListener(this)
         getWalkTargetData()
     }
 
@@ -155,6 +159,15 @@ class MineFragment : BaseFragment() {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun refreshMineInfo(event: EventBusEvent<Boolean>) {
+        if (event.code == REFRESH_CURRENT_LOGIN_ACCOUNT_INFO) {
+            if (event.data != null && event.data!!) {
+                refreshHeaderAndName(isRefreshGroup = false)
+            }
+        }
+    }
+
     override fun onNoDoubleClick(v: View) {
         when (v) {
             bindLayout -> {
@@ -169,8 +182,13 @@ class MineFragment : BaseFragment() {
                 }
             }
             topLayout -> {
-                val intent = Intent(mActivity, PersonInfoActivity::class.java)
-                startActivityForResult(intent, PERSON_INFO)
+                //区分是否是游客登录
+                if (MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE)) {
+                    (mActivity as MainActivity).touristsEvent()
+                } else {
+                    val intent = Intent(mActivity, PersonInfoActivity::class.java)
+                    startActivityForResult(intent, PERSON_INFO)
+                }
             }
             sportLayout -> {
                 val intent = Intent(mActivity, SingleLineEditActivity::class.java)
@@ -195,12 +213,18 @@ class MineFragment : BaseFragment() {
                 startActivityForResult(intent, ALARM_SET)
             }
             passwordLayout -> {
-                val intent = Intent(mActivity, ChangePasswordActivity::class.java)
-                startActivity(intent)
+                if (MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE)) {
+                    (mActivity as MainActivity).touristsEvent()
+                } else {
+                    val intent = Intent(mActivity, ChangePasswordActivity::class.java)
+                    startActivity(intent)
+                }
             }
-            thirdAccountBindLayout -> {
-                val intent = Intent(mActivity, ThirdAccountBindActivity::class.java)
-                startActivity(intent)
+            accountBindLayout -> {
+                val intent = Intent(mActivity, AccountBindActivity::class.java)
+                if (MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE)) {
+                    startActivityForResult(intent, ACCOUNT_BIND)
+                } else startActivity(intent)
             }
         }
     }
@@ -282,6 +306,12 @@ class MineFragment : BaseFragment() {
                         }
                     }
                 }
+                ACCOUNT_BIND -> {
+                    //游客登录注册用户成功刷新整个用户体系
+                    Log.i(TAG, "游客绑定手机账号成功，重新刷新数据")
+                    EventBusUtils.sendEvent(
+                            EventBusEvent(EventBusAction.REFRESH_LATEST_GROUP_DATA, true))
+                }
             }
         }
     }
@@ -309,7 +339,7 @@ class MineFragment : BaseFragment() {
         }
     }
 
-    private fun refreshHeaderAndName(isFirst: Boolean = true) {
+    private fun refreshHeaderAndName(isFirst: Boolean = true, isRefreshGroup: Boolean = true) {
         if (MMKVUtil.containKey(USER.HEADER) &&
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.HEADER))) {
             ImageLoaderUtils.loadImage(mActivity, headerIv, MMKVUtil.getString(USER.HEADER))
@@ -320,7 +350,7 @@ class MineFragment : BaseFragment() {
                 StringUtil.isNotBlankAndEmpty(MMKVUtil.getString(USER.NAME))) {
             nameTv.text = MMKVUtil.getString(USER.NAME)
         }
-        if (!isFirst) EventBusUtils.sendEvent(
+        if (!isFirst && isRefreshGroup) EventBusUtils.sendEvent(
                 EventBusEvent(EventBusAction.REFRESH_LATEST_GROUP_DATA, true))
     }
 }

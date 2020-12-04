@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
-import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
@@ -62,7 +61,7 @@ class BindPhoneActivity : BaseActivity() {
     private var birthday = ""
     private var type = ""
     private var isHaveLineHead = true
-    private var mDialog: DialogProgress? = null
+    private var bindType: String = "Line"
 
     override val contentViewResId: Int
         get() = R.layout.activity_bind_phone
@@ -74,6 +73,15 @@ class BindPhoneActivity : BaseActivity() {
     override fun initImmersion() {
         showBackButton(R.drawable.ic_back_white)
         setTitle(mContext!!.resources.getString(R.string.app_bind_phone_number))
+        intentEvent()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intentEvent()
+    }
+
+    private fun intentEvent() {
         if (intent != null) {
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("openId"))) {
                 openId = intent.getStringExtra("openId")!!
@@ -87,13 +95,37 @@ class BindPhoneActivity : BaseActivity() {
             if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("name"))) {
                 name = intent.getStringExtra("name")!!
             }
+            if (StringUtil.isNotBlankAndEmpty(intent.getStringExtra("bindType"))) {
+                bindType = intent.getStringExtra("bindType")!!
+            }
         }
     }
 
     override fun initView() {
-        if (StringUtil.isEmpty(header)) {
-            isHaveLineHead = false
-            headerLayout.visibility = View.VISIBLE
+        //绑定手机号只需要手机号和密码即可
+        if (bindType == "touristsBind") {
+            headerLayout.visibility = View.GONE
+            simpleInclude.visibility = View.GONE
+        } else {
+            if (StringUtil.isEmpty(header)) {
+                isHaveLineHead = false
+                headerLayout.visibility = View.VISIBLE
+            }
+        }
+        if (!(MMKVUtil.containKey(TOURISTS_MODE) && MMKVUtil.getBoolean(TOURISTS_MODE))) {
+            if (StringUtil.isNotBlankAndEmpty(USER.COUNTRY_CODE))
+                countryTv.text = MMKVUtil.getString(USER.COUNTRY_CODE)
+            if (StringUtil.isNotBlankAndEmpty(USER.PHONE)) {
+                phoneValue = MMKVUtil.getString(USER.PHONE)
+                phoneEdit.setText(phoneValue)
+                //设置不可编辑状态
+                phoneEdit.isFocusable = false
+                phoneEdit.isFocusableInTouchMode = false
+            }
+            if (StringUtil.isNotBlankAndEmpty(USER.AREA_CODE))
+                countryTv.tag = MMKVUtil.getString(USER.AREA_CODE)
+            countryCodeLayout.isClickable = false
+            countryCodeLayout.isEnabled = false
         }
     }
 
@@ -186,7 +218,10 @@ class BindPhoneActivity : BaseActivity() {
     private fun requestPhonePermission() {
         val perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-        PermissionUtils.requestPermissionActivity(this, perms, "照相机权限", {
+        PermissionUtils.requestPermissionActivity(this, perms,
+                mContext!!.resources.getString(R.string.app_main_map_location_permission_hint),
+                mContext!!.resources.getString(
+                        R.string.app_request_permission_camera), {
             doThings()
         }, {
             ToastUtil.show(mContext!!, mContext!!.resources.getString(
@@ -263,23 +298,28 @@ class BindPhoneActivity : BaseActivity() {
         var monthInt = timeValue.substring(
                 timeValue.indexOf('-') + 1,
                 timeValue.lastIndexOf('-')).toInt()
+        var isChange = false
         val dialog = object : DialogHolder(this,
                 R.layout.dialog_persondate_bottom_layout, Gravity.BOTTOM) {
             override fun bindView(dialogView: View) {
                 val confirmIv = dialogView.findViewById<ImageView>(R.id.confirmIv)
                 val mDatePicker = dialogView.findViewById<DatePicker>(R.id.datePicker)
                 mDatePicker.init(yearInt, monthInt - 1, dayInt) { _, year, monthOfYear, dayOfMonth ->
+                    isChange = true
                     yearInt = year
                     monthInt = monthOfYear
                     dayInt = dayOfMonth
                 }
                 //月份返回的是少1的数
                 confirmIv.setOnClickListener {
-                    var mMonthNew: String = (monthInt + 1).toString()
+                    var mMonthNew: String = monthInt.toString()
+                    if (isChange && StringUtil.isNotBlankAndEmpty(birthday)) {
+                        mMonthNew = (monthInt + 1).toString()
+                    }
                     if (monthInt + 1 < 10) {
                         mMonthNew = "0$mMonthNew"
                     }
-                    var mDayNew: String = (dayInt).toString()
+                    var mDayNew: String = dayInt.toString()
                     if (dayInt < 10) {
                         mDayNew = "0$dayInt"
                     }
@@ -342,7 +382,7 @@ class BindPhoneActivity : BaseActivity() {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "TW"
+                } else DEFAULT_COUNTRY_CODE
         if (!StringUtil.isMobileNumber(phoneValue, tag)) {
             toastShort(mContext!!.resources.getString(R.string.app_phone_illegal))
             return
@@ -351,27 +391,133 @@ class BindPhoneActivity : BaseActivity() {
             toastShort(mContext!!.resources.getString(R.string.app_login_password_empty))
             return
         }
+        if (passwordEdit.text.toString().length < 6) {
+            toastShort(mContext!!.resources.getString(R.string.app_password_format_error))
+            return
+        }
         val passwordValue = MyUtils.md5(passwordEdit.text.toString())
-        sex = sexTv.text.toString()
-        if (StringUtil.isEmpty(sex)) {
-            toastShort(mContext!!.resources.getString(R.string.app_complete_sex_empty))
-            return
-        }
-        if (StringUtil.isEmpty(header)) {
-            toastShort(mContext!!.resources.getString(R.string.app_complete_header_empty))
-            return
-        }
-        birthday = birthdayTv.text.toString()
-        if (StringUtil.isEmpty(birthday)) {
-            toastShort(mContext!!.resources.getString(R.string.app_complete_birthday_empty))
-            return
-        }
-        //从line来的头像或者上传成功但是绑定时的情况
-        if (isHaveLineHead || header.startsWith("http")) {
-            isHaveLineHead = true
-            bindLineToPhone(header, countryCode, passwordValue)
+        if (bindType != "touristsBind") {
+            sex = sexTv.text.toString()
+            if (StringUtil.isEmpty(sex)) {
+                toastShort(mContext!!.resources.getString(R.string.app_complete_sex_empty))
+                return
+            }
+            if (StringUtil.isEmpty(header)) {
+                toastShort(mContext!!.resources.getString(R.string.app_complete_header_empty))
+                return
+            }
+            birthday = birthdayTv.text.toString()
+            if (StringUtil.isEmpty(birthday)) {
+                toastShort(mContext!!.resources.getString(R.string.app_complete_birthday_empty))
+                return
+            }
+            //从line来的头像或者上传成功但是绑定时的情况
+            if (isHaveLineHead || header.startsWith("http")) {
+                isHaveLineHead = true
+                bindPhone(header, countryCode, passwordValue)
+            } else {
+                uploadHeader(countryCode, passwordValue)
+            }
         } else {
-            uploadHeader(countryCode, passwordValue)
+            bindPhone(countryCode = countryCode, passwordValue = passwordValue)
+        }
+    }
+
+    private fun bindPhone(header: String = "", countryCode: String, passwordValue: String) {
+        when (bindType) {
+            "touristsBind" -> {
+                //游客身份绑定
+                bindTouristsToPhone(countryCode, passwordValue)
+            }
+            "touristsLINE" -> {
+                //游客line绑定
+                bindTouristsLineToPhone(header, countryCode, passwordValue)
+            }
+            "bindLINE", "LINE" -> {
+                //LINE绑定
+                bindLineToPhone(header, countryCode, passwordValue)
+            }
+            "WeChat" -> {
+                //微信绑定
+                // TODO: 2020/12/3 后续微信登录实现后增加微信绑定功能
+            }
+            else -> {
+                bindLineToPhone(header, countryCode, passwordValue)
+            }
+        }
+    }
+
+    private fun bindTouristsLineToPhone(header: String, countryCode: String,
+                                        passwordValue: String) {
+        val map = hashMapOf<String, Any?>()
+        map["appId"] = appId
+        map["birthday"] = "${birthday}T00:00:00Z"
+        map["code"] = "kjsp_1@ds"
+        map["gender"] = if (sex == mContext!!.resources.getString(
+                        R.string.app_person_info_man)) "MAN"
+        else "WOMAN"
+        map["headimgurl"] = header
+        map["mac"] = MMKVUtil.getString(PHONE_IMEI_CODE)
+        map["nickname"] = name
+        map["openid"] = openId
+        map["phone"] = phoneValue
+        map["pwd"] = passwordValue
+        map["pwdAgain"] = passwordValue
+        map["telAreaCode"] = countryCode
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+                val result = GuiderApiUtil.getApiService()
+                        .bindTouristsLineToPhone(map)
+                if (result == "true") {
+                    MMKVUtil.saveString(USER.COUNTRY_CODE, countryTv.text.toString())
+                    val tag =
+                            if (countryTv.tag is String) {
+                                countryTv.tag as String
+                            } else DEFAULT_COUNTRY_CODE
+                    MMKVUtil.saveString(USER.AREA_CODE, tag)
+                    MMKVUtil.saveString(USER.PHONE, phoneValue)
+                    MMKVUtil.saveString(USER.HEADER, header)
+                    MMKVUtil.saveString(USER.NAME, name)
+                    intent.putExtra("bindLine", "success")
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            }, onRequestFinish = {
+                dismissDialog()
+            })
+        }
+    }
+
+    private fun bindTouristsToPhone(countryCode: String, passwordValue: String) {
+        val map = hashMapOf<String, Any?>()
+        map["mac"] = MMKVUtil.getString(PHONE_IMEI_CODE)
+        map["telAreaCode"] = countryCode
+        map["code"] = "kjsp_1@ds"
+        map["pwdAgain"] = passwordValue
+        map["pwd"] = passwordValue
+        map["phone"] = phoneValue
+        lifecycleScope.launch {
+            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                showDialog()
+            }, block = {
+                val result = GuiderApiUtil.getApiService()
+                        .bindTouristsToPhone(map)
+                if (result == "true") {
+                    MMKVUtil.saveString(USER.COUNTRY_CODE, countryTv.text.toString())
+                    val tag =
+                            if (countryTv.tag is String) {
+                                countryTv.tag as String
+                            } else DEFAULT_COUNTRY_CODE
+                    MMKVUtil.saveString(USER.AREA_CODE, tag)
+                    MMKVUtil.saveString(USER.PHONE, phoneValue)
+                    intent.putExtra("bindPhone", "success")
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+
+            }, onRequestFinish = {
+                dismissDialog()
+            })
         }
     }
 
@@ -385,7 +531,7 @@ class BindPhoneActivity : BaseActivity() {
                 if (resultBean != null) {
                     Log.e("上传头像", "成功")
                     header = resultBean
-                    bindLineToPhone(header, countryCode, passwordValue)
+                    bindPhone(header, countryCode, passwordValue)
                 }
             }, onError = {
                 Log.e("上传头像", "失败")
@@ -411,25 +557,21 @@ class BindPhoneActivity : BaseActivity() {
         map["openid"] = openId
         map["phone"] = phoneValue
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
-                mDialog = DialogProgress(mContext!!, null)
-                mDialog?.showDialog()
-            }, block = {
+            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
                 val bean = GuiderApiUtil.getApiService()
                         .lineBindLogin(map)
                 if (bean != null)
-                    loginSuccessEvent(bean.TokenInfo)
+                //只是绑定不需要去存储新值和去首页
+                    if (bindType == "bindLINE") {
+                        intent.putExtra("bindLine", "success")
+                        MMKVUtil.saveString(USER.HEADER, header)
+                        MMKVUtil.saveString(USER.NAME, name)
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    } else loginSuccessEvent(bean.TokenInfo)
             }, onRequestFinish = {
-                mDialog?.hideDialog()
+                dismissDialog()
             })
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (mDialog != null) {
-            mDialog?.hideDialog()
-            mDialog = null
         }
     }
 
@@ -440,7 +582,7 @@ class BindPhoneActivity : BaseActivity() {
         val tag =
                 if (countryTv.tag is String) {
                     countryTv.tag as String
-                } else "TW"
+                } else DEFAULT_COUNTRY_CODE
         MMKVUtil.saveString(USER.AREA_CODE, tag)
         MMKVUtil.saveString(USER.PHONE, phoneValue)
         MMKVUtil.saveString(REFRESH_TOKEN, bean.refreshToken!!)
@@ -451,7 +593,7 @@ class BindPhoneActivity : BaseActivity() {
     }
 
     private fun enterMainPage() {
-        intent.putExtra("bind", "success")
+        intent.putExtra("bindLine", "success")
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

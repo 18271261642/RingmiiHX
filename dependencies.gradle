@@ -18,7 +18,6 @@ ext {
     SmartRefreshLayout = "2.0.1"
     eventbus = "3.2.0"
     wechat = "wechat-sdk-android-with-mta:+"
-    greendao = "3.3.0"
     multidex = "2.0.1"
     immersionBar = "3.0.0"
     autosize = "1.2.1"
@@ -33,8 +32,6 @@ ext {
     dbflow = "4.2.1"
     lifecycle = "2.2.0"
     rxlifecycle = "4.0.0"
-    rxjava = "3.0.7"
-    rxandroid = "3.0.0"
     joda_time = "2.10.6"
     pickers = "1.0.3"
     hellocharts = "1.5.8"
@@ -56,6 +53,7 @@ ext {
     arouter = "1.5.0"
     arouter_compiler = "1.2.2"
     url_manager = "1.4.0"
+    permission = "1.4.0"
     dependencies = [
             appcompat             : "androidx.appcompat:appcompat:$appcompat",
             material              : "com.google.android.material:material:$material",
@@ -79,8 +77,6 @@ ext {
             refreshClassicFooter  : "com.scwang.smart:refresh-footer-classics:$SmartRefreshLayout",
             eventbus              : "org.greenrobot:eventbus:$eventbus",
             immersionBar          : "com.gyf.immersionbar:immersionbar:$immersionBar",
-            //greenDao
-            greendao              : "org.greenrobot:greendao:$greendao",
             autosize              : "me.jessyan:autosize:$autosize",
             mmkv                  : "com.tencent:mmkv-static:$mmkv",
             switch_button         : "com.kyleduo.switchbutton:library:$switch_button",
@@ -91,8 +87,6 @@ ext {
             dbflow                : "com.github.Raizlabs.DBFlow:dbflow:$dbflow",
             lifecycle             : "androidx.lifecycle:lifecycle-extensions:$lifecycle",
             rxlifecycle_components: "com.trello.rxlifecycle4:rxlifecycle-components:$rxlifecycle",
-            rxjava                : "io.reactivex.rxjava3:rxjava:$rxjava",
-            rxandroid             : "io.reactivex.rxjava3:rxandroid:$rxandroid",
             joda_time             : "joda-time:joda-time:2.10.6",
             pickers               : "com.github.addappcn:android-pickers:$pickers",
             hellocharts           : "com.github.lecho:hellocharts-android:v$hellocharts",
@@ -121,5 +115,6 @@ ext {
             arouter               : "com.alibaba:arouter-api:$arouter",
             arouter_compiler      : "com.alibaba:arouter-compiler:$arouter_compiler",
             url_manager           : "me.jessyan:retrofit-url-manager:$url_manager",
+            permission            : "com.permissionx.guolindev:permissionx:$permission"
     ]
 }

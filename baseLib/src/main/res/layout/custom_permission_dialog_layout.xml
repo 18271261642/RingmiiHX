@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_white_5_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/messageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:textColor="#fff"
+        android:textSize="@dimen/sp_20" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/dp_20"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/permissionsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_21"
+        android:paddingBottom="@dimen/dp_20"
+        app:layout_constraintTop_toBottomOf="@id/contentTv">
+
+        <TextView
+            android:id="@+id/negativeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_42"
+            android:background="@drawable/circle_f18937_21_bg"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_33"
+            android:paddingEnd="@dimen/dp_33"
+            android:text="@string/app_deny"
+            android:textColor="@color/colorF18937"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/positiveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_42"
+            android:layout_marginStart="@dimen/dp_24"
+            android:background="@drawable/bg_round_home_msg_21"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_33"
+            android:paddingEnd="@dimen/dp_33"
+            android:text="@string/app_allow"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toEndOf="@id/negativeBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
