@@ -469,6 +469,11 @@ class MainActivity : BaseActivity() {
                                     MMKVUtil.saveString(USER.HEADER, it.headUrl!!)
                                 if (StringUtil.isNotBlankAndEmpty(it.relationShip))
                                     MMKVUtil.saveString(USER.NAME, it.relationShip!!)
+                                if (StringUtil.isNotBlankAndEmpty(it.phone)
+                                        && !it.phone!!.contains("vis")) {
+                                    //绑定当前的手机号因为没有点击登录按钮所以没有切换新的手机号避免出错
+                                    MMKVUtil.saveString(USER.PHONE,it.phone?:"")
+                                }
                                 EventBusUtils.sendEvent(EventBusEvent(
                                         REFRESH_CURRENT_LOGIN_ACCOUNT_INFO, true))
                                 //当前登录账号的设备号为空

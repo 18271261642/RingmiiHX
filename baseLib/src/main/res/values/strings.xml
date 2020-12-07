@@ -1407,8 +1407,8 @@
     <string name="download_ecg_tips">Visceral sound application component download？</string>
     <string name="glu_unit_food_2">mmol/L</string>
     <string name="app_send_success">Send Success</string>
-    <string name="app_yesterday">yesterday</string>
-    <string name="app_tomorrow">tomorrow"</string>
+    <string name="app_yesterday">Yesterday</string>
+    <string name="app_tomorrow">Tomorrow"</string>
     <string name="app_monday">Monday</string>
     <string name="app_tuesday">Tuesday</string>
     <string name="app_wednesday">Wednesday</string>
@@ -1425,4 +1425,6 @@
     <string name="app_cancel">Cancel</string>
     <string name="app_allow">Allow</string>
     <string name="app_deny">Deny</string>
+    <string name="app_year">Year</string>
+    <string name="app_month">Month</string>
 </resources>

@@ -114,7 +114,8 @@ class PersonInfoActivity : BaseActivity() {
             MMKVUtil.saveString(NAME, name)
             nameTv.text = name
         }
-        phone = personInfoBean?.phone!!
+        phone = if (StringUtil.isEmpty(personInfoBean?.phone)) MMKVUtil.getString(USER.PHONE)
+        else personInfoBean?.phone ?: ""
         phoneTv.text = phone
         if (StringUtil.isNotBlankAndEmpty(personInfoBean?.birthday))
             birthday = personInfoBean?.birthday!!.replace(
@@ -283,9 +284,13 @@ class PersonInfoActivity : BaseActivity() {
                     var mMonthNew: String = monthInt.toString()
                     if (isChange && StringUtil.isNotBlankAndEmpty(birthday)) {
                         mMonthNew = (monthInt + 1).toString()
-                    }
-                    if (monthInt + 1 < 10) {
-                        mMonthNew = "0$mMonthNew"
+                        if (monthInt + 1 < 10) {
+                            mMonthNew = "0$mMonthNew"
+                        }
+                    } else {
+                        if (monthInt < 10) {
+                            mMonthNew = "0$mMonthNew"
+                        }
                     }
                     var mDayNew: String = dayInt.toString()
                     if (dayInt < 10) {
@@ -373,7 +378,7 @@ class PersonInfoActivity : BaseActivity() {
         PermissionUtils.requestPermissionActivity(this, perms,
                 mContext!!.resources.getString(R.string.app_camera_permission),
                 mContext!!.resources.getString(
-                        R.string.app_request_permission_camera),  {
+                        R.string.app_request_permission_camera), {
             doThings()
         }, {
             ToastUtil.show(mContext!!,

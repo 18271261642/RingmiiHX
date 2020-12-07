@@ -19,6 +19,8 @@ const val TIME_FORMAT_PATTERN7 = "yyyy-MM-dd-HH"
 const val TIME_FORMAT_PATTERN8 = "HH:mm"
 const val TIME_FORMAT_PATTERN9 = "MM-dd HH:mm"
 const val TIME_FORMAT_PATTERN10 = "MM-dd"
+const val TIME_FORMAT_PATTERN11 = "yyyy年MM月"
+const val TIME_FORMAT_PATTERN12 = "MMMM,yyyy"
 
 /**
  * app_id是从微信官网申请到的合法APPid

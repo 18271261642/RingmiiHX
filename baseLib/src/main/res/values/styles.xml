@@ -7,12 +7,13 @@
         <item name="colorPrimaryDark">@color/text_black</item>
         <item name="colorAccent">@color/bar_grey</item>
     </style>
-<!--    <style name="Splash" parent="AppTheme">-->
-<!--        <item name="android:windowFullscreen">false</item>-->
-<!--        <item name="android:windowBackground">@drawable/shape_splash</item>-->
-<!--    </style>-->
+    <!--    <style name="Splash" parent="AppTheme">-->
+    <!--        <item name="android:windowFullscreen">false</item>-->
+    <!--        <item name="android:windowBackground">@drawable/shape_splash</item>-->
+    <!--    </style>-->
     <!--弹出dialog-->
     //两个loadingView的dialog的style配置
+
     <style name="my_dialog" parent="@android:style/Theme.Holo.DialogWhenLarge">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -23,6 +24,7 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.6</item>
     </style>
+
     <style name="my_dialog_no_transparency" parent="@android:style/Theme.Holo.DialogWhenLarge">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -67,15 +69,22 @@
 
     <declare-styleable name="Battery">
         <attr name="batteryOrientation">
-            <enum name="horizontal" value="0"/>
-            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
         </attr>
-        <attr name="batteryColor" format="color"/>
-        <attr name="batteryPower" format="integer"/>
+        <attr name="batteryColor" format="color" />
+        <attr name="batteryPower" format="integer" />
     </declare-styleable>
-    <style name="CustomTabLayoutTextSizeStyle">
+
+    <style name="CustomTabLayoutTextSizeStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/sp_11</item>
+        <item name="textAllCaps">false</item>
     </style>
+
+    <style name="CustomTabLayoutEnStyle" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
     <declare-styleable name="WaterWaveProgress">
         <attr name="progressWidth" format="dimension" />
         <attr name="fontSize" format="dimension" />

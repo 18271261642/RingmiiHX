@@ -18,7 +18,7 @@
             android:layout_width="@dimen/dp_54"
             android:layout_height="@dimen/dp_54"
             android:background="@drawable/circle_f18937_oval_bg"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +27,7 @@
             android:layout_width="@dimen/dp_48"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_height="@dimen/dp_3"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.guider.baselib.widget.CircleImageView
@@ -41,6 +41,7 @@
 
         <TextView
             android:id="@+id/searchPersonFlag"
+            android:maxWidth="@dimen/dp_48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_44"
@@ -53,7 +54,7 @@
             android:textColor="@color/white"
             android:text="@string/app_search_pattern"
             android:textSize="@dimen/sp_10"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -63,7 +64,7 @@
             android:layout_height="19dp"
             android:layout_marginStart="11dp"
             android:src="@drawable/ic_home_draw_msg_select"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,8 @@ package com.guider.baselib.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import com.guider.baselib.R
+import com.guider.health.apilib.utils.ApiLibUtil
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -64,7 +66,7 @@ object DateUtilKotlin {
 
     //获取当前完整的日期和时间
     @SuppressLint("SimpleDateFormat")
-    fun getNowHourTime(): Int? {
+    fun getNowHourTime(): Int {
         val sdf = SimpleDateFormat("HH:mm")
         val format = sdf.format(Date())
         val hour = format.substring(0, format.indexOf(":"))
@@ -116,7 +118,7 @@ object DateUtilKotlin {
 
     //获取今天是星期几
     @SuppressLint("SimpleDateFormat")
-    fun getWeekOfDate(date: Date?): String? {
+    fun getWeekOfDate(date: Date): String {
         val weekDays = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
         val cal = Calendar.getInstance()
         cal.time = date
@@ -148,7 +150,7 @@ object DateUtilKotlin {
     }
 
     //根据年月日计算是星期几并与当前日期判断  非昨天、今天、明天 则以星期显示
-    fun Week(dateTime: String): String? {
+    fun Week(dateTime: String): String {
         var week = ""
         var yesterday = ""
         var today = ""
@@ -215,9 +217,9 @@ object DateUtilKotlin {
         }
     }
 
-    private fun getDateWithWeek(context: Context, dateTime: String): String? {
+    private fun getDateWithWeek(context: Context, dateTime: String): String {
         //得到是否今天，昨天，及星期的显示
-        val week = internationalizationTime(context,Week(dateTime)!!)
+        val week = internationalizationTime(context, Week(dateTime))
         //得到是否显示日期
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date = sdf.parse(dateTime)
@@ -235,7 +237,7 @@ object DateUtilKotlin {
         return week
     }
 
-    fun getDateWithWeekWithTime(context: Context,dateTime: String): String? {
+    fun getDateWithWeekWithTime(context: Context,dateTime: String): String {
         val localTime = uTCToLocal(dateTime, TIME_FORMAT_PATTERN1)
         val yearMonthDay = localTime?.substring(0, localTime.indexOf(" "))
         val dateWithWeek = getDateWithWeek(context,yearMonthDay!!)
@@ -281,5 +283,32 @@ object DateUtilKotlin {
             e.printStackTrace()
         }
         return timestamp
+    }
+
+    fun getDateShowWithLanguage(date: Date = Date()): String? {
+        //获取年月日格式的当前日期
+        val language = ApiLibUtil.getCurrentLanguage()
+        return if (language == "en") {
+            // 创建“英文/美国”的Locale
+            val localeUS = Locale("en", "US")
+            val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, localeUS)
+            dateFormat.format(date)
+
+        } else {
+            CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
+        }
+    }
+
+    fun getYearAndMonthWithLanguageShow(oldDate: String):String {
+        val language = ApiLibUtil.getCurrentLanguage()
+        return if (language == "en") {
+            // 创建“英文/美国”的Locale
+            val localeUS = Locale("en", "US")
+            val dateFormat = SimpleDateFormat(TIME_FORMAT_PATTERN12,localeUS)
+            val date = DateUtil.stringToDate(oldDate, TIME_FORMAT_PATTERN11)
+            dateFormat.format(date)
+        } else {
+            oldDate
+        }
     }
 }

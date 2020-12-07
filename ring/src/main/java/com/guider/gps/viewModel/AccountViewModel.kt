@@ -43,7 +43,6 @@ class AccountViewModel : ViewModel() {
     }
 
     fun checkLineAccountIsNewAccount(appId: String, openId: String) {
-//        val tempId = openId.replace(openId[openId.lastIndex], '1')
         viewModelScope.launch {
             ApiCoroutinesCallBack.resultParse(onStart = {
                 loading.postValue(true)

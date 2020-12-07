@@ -4,9 +4,6 @@
     <string name="app_main_bottom_location">定位</string>
     <string name="app_main_bottom_medicine">照顧</string>
     <string name="app_main_bottom_mine">我的</string>
-    <string name="app_main_left_msg_device_name1">爸爸</string>
-    <string name="app_main_left_msg_device_name2">媽媽</string>
-    <string name="app_main_left_msg_device_name3">弟弟</string>
     <string name="app_main_left_msg_device_status_online">在線</string>
     <string name="app_main_left_msg_device_status_offline">離線</string>
     <string name="app_main_health_today">今日</string>

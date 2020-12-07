@@ -315,9 +315,13 @@ class BindPhoneActivity : BaseActivity() {
                     var mMonthNew: String = monthInt.toString()
                     if (isChange && StringUtil.isNotBlankAndEmpty(birthday)) {
                         mMonthNew = (monthInt + 1).toString()
-                    }
-                    if (monthInt + 1 < 10) {
-                        mMonthNew = "0$mMonthNew"
+                        if (monthInt + 1 < 10) {
+                            mMonthNew = "0$mMonthNew"
+                        }
+                    } else {
+                        if (monthInt < 10) {
+                            mMonthNew = "0$mMonthNew"
+                        }
                     }
                     var mDayNew: String = dayInt.toString()
                     if (dayInt < 10) {

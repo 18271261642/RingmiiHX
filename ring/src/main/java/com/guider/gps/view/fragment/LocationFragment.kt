@@ -38,6 +38,7 @@ import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
 import com.guider.baselib.utils.CommonUtils.convertViewToBitmap
+import com.guider.baselib.utils.DateUtilKotlin.getDateShowWithLanguage
 import com.guider.baselib.widget.CircleImageView
 import com.guider.baselib.widget.LoadingView
 import com.guider.baselib.widget.calendarList.CalendarList
@@ -72,6 +73,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.ref.WeakReference
 import java.util.*
+import java.util.Locale
 
 
 class LocationFragment : BaseFragment(),
@@ -761,9 +763,10 @@ class LocationFragment : BaseFragment(),
                 startActivityForResult(intent, HISTORY_RECORD_LOCATION)
             }
             trackEventsDateCalSelectIv -> {
+                if (trackEventsDateValueTv.tag !is String) return
                 searchFrontLayout.visibility = View.GONE
                 selectTimeBackLayout.visibility = View.VISIBLE
-                dateSelectTag = trackEventsDateValueTv.text.toString() !=
+                dateSelectTag = trackEventsDateValueTv.tag !=
                         CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
             }
             startTimeTv, endTimeTv -> {
@@ -775,8 +778,9 @@ class LocationFragment : BaseFragment(),
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventsDateLeft -> {
+                if (trackEventsDateValueTv.tag !is String) return
                 dateSelectTag = true
-                val currentDate = trackEventsDateValueTv.text.toString()
+                val currentDate = trackEventsDateValueTv.tag as String
                 val calTimeFrontDate = CommonUtils.calTimeFrontDay(
                         currentDate, 1, TIME_FORMAT_PATTERN6)
                 //切到了当前日期
@@ -784,7 +788,10 @@ class LocationFragment : BaseFragment(),
                         && calTimeFrontDate == CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)) {
                     dateSelectTag = false
                 }
-                trackEventsDateValueTv.text = calTimeFrontDate
+                trackEventsDateValueTv.text = getDateShowWithLanguage(
+                        DateUtil.stringToDate(calTimeFrontDate, TIME_FORMAT_PATTERN6))
+                trackEventsDateValueTv.tag = DateUtil.stringToDate(calTimeFrontDate,
+                        TIME_FORMAT_PATTERN6)
                 val dateString = calTimeFrontDate
                         .replace("年", "-")
                         .replace("月", "-")
@@ -794,11 +801,15 @@ class LocationFragment : BaseFragment(),
                 getUserPointLineData(startTimeValue, endTimeValue)
             }
             trackEventsDateRight -> {
+                if (trackEventsDateValueTv.tag !is String) return
                 dateSelectTag = true
-                val currentDate = trackEventsDateValueTv.text.toString()
+                val currentDate = trackEventsDateValueTv.tag as String
                 val calTimeFrontDate = CommonUtils.calTimeFrontDay(
                         currentDate, -1, TIME_FORMAT_PATTERN6)
-                trackEventsDateValueTv.text = calTimeFrontDate
+                trackEventsDateValueTv.text = getDateShowWithLanguage(
+                        DateUtil.stringToDate(calTimeFrontDate, TIME_FORMAT_PATTERN6))
+                trackEventsDateValueTv.tag = DateUtil.stringToDate(calTimeFrontDate,
+                        TIME_FORMAT_PATTERN6)
                 //切到了当前日期
                 if (StringUtil.isNotBlankAndEmpty(calTimeFrontDate)
                         && calTimeFrontDate == CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)) {
@@ -915,8 +926,8 @@ class LocationFragment : BaseFragment(),
      * 恢复初始的轨迹时间选择
      */
     private fun initTrackTimeSelect() {
-        //获取年月日格式的当前日期
-        trackEventsDateValueTv.text = CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
+        trackEventsDateValueTv.text = getDateShowWithLanguage()
+        trackEventsDateValueTv.tag = CommonUtils.getCurrentDate(TIME_FORMAT_PATTERN6)
         startTimeTv.text = CommonUtils.calTimeFrontDay(
                 CommonUtils.getCurrentDate(), 7)
         endTimeTv.text = CommonUtils.getCurrentDate()
@@ -928,6 +939,7 @@ class LocationFragment : BaseFragment(),
         dateSelectTag = false
         initTrackEventTimeAdapter()
     }
+
 
     private fun commitPositionMethodSet() {
         searchPersonFlag = !searchPersonFlag
@@ -1261,13 +1273,16 @@ class LocationFragment : BaseFragment(),
                     dialog?.dismiss()
                 }
                 val calendarListView = dialogView.findViewById<CalendarList>(R.id.calendarListView)
-                calendarListView.setOnDateSelected { startDate, endDate ->
-                    calendarListView.postDelayed({
-                        dialog?.dismiss()
-                        startTimeTv.text = startDate
-                        endTimeTv.text = endDate
-                    }, 500)
-                }
+                calendarListView.setOnDateSelectedListener(object : CalendarList.OnDateSelected {
+                    override fun selected(startDate: String?, endDate: String?) {
+                        calendarListView.postDelayed({
+                            dialog?.dismiss()
+                            startTimeTv.text = startDate
+                            endTimeTv.text = endDate
+                        }, 500)
+                    }
+
+                })
             }
         }
         selectDateDialog?.initView()

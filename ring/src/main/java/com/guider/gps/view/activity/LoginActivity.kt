@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,7 @@ import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.*
+import com.guider.health.apilib.utils.ApiLibUtil
 import com.guider.health.apilib.utils.ApiLibUtil.setTokenCache
 import com.guider.health.apilib.utils.MMKVUtil
 import com.linecorp.linesdk.LoginDelegate
@@ -148,6 +150,15 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         lineIv.setOnClickListener(this)
         policyTextTv.setOnClickListener(this)
         forgotPasswordTv.setOnClickListener(this)
+        val language = ApiLibUtil.getCurrentLanguage()
+        if (language == "en") {
+            forgotPasswordTv.textSize = 10f
+        } else {
+            forgotPasswordTv.textSize = 13f
+            val params: ConstraintLayout.LayoutParams =
+                    forgotPasswordTv.layoutParams as ConstraintLayout.LayoutParams
+            params.marginEnd = ScreenUtils.dip2px(mContext,10f)
+        }
     }
 
     private fun editEvent() {
@@ -400,6 +411,8 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                                         && !it.phone!!.contains("vis")) {
                                     //说明已经是非游客，已经注册了账号
                                     MMKVUtil.saveBoolean(TOURISTS_MODE, false)
+                                    //绑定当前的手机号因为没有点击登录按钮所以没有切换新的手机号避免出错
+                                    MMKVUtil.saveString(PHONE, it.phone ?: "")
                                 }
                                 return@breaking
                             }

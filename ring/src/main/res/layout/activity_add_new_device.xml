@@ -10,6 +10,7 @@
         android:background="@color/colorF5F5F5"
         android:layout_height="42dp"
         app:tabIndicatorHeight="3dp"
+        app:tabTextAppearance="@style/CustomTabLayoutEnStyle"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager.widget.ViewPager

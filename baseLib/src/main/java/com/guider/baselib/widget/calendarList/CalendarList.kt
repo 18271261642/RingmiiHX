@@ -1,502 +1,443 @@
-package com.guider.baselib.widget.calendarList;
+package com.guider.baselib.widget.calendarList
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Color;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Color
+import android.text.TextUtils
+import android.util.AttributeSet
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import androidx.recyclerview.widget.RecyclerView
+import com.guider.baselib.R
+import com.guider.baselib.utils.DateUtilKotlin.getYearAndMonthWithLanguageShow
+import com.guider.baselib.widget.calendarList.CalendarList.CalendarAdapter.OnRecyclerviewItemClick
+import java.text.SimpleDateFormat
+import java.util.*
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.guider.baselib.R;
+class CalendarList : FrameLayout {
+    var recyclerView: RecyclerView? = null
+    var adapter: CalendarAdapter? = null
+    private var startDate //开始时间
+            : DateBean? = null
+    private var endDate //结束时间
+            : DateBean? = null
+    var onDateSelected //选中监听
+            : OnDateSelected? = null
+    var simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-public class CalendarList extends FrameLayout {
-    private static final String TAG = "CalendarList_LOG";
-    RecyclerView recyclerView;
-    CalendarAdapter adapter;
-    private DateBean startDate;//开始时间
-    private DateBean endDate;//结束时间
-    OnDateSelected onDateSelected;//选中监听
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    public CalendarList(Context context) {
-        super(context);
-        init(context);
+    constructor(context: Context) : super(context) {
+        init(context)
     }
 
-    public CalendarList(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context)
     }
 
-    public CalendarList(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        init(context)
     }
 
-    private void init(Context context) {
+    private fun init(context: Context) {
         addView(LayoutInflater.from(context).inflate(R.layout.item_calendar, this,
-                false));
-
-        recyclerView = findViewById(R.id.recyclerView);
-        adapter = new CalendarAdapter();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 7);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int i) {
-                if (DateBean.item_type_month == adapter.data.get(i).getItemType()) {
-                    return 7;
+                false))
+        recyclerView = findViewById(R.id.recyclerView)
+        adapter = CalendarAdapter()
+        val gridLayoutManager = GridLayoutManager(context, 7)
+        gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
+            override fun getSpanSize(i: Int): Int {
+                return if (DateBean.item_type_month == adapter!!.data[i].getItemType()) {
+                    7
                 } else {
-                    return 1;
+                    1
                 }
             }
-        });
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(adapter);
-        adapter.data.addAll(days("", ""));
+        }
+        recyclerView?.layoutManager = gridLayoutManager
+        recyclerView?.adapter = adapter
+        adapter!!.data.addAll(days("", ""))
 
 //        DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
 //        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this,R.drawable.shape));
 //        recyclerView.addItemDecoration(dividerItemDecoration);
-
-        MyItemD myItemD = new MyItemD();
-        recyclerView.addItemDecoration(myItemD);
-
-        adapter.setOnRecyclerviewItemClick(new CalendarAdapter.OnRecyclerviewItemClick() {
-            @Override
-            public void onItemClick(View v, int position) {
-                onClick(adapter.data.get(position));
+        val myItemD = MyItemD()
+        recyclerView?.addItemDecoration(myItemD)
+        adapter!!.onRecyclerviewItemClick = object : OnRecyclerviewItemClick {
+            override fun onItemClick(v: View?, position: Int) {
+                onClick(adapter!!.data[position])
             }
-        });
+        }
     }
 
-    private void onClick(DateBean dateBean) {
-
+    private fun onClick(dateBean: DateBean) {
         if (dateBean.getItemType() == DateBean.item_type_month
                 || TextUtils.isEmpty(dateBean.getDay())) {
-            return;
+            return
         }
 
         //如果没有选中开始日期则此次操作选中开始日期
         if (startDate == null) {
-            startDate = dateBean;
-            dateBean.setItemState(DateBean.ITEM_STATE_BEGIN_DATE);
+            startDate = dateBean
+            dateBean.setItemState(DateBean.ITEM_STATE_BEGIN_DATE)
         } else if (endDate == null) {
             //如果选中了开始日期但没有选中结束日期，本次操作选中结束日期
 
             //如果当前点击的结束日期跟开始日期一致 则不做操作
-            if (startDate == dateBean) {
-
-            } else if (dateBean.getDate().getTime() < startDate.getDate().getTime()) {
+            if (startDate === dateBean) {
+            } else if (dateBean.getDate().time < startDate!!.getDate().time) {
                 //当前点选的日期小于当前选中的开始日期 则本次操作重新选中开始日期
-                startDate.setItemState(DateBean.ITEM_STATE_NORMAL);
-                startDate = dateBean;
-                startDate.setItemState(DateBean.ITEM_STATE_BEGIN_DATE);
+                startDate!!.setItemState(DateBean.ITEM_STATE_NORMAL)
+                startDate = dateBean
+                startDate!!.setItemState(DateBean.ITEM_STATE_BEGIN_DATE)
             } else {
                 //选中结束日期
-                endDate = dateBean;
-                endDate.setItemState(DateBean.ITEM_STATE_END_DATE);
-                setState();
-
+                endDate = dateBean
+                endDate!!.setItemState(DateBean.ITEM_STATE_END_DATE)
+                setState()
                 if (onDateSelected != null) {
-                    onDateSelected.selected(simpleDateFormat.
-                            format(startDate.getDate()), simpleDateFormat.format(endDate.getDate()));
+                    onDateSelected?.selected(simpleDateFormat.format(startDate!!.getDate()), simpleDateFormat.format(endDate!!.getDate()))
                 }
             }
-
         } else if (startDate != null && endDate != null) {
             //结束日期和开始日期都已选中
-            clearState();
+            clearState()
 
             //重新选择开始日期,结束日期清除
-            startDate.setItemState(DateBean.ITEM_STATE_NORMAL);
-            startDate = dateBean;
-            startDate.setItemState(DateBean.ITEM_STATE_BEGIN_DATE);
-
-            endDate.setItemState(DateBean.ITEM_STATE_NORMAL);
-            endDate = null;
+            startDate!!.setItemState(DateBean.ITEM_STATE_NORMAL)
+            startDate = dateBean
+            startDate!!.setItemState(DateBean.ITEM_STATE_BEGIN_DATE)
+            endDate!!.setItemState(DateBean.ITEM_STATE_NORMAL)
+            endDate = null
         }
-
-        adapter.notifyDataSetChanged();
+        adapter!!.notifyDataSetChanged()
     }
 
     //选中中间的日期
-    private void setState() {
+    private fun setState() {
         if (endDate != null && startDate != null) {
-            int start = adapter.data.indexOf(startDate);
-            start += 1;
-            int end = adapter.data.indexOf(endDate);
-            for (; start < end; start++) {
-
-                DateBean dateBean = adapter.data.get(start);
+            var start = adapter!!.data.indexOf(startDate)
+            start += 1
+            val end = adapter!!.data.indexOf(endDate)
+            while (start < end) {
+                val dateBean = adapter!!.data[start]
                 if (!TextUtils.isEmpty(dateBean.getDay())) {
-                    dateBean.setItemState(DateBean.ITEM_STATE_SELECTED);
+                    dateBean.setItemState(DateBean.ITEM_STATE_SELECTED)
                 }
+                start++
             }
         }
     }
 
     //取消选中状态
-    private void clearState() {
+    private fun clearState() {
         if (endDate != null && startDate != null) {
-            int start = adapter.data.indexOf(startDate);
-            start += 1;
-            int end = adapter.data.indexOf(endDate);
-            for (; start < end; start++) {
-                DateBean dateBean = adapter.data.get(start);
-                dateBean.setItemState(DateBean.ITEM_STATE_NORMAL);
+            var start = adapter!!.data.indexOf(startDate)
+            start += 1
+            val end = adapter!!.data.indexOf(endDate)
+            while (start < end) {
+                val dateBean = adapter!!.data[start]
+                dateBean.setItemState(DateBean.ITEM_STATE_NORMAL)
+                start++
             }
         }
     }
 
     //日历adapter
-    public static class CalendarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        ArrayList<DateBean> data = new ArrayList<>();
-        private OnRecyclerviewItemClick onRecyclerviewItemClick;
-
-        public OnRecyclerviewItemClick getOnRecyclerviewItemClick() {
-            return onRecyclerviewItemClick;
+    class CalendarAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        @JvmField
+        var data = ArrayList<DateBean>()
+        var onRecyclerviewItemClick: OnRecyclerviewItemClick? = null
+        override fun getItemCount(): Int {
+            return data.size
         }
 
-        public void setOnRecyclerviewItemClick(OnRecyclerviewItemClick
-                                                       onRecyclerviewItemClick) {
-            this.onRecyclerviewItemClick = onRecyclerviewItemClick;
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): RecyclerView.ViewHolder {
             if (i == DateBean.item_type_day) {
-                View rootView = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_day, viewGroup, false);
-
-                final DayViewHolder dayViewHolder =
-                        new DayViewHolder(rootView);
-                dayViewHolder.itemView.setOnClickListener(v -> {
+                val rootView = LayoutInflater.from(viewGroup.context)
+                        .inflate(R.layout.item_day, viewGroup, false)
+                val dayViewHolder = DayViewHolder(rootView)
+                dayViewHolder.itemView.setOnClickListener { v: View? ->
                     if (onRecyclerviewItemClick != null) {
-                        onRecyclerviewItemClick.onItemClick(v,
-                                dayViewHolder.getLayoutPosition());
+                        onRecyclerviewItemClick!!.onItemClick(v,
+                                dayViewHolder.layoutPosition)
                     }
-                });
-                return dayViewHolder;
-            } else if (i == DateBean.item_type_month) {
-                View rootView = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_month, viewGroup, false);
-                final MonthViewHolder monthViewHolder =
-                        new MonthViewHolder(rootView);
-                monthViewHolder.itemView.setOnClickListener(v -> {
+                }
+                return dayViewHolder
+            } else {
+                val rootView = LayoutInflater.from(viewGroup.context)
+                        .inflate(R.layout.item_month, viewGroup, false)
+                val monthViewHolder = MonthViewHolder(rootView)
+                monthViewHolder.itemView.setOnClickListener { v: View? ->
                     if (onRecyclerviewItemClick != null) {
-                        onRecyclerviewItemClick.onItemClick(v,
-                                monthViewHolder.getLayoutPosition());
+                        onRecyclerviewItemClick!!.onItemClick(v,
+                                monthViewHolder.layoutPosition)
                     }
-                });
-                return monthViewHolder;
+                }
+                return monthViewHolder
             }
-            return null;
         }
 
         @SuppressLint("SimpleDateFormat")
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-            if (viewHolder instanceof MonthViewHolder) {
-                ((MonthViewHolder) viewHolder).tv_month.setText(data.get(i).getMonthStr());
+        override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, i: Int) {
+            if (viewHolder is MonthViewHolder) {
+                //获取年月日格式的当前日期
+                val yearAndMonthWithLanguageShow = getYearAndMonthWithLanguageShow(data[i].getMonthStr())
+                viewHolder.tv_month.text = yearAndMonthWithLanguageShow
             } else {
-                DayViewHolder vh = ((DayViewHolder) viewHolder);
-                vh.tv_day.setText(data.get(i).getDay());
-                vh.tv_check_in_check_out.setVisibility(View.GONE);
-                DateBean dateBean = data.get(i);
+                val vh = viewHolder as DayViewHolder
+                vh.tv_day.text = data[i].getDay()
+                vh.tv_check_in_check_out.visibility = GONE
+                val dateBean = data[i]
                 //设置item状态
-                vh.startBgIv.setVisibility(View.GONE);
+                vh.startBgIv.visibility = GONE
                 if (dateBean.getItemState() == DateBean.ITEM_STATE_BEGIN_DATE
                         || dateBean.getItemState() == DateBean.ITEM_STATE_END_DATE) {
                     //开始日期或结束日期
-                    vh.startBgIv.setVisibility(View.VISIBLE);
-                    vh.tv_day.setTextColor(Color.WHITE);
-                    vh.tv_check_in_check_out.setVisibility(View.VISIBLE);
+                    vh.startBgIv.visibility = VISIBLE
+                    vh.tv_day.setTextColor(Color.WHITE)
+                    vh.tv_check_in_check_out.visibility = VISIBLE
                     if (dateBean.getItemState() == DateBean.ITEM_STATE_END_DATE) {
-                        vh.tv_check_in_check_out.setText("结束");
+                        vh.tv_check_in_check_out.text = "结束"
                     } else {
-                        vh.tv_check_in_check_out.setText("开始");
+                        vh.tv_check_in_check_out.text = "开始"
                     }
-
                 } else if (dateBean.getItemState() == DateBean.ITEM_STATE_SELECTED) {
                     //选中状态
-                    vh.itemView.setBackgroundColor(Color.parseColor("#f5f5f5"));
-                    vh.tv_day.setTextColor(Color.parseColor("#333333"));
+                    vh.itemView.setBackgroundColor(Color.parseColor("#f5f5f5"))
+                    vh.tv_day.setTextColor(Color.parseColor("#333333"))
                 } else {
                     //正常状态
-                    vh.itemView.setBackgroundColor(Color.WHITE);
-                    vh.tv_day.setTextColor(Color.parseColor("#999999"));
+                    vh.itemView.setBackgroundColor(Color.WHITE)
+                    vh.tv_day.setTextColor(Color.parseColor("#999999"))
                 }
                 //未避免文字颜色覆盖，放置最后
-                if (data.get(i).getDate() != null) {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    String time = format.format(data.get(i).getDate());
-                    String currentTime = format.format(Calendar.getInstance().getTime());
-                    if (time.equals(currentTime)) {
+                if (data[i].getDate() != null) {
+                    val format = SimpleDateFormat("yyyy-MM-dd")
+                    val time = format.format(data[i].getDate())
+                    val currentTime = format.format(Calendar.getInstance().time)
+                    if (time == currentTime) {
                         //如果是今天
                         if (dateBean.getItemState() == DateBean.ITEM_STATE_BEGIN_DATE
                                 || dateBean.getItemState() == DateBean.ITEM_STATE_END_DATE) {
-                            vh.tv_day.setTextColor(Color.WHITE);
-                        } else vh.tv_day.setTextColor(Color.parseColor("#333333"));
-                        vh.currentDayIv.setVisibility(View.VISIBLE);
+                            vh.tv_day.setTextColor(Color.WHITE)
+                        } else vh.tv_day.setTextColor(Color.parseColor("#333333"))
+                        vh.currentDayIv.visibility = VISIBLE
                     } else {
-                        vh.currentDayIv.setVisibility(View.GONE);
+                        vh.currentDayIv.visibility = GONE
                     }
                 } else {
-                    vh.currentDayIv.setVisibility(View.GONE);
+                    vh.currentDayIv.visibility = GONE
                 }
             }
         }
 
-        @Override
-        public int getItemViewType(int position) {
-            return data.get(position).getItemType();
+
+
+        override fun getItemViewType(position: Int): Int {
+            return data[position].getItemType()
         }
 
-        public class DayViewHolder extends RecyclerView.ViewHolder {
-            public TextView tv_day;
-            public TextView tv_check_in_check_out;
-            public ImageView currentDayIv;
-            private ImageView startBgIv;
+        inner class DayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var tv_day: TextView
+            var tv_check_in_check_out: TextView
+            var currentDayIv: ImageView
+            val startBgIv: ImageView
 
-            public DayViewHolder(@NonNull View itemView) {
-                super(itemView);
-                tv_day = itemView.findViewById(R.id.tv_day);
-                tv_check_in_check_out = itemView.findViewById(R.id.tv_check_in_check_out);
-                currentDayIv = itemView.findViewById(R.id.currentDayIv);
-                startBgIv = itemView.findViewById(R.id.startBgIv);
+            init {
+                tv_day = itemView.findViewById(R.id.tv_day)
+                tv_check_in_check_out = itemView.findViewById(R.id.tv_check_in_check_out)
+                currentDayIv = itemView.findViewById(R.id.currentDayIv)
+                startBgIv = itemView.findViewById(R.id.startBgIv)
             }
         }
 
-        public class MonthViewHolder extends RecyclerView.ViewHolder {
-            public TextView tv_month;
+        inner class MonthViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var tv_month: TextView = itemView.findViewById(R.id.tv_month)
 
-            public MonthViewHolder(@NonNull View itemView) {
-                super(itemView);
-                tv_month = itemView.findViewById(R.id.tv_month);
-            }
         }
 
-        public interface OnRecyclerviewItemClick {
-            void onItemClick(View v, int position);
+        interface OnRecyclerviewItemClick {
+            fun onItemClick(v: View?, position: Int)
         }
     }
 
     /**
      * 生成日历数据
      */
-    private List<DateBean> days(String sDate, String eDate) {
-        List<DateBean> dateBeans = new ArrayList<>();
+    private fun days(sDate: String, eDate: String): List<DateBean> {
+        val dateBeans: MutableList<DateBean> = ArrayList()
         try {
-            Calendar calendar = Calendar.getInstance();
+            val calendar = Calendar.getInstance()
             //日期格式化
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat formatYYYYMM = new SimpleDateFormat("yyyy年MM月");
-            Date currentDate = new Date();
+            val format = SimpleDateFormat("yyyy-MM-dd")
+            val formatYYYYMM = SimpleDateFormat("yyyy年MM月")
+            val currentDate = Date()
             //起始日期
-            Date date = new Date();
-            calendar.setTime(date);
+            val date = Date()
+            calendar.time = date
             //结束日期
-            calendar.add(Calendar.MONTH, -6);
-            Date startDate = new Date(calendar.getTimeInMillis());
-            calendar.setTime(startDate);
+            calendar.add(Calendar.MONTH, -6)
+            var startDate: Date? = Date(calendar.timeInMillis)
+            calendar.time = startDate
             //结束日期
-            calendar.add(Calendar.MONTH, +6);
-            Date endDate = new Date(calendar.getTimeInMillis());
-
+            calendar.add(Calendar.MONTH, +6)
+            var endDate = Date(calendar.timeInMillis)
             Log.d(TAG, "startDate:" + format.format(startDate) +
-                    "----------endDate:" + format.format(endDate));
+                    "----------endDate:" + format.format(endDate))
 
             //格式化开始日期和结束日期为 yyyy-mm-dd格式
-            String endDateStr = format.format(endDate);
-            endDate = format.parse(endDateStr);
-
-            String startDateStr = format.format(startDate);
-            startDate = format.parse(startDateStr);
-
-            calendar.setTime(startDate);
-
+            val endDateStr = format.format(endDate)
+            endDate = format.parse(endDateStr)
+            val startDateStr = format.format(startDate)
+            startDate = format.parse(startDateStr)
+            calendar.time = startDate
             Log.d(TAG, "startDateStr:" + startDateStr +
-                    "---------endDate:" + format.format(endDate));
+                    "---------endDate:" + format.format(endDate))
             Log.d(TAG, "endDateStr:" + endDateStr +
-                    "---------endDate:" + format.format(endDate));
-
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-            Calendar monthCalendar = Calendar.getInstance();
+                    "---------endDate:" + format.format(endDate))
+            calendar[Calendar.DAY_OF_MONTH] = 1
+            val monthCalendar = Calendar.getInstance()
 
 
             //按月生成日历 每行7个 最多6行 42个
             //每一行有七个日期  日 一 二 三 四 五 六 的顺序
-            for (; calendar.getTimeInMillis() <= endDate.getTime(); ) {
+            while (calendar.timeInMillis <= endDate.time) {
+
 
                 //月份item
-                DateBean monthDateBean = new DateBean();
-                monthDateBean.setDate(calendar.getTime());
-                monthDateBean.setMonthStr(formatYYYYMM.format(monthDateBean.getDate()));
-                monthDateBean.setItemType(DateBean.item_type_month);
-                dateBeans.add(monthDateBean);
+                val monthDateBean = DateBean()
+                monthDateBean.setDate(calendar.time)
+                monthDateBean.setMonthStr(formatYYYYMM.format(monthDateBean.getDate()))
+                monthDateBean.setItemType(DateBean.item_type_month)
+                dateBeans.add(monthDateBean)
 
                 //获取一个月结束的日期和开始日期
-                monthCalendar.setTime(calendar.getTime());
-                monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
-                Date startMonthDay = calendar.getTime();
-
-                monthCalendar.add(Calendar.MONTH, 1);
-                monthCalendar.add(Calendar.DAY_OF_MONTH, -1);
-                Date endMonthDay = monthCalendar.getTime();
+                monthCalendar.time = calendar.time
+                monthCalendar[Calendar.DAY_OF_MONTH] = 1
+                val startMonthDay = calendar.time
+                monthCalendar.add(Calendar.MONTH, 1)
+                monthCalendar.add(Calendar.DAY_OF_MONTH, -1)
+                val endMonthDay = monthCalendar.time
 
                 //重置为本月开始
-                monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
-
+                monthCalendar[Calendar.DAY_OF_MONTH] = 1
                 Log.d(TAG, "月份的开始日期:" + format.format(startMonthDay) +
-                        "---------结束日期:" + format.format(endMonthDay));
-                for (; monthCalendar.getTimeInMillis() <= endMonthDay.getTime(); ) {
+                        "---------结束日期:" + format.format(endMonthDay))
+                while (monthCalendar.timeInMillis <= endMonthDay.time) {
+
                     //生成单个月的日历
 
                     //处理一个月开始的第一天
-                    if (monthCalendar.get(Calendar.DAY_OF_MONTH) == 1) {
+                    if (monthCalendar[Calendar.DAY_OF_MONTH] == 1) {
                         //看某个月第一天是周几
-                        int weekDay = monthCalendar.get(Calendar.DAY_OF_WEEK);
-                        switch (weekDay) {
-                            case 1:
-                                //周日
-                                break;
-                            case 2:
-                                //周一
-                                addDatePlaceholder(dateBeans, 1, monthDateBean.getMonthStr());
-                                break;
-                            case 3:
-                                //周二
-                                addDatePlaceholder(dateBeans, 2, monthDateBean.getMonthStr());
-                                break;
-                            case 4:
-                                //周三
-                                addDatePlaceholder(dateBeans, 3, monthDateBean.getMonthStr());
-                                break;
-                            case 5:
-                                //周四
-                                addDatePlaceholder(dateBeans, 4, monthDateBean.getMonthStr());
-                                break;
-                            case 6:
-                                addDatePlaceholder(dateBeans, 5, monthDateBean.getMonthStr());
-                                //周五
-                                break;
-                            case 7:
-                                addDatePlaceholder(dateBeans, 6, monthDateBean.getMonthStr());
-                                //周六
-                                break;
+                        val weekDay = monthCalendar[Calendar.DAY_OF_WEEK]
+                        when (weekDay) {
+                            1 -> {
+                            }
+                            2 ->                                 //周一
+                                addDatePlaceholder(dateBeans, 1, monthDateBean.getMonthStr())
+                            3 ->                                 //周二
+                                addDatePlaceholder(dateBeans, 2, monthDateBean.getMonthStr())
+                            4 ->                                 //周三
+                                addDatePlaceholder(dateBeans, 3, monthDateBean.getMonthStr())
+                            5 ->                                 //周四
+                                addDatePlaceholder(dateBeans, 4, monthDateBean.getMonthStr())
+                            6 -> addDatePlaceholder(dateBeans, 5, monthDateBean.getMonthStr())
+                            7 -> addDatePlaceholder(dateBeans, 6, monthDateBean.getMonthStr())
                         }
                     }
 
                     //生成某一天日期实体 日item
-                    DateBean dateBean = new DateBean();
-                    dateBean.setDate(monthCalendar.getTime());
-                    dateBean.setDay(monthCalendar.get(Calendar.DAY_OF_MONTH) + "");
-                    dateBean.setMonthStr(monthDateBean.getMonthStr());
-                    dateBeans.add(dateBean);
+                    val dateBean = DateBean()
+                    dateBean.setDate(monthCalendar.time)
+                    dateBean.setDay(monthCalendar[Calendar.DAY_OF_MONTH].toString() + "")
+                    dateBean.setMonthStr(monthDateBean.getMonthStr())
+                    dateBeans.add(dateBean)
 
                     //处理一个月的最后一天
-                    if (monthCalendar.getTimeInMillis() == endMonthDay.getTime()) {
+                    if (monthCalendar.timeInMillis == endMonthDay.time) {
                         //看某个月第一天是周几
-                        int weekDay = monthCalendar.get(Calendar.DAY_OF_WEEK);
-                        switch (weekDay) {
-                            case 1:
-                                //周日
-                                addDatePlaceholder(dateBeans, 6, monthDateBean.getMonthStr());
-                                break;
-                            case 2:
-                                //周一
-                                addDatePlaceholder(dateBeans, 5, monthDateBean.getMonthStr());
-                                break;
-                            case 3:
-                                //周二
-                                addDatePlaceholder(dateBeans, 4, monthDateBean.getMonthStr());
-                                break;
-                            case 4:
-                                //周三
-                                addDatePlaceholder(dateBeans, 3, monthDateBean.getMonthStr());
-                                break;
-                            case 5:
-                                //周四
-                                addDatePlaceholder(dateBeans, 2, monthDateBean.getMonthStr());
-                                break;
-                            case 6:
-                                addDatePlaceholder(dateBeans, 1, monthDateBean.getMonthStr());
-                                //周5
-                                break;
+                        val weekDay = monthCalendar[Calendar.DAY_OF_WEEK]
+                        when (weekDay) {
+                            1 ->                                 //周日
+                                addDatePlaceholder(dateBeans, 6, monthDateBean.getMonthStr())
+                            2 ->                                 //周一
+                                addDatePlaceholder(dateBeans, 5, monthDateBean.getMonthStr())
+                            3 ->                                 //周二
+                                addDatePlaceholder(dateBeans, 4, monthDateBean.getMonthStr())
+                            4 ->                                 //周三
+                                addDatePlaceholder(dateBeans, 3, monthDateBean.getMonthStr())
+                            5 ->                                 //周四
+                                addDatePlaceholder(dateBeans, 2, monthDateBean.getMonthStr())
+                            6 -> addDatePlaceholder(dateBeans, 1, monthDateBean.getMonthStr())
                         }
                     }
 
                     //天数加1
-                    monthCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                    monthCalendar.add(Calendar.DAY_OF_MONTH, 1)
                 }
-
-                Log.d(TAG, "日期" + format.format(calendar.getTime()) + "----周几" + getWeekStr(calendar.get(Calendar.DAY_OF_WEEK) + ""));
+                Log.d(TAG, "日期" + format.format(calendar.time) + "----周几" + getWeekStr(calendar[Calendar.DAY_OF_WEEK].toString() + ""))
                 //月份加1
-                calendar.add(Calendar.MONTH, 1);
+                calendar.add(Calendar.MONTH, 1)
             }
-
-        } catch (Exception ex) {
-
+        } catch (ex: Exception) {
         }
-
-        return dateBeans;
+        return dateBeans
     }
 
     //添加空的日期占位
-    private void addDatePlaceholder(List<DateBean> dateBeans, int count, String monthStr) {
-        for (int i = 0; i < count; i++) {
-            DateBean dateBean = new DateBean();
-            dateBean.setMonthStr(monthStr);
-            dateBeans.add(dateBean);
+    private fun addDatePlaceholder(dateBeans: MutableList<DateBean>, count: Int, monthStr: String) {
+        for (i in 0 until count) {
+            val dateBean = DateBean()
+            dateBean.setMonthStr(monthStr)
+            dateBeans.add(dateBean)
         }
     }
 
-    private String getWeekStr(String mWay) {
-        if ("1".equals(mWay)) {
-            mWay = "天";
-        } else if ("2".equals(mWay)) {
-            mWay = "一";
-        } else if ("3".equals(mWay)) {
-            mWay = "二";
-        } else if ("4".equals(mWay)) {
-            mWay = "三";
-        } else if ("5".equals(mWay)) {
-            mWay = "四";
-        } else if ("6".equals(mWay)) {
-            mWay = "五";
-        } else if ("7".equals(mWay)) {
-            mWay = "六";
+    private fun getWeekStr(mWay: String): String {
+        var value = mWay
+        when (mWay) {
+            "1" -> {
+                value = "天"
+            }
+            "2" -> {
+                value = "一"
+            }
+            "3" -> {
+                value = "二"
+            }
+            "4" -> {
+                value = "三"
+            }
+            "5" -> {
+                value = "四"
+            }
+            "6" -> {
+                value = "五"
+            }
+            "7" -> {
+                value = "六"
+            }
         }
-        return mWay;
+        return value
     }
 
-    public interface OnDateSelected {
-        void selected(String startDate, String endDate);
+    interface OnDateSelected {
+        fun selected(startDate: String?, endDate: String?)
     }
 
-    public void setOnDateSelected(OnDateSelected onDateSelected) {
-        this.onDateSelected = onDateSelected;
+    fun setOnDateSelectedListener(onDateSelected: OnDateSelected?) {
+        this.onDateSelected = onDateSelected
+    }
+
+    companion object {
+        private const val TAG = "CalendarList_LOG"
     }
 }

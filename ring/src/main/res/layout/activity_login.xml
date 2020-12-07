@@ -102,10 +102,8 @@
                 android:id="@+id/forgotPasswordTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_10"
                 android:text="@string/app_forgot_password"
                 android:textColor="@color/color999999"
-                android:textSize="@dimen/sp_13"
                 app:layout_constraintBaseline_toBaselineOf="@id/passwordEdit"
                 app:layout_constraintEnd_toStartOf="@id/passwordShowIv" />
 

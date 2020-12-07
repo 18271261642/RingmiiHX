@@ -35,7 +35,7 @@ object ApiLibUtil {
                 val substring = toLanguageTag.substring(
                         toLanguageTag.indexOf("-") + 1)
                 if (substring.contains("-")) {
-                    //有语言有地区
+                    //有语言有地区，三个字符标识语言
                     val substring1 = substring.substring(0, substring.indexOf("-"))
                     return when {
                         substring1.contains("Hant") -> {
@@ -52,14 +52,14 @@ object ApiLibUtil {
                         }
                     }
                 } else {
-                    //只有语言
-                    val lowerCase = substring.toLowerCase(Locale.ROOT)
+                    //用两个字符标识语言
+                    val lowerCase = toLanguageTag.toLowerCase(Locale.ROOT)
                     return when {
                         lowerCase.contains("tw") -> {
                             Log.i("LanguageUtil", "tw")
                             "tw"
                         }
-                        lowerCase.contains("cn") -> {
+                        lowerCase.contains("zh") -> {
                             Log.i("LanguageUtil", "cn")
                             "cn"
                         }

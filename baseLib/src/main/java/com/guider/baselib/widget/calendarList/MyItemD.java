@@ -8,6 +8,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.guider.baselib.utils.DateUtilKotlin;
+
 public class MyItemD extends RecyclerView.ItemDecoration {
     Paint paint=new Paint();
     Paint colorPaint=new Paint();
@@ -65,7 +67,8 @@ public class MyItemD extends RecyclerView.ItemDecoration {
         colorPaint.setTextAlign(Paint.Align.CENTER);
         colorPaint.setTextSize(15*scale+0.5f);
         //绘制头部月份文字
-        c.drawText(text,parent.getRight()/2,(t+height)/2,colorPaint);
+        String textValue = DateUtilKotlin.INSTANCE.getYearAndMonthWithLanguageShow(text);
+        c.drawText(textValue,parent.getRight()/2,(t+height)/2,colorPaint);
 
         //绘制分割线
 //        if(fistViewTop!=height) {

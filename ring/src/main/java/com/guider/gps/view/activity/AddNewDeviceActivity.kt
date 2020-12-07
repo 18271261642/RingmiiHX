@@ -124,18 +124,25 @@ class AddNewDeviceActivity : BaseActivity() {
                                                 it.deviceCode!!)
                                     }
                                 }
+                                if (StringUtil.isNotBlankAndEmpty(it.phone)
+                                        && !it.phone!!.contains("vis")) {
+                                    //绑定当前的手机号因为没有点击登录按钮所以没有切换新的手机号避免出错
+                                    MMKVUtil.saveString(USER.PHONE,it.phone?:"")
+                                }
                             }
                         }
                         val intent: Intent
                         if (type == "unBindAndBindNew") {
                             intent = Intent()
                             intent.putExtra("bindListBean", bean)
+                            setResult(Activity.RESULT_OK, intent)
                         } else {
                             intent = Intent(mContext!!, MainActivity::class.java)
                             intent.putExtra("bindListBean", bean)
+                            //注意setResult的调用时间需要在onPause之前，否则出现不回调onResult方法的情况
+                            setResult(Activity.RESULT_OK, intent)
                             startActivity(intent)
                         }
-                        setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
                 }, onRequestFinish = {

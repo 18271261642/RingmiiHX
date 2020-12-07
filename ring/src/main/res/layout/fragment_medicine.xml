@@ -8,6 +8,7 @@
         android:id="@+id/medicineTabLayout"
         android:layout_width="match_parent"
         android:layout_height="42dp"
+        app:tabTextAppearance="@style/CustomTabLayoutEnStyle"
         app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorHeight="@dimen/dp_2" />
 

@@ -927,4 +927,6 @@
     <string name="app_cancel">取消</string>
     <string name="app_allow">允许</string>
     <string name="app_deny">拒绝</string>
+    <string name="app_year">年</string>
+    <string name="app_month">月</string>
 </resources>
