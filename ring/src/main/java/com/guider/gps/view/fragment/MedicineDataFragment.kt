@@ -9,7 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.device.IUnit
-import com.guider.baselib.device.Unit
+import com.guider.baselib.device.Unit.bloodO2
+import com.guider.baselib.device.Unit.bp
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
@@ -121,13 +122,13 @@ class MedicineDataFragment : BaseFragment() {
                 getBloodSugarData()
             }
             resources.getString(R.string.app_main_health_blood_pressure) -> {
-                dataUnitTv.text = Unit().bp
-                dataChartUnit.text = Unit().bp
+                dataUnitTv.text = bp
+                dataChartUnit.text = bp
                 getBloodData()
             }
             resources.getString(R.string.app_main_health_blood_oxygen) -> {
-                dataUnitTv.text = Unit().bloodO2
-                dataChartUnit.text = Unit().bloodO2
+                dataUnitTv.text = bloodO2
+                dataChartUnit.text = bloodO2
                 getBloodOxygenData()
             }
         }

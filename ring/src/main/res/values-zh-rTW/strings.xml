@@ -67,8 +67,14 @@
     <string name="app_main_medicine_suggest_hypertension_normal">建議加強運動鍛鍊，定期監測血壓，如持續監測較高，請及時就醫，遵醫囑按時服藥。</string>
     <string name="app_main_medicine_suggest_blood_oxygen_low">多吃補血的食物，比如要多吃紅棗 ，桂圓肉，花生，紅豆，紅米粥等。</string>
     <string name="app_main_medicine_suggest_blood_oxygen_normal">請繼續保持！保持良好的生活習慣，保持日常愉快心情。</string>
-    <string name="app_main_medicine_suggest_heart_rate_high">建議積極鍛鍊，改善體質以及心肺的功能</string>
+    <string name="app_main_medicine_suggest_heart_rate_abnormal">建議積極鍛鍊，改善體質以及心肺的功能</string>
     <string name="app_main_medicine_suggest_heart_rate_normal">請繼續保持！保持良好的生活習慣，保持日常愉快心情。</string>
+    <string name="app_health_warn_temp_low">請多運動，注意保暖，加強營養</string>
+    <string name="app_health_warn_temp_normal">保持日常健康飲食、運動與作息習慣</string>
+    <string name="app_health_warn_temp_low_fever">請做好物理降溫，多喝水，多吃蔬菜水果，或根據情況就醫檢查治療</string>
+    <string name="app_health_warn_temp_medium_fever">請做好物理降溫，多喝水，注意體溫變化，根據情況及時就醫檢查治療</string>
+    <string name="app_health_warn_temp_highly_fever">請注意體溫變化，及時就醫檢查治療</string>
+    <string name="app_health_warn_temp_hyperthermia">可能有生命危險，請儘快就醫檢查治療</string>
     <string name="app_main_medicine_doctors_consultation">醫師諮詢</string>
     <string name="app_doctor_answer_edit_hint">來問健康醫生</string>
     <string name="app_doctor_answer_picture">上傳圖片</string>

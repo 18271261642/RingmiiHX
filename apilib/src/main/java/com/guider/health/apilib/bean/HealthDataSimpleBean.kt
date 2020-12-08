@@ -21,6 +21,8 @@ data class HealthDataSimpleBean(
         var minute: Int = 0,
         var step: Int = 0,
         var bs: Double = 0.0,
-        var bo:Int = 0,
-        var warningContent: String = ""
+        var bo: Int = 0,
+        var warningContent: String = "",
+        //详细状态判断的key值
+        var stateKey: String = ""
 )

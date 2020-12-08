@@ -5,14 +5,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guider.baselib.device.IUnit
-import com.guider.baselib.device.Unit
+import com.guider.baselib.device.Unit.bloodO2
+import com.guider.baselib.device.Unit.bodyTemp
+import com.guider.baselib.device.Unit.bp
+import com.guider.baselib.device.Unit.heart
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
 import com.guider.gps.bean.SimpleWithTypeBean
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.AbnormalRingMsgListBean
+import com.guider.health.apilib.enums.EnumHealthDataStateKey
+import com.guider.health.apilib.enums.HealthWarnDataType
+import com.guider.health.apilib.utils.MMKVUtil
 
 class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingMsgListBean>)
     : CommonAdapter<AbnormalRingMsgListBean>(context, dataList, R.layout.item_abnormal_msg) {
@@ -38,8 +43,9 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
         if (data.dataBean != null) {
             when (data.dataType) {
                 //血糖
-                "BLOODSUGAR" -> {
-                    holder.setImageResource(R.id.msgTypeIv, R.drawable.icon_home_blood)
+                HealthWarnDataType.BLOODSUGAR -> {
+                    holder.setImageResource(R.id.msgTypeIv,
+                            R.drawable.icon_health_warn_msg_blood_glucose)
                     holder.setText(R.id.msgTypeTv,
                             String.format(mContext.resources.getString(
                                     R.string.app_msg_item_title), mContext.resources.getString(
@@ -59,13 +65,14 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     )
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
-                    when (data.dataBean!!.state2.substring(0,
-                            data.dataBean!!.state2.indexOf(","))) {
-                        "偏低" -> {
+                    when (data.dataBean?.stateKey) {
+                        EnumHealthDataStateKey.FbsLow.key,
+                        EnumHealthDataStateKey.PbsLow.key -> {
                             suggestTv.text = mContext.resources.getString(
                                     R.string.app_main_medicine_suggest_sugar_low)
                         }
-                        "偏高" -> {
+                        EnumHealthDataStateKey.FbsHigh.key,
+                        EnumHealthDataStateKey.PbsHigh.key -> {
                             suggestTv.text = mContext.resources.getString(
                                     R.string.app_main_medicine_suggest_sugar_high)
                         }
@@ -87,8 +94,9 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     }
                 }
                 //血压
-                "BLOODPRESSUREDYNAMIC" -> {
-                    holder.setImageResource(R.id.msgTypeIv, R.drawable.icon_home_blood_sugar)
+                HealthWarnDataType.BLOODPRESSUREDYNAMIC -> {
+                    holder.setImageResource(R.id.msgTypeIv,
+                            R.drawable.icon_health_warn_msg_blood_pressure)
                     holder.setText(R.id.msgTypeTv,
                             String.format(mContext.resources.getString(
                                     R.string.app_msg_item_title), mContext.resources.getString(
@@ -99,7 +107,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                             data.dataBean!!.state2.indexOf(",") + 1)
                     val list = arrayListOf(SimpleWithTypeBean(
                             mContext.resources.getString(R.string.app_msg_item_collect_compressive),
-                            data.dataBean!!.sbp.toString().plus(Unit().bp), state1),
+                            data.dataBean!!.sbp.toString().plus(bp), state1),
                             SimpleWithTypeBean(
                                     mContext.resources.getString(
                                             R.string.app_msg_item_shu_zhang_pressure),
@@ -115,18 +123,22 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     )
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
-                    when {
-                        state1 == "偏低" || (state1 == "正常" && state2 == "偏低") -> {
+                    when (data.dataBean?.stateKey) {
+                        EnumHealthDataStateKey.BpLow.key -> {
                             suggestTv.text = mContext.resources.getString(
                                     R.string.app_main_medicine_suggest_blood_pre_low)
                         }
-                        state1 == "正常" && state2 == "正常" -> {
-                            suggestTv.text = mContext.resources.getString(
-                                    R.string.app_main_medicine_suggest_blood_pre_normal)
-                        }
-                        state1 == "偏高" || (state1 == "正常" && state2 == "偏高") -> {
+                        EnumHealthDataStateKey.BpHigh.key -> {
                             suggestTv.text = mContext.resources.getString(
                                     R.string.app_main_medicine_suggest_blood_pre_high)
+                        }
+                        EnumHealthDataStateKey.BpHyp.key -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_main_medicine_suggest_hypertension_normal)
+                        }
+                        else -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_main_medicine_suggest_blood_pre_normal)
                         }
                     }
                     if (data.accountId == accountId) {
@@ -142,21 +154,22 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     }
                 }
                 //血氧
-                "BLOODOXYGEN" -> {
-                    holder.setImageResource(R.id.msgTypeIv, R.drawable.icon_home_blood_oxygen)
+                HealthWarnDataType.BLOODOXYGEN -> {
+                    holder.setImageResource(R.id.msgTypeIv,
+                            R.drawable.icon_health_warn_msg_blood_oxygen)
                     holder.setText(R.id.msgTypeTv, String.format(mContext.resources.getString(
                             R.string.app_msg_item_title), mContext.resources.getString(
                             R.string.app_main_health_blood_oxygen)))
                     val list = arrayListOf(SimpleWithTypeBean(
                             mContext.resources.getString(
                                     R.string.app_main_health_blood_oxygen_title),
-                            data.dataBean!!.bo.toString().plus(Unit().bloodO2),
+                            data.dataBean!!.bo.toString().plus(bloodO2),
                             data.dataBean!!.state2
                     ))
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
-                    when (data.dataBean!!.state2) {
-                        "偏低" -> {
+                    when (data.dataBean?.stateKey) {
+                        EnumHealthDataStateKey.Low.key -> {
                             suggestTv.text = mContext.resources.getString(
                                     R.string.app_main_medicine_suggest_blood_oxygen_low)
                         }
@@ -177,6 +190,59 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                                 R.string.app_main_health_blood_oxygen))
                     }
                 }
+                //体温
+                HealthWarnDataType.BODYTEMP -> {
+                    holder.setImageResource(R.id.msgTypeIv,
+                            R.drawable.icon_health_warn_msg_body_temp)
+                    holder.setText(R.id.msgTypeTv, String.format(mContext.resources.getString(
+                            R.string.app_msg_item_title), mContext.resources.getString(
+                            R.string.app_main_health_body_temp)))
+                    val list = arrayListOf(SimpleWithTypeBean(
+                            mContext.resources.getString(
+                                    R.string.app_main_health_body_temp),
+                            data.dataBean!!.bodyTemp.toString().plus(bodyTemp),
+                            data.dataBean!!.state2
+                    ))
+                    val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
+                    msgDataDetailRv.adapter = adapter
+                    when (data.dataBean?.stateKey) {
+                        EnumHealthDataStateKey.Low.key -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_health_warn_temp_low)
+                        }
+                        EnumHealthDataStateKey.LowFever.key -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_health_warn_temp_low_fever)
+                        }
+                        EnumHealthDataStateKey.MediumFever.key -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_health_warn_temp_medium_fever)
+                        }
+                        EnumHealthDataStateKey.HighlyFever.key -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_health_warn_temp_highly_fever)
+                        }
+                        EnumHealthDataStateKey.Hyperthermia.key -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_health_warn_temp_hyperthermia)
+                        }
+                        else -> {
+                            suggestTv.text = mContext.resources.getString(
+                                    R.string.app_health_warn_temp_normal)
+                        }
+                    }
+                    if (data.accountId == accountId) {
+                        msgContent.text = mContext.resources.getString(
+                                R.string.app_abnormal_msg_tile_model_own,
+                                mContext.resources.getString(
+                                        R.string.app_main_health_body_temp))
+                    } else {
+                        msgContent.text = mContext.resources.getString(
+                                R.string.app_abnormal_msg_tile_model,
+                                data.relationShip, mContext.resources.getString(
+                                R.string.app_main_health_body_temp))
+                    }
+                }
                 //心率
                 else -> {
                     holder.setImageResource(R.id.msgTypeIv, R.drawable.icon_home_heart)
@@ -186,15 +252,15 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     val list = arrayListOf(SimpleWithTypeBean(
                             mContext.resources.getString(
                                     R.string.app_main_health_heart_rate),
-                            data.dataBean!!.hb.toString().plus(Unit().heart),
+                            data.dataBean!!.hb.toString().plus(heart),
                             data.dataBean!!.state2
                     ))
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
-                    when (data.dataBean!!.state2) {
-                        "偏高", "偏低" -> {
+                    when (data.dataBean?.stateKey) {
+                        EnumHealthDataStateKey.Low.key, EnumHealthDataStateKey.Normal.key -> {
                             suggestTv.text = mContext.resources.getString(
-                                    R.string.app_main_medicine_suggest_heart_rate_high)
+                                    R.string.app_main_medicine_suggest_heart_rate_abnormal)
                         }
                         else -> {
                             suggestTv.text = mContext.resources.getString(

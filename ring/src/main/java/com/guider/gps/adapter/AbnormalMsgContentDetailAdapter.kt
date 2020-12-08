@@ -31,31 +31,15 @@ class AbnormalMsgContentDetailAdapter(context: Context, dataList: ArrayList<Simp
                 }
             }
         } else holder.setViewVisibility(R.id.dataStatusIv, View.GONE)
-        when (data.type) {
-            mContext.resources.getString(
-                    R.string.app_msg_item_collect_compressive) -> {
+        //心率值复杂一些
+        if (data.type == mContext.resources.getString(
+                        R.string.app_main_health_heart_rate)) {
+            if (StringUtil.isNotBlankAndEmpty(data.vaule) && data.vaule != "0")
                 holder.setText(R.id.dataContentTv, data.vaule)
-            }
-            (mContext.resources.getString(
-                    R.string.app_msg_item_shu_zhang_pressure)) -> {
-                holder.setText(R.id.dataContentTv, data.vaule)
-            }
-            mContext.resources.getString(
-                    R.string.app_main_health_heart_rate) -> {
-                if (StringUtil.isNotBlankAndEmpty(data.vaule) && data.vaule != "0")
-                    holder.setText(R.id.dataContentTv, data.vaule)
-                else holder.setText(R.id.dataContentTv, "-")
-            }
-            mContext.resources.getString(R.string.app_main_health_blood_sugar) -> {
-                holder.setText(R.id.dataContentTv, data.vaule)
-            }
-            mContext.resources.getString(
-                    R.string.app_main_health_blood_oxygen_title) -> {
-                holder.setText(R.id.dataContentTv, data.vaule)
-            }
-            else -> {
-                holder.setText(R.id.dataContentTv, data.vaule)
-            }
+            else holder.setText(R.id.dataContentTv, "-")
+
+        } else {
+            holder.setText(R.id.dataContentTv, data.vaule)
         }
     }
 }

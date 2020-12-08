@@ -1,9 +1,11 @@
 package com.guider.health.apilib.bean
 
+import com.guider.health.apilib.enums.HealthWarnDataType
+
 data class AbnormalRingMsgListBean(
         val accountId: Int,
         val createTime: String?,
-        val dataType: String,
+        val dataType: HealthWarnDataType,
         val deviceTypeName: Any,
         val healthDataId: Int,
         val id: Int,

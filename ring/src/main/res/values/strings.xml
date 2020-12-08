@@ -68,8 +68,14 @@
     <string name="app_main_medicine_suggest_hypertension_normal">It is recommended to strengthen physical exercise and monitor blood pressure regularly. If continuous monitoring is high, please see a doctor in time and take medicine as prescribed by the doctor.</string>
     <string name="app_main_medicine_suggest_blood_oxygen_low">Eat more blood-enriching foods, such as red dates, longan meat, peanuts, red beans, red rice porridge and so on.</string>
     <string name="app_main_medicine_suggest_blood_oxygen_normal">Please keep it up!Maintain good living habits, maintain daily happy mood.</string>
-    <string name="app_main_medicine_suggest_heart_rate_high">It is recommended to exercise actively, improve physical fitness and cardiopulmonary function</string>
+    <string name="app_main_medicine_suggest_heart_rate_abnormal">It is recommended to exercise actively, improve physical fitness and cardiopulmonary function</string>
     <string name="app_main_medicine_suggest_heart_rate_normal">Please keep up! Maintain good living habits, maintain daily happy mood.</string>
+    <string name="app_health_warn_temp_low">Please take more exercise, keep warm and strengthen nutrition</string>
+    <string name="app_health_warn_temp_normal">Maintain a healthy diet, exercise, and sleep routine</string>
+    <string name="app_health_warn_temp_low_fever">Please do a good physical cooling, drink more water, eat more fruits and vegetables, or according to the situation medical examination and treatment</string>
+    <string name="app_health_warn_temp_medium_fever">Please do a good job of physical cooling, drink more water, pay attention to the change of body temperature, timely medical examination and treatment according to the situation</string>
+    <string name="app_health_warn_temp_highly_fever">Please pay attention to the change of body temperature and seek medical examination and treatment in time</string>
+    <string name="app_health_warn_temp_hyperthermia">Life may be dangerous, please seek medical treatment as soon as possible</string>
     <string name="app_main_medicine_doctors_consultation">Doctors consultation</string>
     <string name="app_doctor_answer_edit_hint">Ask the health doctor</string>
     <string name="app_doctor_answer_picture">To upload pictures</string>

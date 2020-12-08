@@ -4,7 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.widget.TextView
-import com.guider.baselib.device.Unit
+import com.guider.baselib.device.Unit.bp
+import com.guider.baselib.device.Unit.heart
 import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.DateUtilKotlin
 import com.guider.baselib.utils.TIME_FORMAT_PATTERN4
@@ -35,13 +36,13 @@ class HealthDetailListAdapter(context: Context, dataList: ArrayList<HealthDataSi
                 val state2 = data.state2.substring(data.state2.indexOf(",") + 1)
                 showStatusColor(state1, dataFrontValue)
                 showStatusColor(state2, dataBackValue)
-                unitTv.text = Unit().bp
+                unitTv.text = bp
             }
             mContext.resources.getString(R.string.app_main_health_heart_rate) -> {
                 dataFrontValue.visibility = View.GONE
                 dataBackValue.text = "${data.hb}"
                 showStatusColor(data.state2, dataBackValue)
-                unitTv.text = Unit().heart
+                unitTv.text = heart
             }
             mContext.resources.getString(R.string.app_main_health_body_temp) -> {
                 dataFrontValue.visibility = View.GONE
