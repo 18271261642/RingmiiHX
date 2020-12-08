@@ -60,7 +60,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     ),
                             SimpleWithTypeBean(
                                     mContext.resources.getString(
-                                            R.string.app_health_msg_blood_sugar_level),
+                                            R.string.app_health_msg_blood_sugar_state),
                                     data.dataBean!!.state)
                     )
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
@@ -118,7 +118,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                                     data.dataBean!!.hb.toString()),
                             SimpleWithTypeBean(
                                     mContext.resources.getString(
-                                            R.string.app_health_msg_blood_pre_level),
+                                            R.string.app_health_msg_blood_pressure_state),
                                     data.dataBean!!.state)
                     )
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
@@ -134,7 +134,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                         }
                         EnumHealthDataStateKey.BpHyp.key -> {
                             suggestTv.text = mContext.resources.getString(
-                                    R.string.app_main_medicine_suggest_hypertension_normal)
+                                    R.string.app_main_medicine_suggest_hypertension)
                         }
                         else -> {
                             suggestTv.text = mContext.resources.getString(
@@ -165,7 +165,11 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                                     R.string.app_main_health_blood_oxygen_title),
                             data.dataBean!!.bo.toString().plus(bloodO2),
                             data.dataBean!!.state2
-                    ))
+                    ), SimpleWithTypeBean(
+                            mContext.resources.getString(
+                                    R.string.app_health_msg_blood_oxygen_state),
+                            data.dataBean!!.state)
+                    )
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
                     when (data.dataBean?.stateKey) {
@@ -200,9 +204,13 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     val list = arrayListOf(SimpleWithTypeBean(
                             mContext.resources.getString(
                                     R.string.app_main_health_body_temp),
-                            data.dataBean!!.bodyTemp.toString().plus(bodyTemp),
+                            data.dataBean!!.bt.toString().plus(bodyTemp),
                             data.dataBean!!.state2
-                    ))
+                    ), SimpleWithTypeBean(
+                            mContext.resources.getString(
+                                    R.string.app_health_msg_body_temp_state),
+                            data.dataBean!!.state)
+                    )
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
                     when (data.dataBean?.stateKey) {
@@ -245,7 +253,8 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                 }
                 //心率
                 else -> {
-                    holder.setImageResource(R.id.msgTypeIv, R.drawable.icon_home_heart)
+                    holder.setImageResource(R.id.msgTypeIv,
+                            R.drawable.icon_health_warn_msg_heart_rate)
                     holder.setText(R.id.msgTypeTv, String.format(mContext.resources.getString(
                             R.string.app_msg_item_title), mContext.resources.getString(
                             R.string.app_main_health_heart_rate)))
@@ -254,7 +263,11 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                                     R.string.app_main_health_heart_rate),
                             data.dataBean!!.hb.toString().plus(heart),
                             data.dataBean!!.state2
-                    ))
+                    ), SimpleWithTypeBean(
+                            mContext.resources.getString(
+                                    R.string.app_health_msg_heart_rate_state),
+                            data.dataBean!!.state)
+                    )
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
                     when (data.dataBean?.stateKey) {

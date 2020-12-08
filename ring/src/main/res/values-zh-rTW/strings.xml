@@ -64,7 +64,7 @@
     <string name="app_main_medicine_suggest_blood_pre_high">建議加強運動鍛鍊，注意低鹽低脂飲食，節制飲食，戒菸、戒酒。</string>
     <string name="app_main_medicine_suggest_blood_pre_low">建議積極鍛鍊，改善體質以及心肺的功能。</string>
     <string name="app_main_medicine_suggest_blood_pre_normal">建議繼續保持！加強運動鍛鍊，保持良好的生活習慣，保持日常愉快心情。</string>
-    <string name="app_main_medicine_suggest_hypertension_normal">建議加強運動鍛鍊，定期監測血壓，如持續監測較高，請及時就醫，遵醫囑按時服藥。</string>
+    <string name="app_main_medicine_suggest_hypertension">建議加強運動鍛鍊，定期監測血壓，如持續監測較高，請及時就醫，遵醫囑按時服藥。</string>
     <string name="app_main_medicine_suggest_blood_oxygen_low">多吃補血的食物，比如要多吃紅棗 ，桂圓肉，花生，紅豆，紅米粥等。</string>
     <string name="app_main_medicine_suggest_blood_oxygen_normal">請繼續保持！保持良好的生活習慣，保持日常愉快心情。</string>
     <string name="app_main_medicine_suggest_heart_rate_abnormal">建議積極鍛鍊，改善體質以及心肺的功能</string>
@@ -104,7 +104,7 @@
     <string name="app_msg_health_notify">健康提醒</string>
     <string name="app_msg_care_info">關愛信息</string>
     <string name="app_msg_system_info">系統信息</string>
-    <string name="app_msg_item_title">%s 測量</string>
+    <string name="app_msg_item_title">%s測量</string>
     <string name="app_msg_item_measure_time">測量時間:  </string>
     <string name="app_msg_item_suggest">建      議：</string>
     <string name="app_msg_item_collect_compressive">收縮壓 ：  </string>
@@ -189,8 +189,11 @@
     <string name="app_frequency_configure_one">配置一</string>
     <string name="app_frequency_configure_two">配置二</string>
     <string name="app_frequency_configure_third">配置三</string>
-    <string name="app_health_msg_blood_sugar_level">血糖水平</string>
-    <string name="app_health_msg_blood_pre_level">血壓水平</string>
+    <string name="app_health_msg_blood_sugar_state">血糖狀態</string>
+    <string name="app_health_msg_blood_pressure_state">血壓狀態</string>
+    <string name="app_health_msg_blood_oxygen_state">血氧狀態</string>
+    <string name="app_health_msg_body_temp_state">體溫狀態</string>
+    <string name="app_health_msg_heart_rate_state">心率狀態</string>
     <string name="app_abnormal_msg_tile_model">您好，您的家人【%s】測量了 %s</string>
     <string name="app_abnormal_msg_tile_model_own">您好，您測量了 %s</string>
     <string name="app_send">發送</string>
@@ -264,4 +267,5 @@
     <string name="app_search_person_mode_content">確認是否切換爲“尋人模式”？</string>
     <string name="app_phone_state_permission">手機信息</string>
     <string name="app_line_account_error_hint">此LINE賬號已被其他賬號綁定，請關聯其他賬號</string>
+    <string name="app_hypertension">高血壓</string>
 </resources>

@@ -46,7 +46,7 @@ class HealthDetailListAdapter(context: Context, dataList: ArrayList<HealthDataSi
             }
             mContext.resources.getString(R.string.app_main_health_body_temp) -> {
                 dataFrontValue.visibility = View.GONE
-                dataBackValue.text = "${data.bodyTemp}"
+                dataBackValue.text = "${data.bt}"
                 showStatusColor(data.state2, dataBackValue)
                 unitTv.text = "°C"
             }

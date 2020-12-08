@@ -65,7 +65,7 @@
     <string name="app_main_medicine_suggest_blood_pre_high">It is suggested to strengthen exercise, pay attention to low salt and fat diet, moderate diet, quit smoking and alcohol.</string>
     <string name="app_main_medicine_suggest_blood_pre_low">Active exercise is recommended to improve physical fitness and cardiopulmonary function.</string>
     <string name="app_main_medicine_suggest_blood_pre_normal">Recommended to keep up!Strengthen exercise, maintain good living habits, maintain daily happy mood.</string>
-    <string name="app_main_medicine_suggest_hypertension_normal">It is recommended to strengthen physical exercise and monitor blood pressure regularly. If continuous monitoring is high, please see a doctor in time and take medicine as prescribed by the doctor.</string>
+    <string name="app_main_medicine_suggest_hypertension">It is recommended to strengthen physical exercise and monitor blood pressure regularly. If continuous monitoring is high, please see a doctor in time and take medicine as prescribed by the doctor.</string>
     <string name="app_main_medicine_suggest_blood_oxygen_low">Eat more blood-enriching foods, such as red dates, longan meat, peanuts, red beans, red rice porridge and so on.</string>
     <string name="app_main_medicine_suggest_blood_oxygen_normal">Please keep it up!Maintain good living habits, maintain daily happy mood.</string>
     <string name="app_main_medicine_suggest_heart_rate_abnormal">It is recommended to exercise actively, improve physical fitness and cardiopulmonary function</string>
@@ -106,7 +106,7 @@
     <string name="app_msg_health_notify">Health</string>
     <string name="app_msg_care_info">Care</string>
     <string name="app_msg_system_info">System</string>
-    <string name="app_msg_item_title">%s measure</string>
+    <string name="app_msg_item_title">%smeasure</string>
     <string name="app_msg_item_measure_time">Measure time:  </string>
     <string name="app_msg_item_suggest">Suggest：        </string>
     <string name="app_msg_item_collect_compressive">Collect compressive:  </string>
@@ -192,8 +192,11 @@
     <string name="app_frequency_configure_one">Configure the first</string>
     <string name="app_frequency_configure_two">Configure the second</string>
     <string name="app_frequency_configure_third">Configure the third</string>
-    <string name="app_health_msg_blood_sugar_level">Blood glucose levels</string>
-    <string name="app_health_msg_blood_pre_level">Blood pressure  levels</string>
+    <string name="app_health_msg_blood_sugar_state">Blood glucose State</string>
+    <string name="app_health_msg_blood_pressure_state">Blood pressure State</string>
+    <string name="app_health_msg_blood_oxygen_state">Blood Oxygen State</string>
+    <string name="app_health_msg_body_temp_state">Body temp State</string>
+    <string name="app_health_msg_heart_rate_state">Heart rate State</string>
     <string name="app_abnormal_msg_tile_model">Hello, your family [%s] measurement  %s</string>
     <string name="app_abnormal_msg_tile_model_own">Hello, your measurement  %s</string>
     <string name="app_send">Send</string>
@@ -267,4 +270,5 @@
     <string name="app_search_person_mode_title">The locating frequency of the search mode is 5 minutes per time, and the power consumption of the bracelet increases in this mode.</string>
     <string name="app_phone_state_permission">Phone information</string>
     <string name="app_line_account_error_hint">This LINE account has been bound by another account, please associate it with another account</string>
+    <string name="app_hypertension">Hypertension</string>
 </resources>

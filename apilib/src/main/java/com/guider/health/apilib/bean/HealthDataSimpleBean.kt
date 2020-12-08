@@ -16,7 +16,7 @@ data class HealthDataSimpleBean(
         var sbp: Int = 0,
         var state: String = "",
         var state2: String = "",
-        var bodyTemp: Double = 0.0,
+        var bt: Double = 0.0,
         var hb: Int = 0,
         var minute: Int = 0,
         var step: Int = 0,

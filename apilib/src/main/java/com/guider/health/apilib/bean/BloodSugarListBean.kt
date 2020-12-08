@@ -12,5 +12,7 @@ data class BloodSugarListBean(
     val normal: Boolean,
     val state: String,
     val state2: String,
-    val testTime: String
+    val testTime: String,
+        //详细状态判断的key值
+    var stateKey: String = ""
 )

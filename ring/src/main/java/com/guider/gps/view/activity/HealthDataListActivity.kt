@@ -233,7 +233,7 @@ class HealthDataListActivity : BaseActivity() {
                         refreshLayout.setEnableLoadMore(false)
                     } else refreshLayout.setEnableLoadMore(true)
                     val resultList = resultBean.map {
-                        HealthDataSimpleBean(it.id, it.testTime, bodyTemp = it.bodyTemp,
+                        HealthDataSimpleBean(it.id, it.testTime, bt = it.bodyTemp,
                                 state2 = it.state2)
                     }
 //                            val timeResultList = arrayListOf<HealthDataDetailListBean>()

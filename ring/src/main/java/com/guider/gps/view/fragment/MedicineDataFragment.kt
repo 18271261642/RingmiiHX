@@ -19,7 +19,9 @@ import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.BloodListBeann
 import com.guider.health.apilib.bean.BloodOxygenListBean
 import com.guider.health.apilib.bean.BloodSugarListBean
+import com.guider.health.apilib.enums.EnumHealthDataStateKey
 import com.guider.health.apilib.enums.SortType
+import com.guider.health.apilib.utils.ApiLibUtil
 import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.fragment_medicine_data.*
 import kotlinx.coroutines.launch
@@ -181,12 +183,8 @@ class MedicineDataFragment : BaseFragment() {
         val belowBloodAxisPoints = getBelowBloodAxisPoints(resultBean)
         val highBloodAxisPoints = getHighBloodAxisPoints(resultBean)
         initBloodLineChart(belowBloodAxisPoints, highBloodAxisPoints, resultBean)
-        val state1 = resultBean[0].state2.substring(0,
-                resultBean[0].state2.indexOf(","))
-        val state2 = resultBean[0].state2.substring(
-                resultBean[0].state2.indexOf(",") + 1)
-        when {
-            state1 == "偏低" || (state1 == "正常" && state2 == "偏低") -> {
+        when (resultBean[0].stateKey) {
+            EnumHealthDataStateKey.BpLow.key -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
                 val title = String.format(
                         resources.getString(
@@ -196,17 +194,7 @@ class MedicineDataFragment : BaseFragment() {
                         R.string.app_main_medicine_suggest_blood_pre_low)
                 suggestContentTv.text = "${title}${content}"
             }
-            state1 == "正常" && state2 == "正常" -> {
-                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
-                val title = String.format(
-                        resources.getString(
-                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[1]
-                )
-                val content = resources.getString(
-                        R.string.app_main_medicine_suggest_blood_pre_normal)
-                suggestContentTv.text = "${title}${content}"
-            }
-            state1 == "偏高" || (state1 == "正常" && state2 == "偏高") -> {
+            EnumHealthDataStateKey.BpHigh.key -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
                 val title = String.format(
                         resources.getString(
@@ -216,8 +204,38 @@ class MedicineDataFragment : BaseFragment() {
                         R.string.app_main_medicine_suggest_blood_pre_high)
                 suggestContentTv.text = "${title}${content}"
             }
+            EnumHealthDataStateKey.BpHyp.key -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                val title = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint),
+                        resources.getString(
+                                R.string.app_hypertension)
+                )
+                val content = resources.getString(
+                        R.string.app_main_medicine_suggest_hypertension)
+                suggestContentTv.text = "${title}${content}"
+            }
+
+            else -> {
+                dataLatestLayout.setBackgroundResource(medicineDataBgResIds[1])
+                val title = String.format(
+                        resources.getString(
+                                R.string.app_main_medicine_suggest_hint), medicineDataTextValues[1]
+                )
+                val content = resources.getString(
+                        R.string.app_main_medicine_suggest_blood_pre_normal)
+                suggestContentTv.text = "${title}${content}"
+            }
         }
-        dataTagTv.text = resultBean[0].state
+        var state = resultBean[0].state
+        val language = ApiLibUtil.getCurrentLanguage()
+        //简写
+        if (language == "en" &&
+                state.contains(mActivity.resources.getString(R.string.app_hypertension))) {
+            state = mActivity.resources.getString(R.string.app_hypertension)
+        }
+        dataTagTv.text = state
         dataValueTv.text = "${resultBean[0].sbp}/" +
                 "${resultBean[0].dbp}"
         measureTime.text = DateUtilKotlin.uTCToLocal(
@@ -401,8 +419,8 @@ class MedicineDataFragment : BaseFragment() {
         )
         val bloodOxygenAxisPoints = getBloodOxygenAxisPoints(tempList)
         initBloodOxygenLineChart(bloodOxygenAxisPoints, tempList)
-        when (tempList[0].state2) {
-            "偏低" -> {
+        when (tempList[0].stateKey) {
+            EnumHealthDataStateKey.Low.key -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
                 val title = String.format(
                         resources.getString(
@@ -536,9 +554,9 @@ class MedicineDataFragment : BaseFragment() {
         noDataTv.visibility = View.GONE
         if (isRefresh) refreshLayout.finishRefresh(500)
         //返回的数据类中state2的第一个字段为血糖状态
-        when (resultBean[0].state2.substring(0,
-                resultBean[0].state2.indexOf(","))) {
-            "偏低" -> {
+        when (resultBean[0].stateKey) {
+            EnumHealthDataStateKey.FbsLow.key,
+            EnumHealthDataStateKey.PbsLow.key -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[2])
                 val title = String.format(
                         resources.getString(
@@ -548,7 +566,8 @@ class MedicineDataFragment : BaseFragment() {
                         R.string.app_main_medicine_suggest_sugar_low)
                 suggestContentTv.text = "${title}${content}"
             }
-            "偏高" -> {
+            EnumHealthDataStateKey.FbsHigh.key,
+            EnumHealthDataStateKey.PbsHigh.key -> {
                 dataLatestLayout.setBackgroundResource(medicineDataBgResIds[0])
                 val title = String.format(
                         resources.getString(
