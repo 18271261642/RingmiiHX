@@ -18,8 +18,8 @@ import com.guider.gps.R
 import com.guider.gps.view.activity.HealthDataListActivity
 import com.guider.gps.view.activity.MainActivity
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.*
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.fragment_health_data.*
 import kotlinx.android.synthetic.main.fragment_home_health.*
 import kotlinx.coroutines.launch
@@ -264,7 +264,7 @@ class HealthFragment : BaseFragment() {
                                 startTimeValue, endTimeValue)
                 var maximum = 24
                 if (dateType == 0) {
-                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
+                    maximum = DateUtilKotlin.getNowHourTime()
                 }
                 if (resultBean.size > 24) {
                     val tempList = arrayListOf<SportListBean>()
@@ -356,7 +356,7 @@ class HealthFragment : BaseFragment() {
                                 startTimeValue, endTimeValue)
                 var maximum = 24
                 if (dateType == 0) {
-                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
+                    maximum = DateUtilKotlin.getNowHourTime()
                 }
                 if (resultBean.size > 24) {
                     val tempList = arrayListOf<HeartRateListBean>()
@@ -390,7 +390,7 @@ class HealthFragment : BaseFragment() {
                                 -1, 9, startTimeValue, endTimeValue)
                 var maximum = 24
                 if (dateType == 0) {
-                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
+                    maximum = DateUtilKotlin.getNowHourTime()
                 }
                 if (resultBean.size > 24) {
                     val tempList = arrayListOf<BodyTempListBean>()
@@ -426,37 +426,17 @@ class HealthFragment : BaseFragment() {
             ApiCoroutinesCallBack.resultParse(mActivity, {
                 if (!isFirstLoadData && !isRefresh) mDialog?.showDialog()
             }, block = {
-                var resultBean = GuiderApiUtil.getHDApiService()
+                val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthBloodChartData(
                                 accountId, -1, 100, startTimeValue, endTimeValue)
-                var maximum = 24
-                if (dateType == 0) {
-                    maximum = DateUtilKotlin.getNowHourTime() ?: 24
-                }
-                if (resultBean.size > 24) {
-                    val tempList = arrayListOf<BloodListBeann>()
-                    val indexList = getSamplingIndexList(resultBean, maximum)
-                    for (i in indexList.indices) {
-                        tempList.add(resultBean[indexList[i]])
-                    }
-                    resultBean = tempList
-                }
-                if (!resultBean.isNullOrEmpty()) {
-                    bloodPressureNoDataTv.visibility = View.GONE
-                    if (isRefresh) refreshLayout.finishRefresh(500)
-                    val options = getBloodXAxisLabels(resultBean)
-                    val highDataList = resultBean.map { it.sbp }
-                    val highArray: Array<Any> = highDataList.toTypedArray()
-                    val belowDataList = resultBean.map { it.dbp }
-                    val belowArray: Array<Any> = belowDataList.toTypedArray()
-                    val aaOptions = initBloodLineChart(options, highArray, belowArray)
-                    bloodChart.aa_drawChartWithChartOptions(aaOptions)
-                } else {
+                if (resultBean is String && resultBean == "null") {
                     if (isRefresh) {
                         refreshLayout.finishRefresh()
                     }
                     initBloodChart()
                     bloodPressureNoDataTv.visibility = View.VISIBLE
+                } else {
+                    dealSuccessBloodPressureData(resultBean)
                 }
             }, onRequestFinish = {
                 if (isRefresh) refreshLayout.finishRefresh()
@@ -464,6 +444,33 @@ class HealthFragment : BaseFragment() {
                 isRefresh = false
             })
         }
+    }
+
+    private fun dealSuccessBloodPressureData(resultBean: Any) {
+        var maximum = 24
+        if (dateType == 0) {
+            maximum = DateUtilKotlin.getNowHourTime()
+        }
+        var resultBeanList = ParseJsonData.parseJsonDataList<BloodPressureListBeann>(
+                resultBean, BloodPressureListBeann::class.java
+        )
+        if (resultBeanList.size > 24) {
+            val tempList = arrayListOf<BloodPressureListBeann>()
+            val indexList = getSamplingIndexList(resultBeanList, maximum)
+            for (i in indexList.indices) {
+                tempList.add(resultBeanList[indexList[i]])
+            }
+            resultBeanList = tempList
+        }
+        bloodPressureNoDataTv.visibility = View.GONE
+        if (isRefresh) refreshLayout.finishRefresh(500)
+        val options = getBloodXAxisLabels(resultBeanList)
+        val highDataList = resultBeanList.map { it.sbp }
+        val highArray: Array<Any> = highDataList.toTypedArray()
+        val belowDataList = resultBeanList.map { it.dbp }
+        val belowArray: Array<Any> = belowDataList.toTypedArray()
+        val aaOptions = initBloodLineChart(options, highArray, belowArray)
+        bloodChart.aa_drawChartWithChartOptions(aaOptions)
     }
 
     /**
@@ -728,7 +735,7 @@ class HealthFragment : BaseFragment() {
         bloodChart.aa_drawChartWithChartOptions(aaOptions)
     }
 
-    private fun getBloodXAxisLabels(list: List<BloodListBeann>): Array<String> {
+    private fun getBloodXAxisLabels(list: List<BloodPressureListBeann>): Array<String> {
         if (list.isNullOrEmpty()) return arrayOf()
         val category = arrayListOf<String>()
         for (i in list.indices) {

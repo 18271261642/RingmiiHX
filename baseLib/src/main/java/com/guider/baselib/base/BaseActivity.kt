@@ -2,8 +2,10 @@ package com.guider.baselib.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -159,6 +161,7 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
                             systemMsgDialog?.closeDialog()
                             systemMsgDialog = null
                         }
+                        clearNotification(msgId)
                     }
                     mDismiss.setOnClickListener {
                         dialog?.dismiss()
@@ -166,6 +169,7 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
                             systemMsgDialog?.closeDialog()
                             systemMsgDialog = null
                         }
+                        clearNotification(msgId)
                     }
 //                    mDismiss.postDelayed({
 //                        dialog?.dismiss()
@@ -174,6 +178,21 @@ abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
             }
             systemMsgDialog?.initView()
             systemMsgDialog?.show(false)
+        }
+    }
+
+    /**
+     * 清除已关闭对话框的通知栏对应的通知
+     */
+    private fun clearNotification(msgId: String) {
+        val notificationManager = mContext?.getSystemService(
+                NOTIFICATION_SERVICE) as NotificationManager
+        //移除通知栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //关闭通知通道
+            notificationManager.deleteNotificationChannel(msgId)
+        } else {
+            notificationManager.cancel(msgId.toInt())
         }
     }
 

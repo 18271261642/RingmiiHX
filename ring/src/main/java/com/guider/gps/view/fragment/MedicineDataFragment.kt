@@ -16,8 +16,8 @@ import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
 import com.guider.gps.view.activity.MainActivity
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.bean.BloodListBeann
 import com.guider.health.apilib.bean.BloodOxygenListBean
+import com.guider.health.apilib.bean.BloodPressureListBeann
 import com.guider.health.apilib.bean.BloodSugarListBean
 import com.guider.health.apilib.enums.EnumHealthDataStateKey
 import com.guider.health.apilib.enums.SortType
@@ -147,11 +147,13 @@ class MedicineDataFragment : BaseFragment() {
             }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthBloodChartData(accountId, 1, 7, sort = SortType.DESC)
-
-                if (!resultBean.isNullOrEmpty()) {
-                    dealBloodSuccessList(resultBean)
-                } else {
+                if (resultBean is String && resultBean == "null") {
                     dealBloodEmptyList()
+                } else {
+                    val resultList = ParseJsonData.parseJsonDataList<BloodPressureListBeann>(
+                            resultBean, BloodPressureListBeann::class.java
+                    )
+                    dealBloodSuccessList(resultList)
                 }
             }, onRequestFinish = {
                 if (!isRefresh) mDialog1?.hideDialog()
@@ -177,7 +179,7 @@ class MedicineDataFragment : BaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun dealBloodSuccessList(resultBean: List<BloodListBeann>) {
+    private fun dealBloodSuccessList(resultBean: List<BloodPressureListBeann>) {
         if (isRefresh) refreshLayout.finishRefresh(500)
         noDataTv.visibility = View.GONE
         val belowBloodAxisPoints = getBelowBloodAxisPoints(resultBean)
@@ -244,7 +246,7 @@ class MedicineDataFragment : BaseFragment() {
 
     private fun initBloodLineChart(belowBloodAxisPoints: ArrayList<PointValue>,
                                    highBloodAxisPoints: ArrayList<PointValue>,
-                                   list: List<BloodListBeann>) {
+                                   list: List<BloodPressureListBeann>) {
         //折线的颜色
         val lines = arrayListOf<Line>()
         val line1 = Line(belowBloodAxisPoints)
@@ -271,7 +273,7 @@ class MedicineDataFragment : BaseFragment() {
         //创建一个图标视图 大小为控件的最大大小
     }
 
-    private fun getHighBloodAxisPoints(list: List<BloodListBeann>): ArrayList<PointValue> {
+    private fun getHighBloodAxisPoints(list: List<BloodPressureListBeann>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
         if (list.size == 1) {
@@ -321,7 +323,7 @@ class MedicineDataFragment : BaseFragment() {
         return pointValues
     }
 
-    private fun getBelowBloodAxisPoints(list: List<BloodListBeann>): ArrayList<PointValue> {
+    private fun getBelowBloodAxisPoints(list: List<BloodPressureListBeann>): ArrayList<PointValue> {
         val pointValues = arrayListOf<PointValue>()
         val pointYValues = arrayListOf<Float>()
         if (list.size == 1) {
@@ -520,11 +522,15 @@ class MedicineDataFragment : BaseFragment() {
         lifecycleScope.launch {
             ApiCoroutinesCallBack.resultParse(mActivity, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
-                        .getHealthBloodSugarChartData(accountId, 1, 7, sort = SortType.DESC)
-                if (!resultBean.isNullOrEmpty()) {
-                    dealBloodSugarSuccessList(resultBean)
-                } else {
+                        .getHealthBloodSugarChartData(accountId,
+                                1, 7, sort = SortType.DESC)
+                if (resultBean is String && resultBean == "null") {
                     dealBloodSugarEmptyList()
+                } else {
+                    val resultList = ParseJsonData.parseJsonDataList<BloodSugarListBean>(
+                            resultBean, BloodSugarListBean::class.java
+                    )
+                    dealBloodSugarSuccessList(resultList)
                 }
             }, onRequestFinish = {
                 if (!isRefresh) mDialog3?.hideDialog()

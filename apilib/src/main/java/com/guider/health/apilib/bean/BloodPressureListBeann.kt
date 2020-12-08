@@ -1,6 +1,6 @@
 package com.guider.health.apilib.bean
 
-data class BloodListBeann(
+data class BloodPressureListBeann(
     val accountId: Int,
     val createTime: String,
     val dbp: Int,

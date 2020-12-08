@@ -31,7 +31,7 @@ interface IUserHDApi {
             @Query("row") row: Int,
             @Query("startTime") startTime: String? = null,
             @Query("endTime") endTime: String? = null
-    ): Call<List<BloodListBeann>>
+    ): Call<List<BloodPressureListBeann>>
 
     /**
      * 欧孚体温数据查询

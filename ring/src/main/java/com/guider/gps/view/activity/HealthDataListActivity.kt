@@ -13,9 +13,10 @@ import com.guider.feifeia3.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.HealthDetailListAdapter
 import com.guider.health.apilib.GuiderApiUtil
-import com.guider.health.apilib.utils.MMKVUtil
+import com.guider.health.apilib.bean.BloodPressureListBeann
 import com.guider.health.apilib.bean.HealthDataSimpleBean
 import com.guider.health.apilib.enums.SortType
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_health_data_list.*
 import kotlinx.coroutines.launch
 
@@ -108,14 +109,31 @@ class HealthDataListActivity : BaseActivity() {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthBloodChartData(
                                 accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
-                if (!resultBean.isNullOrEmpty()) {
+
+                if (resultBean is String && resultBean == "null") {
+                    noDataTv.visibility = View.VISIBLE
+                    if (isRefresh) {
+                        refreshLayout.finishRefresh()
+                    }
+                    if (isLoadMore) {
+                        refreshLayout.finishLoadMore()
+                        refreshLayout.setEnableLoadMore(false)
+                    }
+                    if (!isLoadMore) {
+                        dataList.clear()
+                        adapter.setSourceList(dataList)
+                    }
+                } else {
+                    val resultBeanList = ParseJsonData.parseJsonDataList<BloodPressureListBeann>(
+                            resultBean, BloodPressureListBeann::class.java
+                    )
                     noDataTv.visibility = View.GONE
                     if (isRefresh) refreshLayout.finishRefresh(500)
                     if (isLoadMore) refreshLayout.finishLoadMore(500)
-                    if (resultBean.size < 20) {
+                    if (resultBeanList.size < 20) {
                         refreshLayout.setEnableLoadMore(false)
                     } else refreshLayout.setEnableLoadMore(true)
-                    val resultList = resultBean.map {
+                    val resultList = resultBeanList.map {
                         HealthDataSimpleBean(
                                 it.id, it.testTime, sbp = it.sbp, dbp = it.dbp,
                                 state2 = it.state2)
@@ -131,19 +149,6 @@ class HealthDataListActivity : BaseActivity() {
                     adapter.type = resources.getString(
                             R.string.app_main_health_blood_pressure)
                     adapter.setSourceList(dataList)
-                } else {
-                    noDataTv.visibility = View.VISIBLE
-                    if (isRefresh) {
-                        refreshLayout.finishRefresh()
-                    }
-                    if (isLoadMore) {
-                        refreshLayout.finishLoadMore()
-                        refreshLayout.setEnableLoadMore(false)
-                    }
-                    if (!isLoadMore) {
-                        dataList.clear()
-                        adapter.setSourceList(dataList)
-                    }
                 }
             }, onError = {
                 if (isLoadMore) {

@@ -28,7 +28,7 @@ interface IGuiderCoroutinesHDApi {
             @Query("startTime") startTime: String? = null,
             @Query("endTime") endTime: String? = null,
             @Query("sort") sort: SortType? = SortType.ASC
-    ): List<BloodListBeann>
+    ): Any
 
     /**
      * 欧孚体温数据查询
@@ -117,7 +117,7 @@ interface IGuiderCoroutinesHDApi {
             @Query("startTime") startTime: String? = null,
             @Query("endTime") endTime: String? = null,
             @Query("sort") sort: SortType? = SortType.ASC
-    ): List<BloodSugarListBean>
+    ): Any
 
     /**
      * 欧孚步数数据查询
