@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_84"
     android:id="@+id/rootLayout"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_84">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headLayout"
         android:layout_width="wrap_content"
@@ -13,21 +13,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <View
             android:id="@+id/searchPersonBgView"
             android:layout_width="@dimen/dp_54"
             android:layout_height="@dimen/dp_54"
             android:background="@drawable/circle_f18937_oval_bg"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/distanceView"
             android:layout_width="@dimen/dp_48"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_height="@dimen/dp_3"
-            android:visibility="visible"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.guider.baselib.widget.CircleImageView
@@ -41,30 +42,31 @@
 
         <TextView
             android:id="@+id/searchPersonFlag"
-            android:maxWidth="@dimen/dp_48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_44"
             android:background="@drawable/rounded_f18937_8_bg"
             android:gravity="center"
+            android:maxWidth="@dimen/dp_48"
             android:paddingStart="@dimen/dp_4"
             android:paddingTop="@dimen/dp_1"
             android:paddingEnd="@dimen/dp_4"
             android:paddingBottom="@dimen/dp_1"
-            android:textColor="@color/white"
             android:text="@string/app_search_pattern"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/msgSelectIv"
             android:layout_width="19dp"
             android:layout_height="19dp"
             android:layout_marginStart="11dp"
             android:src="@drawable/ic_home_draw_msg_select"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

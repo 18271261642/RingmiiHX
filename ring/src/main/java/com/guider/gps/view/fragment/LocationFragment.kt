@@ -67,7 +67,9 @@ import kotlinx.android.synthetic.main.include_location_loading_proactively_addre
 import kotlinx.android.synthetic.main.include_location_position_layout.*
 import kotlinx.android.synthetic.main.include_location_proactively_addressing.*
 import kotlinx.android.synthetic.main.include_location_track_event_layout.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -172,6 +174,7 @@ class LocationFragment : BaseFragment(),
     private var searchPersonFlag = false
     private var latestUserPositionListBean: UserPositionListBean? = null
     private var personModeConfirmDialog: DialogHolder? = null
+    private var cancelTag = false
 
     override fun initView(rootView: View) {
     }
@@ -727,16 +730,13 @@ class LocationFragment : BaseFragment(),
                 if (accountId == 0) {
                     return
                 }
+                //正在寻址过程中
                 if (locationNumberSet.text == mActivity.resources.getString(
                                 R.string.app_cancel_the_addressing)) {
                     proactivelyAddressingFinish("cancelSuccess")
                     locationNumberSet.text =
                             mActivity.resources.getString(
                                     R.string.app_main_map_send_instructions)
-                    return
-                }
-                //正在寻址过程中
-                if (proactivelyAddressingNum != 0) {
                     return
                 }
                 //发起主动寻址
@@ -1182,22 +1182,53 @@ class LocationFragment : BaseFragment(),
      */
     private fun proactivelyAddressingLoad(accountId: Int) {
         startLoadAnimation()
+        cancelTag = false
         locationNumberSet.text = mActivity.resources.getString(R.string.app_cancel_the_addressing)
         val time = DateUtilKotlin.localToUTC(
                 DateUtil.localNowStringByPattern(DEFAULT_TIME_FORMAT_PATTERN))!!
         lifecycleScope.launch {
-            while (true) {
-                delay(1_000 * 5)
-                ++proactivelyAddressingNum
-                Log.i(TAG, "轮询主动寻址执行了${proactivelyAddressingNum}次")
-                if (proactivelyAddressingNum > 24) {
-                    //如果2分钟还没有寻址成功，则结束寻址
-                    proactivelyAddressingFinish("fail")
-                    return@launch
-                } else {
-                    proactivelyAddressing(accountId, time)
+            flow {
+                for (i in 1..24) {
+                    delay(1_000 * 5)
+                    if (!cancelTag) {
+                        emit(i)
+                    } else return@flow
                 }
-            }
+            }.map {
+                proactivelyAddressingNum = it
+                Log.i(TAG, "轮询主动寻址执行了${proactivelyAddressingNum}次")
+                GuiderApiUtil.getApiService().proactivelyAddressingData(
+                        accountId, time)
+            }.catch {
+                proactivelyAddressingFinish("fail")
+                cancelTag = true
+            }.onCompletion {
+                Log.i(TAG, "flowOnCompletion")
+            }.flowOn(Dispatchers.IO)
+                    .collect {
+                        if (!(it is String && it == "null") && it != null) {
+                            tempLocationBean = ParseJsonData.parseJsonAny<UserPositionListBean>(it)
+                            if (tempLocationBean == null) return@collect
+                            mGoogleMap?.animateCamera(
+                                    CameraUpdateFactory.newLatLngZoom(LatLng(tempLocationBean!!.lat,
+                                            tempLocationBean!!.lng), 16.0f))
+                            startDisplayPerth(LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng))
+                            proactivelyAddressingFinish("success")
+                        }
+                    }
+//            while (true) {
+//                delay(1_000 * 5)
+//                ++proactivelyAddressingNum
+//                Log.i(TAG, "轮询主动寻址执行了${proactivelyAddressingNum}次")
+//                if (proactivelyAddressingNum > 24) {
+//                    //如果2分钟还没有寻址成功，则结束寻址
+//                    proactivelyAddressingFinish("fail")
+//                    cancelTag = true
+//                    return@launch
+//                } else {
+//                    proactivelyAddressing(accountId, time)
+//                }
+//            }
         }
     }
 
@@ -1218,9 +1249,9 @@ class LocationFragment : BaseFragment(),
                     startDisplayPerth(LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng))
                     proactivelyAddressingFinish("success")
                 }
-            }, onRequestFinish = {
-                //寻址结束后寻址次数归0便于下一次寻址开始
-                proactivelyAddressingNum = 0
+            }, onError = {
+                proactivelyAddressingFinish("fail")
+                cancelTag = true
             })
         }
     }

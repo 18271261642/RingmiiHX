@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
  * Author:  andy.xwt
  * Date:    2020-01-14 14:43
  * Description:支持懒加载的FragmentLazyStatePageAdapter,
- * 只有主Fragment才会调用resume方法,需要配合[com.jennifer.andy.androidxlazyload.LazyFragment]使用
+ * 只有主Fragment才会调用resume方法,需要配合[com.guider.baselib.base.BaseFragment]使用
  */
 
 open class FragmentLazyStatePageAdapterViewPager(

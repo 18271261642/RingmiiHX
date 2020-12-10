@@ -69,7 +69,6 @@ dependencies {
     api dependencies.switch_button
     // ViewModel and LiveData
     api dependencies.lifecycle
-    api dependencies.rxlifecycle_components
     api dependencies.pickers
     //微信登录分享支付
     api dependencies.wechat

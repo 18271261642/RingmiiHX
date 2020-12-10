@@ -1,90 +1,117 @@
 package com.guider.baselib.utils
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.Process
-import android.text.TextUtils
-import androidx.annotation.Nullable
+import android.util.Log
+import com.guider.baselib.utils.StringUtil.Companion.isNotBlankAndEmpty
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.IOException
 
 /**
- * @Package: com.guider.baselib.utils
+ * @Package: com.guider.gps.util
  * @ClassName: ProcessUtil
  * @Description: 进程获取工具类
  * @Author: hjr
- * @CreateDate: 2020/9/28 15:43
+ * @CreateDate: 2020/12/10 10:12
  * Copyright (C), 1998-2020, GuiderTechnology
  */
 object ProcessUtil {
-    private var currentProcessName: String? = null
-
-    /**
-     * @return 当前进程名
-     */
-    @Nullable
+    private const val TAG = "ProcessUtil"
+    private var sProcessName: String? = ""
     fun getCurrentProcessName(context: Context): String? {
-        if (!TextUtils.isEmpty(currentProcessName)) {
-            return currentProcessName
+        if (isNotBlankAndEmpty(sProcessName)) {
+            return sProcessName
         }
-
-        //1)通过Application的API获取当前进程名
-        currentProcessName = getCurrentProcessNameByApplication()
-        if (!TextUtils.isEmpty(currentProcessName)) {
-            return currentProcessName
+        try {
+            sProcessName = getCurrentProcessNameByActivityManager(context)
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
         }
-
-//        //2)通过反射ActivityThread获取当前进程名
-//        currentProcessName = getCurrentProcessNameByActivityThread()
-//        if (!TextUtils.isEmpty(currentProcessName)) {
-//            return currentProcessName
-//        }
-
-        //3)通过ActivityManager获取当前进程名
-        currentProcessName = getCurrentProcessNameByActivityManager(context)
-        return currentProcessName
+        if (isNotBlankAndEmpty(sProcessName)) {
+            return sProcessName
+        }
+        try {
+            sProcessName = currentProcessNameByApplication
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
+        }
+        if (isNotBlankAndEmpty(sProcessName)) {
+            return sProcessName
+        }
+        try {
+            sProcessName = processNameByCmd
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString(), e)
+        }
+        if (isNotBlankAndEmpty(sProcessName)) {
+            return sProcessName
+        }
+        try {
+            sProcessName = currentProcessNameByActivityThread
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
+        }
+        return sProcessName
     }
 
-    /**
-     * 通过Application新的API获取进程名，无需反射，无需IPC，效率最高。
-     */
-    private fun getCurrentProcessNameByApplication(): String? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            Application.getProcessName()
-        } else null
-    }
-
-//    /**
-//     * 通过反射ActivityThread获取进程名，避免了ipc
-//     */
-//    fun getCurrentProcessNameByActivityThread(): String? {
-//        var processName: String? = null
-//        try {
-//            val declaredMethod: Method = Class.forName("android.app.ActivityThread", false, Application::class.java.getClassLoader())
-//                    .getDeclaredMethod("currentProcessName", *arrayOfNulls<Class<*>?>(0))
-//            declaredMethod.setAccessible(true)
-//            val invoke: Any = declaredMethod.invoke(null, arrayOfNulls<Any>(0))
-//            if (invoke is String) {
-//                processName = invoke
-//            }
-//        } catch (e: Throwable) {
-//            e.printStackTrace()
-//        }
-//        return processName
-//    }
-
-    /**
-     * 通过ActivityManager 获取进程名，需要IPC通信
-     */
     private fun getCurrentProcessNameByActivityManager(context: Context): String? {
-        val pid: Int = Process.myPid()
-        val am: ActivityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val runningAppList: List<ActivityManager.RunningAppProcessInfo> = am.runningAppProcesses
-        for (processInfo in runningAppList) {
-            if (processInfo.pid == pid) {
-                return processInfo.processName
+        val pid = Process.myPid()
+        val mActivityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (appProcess in mActivityManager.runningAppProcesses) {
+            if (appProcess.pid == pid) {
+                return appProcess.processName
             }
         }
         return null
     }
+
+    private val currentProcessNameByApplication: String?
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            Application.getProcessName()
+        } else null
+    private val processNameByCmd: String?
+        get() {
+            var reader: BufferedReader? = null
+            try {
+                reader = BufferedReader(FileReader("/proc/" + Process.myPid() + "/cmdline"))
+                var processName = reader.readLine()
+                if (isNotBlankAndEmpty(processName)) {
+                    processName = processName.trim { it <= ' ' }
+                }
+                return processName
+            } catch (e: Exception) {
+                Log.e(TAG, "getProcessName read is fail. exception=$e")
+            } finally {
+                try {
+                    reader?.close()
+                } catch (e: IOException) {
+                    Log.e(TAG, "getProcessName close is fail. exception=$e")
+                }
+            }
+            return null
+        }
+
+    @get:SuppressLint("DiscouragedPrivateApi", "PrivateApi")
+    val currentProcessNameByActivityThread: String?
+        get() {
+            var processName: String? = null
+            try {
+                val declaredMethod = Class.forName("android.app.ActivityThread",
+                        false, Application::class.java.classLoader)
+                        .getDeclaredMethod("currentProcessName", *arrayOfNulls<Class<*>?>(0))
+                declaredMethod.isAccessible = true
+                val invoke = declaredMethod.invoke(null, *arrayOfNulls(0))
+                if (invoke is String) {
+                    processName = invoke
+                }
+            } catch (e: Throwable) {
+                Log.e(TAG, e.toString())
+            }
+            return processName
+        }
 }

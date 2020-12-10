@@ -271,7 +271,7 @@ class AbnormalMsgListAdapter(context: Context, dataList: ArrayList<AbnormalRingM
                     val adapter = AbnormalMsgContentDetailAdapter(mContext, list)
                     msgDataDetailRv.adapter = adapter
                     when (data.dataBean?.stateKey) {
-                        EnumHealthDataStateKey.Low.key, EnumHealthDataStateKey.Normal.key -> {
+                        EnumHealthDataStateKey.Low.key, EnumHealthDataStateKey.High.key -> {
                             suggestTv.text = mContext.resources.getString(
                                     R.string.app_main_medicine_suggest_heart_rate_abnormal)
                         }

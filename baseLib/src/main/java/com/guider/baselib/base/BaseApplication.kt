@@ -27,7 +27,6 @@ abstract class BaseApplication : Application() {
 
     val TAG = BaseApplication.javaClass.simpleName
 
-
     @SuppressLint("RestrictedApi")
     override fun onCreate() {
         super.onCreate()

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    app:layoutDescription="@xml/activity_test_motion_scene"
+    app:motionDebug="SHOW_PROGRESS">
+
+    <TextView
+        android:id="@+id/click"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_100"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:gravity="center"
+        android:text="click"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_head"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        android:src="@mipmap/icon" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_20"
+        android:background="@color/mainOrange" />
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:background="@drawable/oval_blue_5e95ff"
+        android:gravity="center"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:background="@drawable/oval_blue_5e95ff"
+        android:gravity="center"
+        android:text="2" />
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:background="@drawable/oval_blue_5e95ff"
+        android:gravity="center"
+        android:text="3" />
+
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:background="@drawable/oval_blue_5e95ff"
+        android:gravity="center"
+        android:text="4" />
+</androidx.constraintlayout.motion.widget.MotionLayout>

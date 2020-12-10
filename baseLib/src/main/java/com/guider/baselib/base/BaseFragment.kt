@@ -6,13 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.guider.baselib.utils.EventBusUtils
 import com.guider.baselib.utils.OnNoDoubleClickListener
 import com.guider.feifeia3.utils.ToastUtil
 import com.orhanobut.logger.Logger
-import com.trello.rxlifecycle4.components.support.RxFragment
 
 
 /**
@@ -21,7 +21,7 @@ import com.trello.rxlifecycle4.components.support.RxFragment
  * date: 2017/8/14 0014 下午 2:28
  * version:
  */
-abstract class BaseFragment : RxFragment(), OnNoDoubleClickListener {
+abstract class BaseFragment : Fragment(), OnNoDoubleClickListener {
 
     protected var rootView: View? = null
 

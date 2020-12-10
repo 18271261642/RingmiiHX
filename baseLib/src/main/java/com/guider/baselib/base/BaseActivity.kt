@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.alibaba.android.arouter.launcher.ARouter
 import com.guider.baselib.R
@@ -24,9 +25,8 @@ import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.health.apilib.enums.PushMsgType
 import com.gyf.immersionbar.ImmersionBar
-import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 
-abstract class BaseActivity : RxAppCompatActivity(), OnNoDoubleClickListener {
+abstract class BaseActivity : AppCompatActivity(), OnNoDoubleClickListener {
 
     /**
      * 在使用自定义toolbar时候的根布局 =toolBarView+childView

@@ -3,8 +3,8 @@ ext {
             compileSdkVersion: 29,
             minSdkVersion    : 19,
             targetSdkVersion : 29,
-            codeVersion      : 18,
-            appVersion       : "1.9.2"
+            codeVersion      : 19,
+            appVersion       : "1.9.3"
     ]
 
     supportLibVersion = '1.1.0'
@@ -31,7 +31,6 @@ ext {
     material = "1.2.1"
     dbflow = "4.2.1"
     lifecycle = "2.2.0"
-    rxlifecycle = "4.0.0"
     joda_time = "2.10.6"
     pickers = "1.0.3"
     hellocharts = "1.5.8"
@@ -86,7 +85,6 @@ ext {
             dbflow_core           : "com.github.Raizlabs.DBFlow:dbflow-core:$dbflow",
             dbflow                : "com.github.Raizlabs.DBFlow:dbflow:$dbflow",
             lifecycle             : "androidx.lifecycle:lifecycle-extensions:$lifecycle",
-            rxlifecycle_components: "com.trello.rxlifecycle4:rxlifecycle-components:$rxlifecycle",
             joda_time             : "joda-time:joda-time:2.10.6",
             pickers               : "com.github.addappcn:android-pickers:$pickers",
             hellocharts           : "com.github.lecho:hellocharts-android:v$hellocharts",

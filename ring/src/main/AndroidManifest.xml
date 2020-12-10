@@ -93,6 +93,7 @@
         <activity android:name=".view.activity.AccountBindActivity"
             android:launchMode="singleTop"
             />
+        <activity android:name=".view.activity.TestMotionActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

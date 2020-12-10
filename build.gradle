@@ -14,9 +14,9 @@ buildscript {
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-beta01'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.4'
     }
