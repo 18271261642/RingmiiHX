@@ -61,7 +61,7 @@ public class WhiteService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "1002";
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "guider_hx_white_service", NotificationManager.IMPORTANCE_LOW);
+                    "guider_hx_WhiteService", NotificationManager.IMPORTANCE_LOW);
             NotificationManager manager = (NotificationManager) getSystemService(
                     Context.NOTIFICATION_SERVICE);
             if (manager == null)
