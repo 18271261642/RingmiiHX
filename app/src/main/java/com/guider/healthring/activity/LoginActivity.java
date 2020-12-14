@@ -68,6 +68,7 @@ import com.guider.libbase.activity.WebviewActivity;
 import com.guider.libbase.thirdlogin.ThirdLogin;
 import com.guider.libbase.thirdlogin.line.ILineLogin;
 import com.linecorp.linesdk.LoginDelegate;
+import com.linecorp.linesdk.widget.LoginButton;
 import com.tencent.connect.common.Constants;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -146,6 +147,7 @@ public class LoginActivity extends WatchBaseActivity
     private Boolean passwordIsInit = false;
     //guider备份的 手环方的密码
     private String bandPwd = "1";
+    private LoginButton lineButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +181,7 @@ public class LoginActivity extends WatchBaseActivity
         weiboIv = findViewById(R.id.xinlang_iv);
         qqIv = findViewById(R.id.qq_iv);
         weixinIv = findViewById(R.id.weixin_iv);
+        lineButton = findViewById(R.id.lb_line);
         if (BuildConfig.GOOGLEPLAY) {
             weixinIv.setVisibility(View.GONE);
         } else {
@@ -416,7 +419,7 @@ public class LoginActivity extends WatchBaseActivity
             case R.id.line_iv: // LINE 登陆
                 // 用户信息可以做自己的操作
                 String lineId = BuildConfig.LINE_APP_ID;
-                mThirdLogin.lineOfficeLogin(this, findViewById(R.id.lb_line),
+                mThirdLogin.lineOfficeLogin(this, lineButton,
                         lineId, null, this::registerRingUser, () -> {
                             startActivity(NewSearchActivity.class);
                             finish();

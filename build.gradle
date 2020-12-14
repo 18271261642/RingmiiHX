@@ -3,7 +3,7 @@ apply from: "config.gradle"
 apply from: "dependencies.gradle"
 buildscript {
     ext {
-        kotlin_version = '1.4.20'
+        kotlin_version = '1.4.21'
     }
     repositories {
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
@@ -23,10 +23,10 @@ buildscript {
         //
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-beta01'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
         classpath "com.mob.sdk:MobSDK:+"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
@@ -55,8 +55,8 @@ allprojects {
     }
 
     ext {
-        codeVersion = 228
-        appVersion = "2.6.6"
+        codeVersion = 229
+        appVersion = "2.6.7"
         googlePlay = true
         isMcu = false
     }

@@ -364,7 +364,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                                             "accountIdGD", accountId);
                                     String token = dataJsonObject.getString("token");
                                     SharedPreferencesUtils.setParam(MyApp.getInstance(),
-                                            "tokenGD", accountId);
+                                            "tokenGD", token);
                                     Log.e("登录的userId", accountId + "");
                                     backupPassword(Integer.parseInt(String.valueOf(accountId)));
                                 } else hideLoadingDialog();

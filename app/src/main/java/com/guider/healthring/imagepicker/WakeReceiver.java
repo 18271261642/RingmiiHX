@@ -66,13 +66,9 @@ public class WakeReceiver extends BroadcastReceiver {
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
             LogUtil.i(TAG, "WakeNotifyService->onStartCommand");
-            if (Build.VERSION.SDK_INT < 18) {
-                startForeground(WAKE_SERVICE_ID, new Notification());//API < 18 ，此方法能有效隐藏Notification上的图标
-            } else {
-                Intent innerIntent = new Intent(this, WakeGrayInnerService.class);
-                startService(innerIntent);
-                startForeground(WAKE_SERVICE_ID, new Notification());
-            }
+            Intent innerIntent = new Intent(this, WakeGrayInnerService.class);
+            startService(innerIntent);
+            startForeground(WAKE_SERVICE_ID, new Notification());
             return START_STICKY;
         }
 

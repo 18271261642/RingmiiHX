@@ -2,12 +2,16 @@ package com.guider.healthring.w30s.service;
 
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Process;
 import androidx.core.app.NotificationCompat;
@@ -15,6 +19,7 @@ import android.util.Log;
 
 import com.guider.healthring.activity.wylactivity.wyl_util.service.AlertService;
 import com.guider.healthring.R;
+import com.guider.healthring.util.AppUtils;
 
 import java.util.List;
 
@@ -63,24 +68,31 @@ public class BleCollectorMonitorService extends Service {
      * Notification
      */
     public void createNotification(){
-        //使用兼容版本
-        NotificationCompat.Builder builder=new NotificationCompat.Builder(this);
-        //设置状态栏的通知图标
-        builder.setSmallIcon(R.mipmap.beraceiocn);
-        //设置通知栏横条的图标
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.beraceiocn));
-        //禁止用户点击删除按钮删除
-        builder.setAutoCancel(false);
-        //禁止滑动删除
-        builder.setOngoing(true);
-        //右上角的时间显示
-        builder.setShowWhen(true);
-        //设置通知栏的标题内容
-        builder.setContentTitle("RaceFitPro");
-        //创建通知
-        Notification notification = builder.build();
+        String appName = AppUtils.getAppName(getApplicationContext());
+        Bitmap appIcon = AppUtils.getBitmap(getApplicationContext());
+        NotificationCompat.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "1002";
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "guider_hx_white_service", NotificationManager.IMPORTANCE_LOW);
+            NotificationManager manager = (NotificationManager) getSystemService(
+                    Context.NOTIFICATION_SERVICE);
+            if (manager == null)
+                return;
+            manager.createNotificationChannel(channel);
+            builder = new NotificationCompat.Builder(this,
+                    channelId);
+        } else {
+            builder = new NotificationCompat.Builder(this);
+        }
+        Notification notification = builder
+                .setContentTitle(appName)
+                .setContentText("BleCollectorMonitorService")
+                .setLargeIcon(appIcon)
+                .setAutoCancel(false)
+                .build();
         //设置为前台服务
-        startForeground(NOTIFICATION_DOWNLOAD_PROGRESS_ID,notification);
+        startForeground(NOTIFICATION_DOWNLOAD_PROGRESS_ID, notification);
     }
 
 

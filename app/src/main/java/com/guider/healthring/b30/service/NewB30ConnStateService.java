@@ -400,38 +400,33 @@ public class NewB30ConnStateService extends Service {
         try {
             String appName = AppUtils.getAppName(getApplicationContext());
             Bitmap appIcon = AppUtils.getBitmap(getApplicationContext());
+            NotificationCompat.Builder builder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel("1001", "guider_hx", NotificationManager.IMPORTANCE_LOW);
-                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                String channelId = "1001";
+                NotificationChannel channel = new NotificationChannel(channelId,
+                        "guider_hx", NotificationManager.IMPORTANCE_LOW);
+                NotificationManager manager = (NotificationManager) getSystemService(
+                        Context.NOTIFICATION_SERVICE);
                 if (manager == null)
                     return;
                 manager.createNotificationChannel(channel);
-                Notification notification = new NotificationCompat.Builder(this, "1001")
-                        .setAutoCancel(true)
-                        .setCategory(Notification.CATEGORY_SERVICE)
-                        .setOngoing(true)
-                        .setPriority(NotificationManager.IMPORTANCE_LOW)
-                        .setContentTitle(appName)
-                        .setContentText(appName)
-                        // .setB(appIcon)
-                        .setLargeIcon(appIcon)
-                        .setAutoCancel(false)
-                        .build();
-
-                startForeground(101, notification);
+                builder = new NotificationCompat.Builder(this,
+                        channelId);
             } else {
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-                //Notification.Builder builder = new Notification.Builder(this,11);
-                builder.setLargeIcon(appIcon);
-                builder.setContentText(appName);
-                builder.setContentTitle(appName);
-                // 设置通知的点击行为：自动取消/跳转等
-                builder.setAutoCancel(false);
-                startForeground(12, builder.build());
-
+                builder = new NotificationCompat.Builder(this);
             }
+            Notification notification = builder
+                    //禁止滑动删除
+                    .setOngoing(true)
+                    .setContentTitle(appName)
+                    .setContentText(appName)
+                    .setLargeIcon(appIcon)
+                    .setAutoCancel(false)
+                    .build();
+            startForeground(101, notification);
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e(TAG, "前台服务 ------" + e.getMessage());
         }
 
 //        try {

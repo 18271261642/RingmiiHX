@@ -356,7 +356,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity
             long accountId = dataJson.getLong("accountId");
             SharedPreferencesUtils.setParam(this, "accountIdGD", accountId);
             String token = dataJson.getString("token");
-            SharedPreferencesUtils.setParam(this, "tokenGD", accountId);
+            SharedPreferencesUtils.setParam(this, "tokenGD", token);
             ToastUtil.showToast(this, getResources().getString(R.string.bind_phone_success));
 
 

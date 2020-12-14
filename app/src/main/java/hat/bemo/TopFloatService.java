@@ -16,6 +16,7 @@ import android.os.IBinder;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -239,7 +240,7 @@ public class TopFloatService extends Service implements View.OnClickListener, Vi
     /**
      * 通过MyApplication创建view，并初始化显示参数
      */
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "WrongConstant"})
     private void createView() {
         wm = (WindowManager) getApplicationContext().getSystemService("window");
         ballWmParams = ((MyApplication) getApplication()).getMywmParams();
