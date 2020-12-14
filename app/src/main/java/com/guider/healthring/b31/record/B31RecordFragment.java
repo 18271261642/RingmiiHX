@@ -2,11 +2,9 @@ package com.guider.healthring.b31.record;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -25,12 +23,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.NotificationManagerCompat;
-
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -83,8 +78,6 @@ import com.guider.healthring.util.Constant;
 import com.guider.healthring.util.LocalizeTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.widget.WaveProgress;
-import com.guider.libbase.other.impl.BaseOnDialogClick;
-import com.guider.libbase.util.DialogUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.model.datas.HRVOriginData;
@@ -98,21 +91,16 @@ import com.veepoo.protocol.model.enums.ESpo2hDataType;
 import com.veepoo.protocol.util.HRVOriginUtil;
 import com.veepoo.protocol.util.HrvScoreUtil;
 import com.veepoo.protocol.util.Spo2hOriginUtil;
-
 import org.litepal.LitePal;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_SPO2H;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIN_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIN_SPO2H;
-import static com.guider.healthring.util.SharedPreferencesUtils.isOpenNotificationPermission;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BEATH_BREAK;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HRV;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
