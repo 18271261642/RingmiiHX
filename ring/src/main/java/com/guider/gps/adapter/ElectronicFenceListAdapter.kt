@@ -34,21 +34,25 @@ class ElectronicFenceListAdapter(context: Context, dataList: ArrayList<Electroni
     }
 
     override fun bindData(holder: ViewHolder, data: ElectronicFenceListBean, position: Int) {
-        val fenceSwitch = holder.itemView.fenceSwitch
-        fenceSwitch.setCheckedNoEvent(data.open)
-        holder.itemView.nameTv.text = data.title
-        holder.setOnItemClickListener {
-            listener?.onClickItem(holder.adapterPosition)
-        }
-        fenceSwitch.setOnCheckedChangeListener { _, isChecked ->
-            eventListener?.switchChange(holder.adapterPosition, isChecked)
-        }
-        holder.itemView.deleteIv.setOnClickListener(object : OnNoDoubleClickListener {
-            override fun onNoDoubleClick(v: View) {
-                eventListener?.deleteItem(holder.adapterPosition)
-            }
+        with(holder) {
+            data.run {
+                val fenceSwitch = itemView.fenceSwitch
+                fenceSwitch.setCheckedNoEvent(open)
+                itemView.nameTv.text = title
+                setOnItemClickListener {
+                    listener?.onClickItem(adapterPosition)
+                }
+                fenceSwitch.setOnCheckedChangeListener { _, isChecked ->
+                    eventListener?.switchChange(adapterPosition, isChecked)
+                }
+                itemView.deleteIv.setOnClickListener(object : OnNoDoubleClickListener {
+                    override fun onNoDoubleClick(v: View) {
+                        eventListener?.deleteItem(adapterPosition)
+                    }
 
-        })
+                })
+            }
+        }
     }
 
     interface AdapterEventListener {

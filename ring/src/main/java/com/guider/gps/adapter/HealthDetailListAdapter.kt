@@ -22,45 +22,49 @@ class HealthDetailListAdapter(context: Context, dataList: ArrayList<HealthDataSi
 
     @SuppressLint("SetTextI18n")
     override fun bindData(holder: ViewHolder, data: HealthDataSimpleBean, position: Int) {
-        holder.setText(R.id.dateTv,DateUtilKotlin.uTCToLocal(data.testTime,TIME_FORMAT_PATTERN4))
-        holder.setText(R.id.timeTv,DateUtilKotlin.uTCToLocal(data.testTime,TIME_FORMAT_PATTERN8))
-        val dataBackValue = holder.getView<TextView>(R.id.dataBackValue)
-        val dataFrontValue = holder.getView<TextView>(R.id.dataFrontValue)
-        val unitTv = holder.getView<TextView>(R.id.unitTv)
-        when (type) {
-            mContext.resources.getString(R.string.app_main_health_blood_pressure) -> {
-                dataFrontValue.visibility = View.VISIBLE
-                dataFrontValue.text = "${data.sbp}/"
-                dataBackValue.text = "${data.dbp}"
-                val state1 = data.state2.substring(0, data.state2.indexOf(","))
-                val state2 = data.state2.substring(data.state2.indexOf(",") + 1)
-                showStatusColor(state1, dataFrontValue)
-                showStatusColor(state2, dataBackValue)
-                unitTv.text = bp
-            }
-            mContext.resources.getString(R.string.app_main_health_heart_rate) -> {
-                dataFrontValue.visibility = View.GONE
-                dataBackValue.text = "${data.hb}"
-                showStatusColor(data.state2, dataBackValue)
-                unitTv.text = heart
-            }
-            mContext.resources.getString(R.string.app_main_health_body_temp) -> {
-                dataFrontValue.visibility = View.GONE
-                dataBackValue.text = "${data.bt}"
-                showStatusColor(data.state2, dataBackValue)
-                unitTv.text = "°C"
-            }
-            mContext.resources.getString(R.string.app_main_health_sleep) -> {
-                dataFrontValue.visibility = View.GONE
-                dataBackValue.text = "${data.minute}"
-                dataBackValue.setTextColor(CommonUtils.getColor(
-                        mContext, R.color.color333333))
-            }
-            mContext.resources.getString(R.string.app_main_health_sport) -> {
-                dataFrontValue.visibility = View.GONE
-                dataBackValue.text = "${data.step}"
-                dataBackValue.setTextColor(CommonUtils.getColor(
-                        mContext, R.color.color333333))
+        with(holder) {
+            data.run {
+                setText(R.id.dateTv, DateUtilKotlin.uTCToLocal(testTime, TIME_FORMAT_PATTERN4))
+                setText(R.id.timeTv, DateUtilKotlin.uTCToLocal(testTime, TIME_FORMAT_PATTERN8))
+                val dataBackValue = getView<TextView>(R.id.dataBackValue)
+                val dataFrontValue = getView<TextView>(R.id.dataFrontValue)
+                val unitTv = getView<TextView>(R.id.unitTv)
+                when (type) {
+                    mContext.resources.getString(R.string.app_main_health_blood_pressure) -> {
+                        dataFrontValue.visibility = View.VISIBLE
+                        dataFrontValue.text = "${sbp}/"
+                        dataBackValue.text = dbp.toString()
+                        val state1 = state2.substring(0, state2.indexOf(","))
+                        val state2 = state2.substring(state2.indexOf(",") + 1)
+                        showStatusColor(state1, dataFrontValue)
+                        showStatusColor(state2, dataBackValue)
+                        unitTv.text = bp
+                    }
+                    mContext.resources.getString(R.string.app_main_health_heart_rate) -> {
+                        dataFrontValue.visibility = View.GONE
+                        dataBackValue.text = hb.toString()
+                        showStatusColor(state2, dataBackValue)
+                        unitTv.text = heart
+                    }
+                    mContext.resources.getString(R.string.app_main_health_body_temp) -> {
+                        dataFrontValue.visibility = View.GONE
+                        dataBackValue.text = bt.toString()
+                        showStatusColor(state2, dataBackValue)
+                        unitTv.text = "°C"
+                    }
+                    mContext.resources.getString(R.string.app_main_health_sleep) -> {
+                        dataFrontValue.visibility = View.GONE
+                        dataBackValue.text = minute.toString()
+                        dataBackValue.setTextColor(CommonUtils.getColor(
+                                mContext, R.color.color333333))
+                    }
+                    mContext.resources.getString(R.string.app_main_health_sport) -> {
+                        dataFrontValue.visibility = View.GONE
+                        dataBackValue.text = step.toString()
+                        dataBackValue.setTextColor(CommonUtils.getColor(
+                                mContext, R.color.color333333))
+                    }
+                }
             }
         }
     }

@@ -15,31 +15,35 @@ class AbnormalMsgContentDetailAdapter(context: Context, dataList: ArrayList<Simp
     : CommonAdapter<SimpleWithTypeBean>(context, dataList, R.layout.item_annormal_msg_content) {
 
     override fun bindData(holder: ViewHolder, data: SimpleWithTypeBean, position: Int) {
-        holder.setText(R.id.dataTitle, data.type)
-        if (StringUtil.isNotBlankAndEmpty(data.state)) {
-            when (data.state) {
-                "偏低" -> {
-                    holder.setViewVisibility(R.id.dataStatusIv, View.VISIBLE)
-                    holder.setImageResource(R.id.dataStatusIv, R.drawable.icon_arrow_low)
-                }
-                "偏高" -> {
-                    holder.setViewVisibility(R.id.dataStatusIv, View.VISIBLE)
-                    holder.setImageResource(R.id.dataStatusIv, R.drawable.icon_arrow_high)
-                }
-                else -> {
-                    holder.setViewVisibility(R.id.dataStatusIv, View.GONE)
+        with(data) {
+            holder.run {
+                setText(R.id.dataTitle, type)
+                if (StringUtil.isNotBlankAndEmpty(state)) {
+                    when (state) {
+                        "偏低" -> {
+                            setViewVisibility(R.id.dataStatusIv, View.VISIBLE)
+                            setImageResource(R.id.dataStatusIv, R.drawable.icon_arrow_low)
+                        }
+                        "偏高" -> {
+                            setViewVisibility(R.id.dataStatusIv, View.VISIBLE)
+                            setImageResource(R.id.dataStatusIv, R.drawable.icon_arrow_high)
+                        }
+                        else -> {
+                            setViewVisibility(R.id.dataStatusIv, View.GONE)
+                        }
+                    }
+                } else setViewVisibility(R.id.dataStatusIv, View.GONE)
+                //心率值复杂一些
+                if (type == mContext.resources.getString(
+                                R.string.app_main_health_heart_rate)) {
+                    if (StringUtil.isNotBlankAndEmpty(vaule) && vaule != "0")
+                        setText(R.id.dataContentTv, vaule)
+                    else setText(R.id.dataContentTv, "-")
+
+                } else {
+                    setText(R.id.dataContentTv, vaule)
                 }
             }
-        } else holder.setViewVisibility(R.id.dataStatusIv, View.GONE)
-        //心率值复杂一些
-        if (data.type == mContext.resources.getString(
-                        R.string.app_main_health_heart_rate)) {
-            if (StringUtil.isNotBlankAndEmpty(data.vaule) && data.vaule != "0")
-                holder.setText(R.id.dataContentTv, data.vaule)
-            else holder.setText(R.id.dataContentTv, "-")
-
-        } else {
-            holder.setText(R.id.dataContentTv, data.vaule)
         }
     }
 }

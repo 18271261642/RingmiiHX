@@ -20,27 +20,31 @@ class HistoryRecordListAdapter(context: Context, dataList: ArrayList<UserPositio
     }
 
     override fun bindData(holder: ViewHolder, data: UserPositionListBean, position: Int) {
-        val localTime = DateUtilKotlin.uTCToLocal(data.testTime, TIME_FORMAT_PATTERN1)
-        holder.setText(R.id.timeTv, localTime)
-        if (StringUtil.isNotBlankAndEmpty(data.addr)){
-            holder.setViewVisibility(R.id.historyLocation,View.VISIBLE)
-            holder.setText(R.id.historyLocation, data.addr)
-        }else {
-            holder.setViewVisibility(R.id.historyLocation,View.GONE)
-        }
-        holder.setText(R.id.locationMethodTv, String.format(
-                mContext.resources.getString(
-                        R.string.app_map_location_method_content), data.signalType
-        ))
-        val detailLayout = holder.getView<ConstraintLayout>(R.id.detailLayout)
-        detailLayout.setOnClickListener(object : OnNoDoubleClickListener {
-            override fun onNoDoubleClick(v: View) {
-                MapUtils.startGuide(mContext, data.lat, data.lng)
-            }
+        with(holder) {
+            data.run {
+                val localTime = DateUtilKotlin.uTCToLocal(data.testTime, TIME_FORMAT_PATTERN1)
+                setText(R.id.timeTv, localTime)
+                if (StringUtil.isNotBlankAndEmpty(addr)) {
+                    setViewVisibility(R.id.historyLocation, View.VISIBLE)
+                    setText(R.id.historyLocation, addr)
+                } else {
+                    setViewVisibility(R.id.historyLocation, View.GONE)
+                }
+                setText(R.id.locationMethodTv, String.format(
+                        mContext.resources.getString(
+                                R.string.app_map_location_method_content), signalType
+                ))
+                val detailLayout = getView<ConstraintLayout>(R.id.detailLayout)
+                detailLayout.setOnClickListener(object : OnNoDoubleClickListener {
+                    override fun onNoDoubleClick(v: View) {
+                        MapUtils.startGuide(mContext, lat, lng)
+                    }
 
-        })
-        holder.setOnItemClickListener {
-            listener?.onClickItem(holder.adapterPosition)
+                })
+                setOnItemClickListener {
+                    listener?.onClickItem(adapterPosition)
+                }
+            }
         }
     }
 }

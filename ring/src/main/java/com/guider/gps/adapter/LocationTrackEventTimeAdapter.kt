@@ -21,18 +21,24 @@ class LocationTrackEventTimeAdapter(context: Context, dataList: ArrayList<WithSe
 
     @SuppressLint("SetTextI18n")
     override fun bindData(holder: ViewHolder, data: WithSelectBaseBean, position: Int) {
-        val timeTv = holder.getView<TextView>(R.id.timeTv)
-        timeTv.text = String.format(
-                mContext.resources.getString(R.string.app_map_track_time_hour), data.name.toInt())
-        if (data.isSelect) {
-            timeTv.setTextColor(CommonUtils.getColor(mContext, R.color.colorF18937))
-            timeTv.setBackgroundResource(R.drawable.circle_f18937_21_bg)
-        } else {
-            timeTv.setTextColor(CommonUtils.getColor(mContext, R.color.colorCCCCCC))
-            timeTv.setBackgroundResource(R.drawable.circle_cccccc_21_bg)
+        with(holder) {
+            data.run {
+                val timeTv = getView<TextView>(R.id.timeTv)
+                timeTv.text = String.format(
+                        mContext.resources.getString(R.string.app_map_track_time_hour),
+                        name.toInt())
+                if (isSelect) {
+                    timeTv.setTextColor(CommonUtils.getColor(mContext, R.color.colorF18937))
+                    timeTv.setBackgroundResource(R.drawable.circle_f18937_21_bg)
+                } else {
+                    timeTv.setTextColor(CommonUtils.getColor(mContext, R.color.colorCCCCCC))
+                    timeTv.setBackgroundResource(R.drawable.circle_cccccc_21_bg)
+                }
+                setOnItemClickListener {
+                    listener?.onClickItem(holder.adapterPosition)
+                }
+            }
         }
-        holder.setOnItemClickListener {
-            listener?.onClickItem(holder.adapterPosition)
-        }
+
     }
 }

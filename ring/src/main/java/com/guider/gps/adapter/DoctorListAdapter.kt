@@ -27,15 +27,19 @@ class DoctorListAdapter(context: Context, dataList: ArrayList<DoctorListBean>)
     }
 
     override fun bindData(holder: ViewHolder, data: DoctorListBean, position: Int) {
-        if (StringUtil.isEmpty(data.headUrl)) {
-            holder.setImageResource(R.id.headerIv, R.drawable.icon_default_user)
-        } else {
-            ImageLoaderUtils.loadImage(mContext, holder.getView(R.id.headerIv), data.headUrl!!)
-        }
-        holder.setText(R.id.nameTv, data.name)
-        holder.setText(R.id.positionTv, data.professionalTitle)
-        holder.setOnItemClickListener {
-            listener?.onClickItem(position)
+        with(holder) {
+            data.run {
+                if (StringUtil.isEmpty(headUrl)) {
+                    setImageResource(R.id.headerIv, R.drawable.icon_default_user)
+                } else {
+                    ImageLoaderUtils.loadImage(mContext, holder.getView(R.id.headerIv), headUrl!!)
+                }
+                setText(R.id.nameTv, name)
+                setText(R.id.positionTv, professionalTitle)
+                setOnItemClickListener {
+                    listener?.onClickItem(position)
+                }
+            }
         }
     }
 }

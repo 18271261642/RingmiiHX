@@ -9,15 +9,19 @@ import com.guider.gps.R
 import com.guider.health.apilib.bean.HealthDataDetailListBean
 
 class HealthDataAdapter(context: Context, dataList: ArrayList<HealthDataDetailListBean>,
-                        val type:String)
+                        val type: String)
     : CommonAdapter<HealthDataDetailListBean>(context, dataList, R.layout.item_health_data) {
 
     override fun bindData(holder: ViewHolder, data: HealthDataDetailListBean, position: Int) {
-        holder.setText(R.id.dateTv, data.time)
-        val dataDetailListRv = holder.getView<RecyclerView>(R.id.dataDetailListRv)
-        dataDetailListRv.isNestedScrollingEnabled = true
-        dataDetailListRv.layoutManager = LinearLayoutManager(mContext)
-        val adapter = HealthDetailListAdapter(mContext, data.list as ArrayList,type)
-        dataDetailListRv.adapter = adapter
+        with(holder) {
+            data.run {
+                setText(R.id.dateTv, time)
+                val dataDetailListRv = getView<RecyclerView>(R.id.dataDetailListRv)
+                dataDetailListRv.isNestedScrollingEnabled = true
+                dataDetailListRv.layoutManager = LinearLayoutManager(mContext)
+                val adapter = HealthDetailListAdapter(mContext, list as ArrayList, type)
+                dataDetailListRv.adapter = adapter
+            }
+        }
     }
 }

@@ -25,12 +25,16 @@ class CountryCodeDialogAdapter(context: Context, dataList: ArrayList<AreCodeBean
     }
 
     override fun bindData(holder: ViewHolder, data: AreCodeBean, position: Int) {
-        holder.setText(R.id.itemPhoneRegionsTv, data.phoneRegious)
-        holder.setText(R.id.itemPhoneCountryTv, data.phoneCountry)
-        holder.setText(R.id.itemPhoneCodeTv, data.phoneAreCode)
-        holder.setText(R.id.tv_phone_head, data.phoneCode)
-        holder.setOnItemClickListener {
-            listener?.onClickItem(holder.adapterPosition)
+        with(holder) {
+            data.run {
+                setText(R.id.itemPhoneRegionsTv, phoneRegious)
+                setText(R.id.itemPhoneCountryTv, phoneCountry)
+                setText(R.id.itemPhoneCodeTv, phoneAreCode)
+                setText(R.id.tv_phone_head, phoneCode)
+                setOnItemClickListener {
+                    listener?.onClickItem(adapterPosition)
+                }
+            }
         }
     }
 }

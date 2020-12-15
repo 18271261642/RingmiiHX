@@ -19,12 +19,17 @@ class HealthCareMsgListAdapter(context: Context, dataList: ArrayList<CareMsgList
     }
 
     override fun bindData(holder: ViewHolder, data: CareMsgListBean, position: Int) {
-        holder.setText(R.id.careMsgContent, data.adviceContent)
-        if (StringUtil.isNotBlankAndEmpty(data.sendTime))
-            holder.setText(
-                    R.id.timeTv, DateUtilKotlin.getDateWithWeekWithTime(mContext, data.sendTime))
-        holder.setOnItemClickListener {
-            listener?.onClickItem(holder.adapterPosition)
+        with(holder) {
+            data.run {
+                setText(R.id.careMsgContent, adviceContent)
+                if (StringUtil.isNotBlankAndEmpty(sendTime))
+                    setText(
+                            R.id.timeTv, DateUtilKotlin.getDateWithWeekWithTime(mContext, sendTime))
+                setOnItemClickListener {
+                    listener?.onClickItem(adapterPosition)
+                }
+            }
         }
+
     }
 }

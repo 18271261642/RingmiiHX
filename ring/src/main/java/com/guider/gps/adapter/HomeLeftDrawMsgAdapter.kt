@@ -11,9 +11,9 @@ import com.guider.baselib.widget.image.ImageLoaderUtils
 import com.guider.baselib.widget.recyclerview.ViewHolder
 import com.guider.baselib.widget.recyclerview.adapter.CommonAdapter
 import com.guider.gps.R
-import com.guider.health.apilib.utils.MMKVUtil
 import com.guider.health.apilib.bean.UserInfo
 import com.guider.health.apilib.enums.PositionType
+import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.item_home_draw_msg.view.*
 import java.util.*
 
@@ -42,100 +42,104 @@ class HomeLeftDrawMsgAdapter(context: Context, dataList: ArrayList<UserInfo>)
     }
 
     override fun bindData(holder: ViewHolder, data: UserInfo, position: Int) {
-        if (data.isSelected == 1) {
-            holder.setViewVisibility(R.id.msgSelectIv, View.VISIBLE)
-            holder.itemView.rootLayout.setBackgroundColor(
-                    CommonUtils.getColor(mContext, R.color.colorFFFBF3))
-        } else {
-            holder.setViewVisibility(R.id.msgSelectIv, View.INVISIBLE)
-            holder.itemView.rootLayout.setBackgroundColor(
-                    CommonUtils.getColor(mContext, R.color.white))
-        }
-        holder.setText(R.id.msgPersonName, data.relationShip)
-        val batteryView = holder.getView<BatteryView>(R.id.batteryLayout)
-        val deviceCodeTv = holder.getView<TextView>(R.id.deviceCodeTv)
-        if (StringUtil.isNotBlankAndEmpty(data.deviceCode)) {
-            deviceCodeTv.visibility = View.VISIBLE
-            val spanny = Spanny().append("IMEI：",
-                    ForegroundColorSpan(
-                            CommonUtils.getColor(mContext, R.color.color333333)))
-                    .append(data.deviceCode, ForegroundColorSpan(
-                            CommonUtils.getColor(mContext, R.color.color999999)))
-            deviceCodeTv.text = spanny
-        } else deviceCodeTv.visibility = View.GONE
-        if (StringUtil.isNotBlankAndEmpty(data.deviceState)) {
-            holder.setViewVisibility(R.id.msgRingStatusIv, View.VISIBLE)
-            holder.setViewVisibility(R.id.msgRingStatusTv, View.VISIBLE)
-            when (data.deviceState) {
-                "ONLINE" -> {
-                    holder.setImageResource(R.id.msgRingStatusIv, R.drawable.oval_green_59d15f)
-                    holder.setText(R.id.msgRingStatusTv,
-                            mContext.resources.getString(
-                                    R.string.app_main_left_msg_device_status_online))
-                    holder.setViewVisibility(R.id.batteryLayout, View.VISIBLE)
-                    holder.setViewVisibility(R.id.rssiIv, View.VISIBLE)
-                    when (data.rssi) {
-                        in 0..10 -> {
-                            holder.setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_1)
+        with(holder) {
+            data.run {
+                if (isSelected == 1) {
+                    setViewVisibility(R.id.msgSelectIv, View.VISIBLE)
+                    itemView.rootLayout.setBackgroundColor(
+                            CommonUtils.getColor(mContext, R.color.colorFFFBF3))
+                } else {
+                    setViewVisibility(R.id.msgSelectIv, View.INVISIBLE)
+                    itemView.rootLayout.setBackgroundColor(
+                            CommonUtils.getColor(mContext, R.color.white))
+                }
+                setText(R.id.msgPersonName, relationShip)
+                val batteryView = getView<BatteryView>(R.id.batteryLayout)
+                val deviceCodeTv = getView<TextView>(R.id.deviceCodeTv)
+                if (StringUtil.isNotBlankAndEmpty(deviceCode)) {
+                    deviceCodeTv.visibility = View.VISIBLE
+                    val spanny = Spanny().append("IMEI：",
+                            ForegroundColorSpan(
+                                    CommonUtils.getColor(mContext, R.color.color333333)))
+                            .append(deviceCode, ForegroundColorSpan(
+                                    CommonUtils.getColor(mContext, R.color.color999999)))
+                    deviceCodeTv.text = spanny
+                } else deviceCodeTv.visibility = View.GONE
+                if (StringUtil.isNotBlankAndEmpty(deviceState)) {
+                    setViewVisibility(R.id.msgRingStatusIv, View.VISIBLE)
+                    setViewVisibility(R.id.msgRingStatusTv, View.VISIBLE)
+                    when (deviceState) {
+                        "ONLINE" -> {
+                            setImageResource(R.id.msgRingStatusIv, R.drawable.oval_green_59d15f)
+                            setText(R.id.msgRingStatusTv,
+                                    mContext.resources.getString(
+                                            R.string.app_main_left_msg_device_status_online))
+                            setViewVisibility(R.id.batteryLayout, View.VISIBLE)
+                            setViewVisibility(R.id.rssiIv, View.VISIBLE)
+                            when (rssi) {
+                                in 0..10 -> {
+                                    setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_1)
+                                }
+                                in 11..30 -> {
+                                    setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_2)
+                                }
+                                in 31..60 -> {
+                                    setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_3)
+                                }
+                                else -> {
+                                    setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_4)
+                                }
+                            }
+                            batteryView.power = electricity
                         }
-                        in 11..30 -> {
-                            holder.setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_2)
-                        }
-                        in 31..60 -> {
-                            holder.setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_3)
-                        }
-                        else -> {
-                            holder.setImageResource(R.id.rssiIv, R.drawable.icon_device_rssi_4)
+                        "OFFLINE" -> {
+                            setImageResource(R.id.msgRingStatusIv, R.drawable.oval_red_d76155)
+                            setText(R.id.msgRingStatusTv, mContext.resources.getString(
+                                    R.string.app_main_left_msg_device_status_offline))
+                            setViewVisibility(R.id.batteryLayout, View.GONE)
+                            setViewVisibility(R.id.rssiIv, View.GONE)
                         }
                     }
-                    batteryView.power = data.electricity
+                } else {
+                    setViewVisibility(R.id.msgRingStatusIv, View.GONE)
+                    setViewVisibility(R.id.msgRingStatusTv, View.GONE)
                 }
-                "OFFLINE" -> {
-                    holder.setImageResource(R.id.msgRingStatusIv, R.drawable.oval_red_d76155)
-                    holder.setText(R.id.msgRingStatusTv, mContext.resources.getString(
-                            R.string.app_main_left_msg_device_status_offline))
-                    holder.setViewVisibility(R.id.batteryLayout, View.GONE)
-                    holder.setViewVisibility(R.id.rssiIv, View.GONE)
+                if (StringUtil.isNotBlankAndEmpty(headUrl)) {
+                    setImagePath(R.id.msgHeadIv,
+                            object : ViewHolder.HolderImageLoader(headUrl!!) {
+                                override fun loadImage(iv: ImageView, path: String) {
+                                    ImageLoaderUtils.loadImage(mContext, iv, path)
+                                }
+                            })
+                } else {
+                    setImageResource(R.id.msgHeadIv, R.drawable.icon_default_user)
+                }
+                setOnItemClickListener {
+                    listener?.onClickItem(adapterPosition)
+                }
+                setOnItemLongClickListener {
+                    longClickListener?.onClickItem(adapterPosition)
+                    true
+                }
+                if (MMKVUtil.getInt(USER.USERID) != 0 &&
+                        MMKVUtil.getInt(USER.USERID) == accountId) {
+                    setViewVisibility(R.id.msgPersonNameIv, View.GONE)
+                } else {
+                    setViewVisibility(R.id.msgPersonNameIv, View.VISIBLE)
+                    itemView.nameLayout.setOnClickListener {
+                        editClickListener?.onEditItem(adapterPosition)
+                    }
+                }
+                if (deviceMode == PositionType.FINDER.name) {
+                    itemView.searchPersonBgView.visibility = View.VISIBLE
+                    itemView.searchPersonFlag.visibility = View.VISIBLE
+                    itemView.distanceView.visibility = View.VISIBLE
+                } else {
+                    itemView.searchPersonBgView.visibility = View.GONE
+                    itemView.searchPersonFlag.visibility = View.GONE
+                    itemView.distanceView.visibility = View.GONE
                 }
             }
-        } else {
-            holder.setViewVisibility(R.id.msgRingStatusIv, View.GONE)
-            holder.setViewVisibility(R.id.msgRingStatusTv, View.GONE)
-
-        }
-        if (StringUtil.isNotBlankAndEmpty(data.headUrl)) {
-            holder.setImagePath(R.id.msgHeadIv,
-                    object : ViewHolder.HolderImageLoader(data.headUrl!!) {
-                        override fun loadImage(iv: ImageView, path: String) {
-                            ImageLoaderUtils.loadImage(mContext, iv, path)
-                        }
-                    })
-        } else {
-            holder.setImageResource(R.id.msgHeadIv, R.drawable.icon_default_user)
-        }
-        holder.setOnItemClickListener {
-            listener?.onClickItem(holder.adapterPosition)
-        }
-        holder.setOnItemLongClickListener {
-            longClickListener?.onClickItem(holder.adapterPosition)
-            true
-        }
-        if (MMKVUtil.getInt(USER.USERID) != 0 && MMKVUtil.getInt(USER.USERID) == data.accountId) {
-            holder.setViewVisibility(R.id.msgPersonNameIv, View.GONE)
-        } else {
-            holder.setViewVisibility(R.id.msgPersonNameIv, View.VISIBLE)
-            holder.itemView.nameLayout.setOnClickListener {
-                editClickListener?.onEditItem(holder.adapterPosition)
-            }
-        }
-        if (data.deviceMode == PositionType.FINDER.name) {
-            holder.itemView.searchPersonBgView.visibility = View.VISIBLE
-            holder.itemView.searchPersonFlag.visibility = View.VISIBLE
-            holder.itemView.distanceView.visibility = View.VISIBLE
-        } else {
-            holder.itemView.searchPersonBgView.visibility = View.GONE
-            holder.itemView.searchPersonFlag.visibility = View.GONE
-            holder.itemView.distanceView.visibility = View.GONE
         }
     }
 
