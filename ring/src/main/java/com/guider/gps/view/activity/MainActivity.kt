@@ -230,7 +230,7 @@ class MainActivity : BaseActivity() {
         if (StringUtil.isEmpty(token)) return
         if (MMKVUtil.getInt(USER.USERID) == 0) return
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadPushToken(
                         MMKVUtil.getInt(USER.USERID), PushNationType.ZH_TW,
                         "ANDROID", token!!)
@@ -306,7 +306,7 @@ class MainActivity : BaseActivity() {
         if (bindListBean == null) return
         val accountId = bindDeviceList[position].accountId
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService().updateRelationShipData(
@@ -354,7 +354,7 @@ class MainActivity : BaseActivity() {
 
     private fun getCareMsgUndoNum(accountId: Int) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getCareMsgUndo(accountId)
                 if (resultBean != null) {
                     careMsgUndoNum = resultBean.toInt()
@@ -366,7 +366,7 @@ class MainActivity : BaseActivity() {
 
     private fun getAbnormalMsgUndoNum(accountId: Int) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getAbnormalMsgUndo(accountId)
                 if (resultBean != null) {
                     abnormalMsgUndoNum = resultBean.toInt()
@@ -454,7 +454,7 @@ class MainActivity : BaseActivity() {
         val bindAccountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         val bingAccountName = MMKVUtil.getString(BIND_DEVICE_NAME)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (isShowDialog) showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -472,7 +472,7 @@ class MainActivity : BaseActivity() {
                                 if (StringUtil.isNotBlankAndEmpty(it.phone)
                                         && !it.phone!!.contains("vis")) {
                                     //绑定当前的手机号因为没有点击登录按钮所以没有切换新的手机号避免出错
-                                    MMKVUtil.saveString(USER.PHONE,it.phone?:"")
+                                    MMKVUtil.saveString(USER.PHONE, it.phone ?: "")
                                 }
                                 EventBusUtils.sendEvent(EventBusEvent(
                                         REFRESH_CURRENT_LOGIN_ACCOUNT_INFO, true))
@@ -533,7 +533,7 @@ class MainActivity : BaseActivity() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         if (accountId == 0) return
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .userPosition(accountId, 1, 1, "", "")
                 var dataMap = hashMapOf<String, Any>()
@@ -594,7 +594,7 @@ class MainActivity : BaseActivity() {
             }
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -733,7 +733,7 @@ class MainActivity : BaseActivity() {
             val groupId = bindListBean!!.userGroupId
             val accountId = bindDeviceList[position].accountId
             lifecycleScope.launch {
-                ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                ApiCoroutinesCallBack.resultParse(onStart = {
                     showDialog()
                 }, block = {
                     val resultBean = GuiderApiUtil.getApiService()

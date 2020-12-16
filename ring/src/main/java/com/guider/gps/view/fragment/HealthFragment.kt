@@ -228,7 +228,7 @@ class HealthFragment : BaseFragment() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         val userId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .sportStepAndTargetStep(accountId, startTimeValue)
                 if (resultBean != null) {
@@ -258,7 +258,7 @@ class HealthFragment : BaseFragment() {
     private fun getSportData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 var resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthSportChartData(accountId, -1, 100,
                                 startTimeValue, endTimeValue)
@@ -307,7 +307,7 @@ class HealthFragment : BaseFragment() {
     private fun getSleepData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthSleepChartData(accountId, startTimeValue)
                 if (!resultBean.isNullOrEmpty()) {
@@ -350,7 +350,7 @@ class HealthFragment : BaseFragment() {
     private fun getHeartData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 var resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthHeartChartData(accountId, -1, 100,
                                 startTimeValue, endTimeValue)
@@ -384,7 +384,7 @@ class HealthFragment : BaseFragment() {
     private fun getBodyTempData() {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 var resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthTempChartData(accountId,
                                 -1, 9, startTimeValue, endTimeValue)
@@ -423,7 +423,7 @@ class HealthFragment : BaseFragment() {
         if (!isFirstLoadData && !isRefresh) mDialog?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, {
+            ApiCoroutinesCallBack.resultParse({
                 if (!isFirstLoadData && !isRefresh) mDialog?.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()

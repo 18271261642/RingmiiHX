@@ -105,7 +105,7 @@ class HealthDataListActivity : BaseActivity() {
 
     private fun getBloodPressureData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthBloodChartData(
                                 accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
@@ -168,7 +168,7 @@ class HealthDataListActivity : BaseActivity() {
 
     private fun getHeartData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthHeartChartData(
                                 accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
@@ -226,7 +226,7 @@ class HealthDataListActivity : BaseActivity() {
 
     private fun getBodyTempData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthTempChartData(
                                 accountId, page, 20, startTime!!, endTime!!, SortType.DESC)
@@ -284,7 +284,7 @@ class HealthDataListActivity : BaseActivity() {
 
     private fun getSleepData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthSleepChartData(accountId, startTime!!, SortType.DESC)
                 if (!resultBean.isNullOrEmpty()) {
@@ -340,7 +340,7 @@ class HealthDataListActivity : BaseActivity() {
 
     private fun getSportData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthSportChartData(
                                 accountId, page, 20, startTime!!, endTime!!, SortType.DESC)

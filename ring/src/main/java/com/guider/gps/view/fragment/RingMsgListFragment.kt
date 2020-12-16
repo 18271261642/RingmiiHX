@@ -100,7 +100,7 @@ class RingMsgListFragment : BaseFragment() {
 
     private fun getAbnormalMsgListData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (isShowLoading)
                     mActivity.showDialog()
             }, block = {
@@ -147,7 +147,7 @@ class RingMsgListFragment : BaseFragment() {
                 if (isLoadMore) {
                     page--
                 }
-            }, onRequestFinish = {
+            }) {
                 if (isShowLoading) mActivity.dismissDialog()
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
@@ -155,13 +155,13 @@ class RingMsgListFragment : BaseFragment() {
                 }
                 isRefresh = false
                 isLoadMore = false
-            })
+            }
         }
     }
 
     private fun getCareMsgListData(accountId: Int, isShowLoading: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (isShowLoading)
                     mActivity.showDialog()
             }, block = {
@@ -198,7 +198,7 @@ class RingMsgListFragment : BaseFragment() {
                 if (isLoadMore) {
                     page--
                 }
-            }, onRequestFinish = {
+            }) {
                 if (isShowLoading) mActivity.dismissDialog()
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
@@ -206,7 +206,7 @@ class RingMsgListFragment : BaseFragment() {
                 }
                 isRefresh = false
                 isLoadMore = false
-            })
+            }
         }
     }
 
@@ -214,7 +214,7 @@ class RingMsgListFragment : BaseFragment() {
         if (!isInitComplete) return
         Log.i(TAG,"加载新数据")
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (isShowLoading)
                     mActivity.showDialog()
             }, block = {
@@ -251,7 +251,7 @@ class RingMsgListFragment : BaseFragment() {
                 if (isLoadMore) {
                     page--
                 }
-            }, onRequestFinish = {
+            }) {
                 if (isShowLoading) mActivity.dismissDialog()
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
@@ -259,7 +259,7 @@ class RingMsgListFragment : BaseFragment() {
                 }
                 isRefresh = false
                 isLoadMore = false
-            })
+            }
         }
     }
 

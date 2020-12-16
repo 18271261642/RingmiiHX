@@ -151,9 +151,9 @@ class AlarmSeActivity : BaseActivity() {
     private fun commitTempAlarmSet(checked: Boolean) {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!,onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
-            },block = {
+            }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .setBodyTempAlarm(accountId, timeIntervalValue, checked)
                 if (resultBean != null) {
@@ -162,7 +162,7 @@ class AlarmSeActivity : BaseActivity() {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-            },onRequestFinish = {
+            }, onRequestFinish = {
                 dismissDialog()
             })
         }
@@ -171,7 +171,7 @@ class AlarmSeActivity : BaseActivity() {
     private fun commitHeartAlarmSet(checked: Boolean) {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()

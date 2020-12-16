@@ -33,7 +33,12 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.scwang.smart.refresh.header.ClassicsHeader
 import kotlinx.android.synthetic.main.activity_doctor_answer.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /**
@@ -60,9 +65,6 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
     //聊天医生的accountId
     private var receiveAccountId = 0
     private var doctorName = ""
-
-    //定时器
-    val DELAY_TIME: Long = 1_000 * 5
 
     companion object {
         init {
@@ -164,43 +166,41 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
         val accountId = MMKVUtil.getInt(USER.USERID, 0)
         if (accountId == 0) return
         var num = 1
+        //定时器
         lifecycleScope.launch {
-            while (true) {
-                delay(DELAY_TIME)
-                Log.i(TAG, "轮询获取咨询消息执行了${num++}次")
-                addLatestLoopNews()
+            flow {
+                while (true) {
+                    delay(1_000 * 5)
+                    emit(num++)
+                }
+            }.map {
+                Log.i(TAG, "轮询获取咨询消息执行了${it}次")
+                val tempTime = DateUtilKotlin.localToUTC(
+                        CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
+                val resultBean = GuiderApiUtil.getApiService()
+                        .getAnswerMsgList(receiveAccountId, MMKVUtil.getInt(USER.USERID),
+                                true,
+                                20,
+                                tempTime)
+                resultBean
+            }.flowOn(Dispatchers.IO).collect { resultBean ->
+                if (!resultBean.isNullOrEmpty()) {
+                    val tempList = arrayListOf<AnswerListBean>()
+                    for (key in resultBean.keys) {
+                        //遍历取出key，再遍历map取出value。
+                        resultBean[key]?.let { tempList.addAll(it) }
+                    }
+                    msgList.addAll(tempList)
+                    msgAdapter.setSourceList(msgList)
+                    msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
+                }
             }
         }
     }
 
-    /**
-     * 添加最新的轮询消息
-     */
-    private suspend fun addLatestLoopNews() {
-        ApiCoroutinesCallBack.resultParse(mContext!!, block = {
-            val tempTime = DateUtilKotlin.localToUTC(
-                    CommonUtils.getCurrentDate(DEFAULT_TIME_FORMAT_PATTERN))!!
-            val resultBean = GuiderApiUtil.getApiService()
-                    .getAnswerMsgList(receiveAccountId, MMKVUtil.getInt(USER.USERID),
-                            false,
-                            20,
-                            tempTime)
-            if (!resultBean.isNullOrEmpty()) {
-                val tempList = arrayListOf<AnswerListBean>()
-                for (key in resultBean.keys) {
-                    //遍历取出key，再遍历map取出value。
-                    resultBean[key]?.let { tempList.addAll(it) }
-                }
-                msgList.addAll(tempList)
-                msgAdapter.setSourceList(msgList)
-                msgListRv.scrollToPosition(msgAdapter.itemCount - 1)
-            }
-        })
-    }
-
     private fun getAnswerListData() {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (!isLoadMore)
                     showDialog()
             }, block = {
@@ -287,7 +287,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
 
     private fun uploadPic(pic: String, onSuccess: (url: String) -> Unit, onFail: () -> Unit) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mDialog1 = DialogProgress(mContext!!, null)
                 mDialog1?.showDialog()
             }, block = {
@@ -300,9 +300,9 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
             }, onError = {
                 Log.e("上传单张图片", "失败")
                 onFail.invoke()
-            }, onRequestFinish = {
+            }) {
                 mDialog1?.hideDialog()
-            })
+            }
         }
     }
 
@@ -313,7 +313,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
         map["toAccount"] = receiveAccountId
         map["type"] = type
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mDialog2 = DialogProgress(mContext!!, null)
                 mDialog2?.showDialog()
             }, block = {

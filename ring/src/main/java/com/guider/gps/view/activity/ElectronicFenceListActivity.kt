@@ -89,7 +89,7 @@ class ElectronicFenceListActivity : BaseActivity() {
                 val confirm = dialogView.findViewById<ConstraintLayout>(R.id.confirmLayout)
                 confirm.setOnClickListener {
                     lifecycleScope.launch {
-                        ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                        ApiCoroutinesCallBack.resultParse(onStart = {
                             showDialog()
                         }, block = {
                             val resultBean = GuiderApiUtil.getApiService()
@@ -134,7 +134,7 @@ class ElectronicFenceListActivity : BaseActivity() {
 
     private fun switchStatus(position: Int, isChecked: Boolean) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -144,11 +144,11 @@ class ElectronicFenceListActivity : BaseActivity() {
                 } else electronicFenceList[position].open = isChecked
             }, onError = {
                 electronicFenceList[position].open = !isChecked
-            }, onRequestFinish = {
+            }) {
                 if (electronicFenceList[position].open != isChecked)
                     adapter.notifyItemChanged(position)
                 dismissDialog()
-            })
+            }
         }
     }
 
@@ -158,7 +158,7 @@ class ElectronicFenceListActivity : BaseActivity() {
             return
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()

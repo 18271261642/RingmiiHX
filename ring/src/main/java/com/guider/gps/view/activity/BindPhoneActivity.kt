@@ -469,7 +469,7 @@ class BindPhoneActivity : BaseActivity() {
         map["pwdAgain"] = passwordValue
         map["telAreaCode"] = countryCode
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val result = GuiderApiUtil.getApiService()
                         .bindTouristsLineToPhone(map)
                 if (result == "true") {
@@ -501,7 +501,7 @@ class BindPhoneActivity : BaseActivity() {
         map["pwd"] = passwordValue
         map["phone"] = phoneValue
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val result = GuiderApiUtil.getApiService()
@@ -529,7 +529,7 @@ class BindPhoneActivity : BaseActivity() {
         // 上传头像
         showDialog()
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadFile(
                         GuiderApiUtil.uploadFile(header))
                 if (resultBean != null) {
@@ -561,7 +561,7 @@ class BindPhoneActivity : BaseActivity() {
         map["openid"] = openId
         map["phone"] = phoneValue
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val bean = GuiderApiUtil.getApiService()
                         .lineBindLogin(map)
                 if (bean != null)

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -24,10 +25,13 @@ import com.guider.health.apilib.ApiUtil
 import com.guider.health.apilib.JsonApi
 import com.guider.health.apilib.bean.AreCodeBean
 import kotlinx.android.synthetic.main.activity_forgot_password.*
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.include_password_edit.*
 import kotlinx.android.synthetic.main.include_phone_edit_layout.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
@@ -113,16 +117,21 @@ class ForgotPasswordActivity : BaseActivity() {
         })
         viewModel.nextDataResult.observe(this, {
             if (it) {
-                val intent = Intent(mContext, ResetPasswordActivity::class.java)
-                intent.putExtra("phone", phoneEdit.text.toString())
-                intent.putExtra("country",
-                        countryTv.text.toString().replace("+", ""))
-                intent.putExtra("title",
-                        mContext!!.resources.getString(R.string.app_forgot_password))
-                seconds = 0
-                startActivityForResult(intent, RESET_PASSWORD)
+                enterNextPage()
             }
         })
+    }
+
+    private fun enterNextPage() {
+        val intent = Intent(mContext, ResetPasswordActivity::class.java)
+        intent.putExtra("phone", phoneEdit.text.toString())
+        intent.putExtra("country",
+                countryTv.text.toString().replace("+", ""))
+        intent.putExtra("title",
+                mContext!!.resources.getString(R.string.app_forgot_password))
+        seconds = 0
+        initEditCodeShow()
+        startActivityForResult(intent, RESET_PASSWORD)
     }
 
     @SuppressLint("SetTextI18n")
@@ -280,26 +289,37 @@ class ForgotPasswordActivity : BaseActivity() {
             sendCodeTv.setBackgroundResource(R.drawable.circle_f28a38_14_bg)
             sendCodeTv.isClickable = false
             lifecycleScope.launch {
-                while (true) {
-                    if (seconds > 0) {
-                        val codeTvShow = String.format(
-                                resources.getString(R.string.app_retry_send),
-                                seconds)
-                        seconds--
-                        sendCodeTv.text = codeTvShow
+                flow {
+                    for (i in 60 downTo 0) {
                         delay(1_000)
-                    } else {
-                        sendCodeStatus = "send"
-                        sendCodeTv.isClickable = true
-                        sendCodeTv.setTextColor(CommonUtils.getColor(mContext!!, R.color.white))
-                        sendCodeTv.setBackgroundResource(R.drawable.rounded_f28a38_14_bg)
-                        sendCodeTv.text = mContext!!.resources.getString(
-                                R.string.app_send_verify_code)
-                        return@launch
+                        if (seconds == 0) {
+                            return@flow
+                        } else emit(i)
                     }
-                }
+                }.flowOn(Dispatchers.Default)
+                        .collect {
+                            seconds = it
+                            if (seconds > 0) {
+                                val codeTvShow = String.format(
+                                        resources.getString(R.string.app_retry_send),
+                                        seconds)
+                                sendCodeTv.text = codeTvShow
+                            } else {
+                                initEditCodeShow()
+                                return@collect
+                            }
+                        }
             }
         }
+    }
+
+    private fun initEditCodeShow() {
+        sendCodeStatus = "send"
+        sendCodeTv.isClickable = true
+        sendCodeTv.setTextColor(CommonUtils.getColor(mContext!!, R.color.white))
+        sendCodeTv.setBackgroundResource(R.drawable.rounded_f28a38_14_bg)
+        sendCodeTv.text = mContext!!.resources.getString(
+                R.string.app_send_verify_code)
     }
 
     private fun getCountryCode() {
@@ -356,7 +376,6 @@ class ForgotPasswordActivity : BaseActivity() {
             codeDialog?.closeDialog()
             codeDialog = null
         }
-        seconds = 0
         super.onDestroy()
     }
 

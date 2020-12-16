@@ -55,7 +55,7 @@ class MineFragment : BaseFragment() {
     private fun getWalkTargetData() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().getUserTargetStep(accountId)
                 if (resultBean != "null") {
                     MMKVUtil.saveInt(TARGET_STEP, resultBean.toInt())
@@ -232,7 +232,7 @@ class MineFragment : BaseFragment() {
     private fun deleteToken() {
         if (MMKVUtil.getInt(USER.USERID) == 0) return
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().deletePushToken(
                         MMKVUtil.getInt(USER.USERID), "ANDROID")
                 if (resultBean != null) {
@@ -319,7 +319,7 @@ class MineFragment : BaseFragment() {
     private fun setTargetStepData(sportValueInt: Int) {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mActivity.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()

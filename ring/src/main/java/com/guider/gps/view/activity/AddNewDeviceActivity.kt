@@ -97,7 +97,7 @@ class AddNewDeviceActivity : BaseActivity() {
         if (type == "mine" || type == "unBindAndBindNew") {
             val accountId = MMKVUtil.getInt(USER.USERID, 0)
             lifecycleScope.launch {
-                ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                ApiCoroutinesCallBack.resultParse(onStart = {
                     showDialog()
                 }, block = {
                     val resultBean = GuiderApiUtil.getApiService()
@@ -156,7 +156,7 @@ class AddNewDeviceActivity : BaseActivity() {
             map["url"] = header
             map["userGroupId"] = userGroupId.toInt()
             lifecycleScope.launch {
-                ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+                ApiCoroutinesCallBack.resultParse(onStart = {
                     if (isShowDialog)
                         showDialog()
                 }, block = {

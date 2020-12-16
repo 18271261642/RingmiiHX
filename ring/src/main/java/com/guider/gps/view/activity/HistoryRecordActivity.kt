@@ -80,7 +80,7 @@ class HistoryRecordActivity : BaseActivity() {
     private fun getUserLocationHistoryData(isShowLoading: Boolean = true) {
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (isShowLoading)
                     showDialog()
             }, block = {
@@ -122,7 +122,7 @@ class HistoryRecordActivity : BaseActivity() {
                 if (isLoadMore) {
                     page--
                 }
-            }, onRequestFinish = {
+            }) {
                 if (isShowLoading) dismissDialog()
                 if (isRefresh) refreshLayout.finishRefresh()
                 if (isLoadMore) {
@@ -130,7 +130,7 @@ class HistoryRecordActivity : BaseActivity() {
                 }
                 isRefresh = false
                 isLoadMore = false
-            })
+            }
         }
     }
 

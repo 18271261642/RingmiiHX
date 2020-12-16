@@ -137,7 +137,7 @@ class CompleteInfoActivity : BaseActivity() {
         // 上传头像
         showDialog()
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadFile(
                         GuiderApiUtil.uploadFile(picPath))
                 if (resultBean != null) {
@@ -164,7 +164,7 @@ class CompleteInfoActivity : BaseActivity() {
                 else "WOMAN"
         map["birthday"] = "${birthday}T00:00:00Z"
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val bean = GuiderApiUtil.getApiService()
                         .register(map)
                 if (bean != null) {

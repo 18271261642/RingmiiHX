@@ -142,7 +142,7 @@ class MedicineDataFragment : BaseFragment() {
 
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (!isRefresh) mDialog1?.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
@@ -377,7 +377,7 @@ class MedicineDataFragment : BaseFragment() {
         mDialog2 = DialogProgress(mActivity, null)
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 if (!isRefresh) mDialog2?.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
@@ -520,7 +520,7 @@ class MedicineDataFragment : BaseFragment() {
         if (!isRefresh) mDialog3?.showDialog()
         val accountId = MMKVUtil.getInt(BIND_DEVICE_ACCOUNT_ID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .getHealthBloodSugarChartData(accountId,
                                 1, 7, sort = SortType.DESC)

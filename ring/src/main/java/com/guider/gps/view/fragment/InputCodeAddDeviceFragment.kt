@@ -149,7 +149,7 @@ class InputCodeAddDeviceFragment : BaseFragment() {
     private fun uploadHeader(deviceCode: String, nickName: String) {
         // 上传头像
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mActivity.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService().uploadFile(
@@ -162,9 +162,9 @@ class InputCodeAddDeviceFragment : BaseFragment() {
                 }
             }, onError = {
                 Log.e("上传头像", "失败")
-            }, onRequestFinish = {
+            }) {
                 mActivity.dismissDialog()
-            })
+            }
         }
     }
 

@@ -172,7 +172,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     private fun bindNewMemberCheck(phoneValue: String, deviceName: String) {
         val groupId = userGroupId.substring(0, userGroupId.lastIndexOf(".")).toInt()
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -221,7 +221,7 @@ class DeviceBindAddMemberActivity : BaseActivity() {
     private fun addMemberToGroup() {
         val groupId = userGroupId.substring(0, userGroupId.lastIndexOf(".")).toInt()
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()

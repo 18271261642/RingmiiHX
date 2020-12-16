@@ -316,8 +316,9 @@ class LocationFragment : BaseFragment(),
                 getElectronicFenceData()
             }
 //            tabTitleList[3] -> {
-//                initTempMark()
-//                mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter())
+//                initFunctionShowAndDealEvent()
+//                mGoogleMap?.setInfoWindowAdapter(CustomInfoWindowAdapter(WeakReference(this)))
+//                mGoogleMap?.clear()
 //                closeShowDialog()
 //                initElectronicPoint()
 //                if (loadView != null) {
@@ -331,7 +332,6 @@ class LocationFragment : BaseFragment(),
 //                        CommonUtils.getColor(mActivity, R.color.colorF18937))
 //                historyRecord.text =
 //                        resources.getString(R.string.app_main_map_address_history)
-//                mGoogleMap?.clear()
 //            }
         }
     }
@@ -449,7 +449,7 @@ class LocationFragment : BaseFragment(),
             return
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mDialog1 = DialogProgress(mActivity, null)
                 mDialog1?.showDialog()
             }, block = {
@@ -508,7 +508,7 @@ class LocationFragment : BaseFragment(),
         }
         Log.i("getUserPointDataTime", "start$startTimeValue-----end$endTimeValue")
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mDialog2 = DialogProgress(mActivity, null)
                 mDialog2?.showDialog()
             }, block = {
@@ -552,7 +552,7 @@ class LocationFragment : BaseFragment(),
             return
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mActivity.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -652,7 +652,7 @@ class LocationFragment : BaseFragment(),
                 ElectronicFenceBean(customThirdLatLng!!.latitude, customThirdLatLng!!.longitude),
                 ElectronicFenceBean(customFourLatLng!!.latitude, customFourLatLng!!.longitude))
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mActivity.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService().setElectronicFence(fenceBean!!)
@@ -662,11 +662,11 @@ class LocationFragment : BaseFragment(),
                 }
             }, onError = {
                 fenceBean = null
-            }, onRequestFinish = {
+            }) {
                 mActivity.dismissDialog()
                 electronicSaveDialog?.closeDialog()
                 electronicSaveDialog = null
-            })
+            }
         }
     }
 
@@ -953,7 +953,7 @@ class LocationFragment : BaseFragment(),
             PositionType.COMMON
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mActivity.showDialog()
             }, block = {
                 GuiderApiUtil.getApiService().setLocationFrequency(
@@ -982,9 +982,9 @@ class LocationFragment : BaseFragment(),
                         EventBusEvent(EventBusAction.REFRESH_LATEST_GROUP_DATA, true))
             }, onError = {
                 searchPersonFlag = !searchPersonFlag
-            }, onRequestFinish = {
+            }) {
                 mActivity.dismissDialog()
-            })
+            }
         }
     }
 
@@ -1155,7 +1155,7 @@ class LocationFragment : BaseFragment(),
      */
     private fun initiateActiveAddressing(accountId: Int) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 mActivity.showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService().initiateActiveAddressing(accountId)
@@ -1167,13 +1167,12 @@ class LocationFragment : BaseFragment(),
                     mActivity.resources.getString(R.string.app_main_send_success)
                 else mActivity.resources.getString(R.string.app_main_send_fail))
             }, onError = {
-                Log.e(TAG, if (StringUtil.isNotBlankAndEmpty(it.message)) it.message!! else "fail")
                 ToastUtil.showCustomToast(null, mActivity,
                         true,
                         mActivity.resources.getString(R.string.app_main_location_send_fail))
-            }, onRequestFinish = {
+            }) {
                 mActivity.dismissDialog()
-            })
+            }
         }
     }
 
@@ -1204,6 +1203,9 @@ class LocationFragment : BaseFragment(),
                 cancelTag = true
             }.onCompletion {
                 Log.i(TAG, "flowOnCompletion")
+                if (cancelTag) return@onCompletion
+                proactivelyAddressingFinish("fail")
+                cancelTag = true
             }.flowOn(Dispatchers.IO)
                     .collect {
                         if (!(it is String && it == "null") && it != null) {
@@ -1214,45 +1216,9 @@ class LocationFragment : BaseFragment(),
                                             tempLocationBean!!.lng), 16.0f))
                             startDisplayPerth(LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng))
                             proactivelyAddressingFinish("success")
+                            cancelTag = true
                         }
                     }
-//            while (true) {
-//                delay(1_000 * 5)
-//                ++proactivelyAddressingNum
-//                Log.i(TAG, "轮询主动寻址执行了${proactivelyAddressingNum}次")
-//                if (proactivelyAddressingNum > 24) {
-//                    //如果2分钟还没有寻址成功，则结束寻址
-//                    proactivelyAddressingFinish("fail")
-//                    cancelTag = true
-//                    return@launch
-//                } else {
-//                    proactivelyAddressing(accountId, time)
-//                }
-//            }
-        }
-    }
-
-    /**
-     * 主动寻址
-     */
-    private fun proactivelyAddressing(accountId: Int, time: String) {
-        lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mActivity, block = {
-                val resultBean = GuiderApiUtil.getApiService().proactivelyAddressingData(
-                        accountId, time)
-                if (!(resultBean is String && resultBean == "null") && resultBean != null) {
-                    tempLocationBean = ParseJsonData.parseJsonAny<UserPositionListBean>(resultBean)
-                    if (tempLocationBean == null) return@resultParse
-                    mGoogleMap?.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(LatLng(tempLocationBean!!.lat,
-                                    tempLocationBean!!.lng), 16.0f))
-                    startDisplayPerth(LatLng(tempLocationBean!!.lat, tempLocationBean!!.lng))
-                    proactivelyAddressingFinish("success")
-                }
-            }, onError = {
-                proactivelyAddressingFinish("fail")
-                cancelTag = true
-            })
         }
     }
 

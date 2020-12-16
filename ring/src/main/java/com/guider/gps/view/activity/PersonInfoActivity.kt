@@ -81,7 +81,7 @@ class PersonInfoActivity : BaseActivity() {
     private fun getUserInfoData(accountId: Int) {
 
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -181,7 +181,7 @@ class PersonInfoActivity : BaseActivity() {
         if (isChangeTag) {
             if (isChangePicTag) {
                 lifecycleScope.launch {
-                    ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+                    ApiCoroutinesCallBack.resultParse(block = {
                         val resultBean = GuiderApiUtil.getApiService().uploadFile(
                                 GuiderApiUtil.uploadFile(picPath))
                         if (resultBean != null) {
@@ -216,7 +216,7 @@ class PersonInfoActivity : BaseActivity() {
         personInfoBean?.accountId = MMKVUtil.getInt(USER.USERID)
         personInfoBean?.headUrl = header
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .editUserInfo(personInfoBean)
                 if (resultBean != null) {

@@ -95,7 +95,7 @@ class AddressSelectActivity : BaseActivity() {
     private fun getProvinceAddress() {
 
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -142,7 +142,7 @@ class AddressSelectActivity : BaseActivity() {
 
     private fun getCityAddress(parentId: Int) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.CITY, parentId)
                 if (!resultBean.isNullOrEmpty()) {
@@ -174,7 +174,7 @@ class AddressSelectActivity : BaseActivity() {
 
     private fun getCountieAddress(parentId: Int) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.COUNTIE, parentId)
 
@@ -223,7 +223,7 @@ class AddressSelectActivity : BaseActivity() {
             else -> provinceValue
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -254,7 +254,7 @@ class AddressSelectActivity : BaseActivity() {
             else -> cityValue
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.CITY, parentId)
                 if (!resultBean.isNullOrEmpty()) {
@@ -277,7 +277,7 @@ class AddressSelectActivity : BaseActivity() {
     private fun getCountieCode(parentId: Int) {
         val countie = countieValue
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.COUNTIE, parentId)
                 if (!resultBean.isNullOrEmpty()) {
@@ -303,7 +303,7 @@ class AddressSelectActivity : BaseActivity() {
         bean?.countie = countieValueInt
         bean?.descDetail = detailAddress
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()

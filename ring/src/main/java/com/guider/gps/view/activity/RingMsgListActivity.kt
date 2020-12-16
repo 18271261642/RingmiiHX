@@ -131,7 +131,7 @@ class RingMsgListActivity : BaseActivity() {
     fun getCareMsgUndoNum() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getCareMsgUndo(accountId)
                 if (resultBean != null) {
                     mBadgeCountList[1] = resultBean.toInt()
@@ -148,7 +148,7 @@ class RingMsgListActivity : BaseActivity() {
     fun getAbnormalMsgUndoNum() {
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService().getAbnormalMsgUndo(accountId)
                 if (resultBean != null) {
                     mBadgeCountList[0] = resultBean.toInt()
@@ -166,7 +166,7 @@ class RingMsgListActivity : BaseActivity() {
         if (mBadgeCountList[1] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService().resetCareMsgReadStatus(accountId)
                 if (resultBean == "true") {
                     mBadgeCountList[1] = 0
@@ -181,7 +181,7 @@ class RingMsgListActivity : BaseActivity() {
         if (mBadgeCountList[0] <= 0) return
         val accountId = MMKVUtil.getInt(USER.USERID)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getHDApiService()
                         .resetAbnormalMsgReadStatus(accountId)
                 if (resultBean != null) {

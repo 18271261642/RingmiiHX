@@ -106,7 +106,7 @@ class AppSystemMsgService : LifecycleService() {
 
         private suspend fun getLatestSystemMsg(accountId: Int) {
             if (service == null) return
-            ApiCoroutinesCallBack.resultParse(service, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 Log.i(service?.TAG, "最新的时间为${service?.latestSystemMsgTime}")
                 val resultBean = GuiderApiUtil.getApiService().getSystemMsgLatest(
                         accountId, service!!.latestSystemMsgTime)

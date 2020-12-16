@@ -362,7 +362,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
     private fun touristsLogin(imei: String) {
         if (StringUtil.isEmpty(imei)) return
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val tokenInfo = GuiderApiUtil.getApiService().touristsLogin(imei)
@@ -382,7 +382,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         //保存token的信息用来之后的刷新token使用
         setTokenCache(tokenBean)
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().checkIsBindDevice(
                         tokenBean.accountId)
                 if (resultBean is String && resultBean == "null") {
@@ -433,7 +433,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         val passwordValue = MyUtils.md5(passwordEdit.text.toString())
 
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val tokenInfo = GuiderApiUtil.getApiService().loginWithPassword(
@@ -481,7 +481,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     private fun getUserInfo(accountId: Int) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().getUserInfo(
                         accountId)
                 if (resultBean != null) {
@@ -505,7 +505,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     private fun verifyIsBindDevice(accountId: Int) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, block = {
+            ApiCoroutinesCallBack.resultParse(block = {
                 val resultBean = GuiderApiUtil.getApiService().checkIsBindDevice(
                         accountId)
                 if (resultBean is String && resultBean == "null") {
@@ -610,7 +610,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
 
     private fun lineLogin(openId: String, header: String, name: String) {
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()
@@ -632,9 +632,9 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
                 }
             }, onError = {
                 isLineLoginFirst = false
-            }, onRequestFinish = {
+            }) {
                 dismissDialog()
-            })
+            }
         }
     }
 
@@ -679,7 +679,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         weChatInfo.unionid = unionid
         weChatInfo.sex = sex
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService()

@@ -48,7 +48,7 @@ class LocationFrequencySetNewActivity : BaseActivity() {
             return
         }
         lifecycleScope.launch {
-            ApiCoroutinesCallBack.resultParse(mContext!!, onStart = {
+            ApiCoroutinesCallBack.resultParse(onStart = {
                 showDialog()
             }, block = {
                 val resultBean = GuiderApiUtil.getApiService().locationFrequencySet(accountId)
