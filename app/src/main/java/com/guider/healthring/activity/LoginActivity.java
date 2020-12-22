@@ -737,16 +737,16 @@ public class LoginActivity extends WatchBaseActivity
                             "userInfo", userStr);
                     SharedPreferencesUtils.saveObject(LoginActivity.this,
                             Commont.USER_INFO_DATA, userStr);
-                    Object accountIdGD = SharedPreferencesUtils.getParam(mContext,
-                            "accountIdGD", 0L);
-                    if (accountIdGD == null) return;
-                    long accountId = (long) accountIdGD;
-                    if (accountId == 0L) return;
-                    int accountValue = Integer.parseInt(String.valueOf(accountId));
                     if (bandPwd.equals("changPassword")) {
                         bandPwd = null;
-                        changeWithBackupPassword(accountValue);
+                        changeWithBackupPassword();
                     } else {
+                        Object accountIdGD = SharedPreferencesUtils.getParam(mContext,
+                                "accountIdGD", 0L);
+                        if (accountIdGD == null) return;
+                        long accountId = (long) accountIdGD;
+                        if (accountId == 0L) return;
+                        int accountValue = Integer.parseInt(String.valueOf(accountId));
                         if (StringUtil.isEmpty(bandPwd)) {
                             backupPassword(accountValue);
                         } else {
@@ -807,7 +807,7 @@ public class LoginActivity extends WatchBaseActivity
                 });
     }
 
-    private void changeWithBackupPassword(int accountValue) {
+    private void changeWithBackupPassword() {
         String code = tv_phone_head.getText().toString().replace("+", "");
         String usernametxt = username.getText().toString();
         String pass = Md5Util.Md532(password.getText().toString());
@@ -825,7 +825,7 @@ public class LoginActivity extends WatchBaseActivity
                             String token = body.getToken();
                             SharedPreferencesUtils.setParam(MyApp.getInstance(),
                                     "tokenGD", token);
-                            toNextEvent((long) accountValue);
+                            toNextEvent((long) accountId);
                         }
                     }
 

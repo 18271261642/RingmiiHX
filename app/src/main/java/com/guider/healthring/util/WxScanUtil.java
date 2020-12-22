@@ -16,8 +16,10 @@ import retrofit2.Response;
 public class WxScanUtil {
     public static <T> boolean handle(Context context, long accountId, IWxScan iWxScan) {
         // 1 检测微信是否安装
-        if (!(AppUtils.isWeixinAvilible(context) || BuildConfig.DEBUG))
+        if (!(AppUtils.isWeixinAvilible(context) || BuildConfig.DEBUG)){
+            iWxScan.onError();
             return false;
+        }
         // 2. 若微信安装访问后台接口
         ApiUtil.createApi(IGuiderApi.class)
                 .getUserBindWxPublic("wx6054546f7e4e24b6", accountId)
