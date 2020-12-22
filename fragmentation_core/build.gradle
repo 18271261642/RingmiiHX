@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-
+//上传到maven
+apply plugin: 'maven'
 def andr = rootProject.ext.android
 android {
     compileSdkVersion andr.compileSdkVersion
@@ -17,4 +18,14 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
+}
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'fragmentation_core'
+        }
+    }
 }

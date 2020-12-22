@@ -124,7 +124,7 @@ public class BluetoothUtils {
         return mBluetoothAdapter;
     }
 
-    public static android.bluetooth.BluetoothDevice getRemoteDevice(String mac) {
+    public static BluetoothDevice getRemoteDevice(String mac) {
         if (!TextUtils.isEmpty(mac)) {
             BluetoothAdapter adapter = getBluetoothAdapter();
             if (adapter != null) {
@@ -135,8 +135,8 @@ public class BluetoothUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public static List<android.bluetooth.BluetoothDevice> getConnectedBluetoothLeDevices() {
-        List<android.bluetooth.BluetoothDevice> devices = new ArrayList<android.bluetooth.BluetoothDevice>();
+    public static List<BluetoothDevice> getConnectedBluetoothLeDevices() {
+        List<BluetoothDevice> devices = new ArrayList<BluetoothDevice>();
 
         BluetoothManager manager = getBluetoothManager();
 
@@ -189,7 +189,7 @@ public class BluetoothUtils {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static boolean isDeviceConnected(String mac) {
         if (!TextUtils.isEmpty(mac) && isBleSupported()) {
-            android.bluetooth.BluetoothDevice device = getBluetoothAdapter().getRemoteDevice(mac);
+            BluetoothDevice device = getBluetoothAdapter().getRemoteDevice(mac);
             return getBluetoothManager().getConnectionState(device, BluetoothProfile.GATT) == BluetoothProfile.STATE_CONNECTED;
         }
         return false;

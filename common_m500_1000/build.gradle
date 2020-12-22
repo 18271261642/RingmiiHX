@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+//上传到maven
+apply plugin: 'maven'
 def andr = rootProject.ext.android
 android {
     compileSdkVersion andr.compileSdkVersion
@@ -25,25 +27,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
 }
 
 dependencies {
-    implementation(name:'medchecklib-release', ext:'aar')
-    implementation project(path: ':common')
-    implementation project(path: ':arouter-core')
-    implementation project(path: ':arouter-compiler')
-    implementation project(path: ':simpleble')
-    implementation project(path: ':rtc')
-    implementation project(':bluetooth')
+    implementation 'com.guider.m100:medchecklib-release:0.0.1'
+    implementation 'com.guider.m:common:0.0.1'
+    annotationProcessor 'com.guider.m:arouter-compiler:0.0.1'
+    //api的方式有传递性
+    implementation 'com.guider.m:arouter-core:0.0.1'
+    implementation 'com.guider.m:simpleble:0.0.1'
+    implementation 'com.guider.m:bluetooth:0.0.1'
     implementation 'no.nordicsemi.android.support.v18:scanner:1.4.3'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
     // event bus
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.guider.m:rtc:0.0.1'
+}
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'common_m500_1000'
+        }
+    }
 }

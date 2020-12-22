@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 def andr = rootProject.ext.android
+//上传到maven
+apply plugin: 'maven'
 android {
     compileSdkVersion andr.compileSdkVersion
     defaultConfig {
@@ -25,4 +27,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     api 'com.tencent.bugly:crashreport:3.3.1'
     api 'com.tencent.bugly:nativecrashreport:3.7.471'
+}
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'libbuglygoogle'
+        }
+    }
 }

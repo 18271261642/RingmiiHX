@@ -4,9 +4,7 @@ import com.inuker.bluetooth.library.search.SearchResult;
 
 import java.util.TreeSet;
 
-/**
- * 扫描过滤器
- */
+
 public class SearchFilter {
 
     private TreeSet<String> deviceAddress;

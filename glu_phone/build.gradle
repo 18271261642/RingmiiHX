@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+//上传到maven
+apply plugin: 'maven'
 def andr = rootProject.ext.android
 android {
     compileSdkVersion andr.compileSdkVersion
@@ -32,10 +34,18 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':common')
-    implementation project(':bluetooth')
-    implementation project(':glu')
+    api 'com.guider.m:glu:0.0.1'
     api 'com.just.agentweb:agentweb:4.1.3'
     api 'com.just.agentweb:filechooser:4.1.3'// (可选)
     api 'com.download.library:Downloader:4.1.3'
+}
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'glu_phone'
+        }
+    }
 }

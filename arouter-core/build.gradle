@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-
+//上传到maven
+apply plugin: 'maven'
 def andr = rootProject.ext.android
 
 android {
@@ -27,8 +28,18 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     //Element这个类只有在module中java工程中才有, 所以, router-annotation被放在了单独的java工程中
-    api project(':arouter-annotation')
+    api 'com.guider.m:arouter-annotation:0.0.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
+}
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'arouter-core'
+        }
+    }
 }

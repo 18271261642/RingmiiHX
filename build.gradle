@@ -6,6 +6,9 @@ buildscript {
         kotlin_version = '1.4.21'
     }
     repositories {
+        maven {
+            url("file://" + project.rootDir.absolutePath + "/Libs")
+        }
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         google()
         maven { url 'https://maven.aliyun.com/repository/public' }
@@ -37,6 +40,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url("file://" + project.rootDir.absolutePath + "/Libs")
+        }
         // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         google()
         maven { url 'https://maven.aliyun.com/repository/public' }

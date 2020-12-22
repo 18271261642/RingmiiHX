@@ -3,13 +3,10 @@ package com.aliyun.rtcdemo.network;
 import com.aliyun.rtcdemo.AliRtcApplication;
 import com.aliyun.rtcdemo.utils.AliRtcConstants;
 import com.aliyun.rtcdemo.utils.NetworkUtils;
-//import com.facebook.stetho.okhttp3.StethoInterceptor;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -18,12 +15,13 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+//import com.facebook.stetho.okhttp3.StethoInterceptor;
 //import okhttp3.logging.HttpLoggingInterceptor;
 
 /**

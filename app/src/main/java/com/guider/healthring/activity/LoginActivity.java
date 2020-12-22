@@ -808,33 +808,28 @@ public class LoginActivity extends WatchBaseActivity
     }
 
     private void changeWithBackupPassword() {
-        String code = tv_phone_head.getText().toString().replace("+", "");
         String usernametxt = username.getText().toString();
-        String pass = Md5Util.Md532(password.getText().toString());
-        ApiUtil.createApi(IGuiderApi.class, false)
-                .changeWithBackupPassword(code, usernametxt, pass, pass)
-                .enqueue(new ApiCallBack<ChangeWithBanPasswordBean>() {
-                    @Override
-                    public void onApiResponse(Call<ChangeWithBanPasswordBean> call,
-                                              Response<ChangeWithBanPasswordBean> response) {
-                        if (response.body() != null) {
-                            ChangeWithBanPasswordBean body = response.body();
-                            long accountId = body.getAccountId();
-                            SharedPreferencesUtils.setParam(MyApp.getInstance(),
-                                    "accountIdGD", accountId);
-                            String token = body.getToken();
-                            SharedPreferencesUtils.setParam(MyApp.getInstance(),
-                                    "tokenGD", token);
-                            toNextEvent((long) accountId);
-                        }
+        String loginUrl = "http://api.guiderhealth.com/api/v1/login/onlyphone?phone=" + usernametxt;
+        OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {
+            if (WatchUtils.isNetRequestSuccess(result, 0)) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.has("data")) {
+                        JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+                        long accountId = dataJsonObject.getLong("accountId");
+                        SharedPreferencesUtils.setParam(MyApp.getInstance(),
+                                "accountIdGD", accountId);
+                        String token = dataJsonObject.getString("token");
+                        SharedPreferencesUtils.setParam(MyApp.getInstance(),
+                                "tokenGD", token);
+                        toNextEvent(accountId);
                     }
 
-                    @Override
-                    public void onRequestFinish() {
-                        super.onRequestFinish();
-                        hideLoadingDialog();
-                    }
-                });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, false);
     }
 
     private void backupPassword(int accountValue) {

@@ -300,7 +300,7 @@ public class AliRtcChatActivity extends AliBaseActivity {
     private void initValues() {
         if (this.checkPermission(Manifest.permission.CAMERA) || checkPermission(
             Manifest.permission.MODIFY_AUDIO_SETTINGS)) {
-            Toast.makeText(this.getApplicationContext(), "需要开启权限才可进行观看", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getApplicationContext(), getResources().getString(R.string.rtc_need_per), Toast.LENGTH_SHORT).show(); // "需要开启权限才可进行观看"
             mGrantPermission = false;
             return;
         }
@@ -448,7 +448,7 @@ public class AliRtcChatActivity extends AliBaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(AliRtcChatActivity.this, "对方已挂断", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AliRtcChatActivity.this, getResources().getString(R.string.rtc_disconn), Toast.LENGTH_SHORT).show(); // "对方已挂断"
                 mUserListApdater.remoteData(uid, true);
             }
         });
@@ -589,8 +589,8 @@ public class AliRtcChatActivity extends AliBaseActivity {
     private void noSessionExit(int error) {
         runOnUiThread(() -> new AlertDialog.Builder(AliRtcChatActivity.this)
             .setTitle("ErrorCode : " + error)
-            .setMessage("网络超时，请退出房间")
-            .setPositiveButton("确定", (dialog, which) -> {
+            .setMessage(getResources().getString(R.string.rtc_quit_room)) // "网络超时，请退出房间")
+            .setPositiveButton(getResources().getString(R.string.rtc_ok), (dialog, which) -> {
                 dialog.dismiss();
                 onBackPressed();
             })
@@ -724,8 +724,7 @@ public class AliRtcChatActivity extends AliBaseActivity {
                 public void run() {
                     hideOverButtoun();
                     loading.setVisibility(View.GONE);
-                    Toast.makeText(AliRtcChatActivity.this, "即将接通视频...", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(AliRtcChatActivity.this, getResources().getString(R.string.rtc_ok_soon_), Toast.LENGTH_LONG).show(); // "即将接通视频..."
                 }
             });
             addOrOBRemoteUser(s);

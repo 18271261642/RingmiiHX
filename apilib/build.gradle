@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 def andr = rootProject.ext.android
 apply plugin: 'kotlin-android'
+//上传到maven
+apply plugin: 'maven'
 apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion andr.compileSdkVersion
@@ -21,38 +23,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (rootProject.isMcu) {
-                buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
-                buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
-            } else if (rootProject.googlePlay) { // 国际版
-                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
-                println "apilib -- Package Google Play Bundle Release . . ."
-            } else { // 大陆版
-                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
-                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
-
-                println "apilib -- Package CN Bundle Release . . ."
-            }
+            buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
+            buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            if (rootProject.isMcu) {
-                buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
-                buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
-            } else if (rootProject.googlePlay) { // 国际版
-                buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-                buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
-//                 buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
-//                 buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
-                println "apilib -- Package Google Play Bundle Debug . . ."
-            } else { // 大陆版
-                buildConfigField("String", "APIURL", '"https://api.guiderhealth.com/"')
-                buildConfigField("String", "APIHDURL", '"https://apihd.guiderhealth.com/"')
-                // buildConfigField("String", "APIURL", '"http://192.168.1.180:8082/"')
-                // buildConfigField("String", "APIHDURL", '"http://192.168.1.180:8083/"')
-            }
+            buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
+            buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
         }
     }
 
@@ -76,4 +54,15 @@ dependencies {
     // https://mvnrepository.com/artifact/joda-time/joda-time
     api group: 'joda-time', name: 'joda-time', version: '2.10.6'
 
+}
+
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'apilib'
+        }
+    }
 }

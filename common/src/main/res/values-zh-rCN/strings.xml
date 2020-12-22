@@ -213,4 +213,8 @@
     <string name="app_permission_notification_ring">获取手环通知提醒需要开启相关权限</string>
     <string name="app_send_email_hint">此邮件来自 %sApp 用户反馈</string>
     <string name="app_user_feedback">用户反馈</string>
+
+    <!-- simpleble -->
+    <string name = "simpleble_bt_conn_error">蓝牙连接失败</string>
+    <string name = "simpleble_bt_connectting">蓝牙正在连接或已存在的连接</string>
 </resources>

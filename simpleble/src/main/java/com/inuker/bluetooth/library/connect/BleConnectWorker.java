@@ -166,7 +166,6 @@ public class BleConnectWorker implements Handler.Callback, IBleConnectWorker, IB
 
         BluetoothLog.v(String.format("onServicesDiscovered for %s: status = %d",
                 mBluetoothDevice.getAddress(), status));
-        Log.i("Meeeeee", "发现服务回调被调用:Code = " + status);
         if (status == BluetoothGatt.GATT_SUCCESS) {
             setConnectStatus(Constants.STATUS_DEVICE_SERVICE_READY);
             broadcastConnectStatus(Constants.STATUS_CONNECTED);

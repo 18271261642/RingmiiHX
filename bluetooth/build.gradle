@@ -1,41 +1,28 @@
 apply plugin: 'com.android.library'
-
+//上传到maven
+apply plugin: 'maven'
 def andr = rootProject.ext.android
 
 android {
     compileSdkVersion andr.compileSdkVersion
-    defaultConfig {
-        minSdkVersion andr.minSdkVersion
-        targetSdkVersion andr.targetSdkVersion
-        versionCode andr.versionCode
-        versionName andr.versionName
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                includeCompileClasspath true
-                arguments = [moduleName: project.getName()]
-            }
-        }
-
-        sourceSets {
-            main {
-                jniLibs.srcDirs = ['libs']
-            }
-        }
-
-    }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-
-
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
+}
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version = '0.0.1'
+            pom.artifactId = 'bluetooth'
+        }
+    }
 }

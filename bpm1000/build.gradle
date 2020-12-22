@@ -1,5 +1,7 @@
 //apply plugin: 'com.android.application'
 apply plugin: 'com.android.library'
+//上传到maven
+apply plugin: 'maven'
 def andr = rootProject.ext.android
 
 android {
@@ -42,12 +44,22 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation(name: 'healthkits-release', ext: 'aar')
-    annotationProcessor project(':arouter-compiler')
+    api 'com.guider.m100:healthkits:0.0.1'
+    annotationProcessor 'com.guider.m:arouter-compiler:0.0.1'
     //api的方式有传递性
-    implementation project(':arouter-core')
-    implementation project(':common')
-    api project(':bluetooth')
-    api project(':fragmentation_core')
-    implementation project(path: ':simpleble')
+    implementation 'com.guider.m:arouter-core:0.0.1'
+    implementation 'com.guider.m:common:0.0.1'
+    api 'com.guider.m:bluetooth:0.0.1'
+    api 'com.guider.m:fragmentation_core:0.0.1'
+    implementation 'com.guider.m:simpleble:0.0.1'
+}
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'bpm1000'
+        }
+    }
 }

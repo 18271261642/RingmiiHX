@@ -101,7 +101,6 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     private CountDownLatch mCountDownLatch;
 
-    private HandlerThread mWorkerThread;
     private Handler mWorkerHandler;
 
     private HashMap<String, HashMap<String, List<BleNotifyResponse>>> mNotifyResponses;
@@ -113,15 +112,15 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         mContext = context.getApplicationContext();
         BluetoothContext.set(mContext);
 
-        mWorkerThread = new HandlerThread(TAG);
+        HandlerThread mWorkerThread = new HandlerThread(TAG);
         mWorkerThread.start();
 
         mWorkerHandler = new Handler(mWorkerThread.getLooper(), this);
 
-        mNotifyResponses = new HashMap<String, HashMap<String, List<BleNotifyResponse>>>();
-        mConnectStatusListeners = new HashMap<String, List<BleConnectStatusListener>>();
-        mBluetoothStateListeners = new LinkedList<BluetoothStateListener>();
-        mBluetoothBondListeners = new LinkedList<BluetoothBondListener>();
+        mNotifyResponses = new HashMap<>();
+        mConnectStatusListeners = new HashMap<>();
+        mBluetoothStateListeners = new LinkedList<>();
+        mBluetoothBondListeners = new LinkedList<>();
 
         mWorkerHandler.obtainMessage(MSG_REG_RECEIVER).sendToTarget();
 
@@ -149,7 +148,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     private void bindServiceSync() {
-        checkRuntime(true);
+        checkRuntime();
 
 //        BluetoothLog.v(String.format("bindServiceSync"));
 
@@ -190,7 +189,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_CONNECT, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     data.setClassLoader(getClass().getClassLoader());
                     BleGattProfile profile = data.getParcelable(EXTRA_GATT_PROFILE);
@@ -210,10 +209,10 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     @Override
     public void registerConnectStatusListener(String mac, BleConnectStatusListener listener) {
-        checkRuntime(true);
+        checkRuntime();
         List<BleConnectStatusListener> listeners = mConnectStatusListeners.get(mac);
         if (listeners == null) {
-            listeners = new ArrayList<BleConnectStatusListener>();
+            listeners = new ArrayList<>();
             mConnectStatusListeners.put(mac, listeners);
         }
         if (listener != null && !listeners.contains(listener)) {
@@ -223,7 +222,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     @Override
     public void unregisterConnectStatusListener(String mac, BleConnectStatusListener listener) {
-        checkRuntime(true);
+        checkRuntime();
         List<BleConnectStatusListener> listeners = mConnectStatusListeners.get(mac);
         if (listener != null && !ListUtils.isEmpty(listeners)) {
             listeners.remove(listener);
@@ -239,7 +238,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_READ, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     response.onResponse(code, data.getByteArray(EXTRA_BYTE_VALUE));
                 }
@@ -248,7 +247,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void write(String mac, UUID service, UUID character, byte[] value, final BleWriteResponse response) {
+    public void write(String mac, UUID service, UUID character, byte[] value,
+                      final BleWriteResponse response) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         args.putSerializable(EXTRA_SERVICE_UUID, service);
@@ -257,7 +257,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_WRITE, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     response.onResponse(code);
                 }
@@ -266,7 +266,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void readDescriptor(String mac, UUID service, UUID character, UUID descriptor, final BleReadResponse response) {
+    public void readDescriptor(String mac, UUID service, UUID character, UUID descriptor,
+                               final BleReadResponse response) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         args.putSerializable(EXTRA_SERVICE_UUID, service);
@@ -275,7 +276,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_READ_DESCRIPTOR, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     response.onResponse(code, data.getByteArray(EXTRA_BYTE_VALUE));
                 }
@@ -284,7 +285,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void writeDescriptor(String mac, UUID service, UUID character, UUID descriptor, byte[] value, final BleWriteResponse response) {
+    public void writeDescriptor(String mac, UUID service, UUID character, UUID descriptor,
+                                byte[] value, final BleWriteResponse response) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         args.putSerializable(EXTRA_SERVICE_UUID, service);
@@ -294,7 +296,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_WRITE_DESCRIPTOR, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     response.onResponse(code);
                 }
@@ -303,7 +305,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void writeNoRsp(String mac, UUID service, UUID character, byte[] value, final BleWriteResponse response) {
+    public void writeNoRsp(String mac, UUID service, UUID character,
+                           byte[] value, final BleWriteResponse response) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         args.putSerializable(EXTRA_SERVICE_UUID, service);
@@ -312,7 +315,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_WRITE_NORSP, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     response.onResponse(code);
                 }
@@ -320,18 +323,19 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         });
     }
 
-    private void saveNotifyListener(String mac, UUID service, UUID character, BleNotifyResponse response) {
-        checkRuntime(true);
+    private void saveNotifyListener(String mac, UUID service, UUID character,
+                                    BleNotifyResponse response) {
+        checkRuntime();
         HashMap<String, List<BleNotifyResponse>> listenerMap = mNotifyResponses.get(mac);
         if (listenerMap == null) {
-            listenerMap = new HashMap<String, List<BleNotifyResponse>>();
+            listenerMap = new HashMap<>();
             mNotifyResponses.put(mac, listenerMap);
         }
 
         String key = generateCharacterKey(service, character);
         List<BleNotifyResponse> responses = listenerMap.get(key);
         if (responses == null) {
-            responses = new ArrayList<BleNotifyResponse>();
+            responses = new ArrayList<>();
             listenerMap.put(key, responses);
         }
 
@@ -339,7 +343,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     private void removeNotifyListener(String mac, UUID service, UUID character) {
-        checkRuntime(true);
+        checkRuntime();
         HashMap<String, List<BleNotifyResponse>> listenerMap = mNotifyResponses.get(mac);
         if (listenerMap != null) {
             String key = generateCharacterKey(service, character);
@@ -348,7 +352,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     private void clearNotifyListener(String mac) {
-        checkRuntime(true);
+        checkRuntime();
         mNotifyResponses.remove(mac);
     }
 
@@ -357,7 +361,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void notify(final String mac, final UUID service, final UUID character, final BleNotifyResponse response) {
+    public void notify(final String mac, final UUID service, final UUID character,
+                       final BleNotifyResponse response) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         args.putSerializable(EXTRA_SERVICE_UUID, service);
@@ -365,7 +370,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_NOTIFY, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     if (code == REQUEST_SUCCESS) {
                         saveNotifyListener(mac, service, character, response);
@@ -377,7 +382,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void unnotify(final String mac, final UUID service, final UUID character, final BleUnnotifyResponse response) {
+    public void unnotify(final String mac, final UUID service, final UUID character,
+                         final BleUnnotifyResponse response) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         args.putSerializable(EXTRA_SERVICE_UUID, service);
@@ -385,7 +391,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_UNNOTIFY, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
 
                 removeNotifyListener(mac, service, character);
 
@@ -397,7 +403,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void indicate(final String mac, final UUID service, final UUID character, final BleNotifyResponse response) {
+    public void indicate(final String mac, final UUID service, final UUID character,
+                         final BleNotifyResponse response) {
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         args.putSerializable(EXTRA_SERVICE_UUID, service);
@@ -405,7 +412,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_INDICATE, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     if (code == REQUEST_SUCCESS) {
                         saveNotifyListener(mac, service, character, response);
@@ -417,7 +424,8 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     @Override
-    public void unindicate(String mac, UUID service, UUID character, BleUnnotifyResponse response) {
+    public void unindicate(String mac, UUID service, UUID character,
+                           BleUnnotifyResponse response) {
        unnotify(mac, service, character, response);
     }
 
@@ -428,7 +436,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_READ_RSSI, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     response.onResponse(code, data.getInt(EXTRA_RSSI, 0));
                 }
@@ -444,7 +452,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_REQUEST_MTU, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
                 if (response != null) {
                     response.onResponse(code, data.getInt(EXTRA_MTU, GATT_DEF_BLE_MTU_SIZE));
                 }
@@ -459,7 +467,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         safeCallBluetoothApi(CODE_SEARCH, args, new BluetoothResponse() {
             @Override
             protected void onAsyncResponse(int code, Bundle data) {
-                checkRuntime(true);
+                checkRuntime();
 
                 if (response == null) {
                     return;
@@ -499,7 +507,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     @Override
     public void registerBluetoothStateListener(BluetoothStateListener listener) {
-        checkRuntime(true);
+        checkRuntime();
         if (listener != null && !mBluetoothStateListeners.contains(listener)) {
             mBluetoothStateListeners.add(listener);
         }
@@ -507,7 +515,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     @Override
     public void unregisterBluetoothStateListener(BluetoothStateListener listener) {
-        checkRuntime(true);
+        checkRuntime();
         if (listener != null) {
             mBluetoothStateListeners.remove(listener);
         }
@@ -515,7 +523,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     @Override
     public void registerBluetoothBondListener(BluetoothBondListener listener) {
-        checkRuntime(true);
+        checkRuntime();
         if (listener != null && !mBluetoothBondListeners.contains(listener)) {
             mBluetoothBondListeners.add(listener);
         }
@@ -523,7 +531,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     @Override
     public void unregisterBluetoothBondListener(BluetoothBondListener listener) {
-        checkRuntime(true);
+        checkRuntime();
         if (listener != null) {
             mBluetoothBondListeners.remove(listener);
         }
@@ -539,14 +547,14 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
 
     @Override
     public void refreshCache(String mac) {
-        checkRuntime(true);
+        checkRuntime();
         Bundle args = new Bundle();
         args.putString(EXTRA_MAC, mac);
         safeCallBluetoothApi(CODE_REFRESH_CACHE, args, null);
     }
 
     private void safeCallBluetoothApi(int code, Bundle args, final BluetoothResponse response) {
-        checkRuntime(true);
+        checkRuntime();
 
 //        BluetoothLog.v(String.format("safeCallBluetoothApi code = %d", code));
 
@@ -605,25 +613,25 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     private void registerBluetoothReceiver() {
-        checkRuntime(true);
+        checkRuntime();
         BluetoothReceiver.getInstance().register(new BluetoothStateChangeListener() {
             @Override
             protected void onBluetoothStateChanged(int prevState, int curState) {
-                checkRuntime(true);
+                checkRuntime();
                 dispatchBluetoothStateChanged(curState);
             }
         });
         BluetoothReceiver.getInstance().register(new BluetoothBondStateChangeListener() {
             @Override
             protected void onBondStateChanged(String mac, int bondState) {
-                checkRuntime(true);
+                checkRuntime();
                 dispatchBondStateChanged(mac, bondState);
             }
         });
         BluetoothReceiver.getInstance().register(new BleConnectStatusChangeListener() {
             @Override
             protected void onConnectStatusChanged(String mac, int status) {
-                checkRuntime(true);
+                checkRuntime();
                 if (status == Constants.STATUS_DISCONNECTED) {
                     clearNotifyListener(mac);
                 }
@@ -633,14 +641,14 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
         BluetoothReceiver.getInstance().register(new BleCharacterChangeListener() {
             @Override
             public void onCharacterChanged(String mac, UUID service, UUID character, byte[] value) {
-                checkRuntime(true);
+                checkRuntime();
                 dispatchCharacterNotify(mac, service, character, value);
             }
         });
     }
 
     private void dispatchCharacterNotify(String mac, UUID service, UUID character, byte[] value) {
-        checkRuntime(true);
+        checkRuntime();
         HashMap<String, List<BleNotifyResponse>> notifyMap = mNotifyResponses.get(mac);
         if (notifyMap != null) {
             String key = generateCharacterKey(service, character);
@@ -654,7 +662,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     private void dispatchConnectionStatus(final String mac, final int status) {
-        checkRuntime(true);
+        checkRuntime();
         List<BleConnectStatusListener> listeners = mConnectStatusListeners.get(mac);
         if (!ListUtils.isEmpty(listeners)) {
             for (final BleConnectStatusListener listener : listeners) {
@@ -664,7 +672,7 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     private void dispatchBluetoothStateChanged(final int currentState) {
-        checkRuntime(true);
+        checkRuntime();
         if (currentState == Constants.STATE_OFF || currentState == Constants.STATE_ON) {
             for (final BluetoothStateListener listener : mBluetoothStateListeners) {
                 listener.invokeSync(currentState == Constants.STATE_ON);
@@ -673,14 +681,14 @@ public class BluetoothClientImpl implements IBluetoothClient, ProxyInterceptor, 
     }
 
     private void dispatchBondStateChanged(final String mac, final int bondState) {
-        checkRuntime(true);
+        checkRuntime();
         for (final BluetoothBondListener listener : mBluetoothBondListeners) {
             listener.invokeSync(mac, bondState);
         }
     }
 
-    private void checkRuntime(boolean async) {
-        Looper targetLooper = async ? mWorkerHandler.getLooper() : Looper.getMainLooper();
+    private void checkRuntime() {
+        Looper targetLooper = mWorkerHandler.getLooper();
         if (Looper.myLooper() != targetLooper) {
             throw new RuntimeException();
         }

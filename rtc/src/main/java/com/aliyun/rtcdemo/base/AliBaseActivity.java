@@ -52,7 +52,7 @@ public class AliBaseActivity extends BaseActivity {
         @Override
         public void onPermissionCancel() {
 
-            Toast.makeText(AliBaseActivity.this.getApplicationContext(), getString(R.string.alirtc_permission), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AliBaseActivity.this.getApplicationContext(), getString(R.string.rtc_permission), Toast.LENGTH_SHORT).show();
             finish();
         }
     };

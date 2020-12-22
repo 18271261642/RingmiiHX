@@ -344,4 +344,9 @@
     <string name="app_permission_notification_ring">Permissions need to be enabled to get bracelet notifications</string>
     <string name="app_send_email_hint">This email is from %s App User feedback</string>
     <string name="app_user_feedback">User feedback</string>
+    <!--simpleble-->
+        
+    <string name="simpleble_bt_conn_error">Bluetooth connection failed</string>
+        
+    <string name="simpleble_bt_connectting">Bluetooth is connecting or existing connection</string>
 </resources>

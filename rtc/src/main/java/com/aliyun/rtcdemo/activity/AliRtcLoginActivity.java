@@ -111,12 +111,12 @@ public class AliRtcLoginActivity extends AliBaseActivity implements AliRtcLoginC
     private void doCreateChannel() {
         mChannelId = mEtChannelId.getText().toString().trim();
         if (mChannelId.isEmpty()) {
-            Toast.makeText(AliRtcLoginActivity.this, getString(R.string.alirtc_attention), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AliRtcLoginActivity.this, getString(R.string.rtc_attention), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (mChannelId.length() < CHANNELID_MIN_SIZE || mChannelId.length() > CHANNELID_MAX_SIZE) {
-            Toast.makeText(AliRtcLoginActivity.this, getString(R.string.alirtc_channel_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AliRtcLoginActivity.this, getString(R.string.rtc_channel_error), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -189,7 +189,7 @@ public class AliRtcLoginActivity extends AliBaseActivity implements AliRtcLoginC
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage("登陆中...");
+            mProgressDialog.setMessage(getResources().getString(R.string.rtc_loging_)); // "登陆中...");
             mProgressDialog.show();
         } else if (!isShow && mProgressDialog != null) {
             mProgressDialog.dismiss();

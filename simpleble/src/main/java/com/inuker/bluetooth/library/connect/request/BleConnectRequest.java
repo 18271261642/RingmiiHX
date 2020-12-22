@@ -96,7 +96,6 @@ public class BleConnectRequest extends BleRequest implements ServiceDiscoverList
 
         switch (getCurrentStatus()) {
             case Constants.STATUS_DEVICE_CONNECTED:
-                Log.i("Meeeeee", "开始发现服务");
                 if (!doDiscoverService()) {
                     onServiceDiscoverFailed();
                 } else {

@@ -1,14 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RTCSample</string>
+    <!--rtc-->
+        
+    <string name="rtc_title">RTC</string>
+    <string name="rtc_waiting_pick_up">Waiting for the other party to answer ...</string>
+        
+    <string name="rtc_ok">OK</string>
+        
+    <string name="rtc_join_channel">Hang up</string>
+        
+    <string name="rtc_attention">Channel ID cannot be empty!</string>
+        
+    <string name="rtc_out">exit</string>
+        
+    <string name="rtc_mode">video call</string>
+        
+    <string name="rtc_permission">Please give permission first</string>
+        
+    <string name="rtc_enter">OK</string>
+        
+    <string name="rtc_channel_hint">Please enter the channel number (3-12 digits)</string>
+        
+    <string name="rtc_channel_error">The channel number length cannot be less than 3 digits or greater than 12 digits</string>
 
-    <string name="alirtc_title">AliRTCSample</string>
-    <string name="alirtc_join_channel">挂断</string>
-    <string name="alirtc_attention">频道ID不能为空！</string>
-    <string name="alirtc_out">退出</string>
-    <string name="alirtc_mode">视频通话</string>
-    <string name="alirtc_permission">请先给予权限</string>
-    <string name="alirtc_enter">确定</string>
-    <string name="alirtc_channel_hint">请输入频道号（3-12位数字）</string>
-    <string name="alirtc_channel_error">频道号长度不能小于3位或大于12位</string>
+        
+    <string name="rtc_click">click</string>
+
+        
+    <string name="rtc_talking">In audio and video call</string>
+        
+    <string name="rtc_talking_now">Audio and video calls are in progress</string>
+
+        
+    <string name="rtc_loging_">Login ...</string>
+
+        
+    <string name="rtc_request_per">Request permission must be opened, otherwise it cannot be used normally!</string>
+
+        
+    <string name="rtc_need_per">Require permission to view</string>
+        
+    <string name="rtc_disconn">the other party has hung up</string>
+
+        
+    <string name="rtc_quit_room">Network timeout, please exit the room</string>
+        
+    <string name="rtc_ok_soon_">Video will be connected soon ...</string>
 
 </resources>

@@ -1,6 +1,7 @@
 //apply plugin: 'com.android.application'
 apply plugin: 'com.android.library'
-
+//上传到maven
+apply plugin: 'maven'
 def andr = rootProject.ext.android
 
 android {
@@ -39,16 +40,26 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    annotationProcessor project(':arouter-compiler')
+    annotationProcessor 'com.guider.m:arouter-compiler:0.0.1'
     //api的方式有传递性
-    implementation project(':arouter-core')
-    implementation project(':common')
-    implementation project(':tckeyboard')
-    implementation project(':bluetooth')
+    implementation 'com.guider.m:arouter-core:0.0.1'
+    implementation 'com.guider.m:common:0.0.1'
+    implementation 'com.guider.m:tckeyboard:0.0.1'
+    implementation 'com.guider.m:bluetooth:0.0.1'
     api 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    api project(':fragmentation_core')
+    api 'com.guider.m:fragmentation_core:0.0.1'
     // 红豆心电
     implementation 'com.proton.ecg.card:connector:1.0.3'
     implementation 'com.proton:protonecg:1.0.2'
 }
 
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'ecg'
+        }
+    }
+}

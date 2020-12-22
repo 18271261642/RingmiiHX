@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 //提示用户手动打开权限
 
-                Toast.makeText(this, "请求权限要打开，否则不能正常使用！", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.rtc_request_per), Toast.LENGTH_LONG).show(); // "请求权限要打开，否则不能正常使用！"
 
             }
         }
@@ -359,6 +359,7 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     /*
     private static final int TIME_OUT = 60;
     private OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()

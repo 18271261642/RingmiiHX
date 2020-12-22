@@ -100,33 +100,5 @@ public class ByteUtils {
             System.out.println("111    "+getString(a));;
 
 
-//        short s = 122;
-//        int i = 122;
-//        long l = 1222222;
-//
-//        char c = 'a';
-//
-//        float f = 122.22f;
-//        double d = 122.22;
-//
-//        String string = "我是好孩子";
-//        System.out.println(s);
-//        System.out.println(i);
-//        System.out.println(l);
-//        System.out.println(c);
-//        System.out.println(f);
-//        System.out.println(d);
-//        System.out.println(string);
-//
-//        System.out.println("**************");
-//
-//        System.out.println(getShort(getBytes(s)));
-//        System.out.println(getInt(getBytes(i)));
-//        System.out.println(getLong(getBytes(l)));
-//        System.out.println(getChar(getBytes(c)));
-//        System.out.println(getFloat(getBytes(f)));
-//        System.out.println(getDouble(getBytes(d)));
-//        System.out.println(getString(getBytes(string)));
-
         }
 }

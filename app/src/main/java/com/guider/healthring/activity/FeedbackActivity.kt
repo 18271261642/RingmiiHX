@@ -2,20 +2,16 @@ package com.guider.healthring.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
-import cn.wuweikang.StringUtil
 import com.guider.healthring.BuildConfig
-import com.guider.healthring.Commont
 import com.guider.healthring.R
 import com.guider.healthring.base.BaseActivity
 import com.guider.healthring.siswatch.utils.WatchUtils
-import com.guider.healthring.util.SharedPreferencesUtils
 import com.guider.healthring.util.ToastUtil
 import com.guider.libbase.util.Log
 import java.util.*

@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_10"
             android:padding="@dimen/dimen_3"
-            android:text="@string/alirtc_out"
+            android:text="@string/rtc_out"
             android:textColor="@android:color/black"
             android:textSize="@dimen/title_size" />
 
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/alirtc_mode"
+            android:text="@string/rtc_mode"
             android:textColor="@android:color/black"
             android:textSize="@dimen/title_size" />
 
@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="等待对方接听..."
+        android:text="@string/rtc_waiting_pick_up"
         android:textColor="#ffffff"
         android:textSize="@dimen/sp_22" />
 
@@ -84,7 +84,7 @@
             android:layout_height="64dp"
             android:background="@drawable/alirtc_video_call_handsfree_shape"
             android:gravity="center"
-            android:text="@string/alirtc_join_channel"
+            android:text="@string/rtc_join_channel"
             android:textColor="@android:color/black"
             android:textSize="@dimen/labels_text_size" />
 

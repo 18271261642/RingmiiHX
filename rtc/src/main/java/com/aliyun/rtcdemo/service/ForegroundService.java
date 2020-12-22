@@ -34,8 +34,8 @@ public class ForegroundService extends Service {
         Notification.Builder builder = new Notification.Builder(this.getApplicationContext());
         builder.setContentIntent(pendingIntent)
             .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_launcher))
-            .setContentTitle("音视频通话中")
-            .setContentText("正在进行音视频通话")
+            .setContentTitle(getResources().getString(R.string.rtc_talking)) // "音视频通话中")
+            .setContentText(getResources().getString(R.string.rtc_talking_now)) // "正在进行音视频通话")
             .setSmallIcon(R.mipmap.ic_launcher)
             .setWhen(System.currentTimeMillis())
             .setDefaults(Notification.DEFAULT_VIBRATE)

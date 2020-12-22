@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textSize="@dimen/title_size"
-            android:text="@string/alirtc_title"
+            android:text="@string/rtc_title"
             />
     </LinearLayout>
 
@@ -33,8 +33,7 @@
         android:inputType="number"
         android:textSize="@dimen/labels_text_size"
         android:background="@drawable/alirtc_bg_enter_shape"
-        android:hint="@string/alirtc_channel_hint"
-        />
+        android:hint="@string/rtc_channel_hint" />
 
     <Button
         android:id="@+id/bt_AuthInfo"
@@ -45,7 +44,7 @@
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/black"
         android:textSize="@dimen/labels_text_size"
-        android:text="@string/alirtc_enter"
+        android:text="@string/rtc_enter"
         android:background="@drawable/alirtc_bg_enter_shape"
         />
 

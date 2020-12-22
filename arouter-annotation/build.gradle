@@ -1,8 +1,19 @@
 apply plugin: 'java-library'
-
+//上传到maven
+apply plugin: 'maven'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
+uploadArchives  {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../libs'))
+            pom.groupId = 'com.guider.m'
+            pom.version  = '0.0.1'
+            pom.artifactId = 'arouter-annotation'
+        }
+    }
+}

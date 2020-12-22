@@ -22,12 +22,9 @@ public class SimpleDevice implements Parcelable {
 
     protected int rssi;
 
-    public boolean isBLE = true; // 是否是BLE蓝牙 默认是BLE蓝牙
+    public boolean isBLE = true;
 
-    /**
-     * 服务UUID和特征值UUID
-     * 可以在子类中进行赋值
-     */
+
     protected UUID serviceUUID;
     protected HashMap<UUID, UUID[]> characteristicUUID;
 
