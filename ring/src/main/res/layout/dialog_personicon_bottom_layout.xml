@@ -24,7 +24,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="14dp"
                 android:gravity="center"
-                android:text="拍照"
+                android:text="@string/app_doctor_answer_camera"
                 android:textColor="#0E0E0E"
                 android:textSize="@dimen/sp_14" />
 
@@ -42,7 +42,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="14dp"
                 android:gravity="center"
-                android:text="从手机相册选择"
+                android:text="@string/select_from_your_phone_photo_album"
                 android:textColor="#0E0E0E"
                 android:textSize="@dimen/sp_14" />
         </RelativeLayout>
@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/rounded_white_4_bg"
             android:gravity="center"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="@color/mainOrange"
             android:textSize="@dimen/sp_14" />
     </LinearLayout>

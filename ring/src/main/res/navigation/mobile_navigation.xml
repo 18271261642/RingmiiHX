@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navHostFragment">
+
+    <fragment
+        android:id="@+id/navHostFragment"
+        android:name="com.guider.gps.view.fragment.MainFragment"
+        android:label="NavHostFragment"
+        tools:layout="@layout/fragment_nav_host">
+        <action
+            android:id="@+id/action_navHostFragment_to_settingFragment"
+            app:destination="@id/settingFragment"
+            app:popUpTo="@id/navHostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.guider.gps.view.fragment.SettingFragment"
+        android:label="SettingFragment"
+        tools:layout="@layout/fragment_setting" />
+
+</navigation>

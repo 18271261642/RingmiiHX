@@ -34,7 +34,7 @@ object ApiCoroutinesCallBack {
     }
 
     suspend fun resultParse(onStart: (() -> Unit)? = null, block: suspend () -> Unit,
-                            onError: ((Throwable) -> Unit)? = null,
+                            onError: ((Exception) -> Unit)? = null,
                             onRequestFinish: (() -> Unit)? = null) {
         try {
             onStart?.invoke()

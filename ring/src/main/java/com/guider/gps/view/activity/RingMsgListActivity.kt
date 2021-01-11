@@ -104,6 +104,7 @@ class RingMsgListActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        setIntent(intent)
         Log.i(TAG, "重新加载而非重建")
         if (intent != null) {
             if (intent.getIntExtra("entryPageIndex", 0) != 0) {

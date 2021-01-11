@@ -271,4 +271,6 @@
     <string name="app_phone_state_permission">Phone information</string>
     <string name="app_line_account_error_hint">This LINE account has been bound by another account, please associate it with another account</string>
     <string name="app_hypertension">Hypertension</string>
+    <string name="select_from_your_phone_photo_album">Select from your phone photo album</string>
+    <string name="cancel">Cancel</string>
 </resources>

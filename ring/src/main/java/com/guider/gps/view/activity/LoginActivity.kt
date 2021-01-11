@@ -92,6 +92,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
         return false
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
         //通过WXAPIFactory工厂获取IWXApI的示例
 //        api = WXAPIFactory.createWXAPI(this, APP_ID_WX, true)
@@ -112,6 +113,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
             countryCodeKey = MMKVUtil.getString(AREA_CODE)
         }
         countryTv.tag = countryCodeKey
+        versionTv.text = "v ${CommonUtils.getPKgVersionName(mContext!!)}"
     }
 
     override fun initLogic() {
@@ -157,7 +159,7 @@ class LoginActivity : BaseActivity(), CustomAdapt, ILineLogin {
             forgotPasswordTv.textSize = 13f
             val params: ConstraintLayout.LayoutParams =
                     forgotPasswordTv.layoutParams as ConstraintLayout.LayoutParams
-            params.marginEnd = ScreenUtils.dip2px(mContext,10f)
+            params.marginEnd = ScreenUtils.dip2px(mContext, 10f)
         }
     }
 

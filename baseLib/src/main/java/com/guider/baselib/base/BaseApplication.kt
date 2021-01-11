@@ -36,23 +36,23 @@ abstract class BaseApplication : Application() {
             Log.i("Application", "不是主进程，不再执行初始化application")
             return
         }
+        //MMKV初始化
         MMKV_ROOT = MMKV.initialize(guiderHealthContext)
+        initAutoSize()
         asyncInitSdk()
     }
 
     private fun asyncInitSdk() {
-        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+        CoroutineScope(Dispatchers.Default + SupervisorJob()).launch {
             initSdk()
         }
     }
 
     @SuppressLint("RestrictedApi")
     private fun initSdk() {
-        //MMKV初始化
         MyUtils.setMacAddress("11:11:11:11:11:26")
         ApiUtil.init(guiderHealthContext, MyUtils.getMacAddress())
         GuiderApiUtil.setContextAndMac(guiderHealthContext, MyUtils.getMacAddress())
-        initAutoSize()
         MyUtils.application = this
         init()
         if (BuildConfig.DEBUG) {
@@ -90,7 +90,6 @@ abstract class BaseApplication : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        applicationTime = System.currentTimeMillis()
         MultiDex.install(this)
     }
 
@@ -98,7 +97,6 @@ abstract class BaseApplication : Application() {
         // 获取到主线程的上下文
         @SuppressLint("StaticFieldLeak")
         lateinit var guiderHealthContext: Context
-        var applicationTime = 0L
     }
 
     private fun isMainProcess(): Boolean {

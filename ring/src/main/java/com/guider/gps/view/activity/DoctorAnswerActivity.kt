@@ -35,10 +35,7 @@ import com.scwang.smart.refresh.header.ClassicsHeader
 import kotlinx.android.synthetic.main.activity_doctor_answer.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 /**
@@ -183,7 +180,7 @@ class DoctorAnswerActivity : BaseActivity(), ViewTreeObserver.OnGlobalLayoutList
                                 20,
                                 tempTime)
                 resultBean
-            }.flowOn(Dispatchers.IO).collect { resultBean ->
+            }.flowOn(Dispatchers.IO).collectLatest { resultBean ->
                 if (!resultBean.isNullOrEmpty()) {
                     val tempList = arrayListOf<AnswerListBean>()
                     for (key in resultBean.keys) {

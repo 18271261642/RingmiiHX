@@ -268,4 +268,6 @@
     <string name="app_phone_state_permission">手機信息</string>
     <string name="app_line_account_error_hint">此LINE賬號已被其他賬號綁定，請關聯其他賬號</string>
     <string name="app_hypertension">高血壓</string>
+    <string name="select_from_your_phone_photo_album">從手機相冊選擇</string>
+    <string name="cancel">取消</string>
 </resources>

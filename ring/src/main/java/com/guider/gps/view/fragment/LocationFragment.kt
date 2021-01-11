@@ -1207,10 +1207,10 @@ class LocationFragment : BaseFragment(),
                 proactivelyAddressingFinish("fail")
                 cancelTag = true
             }.flowOn(Dispatchers.IO)
-                    .collect {
+                    .collectLatest {
                         if (!(it is String && it == "null") && it != null) {
                             tempLocationBean = ParseJsonData.parseJsonAny<UserPositionListBean>(it)
-                            if (tempLocationBean == null) return@collect
+                            if (tempLocationBean == null) return@collectLatest
                             mGoogleMap?.animateCamera(
                                     CameraUpdateFactory.newLatLngZoom(LatLng(tempLocationBean!!.lat,
                                             tempLocationBean!!.lng), 16.0f))

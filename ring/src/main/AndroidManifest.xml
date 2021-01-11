@@ -86,7 +86,7 @@
         <activity android:name=".view.activity.AlarmSeActivity" />
         <activity android:name=".view.activity.LocationFrequencySetNewActivity" />
         <activity android:name=".view.activity.ElectronicFenceListActivity" />
-        <activity android:name=".view.fragment.DoctorListActivity" />
+        <activity android:name=".view.activity.DoctorListActivity" />
         <activity android:name=".view.activity.ForgotPasswordActivity" />
         <activity android:name=".view.activity.ResetPasswordActivity" />
         <activity android:name=".view.activity.ChangePasswordActivity" />
@@ -94,6 +94,8 @@
             android:launchMode="singleTop"
             />
         <activity android:name=".view.activity.TestMotionActivity" />
+        <activity android:name=".view.activity.PagingListActivity" />
+        <activity android:name=".view.activity.NavigationActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

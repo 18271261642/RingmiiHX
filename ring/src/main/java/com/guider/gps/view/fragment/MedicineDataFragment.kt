@@ -14,6 +14,7 @@ import com.guider.baselib.device.Unit.bp
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.gps.R
+import com.guider.gps.view.activity.DoctorListActivity
 import com.guider.gps.view.activity.MainActivity
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.BloodOxygenListBean
