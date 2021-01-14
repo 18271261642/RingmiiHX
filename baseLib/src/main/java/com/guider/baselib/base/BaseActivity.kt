@@ -136,48 +136,51 @@ abstract class BaseActivity : AppCompatActivity(), OnNoDoubleClickListener {
      * 显示系统消息的弹窗
      */
     fun showSystemMsgDialog(content: String, type: PushMsgType, msgId: String) {
-        if (systemMsgDialog != null) {
-            systemMsgDialog?.closeDialog()
-            systemMsgDialog = null
-        }
-        if (systemMsgDialog == null && !this.isFinishing) {
-            systemMsgDialog = object : DialogHolder(this,
-                    R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {
-                override fun bindView(dialogView: View) {
-                    val contentTv = dialogView.findViewById<TextView>(R.id.contentTv)
-                    val watchDetail = dialogView.findViewById<TextView>(R.id.watchDetail)
-                    val mDismiss = dialogView.findViewById<ImageView>(R.id.cancelIv)
-                    contentTv.text = content
-                    //做特殊处理
+        //防止在推送的回调中显示dialog。所以回到主线程弹出
+        runOnUiThread {
+            if (systemMsgDialog != null) {
+                systemMsgDialog?.closeDialog()
+                systemMsgDialog = null
+            }
+            if (systemMsgDialog == null && !this.isFinishing) {
+                systemMsgDialog = object : DialogHolder(this,
+                        R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {
+                    override fun bindView(dialogView: View) {
+                        val contentTv = dialogView.findViewById<TextView>(R.id.contentTv)
+                        val watchDetail = dialogView.findViewById<TextView>(R.id.watchDetail)
+                        val mDismiss = dialogView.findViewById<ImageView>(R.id.cancelIv)
+                        contentTv.text = content
+                        //做特殊处理
 //                    if (type == SystemMsgType.SOS){
 //
 //                    }
-                    watchDetail.setOnClickListener {
-                        ARouter.getInstance().build(msgList)
-                                //进入页面需跳转到的指定列表项
-                                .withInt("entryPageIndex", 2)
-                                .navigation()
-                        if (systemMsgDialog != null) {
-                            systemMsgDialog?.closeDialog()
-                            systemMsgDialog = null
+                        watchDetail.setOnClickListener {
+                            ARouter.getInstance().build(msgList)
+                                    //进入页面需跳转到的指定列表项
+                                    .withInt("entryPageIndex", 2)
+                                    .navigation()
+                            if (systemMsgDialog != null) {
+                                systemMsgDialog?.closeDialog()
+                                systemMsgDialog = null
+                            }
+                            clearNotification(msgId)
                         }
-                        clearNotification(msgId)
-                    }
-                    mDismiss.setOnClickListener {
-                        dialog?.dismiss()
-                        if (systemMsgDialog != null) {
-                            systemMsgDialog?.closeDialog()
-                            systemMsgDialog = null
+                        mDismiss.setOnClickListener {
+                            dialog?.dismiss()
+                            if (systemMsgDialog != null) {
+                                systemMsgDialog?.closeDialog()
+                                systemMsgDialog = null
+                            }
+                            clearNotification(msgId)
                         }
-                        clearNotification(msgId)
-                    }
 //                    mDismiss.postDelayed({
 //                        dialog?.dismiss()
 //                    }, 5000)
+                    }
                 }
+                systemMsgDialog?.initView()
+                systemMsgDialog?.show(false)
             }
-            systemMsgDialog?.initView()
-            systemMsgDialog?.show(false)
         }
     }
 

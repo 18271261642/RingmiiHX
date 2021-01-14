@@ -80,6 +80,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             builder.setContentIntent(clickInstallIntent(context, notificationId))
             val notification = builder.build()
             notificationManager.notify(notificationId, notification)
+            // do something
             ((BaseActivity.getForegroundActivity()) as BaseActivity)
                     .showSystemMsgDialog(it.body ?: "",
                             pushMessageBean?.type ?: PushMsgType.TAKEOFF,
