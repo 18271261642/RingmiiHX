@@ -1342,6 +1342,11 @@ class LocationFragment : BaseFragment(),
      */
     override fun onMapReady(it: GoogleMap?) {
         mGoogleMap = it
+        mGoogleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
+        //隐藏地图上的商家poi图标和公共交通标识
+        mGoogleMap?.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                        mActivity, R.raw.style_json))
         var dataMap = hashMapOf<String, Any>()
         if (MMKVUtil.containKey(BIND_DEVICE_LAST_LOCATION)) {
             val json = MMKVUtil.getString(BIND_DEVICE_LAST_LOCATION)
@@ -1365,7 +1370,6 @@ class LocationFragment : BaseFragment(),
         uiSettings.isMyLocationButtonEnabled = false //显示定位按钮
         uiSettings.isCompassEnabled = false //设置是否显示指南针
         uiSettings.isZoomControlsEnabled = true//缩放控件
-        mGoogleMap?.isTrafficEnabled = true
         mGoogleMap?.setInfoWindowAdapter(
                 CustomInfoWindowAdapter(WeakReference(this)))
         mGoogleMap?.setOnMarkerClickListener(this)
