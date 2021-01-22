@@ -24,6 +24,7 @@ import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.dialog.DialogProgress
 import com.guider.health.apilib.enums.PushMsgType
+import com.guider.health.apilib.utils.MMKVUtil
 import com.gyf.immersionbar.ImmersionBar
 
 abstract class BaseActivity : AppCompatActivity(), OnNoDoubleClickListener {
@@ -151,9 +152,19 @@ abstract class BaseActivity : AppCompatActivity(), OnNoDoubleClickListener {
                         val mDismiss = dialogView.findViewById<ImageView>(R.id.cancelIv)
                         contentTv.text = content
                         //做特殊处理
-//                    if (type == SystemMsgType.SOS){
-//
-//                    }
+                        if (type == PushMsgType.SOS) {
+                            //如果是sos消息的去发个通知，刷新地图页面
+                            MMKVUtil.saveString(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "0")
+                            EventBusUtils.sendStickyEvent(EventBusEvent(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "0"))
+                        } else if (type == PushMsgType.FENCE) {
+                            //跳转到地图页，并且开启运动轨迹页
+                            MMKVUtil.saveString(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "1")
+                            EventBusUtils.sendStickyEvent(EventBusEvent(
+                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "1"))
+                        }
                         watchDetail.setOnClickListener {
                             ARouter.getInstance().build(msgList)
                                     //进入页面需跳转到的指定列表项

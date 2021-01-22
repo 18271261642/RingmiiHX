@@ -45,11 +45,12 @@ import com.guider.health.apilib.bean.CheckBindDeviceBean
 import com.guider.health.apilib.bean.UserInfo
 import com.guider.health.apilib.enums.PositionType
 import com.guider.health.apilib.enums.PushNationType
-import com.guider.health.apilib.enums.SystemMsgType
 import com.guider.health.apilib.utils.GsonUtil
 import com.guider.health.apilib.utils.MMKVUtil
 import kotlinx.android.synthetic.main.activity_home_draw_layout.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_msg_list.*
+import kotlinx.android.synthetic.main.include_location_fragment_deal_layout.*
 import kotlinx.android.synthetic.main.include_phone_edit_layout.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
@@ -343,6 +344,13 @@ class MainActivity : BaseActivity() {
                 bindListBean = event.data as CheckBindDeviceBean
                 getBindDeviceList()
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun sosRefreshLocation(event: EventBusEvent<String>) {
+        if (event.code == EventBusAction.ENTRY_LOCATION_WITH_TYPE) {
+            homeViewPager.currentItem = 1
         }
     }
 
@@ -890,63 +898,6 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    /**
-     * 显示系统消息的弹窗
-     */
-    private fun showMsgDialog(content: String, type: SystemMsgType, msgId: String) {
-        val dialog = object : DialogHolder(this,
-                R.layout.dialog_system_msg, Gravity.TOP, tag = msgId) {
-            override fun bindView(dialogView: View) {
-                val contentTv = dialogView.findViewById<TextView>(R.id.contentTv)
-                val watchDetail = dialogView.findViewById<TextView>(R.id.watchDetail)
-                val mDismiss = dialogView.findViewById<ImageView>(R.id.cancelIv)
-                contentTv.text = content
-                dialogTagList.add(msgId)
-                watchDetail.setOnClickListener {
-                    //判断消息的类型做相应的处理，sos和电子围栏的跳转到定位信息页和运动轨迹页
-                    when (type) {
-                        SystemMsgType.SOS -> {
-                            //跳转到地图页，并且开启定位信息页
-                            homeViewPager.currentItem = 1
-                            MMKVUtil.saveString(
-                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "0")
-                            EventBusUtils.sendStickyEvent(EventBusEvent(
-                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "0"))
-                        }
-                        SystemMsgType.FENCE -> {
-                            //跳转到地图页，并且开启运动轨迹页
-                            homeViewPager.currentItem = 1
-                            MMKVUtil.saveString(
-                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "1")
-                            EventBusUtils.sendStickyEvent(EventBusEvent(
-                                    EventBusAction.ENTRY_LOCATION_WITH_TYPE, "1"))
-                        }
-                        else -> {
-                            val intent = Intent(mContext, RingMsgListActivity::class.java)
-                            intent.putExtra("abnormalMsgUndoNum", abnormalMsgUndoNum)
-                            intent.putExtra("careMsgUndoNum", careMsgUndoNum)
-                            //进入页面需跳转到的指定列表项
-                            intent.putExtra("entryPageIndex", 2)
-                            startActivity(intent)
-                        }
-                    }
-                    dialogTagList.remove(msgId)
-                    dialog?.dismiss()
-                }
-                mDismiss.setOnClickListener {
-                    dialogTagList.remove(msgId)
-                    dialog?.dismiss()
-                }
-                mDismiss.postDelayed({
-                    dialogTagList.remove(msgId)
-                    dialog?.dismiss()
-                }, 5000)
-            }
-        }
-        dialog.initView()
-        dialog.show(true)
     }
 
     @SuppressLint("WrongConstant")

@@ -3,8 +3,8 @@ ext {
             compileSdkVersion: 29,
             minSdkVersion    : 19,
             targetSdkVersion : 29,
-            codeVersion      : 23,
-            appVersion       : "1.9.7"
+            codeVersion      : 24,
+            appVersion       : "1.9.8"
     ]
 
     supportLibVersion = '1.1.0'
