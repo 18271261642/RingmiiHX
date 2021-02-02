@@ -107,7 +107,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:vmSafeMode="true"
         tools:ignore="AllowBackup,HardcodedDebugMode,UnusedAttribute"
-        tools:replace="android:label,android:name,android:icon"
+        tools:replace="android:theme,android:label,android:name,android:icon"
         android:usesCleartextTraffic="true">
 
         <!--支持高宽高比屏幕-->

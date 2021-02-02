@@ -4,23 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.guider.health.apilib.BuildConfig;
 import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.R;
-import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.bean.AreCodeBean;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.WatchBaseActivity;
@@ -31,13 +26,8 @@ import com.guider.healthring.util.WxScanUtil;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
-import com.guider.libbase.sms.SmsMob;
 
-import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
-
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
 
 /**
  * 盖德微信绑定手机号，获取手机号验证码
@@ -159,141 +149,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity
 
     //获取验证码
     private void getPhoneVerCode(final String phoeCode) {
-        //requestPressent.getRequestJSONObjectGet(1001, GET_PHONE_CODE + phoeCode, this, 1);
-        //区号
-        String areaCode = wxBindPhoneCodeTv.getText().toString();
-        // 注册一个事件回调，用于处理SMSSDK接口请求的结果
-        SMSSDK.registerEventHandler(eventHandler);
-        // 请求验证码，其中country表示国家代码，如“86”；phone表示手机号码，如“13800138000”
-        // SMSSDK.getVerificationCode(StringUtils.substringAfter(areaCode,"+").trim(), phoeCode);
-        SMSSDK.getVerificationCode(areaCode, phoeCode, SmsMob.getTempCode(areaCode), null);
-        if (countTimeUtils == null)
-            countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
-        countTimeUtils.start();
-
     }
-
-
-    EventHandler eventHandler = new EventHandler() {
-        public void afterEvent(int event, int result, Object data) {
-            // afterEvent会在子线程被调用，因此如果后续有UI相关操作，需要将数据发送到UI线程
-            Message msg = new Message();
-            msg.arg1 = event;
-            msg.arg2 = result;
-            msg.obj = data;
-            new Handler(Looper.getMainLooper(), msg1 -> {
-                int event1 = msg1.arg1;
-                int result1 = msg1.arg2;
-                Object data1 = msg1.obj;
-
-                Log.e(TAG, "-------event=" + event1 + "---result=" + result1 +
-                        "---data=" + data1.toString());
-
-
-                if (event1 == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                    if (result1 == SMSSDK.RESULT_COMPLETE) {
-                        // TODO 处理成功得到验证码的结果
-                        // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
-//                                                Log.e("===验证码", "完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达  " + data.toString());
-
-                    } else {
-                        if (!WatchUtils.isEmpty(data1.toString()) && data1.toString()
-                                .contains("java.lang.Throwable:")) {
-                            String res =
-                                    data1.toString().
-                                            replace("java.lang.Throwable:",
-                                                    "").trim();
-//                                                    Log.e("===验证码", "处理错误的结果  " + res);
-                            if (!WatchUtils.isEmpty(res)) {
-                                CodeBean codeBean = new Gson().fromJson(res, CodeBean.class);
-                                if (codeBean != null) {
-                                    int status = codeBean.getStatus();
-                                    if (status == 603) {//手机号错
-                                        ToastUtil.showLong(
-                                                GuiderWxBindPhoneActivity.this,
-                                                getResources()
-                                                        .getString(R.string.string_phone_er));
-                                    } else if (status == 468) {//验证码错
-                                        ToastUtil.showLong(
-                                                GuiderWxBindPhoneActivity.this,
-                                                getResources().getString(R.string.yonghuzdffhej));
-                                    } else if (status == 457) {//手机号格式不对
-                                        //username.setText("");
-                                        wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
-                                        wxBindGetVerCodeBtn.setClickable(true);
-                                        ToastUtil.showShort(
-                                                GuiderWxBindPhoneActivity.this,
-                                                getResources()
-                                                        .getString(R.string.format_is_wrong));
-                                    } else {
-                                        ToastUtil.showLong(
-                                                GuiderWxBindPhoneActivity.this,
-                                                codeBean.getError());
-                                    }
-                                }
-                            }
-                        }
-                        // TODO 处理错误的结果
-                        ((Throwable) data1).printStackTrace();
-                    }
-                } else if (event1 == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                    if (result1 == SMSSDK.RESULT_COMPLETE) {
-                        // TODO 处理验证码验证通过的结果
-                        Log.e("===验证码", "处理验证码验证通过的结果  " + data1.toString());
-                        //手机号
-                        String phoeCodes = wxBindPhoneCodeEdit.getText().toString();
-
-                        String bindUrl = BuildConfig.APIURL +
-                                "api/v2/wechat/bind/phone/token?phone=" + phoeCodes + "&code=";
-                        // http://api.guiderhealth.com/
-                        if (!StringUtil.isEmpty(wxStr)) {
-                            WxBindStr wxBindStr = new Gson().fromJson(wxStr, WxBindStr.class);
-                            //Log.e(TAG, "--------wx=" + wxBindStr.toString());
-                            requestPressent.getRequestJSONObject(1002, bindUrl,
-                                    GuiderWxBindPhoneActivity.this,
-                                    new Gson().toJson(wxBindStr), 2);
-                        }
-                    } else {
-                        if (!WatchUtils.isEmpty(data1.toString()) &&
-                                data1.toString().contains("java.lang.Throwable:")) {
-                            String res = data1.toString()
-                                    .replace("java.lang.Throwable:", "")
-                                    .trim();
-//                                                    Log.e("===验证码", "处理错误的结果2  " + res);
-                            if (!WatchUtils.isEmpty(res)) {
-                                CodeBean codeBean = new Gson().fromJson(res, CodeBean.class);
-                                if (codeBean != null) {
-                                    int status = codeBean.getStatus();
-//                                                            Log.e("===验证码", "处理错误的结果2  " + status);
-                                    if (status == 468) {//验证码错
-                                        ToastUtil.showLong(
-                                                GuiderWxBindPhoneActivity.this,
-                                                getResources().getString(R.string.yonghuzdffhej));
-                                    } else if (status == 457) {//手机号格式不对
-                                        // username.setText("");
-                                        wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
-                                        wxBindGetVerCodeBtn.setClickable(true);
-                                        ToastUtil.showShort(
-                                                GuiderWxBindPhoneActivity.this,
-                                                getResources().getString(R.string.format_is_wrong));
-                                    } else {
-                                        ToastUtil.showLong(
-                                                GuiderWxBindPhoneActivity.this,
-                                                codeBean.getError());
-                                    }
-                                }
-                            }
-                        }
-                        // TODO 处理错误的结果
-                        ((Throwable) data1).printStackTrace();
-                    }
-                }
-//                                        Log.e("===验证码", "其他接口的返回结果也类似  " + event);
-                // TODO 其他接口的返回结果也类似，根据event判断当前数据属于哪个接口
-                return false;
-            }).sendMessage(msg);
-        }
-    };
 
 
     //选择区号

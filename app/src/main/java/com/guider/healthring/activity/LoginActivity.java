@@ -369,10 +369,10 @@ public class LoginActivity extends WatchBaseActivity
                 };
                 break;
             case R.id.weixin_iv://微信登录
-                mThirdLogin.wechatLogin(hashMap -> {
-                    String strUserInfo = JsonUtil.toStr(hashMap);
-                    mWXEntryActivityAdapter.analysisWXUserInfo(strUserInfo);
-                });
+//                mThirdLogin.wechatLogin(hashMap -> {
+//                    String strUserInfo = JsonUtil.toStr(hashMap);
+//                    mWXEntryActivityAdapter.analysisWXUserInfo(strUserInfo);
+//                });
                 break;
             case R.id.login_visitorTv:  //游客登录
                 final PromptDialog pd = new PromptDialog(LoginActivity.this);

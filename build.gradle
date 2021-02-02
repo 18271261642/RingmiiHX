@@ -19,15 +19,13 @@ buildscript {
         maven { url "https://jitpack.io" }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
-        maven { url "http://mvn.mob.com/android" }
         //
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
-        classpath "com.mob.sdk:MobSDK:+"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
@@ -50,13 +48,12 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url 'https://repository.mulesoft.org/nexus/content/repositories/public/' }
         maven { url 'https://repo1.maven.org/maven2/' }
-        maven { url "http://mvn.mob.com/android" }
         //
     }
 
     ext {
-        codeVersion = 230
-        appVersion = "2.7.0"
+        codeVersion = 231
+        appVersion = "2.7.1"
         googlePlay = true
         isMcu = false
     }

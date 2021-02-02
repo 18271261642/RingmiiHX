@@ -11,15 +11,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
-
-import androidx.multidex.MultiDex;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
 import com.afa.tourism.greendao.gen.DaoMaster;
 import com.afa.tourism.greendao.gen.DaoSession;
 import com.android.volley.RequestQueue;
@@ -35,27 +32,15 @@ import com.guider.healthring.bzlmaps.PhoneSosOrDisPhone;
 import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.libbase.map.IMapLocation;
-import com.mob.MobSDK;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
-
 import org.litepal.LitePalApplication;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 
 /**
@@ -161,8 +146,6 @@ public class MyApp extends LitePalApplication {
         // locationService = new LocationService(application);
 
         Bugly.init(this, "e4251eb2f8", true);
-
-        MobSDK.init(this, "2dc65dc4724aa", "5c4cd9ab545da0ccebd0d4b6d46c73fd");
 
         // 启动B30的服务
         startB30Server();

@@ -315,7 +315,8 @@ public class NewSearchActivity extends GetUserInfoActivity implements
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice bluetoothDevice, int rssi, byte[] scanRecord) {
-            @SuppressLint("MissingPermission") String bleName = bluetoothDevice.getName();
+            @SuppressLint("MissingPermission")
+            String bleName = bluetoothDevice.getName();
             String bleMac = bluetoothDevice.getAddress(); //bozlun
             if (!WatchUtils.isEmpty(bleName)) {
                 if (!repeatList.contains(bleMac)) {

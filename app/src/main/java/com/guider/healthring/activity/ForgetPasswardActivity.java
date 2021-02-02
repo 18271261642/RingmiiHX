@@ -2,27 +2,19 @@ package com.guider.healthring.activity;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.core.content.ContextCompat;
-
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
 import com.guider.health.apilib.ApiCallBack;
 import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.apilib.model.ChangeWithBanPasswordBean;
 import com.guider.healthring.R;
-import com.guider.healthring.b30.bean.CodeBean;
 import com.guider.healthring.base.BaseActivity;
 import com.guider.healthring.bean.AreCodeBean;
 import com.guider.healthring.siswatch.utils.WatchUtils;
@@ -31,14 +23,10 @@ import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
-
 import org.json.JSONObject;
-
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import cn.smssdk.SMSSDK;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
@@ -362,62 +350,6 @@ public class ForgetPasswardActivity extends BaseActivity
                 .subscribe(subscriber);
     }
 
-    @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int event = msg.arg1;
-            int result = msg.arg2;
-            Object data = msg.obj;
-            if (result == SMSSDK.RESULT_COMPLETE) {
-                // 短信注册成功后，返回MainActivity,然后提示新好友
-                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {// 提交验证码成功
-                    //registerRemote();
-                } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                    Toast.makeText(getApplicationContext(), R.string.yanzhengma,
-                            Toast.LENGTH_SHORT).show();
-                } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {// 返回支持发送验证码的国家列表
-                    Toast.makeText(getApplicationContext(), R.string.guojia,
-                            Toast.LENGTH_SHORT).show();
-                }
-            } else {
-//                com.alibaba.fastjson.JSONObject jsStr =  com.alibaba.fastjson.JSONObject.parseObject();
-                String s = data.toString().trim().substring(20, data.toString().trim().length());
-                if (TextUtils.isEmpty(s)) return;
-                CodeBean codeBean = new Gson().fromJson(s, CodeBean.class);
-                if (codeBean != null) {
-                    int status = codeBean.getStatus();
-                    if (status == 603) {//手机号错
-                        ToastUtil.showLong(ForgetPasswardActivity.this, getResources().getString(R.string.string_phone_er));
-                    } else if (status == 468) {//验证码错
-                        ToastUtil.showLong(ForgetPasswardActivity.this, getResources().getString(R.string.yonghuzdffhej));
-                    } else {
-                        ToastUtil.showLong(ForgetPasswardActivity.this, getResources().getString(R.string.yonghuzdffhej));
-                    }
-                }
-
-
-            }
-        }
-    };
-
-
-    /**
-     * 验证手机格式
-     */
-    public static boolean isMobileNO(String mymobiles) {
-    /*
-    移动：134、135、136、137、138、139、150、151、157(TD)、158、159、187、188
-    联通：130、131、132、152、155、156、185、186
-    电信：133、153、180、189、（1349卫通）
-    总结起来就是第一位必定为1，第二位必定为3或5或8，其他位置的可以为0-9
-    */
-        String telRegex = "[1][358]\\d{9}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
-        if (TextUtils.isEmpty(mymobiles)) return false;
-        else return mymobiles.matches(telRegex);
-    }
-
 
     @Override
     protected int getContentViewId() {
@@ -427,7 +359,6 @@ public class ForgetPasswardActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacksAndMessages(null);
         if (requestPressent != null)
             requestPressent.detach();
     }

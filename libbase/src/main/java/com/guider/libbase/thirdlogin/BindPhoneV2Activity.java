@@ -26,7 +26,6 @@ import com.guider.health.common.utils.SharedPreferencesUtils;
 import com.guider.health.common.utils.StringUtil;
 import com.guider.health.common.utils.ToastUtil;
 import com.guider.libbase.R;
-import com.guider.libbase.sms.SmsMob;
 import com.guider.libbase.view.PhoneAreaCodeView;
 
 import java.util.HashMap;
@@ -60,7 +59,6 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_phone_layout);
-        SmsMob.init(this);
 
         wxBindPhoneVerCodeEdit = findViewById(R.id.wxBindPhoneVerCodeEdit);
         wxBindGetVerCodeBtn = findViewById(R.id.wxBindGetVerCodeBtn);
@@ -81,12 +79,6 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
         countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SmsMob.unInit();
-    }
-
     // @OnClick({R.id.wxBindPhoneCodeTv, R.id.wxBindGetVerCodeBtn, R.id.wxBindSubBtn,})
     public void onClick(View view) {
         // 区号
@@ -95,16 +87,7 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
         if (view.getId() == R.id.wxBindPhoneCodeTv) {   // 选择区号
             choosePhoneAreCode();
         } else if (view.getId() == R.id.wxBindGetVerCodeBtn) { // 获取验证码
-            // 手机号
-            String phoeCode = wxBindPhoneCodeEdit.getText().toString();
-            if (StringUtil.isEmpty(phoeCode) || StringUtil.isEmpty(areaCode)) {
-                showToast(this, R.string.input_name);
-                return;
-            }
-            if (countTimeUtils == null)
-                countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
-            countTimeUtils.start();
-            SmsMob.sendCode(areaCode, phoeCode);
+
         } else if (view.getId() == R.id.wxBindSubBtn) {     // 提交
             //手机号
             final String phoeCodes = wxBindPhoneCodeEdit.getText().toString();

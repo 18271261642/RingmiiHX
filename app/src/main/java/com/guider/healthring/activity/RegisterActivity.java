@@ -1,12 +1,8 @@
 package com.guider.healthring.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
-import com.google.android.material.textfield.TextInputLayout;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -19,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,15 +23,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.ConnectManages;
 import com.guider.healthring.base.BaseActivity;
 import com.guider.healthring.bean.BlueUser;
-import com.guider.healthring.net.OkHttpObservable;
 import com.guider.healthring.rxandroid.DialogSubscriber;
 import com.guider.healthring.rxandroid.SubscriberOnNextListener;
-import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Common;
 import com.guider.healthring.util.Md5Util;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -42,14 +39,14 @@ import com.guider.healthring.util.ToastUtil;
 import com.guider.healthring.util.URLs;
 import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.view.PrivacyActivity;
-import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -60,7 +57,7 @@ import rx.functions.Func1;
  * 注册页面
  */
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 
     TextView tvTitle;
     TextView registerAgreement;
@@ -84,7 +81,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         tvTitle.setText(R.string.user_regsiter);
 
 
-        boolean lauage= VerifyUtil.isZh(RegisterActivity.this);
+        boolean lauage = VerifyUtil.isZh(RegisterActivity.this);
 //        if(lauage){
 //            usernameInput.setHint(getResources().getString(R.string.input_name));
 //        }else{
@@ -179,7 +176,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void initTime() {
         final int countTime = 60;
-        sendBtn.setText(getResources().getString(R.string.resend)+"(" + countTime + "s)");
+        sendBtn.setText(getResources().getString(R.string.resend) + "(" + countTime + "s)");
         sendBtn.setClickable(false);
         subscriber = new Subscriber<Integer>() {
             @Override
@@ -197,7 +194,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     sendBtn.setText(getResources().getString(R.string.resend));
                     sendBtn.setClickable(true);
                 } else {
-                    sendBtn.setText(getResources().getString(R.string.resend)+"(" + integer + "s)");
+                    sendBtn.setText(getResources().getString(R.string.resend) + "(" + integer + "s)");
                 }
             }
         };
@@ -219,38 +216,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         final String phoneTxt = username.getText().toString().trim();
         switch (view.getId()) {
             case R.id.send_btn:
-                if(Common.isFastClick()){
-//                    if (TextUtils.isEmpty(phoneTxt) | !VerifyUtil.VerificationPhone(phoneTxt)) {
-//                        ToastUtil.showShort(RegisterActivity.this, getResources().getString(R.string.format_is_wrong));
-//                    } else {
-//                        initTime();
-//                        SMSSDK.getVerificationCode("86", phoneTxt);
-//                    }
-
-                    if (WatchUtils.isEmpty(phoneTxt)) {
-                        ToastUtil.showShort(RegisterActivity.this, getResources().getString(R.string.format_is_wrong));
-                    } else {
-                        initTime();
-                        SMSSDK.getVerificationCode("86", phoneTxt);
-                    }
-
-                    EventHandler eventHandler = new EventHandler() {
-                        @Override
-                        public void afterEvent(int event, int result, Object data) {
-                            Message msg = new Message();
-                            msg.arg1 = event;
-                            msg.arg2 = result;
-                            msg.obj = data;
-                            handler.sendMessage(msg);
-                        }
-                    };
-                    SMSSDK.registerEventHandler(eventHandler);
-
-                }
                 break;
             case R.id.login_btn_reger:
 
-                boolean lauages= VerifyUtil.isZh(RegisterActivity.this);
+                boolean lauages = VerifyUtil.isZh(RegisterActivity.this);
 
                 //其它语言为邮箱
                 try {
@@ -323,7 +292,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                                 }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                if(error != null){
+                                                if (error != null) {
 //                                                    Log.e("RegisterActivity","------注册返回--error----"+error.getMessage());
                                                     Toast.makeText(RegisterActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
                                                 }
@@ -348,8 +317,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             } else {
                                 Toast.makeText(this, R.string.not_b_less, Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        else {
+                        } else {
                             Toast.makeText(this, R.string.mailbox_format_error, Toast.LENGTH_SHORT).show();
                         }
 
@@ -396,44 +364,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                 break;
         }
-    }
-
-    @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int event = msg.arg1;
-            int result = msg.arg2;
-            Object data = msg.obj;
-            if (result == SMSSDK.RESULT_COMPLETE) {
-                // 短信注册成功后，返回MainActivity,然后提示新好友
-                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {// 提交验证码成功
-                    isVal = true;
-                } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                    Toast.makeText(getApplicationContext(), R.string.yanzhengma,
-                            Toast.LENGTH_SHORT).show();
-                } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {// 返回支持发送验证码的国家列表
-                    Toast.makeText(getApplicationContext(), R.string.guojia,
-                            Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                ((Throwable) data).printStackTrace();
-            }
-        }
-    };
-
-    private void registerRemote(String phone, String pass) {
-        Gson gson = new Gson();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("phone", phone);
-        map.put("pwd", Md5Util.Md532(pass));
-        map.put("status", "0");
-        map.put("type", "0");
-        String mapjson = gson.toJson(map);
-//        Log.e("msg","-mapjson-"+mapjson);
-        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener, RegisterActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber, URLs.HTTPs + URLs.myHTTPs, mapjson);
     }
 
 }

@@ -11,16 +11,15 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.Settings;
-import androidx.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
-import com.guider.health.common.utils.FileDirUtil;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
@@ -49,7 +48,6 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -1454,13 +1452,13 @@ public class WatchUtils {
                 txt = context.getResources().getString(R.string.miamacuo);
                 break;
             case 5:     //服务异常
-                txt = context.getResources().getString(R.string.ssdk_sms_dialog_error_desc_100);
+                txt = "服务异常";
                 break;
             case 6:     //用户不存在或验证码失效
                 txt = "用户不存在或验证码失效";
                 break;
             case 7:     //关键参数不能为空
-                txt = context.getResources().getString(R.string.ssdk_sms_dialog_error_desc_103);
+                txt = "关键参数不能为空";
                 break;
             case 10:       //无数据
                 txt = context.getResources().getString(R.string.string_no_data);
