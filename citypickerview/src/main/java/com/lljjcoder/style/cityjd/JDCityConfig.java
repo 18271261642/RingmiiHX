@@ -1,7 +1,5 @@
 package com.lljjcoder.style.cityjd;
 
-import com.lljjcoder.citywheel.CityConfig;
-
 public class JDCityConfig {
 
     /**

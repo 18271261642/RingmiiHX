@@ -158,7 +158,8 @@ class MainActivity : BaseActivity() {
                 bindDeviceList[bindPosition].isSelected = 1
                 drawAdapter.notifyItemChanged(bindPosition)
                 homeDrawLayout.closeDrawer(Gravity.START)
-                deviceName = bindDeviceList[bindPosition].relationShip!!
+                deviceName = bindDeviceList[bindPosition].relationShip
+                        ?: bindDeviceList[bindPosition].name ?: ""
                 MMKVUtil.saveString(BIND_DEVICE_NAME, deviceName)
                 MMKVUtil.saveInt(BIND_DEVICE_ACCOUNT_ID, bindDeviceList[bindPosition].accountId)
                 if (StringUtil.isNotBlankAndEmpty(bindDeviceList[bindPosition].headUrl))
@@ -185,7 +186,7 @@ class MainActivity : BaseActivity() {
         })
         drawAdapter.setEditClickListener(object : HomeLeftDrawMsgAdapter.AdapterEditClickListener {
             override fun onEditItem(position: Int) {
-                if (StringUtil.isEmpty(drawAdapter.mData[position].relationShip)) return
+//                if (StringUtil.isEmpty(drawAdapter.mData[position].relationShip)) return
                 editNameDialog(position)
             }
 
@@ -242,6 +243,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private fun editNameDialog(position: Int) {
         if (editDialog == null) {
             editDialog = object : DialogHolder(this,
@@ -413,7 +415,7 @@ class MainActivity : BaseActivity() {
                         if (StringUtil.isNotBlankAndEmpty(it.headUrl))
                             MMKVUtil.saveString(USER.HEADER, it.headUrl!!)
                         if (StringUtil.isNotBlankAndEmpty(it.relationShip))
-                            MMKVUtil.saveString(USER.NAME, it.relationShip!!)
+                            MMKVUtil.saveString(USER.NAME, it.relationShip ?: "")
                         return@breaking
                     }
                 }
@@ -425,7 +427,7 @@ class MainActivity : BaseActivity() {
                 if (bindDeviceList[i].accountId == bindAccountId) {
                     bindDeviceList[i].isSelected = 1
                     bindPosition = i
-                    pageTitle = bindDeviceList[i].relationShip!!
+                    pageTitle = bindDeviceList[i].relationShip ?: bindDeviceList[i].name ?: ""
                     setTitle(pageTitle,
                             CommonUtils.getColor(mContext!!, R.color.white))
                     break@breaking
@@ -476,7 +478,7 @@ class MainActivity : BaseActivity() {
                                 if (StringUtil.isNotBlankAndEmpty(it.headUrl))
                                     MMKVUtil.saveString(USER.HEADER, it.headUrl!!)
                                 if (StringUtil.isNotBlankAndEmpty(it.relationShip))
-                                    MMKVUtil.saveString(USER.NAME, it.relationShip!!)
+                                    MMKVUtil.saveString(USER.NAME, it.relationShip ?: "")
                                 if (StringUtil.isNotBlankAndEmpty(it.phone)
                                         && !it.phone!!.contains("vis")) {
                                     //绑定当前的手机号因为没有点击登录按钮所以没有切换新的手机号避免出错
@@ -515,9 +517,9 @@ class MainActivity : BaseActivity() {
                             bindPosition = i
                             if (bingAccountName !=
                                     bindDeviceList[i].relationShip) {
-                                pageTitle = bindDeviceList[i].relationShip!!
-                                MMKVUtil.saveString(BIND_DEVICE_NAME,
-                                        bindDeviceList[i].relationShip!!)
+                                pageTitle = bindDeviceList[i].relationShip
+                                        ?: bindDeviceList[i].name ?: ""
+                                MMKVUtil.saveString(BIND_DEVICE_NAME, pageTitle)
                                 if (homeViewPager.currentItem != 3)
                                     setTitle(pageTitle,
                                             CommonUtils.getColor(mContext!!, R.color.white))
@@ -580,7 +582,8 @@ class MainActivity : BaseActivity() {
                 val unBindContentTv = dialogView.findViewById<TextView>(R.id.unBindContentTv)
                 val unbindValue = String.format(
                         resources.getString(R.string.app_main_unbind_device),
-                        bindDeviceList[position].relationShip)
+                        bindDeviceList[position].relationShip
+                                ?: bindDeviceList[position].name ?: "")
                 unBindContentTv.text = unbindValue
                 val confirm = dialogView.findViewById<ConstraintLayout>(R.id.confirmLayout)
                 confirm.setOnClickListener {
@@ -643,7 +646,7 @@ class MainActivity : BaseActivity() {
                 0 -> {
                     deviceName = if (StringUtil.isNotBlankAndEmpty(
                                     bindDeviceList[devicePosition + 1].relationShip))
-                        bindDeviceList[devicePosition + 1].relationShip!!
+                        bindDeviceList[devicePosition + 1].relationShip ?: ""
                     else bindDeviceList[devicePosition + 1].name!!
                     //删除了绑定的设备
                     if ((bindAccountId != 0 && bindAccountId == bindDeviceList[devicePosition].accountId)
@@ -667,7 +670,7 @@ class MainActivity : BaseActivity() {
                 else -> {
                     deviceName = if (StringUtil.isNotBlankAndEmpty(
                                     bindDeviceList[devicePosition - 1].relationShip))
-                        bindDeviceList[devicePosition - 1].relationShip!!
+                        bindDeviceList[devicePosition - 1].relationShip ?: ""
                     else bindDeviceList[devicePosition - 1].name!!
                     if ((bindAccountId != 0 && bindAccountId == bindDeviceList[devicePosition].accountId)
                             || (bindAccountId == bindDeviceList[devicePosition - 1].accountId)
@@ -776,7 +779,7 @@ class MainActivity : BaseActivity() {
                 0 -> {
                     deviceName = if (StringUtil.isNotBlankAndEmpty(
                                     bindDeviceList[position + 1].relationShip))
-                        bindDeviceList[position + 1].relationShip!!
+                        bindDeviceList[position + 1].relationShip ?: ""
                     else bindDeviceList[position + 1].name!!
                     //删除了绑定的设备
                     if ((bindAccountId != 0 && bindAccountId == bindDeviceList[position].accountId)
@@ -800,7 +803,7 @@ class MainActivity : BaseActivity() {
                 else -> {
                     deviceName = if (StringUtil.isNotBlankAndEmpty(
                                     bindDeviceList[position - 1].relationShip))
-                        bindDeviceList[position - 1].relationShip!!
+                        bindDeviceList[position - 1].relationShip ?: ""
                     else bindDeviceList[position - 1].name!!
                     if ((bindAccountId != 0 && bindAccountId == bindDeviceList[position].accountId)
                             || (bindAccountId == bindDeviceList[position - 1].accountId)

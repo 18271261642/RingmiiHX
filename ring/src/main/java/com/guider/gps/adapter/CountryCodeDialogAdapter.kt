@@ -28,7 +28,7 @@ class CountryCodeDialogAdapter(context: Context, dataList: ArrayList<AreCodeBean
         with(holder) {
             data.run {
                 setText(R.id.itemPhoneRegionsTv, phoneRegious)
-                setText(R.id.itemPhoneCountryTv, phoneCountry)
+//                setText(R.id.itemPhoneCountryTv, phoneCountry)
                 setText(R.id.itemPhoneCodeTv, phoneAreCode)
                 setText(R.id.tv_phone_head, phoneCode)
                 setOnItemClickListener {

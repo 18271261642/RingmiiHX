@@ -229,14 +229,16 @@ class AddressSelectActivity : BaseActivity() {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.PROVINCE, 0)
                 if (!resultBean.isNullOrEmpty()) {
-                    run breaking@{
-                        resultBean.forEach {
-                            if (it.name == province) {
-                                provinceValueInt = it.id
-                                getCityCode(provinceValueInt)
-                                return@breaking
-                            }
-                        }
+                    val filter = resultBean.filter {
+                        it.name == province
+                    }
+                    if (filter.isNullOrEmpty()) {
+                        toastShort(mContext!!.resources.getString(R.string.app_address_error))
+                        dismissDialog()
+                        return@resultParse
+                    } else {
+                        provinceValueInt = filter[0].id
+                        getCityCode(provinceValueInt)
                     }
                 }
             }, onError = {
@@ -258,14 +260,16 @@ class AddressSelectActivity : BaseActivity() {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.CITY, parentId)
                 if (!resultBean.isNullOrEmpty()) {
-                    run breaking@{
-                        resultBean.forEach {
-                            if (it.name == city) {
-                                cityValueInt = it.id
-                                getCountieCode(cityValueInt)
-                                return@breaking
-                            }
-                        }
+                    val filter = resultBean.filter {
+                        it.name == city
+                    }
+                    if (filter.isNullOrEmpty()) {
+                        toastShort(mContext!!.resources.getString(R.string.app_address_error))
+                        dismissDialog()
+                        return@resultParse
+                    } else {
+                        cityValueInt = filter[0].id
+                        getCountieCode(cityValueInt)
                     }
                 }
             }, onError = {
@@ -281,14 +285,16 @@ class AddressSelectActivity : BaseActivity() {
                 val resultBean = GuiderApiUtil.getApiService()
                         .getAddressCode(AddressType.COUNTIE, parentId)
                 if (!resultBean.isNullOrEmpty()) {
-                    run breaking@{
-                        resultBean.forEach {
-                            if (it.name == countie) {
-                                countieValueInt = it.id
-                                changeAddressInfo()
-                                return@breaking
-                            }
-                        }
+                    val filter = resultBean.filter {
+                        it.name == countie
+                    }
+                    if (filter.isNullOrEmpty()) {
+                        toastShort(mContext!!.resources.getString(R.string.app_address_error))
+                        dismissDialog()
+                        return@resultParse
+                    } else {
+                        countieValueInt = filter[0].id
+                        changeAddressInfo()
                     }
                 }
             }, onRequestFinish = {

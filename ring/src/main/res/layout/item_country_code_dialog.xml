@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:gravity="left"
+            android:gravity="center"
             android:padding="5dp"
             android:text="Angola"
             android:textColor="#000"
@@ -34,6 +34,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="安哥拉"
+            android:visibility="gone"
             android:textColor="#000"
             android:textSize="@dimen/sp_15" />
 

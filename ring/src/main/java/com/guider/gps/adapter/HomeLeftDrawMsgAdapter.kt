@@ -53,7 +53,7 @@ class HomeLeftDrawMsgAdapter(context: Context, dataList: ArrayList<UserInfo>)
                     itemView.rootLayout.setBackgroundColor(
                             CommonUtils.getColor(mContext, R.color.white))
                 }
-                setText(R.id.msgPersonName, relationShip)
+                setText(R.id.msgPersonName, relationShip ?: name ?: "")
                 val batteryView = getView<BatteryView>(R.id.batteryLayout)
                 val deviceCodeTv = getView<TextView>(R.id.deviceCodeTv)
                 if (StringUtil.isNotBlankAndEmpty(deviceCode)) {
