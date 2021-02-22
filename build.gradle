@@ -52,8 +52,8 @@ allprojects {
     }
 
     ext {
-        codeVersion = 231
-        appVersion = "2.7.1"
+        codeVersion = 234
+        appVersion = "2.8.0"
         googlePlay = true
         isMcu = false
     }

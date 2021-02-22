@@ -1231,11 +1231,11 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                         //Log.e(TAG,"-------")
                         File cutfile = new File(FileDirUtil.INSTANCE.getExternalFileDir(this),
                                 "cutcamera.png"); //裁剪的保存地址
-                        String displayName = System.currentTimeMillis()+".png";
+                        String displayName = System.currentTimeMillis() + ".png";
                         String mimeType = "image/png";
                         Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
-                        FileDirUtil.INSTANCE.addBitmapToAlbum(bitmap,displayName,
-                                mimeType,compressFormat,mContext,false);
+                        FileDirUtil.INSTANCE.addBitmapToAlbum(bitmap, displayName,
+                                mimeType, compressFormat, mContext, false);
                         uploadGuiderPic(cutfile.getPath());
                     } catch (IOException e) {
                         e.printStackTrace();

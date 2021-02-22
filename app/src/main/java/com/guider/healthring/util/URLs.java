@@ -4,7 +4,9 @@ package com.guider.healthring.util;
  * 接口URL实体类
  */
 public class URLs {
-    public final static String HTTPs = "http://apis.berace.com.cn/watch";
+    public final static String HTTPs = "https://api.guidertech.com/berace/watch";
+//    public final static String HTTPs =  "http://apis.berace.com.cn/watch";
+
     //    public final static String GDHTTPS = "http://210.242.50.123/GuiderAPI/api/getmsg";
     public final static String GDHTTPS = "http://47.92.218.150/GuiderAPI/api/getmsg/";//盖德新修改的API
 //    public final static String HTTPs = "http://47.90.83.197:8080/watch";

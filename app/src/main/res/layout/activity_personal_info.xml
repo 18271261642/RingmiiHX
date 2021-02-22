@@ -35,7 +35,6 @@
                 android:textSize="17sp" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/personal_info_save"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -43,7 +42,8 @@
                 android:padding="10dp"
                 android:text="@string/save"
                 android:textColor="#ffffff"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView

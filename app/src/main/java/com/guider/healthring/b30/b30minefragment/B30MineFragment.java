@@ -400,34 +400,17 @@ public class B30MineFragment extends LazyFragment implements View.OnClickListene
                 R.string.exit_login, R.string.confirm, R.string.cancle,
                 () -> {
                     unbindDevices();
-                    if (MyCommandManager.DEVICENAME != null) {
-                        MyApp.getInstance().getVpOperateManager().disconnectWatch(state -> {
-                            if (state == -1) {
-                                SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
-                                SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
-                                MyApp.getInstance().setMacAddress(null);// 清空全局的
-                                SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
-                                SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
-                                SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
-                                SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                                startActivity(new Intent(getActivity(), LoginActivity.class));
-                                getActivity().finish();
-                            }
-                        });
-                    } else {
-                        MyCommandManager.ADDRESS = null;
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
-                        MyApp.getInstance().setMacAddress(null);// 清空全局的
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
-                        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
-                        SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
-                        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                    }
+                    return null;
+                }
+        );
+    }
 
-                    MyCommandManager.DEVICENAME = null;
-                    MyCommandManager.ADDRESS = null;
+    private void signOut() {
+        SharedPreferencesUtils.setParam(
+                MyApp.getContext(), "accountIdGD", 0L);
+        if (MyCommandManager.DEVICENAME != null) {
+            MyApp.getInstance().getVpOperateManager().disconnectWatch(state -> {
+                if (state == -1) {
                     SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
                     SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
                     MyApp.getInstance().setMacAddress(null);// 清空全局的
@@ -435,25 +418,47 @@ public class B30MineFragment extends LazyFragment implements View.OnClickListene
                     SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
                     SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
                     SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-                    //  startActivity(new Intent(getActivity(), LoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                }
+            });
+        } else {
+            MyCommandManager.ADDRESS = null;
+            SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
+            SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
+            MyApp.getInstance().setMacAddress(null);// 清空全局的
+            SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
+            SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
+            SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
+            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
+
+        MyCommandManager.DEVICENAME = null;
+        MyCommandManager.ADDRESS = null;
+        SharedPreferencesUtils.saveObject(MyApp.getContext(), "mylanya", "");
+        SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, "");
+        MyApp.getInstance().setMacAddress(null);// 清空全局的
+        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userId", null);
+        SharedPreferencesUtils.saveObject(MyApp.getContext(), "userInfo", "");
+        SharedPreferencesUtils.setParam(MyApp.getContext(), "isFirst", "");
+        SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
+        //  startActivity(new Intent(getActivity(), LoginActivity.class));
 
 //                        if (BemoServiceConnection.getInstance()!=null){
 //                            getActivity().unbindService(BemoServiceConnection.getInstance());
 //                        }
-                    //SharedPreferences_status.save_IMEI(MyApplication.context, "");
-                    SharedPreferencesUtils.setParam(getContext(), Commont.BATTERNUMBER, 0);//电池
-                    SharedPreferencesUtils.setParam(getContext(), "personContent", "");//SOS 内容
-                    SharedPreferencesUtils.setParam(getContext(), "personOne", "");//SOS 联系人  名字 1
-                    SharedPreferencesUtils.setParam(getContext(), "personTwo", "");//SOS 联系人  名字 2
-                    SharedPreferencesUtils.setParam(getContext(), "personThree", "");//SOS 联系人 名字  3
-                    SharedPreferencesUtils.setParam(getContext(), "NameOne", "");//SOS 联系人 电话  1
-                    SharedPreferencesUtils.setParam(getContext(), "NameTwo", "");//SOS 联系人 电话  2
-                    SharedPreferencesUtils.setParam(getContext(), "NameThree", "");//SOS 联系人 电话  3
-                    new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
-                            .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
-                    return null;
-                }
-        );
+        //SharedPreferences_status.save_IMEI(MyApplication.context, "");
+        SharedPreferencesUtils.setParam(getContext(), Commont.BATTERNUMBER, 0);//电池
+        SharedPreferencesUtils.setParam(getContext(), "personContent", "");//SOS 内容
+        SharedPreferencesUtils.setParam(getContext(), "personOne", "");//SOS 联系人  名字 1
+        SharedPreferencesUtils.setParam(getContext(), "personTwo", "");//SOS 联系人  名字 2
+        SharedPreferencesUtils.setParam(getContext(), "personThree", "");//SOS 联系人 名字  3
+        SharedPreferencesUtils.setParam(getContext(), "NameOne", "");//SOS 联系人 电话  1
+        SharedPreferencesUtils.setParam(getContext(), "NameTwo", "");//SOS 联系人 电话  2
+        SharedPreferencesUtils.setParam(getContext(), "NameThree", "");//SOS 联系人 电话  3
+        new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
+                .obtainFormatDate(1));// 同时把数据更新时间清楚更新最后更新数据的时间
     }
 
 
@@ -463,20 +468,29 @@ public class B30MineFragment extends LazyFragment implements View.OnClickListene
     private final String Base_Url = com.guider.health.apilib.BuildConfig.APIURL + "api/v1/";
 
     void unbindDevices() {
-        long accountIdGD = (long) SharedPreferencesUtils.getParam(MyApp.getInstance(), "accountIdGD", 0L);
-        if (accountIdGD == 0L) return;
+        long accountIdGD = (long) SharedPreferencesUtils.getParam(
+                MyApp.getInstance(), "accountIdGD", 0L);
+        if (accountIdGD == 0L) {
+            signOut();
+            return;
+        }
         String deviceCode = (String) SharedPreferencesUtils.readObject(MyApp.getInstance(), Commont.BLEMAC);
         String upStepPatch = Base_Url + "user/" + accountIdGD + "/device/unbind?deviceCode=" + deviceCode;
-        if (StringUtil.isEmpty(deviceCode)) return;
+        if (StringUtil.isEmpty(deviceCode)) {
+            signOut();
+            return;
+        }
         OkHttpTool.getInstance().doDelete(upStepPatch, "", this, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
                 if (!WatchUtils.isEmpty(result)) {
                     BaseResultVoNew baseResultVoNew = new Gson().fromJson(result, BaseResultVoNew.class);
-                    if (baseResultVoNew.getCode() == 0 || baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
+                    if (baseResultVoNew.getCode() == 0
+                            || baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
                         Log.e(TAG, "=======解绑该设备= " + result);
                     }
                 }
+                signOut();
             }
         });
     }

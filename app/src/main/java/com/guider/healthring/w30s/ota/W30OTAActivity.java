@@ -39,7 +39,7 @@ public class W30OTAActivity extends WatchBaseActivity implements RequestView, Vi
     Button btnStartUp;
 
     RequestPressent requestPressent;
-    int localVersion;
+    int localVersion =0;
     private String downloadUrl = null;
     /**
      * 下载请求.
@@ -55,7 +55,7 @@ public class W30OTAActivity extends WatchBaseActivity implements RequestView, Vi
 
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
-        localVersion = Integer.valueOf((String) SharedPreferenceUtil.get(W30OTAActivity.this, "W30S_V", "ab"));
+//        localVersion = Integer.valueOf((String) SharedPreferenceUtil.get(W30OTAActivity.this, "W30S_V", "ab"));
         downPath = Environment.getExternalStorageDirectory() + "RaceDown/";
 
         getNetWorke();

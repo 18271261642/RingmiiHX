@@ -15,8 +15,10 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.multidex.MultiDex;
+
 import com.afa.tourism.greendao.gen.DaoMaster;
 import com.afa.tourism.greendao.gen.DaoSession;
 import com.android.volley.RequestQueue;
@@ -35,7 +37,9 @@ import com.guider.libbase.map.IMapLocation;
 import com.suchengkeji.android.w30sblelibrary.W30SBLEManage;
 import com.tencent.bugly.Bugly;
 import com.veepoo.protocol.VPOperateManager;
+
 import org.litepal.LitePalApplication;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

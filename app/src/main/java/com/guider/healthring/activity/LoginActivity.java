@@ -60,6 +60,7 @@ import com.guider.healthring.util.VerifyUtil;
 import com.guider.healthring.util.WxScanUtil;
 import com.guider.healthring.view.PhoneAreaCodeView;
 import com.guider.healthring.view.PromptDialog;
+import com.guider.healthring.w30s.ota.W30OTAActivity;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 import com.guider.healthring.xinlangweibo.SinaUserInfo;

@@ -59,12 +59,12 @@ android {
                 buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
             } else if (rootProject.googlePlay) { // 国际版
-                buildConfigField("String", "WEBDOMAIN", '"http://app.guidertech.com/"')
-                buildConfigField("String", "CMATEWEBDOMAIN", '"http://cmate.guidertech.com/"')
+                buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+                buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
             } else { // 大陆版
-                buildConfigField("String", "WEBDOMAIN", '"https://app.guiderhealth.com/"')
-                buildConfigField("String", "CMATEWEBDOMAIN", '"http://cmate.guidertech.com/"')
+                buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+                buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
             }
         }
@@ -83,13 +83,13 @@ android {
                 buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
             } else if (rootProject.googlePlay) { // 国际版
-                buildConfigField("String", "WEBDOMAIN", '"http://app.guidertech.com/"')
-                buildConfigField("String", "CMATEWEBDOMAIN", '"http://cmate.guidertech.com/"')
+                buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+                buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
                 println "app -- Package Google Play Bundle Release . . ."
             } else { // 大陆版
-                buildConfigField("String", "WEBDOMAIN", '"https://app.guiderhealth.com/"')
-                buildConfigField("String", "CMATEWEBDOMAIN", '"http://cmate.guidertech.com/"')
+                buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+                buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
                 println "app -- Package CN Bundle Release . . ."
             }
