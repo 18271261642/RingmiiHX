@@ -21,7 +21,7 @@ import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.base.BaseApplication
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogProgress
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.AnswerListAdapter
 import com.guider.health.apilib.GuiderApiUtil

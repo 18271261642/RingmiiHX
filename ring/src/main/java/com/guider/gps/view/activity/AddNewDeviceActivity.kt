@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.fragment.InputCodeAddDeviceFragment
 import com.guider.gps.view.fragment.ScanCodeAddDeviceFragment

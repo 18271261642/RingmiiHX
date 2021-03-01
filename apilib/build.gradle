@@ -2,8 +2,9 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
-def andr = rootProject.ext.android
+
 android {
+    def andr = rootProject.ext.android
     compileSdkVersion andr.compileSdkVersion
     defaultConfig {
         minSdkVersion andr.minSdkVersion
@@ -22,8 +23,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-            buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
 //                buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
 //                buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
         }
@@ -34,8 +35,8 @@ android {
 //            buildConfigField("String", "APIURL", '"http://192.168.1.181:8082/"')
 //            buildConfigField("String", "APIHDURL", '"http://192.168.1.181:8083/"')
             //debug
-            buildConfigField("String", "APIURL", '"http://api.guidertech.com/"')
-            buildConfigField("String", "APIHDURL", '"http://apihd.guidertech.com/"')
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
         }
     }
 

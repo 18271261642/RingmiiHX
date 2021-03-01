@@ -17,7 +17,7 @@ import com.guider.baselib.utils.USER.HEADER
 import com.guider.baselib.utils.USER.NAME
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.health.apilib.GuiderApiUtil
 import com.guider.health.apilib.bean.UserInfo

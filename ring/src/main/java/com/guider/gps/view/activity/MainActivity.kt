@@ -32,7 +32,7 @@ import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.*
 import com.guider.baselib.utils.EventBusAction.REFRESH_CURRENT_LOGIN_ACCOUNT_INFO
 import com.guider.baselib.widget.dialog.DialogHolder
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.adapter.HomeLeftDrawMsgAdapter
 import com.guider.gps.util.TouristsEventUtil

@@ -4,7 +4,7 @@ import android.view.View
 import androidx.navigation.Navigation
 import com.guider.baselib.base.BaseApplication
 import com.guider.baselib.base.BaseFragment
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.R
 import kotlinx.android.synthetic.main.fragment_setting.*
 

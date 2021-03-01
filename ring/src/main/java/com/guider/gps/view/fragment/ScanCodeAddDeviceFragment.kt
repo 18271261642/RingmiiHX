@@ -8,7 +8,7 @@ import androidx.core.app.ActivityOptionsCompat
 import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.PermissionUtils
 import com.guider.baselib.utils.SCAN_CODE
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.R
 import com.king.zxing.CaptureActivity
 import kotlinx.android.synthetic.main.fragment_scan_code_add_device.*

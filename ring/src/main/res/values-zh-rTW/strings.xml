@@ -271,4 +271,6 @@
     <string name="select_from_your_phone_photo_album">從手機相冊選擇</string>
     <string name="cancel">取消</string>
     <string name="app_address_error">地區選擇錯誤</string>
+    <string name="input_value_empty">輸入值不能爲空</string>
+    <string name="input_target_value_empty">指定的目標步數要大於0</string>
 </resources>

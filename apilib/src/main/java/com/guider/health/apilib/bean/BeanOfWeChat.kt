@@ -49,15 +49,13 @@ class BeanOfWeChat : Parcelable {
         tokenInfo = `in`.readParcelable(TokenInfo::class.java.classLoader)
     }
 
-    companion object {
-        val CREATOR: Parcelable.Creator<BeanOfWeChat?> = object : Parcelable.Creator<BeanOfWeChat?> {
-            override fun createFromParcel(source: Parcel): BeanOfWeChat? {
-                return BeanOfWeChat(source)
-            }
+    companion object CREATOR : Parcelable.Creator<BeanOfWeChat> {
+        override fun createFromParcel(parcel: Parcel): BeanOfWeChat {
+            return BeanOfWeChat(parcel)
+        }
 
-            override fun newArray(size: Int): Array<BeanOfWeChat?> {
-                return arrayOfNulls(size)
-            }
+        override fun newArray(size: Int): Array<BeanOfWeChat?> {
+            return arrayOfNulls(size)
         }
     }
 }

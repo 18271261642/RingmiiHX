@@ -3,7 +3,6 @@ package com.guider.baselib.utils
 import android.util.Log
 import com.guider.baselib.R
 import com.guider.baselib.base.BaseApplication
-import com.guider.feifeia3.utils.ToastUtil
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 /**

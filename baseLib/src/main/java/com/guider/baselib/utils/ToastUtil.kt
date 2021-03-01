@@ -1,4 +1,4 @@
-package com.guider.feifeia3.utils
+package com.guider.baselib.utils
 
 import android.annotation.SuppressLint
 import android.content.Context

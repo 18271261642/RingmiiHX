@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.guider.baselib.utils.EventBusUtils
 import com.guider.baselib.utils.OnNoDoubleClickListener
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.orhanobut.logger.Logger
 
 

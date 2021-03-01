@@ -274,4 +274,6 @@
     <string name="select_from_your_phone_photo_album">Select from your phone photo album</string>
     <string name="app_address_error">Location selection error</string>
     <string name="cancel">Cancel</string>
+    <string name="input_value_empty">The input value cannot be empty</string>
+    <string name="input_target_value_empty">The number of target steps specified should be greater than 0</string>
 </resources>

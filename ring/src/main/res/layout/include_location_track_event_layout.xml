@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/trackEventsDateLayout"
@@ -24,7 +24,7 @@
             android:id="@+id/searchFrontLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -75,7 +75,7 @@
             android:id="@+id/selectTimeBackLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView

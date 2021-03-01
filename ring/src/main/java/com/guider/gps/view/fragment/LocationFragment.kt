@@ -44,7 +44,7 @@ import com.guider.baselib.widget.LoadingView
 import com.guider.baselib.widget.calendarList.CalendarList
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.dialog.DialogProgress
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.BuildConfig
 import com.guider.gps.R
 import com.guider.gps.adapter.LocationTrackEventTimeAdapter
@@ -1021,6 +1021,7 @@ class LocationFragment : BaseFragment(),
         electronicSaveDialog?.show(true)
     }
 
+    @SuppressLint("StaticFieldLeak")
     private fun pathMethodSetDialogShow() {
         pathSetDialog = object : DialogHolder(mActivity,
                 R.layout.dialog_path_method_set, Gravity.CENTER), View.OnClickListener {

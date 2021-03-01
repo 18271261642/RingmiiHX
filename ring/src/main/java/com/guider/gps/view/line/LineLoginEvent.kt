@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import com.guider.baselib.base.BaseActivity
 import com.guider.baselib.utils.StringUtil
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.linecorp.linesdk.LineApiResponseCode
 import com.linecorp.linesdk.LoginListener
 import com.linecorp.linesdk.Scope

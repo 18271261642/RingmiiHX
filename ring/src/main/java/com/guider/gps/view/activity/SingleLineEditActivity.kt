@@ -5,6 +5,7 @@ import android.content.Intent
 import android.text.InputType
 import android.view.View
 import com.guider.baselib.base.BaseActivity
+import com.guider.baselib.utils.CommonUtils
 import com.guider.baselib.utils.StringUtil
 import com.guider.baselib.utils.toastShort
 import com.guider.gps.R
@@ -65,14 +66,18 @@ class SingleLineEditActivity : BaseActivity() {
             iv_toolbar_right -> {
                 when (type) {
                     resources.getString(R.string.app_main_mine_sport_target) -> {
-                        if (editInput.text.toString().toInt() <= 0) {
-                            toastShort("指定的目标步数要大于0")
+                        if (StringUtil.isEmpty(editInput.text.toString())
+                                || editInput.text.toString().toInt() <= 0) {
+                            toastShort(
+                                    mContext!!.resources.getString(
+                                            R.string.input_target_value_empty))
                             return
                         }
                     }
                     else -> {
                         if (StringUtil.isEmpty(editInput.text.toString())) {
-                            toastShort("输入值不能为空")
+                            toastShort(mContext!!.resources.getString(
+                                    R.string.input_value_empty))
                             return
                         }
                     }

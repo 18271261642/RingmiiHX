@@ -16,7 +16,7 @@ import com.guider.baselib.base.BaseFragment
 import com.guider.baselib.utils.*
 import com.guider.baselib.widget.dialog.DialogHolder
 import com.guider.baselib.widget.image.ImageLoaderUtils
-import com.guider.feifeia3.utils.ToastUtil
+import com.guider.baselib.utils.ToastUtil
 import com.guider.gps.R
 import com.guider.gps.view.activity.AddNewDeviceActivity
 import com.guider.health.apilib.BuildConfig
