@@ -250,7 +250,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
     //异常日志上传后台请求
     private void sendLog(final String jsonMap) {
         Log.e("CrashHandler", "-----错误信息收集----" + jsonMap.toString());
-             //String url = "http://dgxw.gqwap.com/logMobile/exceptionLog";
         String url = "http://ctcheck.suchkj.com/appExceptionApi/submitException";
 //        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {

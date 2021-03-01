@@ -664,7 +664,8 @@ public class B30MineFragment extends LazyFragment implements View.OnClickListene
         String hearUrl = guiderUserInfo.getHeadUrl();
         if (hearUrl != null) {
             RequestOptions mRequestOptions = RequestOptions.circleCropTransform();
-            Glide.with(this).load(hearUrl).apply(mRequestOptions).into(b30UserImageHead);//头像
+            Glide.with(MyApp.context)
+                    .load(hearUrl).apply(mRequestOptions).into(b30UserImageHead);//头像
         }
         // 用户名
         String name = guiderUserInfo.getName();

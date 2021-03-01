@@ -197,7 +197,3 @@
 -keepattributes InnerClasses,Signature
 -keepattributes *Annotation*
 -keep class cn.addapp.pickers.entity.** { *;}
-#sms sdk
--keep class com.mob.**{*;}
--keep class cn.smssdk.**{*;}
--dontwarn com.mob.**

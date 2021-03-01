@@ -1134,7 +1134,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     RequestOptions mRequestOptions = RequestOptions.circleCropTransform()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true);
-                    Glide.with(this).load(hearUrl)
+                    Glide.with(MyPersonalActivity.this).load(hearUrl)
                             .apply(mRequestOptions).into(mineLogoIv);//头像
                 }
 

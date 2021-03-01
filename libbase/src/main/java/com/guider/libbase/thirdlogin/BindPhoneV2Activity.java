@@ -98,24 +98,6 @@ public class BindPhoneV2Activity extends AppCompatActivity implements View.OnCli
                 showToast(this, R.string.input_name);
                 return;
             }
-//            if (StringUtil.isEmpty(phoeVerCode)) {
-//                showToast(this, R.string.input_code);
-//                return;
-//            }
-
-//            final String finalAreaCode = areaCode;
-//            SmsMob.submitVerifyCode(areaCode, phoeCodes, phoeVerCode, new SmsMob.SmsCodeVerifyListener() {
-//                @Override
-//                public void onResult(int result) {
-//
-//                    if (result != 0) {
-//                        if (result == 457) {//手机号格式不对
-//                            wxBindGetVerCodeBtn.setText(getResources().getString(R.string.resend));
-//                            wxBindGetVerCodeBtn.setClickable(true);
-//                            ToastUtil.showShort(BindPhoneV2Activity.this, getResources().getString(R.string.format_is_wrong));
-//                        }
-//                        return;
-//                    }
 
             // 注册
             IGuiderApi iGuiderApi = ApiUtil.createApi(IGuiderApi.class);
