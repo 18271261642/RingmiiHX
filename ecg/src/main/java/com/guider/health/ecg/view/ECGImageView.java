@@ -59,10 +59,11 @@ public class ECGImageView extends FrameLayout {
         if (StringUtil.isEmpty(fileId)) {
             openFail(getContext().getResources().getString(R.string.ecg_bt_error7),
                     true); // "Please upload ECG first."
+            onSaveFinish.onError();
             return;
         }
 
-        path = "http://203.66.73.52/CMateTaiwanWeb/CHADownload?filename=" + fileId;
+        path = "https://api.cmatecare.com/CMateTaiwanWeb/CHADownload?filename=" + fileId;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -80,6 +81,7 @@ public class ECGImageView extends FrameLayout {
                     e.printStackTrace();
                     openFail(getContext().getResources().getString(R.string.ecg_file_open_error),
                             false); // "心电图文件打开失败");
+                    onSaveFinish.onError();
                 }
             }
         }).start();

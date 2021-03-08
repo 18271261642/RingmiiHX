@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -52,7 +53,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import static android.content.Context.BLUETOOTH_SERVICE;
 
-public class ECGTrueModel{
+public class ECGTrueModel {
 
 
     private static Activity context;
@@ -80,6 +81,7 @@ public class ECGTrueModel{
         outStream = out;
         inStream = in;
     }
+
     static BluetoothSocket btSocket = null;
 
 
@@ -141,7 +143,6 @@ public class ECGTrueModel{
     public static boolean alreadyscan = false;
 
     public static String connectaddress = "";
-
 
 
     //////畫心電圖使用///////
@@ -517,7 +518,7 @@ public class ECGTrueModel{
                     ArrayList<Byte> updelist = new ArrayList<Byte>();
 
                     for (int i = 0; i < list_count; i++) {
-                        updelist.add((byte)(i & 0xFF));
+                        updelist.add((byte) (i & 0xFF));
                     }
 
 
@@ -538,24 +539,23 @@ public class ECGTrueModel{
     }
 
 
-    public static void readbattery(final android.os.Handler handlerxx)
-    {
+    public static void readbattery(final android.os.Handler handlerxx) {
         mhandler = handlerxx;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while(!ischecklifefinish) {
+                while (!ischecklifefinish) {
                     SystemClock.sleep(20);
                 }
 
-                while(true) {
-                    byte [] ret = send_BTCommand(new byte[]{(byte) 0xaa, 0x10, 0x01, 0x01, 0x00, 0x00, 0x00});
+                while (true) {
+                    byte[] ret = send_BTCommand(new byte[]{(byte) 0xaa, 0x10, 0x01, 0x01, 0x00, 0x00, 0x00});
 
-                    if(ret.length == 1) {
-                        Log.d("eeeecgpp","停止---成功");
+                    if (ret.length == 1) {
+                        Log.d("eeeecgpp", "停止---成功");
                         break;
-                    } else if(ret[1] == 0x10) {
-                        Log.d("eeeecgpp","停止---失敗");
+                    } else if (ret[1] == 0x10) {
+                        Log.d("eeeecgpp", "停止---失敗");
                         break;
                     }
                 }
@@ -566,23 +566,23 @@ public class ECGTrueModel{
                 if (getbyte.length == 1) {
                     Log.d("eeeecgpp", "錯誤");
                 } else {
-                    value = byteArrayToInt(new byte[]{getbyte[3],getbyte[2]});
-                    Log.d("eeeecgpp","batteryPower = "+ value);
+                    value = byteArrayToInt(new byte[]{getbyte[3], getbyte[2]});
+                    Log.d("eeeecgpp", "batteryPower = " + value);
 
-                    if(value >= 1990) {
-                        Log.d("eeeecgpp","battery100");
+                    if (value >= 1990) {
+                        Log.d("eeeecgpp", "battery100");
                         value = 100;
-                    } else if(value >= 1955 && value < 1990) {
-                        Log.d("eeeecgpp","battery75");
+                    } else if (value >= 1955 && value < 1990) {
+                        Log.d("eeeecgpp", "battery75");
                         value = 75;
-                    } else if(value >= 1920 && value < 1955) {
-                        Log.d("eeeecgpp","battery50");
+                    } else if (value >= 1920 && value < 1955) {
+                        Log.d("eeeecgpp", "battery50");
                         value = 50;
-                    } else if(value >= 1880 && value < 1920) {
-                        Log.d("eeeecgpp","battery25");
+                    } else if (value >= 1880 && value < 1920) {
+                        Log.d("eeeecgpp", "battery25");
                         value = 25;
                     } else {
-                        Log.d("eeeecgpp","battery0");
+                        Log.d("eeeecgpp", "battery0");
                         value = 0;
                     }
                 }
@@ -748,7 +748,7 @@ public class ECGTrueModel{
                         }
                         Log.d("bytesAvailable", "bytesAvailable = " + bytesAvailable);
 
-                        if (bytesAvailable >= 7)  {  // Wait until ECG data income
+                        if (bytesAvailable >= 7) {  // Wait until ECG data income
                             outcount = 0;
 
                             final byte[] result = new byte[7];
@@ -1053,7 +1053,7 @@ public class ECGTrueModel{
         String jsonString = "Null--";
         try {
             // API url
-            String strURL = "http://api.cmatecare.com/API/Device/Login";
+            String strURL = "https://api.cmatecare.com/ECGAppApi/api/Device/Login";
 
             // Parameters
             HashMap mapPara = new HashMap();
@@ -1066,7 +1066,7 @@ public class ECGTrueModel{
             //jsonString 为接口返回的结果
 
             Log.i("haix", "获取token: " + jsonString);
-            BuglyLog.e("EcgTokenJson" , TextUtils.isEmpty(jsonString)?"Token=空" :jsonString);
+            BuglyLog.e("EcgTokenJson", TextUtils.isEmpty(jsonString) ? "Token=空" : jsonString);
 
             // For debug
             //Log.i(MY_LOG_TAG, "API return: " + jsonString);
@@ -1081,7 +1081,7 @@ public class ECGTrueModel{
 //                    ", Name: " + strUserName);
         } catch (Exception e) {
             e.printStackTrace();
-            CrashReport.putUserData(context, "tokenJson", TextUtils.isEmpty(jsonString)?"Token=空" :jsonString);
+            CrashReport.putUserData(context, "tokenJson", TextUtils.isEmpty(jsonString) ? "Token=空" : jsonString);
             Exception je = new Exception(jsonString);
             CrashReport.postCatchedException(je);
         }
@@ -1091,16 +1091,17 @@ public class ECGTrueModel{
     }
 
 
-    public interface MeasureResult{
+    public interface MeasureResult {
         void result(String result);
     }
 
 
     String upload_lp4_file_pattern = "{\"ProjectId\":\"4\",\"SubUserNo\":\"SubUserNo#\",\"FileName\":\"FileName#\",\"Token\":\"Token#\",\"FileBase64\":\"FileBase64#\"}";
+
     public void lp4Upload(String token, MeasureResult measureResult) {
         try {
             // API url
-            String strURL = "http://api.cmatecare.com/API/Upload/UploadLp4";
+            String strURL = "https://api.cmatecare.com/ECGAppApi/api/Upload/UploadLp4";
 
 
             byte[] bytes = new byte[ECGTrueModel.file_data.size()];
@@ -1110,21 +1111,22 @@ public class ECGTrueModel{
 //                receive = receive+", "+  (bytes[i] & 0xFF) ;
             }
 
-            String strEncFile = android.util.Base64.encodeToString(bytes, android.util.Base64.DEFAULT);
+            String strEncFile = Base64.encodeToString(bytes, Base64.NO_WRAP);
             String fileName = getFileName();
+            strEncFile = strEncFile.replaceAll("\r\n", "")
+                    .replaceAll("\n", "");
 
-
-            String[] patternin = new String[]{"26",fileName,token,strEncFile};
+            String[] patternin = new String[]{"26", fileName, token, strEncFile};
 
             String pattern = upload_lp4_file_pattern
                     .replace("SubUserNo#", patternin[0])
-                    .replace("FileName#",  patternin[1])
+                    .replace("FileName#", patternin[1])
                     .replace("Token#", patternin[2])
                     .replace("FileBase64#", patternin[3]);
 
 //            LP4LP4 = {"ProjectId":"4","SubUserNo":"26","FileName":"J6QE1911.lp4","Token":"64a3703a-428d-4ae8-be04-08da67dc6530","FileBase64":"xwHxCDcGNwY4B...
 
-            Log.d("haix","LP4LP4 = " + pattern);
+            Log.d("haix", "LP4LP4 = " + pattern);
 
             httprequest(strURL, pattern, measureResult);
 
@@ -1302,7 +1304,6 @@ public class ECGTrueModel{
     }
 
 
-
     //tired
     public static String lfhftovalue(double lfhf) {
 
@@ -1316,7 +1317,6 @@ public class ECGTrueModel{
         } else if (lfhf < 0.02 || lfhf > 50) // red
 
         {
-
 
 
             if (lfhf < 0.02) // 靠下紅
