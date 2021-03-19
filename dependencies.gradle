@@ -33,7 +33,6 @@ ext {
     lifecycle = "2.2.0"
     joda_time = "2.10.6"
     pickers = "1.0.3"
-    hellocharts = "1.5.8"
     crashreport_upgrade = "1.4.5"
     crashreport = "3.1.8"
     nativecrashreport = "3.7.471"
@@ -87,7 +86,6 @@ ext {
             lifecycle             : "androidx.lifecycle:lifecycle-extensions:$lifecycle",
             joda_time             : "joda-time:joda-time:2.10.6",
             pickers               : "com.github.addappcn:android-pickers:$pickers",
-            hellocharts           : "com.github.lecho:hellocharts-android:v$hellocharts",
             crashreport_upgrade   : "com.tencent.bugly:crashreport_upgrade:$crashreport_upgrade",
             nativecrashreport     : "com.tencent.bugly:nativecrashreport:$nativecrashreport",
             crashreport           : "com.tencent.bugly:crashreport:3.1.8",
