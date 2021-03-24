@@ -33,6 +33,8 @@
     <string name="app_main_health_time_sleep">睡眠時間: %s-%s</string>
     <string name="app_main_health_query">查詢</string>
     <string name="app_main_bind_device">綁定了 %s 的手環</string>
+    <string name="app_main_remove_family_title">移除家人</string>
+    <string name="app_main_remove_family">您確定要移除%s的家人關係嗎？</string>
     <string name="app_main_unbind_device">您確定要解除對%s手環的綁定嗎？</string>
     <string name="app_main_delete_fence">您確定要刪除此電子圍欄區域嗎?</string>
     <string name="app_main_unbind_success">解綁成功</string>
@@ -89,7 +91,7 @@
     <string name="app_main_mine_version_check">版本檢測</string>
     <string name="app_main_mine_log_out">退出登錄</string>
     <string name="app_main_left_device_list">設備列表</string>
-    <string name="app_main_left_add_device">添加新設備</string>
+    <string name="app_main_left_add_device">添加家人</string>
     <string name="app_add_device">添加設備</string>
     <string name="app_add_device_scan_code">掃碼</string>
     <string name="app_add_device_input">輸入</string>

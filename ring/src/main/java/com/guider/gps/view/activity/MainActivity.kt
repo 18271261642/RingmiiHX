@@ -260,12 +260,16 @@ class MainActivity : BaseActivity() {
                         deviceNameEdit.setText(drawAdapter.mData[position].relationShip)
                     }
                     deviceNameEdit.addTextChangedListener(object : TextWatcher {
-                        override fun beforeTextChanged(s: CharSequence?, start: Int,
-                                                       count: Int, after: Int) {
+                        override fun beforeTextChanged(
+                                s: CharSequence?, start: Int,
+                                count: Int, after: Int,
+                        ) {
                         }
 
-                        override fun onTextChanged(s: CharSequence?, start: Int,
-                                                   before: Int, count: Int) {
+                        override fun onTextChanged(
+                                s: CharSequence?, start: Int,
+                                before: Int, count: Int,
+                        ) {
                         }
 
                         override fun afterTextChanged(s: Editable?) {
@@ -578,10 +582,12 @@ class MainActivity : BaseActivity() {
                 cancel.setOnClickListener {
                     dialog?.dismiss()
                 }
-
+                val removeFamilyTitle = dialogView.findViewById<TextView>(R.id.selectDateTitle)
+                removeFamilyTitle.text = mContext!!.resources.getString(
+                        R.string.app_main_remove_family_title)
                 val unBindContentTv = dialogView.findViewById<TextView>(R.id.unBindContentTv)
                 val unbindValue = String.format(
-                        resources.getString(R.string.app_main_unbind_device),
+                        mContext!!.resources.getString(R.string.app_main_remove_family),
                         bindDeviceList[position].relationShip
                                 ?: bindDeviceList[position].name ?: "")
                 unBindContentTv.text = unbindValue

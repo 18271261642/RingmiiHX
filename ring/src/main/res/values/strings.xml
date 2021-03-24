@@ -33,6 +33,8 @@
     <string name="app_main_medicine_high_side">On the high side</string>
     <string name="app_main_health_query">Query</string>
     <string name="app_main_bind_device">Bound to %s bracelet</string>
+    <string name="app_main_remove_family_title">Remove the family</string>
+    <string name="app_main_remove_family">Are you sure you want to remove the family relationship of %s</string>
     <string name="app_main_unbind_device">Are you sure you want to unbind %s bracelet?</string>
     <string name="app_main_delete_fence">Are you sure you want to delete this electronic fence area?</string>
     <string name="app_main_unbind_success">unbind success</string>
@@ -91,7 +93,7 @@
     <string name="app_main_mine_version_check">Version checking</string>
     <string name="app_main_mine_log_out">Log out</string>
     <string name="app_main_left_device_list">The equipment list</string>
-    <string name="app_main_left_add_device">Add new devices</string>
+    <string name="app_main_left_add_device">Add your family</string>
     <string name="app_add_device">Add device</string>
     <string name="app_add_device_scan_code">Scan code</string>
     <string name="app_add_device_input">Input</string>

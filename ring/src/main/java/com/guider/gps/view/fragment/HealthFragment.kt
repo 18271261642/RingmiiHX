@@ -678,7 +678,7 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun initHeartChart() {
-        val options = getBloodXAxisLabels(arrayListOf())
+        val options = getHeartXAxisLabels(arrayListOf())
         val aaOptions = initHeartLineChart(options, arrayOf())
         heartChart.aa_drawChartWithChartOptions(aaOptions)
     }
@@ -730,7 +730,7 @@ class HealthFragment : BaseFragment() {
     }
 
     private fun initBloodChart() {
-        val options = getHeartXAxisLabels(arrayListOf())
+        val options = getBloodXAxisLabels(arrayListOf())
         val aaOptions = initBloodLineChart(options, arrayOf(), arrayOf())
         bloodChart.aa_drawChartWithChartOptions(aaOptions)
     }

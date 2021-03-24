@@ -33,8 +33,10 @@
     <string name="app_main_medicine_high_side">偏高</string>
     <string name="app_main_health_query">查询</string>
     <string name="app_main_bind_device">绑定了 %s 的手环</string>
-    <string name="app_main_unbind_device">您确定要解除对%s手环的绑定吗?</string>
-    <string name="app_main_delete_fence">您确定要删除此电子围栏区域吗?</string>
+    <string name="app_main_remove_family_title">移除家人</string>
+    <string name="app_main_remove_family">您确定要移除%s的家人关系吗？</string>
+    <string name="app_main_unbind_device">您确定要解除对%s手环的绑定吗？</string>
+    <string name="app_main_delete_fence">您确定要删除此电子围栏区域吗？</string>
     <string name="app_main_unbind_success">解绑成功</string>
     <string name="app_exit_hint">再按一次返回键退出</string>
     <string name="app_main_map_location_information">位置信息</string>
@@ -89,7 +91,7 @@
     <string name="app_main_mine_version_check">版本检测</string>
     <string name="app_main_mine_log_out">退出登录</string>
     <string name="app_main_left_device_list">设备列表</string>
-    <string name="app_main_left_add_device">添加新设备</string>
+    <string name="app_main_left_add_device">添加家人</string>
     <string name="app_add_device">添加设备</string>
     <string name="app_add_device_scan_code">扫码</string>
     <string name="app_add_device_input">输入</string>
