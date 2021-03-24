@@ -929,7 +929,8 @@ public class WatchUtils {
     }
 
 
-    public static final String B31_CONNECTED_ACTION = "com.example.bozhilun.android.b31.connected"; //B31设备已经连接
+    public static final String B31_CONNECTED_ACTION = "com.example.bozhilun.android.b31.connected";
+    //B31设备已经连接
     /**
      * 搜索判断蓝牙名称过滤
      *
@@ -941,6 +942,7 @@ public class WatchUtils {
     public static final String B31_NAME = "B31";        //B31手环
     public static final String S500_NAME = "500S";        //500S手环
     public static final String B31S_NAME = "B31S";   //B31S
+    public static final String Z600_NAME = "600Z";   //600z手环
 
     /**
      * 判断是否是维亿魄系列的，B30，B31,B36

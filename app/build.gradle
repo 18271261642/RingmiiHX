@@ -173,7 +173,7 @@ android {
         // Vigori Mate 第三方兼容，健康改为竖版无创
         app_vigori_mate {
             applicationId "com.guider.healthringx"
-            manifestPlaceholders = [
+            manifestPlaceholders = [ 
                     app_name     : "Vigori Mate",
                     channel      : "app_vigori_mate",
                     app_icon     : "@drawable/ic_vigori_icon",

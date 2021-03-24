@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,7 +31,7 @@ import com.veepoo.protocol.model.datas.Spo2hData;
  * Created by Admin
  * Date 2018/12/18
  */
-public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClickListener{
+public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "B31ManSpO2Activity";
 
@@ -60,11 +62,13 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
                 if (spo2hData.getCheckingProgress() == 0x00 && !spo2hData.isChecking()) {
                     b31MeaureSpo2ProgressView.setTmpTxt(spo2hData.getValue() + "%");
                     showSpo2ResultTv.setText(verSpo2Status(spo2hData.getValue()));
-                    b31MeaureSpo2ProgressView.setOxyDexcStr(getResources().getString(R.string.string_spo2_long));//血氧浓度
-                    Log.e(TAG,"----------进度="+spo2hData.getCheckingProgress()+"%");
+                    b31MeaureSpo2ProgressView.setOxyDexcStr(
+                            getResources().getString(R.string.string_spo2_long));//血氧浓度
+                    Log.e(TAG, "----------进度=" + spo2hData.getCheckingProgress() + "%");
                     RequestOptions options = new RequestOptions()
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-                    Glide.with(B31ManSpO2Activity.this).asGif().load(R.drawable.spgif).apply(options).into(spo2ShowGifImg);
+                    Glide.with(B31ManSpO2Activity.this).asGif()
+                            .load(R.drawable.spgif).apply(options).into(spo2ShowGifImg);
 
 
                 }
@@ -108,7 +112,8 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
         //进度色
         b31MeaureSpo2ProgressView.setOutsideColor(Color.WHITE);
         spo2ShowGifImg.setImageResource(R.drawable.spgif);
-        b31MeaureSpo2ProgressView.setOxyDexcStr(getResources().getString(R.string.spo2_calibration_pro));
+        b31MeaureSpo2ProgressView.setOxyDexcStr(
+                getResources().getString(R.string.spo2_calibration_pro));
         b31MeaureSpo2ProgressView.setOxyCh(true);
 
     }
@@ -124,7 +129,8 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
                 break;
             case R.id.b31MeaureStartImg:    //开始或停止测量
                 if (MyCommandManager.DEVICENAME == null) {
-                    showSpo2ResultTv.setText(getResources().getString(R.string.string_devices_disconnected));
+                    showSpo2ResultTv.setText(
+                            getResources().getString(R.string.string_devices_disconnected));
                     return;
                 }
                 startOrStopManSpo2();
@@ -142,12 +148,12 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
             b31MeaureSpo2ProgressView.setProgress(100);
             MyApp.getInstance().getVpOperateManager().startDetectSPO2H(iBleWriteResponse,
                     spo2hData -> {
-                Log.e(TAG, "----------spo2hData=" + spo2hData.toString());
-                Message message = handler.obtainMessage();
-                message.what = 1001;
-                message.obj = spo2hData;
-                handler.sendMessage(message);
-            });
+                        Log.e(TAG, "----------spo2hData=" + spo2hData.toString());
+                        Message message = handler.obtainMessage();
+                        message.what = 1001;
+                        message.obj = spo2hData;
+                        handler.sendMessage(message);
+                    });
 
         } else {  //停止测量
             isStart = false;
@@ -156,13 +162,11 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
             b31MeaureStartImg.setImageResource(R.drawable.detect_sp_start);
             b31MeaureSpo2ProgressView.setOxyDexcStr(getResources().getString(R.string.spo2_calibration_pro));
             b31MeaureSpo2ProgressView.stopAnim(0);
-            MyApp.getInstance().getVpOperateManager().stopDetectSPO2H(iBleWriteResponse, new ISpo2hDataListener() {
-                @Override
-                public void onSpO2HADataChange(Spo2hData spo2hData) {
+            MyApp.getInstance().getVpOperateManager().stopDetectSPO2H(iBleWriteResponse
+                    , spo2hData -> {
 
-                }
-            });
-           // b31MeaureSpo2ProgressView.setTmpTxt("0%");
+                    });
+            // b31MeaureSpo2ProgressView.setTmpTxt("0%");
 
         }
     }
@@ -171,43 +175,37 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(isStart){
-            MyApp.getInstance().getVpOperateManager().stopDetectSPO2H(iBleWriteResponse, new ISpo2hDataListener() {
-                @Override
-                public void onSpO2HADataChange(Spo2hData spo2hData) {
+        if (isStart) {
+            MyApp.getInstance().getVpOperateManager().stopDetectSPO2H(iBleWriteResponse,
+                    spo2hData -> {
 
-                }
-            });
+                    });
         }
 
     }
 
-    private IBleWriteResponse iBleWriteResponse = new IBleWriteResponse() {
-        @Override
-        public void onResponse(int i) {
-
-        }
+    private IBleWriteResponse iBleWriteResponse = i -> {
     };
 
 
     //判断血氧浓度是否正常
     //范围是[0-99], [0-79]=血氧远低于正常值，警告用户要重视,[80-89]=血氧浓度低，提醒用户重视，
     // [90-95]=血氧浓度偏低,[95-99]=血氧正常
-    private String verSpo2Status(int spo2V){
+    private String verSpo2Status(int spo2V) {
 
-        if(spo2V >= 95 && spo2V <=99){
+        if (spo2V >= 95 && spo2V <= 99) {
 //            return "血氧浓度正常";
             return getResources().getString(R.string.string_spo2_nomal);
-        }else if(spo2V >= 90 && spo2V <= 95){
+        } else if (spo2V >= 90 && spo2V <= 95) {
 //            return "血氧浓度偏低";
             return getResources().getString(R.string.string_spo2_low);
-        }else if(spo2V >= 80 && spo2V <= 89){
+        } else if (spo2V >= 80 && spo2V <= 89) {
 //            return "血氧浓度低，请重视!";
             return getResources().getString(R.string.string_spo2_must_low);
-        }else if(spo2V <= 79){
+        } else if (spo2V <= 79) {
 //            return "警告！血氧远低于正常值！";
             return getResources().getString(R.string.string_spo2_varymust_low);
-        }else{
+        } else {
             return null;
         }
     }

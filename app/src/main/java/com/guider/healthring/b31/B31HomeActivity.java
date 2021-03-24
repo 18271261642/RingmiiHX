@@ -94,16 +94,20 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
             switch (msg.what) {
                 case 1001:
                     if (MyApp.getInstance().getB30ConnStateService() != null) {
-                        String bm = (String) SharedPreferencesUtils.readObject(B31HomeActivity.this, Commont.BLEMAC);//设备mac
+                        String bm = (String) SharedPreferencesUtils.readObject(
+                                B31HomeActivity.this, Commont.BLEMAC);//设备mac
                         if (!WatchUtils.isEmpty(bm))
                             MyApp.getInstance().getB30ConnStateService().connectAutoConn(true);
                     }
                     break;
                 case 0x01:
                     handler.removeMessages(0x01);
-                    String stringpersonOne = (String) SharedPreferencesUtils.getParam(B31HomeActivity.this, "personOne", "");
-                    String stringpersonTwo = (String) SharedPreferencesUtils.getParam(B31HomeActivity.this, "personTwo", "");
-                    String stringpersonThree = (String) SharedPreferencesUtils.getParam(B31HomeActivity.this, "personThree", "");
+                    String stringpersonOne = (String) SharedPreferencesUtils.getParam(
+                            B31HomeActivity.this, "personOne", "");
+                    String stringpersonTwo = (String) SharedPreferencesUtils.getParam(
+                            B31HomeActivity.this, "personTwo", "");
+                    String stringpersonThree = (String) SharedPreferencesUtils.getParam(
+                            B31HomeActivity.this, "personThree", "");
 
                     if (!TextUtils.isEmpty(stringpersonOne)) {
                         call(stringpersonOne);
@@ -130,12 +134,14 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
         initViews();
         registerReceiver(broadcastReceiver, new IntentFilter(WatchUtils.CHANGEPASS));
         //过滤器
-        IntentFilter mIntentFilter = new IntentFilter("com.guider.ringmiihx.bzlmaps.sos.SENDSMS");
+        IntentFilter mIntentFilter = new IntentFilter(
+                "com.guider.ringmiihx.bzlmaps.sos.SENDSMS");
         //创建广播接收者的对象
         sendSMSBroadCast = new SendSMSBroadCast();
         //注册广播接收者的对象
         this.registerReceiver(sendSMSBroadCast, mIntentFilter);
-        MyApp.getInstance().getVpOperateManager().settingDeviceControlPhone(MyApp.phoneSosOrDisPhone);
+        MyApp.getInstance().getVpOperateManager().settingDeviceControlPhone(
+                MyApp.phoneSosOrDisPhone);
         b31ViewPager.postDelayed(this::isNotificationServiceEnable, 500);
     }
 

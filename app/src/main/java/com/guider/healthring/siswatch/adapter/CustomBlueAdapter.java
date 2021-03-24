@@ -79,23 +79,17 @@ public class CustomBlueAdapter extends RecyclerView.Adapter<CustomBlueAdapter.Cu
 
             if (bleName.contains("Ringmii")) {
                 holder.img.setImageResource(R.mipmap.hx_search);
-                return;
-            }
-            if (bleName.contains("B30")) {
+            } else if (bleName.contains("B30")) {
                 holder.img.setImageResource(R.mipmap.ic_b30_search);
-                return;
-            }
-            if ((bleName.length() >= 3 && (bleName.substring(0, 3).equals("B31"))) ||
+            } else if ((bleName.length() >= 3 && (bleName.substring(0, 3).equals("B31"))) ||
                     bleName.length() >= 4 && bleName.substring(0, 4).equals("B31S")
             ) {
                 holder.img.setImageResource(R.mipmap.ic_b31_search);
-                return;
-            }
-            if (bleName.contains("500S") || bleName.contains("500H")) {
+            } else if (bleName.contains("500S") || bleName.contains("500H")) {
                 holder.img.setImageResource(R.mipmap.ic_seach_500s);
-                return;
-            }
-            holder.img.setImageResource(R.mipmap.ic_seach_null);
+            } else if (bleName.contains("600Z")) {
+                holder.img.setImageResource(R.mipmap.ic_seach_600z);
+            } else holder.img.setImageResource(R.mipmap.ic_seach_null);
         }
     }
 

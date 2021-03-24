@@ -146,6 +146,7 @@ public class LaunchActivity extends WatchBaseActivity {
                         break;
                     case "500S":
                     case "B31":
+                    case "600Z":
                         startActivity(new Intent(this, B31HomeActivity.class));
                         break;
                     default:

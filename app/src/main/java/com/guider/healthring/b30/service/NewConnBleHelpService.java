@@ -629,8 +629,7 @@ public class NewConnBleHelpService {
                                     connBleMsgDataListener.onOriginData();
                                 }
                             }
-                        }, today ? 2 : 4);
-//                }, today ? 1 : 3);
+                        }, today ? 1 : 3); //读取睡眠最少是2，手环最多保存2天的睡眠，这里是2是读取昨天的睡眠，3是读取前天的睡眠
             } catch (Error e) {
                 isGETDATAS = false;
             }
@@ -917,7 +916,7 @@ public class NewConnBleHelpService {
     }
 
     private IBleWriteResponse bleWriteResponse = i -> {
-            Log.e(TAG, "------bleWriteResponse=" + i);
+        Log.e(TAG, "------bleWriteResponse=" + i);
     };
 
 

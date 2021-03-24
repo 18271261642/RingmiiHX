@@ -169,19 +169,19 @@ public class NewB30ConnStateService extends Service {
                     MyApp.getInstance().setMacAddress(mac);
                     SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLENAME, nameStr);
                     SharedPreferencesUtils.saveObject(MyApp.getContext(), Commont.BLEMAC, mac);
+                    //连接成就发送广播
                     Intent intent = new Intent();
-                    if (nameStr.equals("500S") || nameStr.equals("B31") || nameStr.equals("B31S")) {
+                    intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
+                    //500s，600z
+                    if (nameStr.equals("500S") || nameStr.equals("600Z") ||
+                            nameStr.equals("B31") || nameStr.equals("B31S")) {
                         //B31的连接
                         intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
                     } else {
                         //B30、B36、盖德
                         intent.setAction(WatchUtils.B30_CONNECTED_ACTION);
                     }
-
                     sendBroadcast(intent);
-//                            if(b30ConnStateListener != null){
-//                                b30ConnStateListener.onB30Connect();
-//                            }
                 });
                 NewConnBleHelpService.getConnBleHelpService().doConnOperater(mac);
             }

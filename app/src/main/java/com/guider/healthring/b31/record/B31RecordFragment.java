@@ -23,9 +23,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -91,12 +93,15 @@ import com.veepoo.protocol.model.enums.ESpo2hDataType;
 import com.veepoo.protocol.util.HRVOriginUtil;
 import com.veepoo.protocol.util.HrvScoreUtil;
 import com.veepoo.protocol.util.Spo2hOriginUtil;
+
 import org.litepal.LitePal;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_SPO2H;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIN_HRV;
@@ -390,7 +395,8 @@ public class B31RecordFragment extends LazyFragment
 
     @SuppressLint("WrongConstant")
     private void setGuiderBemo() {
-        if (MyCommandManager.DEVICENAME != null && MyCommandManager.ADDRESS != null && getActivity() != null) {
+        if (MyCommandManager.DEVICENAME != null &&
+                MyCommandManager.ADDRESS != null && getActivity() != null) {
             if (!WatchUtils.isEmpty(MyCommandManager.ADDRESS)) {
                 try {
                     boolean bleServices = isServiceWork(getActivity(),
@@ -459,7 +465,8 @@ public class B31RecordFragment extends LazyFragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b31View = inflater.inflate(R.layout.fragment_b31_record_layout, container, false);
         initViewIds();
         initViews();
@@ -608,12 +615,16 @@ public class B31RecordFragment extends LazyFragment
     private void showDeviceIcon() {
         if (ivTop != null) {
             if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)) {
-                if (MyCommandManager.DEVICENAME.equals(WatchUtils.B31_NAME)) {
-                    ivTop.setImageResource(R.mipmap.ic_home_top_b31);
-                } else if (MyCommandManager.DEVICENAME.equals(WatchUtils.S500_NAME)) {
-                    ivTop.setImageResource(R.mipmap.ic_500s);
-                } else {
-                    ivTop.setImageResource(R.mipmap.ic_home_top_b31);//b31s
+                switch (MyCommandManager.DEVICENAME) {
+                    case WatchUtils.S500_NAME:
+                        ivTop.setImageResource(R.mipmap.ic_500s);
+                        break;
+                    case WatchUtils.Z600_NAME:
+                        ivTop.setImageResource(R.mipmap.ic_600z);
+                        break;
+                    default:
+                        ivTop.setImageResource(R.mipmap.ic_home_top_b31);//b31s
+                        break;
                 }
             }
         }
@@ -844,11 +855,11 @@ public class B31RecordFragment extends LazyFragment
         if (WatchUtils.isEmpty(date))
             date = WatchUtils.obtainFormatDate(1);  //如果是空的话表示第一次读取
         long delayMillis = 60 * 1000;// 默认超时时间
-        if (date.equals(WatchUtils.obtainFormatDate(0))) {
-            connBleHelpService.readAllHealthData(true);// 刷新当天天数据 -----刷新3天数据
-        } else {
-            connBleHelpService.readAllHealthData(false);// 刷新3天数据 ------刷新昨天天数据
-        }
+//        if (date.equals(WatchUtils.obtainFormatDate(0))) {
+        connBleHelpService.readAllHealthData(true);// 刷新当天天数据 -----刷新3天数据
+//        } else {
+//            connBleHelpService.readAllHealthData(false);// 刷新3天数据 ------刷新昨天天数据
+//        }
         handler.sendEmptyMessageDelayed(1001, delayMillis);
 
     }

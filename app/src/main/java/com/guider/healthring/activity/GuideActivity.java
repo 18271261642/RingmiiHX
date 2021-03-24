@@ -44,6 +44,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.guider.healthring.siswatch.utils.WatchUtils.RINGMII_NAME;
+import static com.guider.healthring.siswatch.utils.WatchUtils.S500_NAME;
+import static com.guider.healthring.siswatch.utils.WatchUtils.Z600_NAME;
+
 /**
  * 滑动页
  */
@@ -131,29 +135,38 @@ public class GuideActivity extends BaseActivity {
                 //判断有没有登录
                 if (null != SharedPreferencesUtils.readObject(GuideActivity.this, "userId")) {
                     String userId = (String) SharedPreferencesUtils.readObject(GuideActivity.this, "userId");
-                    Log.i(GuideActivity.this.getClass().getSimpleName(),"userId -------"+userId);
+                    Log.i(GuideActivity.this.getClass().getSimpleName(), "userId -------" + userId);
 //                    Log.e("GuideActivity", "--------蓝牙---" + SharedPreferencesUtils.readObject(GuideActivity.this, "mylanya"));
                     String btooth = (String) SharedPreferencesUtils.readObject(GuideActivity.this, "mylanya");
                     String w30sbtooth = (String) SharedPreferenceUtil.get(GuideActivity.this, "mylanya", "");
                     if (!WatchUtils.isEmpty(btooth) || !WatchUtils.isEmpty(w30sbtooth)) {
                         if ("bozlun".equals(btooth)) {    //H8 手表
-                            startActivity(new Intent(GuideActivity.this, WatchHomeActivity.class));
+                            startActivity(new Intent(GuideActivity.this,
+                                    WatchHomeActivity.class));
                         } else if ("W06X".equals(btooth)) {   // H9 手表
-                            startActivity(new Intent(GuideActivity.this, H9HomeActivity.class));
+                            startActivity(new Intent(GuideActivity.this,
+                                    H9HomeActivity.class));
                         } else if ("W30".equals(w30sbtooth) || "w30".equals(w30sbtooth)) {
-                            startActivity(new Intent(GuideActivity.this, W30SHomeActivity.class));
-                        } else if ("B30".equals(btooth) || "Ringmii".equals(btooth)) {
-                            startActivity(new Intent(GuideActivity.this, B30HomeActivity.class));
-                        } else if ("500S".equals(btooth) || "B31".equals(btooth)) {
-                            startActivity(new Intent(GuideActivity.this, B31HomeActivity.class));
+                            startActivity(new Intent(GuideActivity.this,
+                                    W30SHomeActivity.class));
+                        } else if ("B30".equals(btooth) || RINGMII_NAME.equals(btooth)) {
+                            startActivity(new Intent(GuideActivity.this,
+                                    B30HomeActivity.class));
+                        } else if (S500_NAME.equals(btooth) || "B31".equals(btooth)
+                                || Z600_NAME.equals(btooth)) {
+                            startActivity(new Intent(GuideActivity.this,
+                                    B31HomeActivity.class));
                         } else {
-                            startActivity(new Intent(GuideActivity.this, NewSearchActivity.class));
+                            startActivity(new Intent(GuideActivity.this,
+                                    NewSearchActivity.class));
                         }
                     } else {
-                        startActivity(new Intent(GuideActivity.this, NewSearchActivity.class));
+                        startActivity(new Intent(GuideActivity.this,
+                                NewSearchActivity.class));
                     }
                 } else {
-                    startActivity(new Intent(GuideActivity.this, LoginActivity.class));
+                    startActivity(new Intent(GuideActivity.this,
+                            LoginActivity.class));
                 }
                 finish();
             } catch (Exception e) {

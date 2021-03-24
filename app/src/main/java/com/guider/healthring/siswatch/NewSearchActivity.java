@@ -414,22 +414,35 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                     getBluetoothDevice().getName();
             if (customBlueDevice == null || WatchUtils.isEmpty(bleName))
                 return;
-            //B30，B36，Ringmiihx手表
-            if (bleName.equals(WatchUtils.B30_NAME)
-                    || bleName.equals(WatchUtils.RINGMII_NAME)
-                    || bleName.equals(B31_NAME)
-                    || bleName.equals(WatchUtils.S500_NAME) || bleName.contains("Ringmii")) {
-                //connectB30(customBlueDevice.getBluetoothDevice().getAddress().trim(), bleName);
-                //B30 B31 500S Ringmii
-                if (customBlueDevice != null &&
-                        !WatchUtils.isEmpty(customBlueDevice.getBluetoothDevice().getAddress())) {
-                    showLoadingDialog("connect...");
-                    MyApp.getInstance().getB30ConnStateService()
-                            .connB30ConnBle(customBlueDevice.getBluetoothDevice()
-                                    .getAddress(), bleName);
+
+            //忽略名称，只要能连接成功即可
+
+            if (customBlueDevice != null &&
+                    !WatchUtils.isEmpty(customBlueDevice.getBluetoothDevice().getAddress())) {
+                showLoadingDialog("connect...");
+                MyApp.getInstance().getB30ConnStateService()
+                        .connB30ConnBle(customBlueDevice.getBluetoothDevice()
+                                .getAddress(), bleName);
+
+                //B30，B36，Ringmiihx手表，500s，600Z
+                if (bleName.equals(WatchUtils.B30_NAME)
+                        || bleName.equals(WatchUtils.RINGMII_NAME)
+                        || bleName.equals(B31_NAME)
+                        || bleName.equals(WatchUtils.S500_NAME) || bleName.contains("Ringmii")
+                        || bleName.equals(WatchUtils.Z600_NAME)
+                ) {
+                    //connectB30(customBlueDevice.getBluetoothDevice().getAddress().trim(), bleName);
+                    //B30 B31 500S Ringmii
+                    if (customBlueDevice != null &&
+                            !WatchUtils.isEmpty(
+                                    customBlueDevice.getBluetoothDevice().getAddress())) {
+                        showLoadingDialog("connect...");
+                        MyApp.getInstance().getB30ConnStateService()
+                                .connB30ConnBle(customBlueDevice.getBluetoothDevice()
+                                        .getAddress(), bleName);
+                    }
                 }
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -532,15 +545,15 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                 }
 
 
-                //B30手环连接成功
-                if (action.equals(WatchUtils.B30_CONNECTED_ACTION)) { //B30连接成功
-                    closeLoadingDialog();
-                    isScanConn = true;
-                    startActivity(B30HomeActivity.class);
-                    NewSearchActivity.this.finish();
-                }
+//                //B30手环连接成功
+//                if (action.equals(WatchUtils.B30_CONNECTED_ACTION)) { //B30连接成功
+//                    closeLoadingDialog();
+//                    isScanConn = true;
+//                    startActivity(B30HomeActivity.class);
+//                    NewSearchActivity.this.finish();
+//                }
 
-                //B31、500S连接成功
+                //连接成功
                 if (action.equals(WatchUtils.B31_CONNECTED_ACTION)) {
                     closeLoadingDialog();
                     isScanConn = true;
