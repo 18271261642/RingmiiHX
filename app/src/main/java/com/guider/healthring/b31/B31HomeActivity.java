@@ -261,7 +261,8 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
     public void reconnectDevice() {
         if (MyCommandManager.ADDRESS == null) {    //未连接
             if (MyApp.getInstance().getB30ConnStateService() != null) {
-                String bm = (String) SharedPreferencesUtils.readObject(B31HomeActivity.this, Commont.BLEMAC);//设备mac
+                String bm = (String) SharedPreferencesUtils.readObject(
+                        B31HomeActivity.this, Commont.BLEMAC);//设备mac
                 if (!WatchUtils.isEmpty(bm)) {
                     MyApp.getInstance().getB30ConnStateService().connectAutoConn(true);
                 }

@@ -725,6 +725,7 @@ public class B31RecordFragment extends LazyFragment
             if (param > 0) {
                 showBatterStute(param);
             }
+            showDeviceIcon();
         } else {  //未连接
             if (getActivity() != null && !getActivity().isFinishing()) {
                 if (b30connectStateTv != null)
