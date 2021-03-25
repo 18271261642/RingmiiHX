@@ -29,8 +29,8 @@ public class CommCalUtils {
         List<Integer> calList = new ArrayList<>();
         int countHeart = 0;
         for(HalfHourRateData halfHourRateData : hourRateData){
-            calList.add(halfHourRateData.rateValue);
-            countHeart += halfHourRateData.rateValue;
+            calList.add(halfHourRateData.getRateValue());
+            countHeart += halfHourRateData.getRateValue();
         }
         //最大心率
         maxHeart = Collections.max(calList);
@@ -60,10 +60,10 @@ public class CommCalUtils {
         int minSum = 0;
 
         for(HalfHourBpData halfHourBpData : bpData){
-            highValueList.add(halfHourBpData.highValue);
-            lowValueList.add(halfHourBpData.lowValue);
-            maxSum += halfHourBpData.highValue;
-            minSum += halfHourBpData.lowValue;
+            highValueList.add(halfHourBpData.getHighValue());
+            lowValueList.add(halfHourBpData.getLowValue());
+            maxSum += halfHourBpData.getHighValue();
+            minSum += halfHourBpData.getLowValue();
 
         }
         maxBlod = Collections.max(highValueList);

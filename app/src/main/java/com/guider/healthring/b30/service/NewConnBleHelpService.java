@@ -629,7 +629,7 @@ public class NewConnBleHelpService {
                                     connBleMsgDataListener.onOriginData();
                                 }
                             }
-                        }, today ? 1 : 3); //读取睡眠最少是2，手环最多保存2天的睡眠，这里是2是读取昨天的睡眠，3是读取前天的睡眠
+                        }, today ? 1 : 2); //读取睡眠最少是2，手环最多保存2天的睡眠，这里是2是读取昨天的睡眠，3是读取前天的睡眠
             } catch (Error e) {
                 isGETDATAS = false;
             }
@@ -796,7 +796,7 @@ public class NewConnBleHelpService {
             //保存心率数据
             Integer[] heartStr = CommCalUtils.calHeartData(rateData);
             CommDBManager.getCommDBManager().saveCommHeartData(bleName, WatchUtils.getSherpBleMac(MyApp.getContext()),
-                    rateData.get(0).date, heartStr[0], heartStr[1], heartStr[2]);
+                    rateData.get(0).getDate(), heartStr[0], heartStr[1], heartStr[2]);
 
 
         }
@@ -822,7 +822,7 @@ public class NewConnBleHelpService {
             //保存血压的数据
             Integer[] bloodStr = CommCalUtils.calBloodData(bpData);
 //            Log.e(TAG, "-------血压平均数据=" + Arrays.toString(bloodStr));
-            CommDBManager.getCommDBManager().saveCommBloodDb(WatchUtils.getSherpBleMac(MyApp.getContext()), bpData.get(0).date,
+            CommDBManager.getCommDBManager().saveCommBloodDb(WatchUtils.getSherpBleMac(MyApp.getContext()), bpData.get(0).getDate(),
                     bloodStr[0], bloodStr[1], bloodStr[2], bloodStr[3]);
         }
 

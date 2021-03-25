@@ -20,14 +20,32 @@ public class Commont {
     public static final String WX_APP_ID = "wxc093e3bf0907af3a";
     public static final String WX_APP_SECRET = "984774e72efba8f2f21c8cbc91cbbff8";
 
-
+    //协议版本
+    public static final String VP_DEVICE_VERSION = "vp_origin_protcol_version";
     //设备支持的主题风格数量key
     public static final String SP_DEVICE_STYLE_COUNT = "sp_device_style_count";
 
 
+    //是否支持倒计时
+    public static final String IS_SUPPORT_COUNT_DOWM = "is_support_down";
+    //是否支持血氧
+    public static final String IS_SUPPORT_SPO2 = "is_support_spo2";
+    //是否支持精准睡眠功能
+    public static final String IS_SUPPORT_precisionSleep = "is_support_precision_sleep";
+    //是否支持佩戴检测
+    public static final String IS_SUPPORT_CHECK_WEAR = "is_support_check_wear";
+    //疲劳检测
+    public static final String IS_B31S_FATIGUE_KEY = "is_b31s_fatigue";
+    //是否支持心电
+    public static final String IS_SUPPORT_ECG_KEY = "is_support_ecg_key";
+    //B31是否支持呼吸率
+    public static final String IS_B31_HEART = "is_b31_heart";
+    //是否支持亮度调节功能
+    public static final String IS_B31S_LIGHT_KEY = "is_B31s_light";
+
 
     /**
-     * 判断B31是否带有血压功能
+     * 是否支持血压功能
      */
     public static final String IS_B31_HAS_BP_KEY = "is_b31_bp";
     public static final boolean isDebug = true;//日志

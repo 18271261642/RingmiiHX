@@ -72,7 +72,10 @@ import static android.content.Context.TELEPHONY_SERVICE;
  */
 
 public class WatchUtils {
+
     private static final String TAG = "WatchUtils";
+
+
     public static final String WATCH_CONNECTED_STATE_ACTION = "com.example.bozhilun.android.siswatch.alarm.connectstate";  //判断蓝牙是否连接的广播action
     public static final String WATCH_GETWATCH_STEPS_ACTION = "com.example.bozhilun.android.siswatch.alarm.steps";   //步数的广播action
     public static final String WATCH_OPENTAKE_PHOTO_ACTION = "com.example.bozhilun.android.siswatch.takephoto";     //拍照指令的action
@@ -494,6 +497,31 @@ public class WatchUtils {
     public static double getKcal(int step, double stepLong) {
         double distans = WatchUtils.div(WatchUtils.mul(Double.valueOf(step), stepLong), Double.valueOf(1000), 5);
         return WatchUtils.mul(distans, 65.4);
+    }
+
+
+    /**
+     * 判断两个日期是否相等
+     *
+     * @param str2
+     * @return
+     */
+    public static boolean isEquesValue(String str2) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        try {
+            long startLongTime = sdf.parse(getCurrentDate()).getTime();
+            long endLongTime = sdf.parse(str2).getTime();
+
+            //结束日期减开始日期
+            long diffDay = endLongTime - startLongTime;
+
+            return diffDay == 0;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**

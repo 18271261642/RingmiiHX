@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="8dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/last_ui_select_layout"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/b31HomeTodayTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="@string/today"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/b31HomeTodayImg"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:visibility="visible"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/fgm_home_move" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/b31HomeYestTodayTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="@string/yesterday"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/b31HomeYestdayImg"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/fgm_home_move"
+                android:visibility="invisible" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/b31HomeBeYestdayTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="@string/string_yesterday"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/b31HomeBeYestdayImg"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/fgm_home_move"
+                android:visibility="invisible" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,6 +55,7 @@ import com.guider.healthring.b30.b30view.B30CusHeartView;
 import com.guider.healthring.b30.b30view.B30CusSleepView;
 import com.guider.healthring.b30.bean.B30HalfHourDB;
 import com.guider.healthring.b30.bean.B30HalfHourDao;
+import com.guider.healthring.b30.service.ConnBleHelpService;
 import com.guider.healthring.b30.service.NewConnBleHelpService;
 import com.guider.healthring.b31.B31DeviceActivity;
 import com.guider.healthring.b31.B31HomeActivity;
@@ -116,7 +117,7 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
  * Date 2018/12/17
  */
 public class B31RecordFragment extends LazyFragment
-        implements NewConnBleHelpService.ConnBleMsgDataListener, View.OnClickListener {
+        implements ConnBleHelpService.ConnBleMsgDataListener, View.OnClickListener {
 
     private static final String TAG = "B31RecordFragment";
     ImageView ivTop;
@@ -210,7 +211,10 @@ public class B31RecordFragment extends LazyFragment
     private List<BarEntry> tmpB30StepList;
 
 
-    private NewConnBleHelpService connBleHelpService;
+//    private NewConnBleHelpService connBleHelpService;
+
+    private ConnBleHelpService connBleHelpService;
+
     private Context mContext;
 
     private List<Spo2hOriginData> spo2hOriginDataList = new ArrayList<>();
@@ -368,7 +372,7 @@ public class B31RecordFragment extends LazyFragment
 
         getmContext().registerReceiver(broadcastReceiver, addB31IntentFilter());
         if (connBleHelpService == null) {
-            connBleHelpService = NewConnBleHelpService.getConnBleHelpService();
+            connBleHelpService = ConnBleHelpService.getConnBleHelpService();
         }
         connBleHelpService.setConnBleMsgDataListener(this);
         mLocalTool = new LocalizeTool(getmContext());

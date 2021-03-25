@@ -15,130 +15,7 @@ import java.util.List;
  *
  * @author XuBo 2018-09-19
  */
-//public class B30HalfHourDao {
-//
-//    private static final String TAG = "B30HalfHourDao";
-//
-//    /**
-//     * 单例
-//     */
-//    private static B30HalfHourDao mInstance;
-//
-//    private B30HalfHourDao() {
-//    }
-//
-//    /**
-//     * 获取单例
-//     */
-//    public static B30HalfHourDao getInstance() {
-//        if (mInstance == null) {
-//            mInstance = new B30HalfHourDao();
-//        }
-//        return mInstance;
-//    }
-//
-//    /**
-//     * 数据源类型: 步数数据
-//     */
-//    public static final String TYPE_STEP = "step";
-//    /**
-//     * 数据源类型: 运动数据
-//     */
-//    public static final String TYPE_SPORT = "sport";
-//    /**
-//     * 数据源类型: 心率数据
-//     */
-//    public static final String TYPE_RATE = "rate";
-//    /**
-//     * 数据源类型: 血压数据
-//     */
-//    public static final String TYPE_BP = "bp";
-//    /**
-//     * 数据源类型: 睡眠数据
-//     */
-//    public static final String TYPE_SLEEP = "sleep";
-//
-//    /**
-//     * 获取单条数据源
-//     *
-//     * @param address 手环MAC地址
-//     * @param date    日期
-//     * @param type    数据类型{@link #TYPE_STEP}
-//     * @return 数据源Json字符串
-//     */
-//    private B30HalfHourDB getOriginData(String address, String date, String type) {
-//        String where = "address = ? and date = ? and type = ?";
-//        List<B30HalfHourDB> resultList = LitePal.where(where, address, date, type).limit(1).find
-//                (B30HalfHourDB.class);// 一个类型,同一天只有一条数据
-//        return resultList == null || resultList.isEmpty() ? null : resultList.get(0);
-//    }
-//
-//    /**
-//     * 查找单条数据源
-//     *
-//     * @param address 手环MAC地址
-//     * @param date    日期
-//     * @param type    数据类型{@link #TYPE_STEP}
-//     * @return 数据源Json字符串
-//     */
-//    public String findOriginData(String address, String date, String type) {
-//        B30HalfHourDB result = getOriginData(address, date, type);
-//        return result == null ? null : result.getOriginData();
-//    }
-//
-//    /**
-//     * 保存(更新)单条数据源
-//     *
-//     * @param db 数据源实体类
-//     */
-//    public synchronized void saveOriginData(B30HalfHourDB db) {
-//        boolean result;
-//        B30HalfHourDB localData = getOriginData(db.getAddress(), db.getDate(), db.getType());
-//        if (localData == null) {
-//            result = db.save();// 本地没有,就直接新增
-////            if (Commont.isDebug)Log.e(TAG, "-----------saveOriginData type: " + db.getType() + ",date:"
-////                    + db.getDate() + ",result:" + result + ",add:"+ db.getUpload());
-//        } else {
-////            boolean isBPSave = db.saveOrUpdate("address = ? and date = ? and type = ?",db.getAddress(),db.getDate(),db.getType());
-//            localData.setAddress(db.getAddress());
-//            localData.setDate(db.getDate());
-//            localData.setType(db.getType());
-//            localData.setUpload(db.getUpload());
-//            localData.setUpload(db.getUploadGD());
-//            localData.setOriginData(db.getOriginData());
-//            result = localData.save();// 本地有,就更新本地
-//            if (Commont.isDebug)Log.e("bobo", "--------------saveOriginData type: " + db.getType() + ",date:"
-//                    + db.getDate() + ",result:" + result + ",update:" + localData.getUpload());
-//        }
-//    }
-//
-//    /**
-//     * 根据类型查找所有没上传服务器的数据源,不分日期
-//     *
-//     * @param address 手环MAC地址
-//     * @param type    数据类型{@link #TYPE_STEP}
-//     * @return 指定类型的, 没有上传服务器的所有数据源
-//     */
-//    public List<B30HalfHourDB> findNotUploadData(String address, String type) {
-//        String where = "upload = 0 and address = ? and type = ?";
-////        String where = "address = ? and type = ?";
-//        return LitePal.where(where, address, type).find(B30HalfHourDB.class);
-//    }
-//
-//    /**
-//     * 根据类型查找所有没上传服务器的数据源,不分日期
-//     *
-//     * @param address 手环MAC地址
-//     * @param type    数据类型{@link #TYPE_STEP}
-//     * @return 指定类型的, 没有上传服务器的所有数据源
-//     */
-//    public List<B30HalfHourDB> findNotUploadDataGD(String address, String type) {
-//        String where = "uploadGD = 0 and address = ? and type = ?";
-////        String where = "address = ? and type = ?";
-//        return LitePal.where(where, address, type).find(B30HalfHourDB.class);
-//    }
-//
-//}
+
 public class B30HalfHourDao {
 
     Handler handler = new Handler();
@@ -183,6 +60,9 @@ public class B30HalfHourDao {
      * 数据源类型: 睡眠数据
      */
     public static final String TYPE_SLEEP = "sleep";
+
+    //精准睡眠
+    public static final String TYPE_PRECISION_SLEEP = "precision_sleep";
 
 
     // List<TempB31HRVBean> resultList = new ArrayList<>();

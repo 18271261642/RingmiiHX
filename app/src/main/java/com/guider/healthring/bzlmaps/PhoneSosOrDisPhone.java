@@ -11,7 +11,6 @@ import android.os.Message;
 import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
@@ -23,15 +22,14 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.libbase.map.IMapLocation;
 import com.guider.libbase.map.IOnLocation;
 import com.guider.map.MapLocationImpl;
-import com.veepoo.protocol.listener.data.IDeviceControlPhone;
-
+import com.veepoo.protocol.listener.data.IDeviceControlPhoneModelState;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PhoneSosOrDisPhone implements IDeviceControlPhone, IOnLocation {
+public class PhoneSosOrDisPhone implements IDeviceControlPhoneModelState, IOnLocation {
 
     private static long lastUploadTime = 0;
     // private LocationService locationService;
@@ -39,7 +37,7 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone, IOnLocation {
     // 定位
     private IMapLocation mIMapLocation;
 
-    Handler handler = new Handler(new Handler.Callback() {
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             switch (message.what) {
@@ -183,7 +181,7 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone, IOnLocation {
 //            if (ActivityCompat.checkSelfPermission(MyApp.getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 //                return;
 //            }
-            MyApp.getContext().startActivity(intent);
+//            MyApp.getContext().startActivity(intent);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -235,4 +233,32 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhone, IOnLocation {
             Manifest.permission.READ_CALL_LOG,//
             Manifest.permission.USE_SIP
     };
+
+    //音乐控制 下一首
+    @Override
+    public void nextMusic() {
+
+    }
+
+    //音乐控制 上一首
+    @Override
+    public void previousMusic() {
+
+    }
+
+    //音乐控制 播放/暂停
+    @Override
+    public void pauseAndPlayMusic() {
+
+    }
+
+    @Override
+    public void inPttModel() {
+
+    }
+
+    @Override
+    public void outPttModel() {
+
+    }
 }

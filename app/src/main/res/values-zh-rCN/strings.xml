@@ -80,7 +80,7 @@
     <string name="vpspo2h_ratevaraive">脉率变异性</string>
     <string name="vpspo2h_low_remain">低氧唤醒</string>
     <string name="ave_value">平均值</string>
-    <string name="heart_health_sorce">心脏健康指数x</string>
+    <string name="heart_health_sorce">心脏健康指数</string>
     <string name="spo2_breath_break">血氧/呼吸暂停</string>
     <string name="name">名称</string>
     <string name="frequent_time">频现时间</string>

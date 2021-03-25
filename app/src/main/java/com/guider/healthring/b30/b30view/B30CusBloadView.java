@@ -154,7 +154,7 @@ public class B30CusBloadView extends View {
         emptyPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         emptyPaint.setTextAlign(Paint.Align.LEFT);
         emptyPaint.setColor(timeColor);
-        emptyPaint.setTextSize(dp2px(8));
+        emptyPaint.setTextSize(dp2px(14));
         emptyPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         scalePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -171,14 +171,12 @@ public class B30CusBloadView extends View {
 
         height = getMeasuredHeight();
 
-        Log.e("BP","----onMeasure------withd="+width+"--height="+height);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         width = getMeasuredWidth();
-        Log.e("BP","----onSizeChanged------withd="+getWidth()+"----w="+w);
 
     }
 

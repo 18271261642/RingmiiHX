@@ -146,10 +146,6 @@
             </intent-filter>
         </activity>
 
-<!--        <activity-->
-<!--            android:name="com.tencent.bugly.beta.ui.BetaActivity"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize|locale"-->
-<!--            android:theme="@android:style/Theme.Translucent" />-->
 
 
         <activity
@@ -1023,6 +1019,13 @@
         <activity android:name=".activity.GuiderDeviceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--精准睡眠-->
+        <activity android:name=".b31.B31sPercisionSleepDescActivity"/>
+        <activity android:name=".b31.B31sPrecisionSleepActivity"/>
+
+
+
 
 
         <!--Bemo开关-->

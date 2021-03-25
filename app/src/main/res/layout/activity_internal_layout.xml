@@ -32,6 +32,13 @@
                 android:layout_height="wrap_content" />
 
 
+            <Button
+                android:id="@+id/readDeviceDataBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="读取健康数据"/>
+
+
         </LinearLayout>
 
 

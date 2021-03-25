@@ -233,6 +233,8 @@
         <attr name="sleepViewHeight" format="dimension" />
         <attr name="sleepEmptyData" format="dimension" />
         <attr name="b30SleepNoDataColor" format="color" />
+        <attr name="b31sInsomniaColor" format="color"/>
+        <attr name="b31sDeepAndLightColor" format="color"/>
     </declare-styleable>
 
     <!--滚动选择器通用属性-->

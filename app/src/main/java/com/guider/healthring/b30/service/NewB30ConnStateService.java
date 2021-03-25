@@ -52,7 +52,9 @@ public class NewB30ConnStateService extends Service {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothClient bluetoothClient;
     private final IBinder mLocalBinder = new B30LoadBuilder();
-    private NewConnBleHelpService connBleHelpService;
+//    private NewConnBleHelpService connBleHelpService;
+
+    private ConnBleHelpService connBleHelpService;
     public B30ConnStateListener b30ConnStateListener;
 
     //震动
@@ -61,7 +63,7 @@ public class NewB30ConnStateService extends Service {
 
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -150,17 +152,14 @@ public class NewB30ConnStateService extends Service {
         MyApp.getInstance().getVpOperateManager().connectDevice(mac, (i, bleGattProfile, b) -> {
             Log.e(TAG, "----connectState=" + i);
             if (i == Code.REQUEST_SUCCESS) {  //连接成功过
-                Log.d("----去自动链接-", "go go go7" + b + "----" + i);
                 if (bluetoothClient != null) {
                     bluetoothClient.stopSearch();
                 }
             }
         }, i -> {
-            Log.e(TAG, "----notifyState=" + i);
-            Log.d("----去自动链接-", "go go go8" + "----" + i);
             if (i == Code.REQUEST_SUCCESS) {
                 if (connBleHelpService == null) {
-                    connBleHelpService = NewConnBleHelpService.getConnBleHelpService();
+                    connBleHelpService = ConnBleHelpService.getConnBleHelpService();
                 }
                 // connBleHelpService = connBleHelpService.getConnBleHelpService();
                 connBleHelpService.setConnBleHelpListener(() -> {
@@ -172,18 +171,18 @@ public class NewB30ConnStateService extends Service {
                     //连接成就发送广播
                     Intent intent = new Intent();
                     intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
-                    //500s，600z
-                    if (nameStr.equals("500S") || nameStr.equals("600Z") ||
-                            nameStr.equals("B31") || nameStr.equals("B31S")) {
-                        //B31的连接
-                        intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
-                    } else {
-                        //B30、B36、盖德
-                        intent.setAction(WatchUtils.B30_CONNECTED_ACTION);
-                    }
+//                    //500s，600z
+//                    if (nameStr.equals("500S") || nameStr.equals("600Z") ||
+//                            nameStr.equals("B31") || nameStr.equals("B31S")) {
+//                        //B31的连接
+//                        intent.setAction(WatchUtils.B31_CONNECTED_ACTION);
+//                    } else {
+//                        //B30、B36、盖德
+//                        intent.setAction(WatchUtils.B30_CONNECTED_ACTION);
+//                    }
                     sendBroadcast(intent);
                 });
-                NewConnBleHelpService.getConnBleHelpService().doConnOperater(mac);
+                ConnBleHelpService.getConnBleHelpService().doConnOperater(mac);
             }
         });
     }

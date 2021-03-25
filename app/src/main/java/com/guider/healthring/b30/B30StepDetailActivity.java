@@ -95,6 +95,8 @@ public class B30StepDetailActivity extends WatchBaseActivity implements View.OnC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_b30_step_detail_layout);
+
+
         initViewIds();
         initViews();
         initData();

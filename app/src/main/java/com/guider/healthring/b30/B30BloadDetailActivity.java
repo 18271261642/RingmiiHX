@@ -144,7 +144,7 @@ public class B30BloadDetailActivity extends WatchBaseActivity implements View.On
             if (bpData != null && bpData.size() > 0) {
                 for (HalfHourBpData halfHourBpData : bpData) {
                     Map<Integer, Integer> mp = new ArrayMap<>();
-                    mp.put(halfHourBpData.lowValue, halfHourBpData.highValue);
+                    mp.put(halfHourBpData.getLowValue(), halfHourBpData.getHighValue());
                     //resultMap.add(mp);
 
                     Map<String,Map<Integer,Integer>> mMap = new HashMap<>();
@@ -183,14 +183,14 @@ public class B30BloadDetailActivity extends WatchBaseActivity implements View.On
                 //最高血压
                 int hightValue = Collections.max(hightList);
                 int hightValue_low = lowList.get(hightList.indexOf(hightValue));
-                String hightTime = dataList.get(hightList.indexOf(hightValue)).time.getColck();
+                String hightTime = dataList.get(hightList.indexOf(hightValue)).getTime().getColck();
                 b30DetailHeightBloadTv.setText(hightValue + "/" + hightValue_low);
                 b30DetailHeightBloadDateTv.setText(hightTime);
 
                 //最低血压
                 int lowValue = Collections.min(lowList);
                 int lowValue_hight = hightList.get(lowList.indexOf(lowValue));
-                String lowTime = dataList.get(lowList.indexOf(lowValue)).time.getColck();
+                String lowTime = dataList.get(lowList.indexOf(lowValue)).getTime().getColck();
 
                 b30DetailLowestBloadTv.setText(lowValue_hight + "/" + lowValue);
                 b30DetailLowestBloadDateTv.setText(lowTime);

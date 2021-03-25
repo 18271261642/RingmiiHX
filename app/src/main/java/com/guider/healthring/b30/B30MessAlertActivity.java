@@ -11,12 +11,9 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
-
 import androidx.annotation.Nullable;
-
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -25,8 +22,6 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
-import com.android.internal.telephony.ITelephony;
 import com.guider.healthring.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -36,18 +31,13 @@ import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
-import com.veepoo.protocol.listener.data.IDeviceControlPhone;
-import com.veepoo.protocol.listener.data.ISocialMsgDataListener;
 import com.veepoo.protocol.model.datas.FunctionSocailMsgData;
 import com.veepoo.protocol.model.enums.EFunctionStatus;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
-
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
 import static com.guider.healthring.util.SharedPreferencesUtils.isOpenNotificationPermission;
 
 /**
@@ -490,56 +480,6 @@ public class B30MessAlertActivity extends WatchBaseActivity implements View.OnCl
                     SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISPhone, isChecked);
 //                    isOpenPhone = isChecked;
                     SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISCallPhone, isChecked);
-                    MyApp.getInstance().getVpOperateManager().settingDeviceControlPhone(new IDeviceControlPhone() {
-                        @Override
-                        public void rejectPhone() {//TODO 挂电话还没弄好
-
-                            try {
-                                Method method = Class.forName("android.os.ServiceManager")
-                                        .getMethod("getService", String.class);//getSystemService内部就是调用了ServiceManager的getService方法。
-                                IBinder binder = (IBinder) method.invoke(null,
-                                        new Object[]{TELEPHONY_SERVICE});
-                                ITelephony iTelephony = ITelephony.Stub.asInterface(binder);
-                                iTelephony.endCall();
-                                Log.d("call---", "rejectPhone: " + "电话被挂断了");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-
-                        }
-
-                        @Override
-                        public void cliencePhone() {
-                            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                            if (audioManager != null) {
-                                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                                audioManager.getStreamVolume(AudioManager.STREAM_RING);
-                                Log.d("call---", "RINGING 已被静音");
-                            }
-                        }
-
-                        @Override
-                        public void knocknotify(int i) {
-
-                        }
-
-                        @Override
-                        public void sos() {
-
-                        }
-
-//                        @Override
-//                        public void knocknotify(int i) {
-//
-//                        }
-//
-//                        @Override
-//                        public void sos() {
-//
-//                        }
-                    });
-
                     showLoadingDialog("setting...");
                     handler.sendEmptyMessageDelayed(0x88, 200);
 
@@ -585,7 +525,7 @@ public class B30MessAlertActivity extends WatchBaseActivity implements View.OnCl
         }
     }
 
-    Handler handler = new Handler(new Handler.Callback() {
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             switch (message.what) {

@@ -43,6 +43,7 @@ import com.guider.healthring.b30.b30run.B36RunFragment;
 import com.guider.healthring.b30.service.UpNewDataToGDServices;
 import com.guider.healthring.b30.service.VerB30PwdListener;
 import com.guider.healthring.b31.record.B31RecordFragment;
+import com.guider.healthring.b31.record.NewB31RecordFragment;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.bzlmaps.sos.SendSMSBroadCast;
 import com.guider.healthring.commdbserver.CommDataFragment;
@@ -87,7 +88,7 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
     private AlertDialog alertDialog;
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -199,7 +200,8 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
     }
 
     private void initViews() {
-        fragmentList.add(new B31RecordFragment());
+//        fragmentList.add(new B31RecordFragment());
+        fragmentList.add(new NewB31RecordFragment());
         fragmentList.add(new CommDataFragment());
         fragmentList.add(new B36RunFragment());
         fragmentList.add(new B30MineFragment());//WatchMineFragment

@@ -477,8 +477,8 @@ public class CommVpDateUploadService extends IntentService {
             healthVo.deviceCode = code;
             healthVo.heartRate = "0";
             healthVo.bloodOxygen = "0";
-            healthVo.systolic = "" + item.lowValue;
-            healthVo.diastolic = "" + item.highValue;
+            healthVo.systolic = "" + item.getLowValue();
+            healthVo.diastolic = "" + item.getHighValue();
             healthVo.status = "1";
             healthVo.date = obtainDate(item.getTime());
             bpList.add(healthVo);

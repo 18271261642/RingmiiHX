@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
+import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.commdbserver.CommDBManager;
 import com.guider.healthring.commdbserver.CommStepCountDb;
 import com.guider.healthring.commdbserver.SyncDbUrls;
@@ -20,6 +21,10 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.ToastUtil;
+import com.veepoo.protocol.listener.data.IAllHealthDataListener;
+import com.veepoo.protocol.model.datas.OriginData;
+import com.veepoo.protocol.model.datas.OriginHalfHourData;
+import com.veepoo.protocol.model.datas.SleepData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +44,8 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
     Button internalStartBtn;
     Button stopLocalBtn;
 
+    private Button readDeviceDataBtn;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +58,7 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
     }
 
     private void initViewIds() {
+        readDeviceDataBtn = findViewById(R.id.readDeviceDataBtn);
         commentB30BackImg = findViewById(R.id.commentB30BackImg);
         commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
         internalStartBtn = findViewById(R.id.internalStartBtn);
@@ -58,6 +66,7 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
         commentB30BackImg.setOnClickListener(this);
         internalStartBtn.setOnClickListener(this);
         stopLocalBtn.setOnClickListener(this);
+        readDeviceDataBtn.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -77,8 +86,53 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
             case R.id.stopLocalBtn:
                 findAllUploadData();
                 break;
+            case R.id.readDeviceDataBtn:
+                readAllDeviceData();
+                break;
         }
     }
+
+
+
+
+    private void readAllDeviceData(){
+        if(MyCommandManager.DEVICENAME == null)
+            return;
+        MyApp.getInstance().getVpOperateManager().readAllHealthData(new IAllHealthDataListener() {
+            @Override
+            public void onProgress(float v) {
+                Log.e(TAG,"-----onProgress="+v);
+            }
+
+            @Override
+            public void onSleepDataChange(SleepData sleepData) {
+                Log.e(TAG,"-----onSleepDataChange="+sleepData.toString());
+            }
+
+            @Override
+            public void onReadSleepComplete() {
+                Log.e(TAG,"-----onReadSleepComplete=");
+            }
+
+            @Override
+            public void onOringinFiveMinuteDataChange(OriginData originData) {
+                Log.e(TAG,"-----onOringinFiveMinuteDataChange=");
+            }
+
+            @Override
+            public void onOringinHalfHourDataChange(OriginHalfHourData originHalfHourData) {
+                Log.e(TAG,"-----onOringinHalfHourDataChange="+originHalfHourData.toString());
+            }
+
+            @Override
+            public void onReadOriginComplete() {
+                Log.e(TAG,"-----onReadOriginComplete=");
+            }
+        }, 2);
+    }
+
+
+
 
 
     //查询所有需要上传的数据

@@ -252,7 +252,7 @@ public class NewSearchActivity extends GetUserInfoActivity implements
         } else {
             //不支持蓝牙
             ToastUtil.showToast(NewSearchActivity.this, getResources().getString(R.string.bluetooth_not_supported));
-            return;
+//            return;
         }
     }
 
@@ -424,24 +424,24 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                         .connB30ConnBle(customBlueDevice.getBluetoothDevice()
                                 .getAddress(), bleName);
 
-                //B30，B36，Ringmiihx手表，500s，600Z
-                if (bleName.equals(WatchUtils.B30_NAME)
-                        || bleName.equals(WatchUtils.RINGMII_NAME)
-                        || bleName.equals(B31_NAME)
-                        || bleName.equals(WatchUtils.S500_NAME) || bleName.contains("Ringmii")
-                        || bleName.equals(WatchUtils.Z600_NAME)
-                ) {
-                    //connectB30(customBlueDevice.getBluetoothDevice().getAddress().trim(), bleName);
-                    //B30 B31 500S Ringmii
-                    if (customBlueDevice != null &&
-                            !WatchUtils.isEmpty(
-                                    customBlueDevice.getBluetoothDevice().getAddress())) {
-                        showLoadingDialog("connect...");
-                        MyApp.getInstance().getB30ConnStateService()
-                                .connB30ConnBle(customBlueDevice.getBluetoothDevice()
-                                        .getAddress(), bleName);
-                    }
-                }
+//                //B30，B36，Ringmiihx手表，500s，600Z
+//                if (bleName.equals(WatchUtils.B30_NAME)
+//                        || bleName.equals(WatchUtils.RINGMII_NAME)
+//                        || bleName.equals(B31_NAME)
+//                        || bleName.equals(WatchUtils.S500_NAME) || bleName.contains("Ringmii")
+//                        || bleName.equals(WatchUtils.Z600_NAME)
+//                ) {
+//                    //connectB30(customBlueDevice.getBluetoothDevice().getAddress().trim(), bleName);
+//                    //B30 B31 500S Ringmii
+//                    if (customBlueDevice != null &&
+//                            !WatchUtils.isEmpty(
+//                                    customBlueDevice.getBluetoothDevice().getAddress())) {
+//                        showLoadingDialog("connect...");
+//                        MyApp.getInstance().getB30ConnStateService()
+//                                .connB30ConnBle(customBlueDevice.getBluetoothDevice()
+//                                        .getAddress(), bleName);
+//                    }
+//                }
             }
 
         } catch (Exception e) {
@@ -497,52 +497,52 @@ public class NewSearchActivity extends GetUserInfoActivity implements
                             break;
                     }
                 }
-                if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
-                    //绑定状态的广播，配对
-                    int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,
-                            BluetoothDevice.BOND_NONE);
-                    BluetoothDevice bd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    if (bd == null)
-                        return;
-                    if (bd.getName() == null)
-                        return;
-                    switch (bondState) {
-                        case BluetoothDevice.BOND_BONDED:   //已绑定 12
-//                            Log.e(TAG, "-----111-----");
-                            if (customBlueDevice != null) {
-                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
-                                        .getName())) {
-//                                    Log.e(TAG, "-----22-----");
-                                    showLoadingDialog("connect...");
-                                    HidUtil.getInstance(MyApp.getContext()).connect(bd);
-                                }
-                            }
-                            break;
-                        case BluetoothDevice.BOND_BONDING:  //绑定中   11
-                            if (customBlueDevice != null) {
-                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
-                                        .getName())) {
-//                                    Log.e(TAG, "-----22-----");
-                                    showLoadingDialog(verLanguage());
-                                }
-                            }
-                            break;
-                        case BluetoothDevice.BOND_NONE: //绑定失败  10
-                            if (customBlueDevice != null &&
-                                    customBlueDevice.getBluetoothDevice().getName() != null) {
-                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
-                                        .getName())) {
-                                    closeLoadingDialog();
-                                    ToastUtil.showToast(NewSearchActivity.this,
-                                            getResources().getString(R.string.string_conn_fail));
-                                    refresh();
-                                }
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
+//                if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+//                    //绑定状态的广播，配对
+//                    int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE,
+//                            BluetoothDevice.BOND_NONE);
+//                    BluetoothDevice bd = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                    if (bd == null)
+//                        return;
+//                    if (bd.getName() == null)
+//                        return;
+//                    switch (bondState) {
+//                        case BluetoothDevice.BOND_BONDED:   //已绑定 12
+////                            Log.e(TAG, "-----111-----");
+//                            if (customBlueDevice != null) {
+//                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
+//                                        .getName())) {
+////                                    Log.e(TAG, "-----22-----");
+//                                    showLoadingDialog("connect...");
+//                                    HidUtil.getInstance(MyApp.getContext()).connect(bd);
+//                                }
+//                            }
+//                            break;
+//                        case BluetoothDevice.BOND_BONDING:  //绑定中   11
+//                            if (customBlueDevice != null) {
+//                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
+//                                        .getName())) {
+////                                    Log.e(TAG, "-----22-----");
+//                                    showLoadingDialog(verLanguage());
+//                                }
+//                            }
+//                            break;
+//                        case BluetoothDevice.BOND_NONE: //绑定失败  10
+//                            if (customBlueDevice != null &&
+//                                    customBlueDevice.getBluetoothDevice().getName() != null) {
+//                                if (bd.getName().equals(customBlueDevice.getBluetoothDevice()
+//                                        .getName())) {
+//                                    closeLoadingDialog();
+//                                    ToastUtil.showToast(NewSearchActivity.this,
+//                                            getResources().getString(R.string.string_conn_fail));
+//                                    refresh();
+//                                }
+//                            }
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                }
 
 
 //                //B30手环连接成功
