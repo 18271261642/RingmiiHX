@@ -55,6 +55,7 @@ import com.guider.healthring.b31.bpoxy.B31BpOxyAnysisActivity;
 import com.guider.healthring.b31.bpoxy.ShowSpo2DetailActivity;
 import com.guider.healthring.b31.bpoxy.util.ChartViewUtil;
 import com.guider.healthring.b31.bpoxy.util.VpSpo2hUtil;
+import com.guider.healthring.b31.ecg.EcgDetectActivity;
 import com.guider.healthring.b31.hrv.B31HrvDetailActivity;
 import com.guider.healthring.b31.model.B31HRVBean;
 import com.guider.healthring.b31.model.B31Spo2hBean;
@@ -582,7 +583,7 @@ public class NewB31RecordFragment extends LazyFragment implements ConnBleHelpSer
 
             @Override
             public void ecgItem() {
-
+                startActivity(new Intent(getmContext(), EcgDetectActivity.class));
             }
         });
 

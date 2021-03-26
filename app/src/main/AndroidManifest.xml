@@ -1023,7 +1023,8 @@
         <!--精准睡眠-->
         <activity android:name=".b31.B31sPercisionSleepDescActivity"/>
         <activity android:name=".b31.B31sPrecisionSleepActivity"/>
-
+        <!--手动测量心电-->
+        <activity android:name=".b31.ecg.EcgDetectActivity"/>
 
 
 
