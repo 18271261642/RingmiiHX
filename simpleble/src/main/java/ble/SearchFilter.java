@@ -1,6 +1,6 @@
 package ble;
 
-import com.inuker.bluetooth.library.search.SearchResult;
+import com.inuker.bluetooth.library.old.search.SearchResult;
 
 import java.util.TreeSet;
 

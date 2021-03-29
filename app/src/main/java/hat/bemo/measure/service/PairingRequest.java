@@ -18,7 +18,7 @@ import hat.bemo.measure.setting_db.VO_BP;
 public class PairingRequest extends BroadcastReceiver {  
 	private final static String TaidocDevice_ping = "111111";  
 	private final static String ML103D_ping = "4103"; 
-    final String ACTION_PAIRING_REQUEST = "android.bluetooth.device.action.PAIRING_REQUEST";  
+    final String ACTION_PAIRING_REQUEST = "android.bluetooth.device.action.PAIRING_REQUEST";
     static BluetoothDevice remoteDevice = null;  
     private Context context;
     

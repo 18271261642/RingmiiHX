@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_BREATH;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HEART;
@@ -126,7 +125,7 @@ public class VpSpo2hUtil {
         if (originSpo2hList == null || originSpo2hList.isEmpty()) {
             moringData = new ArrayList<>();
         } else {
-            moringData = getMoringData(originSpo2hList);
+            moringData = getMorningData(originSpo2hList);
         }
     }
 
@@ -409,14 +408,15 @@ public class VpSpo2hUtil {
      * @return
      */
     @NonNull
-    private List<Spo2hOriginData> getMoringData(List<Spo2hOriginData> originSpo2hList) {
-        List<Spo2hOriginData> moringData = new ArrayList<>();
-        for (Spo2hOriginData spo2hOriginData : originSpo2hList) {
+    private List<Spo2hOriginData> getMorningData(List<Spo2hOriginData> originSpo2hList) {
+        ArrayList<Spo2hOriginData> oldList = new ArrayList<>(originSpo2hList);
+        List<Spo2hOriginData> morningData = new ArrayList<>();
+        for (Spo2hOriginData spo2hOriginData : oldList) {
             if (spo2hOriginData.getmTime().getHMValue() < 8 * 60) {
-                moringData.add(spo2hOriginData);
+                morningData.add(spo2hOriginData);
             }
         }
-        return moringData;
+        return morningData;
     }
 
 }

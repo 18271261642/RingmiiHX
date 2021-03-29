@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
@@ -62,6 +63,7 @@ import com.veepoo.protocol.model.enums.ELanguage;
 import com.veepoo.protocol.model.enums.EOprateStauts;
 import com.veepoo.protocol.model.enums.EPwdStatus;
 import com.veepoo.protocol.model.settings.CustomSettingData;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -80,14 +82,14 @@ public class ConnBleHelpService {
     private static final String TAG = "ConnBleHelpService";
 
     //验证密码
-    private  ConnBleHelpListener connBleHelpListener;
+    private ConnBleHelpListener connBleHelpListener;
 
     //设备数据
     private ConnBleMsgDataListener connBleMsgDataListener;
 
 
     //睡眠处理map
-    private Map<String,SleepData> sleepMap = new HashMap<>();
+    private Map<String, SleepData> sleepMap = new HashMap<>();
     //精准睡眠处理的map
     private ConcurrentMap<String, CusVPSleepPrecisionData> precisionSleepMap = new ConcurrentHashMap<>();
 
@@ -128,11 +130,11 @@ public class ConnBleHelpService {
 
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 1001){
+            if (msg.what == 1001) {
                 handler.removeMessages(1001);
                 //普通睡眠
                 if (sleepMap != null && !sleepMap.isEmpty()) {
@@ -164,11 +166,11 @@ public class ConnBleHelpService {
                 }
 
                 //精准睡眠
-                if(precisionSleepMap != null && !precisionSleepMap.isEmpty()){
-                    Log.e(TAG,"------精准睡眠的map="+precisionSleepMap.size());
-                    for(Map.Entry<String,CusVPSleepPrecisionData> mmp : precisionSleepMap.entrySet()){
+                if (precisionSleepMap != null && !precisionSleepMap.isEmpty()) {
+                    Log.e(TAG, "------精准睡眠的map=" + precisionSleepMap.size());
+                    for (Map.Entry<String, CusVPSleepPrecisionData> mmp : precisionSleepMap.entrySet()) {
                         //保存详细数据 ，保存详细数据时日期会往后+ 一天
-                        Log.e(TAG,"------保存精准睡眠="+mmp.toString()+"--="+mmp.getValue().getSleepLine());
+                        Log.e(TAG, "------保存精准睡眠=" + mmp.toString() + "--=" + mmp.getValue().getSleepLine());
                         B30HalfHourDB db = new B30HalfHourDB();
                         db.setAddress(MyApp.getInstance().getMacAddress());
                         db.setDate(mmp.getKey());
@@ -181,12 +183,12 @@ public class ConnBleHelpService {
 
             }
 
-            if(msg.what == 1001){
+            if (msg.what == 1001) {
                 boolean isToday = (boolean) msg.obj;
-                if(originProtcolVersion == 0){
+                if (originProtcolVersion == 0) {
                     readOldVersionData(isToday);
-                }else{
-                    new ReadAllDataAsync().execute();
+                } else {
+                    new ReadAllDataAsync().execute(isToday);
                 }
             }
         }
@@ -203,10 +205,9 @@ public class ConnBleHelpService {
     }
 
 
-
     public void doConnOperater(final String bMac) {
         String b30Pwd = (String) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.DEVICESCODE, "0000");
-        if(WatchUtils.isEmpty(b30Pwd))
+        if (WatchUtils.isEmpty(b30Pwd))
             b30Pwd = "0000";
         final boolean is24Hour = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.IS24Hour, true);//是否为24小时制
 
@@ -219,12 +220,12 @@ public class ConnBleHelpService {
             @Override
             public void onPwdDataChange(PwdData pwdData) {
                 //默认密码不正确，提醒用户输入密码
-                if(pwdData.getmStatus() == EPwdStatus.CHECK_FAIL){
+                if (pwdData.getmStatus() == EPwdStatus.CHECK_FAIL) {
                     showLoadingDialog2(bMac);
                 }
 
                 //是否支持佩戴检测
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_SUPPORT_CHECK_WEAR,pwdData.getWearDetectFunction() == EFunctionStatus.SUPPORT);
+                SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.IS_SUPPORT_CHECK_WEAR, pwdData.getWearDetectFunction() == EFunctionStatus.SUPPORT);
             }
         }, new IDeviceFuctionDataListener() {    //设备所支持的功能
             @Override
@@ -264,20 +265,20 @@ public class ConnBleHelpService {
                 //showLoadingDialog2(mac);
                 Log.e(TAG, "-----pwdData=" + pwdData.toString());
                 //此方法调用 ，密码不正确
-                if(pwdData.getmStatus() == EPwdStatus.CHECK_FAIL){
-                    if(verB30PwdListener != null)
+                if (pwdData.getmStatus() == EPwdStatus.CHECK_FAIL) {
+                    if (verB30PwdListener != null)
                         verB30PwdListener.verPwdFailed();
                 }
 
                 //验证密码成功
-                if(pwdData.getmStatus() == EPwdStatus.CHECK_AND_TIME_SUCCESS){
+                if (pwdData.getmStatus() == EPwdStatus.CHECK_AND_TIME_SUCCESS) {
                     SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, blePwd);
-                    if(verB30PwdListener != null)
+                    if (verB30PwdListener != null)
                         verB30PwdListener.verPwdSucc();
                 }
 
                 //是否支持佩戴检测
-                SharedPreferencesUtils.setParam(MyApp.getContext(),Commont.IS_SUPPORT_CHECK_WEAR,pwdData.getWearDetectFunction() == EFunctionStatus.SUPPORT);
+                SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.IS_SUPPORT_CHECK_WEAR, pwdData.getWearDetectFunction() == EFunctionStatus.SUPPORT);
 
             }
         }, new IDeviceFuctionDataListener() {
@@ -302,63 +303,62 @@ public class ConnBleHelpService {
     }
 
 
-    private void getCommSupportFunction(FunctionDeviceSupportData functionDeviceSupportData){
+    private void getCommSupportFunction(FunctionDeviceSupportData functionDeviceSupportData) {
         Context context = MyApp.getContext();
         Log.e(TAG, "--111---functionDeviceSupportData--=" + functionDeviceSupportData.toString());
 
         //版本协议
         originProtcolVersion = functionDeviceSupportData.getOriginProtcolVersion();
-        SharedPreferencesUtils.setParam(context,Commont.VP_DEVICE_VERSION,originProtcolVersion);
+        SharedPreferencesUtils.setParam(context, Commont.VP_DEVICE_VERSION, originProtcolVersion);
 
         //设置支持的主题风格
         int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
-        SharedPreferencesUtils.setParam(context,Commont.SP_DEVICE_STYLE_COUNT,deviceStyleCoount);
+        SharedPreferencesUtils.setParam(context, Commont.SP_DEVICE_STYLE_COUNT, deviceStyleCoount);
 
         //是否支持亮度调节
-        SharedPreferencesUtils.setParam(context,Commont.IS_B31S_LIGHT_KEY,functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
+        SharedPreferencesUtils.setParam(context, Commont.IS_B31S_LIGHT_KEY, functionDeviceSupportData.getScreenLight() == EFunctionStatus.SUPPORT);
         //是否支持血压
-        SharedPreferencesUtils.setParam(context,Commont.IS_B31_HAS_BP_KEY,functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+        SharedPreferencesUtils.setParam(context, Commont.IS_B31_HAS_BP_KEY, functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
         //是否支持倒计时
-        SharedPreferencesUtils.setParam(context, Commont.IS_SUPPORT_COUNT_DOWM,functionDeviceSupportData.getCountDown() == EFunctionStatus.SUPPORT);
+        SharedPreferencesUtils.setParam(context, Commont.IS_SUPPORT_COUNT_DOWM, functionDeviceSupportData.getCountDown() == EFunctionStatus.SUPPORT);
 
         //是否支持血氧
         isSupportSpo2 = functionDeviceSupportData.getSpo2H() == EFunctionStatus.SUPPORT;
-        SharedPreferencesUtils.setParam(context,Commont.IS_SUPPORT_SPO2,isSupportSpo2);
+        SharedPreferencesUtils.setParam(context, Commont.IS_SUPPORT_SPO2, isSupportSpo2);
 
         //是否支持精准睡眠
         isSleepPrecisionData = functionDeviceSupportData.getPrecisionSleep() == EFunctionStatus.SUPPORT;
-        SharedPreferencesUtils.setParam(context,Commont.IS_SUPPORT_precisionSleep,isSleepPrecisionData);
+        SharedPreferencesUtils.setParam(context, Commont.IS_SUPPORT_precisionSleep, isSleepPrecisionData);
 
         //是否疲劳度检测功能
-        SharedPreferencesUtils.setParam(context,Commont.IS_B31S_FATIGUE_KEY,functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
+        SharedPreferencesUtils.setParam(context, Commont.IS_B31S_FATIGUE_KEY, functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
         //B31是否支持呼吸率
-        SharedPreferencesUtils.setParam(context,Commont.IS_B31_HEART,functionDeviceSupportData.getBeathFunction() == EFunctionStatus.SUPPORT);
+        SharedPreferencesUtils.setParam(context, Commont.IS_B31_HEART, functionDeviceSupportData.getBeathFunction() == EFunctionStatus.SUPPORT);
 
         //是否支持心电
-        SharedPreferencesUtils.setParam(context,Commont.IS_SUPPORT_ECG_KEY,functionDeviceSupportData.getEcg() == EFunctionStatus.SUPPORT);
+        SharedPreferencesUtils.setParam(context, Commont.IS_SUPPORT_ECG_KEY, functionDeviceSupportData.getEcg() == EFunctionStatus.SUPPORT);
     }
 
 
-
     //设置共同的属性
-    private void setCommDevice(){
+    private void setCommDevice() {
 
         SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.BATTERNUMBER, 0);//每次连接清空电量
         //同步用户信息，设置目标步数
         setDeviceUserData();
 
         //设置语言，根据系统的语言设置
-        ELanguage languageData ;
+        ELanguage languageData;
         String localelLanguage = Locale.getDefault().getLanguage();
-        if(!WatchUtils.isEmpty(localelLanguage) && localelLanguage.equals("zh")){    //中文
+        if (!WatchUtils.isEmpty(localelLanguage) && localelLanguage.equals("zh")) {    //中文
             Locale locales = MyApp.getInstance().getApplicationContext().getResources().getConfiguration().locale;
             String localCountry = locales.getCountry();
-            if(localCountry.equals("TW")){  //繁体
+            if (localCountry.equals("TW")) {  //繁体
                 languageData = ELanguage.CHINA_TRADITIONAL;
-            }else{
+            } else {
                 languageData = ELanguage.CHINA;
             }
-        }else{
+        } else {
             languageData = ELanguage.ENGLISH;
         }
         MyApp.getInstance().getVpOperateManager().settingDeviceLanguage(bleWriteResponse, new ILanguageDataListener() {
@@ -375,11 +375,11 @@ public class ConnBleHelpService {
     /**
      * 同步用户信息设置设备的目标步数，
      */
-    public  void setDeviceUserData(){
+    public void setDeviceUserData() {
         //目标步数
         int sportGoal = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "b30Goal", 0);
         PersonInfoData personInfoData = WatchUtils.getUserPerson(sportGoal);
-        if (personInfoData == null){
+        if (personInfoData == null) {
             if (connBleHelpListener != null) {
                 connBleHelpListener.connSuccState();
             }
@@ -397,7 +397,6 @@ public class ConnBleHelpService {
             }
         }, personInfoData);
     }
-
 
 
     /**
@@ -421,7 +420,8 @@ public class ConnBleHelpService {
                 }
 
                 String bleName = "B31";
-                if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)) bleName = MyCommandManager.DEVICENAME;
+                if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME))
+                    bleName = MyCommandManager.DEVICENAME;
                 //保存总步数
                 CommDBManager.getCommDBManager().saveCommCountStepDate(bleName, MyApp.getInstance().getMacAddress(),
                         WatchUtils.getCurrentDate(), sportData.getStep());
@@ -468,9 +468,8 @@ public class ConnBleHelpService {
     }
 
 
-
     //只读取睡眠
-    private void readOnlySleep(boolean day){
+    private void readOnlySleep(boolean day) {
         if (sleepMap != null)
             sleepMap.clear();
 //        if(precisionSleepMap != null)
@@ -483,10 +482,10 @@ public class ConnBleHelpService {
                     return;
                 saveSleepData(sleepData);
                 //Log.e(TAG, "-----22----睡眠原始返回数据=" + sleepData.toString());
-                if(sleepData instanceof SleepPrecisionData && isSleepPrecisionData){
+                if (sleepData instanceof SleepPrecisionData && isSleepPrecisionData) {
                     SleepPrecisionData sleepPrecisionData = (SleepPrecisionData) sleepData;
                     savePrecisionData(sleepPrecisionData);
-                }else{
+                } else {
                     // 睡眠数据返回,会有多条数据
                     saveSleepData(sleepData);
                 }
@@ -508,7 +507,7 @@ public class ConnBleHelpService {
                 Message message = handler.obtainMessage();
                 message.what = 1001;
                 message.obj = day;
-                handler.sendMessageDelayed(message,3 * 1000);
+                handler.sendMessageDelayed(message, 3 * 1000);
             }
         }, day ? 2 : 3);
     }
@@ -517,18 +516,18 @@ public class ConnBleHelpService {
     //保存精准睡眠
     private void savePrecisionData(SleepPrecisionData sleepPrecisionData) {
         try {
-            if(sleepPrecisionData == null)
+            if (sleepPrecisionData == null)
                 return;
-            Log.e(TAG,"--------精准睡眠原始数据="+sleepPrecisionData.toString()+"="+sleepPrecisionData.getSleepLine());
+            Log.e(TAG, "--------精准睡眠原始数据=" + sleepPrecisionData.toString() + "=" + sleepPrecisionData.getSleepLine());
             TimeData downTimeData = sleepPrecisionData.getSleepDown();
-            CusVPTimeData donwTime = new CusVPTimeData(downTimeData.getYear(),downTimeData.getMonth(),
-                    downTimeData.getDay(),downTimeData.getHour(),downTimeData.getMinute(),
-                    downTimeData.getSecond(),downTimeData.getWeekDay());
+            CusVPTimeData donwTime = new CusVPTimeData(downTimeData.getYear(), downTimeData.getMonth(),
+                    downTimeData.getDay(), downTimeData.getHour(), downTimeData.getMinute(),
+                    downTimeData.getSecond(), downTimeData.getWeekDay());
 
             TimeData upTimeData = sleepPrecisionData.getSleepUp();
-            CusVPTimeData upTime = new CusVPTimeData(upTimeData.getYear(),upTimeData.getMonth(),
-                    upTimeData.getDay(),upTimeData.getHour(),upTimeData.getMinute(),
-                    upTimeData.getSecond(),upTimeData.getWeekDay());
+            CusVPTimeData upTime = new CusVPTimeData(upTimeData.getYear(), upTimeData.getMonth(),
+                    upTimeData.getDay(), upTimeData.getHour(), upTimeData.getMinute(),
+                    upTimeData.getSecond(), upTimeData.getWeekDay());
 
 
             CusVPSleepPrecisionData cSleep = new CusVPSleepPrecisionData();
@@ -571,37 +570,36 @@ public class ConnBleHelpService {
             cSleep.setSleepLine(sleepPrecisionData.getSleepLine());
 
 
-
             String dateStr = cSleep.getDate();
-            Log.e(TAG,"---------dateStr="+dateStr);
-            if(precisionSleepMap.get(dateStr) == null){
-                precisionSleepMap.put(dateStr,cSleep);
-            }else{
+            Log.e(TAG, "---------dateStr=" + dateStr);
+            if (precisionSleepMap.get(dateStr) == null) {
+                precisionSleepMap.put(dateStr, cSleep);
+            } else {
                 //同一天的
                 CusVPSleepPrecisionData tmpCusVpSleep = precisionSleepMap.get(dateStr);
-                if(tmpCusVpSleep == null)
+                if (tmpCusVpSleep == null)
                     return;
 
                 //入睡时间的分钟
                 long tmpSleepDownTime = DateTimeUtils.formatDateToLong(tmpCusVpSleep.getSleepDown().getDateAndClockForSleepSecond());
                 long cSleepDownTime = DateTimeUtils.formatDateToLong(cSleep.getSleepDown().getDateAndClockForSleepSecond());
 
-                if(tmpSleepDownTime != cSleepDownTime){ //组合分段的睡眠数据
+                if (tmpSleepDownTime != cSleepDownTime) { //组合分段的睡眠数据
                     CusVPSleepPrecisionData resultSleepData = new CusVPSleepPrecisionData();
                     resultSleepData.setDate(dateStr);
                     //判断哪一个是最后的时间
                     //入睡时间
-                    resultSleepData.setSleepDown(tmpSleepDownTime>cSleepDownTime?cSleep.getSleepDown():tmpCusVpSleep.getSleepDown());
+                    resultSleepData.setSleepDown(tmpSleepDownTime > cSleepDownTime ? cSleep.getSleepDown() : tmpCusVpSleep.getSleepDown());
                     //起床时间
-                    resultSleepData.setSleepUp(tmpSleepDownTime>cSleepDownTime?tmpCusVpSleep.getSleepUp():cSleep.getSleepUp());
+                    resultSleepData.setSleepUp(tmpSleepDownTime > cSleepDownTime ? tmpCusVpSleep.getSleepUp() : cSleep.getSleepUp());
                     //所有睡眠时间
-                    resultSleepData.setAllSleepTime(tmpSleepDownTime>cSleepDownTime?tmpCusVpSleep.getAllSleepTime():cSleep.getAllSleepTime());
+                    resultSleepData.setAllSleepTime(tmpSleepDownTime > cSleepDownTime ? tmpCusVpSleep.getAllSleepTime() : cSleep.getAllSleepTime());
                     //浅睡时间
-                    resultSleepData.setLowSleepTime(tmpSleepDownTime>cSleepDownTime?tmpCusVpSleep.getLowSleepTime():cSleep.getLowSleepTime());
+                    resultSleepData.setLowSleepTime(tmpSleepDownTime > cSleepDownTime ? tmpCusVpSleep.getLowSleepTime() : cSleep.getLowSleepTime());
                     //深睡
-                    resultSleepData.setDeepSleepTime(tmpSleepDownTime>cSleepDownTime?tmpCusVpSleep.getDeepSleepTime():cSleep.getDeepSleepTime());
+                    resultSleepData.setDeepSleepTime(tmpSleepDownTime > cSleepDownTime ? tmpCusVpSleep.getDeepSleepTime() : cSleep.getDeepSleepTime());
                     //苏醒次数
-                    resultSleepData.setWakeCount(tmpSleepDownTime>cSleepDownTime?tmpCusVpSleep.getWakeCount():cSleep.getWakeCount());
+                    resultSleepData.setWakeCount(tmpSleepDownTime > cSleepDownTime ? tmpCusVpSleep.getWakeCount() : cSleep.getWakeCount());
                     //睡眠质量
                     resultSleepData.setSleepQulity(Math.max(tmpCusVpSleep.getSleepQulity(), cSleep.getSleepQulity()));
 
@@ -642,25 +640,24 @@ public class ConnBleHelpService {
 
                     String sleepLinStr1 = tmpCusVpSleep.getSleepLine();
                     String sleepLinStr2 = cSleep.getSleepLine();
-                    resultSleepData.setSleepLine(tmpSleepDownTime>cSleepDownTime?(sleepLinStr2+sleepLinStr1):(sleepLinStr1+sleepLinStr2));
-                    precisionSleepMap.put(dateStr,resultSleepData);
+                    resultSleepData.setSleepLine(tmpSleepDownTime > cSleepDownTime ? (sleepLinStr2 + sleepLinStr1) : (sleepLinStr1 + sleepLinStr2));
+                    precisionSleepMap.put(dateStr, resultSleepData);
 
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
     //版本协议为新版
-    class ReadAllDataAsync extends AsyncTask<Void,Void,Void> {
+    class ReadAllDataAsync extends AsyncTask<Boolean, Void, Void> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
-
-            if(!isSupportSpo2){
+        protected Void doInBackground(Boolean... booleans) {
+            if (!isSupportSpo2) {
                 new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
                         .obtainFormatDate(0));// 更新最后更新数据的时间
                 if (connBleMsgDataListener != null) {
@@ -673,71 +670,76 @@ public class ConnBleHelpService {
 
                 return null;
             }
+            Boolean isToday = true;
+            if (booleans.length != 0) {
+                isToday = booleans[0];
+            }
+            if (isToday) {
+                Log.i(TAG, "版本协议新版只读当日");
+            } else Log.i(TAG, "版本协议新版读取3日数据");
+            MyApp.getInstance().getVpOperateManager().readOriginData(bleWriteResponse,
+                    new IOriginData3Listener() {
+                        @Override
+                        public void onOriginFiveMinuteListDataChange(List<OriginData3> list) {
 
+                        }
 
-            MyApp.getInstance().getVpOperateManager().readOriginData(bleWriteResponse, new IOriginData3Listener() {
-                @Override
-                public void onOriginFiveMinuteListDataChange(List<OriginData3> list) {
+                        @Override
+                        public void onOriginHalfHourDataChange(OriginHalfHourData originHalfHourData) {
+                            saveHalfHourData(originHalfHourData);
+                        }
 
-                }
+                        @Override
+                        public void onOriginHRVOriginListDataChange(List<HRVOriginData> list) {
+                            if (b31sSaveHrvAsyncTask != null &&
+                                    b31sSaveHrvAsyncTask.getStatus() == Status.RUNNING) {
+                                b31sSaveHrvAsyncTask.cancel(true);
+                                b31sSaveHrvAsyncTask = null;
+                            }
+                            b31sSaveHrvAsyncTask = new B31sSaveHrvAsyncTask();
+                            b31sSaveHrvAsyncTask.execute(list);
+                        }
 
-                @Override
-                public void onOriginHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-                    saveHalfHourData(originHalfHourData);
-                }
+                        @Override
+                        public void onOriginSpo2OriginListDataChange(List<Spo2hOriginData> list) {
+                            if (b31SaveSpo2AsyncTask != null &&
+                                    b31SaveSpo2AsyncTask.getStatus() == Status.RUNNING) {
+                                b31SaveSpo2AsyncTask.cancel(true);
+                                b31SaveSpo2AsyncTask = null;
+                                b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
+                            } else {
+                                b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
+                            }
+                            b31SaveSpo2AsyncTask.execute(list);
+                        }
 
-                @Override
-                public void onOriginHRVOriginListDataChange(List<HRVOriginData> list) {
-                    if(b31sSaveHrvAsyncTask != null && b31sSaveHrvAsyncTask.getStatus() == Status.RUNNING){
-                        b31sSaveHrvAsyncTask.cancel(true);
-                        b31sSaveHrvAsyncTask = null;
-                        b31sSaveHrvAsyncTask = new B31sSaveHrvAsyncTask();
-                    }else{
-                        b31sSaveHrvAsyncTask = new B31sSaveHrvAsyncTask();
-                    }
-                    b31sSaveHrvAsyncTask.execute(list);
-                }
+                        @Override
+                        public void onReadOriginProgressDetail(int i, String s, int i1, int i2) {
 
-                @Override
-                public void onOriginSpo2OriginListDataChange(List<Spo2hOriginData> list) {
-                    if(b31SaveSpo2AsyncTask != null && b31SaveSpo2AsyncTask.getStatus() == Status.RUNNING){
-                        b31SaveSpo2AsyncTask.cancel(true);
-                        b31SaveSpo2AsyncTask = null;
-                        b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
-                    }else{
-                        b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
-                    }
-                    b31SaveSpo2AsyncTask.execute(list);
-                }
+                        }
 
-                @Override
-                public void onReadOriginProgressDetail(int i, String s, int i1, int i2) {
+                        @Override
+                        public void onReadOriginProgress(float v) {
 
-                }
+                        }
 
-                @Override
-                public void onReadOriginProgress(float v) {
-
-                }
-
-                @Override
-                public void onReadOriginComplete() {
-                    new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
-                            .obtainFormatDate(0));// 更新最后更新数据的时间
-                    if (connBleMsgDataListener != null) {
-                        connBleMsgDataListener.onOriginData();
-                    }
-                }
-            }, 1);
+                        @Override
+                        public void onReadOriginComplete() {
+                            new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
+                                    .obtainFormatDate(0));// 更新最后更新数据的时间
+                            if (connBleMsgDataListener != null) {
+                                connBleMsgDataListener.onOriginData();
+                            }
+                        }
+                    }, isToday ? 1 : 3);
             return null;
         }
     }
 
 
-
     //读取版本协议为0的数据
-    private void readOldVersionData(boolean isToday){
-        Log.e(TAG,"------读取健康数据="+isToday);
+    private void readOldVersionData(boolean isToday) {
+        Log.e(TAG, "------读取健康数据=" + isToday);
         VPOperateManager.getMangerInstance(MyApp.getContext()).readOriginData(bleWriteResponse, new IOriginDataListener() {
             @Override
             public void onOringinFiveMinuteDataChange(OriginData originData) {
@@ -746,7 +748,7 @@ public class ConnBleHelpService {
 
             @Override
             public void onOringinHalfHourDataChange(OriginHalfHourData originHalfHourData) {
-                Log.e(TAG,"------onOringinHalfHourDataChange="+originHalfHourData.toString());
+                Log.e(TAG, "------onOringinHalfHourDataChange=" + originHalfHourData.toString());
                 saveHalfHourData(originHalfHourData);
             }
 
@@ -770,18 +772,17 @@ public class ConnBleHelpService {
                 }
 
                 //开始读取血氧和HRV数据
-                if(isSupportSpo2){
+                if (isSupportSpo2) {
                     try {
                         Intent intent = new Intent(MyApp.getContext(), NewReadHRVAnSpo2DatatService.class);
                         MyApp.getInstance().getApplicationContext().startService(intent);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
-        },isToday ? 1 : 2);
+        }, isToday ? 1 : 2);
     }
-
 
 
     /**
@@ -853,18 +854,18 @@ public class ConnBleHelpService {
         if (sleepData == null) return;
 
         *//***
-         * 睡眠数据
-         *
-         * @param cali_flag     睡眠定标值，目前这个值没有什么用
-         * @param sleepQulity   睡眠质量
-         * @param wakeCount     睡眠中起床的次数
-         * @param deepSleepTime 深睡时长
-         * @param lowSleepTime  浅睡时长
-         * @param allSleepTime  睡眠总时长
-         * @param sleepLine      获取睡眠曲线，主要用于更具象化的UI来显示睡眠状态（可参考我司APP,360应用市场搜索Hband），如果您睡眠界面对UI没有特殊要求，可不理会,睡眠曲线分为普通睡眠和精准睡眠，普通睡眠是一组由0,1,2组成的字符串，每一个字符代表时长为5分钟，其中0表示浅睡，1表示深睡，2表示苏醒,比如“201112”，长度为6，表示睡眠阶段共30分钟，头尾各苏醒5分钟，中间浅睡5分钟，深睡15分钟;若是精准睡眠，睡眠曲线是一组由0,1,2，3,4组成的字符串，每一个字符代表时长为1分钟，其中0表示深睡，1表示浅睡，2表示快速眼动,3表示失眠,4表示苏醒。
-         * @param sleepDown     入睡时间
-         * @param sleepUp       起床时间
-         *//*
+     * 睡眠数据
+     *
+     * @param cali_flag     睡眠定标值，目前这个值没有什么用
+     * @param sleepQulity   睡眠质量
+     * @param wakeCount     睡眠中起床的次数
+     * @param deepSleepTime 深睡时长
+     * @param lowSleepTime  浅睡时长
+     * @param allSleepTime  睡眠总时长
+     * @param sleepLine      获取睡眠曲线，主要用于更具象化的UI来显示睡眠状态（可参考我司APP,360应用市场搜索Hband），如果您睡眠界面对UI没有特殊要求，可不理会,睡眠曲线分为普通睡眠和精准睡眠，普通睡眠是一组由0,1,2组成的字符串，每一个字符代表时长为5分钟，其中0表示浅睡，1表示深睡，2表示苏醒,比如“201112”，长度为6，表示睡眠阶段共30分钟，头尾各苏醒5分钟，中间浅睡5分钟，深睡15分钟;若是精准睡眠，睡眠曲线是一组由0,1,2，3,4组成的字符串，每一个字符代表时长为1分钟，其中0表示深睡，1表示浅睡，2表示快速眼动,3表示失眠,4表示苏醒。
+     * @param sleepDown     入睡时间
+     * @param sleepUp       起床时间
+     *//*
         TimeData downTimeData = sleepData.getSleepDown();
         CusVPTimeData donwTime = new CusVPTimeData(downTimeData.getYear(),downTimeData.getMonth(),
                 downTimeData.getDay(),downTimeData.getHour(),downTimeData.getMinute(),
@@ -943,12 +944,12 @@ public class ConnBleHelpService {
     private void saveHalfHourData(OriginHalfHourData data) {
         if (data == null) return;
         String mac = MyApp.getInstance().getMacAddress();
-        if(WatchUtils.isEmpty(mac))
+        if (WatchUtils.isEmpty(mac))
             return;
         String dateSport = saveSportData(mac, data.getHalfHourSportDatas());
         saveStepData(mac, dateSport, data.getAllStep());
         saveRateData(mac, data.getHalfHourRateDatas());
-        Log.d(TAG, "------------心率="+data.getHalfHourRateDatas().toString());
+        Log.d(TAG, "------------心率=" + data.getHalfHourRateDatas().toString());
         saveBpData(mac, data.getHalfHourBps());
     }
 
@@ -961,7 +962,7 @@ public class ConnBleHelpService {
      */
     private String saveSportData(String mac, List<HalfHourSportData> sportData) {
         if (sportData == null || sportData.isEmpty()) return null;
-        Log.e(TAG,"-------运动数据="+gson.toJson(sportData));
+        Log.e(TAG, "-------运动数据=" + gson.toJson(sportData));
 //
 //        List<CusVPHalfSportData> cusVPHalfSportDataList = new ArrayList<>();
 //        for(HalfHourSportData halfSportData : sportData){
@@ -1042,10 +1043,6 @@ public class ConnBleHelpService {
 //        }
 
 
-
-
-
-
         B30HalfHourDB db = new B30HalfHourDB();
         db.setAddress(mac);
         db.setDate(bpData.get(0).getDate());
@@ -1088,7 +1085,7 @@ public class ConnBleHelpService {
         if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)) bleName = MyCommandManager.DEVICENAME;
         Log.e(TAG, " B31  " + mac + "  " + date + "  " + stepCurr);
         //当天的汇总步数不在此保存，这里是根据详细步数累加步数，和返回的有出入
-        if(!WatchUtils.isEquesValue(date)){
+        if (!WatchUtils.isEquesValue(date)) {
             //保存总步数
             CommDBManager.getCommDBManager().saveCommCountStepDate(bleName, mac, date, stepCurr);
             if (stepCurr > stepLocal) {
@@ -1098,7 +1095,7 @@ public class ConnBleHelpService {
                 db.setType(B30HalfHourDao.TYPE_STEP);
                 db.setOriginData("" + stepCurr);
                 db.setUpload(0);
-                Log.e(TAG,"---------保存步数总数="+db.toString());
+                Log.e(TAG, "---------保存步数总数=" + db.toString());
                 B30HalfHourDao.getInstance().saveOriginData(db);
             }
         }
@@ -1126,7 +1123,6 @@ public class ConnBleHelpService {
          */
         void onOriginData();
     }
-
 
 
     public void setConnBleMsgDataListener(ConnBleMsgDataListener connBleMsgDataListener) {

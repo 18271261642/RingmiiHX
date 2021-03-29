@@ -17,6 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -65,7 +74,6 @@ import com.guider.healthring.siswatch.LazyFragment;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.utils.WatchConstants;
 import com.guider.healthring.siswatch.utils.WatchUtils;
-import com.guider.healthring.util.Common;
 import com.guider.healthring.util.Constant;
 import com.guider.healthring.util.LocalizeTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -74,31 +82,26 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.model.datas.HRVOriginData;
 import com.veepoo.protocol.model.datas.HalfHourBpData;
 import com.veepoo.protocol.model.datas.HalfHourRateData;
 import com.veepoo.protocol.model.datas.HalfHourSportData;
-import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.model.datas.Spo2hOriginData;
 import com.veepoo.protocol.model.datas.TimeData;
 import com.veepoo.protocol.model.enums.ESpo2hDataType;
 import com.veepoo.protocol.util.HRVOriginUtil;
 import com.veepoo.protocol.util.HrvScoreUtil;
 import com.veepoo.protocol.util.Spo2hOriginUtil;
+
+import org.jetbrains.annotations.NotNull;
 import org.litepal.LitePal;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_HRV;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MAX_SPO2H;
 import static com.guider.healthring.b31.bpoxy.enums.Constants.CHART_MIN_HRV;
@@ -123,7 +126,6 @@ public class NewB31RecordFragment extends LazyFragment
     private static final int UPDATE_SPO2_CODE = 0x00;
     //HRV
     private static final int UPDATE_HRV_CODE = 0x01;
-
 
 
     ImageView ivTop;
@@ -205,8 +207,7 @@ public class NewB31RecordFragment extends LazyFragment
     //血氧
     CardView spo2CardView;
     //血氧
-    LinearLayout block_spo2h,block_heart,block_sleep,block_breath,block_lowspo2h;
-
+    LinearLayout block_spo2h, block_heart, block_sleep, block_breath, block_lowspo2h;
 
 
     /**
@@ -273,15 +274,15 @@ public class NewB31RecordFragment extends LazyFragment
 
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
+    private final Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NotNull Message msg) {
             super.handleMessage(msg);
-            if (getActivity() != null && !getActivity().isFinishing() && b31HomeSwipeRefreshLayout != null) {
+            if (getActivity() != null && !getActivity().isFinishing()
+                    && b31HomeSwipeRefreshLayout != null) {
                 if (msg.what != 1000) {
                     b31HomeSwipeRefreshLayout.finishRefresh();// 停止下拉刷新
                 }
-
             }
             switch (msg.what) {
                 case 1000:
@@ -348,39 +349,29 @@ public class NewB31RecordFragment extends LazyFragment
                     }
                     break;
                 case 555:
-//                    if (getActivity() != null ) {
-//                        try {
-//                            syncStatusTv.setVisibility(View.GONE);
-//                            Intent intent = new Intent(getmContext(),UploadSpo2AndHrvService.class);
-//                            getmContext().startService(intent);
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-                    break;
-                case 0x80:
-                    B31HomeActivity activity = (B31HomeActivity) getActivity();
-                    if (activity != null) activity.startUploadDate();// 上传数据
+                    if (getActivity() != null && !getActivity().isFinishing()) {
+                        syncStatusTv.setVisibility(View.GONE);
+//                        B31HomeActivity activity = (B31HomeActivity) getActivity();
+//                        if (activity != null) activity.startUploadDate();// 上传数据
+                    }
                     break;
                 case UPDATE_SPO2_CODE:  //更新血氧
                     String macStr = (String) msg.obj;
-                    if(WatchUtils.isEmpty(macStr))
+                    if (WatchUtils.isEmpty(macStr))
                         return;
-                    updateSpo2Data(macStr,WatchUtils.getCurrentDate());
+                    updateSpo2Data(macStr, WatchUtils.getCurrentDate());
                     handler.sendEmptyMessage(555);
                     break;
                 case UPDATE_HRV_CODE:   //更新HRV
                     String addressStr = (String) msg.obj;
-                    if(WatchUtils.isEmpty(addressStr))
+                    if (WatchUtils.isEmpty(addressStr))
                         return;
-                    updateHRVData(addressStr,WatchUtils.getCurrentDate());
+                    updateHRVData(addressStr, WatchUtils.getCurrentDate());
                     break;
 
             }
         }
     };
-
-
 
 
     @Override
@@ -430,8 +421,7 @@ public class NewB31RecordFragment extends LazyFragment
     }
 
 
-
-    private void findViewIds(){
+    private void findViewIds() {
         //体检图表
         spo2ChartListLayout = b31View.findViewById(R.id.spo2ChartListLayout);
         refreshHeader = b31View.findViewById(R.id.refreshHeader);
@@ -529,32 +519,32 @@ public class NewB31RecordFragment extends LazyFragment
         manualList = new ArrayList<>();
         manualList.add("HEART");
         //是否支持血压
-        boolean isSupportBp = (boolean) SharedPreferencesUtils.getParam(getmContext(),Commont.IS_B31_HAS_BP_KEY,false);
-        if(isSupportBp)
+        boolean isSupportBp = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_B31_HAS_BP_KEY, false);
+        if (isSupportBp)
             manualList.add("BLOOD");
-        boolean isSupportSpo2 = (boolean) SharedPreferencesUtils.getParam(getmContext(),Commont.IS_SUPPORT_SPO2,false);
-        if(isSupportSpo2){
+        boolean isSupportSpo2 = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_SUPPORT_SPO2, false);
+        if (isSupportSpo2) {
             manualList.add("SPO2");
             spo2ChartListLayout.setVisibility(isSupportSpo2 ? View.VISIBLE : View.GONE);
         }
 
         //是否支持呼吸率
-        boolean isSupportHeartV = (boolean) SharedPreferencesUtils.getParam(getmContext(),Commont.IS_B31_HEART,false);
-        if(isSupportHeartV)
+        boolean isSupportHeartV = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_B31_HEART, false);
+        if (isSupportHeartV)
             manualList.add("BREATH");
         //是否支持疲劳度
-        boolean isSupportFatigue = (boolean) SharedPreferencesUtils.getParam(getmContext(),Commont.IS_B31S_FATIGUE_KEY,false);
-        if(isSupportFatigue)
+        boolean isSupportFatigue = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_B31S_FATIGUE_KEY, false);
+        if (isSupportFatigue)
             manualList.add("FATIGUE");
         //是否支持心电
-        boolean isSupportEcg = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_SUPPORT_ECG_KEY,false);
-        if(isSupportEcg)
+        boolean isSupportEcg = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_SUPPORT_ECG_KEY, false);
+        if (isSupportEcg)
             manualList.add("ECG");
 
-        GridLayoutManager manualGridLm = new GridLayoutManager(mContext,manualList.size());
+        GridLayoutManager manualGridLm = new GridLayoutManager(mContext, manualList.size());
         manualGridLm.setOrientation(LinearLayoutManager.VERTICAL);
         manualRecyclerView.setLayoutManager(manualGridLm);
-        manualAdapter = new ManualAdapter(manualList,mContext);
+        manualAdapter = new ManualAdapter(manualList, mContext);
         manualRecyclerView.setAdapter(manualAdapter);
         manualAdapter.setOnFloatingBtnListener(new ManualAdapter.OnFloatingBtnListener() {
             @Override
@@ -619,12 +609,9 @@ public class NewB31RecordFragment extends LazyFragment
 
         //进度圆显示默认的步数
         if (getActivity() != null && !getActivity().isFinishing() && b31ProgressBar != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    b31ProgressBar.setMaxValue(goalStep);
-                    b31ProgressBar.setValue(defaultSteps);
-                }
+            getActivity().runOnUiThread(() -> {
+                b31ProgressBar.setMaxValue(goalStep);
+                b31ProgressBar.setValue(defaultSteps);
             });
         }
         if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext())))
@@ -637,45 +624,34 @@ public class NewB31RecordFragment extends LazyFragment
         }
 
         if (b31HomeSwipeRefreshLayout != null)
-            b31HomeSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-                @Override
-                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                    getBleMsgData();
-                }
-            });
+            b31HomeSwipeRefreshLayout.setOnRefreshListener(refreshLayout -> getBleMsgData());
 
 
-        b30TopDateTv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startActivity(new Intent(getmContext(), InternalTestActivity.class));
-                return true;
-            }
+        b30TopDateTv.setOnLongClickListener(v -> {
+            startActivity(new Intent(getmContext(), InternalTestActivity.class));
+            return true;
         });
 
     }
 
 
-
     //判断显示的设备图标
     private void showDeviceIcon() {
         if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)) {
-            if (MyCommandManager.DEVICENAME.equals(WatchUtils.B31_NAME)) {
-                ivTop.setImageResource(R.mipmap.ic_home_top_b31);
-                return;
+            switch (MyCommandManager.DEVICENAME) {
+                case WatchUtils.S500_NAME:
+                    ivTop.setImageResource(R.mipmap.ic_500s);
+                    break;
+                case WatchUtils.Z600_NAME:
+                    ivTop.setImageResource(R.mipmap.ic_600z);
+                    break;
+                default:
+                    ivTop.setImageResource(R.mipmap.ic_home_top_b31);//b31s
+                    break;
             }
-
-            if (MyCommandManager.DEVICENAME.equals(WatchUtils.S500_NAME)) {
-                ivTop.setImageResource(R.mipmap.ic_500s);
-                return;
-            }
-            if (MyCommandManager.DEVICENAME.equals("B31S")) {
-                ivTop.setImageResource(R.mipmap.ic_home_top_b31);//b31s
-            }
-
-            } else {
-                ivTop.setImageResource(R.mipmap.icon_comm_top_img);
-            }
+        } else {
+            ivTop.setImageResource(R.mipmap.icon_comm_top_img);
+        }
 
     }
 
@@ -726,12 +702,12 @@ public class NewB31RecordFragment extends LazyFragment
         if (isVisible) {  //判断是否读取数据
             int currCode = (int) SharedPreferencesUtils.getParam(getmContext(), "code_status", 0);
 
-            if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext()))){
+            if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext()))) {
                 clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
                 return;
             }
 
-            if (connBleHelpService == null || MyCommandManager.DEVICENAME == null){
+            if (connBleHelpService == null || MyCommandManager.DEVICENAME == null) {
                 clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
                 return;
             }
@@ -741,14 +717,14 @@ public class NewB31RecordFragment extends LazyFragment
             long diffTime = (currentTime - Long.valueOf(tmpSaveTime)) / 60;
             if (WatchConstants.isScanConn) {  //是搜索进来的
                 WatchConstants.isScanConn = false;
-             //   getBleMsgData();
+                //   getBleMsgData();
                 if (b31HomeSwipeRefreshLayout != null) b31HomeSwipeRefreshLayout.autoRefresh();
             } else {  //不是搜索进来的
                 if (diffTime > 10) {// 大于十分钟没更新再取数据
                     //getBleMsgData();
                     if (b31HomeSwipeRefreshLayout != null)
                         b31HomeSwipeRefreshLayout.autoRefresh();
-                }else{
+                } else {
                     clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
                 }
             }
@@ -790,7 +766,6 @@ public class NewB31RecordFragment extends LazyFragment
         if (broadcastReceiver != null)
             mContext.unregisterReceiver(broadcastReceiver);
     }
-
 
 
     //跳转至详情页面
@@ -835,7 +810,7 @@ public class NewB31RecordFragment extends LazyFragment
 
         String mac = WatchUtils.getSherpBleMac(getmContext());
         String date = WatchUtils.obtainFormatDate(currDay);
-        if (WatchUtils.isEmpty(mac)){
+        if (WatchUtils.isEmpty(mac)) {
             showEmptyData();
             return;
         }
@@ -854,7 +829,7 @@ public class NewB31RecordFragment extends LazyFragment
     }
 
 
-    private void showEmptyData(){
+    private void showEmptyData() {
         if (b30BarChart != null) {
             b30BarChart.invalidate();
         }
@@ -893,7 +868,6 @@ public class NewB31RecordFragment extends LazyFragment
         SharedPreferencesUtils.setParam(getmContext(), "code_status", code);
         updatePageData();
     }
-
 
 
     //电量返回
@@ -977,7 +951,7 @@ public class NewB31RecordFragment extends LazyFragment
                 });
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -998,7 +972,7 @@ public class NewB31RecordFragment extends LazyFragment
             message.obj = sportData;
             handler.sendMessage(message);//发送消息，展示步数图标
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1017,7 +991,7 @@ public class NewB31RecordFragment extends LazyFragment
             message.what = 1003;
             message.obj = rateData;
             handler.sendMessage(message);//发送消息，展示心率的图表
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1030,7 +1004,7 @@ public class NewB31RecordFragment extends LazyFragment
         Log.d("-------数据时间----", date);
         try {
             int deviceVersion = (int) SharedPreferencesUtils.getParam(getmContext(), Commont.VP_DEVICE_VERSION, 0);
-            String sleep = B30HalfHourDao.getInstance().findOriginData(mac, deviceVersion == 0 ? WatchUtils.obtainAroundDate(date,true):date, deviceVersion == 0 ? B30HalfHourDao
+            String sleep = B30HalfHourDao.getInstance().findOriginData(mac, deviceVersion == 0 ? WatchUtils.obtainAroundDate(date, true) : date, deviceVersion == 0 ? B30HalfHourDao
                     .TYPE_SLEEP : B30HalfHourDao.TYPE_PRECISION_SLEEP);
             CusVPSleepData cusVPSleepData = gson.fromJson(sleep, CusVPSleepData.class);
             Message message = handler.obtainMessage();
@@ -1056,7 +1030,7 @@ public class NewB31RecordFragment extends LazyFragment
             message.what = 1005;
             message.obj = bpData;
             handler.sendMessage(message);//发送消息，展示血压的图表
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1097,7 +1071,7 @@ public class NewB31RecordFragment extends LazyFragment
                 }
             }
             b30HomeBloadChart.setBpVerticalMap(resultBpMapList);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1109,34 +1083,31 @@ public class NewB31RecordFragment extends LazyFragment
     private void updateHRVData(final String mac, final String day) {
         tmpHRVlist.clear();
         try {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {//bleMac = ? and
-                    String where = "bleMac = ? and dateStr = ?";
-                    List<B31HRVBean> reList = LitePal.where(where, mac, day).find(B31HRVBean.class);
-                    if (reList == null || reList.isEmpty()) {
-                        Message message = handler.obtainMessage();
-                        message.what = 1113;
-                        message.obj = tmpHRVlist;
-                        handler.sendMessage(message);
-                        return;
-                    }
-
-                    if(reList.size()>430){
-                        reList = reList.subList(0,420);
-                    }
-
-                    for (B31HRVBean hrvBean : reList) {
-                        //Log.e(TAG,"----------hrvBean="+hrvBean.toString());
-                        tmpHRVlist.add(gson.fromJson(hrvBean.getHrvDataStr(), HRVOriginData.class));
-                    }
-
+            Thread thread = new Thread(() -> {//bleMac = ? and
+                String where = "bleMac = ? and dateStr = ?";
+                List<B31HRVBean> reList = LitePal.where(where, mac, day).find(B31HRVBean.class);
+                if (reList == null || reList.isEmpty()) {
                     Message message = handler.obtainMessage();
                     message.what = 1113;
                     message.obj = tmpHRVlist;
                     handler.sendMessage(message);
-
+                    return;
                 }
+
+                if (reList.size() > 430) {
+                    reList = reList.subList(0, 420);
+                }
+
+                for (B31HRVBean hrvBean : reList) {
+                    //Log.e(TAG,"----------hrvBean="+hrvBean.toString());
+                    tmpHRVlist.add(gson.fromJson(hrvBean.getHrvDataStr(), HRVOriginData.class));
+                }
+
+                Message message = handler.obtainMessage();
+                message.what = 1113;
+                message.obj = tmpHRVlist;
+                handler.sendMessage(message);
+
             });
             thread.start();
         } catch (Exception e) {
@@ -1151,36 +1122,34 @@ public class NewB31RecordFragment extends LazyFragment
         try {
             spo2hOriginDataList.clear();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String where = "bleMac = ? and dateStr = ?";
-                    List<B31Spo2hBean> spo2hBeanList = LitePal.where(where, mac, date).find(B31Spo2hBean.class);
-                    if (spo2hBeanList == null || spo2hBeanList.isEmpty()) {
-                        Message message = handler.obtainMessage();
-                        message.what = 1112;
-                        message.obj = spo2hOriginDataList;
-                        handler.sendMessage(message);
-                        return;
-                    }
-
-                    if(spo2hBeanList.size()>430){
-                        spo2hBeanList = spo2hBeanList.subList(0,420);
-                    }
-                    //Log.e(TAG, "---血氧------查询数据=" + currDay +"---="+ spo2hBeanList.size());
-                    for (B31Spo2hBean hBean : spo2hBeanList) {
-                        //Log.e(TAG,"---------走到这里来了="+hBean.toString());
-                        spo2hOriginDataList.add(gson.fromJson(hBean.getSpo2hOriginData(), Spo2hOriginData.class));
-                    }
-
+            new Thread(() -> {
+                String where = "bleMac = ? and dateStr = ?";
+                List<B31Spo2hBean> spo2hBeanList = LitePal.where(where, mac, date).find(B31Spo2hBean.class);
+                if (spo2hBeanList == null || spo2hBeanList.isEmpty()) {
                     Message message = handler.obtainMessage();
                     message.what = 1112;
                     message.obj = spo2hOriginDataList;
                     handler.sendMessage(message);
-
+                    return;
                 }
+
+                if (spo2hBeanList.size() > 430) {
+                    spo2hBeanList = spo2hBeanList.subList(0, 420);
+                }
+                //Log.e(TAG, "---血氧------查询数据=" + currDay +"---="+ spo2hBeanList.size());
+                for (B31Spo2hBean hBean : spo2hBeanList) {
+                    //Log.e(TAG,"---------走到这里来了="+hBean.toString());
+                    spo2hOriginDataList.add(gson.fromJson(hBean.getSpo2hOriginData(),
+                            Spo2hOriginData.class));
+                }
+
+                Message message = handler.obtainMessage();
+                message.what = 1112;
+                message.obj = spo2hOriginDataList;
+                handler.sendMessage(message);
+
             }).start();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1227,7 +1196,7 @@ public class NewB31RecordFragment extends LazyFragment
 
             homeSpo2LinChartView.setTouchEnabled(false);
             homeSpo2LinChartView.invalidate();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1321,7 +1290,7 @@ public class NewB31RecordFragment extends LazyFragment
             } else {
                 if (b30HomeHeartChart != null) b30HomeHeartChart.setRateDataList(heartList);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1360,7 +1329,8 @@ public class NewB31RecordFragment extends LazyFragment
 
                 for (int i = 0; i < listMap.size(); i++) {
                     Map<String, Integer> tmpMap = listMap.get(i);
-                    if (tmpB30StepList != null) tmpB30StepList.add(new BarEntry(i, tmpMap.get("val")));
+                    if (tmpB30StepList != null)
+                        tmpB30StepList.add(new BarEntry(i, tmpMap.get("val")));
                     if (tmpIntegerList != null) tmpIntegerList.add(tmpMap.get("val"));
                 }
                 if (b30ChartList != null) b30ChartList.addAll(tmpB30StepList);
@@ -1375,7 +1345,7 @@ public class NewB31RecordFragment extends LazyFragment
                     b30BarChart.invalidate();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1463,12 +1433,12 @@ public class NewB31RecordFragment extends LazyFragment
             //Hrv的数据更新完了
             if (action.equals(WatchUtils.B31_HRV_COMPLETE)) {
                 String mac = WatchUtils.getSherpBleMac(getmContext());
-                boolean isUpdate = intent.getBooleanExtra("isUpdate",false);
-                if(isUpdate){
+                boolean isUpdate = intent.getBooleanExtra("isUpdate", false);
+                if (isUpdate) {
                     Message message = handler.obtainMessage();
                     message.obj = mac;
                     message.what = UPDATE_HRV_CODE;
-                    handler.sendMessageDelayed(message,3 * 1000);
+                    handler.sendMessageDelayed(message, 3 * 1000);
                 }
 
 
@@ -1476,13 +1446,13 @@ public class NewB31RecordFragment extends LazyFragment
             //血氧的数据更新完了
             if (action.equals(WatchUtils.B31_SPO2_COMPLETE)) {
                 String mac = WatchUtils.getSherpBleMac(getmContext());
-                boolean isUpdate = intent.getBooleanExtra("isUpdate",false);
-                Log.e(TAG,"-----更新血氧="+isUpdate);
-                if(isUpdate){
+                boolean isUpdate = intent.getBooleanExtra("isUpdate", false);
+                Log.e(TAG, "-----更新血氧=" + isUpdate);
+                if (isUpdate) {
                     Message message = handler.obtainMessage();
                     message.what = UPDATE_SPO2_CODE;
                     message.obj = mac;
-                    handler.sendMessageDelayed(message,3 * 1000);
+                    handler.sendMessageDelayed(message, 3 * 1000);
                     // updateSpo2Data(mac, date);
                 }
 
@@ -1512,7 +1482,7 @@ public class NewB31RecordFragment extends LazyFragment
                     showHomeView(tenMinuteData);
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1629,6 +1599,7 @@ public class NewB31RecordFragment extends LazyFragment
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -1653,7 +1624,7 @@ public class NewB31RecordFragment extends LazyFragment
                 if (deviceVersion == 0) {
                     B30SleepDetailActivity.startAndParams(getmContext(), WatchUtils.obtainAroundDate(dayStr, true));
                 } else {
-                    B31sPrecisionSleepActivity.startAndParams(getmContext(),WatchUtils.getCurrentDate());
+                    B31sPrecisionSleepActivity.startAndParams(getmContext(), WatchUtils.getCurrentDate());
                 }
                 break;
             case R.id.heartCardView:   //心率图表的点击
@@ -1686,9 +1657,9 @@ public class NewB31RecordFragment extends LazyFragment
             case R.id.b30_top_dateTv:
                 break;
             case R.id.homeFastLin:  //快捷方式
-                if(MyCommandManager.DEVICENAME != null){
+                if (MyCommandManager.DEVICENAME != null) {
                     startActivity(new Intent(getActivity(), B31DeviceActivity.class));
-                }else{
+                } else {
                     MyApp.getInstance().getB30ConnStateService().stopAutoConn();
                     startActivity(new Intent(getActivity(), NewSearchActivity.class));
                     if (getActivity() != null)

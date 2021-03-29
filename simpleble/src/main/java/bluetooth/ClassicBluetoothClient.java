@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.inuker.bluetooth.library.BluetoothClient;
+import com.inuker.bluetooth.library.old.BluetoothClient;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

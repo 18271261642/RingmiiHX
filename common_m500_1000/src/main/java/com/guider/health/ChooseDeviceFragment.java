@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.getmedcheck.lib.MedCheck;
 import com.guider.health.all.R;
 import com.guider.health.arouter_annotation.Route;
 import com.guider.health.common.cache.MeasureDataUploader;

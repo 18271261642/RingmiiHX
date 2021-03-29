@@ -246,11 +246,8 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
     }
 
 
-    private IBleWriteResponse iBleWriteResponse = new IBleWriteResponse() {
-        @Override
-        public void onResponse(int i) {
+    private IBleWriteResponse iBleWriteResponse = i -> {
 
-        }
     };
 
 

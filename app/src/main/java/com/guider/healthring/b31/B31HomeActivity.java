@@ -86,6 +86,7 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
     private CusInputDialogView cusInputDialogView;
     private SendSMSBroadCast sendSMSBroadCast = null;
     private AlertDialog alertDialog;
+    UpNewDataToGDServices upDataToGDServicesNew = null;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -291,17 +292,14 @@ public class B31HomeActivity extends WatchBaseActivity implements Rationale<List
 //            }
 //            upDataToGDServicesNew.execute();
 //        }
-        if (upDataToGDServicesNew != null && upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
+        if (upDataToGDServicesNew != null &&
+                upDataToGDServicesNew.getStatus() == AsyncTask.Status.RUNNING) {
             upDataToGDServicesNew.cancel(true); // 如果Task还在运行，则先取消它
             upDataToGDServicesNew = null;
         }
         upDataToGDServicesNew = new UpNewDataToGDServices();
         upDataToGDServicesNew.execute();
     }
-
-    //UpDataToGDServices upDataToGDServices = null;
-    UpNewDataToGDServices upDataToGDServicesNew = null;
-//    UpHrvDataToGDServices upHrvDataToGDServices = null;
 
     @Override
     protected void onDestroy() {
