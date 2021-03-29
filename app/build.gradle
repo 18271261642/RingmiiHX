@@ -239,7 +239,7 @@ dependencies {
     implementation project(':ecg')
     implementation project(':common_m500_1000')
     implementation project(':bpm1000')
-    implementation project(':simpleble')
+//    implementation project(':simpleble')
     implementation project(':libbase')
     implementation project(':glu_phone')
     implementation project(':wuweikang')

@@ -113,7 +113,8 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
  * Created by Admin
  * Date 2018/12/17
  */
-public class NewB31RecordFragment extends LazyFragment implements ConnBleHelpService.ConnBleMsgDataListener, View.OnClickListener {
+public class NewB31RecordFragment extends LazyFragment
+        implements ConnBleHelpService.ConnBleMsgDataListener, View.OnClickListener {
 
 
     private static final String TAG = "B31RecordFragment";
