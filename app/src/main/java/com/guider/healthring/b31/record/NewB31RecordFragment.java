@@ -79,9 +79,7 @@ import com.guider.healthring.util.LocalizeTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.widget.WaveProgress;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.veepoo.protocol.model.datas.HRVOriginData;
 import com.veepoo.protocol.model.datas.HalfHourBpData;
 import com.veepoo.protocol.model.datas.HalfHourRateData;
@@ -700,8 +698,8 @@ public class NewB31RecordFragment extends LazyFragment
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
         if (isVisible) {  //判断是否读取数据
-            int currCode = (int) SharedPreferencesUtils.getParam(getmContext(), "code_status", 0);
-
+            int currCode = (int) SharedPreferencesUtils.getParam(getmContext(),
+                    "code_status", 0);
             if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext()))) {
                 clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
                 return;
@@ -713,8 +711,9 @@ public class NewB31RecordFragment extends LazyFragment
             }
             long currentTime = System.currentTimeMillis() / 1000;
             //保存的时间
-            String tmpSaveTime = (String) SharedPreferencesUtils.getParam(getmContext(), "saveDate", currentTime + "");
-            long diffTime = (currentTime - Long.valueOf(tmpSaveTime)) / 60;
+            String tmpSaveTime = (String) SharedPreferencesUtils.getParam(
+                    getmContext(), "saveDate", currentTime + "");
+            long diffTime = (currentTime - Long.parseLong(tmpSaveTime)) / 60;
             if (WatchConstants.isScanConn) {  //是搜索进来的
                 WatchConstants.isScanConn = false;
                 //   getBleMsgData();
@@ -783,23 +782,18 @@ public class NewB31RecordFragment extends LazyFragment
     private void getBleMsgData() {
         if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext())))
             return;
-        SharedPreferencesUtils.setParam(getmContext(), "saveDate", System.currentTimeMillis() / 1000 + "");
+        SharedPreferencesUtils.setParam(getmContext(), "saveDate",
+                System.currentTimeMillis() / 1000 + "");
         connBleHelpService.getDeviceMsgData();
-        /**
-         * 连接的成功时只读取昨天一天的数据，刷新时再读取前3天的数据
-         */
+        //TODO 连接的成功时只读取昨天一天的数据，刷新时再读取前3天的数据
         String date = mLocalTool.getUpdateDate();// 最后更新总数据的日期
         Log.e(TAG, "-----最后更新总数据的日期--date=" + date);
         if (WatchUtils.isEmpty(date))
             date = WatchUtils.obtainFormatDate(1);  //如果是空的话表示第一次读取
         long delayMillis = 60 * 1000;// 默认超时时间
-        if (date.equals(WatchUtils.obtainFormatDate(0))) {
-            connBleHelpService.readAllHealthData(false);// 刷新3天数据
-        } else {
-            connBleHelpService.readAllHealthData(true);// 刷新昨天数据
-        }
+        // 如果日期相同 刷新当天数据不同则刷新3天数据
+        connBleHelpService.readAllHealthData(date.equals(WatchUtils.obtainFormatDate(0)));
         handler.sendEmptyMessageDelayed(1001, delayMillis);
-
     }
 
 
@@ -1085,6 +1079,7 @@ public class NewB31RecordFragment extends LazyFragment
         try {
             Thread thread = new Thread(() -> {//bleMac = ? and
                 String where = "bleMac = ? and dateStr = ?";
+
                 List<B31HRVBean> reList = LitePal.where(where, mac, day).find(B31HRVBean.class);
                 if (reList == null || reList.isEmpty()) {
                     Message message = handler.obtainMessage();
@@ -1156,16 +1151,18 @@ public class NewB31RecordFragment extends LazyFragment
 
 
     //显示血氧的图
+    @SuppressLint("SetTextI18n")
     private void updateSpo2View(List<Spo2hOriginData> dataList) {
         try {
-            List<Spo2hOriginData> data0To8 = getSpo2MoringData(dataList);
+            List<Spo2hOriginData> data0To8 = getSpo2MorningData(dataList);
             Spo2hOriginUtil spo2hOriginUtil = new Spo2hOriginUtil(data0To8);
             //获取处理完的血氧数据
             final List<Map<String, Float>> tenMinuteDataBreathBreak = spo2hOriginUtil.getTenMinuteData(TYPE_BEATH_BREAK);
             final List<Map<String, Float>> tenMinuteDataSpo2h = spo2hOriginUtil.getTenMinuteData(TYPE_SPO2H);
             //平均值
-            int onedayDataArr[] = spo2hOriginUtil.getOnedayDataArr(ESpo2hDataType.TYPE_SPO2H);
-            b31Spo2AveTv.setText(getResources().getString(R.string.ave_value) + "\n" + onedayDataArr[2]);
+            int oneDayDataArr[] = spo2hOriginUtil.getOnedayDataArr(ESpo2hDataType.TYPE_SPO2H);
+            b31Spo2AveTv.setText(
+                    mContext.getResources().getString(R.string.ave_value) + "\n" + oneDayDataArr[2]);
 
             initSpo2hUtil();
             vpSpo2hUtil.setData(dataList);
@@ -1173,7 +1170,8 @@ public class NewB31RecordFragment extends LazyFragment
 
             if (getActivity() == null)
                 return;
-            ChartViewUtil spo2ChartViewUtilHomes = new ChartViewUtil(homeSpo2LinChartView, null, true,
+            ChartViewUtil spo2ChartViewUtilHomes = new ChartViewUtil(homeSpo2LinChartView,
+                    null, true,
                     CHART_MAX_SPO2H, CHART_MIN_SPO2H, getResources().getString(R.string.nodata), TYPE_SPO2H);
             spo2ChartViewUtilHomes.setxColor(R.color.head_text);
             spo2ChartViewUtilHomes.setNoDataColor(R.color.head_text);
@@ -1465,7 +1463,7 @@ public class NewB31RecordFragment extends LazyFragment
 
     //显示HRV的数据
     private void showHrvData(List<HRVOriginData> dataList) {
-        //Log.e(TAG,"----显示HRV="+dataList.size());
+        Log.e(TAG, "----显示HRV=" + dataList.size());
         try {
             List<HRVOriginData> data0to8 = getMoringData(dataList);
             HRVOriginUtil mHrvOriginUtil = new HRVOriginUtil(data0to8);
@@ -1475,12 +1473,9 @@ public class NewB31RecordFragment extends LazyFragment
             final List<Map<String, Float>> tenMinuteData = mHrvOriginUtil.getTenMinuteData();
             if (getActivity() == null)
                 return;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //主界面
-                    showHomeView(tenMinuteData);
-                }
+            getActivity().runOnUiThread(() -> {
+                //主界面
+                showHomeView(tenMinuteData);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -1550,12 +1545,13 @@ public class NewB31RecordFragment extends LazyFragment
      * @return
      */
     @NonNull
-    private synchronized List<Spo2hOriginData> getSpo2MoringData(List<Spo2hOriginData> originSpo2hList) {
+    private synchronized List<Spo2hOriginData> getSpo2MorningData(List<Spo2hOriginData> originSpo2hList) {
         List<Spo2hOriginData> spo2Data = new ArrayList<>();
+        ArrayList<Spo2hOriginData> oldData = new ArrayList(originSpo2hList);
         try {
             if (originSpo2hList == null || originSpo2hList.isEmpty())
                 return spo2Data;
-            for (Spo2hOriginData spo2hOriginData : originSpo2hList) {
+            for (Spo2hOriginData spo2hOriginData : oldData) {
                 if (spo2hOriginData.getmTime().getHMValue() < 8 * 60) {
                     spo2Data.add(spo2hOriginData);
                 }

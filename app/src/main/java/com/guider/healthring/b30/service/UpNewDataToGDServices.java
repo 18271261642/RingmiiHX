@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -20,10 +19,10 @@ import com.guider.healthring.b30.bean.B30HalfHourDB;
 import com.guider.healthring.b30.bean.B30HalfHourDao;
 import com.guider.healthring.b30.bean.BaseResultVoNew;
 import com.guider.healthring.b30.bean.ResultVoNew;
-import com.guider.healthring.bean.TypeUserDatas;
 import com.guider.healthring.b31.model.B31HRVBean;
 import com.guider.healthring.b31.model.B31Spo2hBean;
 import com.guider.healthring.bean.BlueUser;
+import com.guider.healthring.bean.TypeUserDatas;
 import com.guider.healthring.bean.User;
 import com.guider.healthring.bean.WXUserBean;
 import com.guider.healthring.siswatch.utils.WatchUtils;
@@ -41,11 +40,9 @@ import com.veepoo.protocol.model.datas.SportData;
 import com.veepoo.protocol.model.datas.TimeData;
 import com.veepoo.protocol.util.HrvScoreUtil;
 import com.veepoo.protocol.util.Spo2hOriginUtil;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.litepal.LitePal;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,8 +51,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BREATH;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HEART;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_LOWSPO2H;
@@ -105,7 +100,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     //    private String phone, wechartJson;
     private TypeUserDatas typeUserDatas;
 
-    private String userId = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), Commont.USER_ID_DATA);
+    private String userId = (String) SharedPreferencesUtils.readObject(
+            MyApp.getContext(), Commont.USER_ID_DATA);
 
     //血氧的集合
     private List<Spo2hOriginData> spo2hOriginDataList = new ArrayList<>();
@@ -210,12 +206,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
                 String where = "bleMac = ? and dateStr = ?";
                 //HRV
-                hrvList = LitePal.where(where, deviceCode, WatchUtils.obtainFormatDate(0)).find(B31HRVBean.class);
+                hrvList = LitePal.where(where, deviceCode, WatchUtils.obtainFormatDate(0))
+                        .find(B31HRVBean.class);
 
                 //Log.e(TAG,"-------hrvList.Size="+hrvList.size());
 
                 //血氧
-                spo2List = LitePal.where(where, deviceCode, WatchUtils.obtainFormatDate(0)).find(B31Spo2hBean.class);
+                spo2List = LitePal.where(where, deviceCode, WatchUtils.obtainFormatDate(0))
+                        .find(B31Spo2hBean.class);
 
                 if (sportData != null && !sportData.isEmpty())
                     if (Commont.isDebug) Log.e(TAG, "未上传数据条数 运动: " + sportData.size());
@@ -245,11 +243,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                         || (hrvList != null && !hrvList.isEmpty())
                         || (spo2List != null && !spo2List.isEmpty())) {
                     if (Commont.isDebug)
-                        Log.e(TAG, "数据库中存在数据------开始登陆账户-----去上传==（运动->睡眠->心率->血压->HRV->SPO2）");
+                        Log.e(TAG,
+                                "数据库中存在数据------开始登陆账户-----去上传==" +
+                                        "（运动->睡眠->心率->血压->HRV->SPO2）");
 
                     //登陆到盖得后台
 
-                    long guiderId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+                    long guiderId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),
+                            "accountIdGD", 0L);
                     if (guiderId != 0) {
                         accountId = guiderId;
                         bindDevices(guiderId);
@@ -549,29 +550,29 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 //        params.put("accountId", accountId);//accountId
 //        params.put("deviceCode", deviceCode);//deviceCode
 //        JSONObject json = new JSONObject(params);
-        String upStepPatch = Base_Url + "user/" + accountId + "/deviceandcompany/bind?deviceCode=" + deviceCode;
+        String upStepPatch = Base_Url + "user/" + accountId +
+                "/deviceandcompany/bind?deviceCode=" + deviceCode;
         //{accountId}/deviceandcompany/bind?deviceCode=
-        OkHttpTool.getInstance().doRequest(upStepPatch, null, this, new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                try {
-                    if (!WatchUtils.isEmpty(result)) {
-                        Log.e(TAG, "------bindDevices--=" + result);
-                        if (result.contains("Unable"))
-                            return;
-                        BaseResultVoNew baseResultVoNew = new Gson().fromJson(result, BaseResultVoNew.class);
-                        if (Commont.isDebug) Log.d(TAG, "=======绑定该设备A= " + result);
-                        if (baseResultVoNew.getCode() == 0 || baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
-                            if (Commont.isDebug) Log.d(TAG, "=======绑定该设备= " + result);
-                            //并发一起上传
-                            findUnUpdataToservices();
-                        }
+        OkHttpTool.getInstance().doRequest(upStepPatch, null, this, result -> {
+            try {
+                if (!WatchUtils.isEmpty(result)) {
+                    Log.e(TAG, "------bindDevices--=" + result);
+                    if (result.contains("Unable"))
+                        return;
+                    BaseResultVoNew baseResultVoNew = new Gson().fromJson(result,
+                            BaseResultVoNew.class);
+                    if (Commont.isDebug) Log.d(TAG, "=======绑定该设备A= " + result);
+                    if (baseResultVoNew.getCode() == 0 ||
+                            baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
+                        if (Commont.isDebug) Log.d(TAG, "=======绑定该设备= " + result);
+                        //并发一起上传
+                        findUnUpdataToservices();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }, false);
     }
 
@@ -745,7 +746,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 String heartStr = heartdb.getOriginData();
                 //Log.e(TAG,"-----心率="+heartdb.toString());
 
-                List<HalfHourRateData> hourRateDataList = gson.fromJson(heartStr, new TypeToken<List<HalfHourRateData>>() {
+                List<HalfHourRateData> hourRateDataList = gson.fromJson(heartStr,
+                        new TypeToken<List<HalfHourRateData>>() {
                 }.getType());
                 for (HalfHourRateData hb : hourRateDataList) {
                     Map<String, Object> heartMap = new HashMap<>();
@@ -771,24 +773,21 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 //                Environment.getExternalStorageDirectory()+"/DCIM/","heartBloodParams.json");
         String heartUrl = Commont.HEART_URL;
 
-        OkHttpTool.getInstance().doRequest(heartUrl, heartParams, "", new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG, "--------心率上传返回=" + result);
+        OkHttpTool.getInstance().doRequest(heartUrl, heartParams, "", result -> {
+            Log.e(TAG, "--------心率上传返回=" + result);
 //                new GetJsonDataUtil().writeTxtToFile("心率上传返回:"+WatchUtils.getCurrentDate1()+result,
 //                        Environment.getExternalStorageDirectory()+"/DCIM/","heartBloodParams.json");
-                if (WatchUtils.isEmpty(result))
+            if (WatchUtils.isEmpty(result))
+                return;
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (!jsonObject.has("code"))
                     return;
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    if (!jsonObject.has("code"))
-                        return;
-                    if (jsonObject.getInt("code") == 0) {
-                        updateHeartStatus(rateData);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (jsonObject.getInt("code") == 0) {
+                    updateHeartStatus(rateData);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -843,24 +842,22 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             if (sleepListMap.isEmpty())
                 return;
             //Log.e(TAG,"--------睡眠参数="+gson.toJson(sleepListMap));
-            OkHttpTool.getInstance().doRequest(sleepUrl, gson.toJson(sleepListMap), "", new OkHttpTool.HttpResult() {
-                @Override
-                public void onResult(String result) {
-                    Log.e(TAG, "--------睡眠上传=" + result);
-                    if (WatchUtils.isEmpty(result))
-                        return;
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (!jsonObject.has("code"))
+            OkHttpTool.getInstance().doRequest(sleepUrl, gson.toJson(sleepListMap), "",
+                    result -> {
+                        Log.e(TAG, "--------睡眠上传=" + result);
+                        if (WatchUtils.isEmpty(result))
                             return;
-                        if (jsonObject.getInt("code") == 0) {
-                            updateSleepStatus(sleepData);
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            if (!jsonObject.has("code"))
+                                return;
+                            if (jsonObject.getInt("code") == 0) {
+                                updateSleepStatus(sleepData);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+                    });
 
 
         } catch (Exception e) {
@@ -876,7 +873,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             if (!dateStr.equals(WatchUtils.getCurrentDate())) {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("upload", 1);
-                int sleepCode = LitePal.updateAll(B30HalfHourDB.class, contentValues, "address = ? and type = ? and date = ?",
+                int sleepCode = LitePal.updateAll(B30HalfHourDB.class, contentValues,
+                        "address = ? and type = ? and date = ?",
                         deviceCode, B30HalfHourDao.TYPE_SLEEP, dateStr);
                 Log.e(TAG, "-----睡眠修改=" + sleepCode);
             }
@@ -898,7 +896,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         //运动
         Map<String, Object> sportDataMap = new HashMap<>();
 
-        List<B30HalfHourDB> sportGDList = B30HalfHourDao.getInstance().findGDTodayData(deviceCode, B30HalfHourDao.TYPE_SPORT);
+        List<B30HalfHourDB> sportGDList = B30HalfHourDao.getInstance()
+                .findGDTodayData(deviceCode, B30HalfHourDao.TYPE_SPORT);
         if (sportGDList == null || sportGDList.isEmpty()) return;
         String orginStr = sportGDList.get(sportGDList.size() - 1).getOriginData();
 
@@ -916,7 +915,9 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
                 String spo2Dates = timeData.getDateAndClockForSleepSecond();
 
-                Date dateStart = W30BasicUtils.stringToDate(spo2Dates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+                Date dateStart = W30BasicUtils.stringToDate(
+                        spo2Dates.replace(":", "-"),
+                        "yyyy-MM-dd HH-mm-ss");
                 String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
 
                 sMap.put("stepValue", hSport.getStepValue());
@@ -930,7 +931,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         }
 
         sportDataMap.put("data", sportList);
-        String step_detail = B30HalfHourDao.getInstance().findOriginData(deviceCode, WatchUtils.getCurrentDate(), B30HalfHourDao.TYPE_STEP_DETAIL);
+        String step_detail = B30HalfHourDao.getInstance().findOriginData(deviceCode,
+                WatchUtils.getCurrentDate(), B30HalfHourDao.TYPE_STEP_DETAIL);
         if (WatchUtils.isEmpty(step_detail)) {
             sportDataMap.put("totalStep", 0);
             sportDataMap.put("totalDis", 0.0);
@@ -967,7 +969,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
         //spo2
         if (!spo2hOriginDataList.isEmpty() && !oxyMapList.isEmpty()) {
-            try{
+            try {
                 Map<String, Object> spo2TempMap = new HashMap<>();
                 Spo2hOriginUtil spo2hOriginUtil = new Spo2hOriginUtil(spo2hOriginDataList);
                 //获取低氧数据[最大，最小，平均]       *参考：取低氧最大值，大于20，则显示偏高，其他显示正常
@@ -1026,7 +1028,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 spo2TempMap.put("data", oxyMapList);//oxyMapList
 
                 allResultMap.put("spo2", spo2TempMap);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 if (!StringUtil.isEmpty(e.getMessage()))
                     Log.e(TAG, "查询报错----" + e.getMessage());
@@ -1037,7 +1039,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         String allParmas = gson.toJson(allResultMap);
 
         String filePath = Environment.getExternalStorageDirectory() + "/DCIM/";
-        new GetJsonDataUtil().writeTxtToFile(WatchUtils.getCurrentDate1() + allParmas, filePath, "ringData.json");
+        new GetJsonDataUtil().writeTxtToFile(
+                WatchUtils.getCurrentDate1() + allParmas, filePath, "ringData.json");
 
 
         //String allUrl = "http://apihd.guiderhealth.com/api/v1/ringdata";
@@ -1209,7 +1212,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             TimeData timeData = hrvOriginData.getmTime();
             String hrvDates = timeData.getDateAndClockForSleepSecond();//obtainDate(timeData);
 
-            Date dateStart = W30BasicUtils.stringToDate(hrvDates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+            Date dateStart = W30BasicUtils.stringToDate(hrvDates.replace(
+                    ":", "-"), "yyyy-MM-dd HH-mm-ss");
             String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
             // Log.e(TAG,"-------testTime="+iso8601Timestamp);
 
@@ -1256,28 +1260,26 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         // Log.e(TAG,"--------hrv参数="+new Gson().toJson(list));
         //String upPatch = "http://apihd.guiderhealth.com/api/v1/hrv";
         String upPatch = Commont.HRV_URL;
-        OkHttpTool.getInstance().doRequest(upPatch, new Gson().toJson(list), this, new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                if (!WatchUtils.isEmpty(result)) {
-                    if (Commont.isDebug) Log.e(TAG, "最后HRV传返回啊: " + result);
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (jsonObject.has("code")) {
-                            if (jsonObject.getInt("code") == 0) {
-                                //上传成功，修改状态
-                                //LitePal.updateAsync()
-                                updateLoadStatus(hrvList);
-                            }
+        OkHttpTool.getInstance().doRequest(upPatch, new Gson().toJson(list), this, result -> {
+            if (!WatchUtils.isEmpty(result)) {
+                if (Commont.isDebug) Log.e(TAG, "最后HRV传返回啊: " + result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.has("code")) {
+                        if (jsonObject.getInt("code") == 0) {
+                            //上传成功，修改状态
+                            //LitePal.updateAsync()
+                            updateLoadStatus(hrvList);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-
-                    upHrv = true;
-                } else {
-                    MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
+                upHrv = true;
+            } else {
+                MyApp.getInstance().setUploadDateGDNew(false);
+                // 正在上传数据,写到全局,保证同时只有一个本服务在运行
             }
         });
 
@@ -1295,7 +1297,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         for (B31HRVBean hrvBean : hrvLists) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("isUpdata", true);
-            int code = LitePal.updateAll(B31HRVBean.class, contentValues, "bleMac = ? and dateStr = ?",
+            int code = LitePal.updateAll(B31HRVBean.class, contentValues,
+                    "bleMac = ? and dateStr = ?",
                     hrvBean.getBleMac(), hrvBean.getDateStr());
 //            Log.e(TAG,"-------hrv修改="+code);
         }
@@ -1540,7 +1543,9 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         for (B31Spo2hBean b31Spo2hBean : spo2Lists) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("isUpdata", true);
-            LitePal.updateAll(B31Spo2hBean.class, contentValues, "bleMac = ? and dateStr = ?", b31Spo2hBean.getBleMac(), b31Spo2hBean.getDateStr());
+            LitePal.updateAll(B31Spo2hBean.class, contentValues,
+                    "bleMac = ? and dateStr = ?", b31Spo2hBean.getBleMac(),
+                    b31Spo2hBean.getDateStr());
 
         }
     }
@@ -1591,7 +1596,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
          *   }
          * ]
          */
-        final List<HalfHourSportData> dataList = new Gson().fromJson(originData, new TypeToken<List<HalfHourSportData>>() {
+        final List<HalfHourSportData> dataList = new Gson().fromJson(originData,
+                new TypeToken<List<HalfHourSportData>>() {
         }.getType());
 
         List<Map<String, Object>> mapList = new ArrayList<>();
@@ -1605,7 +1611,9 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     TimeData time = halfHourSportData.getTime();
                     //返回时分
                     String stepDate = getTimeStr(time);
-                    Date dateStart = W30BasicUtils.stringToDate(time.getDateAndClockForSleepSecond().replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+                    Date dateStart = W30BasicUtils.stringToDate(
+                            time.getDateAndClockForSleepSecond().replace(
+                                    ":", "-"), "yyyy-MM-dd HH-mm-ss");
                     String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
                     //Log.e(TAG,"-------时间="+time.getDateAndClockForSleepSecond().replace(":","-")+"----转换="+iso8601Timestamp);
                     /**
@@ -1645,28 +1653,25 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             Log.e(TAG, "-----步数上传数组=" + jsonArray.toString());
 
             if (postion == 0) {//这里天数是按照倒序排的，0 = 今天
-                OkHttpTool.getInstance().doRequest(upStepPatch, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
-                    @Override
-                    public void onResult(String result) {
-                        if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug) Log.e(TAG, "sport- 最后步数上传返回啊: " + result);
-                            //是否是 最后一天最后第二条
-                            upSport = true;
-                        } else {
-                            MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                        }
+                OkHttpTool.getInstance().doRequest(upStepPatch, jsonArray.toString(), this,
+                        result -> {
+                    if (!WatchUtils.isEmpty(result)) {
+                        if (Commont.isDebug) Log.e(TAG, "sport- 最后步数上传返回啊: " + result);
+                        //是否是 最后一天最后第二条
+                        upSport = true;
+                    } else {
+                        MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
                     }
                 });
             } else {
-                OkHttpTool.getInstance().doRequest(upStepPatch, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
-                    @Override
-                    public void onResult(String result) {
+                OkHttpTool.getInstance().doRequest(upStepPatch, jsonArray.toString(),
+                        this, result -> {
+                    if (Commont.isDebug) Log.e(TAG, "sport- 步数上传返回: " + result);
+                    if (!WatchUtils.isEmpty(result)) {
                         if (Commont.isDebug) Log.e(TAG, "sport- 步数上传返回: " + result);
-                        if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug) Log.e(TAG, "sport- 步数上传返回: " + result);
-                        } else {
-                            MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                        }
+                    } else {
+                        MyApp.getInstance().setUploadDateGDNew(false);
+                        // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                     }
                 });
             }
@@ -1822,13 +1827,15 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         //入睡时间
         TimeData sleepDown = sleepData.getSleepDown();
         String timeStr_goSleepTime = getTimeStr(sleepDown);//返回时分
-        Date dateStart_goSleepTime = W30BasicUtils.stringToDate(date + " " + timeStr_goSleepTime + "-00", "yyyy-MM-dd HH-mm-ss");
+        Date dateStart_goSleepTime = W30BasicUtils.stringToDate(
+                date + " " + timeStr_goSleepTime + "-00", "yyyy-MM-dd HH-mm-ss");
         String goSleepTime = WatchUtils.getISO8601Timestamp(dateStart_goSleepTime);
 
         //起床时间
         TimeData sleepUp = sleepData.getSleepUp();
         String timeStr_wakeUpTime = getTimeStr(sleepUp);
-        Date dateStart_wakeUpTime = W30BasicUtils.stringToDate(date + " " + timeStr_wakeUpTime + "-00", "yyyy-MM-dd HH-mm-ss");
+        Date dateStart_wakeUpTime = W30BasicUtils.stringToDate(
+                date + " " + timeStr_wakeUpTime + "-00", "yyyy-MM-dd HH-mm-ss");
         String wakeUpTime = WatchUtils.getISO8601Timestamp(dateStart_wakeUpTime);
 
         //睡眠质量
@@ -1898,18 +1905,17 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             //String usSleepPath = "http://api.guiderhealth.com/api/v1/sleepquality";
             JSONArray jsonArray = new JSONArray(mapList);
 //             if (Commont.isDebug)Log.e(TAG, "====SLEEP===" + jsonArray.toString());
-            OkHttpTool.getInstance().doRequest(usSleepPath, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
-                @Override
-                public void onResult(String result) {
-                    if (!WatchUtils.isEmpty(result)) {
-                        //最后一天最后一条
-                        if (postion == 0) {
-                            if (Commont.isDebug) Log.e(TAG, "sleep- 最后睡眠上传返回" + result);
-                            upSleep = true;
-                        }
-                    } else {
-                        MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
+            OkHttpTool.getInstance().doRequest(usSleepPath, jsonArray.toString(), this,
+                    result -> {
+                if (!WatchUtils.isEmpty(result)) {
+                    //最后一天最后一条
+                    if (postion == 0) {
+                        if (Commont.isDebug) Log.e(TAG, "sleep- 最后睡眠上传返回" + result);
+                        upSleep = true;
                     }
+                } else {
+                    MyApp.getInstance().setUploadDateGDNew(false);
+                    // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                 }
             });
         } else {
@@ -1991,7 +1997,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
          * ]
          */
         //LogTestUtil.e(TAG, "======心率数据  " + originData);
-        final List<HalfHourRateData> dataList = new Gson().fromJson(originData, new TypeToken<List<HalfHourRateData>>() {
+        final List<HalfHourRateData> dataList = new Gson().fromJson(originData,
+                new TypeToken<List<HalfHourRateData>>() {
         }.getType());
 
         List<Map<String, Object>> mapList = new ArrayList<>();
@@ -2004,7 +2011,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     TimeData time = hourRateData.getTime();
                     //返回时分
                     String stepDate = getTimeStr(time);
-                    Date dateStart = W30BasicUtils.stringToDate(date + " " + stepDate + "-00", "yyyy-MM-dd HH-mm-ss");
+                    Date dateStart = W30BasicUtils.stringToDate(
+                            date + " " + stepDate + "-00", "yyyy-MM-dd HH-mm-ss");
                     String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
 
                     /**
@@ -2045,26 +2053,24 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
 
                 if (postion) {//这里天数是按照倒序排的，0 = 今天
-                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
-                        @Override
-                        public void onResult(String result) {
-                            if (!WatchUtils.isEmpty(result)) {
-                                if (Commont.isDebug) Log.e(TAG, "最后心率上传返回啊: " + result);
-                                upHeart = true;
-                            } else {
-                                MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                            }
+                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(),
+                            this, result -> {
+                        if (!WatchUtils.isEmpty(result)) {
+                            if (Commont.isDebug) Log.e(TAG, "最后心率上传返回啊: " + result);
+                            upHeart = true;
+                        } else {
+                            MyApp.getInstance().setUploadDateGDNew(false);
+                            // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                         }
                     });
                 } else {
-                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
-                        @Override
-                        public void onResult(String result) {
-                            if (!WatchUtils.isEmpty(result)) {
-                                if (Commont.isDebug) Log.e(TAG, "心率上传返回: " + result);
-                            } else {
-                                MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                            }
+                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(),
+                            this, result -> {
+                        if (!WatchUtils.isEmpty(result)) {
+                            if (Commont.isDebug) Log.e(TAG, "心率上传返回: " + result);
+                        } else {
+                            MyApp.getInstance().setUploadDateGDNew(false);
+                            // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                         }
                     });
                 }
@@ -2182,7 +2188,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
          * ]
          */
         //LogTestUtil.e(TAG, "======血压数据  " + originData);
-        final List<HalfHourBpData> dataList = new Gson().fromJson(originData, new TypeToken<List<HalfHourBpData>>() {
+        final List<HalfHourBpData> dataList = new Gson().fromJson(originData,
+                new TypeToken<List<HalfHourBpData>>() {
         }.getType());
         List<Map<String, Object>> mapList = new ArrayList<>();
         if (dataList != null && !dataList.isEmpty()) {
@@ -2195,7 +2202,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     int lowValue = halfHourBpData.getLowValue();
                     //返回时分
                     String stepDate = getTimeStr(time);
-                    Date dateStart = W30BasicUtils.stringToDate(date + " " + stepDate + "-00", "yyyy-MM-dd HH-mm-ss");
+                    Date dateStart = W30BasicUtils.stringToDate(
+                            date + " " + stepDate + "-00", "yyyy-MM-dd HH-mm-ss");
                     String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
 
                     /**
@@ -2235,22 +2243,18 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 ///String path = "http://apihd.guiderhealth.com/api/v1/bloodpressure";
 
                 if (postion == 0) {//这里天数是按照倒序排的，0 = 今天
-                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
-                        @Override
-                        public void onResult(String result) {
-                            if (!WatchUtils.isEmpty(result)) {
-                                upBool = true;
-                                if (Commont.isDebug) Log.e(TAG, " 最后血压上传返回啊: " + result);
-                            }
+                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(), this,
+                            result -> {
+                        if (!WatchUtils.isEmpty(result)) {
+                            upBool = true;
+                            if (Commont.isDebug) Log.e(TAG, " 最后血压上传返回啊: " + result);
                         }
                     });
                 } else {
-                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(), this, new OkHttpTool.HttpResult() {
-                        @Override
-                        public void onResult(String result) {
-                            if (!WatchUtils.isEmpty(result)) {
-                                if (Commont.isDebug) Log.e(TAG, "血压上传返回: " + result);
-                            }
+                    OkHttpTool.getInstance().doRequest(path, jsonArray.toString(),
+                            this, result -> {
+                        if (!WatchUtils.isEmpty(result)) {
+                            if (Commont.isDebug) Log.e(TAG, "血压上传返回: " + result);
                         }
                     });
                 }
@@ -2367,7 +2371,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         params.put("createTime", WatchUtils.getISO8601Timestamp(new Date()));
         //testTime  =   2019-06-20 17-00-00
         //2019-06-20T08:40:41Z
-        Date dateStart = W30BasicUtils.stringToDate(hrvDates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+        Date dateStart = W30BasicUtils.stringToDate(hrvDates.replace(
+                ":", "-"), "yyyy-MM-dd HH-mm-ss");
         String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
         params.put("testTime", iso8601Timestamp);
         JSONObject json = new JSONObject(params);
@@ -2378,26 +2383,22 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         //String upPatch = "http://apihd.guiderhealth.com/api/v1/hrv";
 
         if (isToday) {
-            OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, new OkHttpTool.HttpResult() {
-                @Override
-                public void onResult(String result) {
-                    if (!WatchUtils.isEmpty(result)) {
-                        if (Commont.isDebug) Log.e(TAG, "最后心HRV传返回啊: " + result);
-                        upHrv = true;
-                    } else {
-                        MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                    }
+            OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, result -> {
+                if (!WatchUtils.isEmpty(result)) {
+                    if (Commont.isDebug) Log.e(TAG, "最后心HRV传返回啊: " + result);
+                    upHrv = true;
+                } else {
+                    MyApp.getInstance().setUploadDateGDNew(false);
+                    // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                 }
             });
         } else {
-            OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, new OkHttpTool.HttpResult() {
-                @Override
-                public void onResult(String result) {
-                    if (!WatchUtils.isEmpty(result)) {
-                        if (Commont.isDebug) Log.e(TAG, "HRV上传返回啊: " + result);
-                    } else {
-                        MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                    }
+            OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, result -> {
+                if (!WatchUtils.isEmpty(result)) {
+                    if (Commont.isDebug) Log.e(TAG, "HRV上传返回啊: " + result);
+                } else {
+                    MyApp.getInstance().setUploadDateGDNew(false);
+                    // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                 }
             });
         }
@@ -2415,7 +2416,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
 //        if (Commont.isDebug)Log.e(TAG, "======= SPO2   " + spo2hOriginData);
 
-        Spo2hOriginData spo2hOriginData1 = new Gson().fromJson(spo2hOriginData, Spo2hOriginData.class);
+        Spo2hOriginData spo2hOriginData1 = new Gson().fromJson(spo2hOriginData,
+                Spo2hOriginData.class);
         TimeData timeData = spo2hOriginData1.getmTime();
         String spo2Dates = obtainDate(timeData);
         int oxygenValue = spo2hOriginData1.getOxygenValue();
@@ -2429,7 +2431,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             params.put("createTime", WatchUtils.getISO8601Timestamp(new Date()));
             //testTime  =   2019-06-20 17-00-00
             //2019-06-20T08:40:41Z
-            Date dateStart = W30BasicUtils.stringToDate(spo2Dates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
+            Date dateStart = W30BasicUtils.stringToDate(spo2Dates.replace(
+                    ":", "-"), "yyyy-MM-dd HH-mm-ss");
             String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
             params.put("testTime", iso8601Timestamp);
             JSONObject json = new JSONObject(params);
@@ -2441,26 +2444,22 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
 
 
             if (isToday) {
-                OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, new OkHttpTool.HttpResult() {
-                    @Override
-                    public void onResult(String result) {
-                        if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug) Log.e(TAG, "最后SPO2上传返回啊: " + result);
-                            upSpo2 = true;
-                        } else {
-                            MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                        }
+                OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, result -> {
+                    if (!WatchUtils.isEmpty(result)) {
+                        if (Commont.isDebug) Log.e(TAG, "最后SPO2上传返回啊: " + result);
+                        upSpo2 = true;
+                    } else {
+                        MyApp.getInstance().setUploadDateGDNew(false);
+                        // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                     }
                 });
             } else {
-                OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, new OkHttpTool.HttpResult() {
-                    @Override
-                    public void onResult(String result) {
-                        if (!WatchUtils.isEmpty(result)) {
-                            if (Commont.isDebug) Log.e(TAG, "SPO2上传返回啊: " + result);
-                        } else {
-                            MyApp.getInstance().setUploadDateGDNew(false);// 正在上传数据,写到全局,保证同时只有一个本服务在运行
-                        }
+                OkHttpTool.getInstance().doRequest(upPatch, list.toString(), this, result -> {
+                    if (!WatchUtils.isEmpty(result)) {
+                        if (Commont.isDebug) Log.e(TAG, "SPO2上传返回啊: " + result);
+                    } else {
+                        MyApp.getInstance().setUploadDateGDNew(false);
+                        // 正在上传数据,写到全局,保证同时只有一个本服务在运行
                     }
                 });
             }
@@ -2590,7 +2589,8 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         int hour = minutes / 60;
         int minute = minutes % 60;
         int seconds = minutes * 60 % 60;
-        return (hour > 9 ? hour : "0" + hour) + ":" + (minute > 9 ? minute : "0" + minute) + ":" + (seconds > 9 ? seconds : "0" + seconds);
+        return (hour > 9 ? hour : "0" + hour) + ":" + (minute > 9 ? minute : "0" + minute)
+                + ":" + (seconds > 9 ? seconds : "0" + seconds);
     }
 
 

@@ -57,7 +57,7 @@ public class CusVPSleepData implements Comparable<Object>{
     public static String getCusVPSleepDate(CusVPTimeData time) {
         String date = time.getDateForDb();
         if (time.getHour() < 8) {
-            date = c.a(date, -1);
+//            date = c.a(date, -1);
         }
 
         return date;

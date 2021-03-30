@@ -245,6 +245,7 @@ dependencies {
     implementation project(':wuweikang')
     implementation project(':wheelpicker')
     implementation(name: 'bluetooth', ext: 'aar')
+    implementation(name: 'vpprotocol_2.1.60.15', ext: 'aar')
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.greenrobot:greendao:3.3.0'
     implementation 'org.greenrobot:greendao-generator:3.3.0'
