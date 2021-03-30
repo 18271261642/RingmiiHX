@@ -183,7 +183,7 @@ public class UserManager {
     private int id = 0;
 
     private int height = 0;
-    private int weight = 0;
+    private Double weight = 0.0;
 
     public int getHeight() {
         return height;
@@ -193,11 +193,11 @@ public class UserManager {
         this.height = height;
     }
 
-    public int getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Double weight) {
         Log.i("uuuuser", weight + "--改变体重");
         this.weight = weight;
     }
@@ -244,7 +244,7 @@ public class UserManager {
         try {
             UserManager.getInstance().setId(data.getInt("id"));
             UserManager.getInstance().setHeight(data.getInt("height"));
-            UserManager.getInstance().setWeight(data.getInt("weight"));
+            UserManager.getInstance().setWeight(data.getDouble("weight"));
             UserManager.getInstance().setAccountId(data.getInt("accountId"));
 
             String name = data.getString("name");

@@ -211,7 +211,7 @@ class PersonInfoActivity : BaseActivity() {
                     "MAN"
                 } else "WOMAN"
         personInfoBean?.height = height.toInt()
-        personInfoBean?.weight = weight.toInt()
+        personInfoBean?.weight = weight.toDouble()
         personInfoBean?.phone = phone
         personInfoBean?.accountId = MMKVUtil.getInt(USER.USERID)
         personInfoBean?.headUrl = header

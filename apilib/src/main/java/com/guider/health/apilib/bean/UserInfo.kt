@@ -51,7 +51,7 @@ class UserInfo : Parcelable {
     var remark: String? = null
     var updateTime: String? = null
     var userState: String? = null
-    var weight = 0
+    var weight = 0.0
     var isSelected = 0
     var relationShip: String? = null
     var deviceCode: String? = null
@@ -87,7 +87,7 @@ class UserInfo : Parcelable {
         dest.writeString(remark)
         dest.writeString(updateTime)
         dest.writeString(userState)
-        dest.writeInt(weight)
+        dest.writeDouble(weight)
         dest.writeInt(isSelected)
         dest.writeString(relationShip)
         dest.writeString(deviceCode)
@@ -121,7 +121,7 @@ class UserInfo : Parcelable {
         remark = `in`.readString()
         updateTime = `in`.readString()
         userState = `in`.readString()
-        weight = `in`.readInt()
+        weight = `in`.readDouble()
         isSelected = `in`.readInt()
         relationShip = `in`.readString()
         deviceCode = `in`.readString()
