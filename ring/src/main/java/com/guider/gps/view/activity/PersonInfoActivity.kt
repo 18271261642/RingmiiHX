@@ -130,7 +130,9 @@ class PersonInfoActivity : BaseActivity() {
         height = personInfoBean?.height.toString()
         heightTv.text = height
         weight = personInfoBean?.weight.toString()
-        weightTv.text = weight
+        weightTv.text =
+                if (weight.endsWith(".0")) weight.replace(".0", "")
+                else weight
         if (StringUtil.isNotBlankAndEmpty(personInfoBean?.descDetail)) {
             addressTv.text = personInfoBean?.descDetail
         }
@@ -423,7 +425,10 @@ class PersonInfoActivity : BaseActivity() {
                             }
                             PERSON_WEIGHT -> {
                                 weight = result
-                                weightTv.text = weight
+                                weightTv.text =
+                                        if (weight.endsWith(".0"))
+                                            weight.replace(".0", "")
+                                        else weight
                             }
                         }
 
