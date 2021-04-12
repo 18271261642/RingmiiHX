@@ -237,6 +237,11 @@ public class ConnBleHelpService {
             public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
                 Log.e(TAG, "-----functionSocailMsgData-=" + functionSocailMsgData);
             }
+
+            @Override
+            public void onSocialMsgSupportDataChange2(FunctionSocailMsgData functionSocailMsgData) {
+
+            }
         }, new ICustomSettingDataListener() {
             @Override
             public void OnSettingDataChange(CustomSettingData customSettingData) {
@@ -290,6 +295,11 @@ public class ConnBleHelpService {
             @Override
             public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
                 //Log.e(TAG, "-----functionSocailMsgData-=" + functionSocailMsgData);
+            }
+
+            @Override
+            public void onSocialMsgSupportDataChange2(FunctionSocailMsgData functionSocailMsgData) {
+
             }
         }, new ICustomSettingDataListener() {
             @Override

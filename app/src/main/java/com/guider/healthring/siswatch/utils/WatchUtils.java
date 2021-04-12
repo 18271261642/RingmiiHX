@@ -1126,6 +1126,11 @@ public class WatchUtils {
             public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
                 Log.d(TAG, "-----设置消息提醒结果-=" + functionSocailMsgData.toString());
             }
+
+            @Override
+            public void onSocialMsgSupportDataChange2(FunctionSocailMsgData functionSocailMsgData) {
+
+            }
         }, socailMsgData);
 
     }

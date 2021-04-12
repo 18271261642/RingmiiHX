@@ -87,7 +87,7 @@ public class CusVPSleepPrecisionData extends CusVPSleepData {
         String wakeDate = wakeTime.getDateForDb();
         if (sleepDate.equals(wakeDate)) {
             if (sleepTime.getHour() >= 20) {
-                this.Date = c.a(sleepDate, 1);
+                this.Date =com.veepoo.protocol.util.d.a(sleepDate, 1);
             } else {
                 this.Date = sleepDate;
             }

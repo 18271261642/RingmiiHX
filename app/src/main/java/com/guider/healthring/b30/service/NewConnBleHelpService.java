@@ -170,48 +170,48 @@ public class NewConnBleHelpService {
         //设置支持的功能
         //消息提醒的开关状态
         //自定义设置的开关状态
-        VPOperateManager.getMangerInstance(MyApp.getContext()).confirmDevicePwd(i -> {
-        }, pwdData -> {
-//                Log.e(TAG, "---111--pwdData=" + pwdData.getmStatus() + "=" + pwdData.toString());
-            //默认密码不正确，提醒用户输入密码
-            if (pwdData.getmStatus() == EPwdStatus.CHECK_FAIL) {
-                showLoadingDialog2(bMac);
-            }
-
-        }, functionDeviceSupportData -> {//设置支持的功能
-            //B31带血压功能的标识
-            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.IS_B31_HAS_BP_KEY,
-                    functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
-            //设置支持的主题风格
-            int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
-            SharedPreferencesUtils.setParam(MyApp.getContext(),
-                    Commont.SP_DEVICE_STYLE_COUNT, deviceStyleCoount);
-//                Log.e(TAG, "--111---functionDeviceSupportData--=" +
-//                functionDeviceSupportData.toString());
-//                Log.e(TAG, "-----contactMsgLength=" +
-//                functionDeviceSupportData.getContactMsgLength() + "--all=" +
-//                functionDeviceSupportData.getAllMsgLength());
-        }, functionSocailMsgData -> { //消息提醒的开关状态
-//                Log.e(TAG, "-----functionSocailMsgData-=" + functionSocailMsgData);
-        }, customSettingData -> {//自定义设置的开关状态
-//                Log.e(TAG, "----111-CustomSettingData-=" + customSettingData.toString());
-        }, b30Pwd, is24Hour);
-
-//        //设置语言，根据系统的语言设置
-//        ELanguage languageData;
-//        String localelLanguage = Locale.getDefault().getLanguage();
-//        if (WatchUtils.isEmpty(localelLanguage) && localelLanguage.equals("zh")) {    //中文
-//            languageData = ELanguage.CHINA;
-//        } else {
-//            languageData = ELanguage.ENGLISH;
-//        }
-//        MyApp.getInstance().getVpOperateManager().settingDeviceLanguage(bleWriteResponse,
-//        new ILanguageDataListener() {
-//            @Override
-//            public void onLanguageDataChange(LanguageData languageData) {
-//
+//        VPOperateManager.getMangerInstance(MyApp.getContext()).confirmDevicePwd(i -> {
+//        }, pwdData -> {
+////                Log.e(TAG, "---111--pwdData=" + pwdData.getmStatus() + "=" + pwdData.toString());
+//            //默认密码不正确，提醒用户输入密码
+//            if (pwdData.getmStatus() == EPwdStatus.CHECK_FAIL) {
+//                showLoadingDialog2(bMac);
 //            }
-//        }, languageData);
+//
+//        }, functionDeviceSupportData -> {//设置支持的功能
+//            //B31带血压功能的标识
+//            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.IS_B31_HAS_BP_KEY,
+//                    functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+//            //设置支持的主题风格
+//            int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
+//            SharedPreferencesUtils.setParam(MyApp.getContext(),
+//                    Commont.SP_DEVICE_STYLE_COUNT, deviceStyleCoount);
+////                Log.e(TAG, "--111---functionDeviceSupportData--=" +
+////                functionDeviceSupportData.toString());
+////                Log.e(TAG, "-----contactMsgLength=" +
+////                functionDeviceSupportData.getContactMsgLength() + "--all=" +
+////                functionDeviceSupportData.getAllMsgLength());
+//        }, functionSocailMsgData -> { //消息提醒的开关状态
+////                Log.e(TAG, "-----functionSocailMsgData-=" + functionSocailMsgData);
+//        }, customSettingData -> {//自定义设置的开关状态
+////                Log.e(TAG, "----111-CustomSettingData-=" + customSettingData.toString());
+//        }, b30Pwd, is24Hour);
+//
+////        //设置语言，根据系统的语言设置
+////        ELanguage languageData;
+////        String localelLanguage = Locale.getDefault().getLanguage();
+////        if (WatchUtils.isEmpty(localelLanguage) && localelLanguage.equals("zh")) {    //中文
+////            languageData = ELanguage.CHINA;
+////        } else {
+////            languageData = ELanguage.ENGLISH;
+////        }
+////        MyApp.getInstance().getVpOperateManager().settingDeviceLanguage(bleWriteResponse,
+////        new ILanguageDataListener() {
+////            @Override
+////            public void onLanguageDataChange(LanguageData languageData) {
+////
+////            }
+////        }, languageData);
 
 
         SharedPreferencesUtils.setParam(MyApp.getContext(),
@@ -306,42 +306,42 @@ public class NewConnBleHelpService {
     public void doConnOperater(final String blePwd, final VerB30PwdListener verB30PwdListener) {
         boolean is24Hour = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(),
                 Commont.IS24Hour, true);//是否为24小时制
-        VPOperateManager.getMangerInstance(MyApp.getContext()).confirmDevicePwd(i -> {
-
-        }, pwdData -> {
-            //showLoadingDialog2(mac);
-//                Log.e(TAG, "-----pwdData=" + pwdData.toString());
-            //此方法调用 ，密码不正确
-            if (pwdData.getmStatus() == EPwdStatus.CHECK_FAIL) {
-                if (verB30PwdListener != null)
-                    verB30PwdListener.verPwdFailed();
-            }
-
-            //验证密码成功
-            if (pwdData.getmStatus() == EPwdStatus.CHECK_AND_TIME_SUCCESS) {
-//                    Log.e(TAG, "-----pwdData=" + pwdData.toString());
-                SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, blePwd);
-                if (verB30PwdListener != null)
-                    verB30PwdListener.verPwdSucc();
-            }
-
-        }, functionDeviceSupportData -> {
-
-            //B31带血压功能的标识
-            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.IS_B31_HAS_BP_KEY, functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
-
-            //设置支持的主题风格
-            int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
-            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.SP_DEVICE_STYLE_COUNT, deviceStyleCoount);
-//                Log.e(TAG, "-----functionDeviceSupportData--=" + functionDeviceSupportData.toString());
-//                Log.e(TAG, "-----contactMsgLength=" + functionDeviceSupportData.getContactMsgLength() + "--all=" + functionDeviceSupportData.getAllMsgLength());
-        }, functionSocailMsgData -> {
-            //Log.e(TAG, "-----functionSocailMsgData-=" + functionSocailMsgData);
-        }, customSettingData -> {
-//                Log.e(TAG, "---2222--OnSettingDataChange-=" + customSettingData.toString());
-
-
-        }, blePwd, is24Hour);
+//        VPOperateManager.getMangerInstance(MyApp.getContext()).confirmDevicePwd(i -> {
+//
+//        }, pwdData -> {
+//            //showLoadingDialog2(mac);
+////                Log.e(TAG, "-----pwdData=" + pwdData.toString());
+//            //此方法调用 ，密码不正确
+//            if (pwdData.getmStatus() == EPwdStatus.CHECK_FAIL) {
+//                if (verB30PwdListener != null)
+//                    verB30PwdListener.verPwdFailed();
+//            }
+//
+//            //验证密码成功
+//            if (pwdData.getmStatus() == EPwdStatus.CHECK_AND_TIME_SUCCESS) {
+////                    Log.e(TAG, "-----pwdData=" + pwdData.toString());
+//                SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.DEVICESCODE, blePwd);
+//                if (verB30PwdListener != null)
+//                    verB30PwdListener.verPwdSucc();
+//            }
+//
+//        }, functionDeviceSupportData -> {
+//
+//            //B31带血压功能的标识
+//            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.IS_B31_HAS_BP_KEY, functionDeviceSupportData.getBp() == EFunctionStatus.SUPPORT);
+//
+//            //设置支持的主题风格
+//            int deviceStyleCoount = functionDeviceSupportData.getScreenstyle();
+//            SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.SP_DEVICE_STYLE_COUNT, deviceStyleCoount);
+////                Log.e(TAG, "-----functionDeviceSupportData--=" + functionDeviceSupportData.toString());
+////                Log.e(TAG, "-----contactMsgLength=" + functionDeviceSupportData.getContactMsgLength() + "--all=" + functionDeviceSupportData.getAllMsgLength());
+//        }, functionSocailMsgData -> {
+//            //Log.e(TAG, "-----functionSocailMsgData-=" + functionSocailMsgData);
+//        }, customSettingData -> {
+////                Log.e(TAG, "---2222--OnSettingDataChange-=" + customSettingData.toString());
+//
+//
+//        }, blePwd, is24Hour);
 
 
 //        //设置语言，根据系统的语言设置

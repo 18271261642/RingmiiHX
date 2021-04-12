@@ -253,6 +253,36 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhoneModelState, IOnLoc
     }
 
     @Override
+    public void pauseMusic() {
+
+    }
+
+    @Override
+    public void playMusic() {
+
+    }
+
+    @Override
+    public void voiceUp() {
+
+    }
+
+    @Override
+    public void voiceDown() {
+
+    }
+
+    @Override
+    public void oprateMusicSuccess() {
+
+    }
+
+    @Override
+    public void oprateMusicFail() {
+
+    }
+
+    @Override
     public void inPttModel() {
 
     }
