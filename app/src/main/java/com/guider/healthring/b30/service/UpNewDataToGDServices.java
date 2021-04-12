@@ -1049,7 +1049,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             @Override
             public void onResult(String result) {
                 Log.e(TAG, "--------所有上传返回=" + result);
-
             }
         });
 
