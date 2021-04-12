@@ -66,9 +66,11 @@ import com.veepoo.protocol.model.settings.CustomSettingData;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -316,7 +318,7 @@ public class ConnBleHelpService {
     private void getCommSupportFunction(FunctionDeviceSupportData functionDeviceSupportData) {
         Context context = MyApp.getContext();
         Log.e(TAG, "--111---functionDeviceSupportData--=" + functionDeviceSupportData.toString());
-
+        Log.i(TAG, "--手环存储数据的天数--=" + functionDeviceSupportData.getWathcDay());
         //版本协议
         originProtcolVersion = functionDeviceSupportData.getOriginProtcolVersion();
         SharedPreferencesUtils.setParam(context, Commont.VP_DEVICE_VERSION, originProtcolVersion);
@@ -716,10 +718,8 @@ public class ConnBleHelpService {
                                     b31SaveSpo2AsyncTask.getStatus() == Status.RUNNING) {
                                 b31SaveSpo2AsyncTask.cancel(true);
                                 b31SaveSpo2AsyncTask = null;
-                                b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
-                            } else {
-                                b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
                             }
+                            b31SaveSpo2AsyncTask = new B31SaveSpo2AsyncTask();
                             b31SaveSpo2AsyncTask.execute(list);
                         }
 
