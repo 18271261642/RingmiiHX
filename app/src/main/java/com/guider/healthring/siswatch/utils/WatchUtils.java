@@ -1402,7 +1402,7 @@ public class WatchUtils {
         TimeZone tz = TimeZone.getTimeZone("GMT00:00");
         //TimeZone tz = TimeZone.getTimeZone("GMT-01");
 //        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.CHINA);
         df.setTimeZone(tz);
         String nowAsISO = df.format(date);
         return nowAsISO;
