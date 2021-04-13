@@ -4,6 +4,7 @@ def andr = rootProject.ext.android
 android {
     compileSdkVersion andr.compileSdkVersion
     resourcePrefix "bluetoothkit_"
+    group 'com.inuker.bluetooth.library1'
     defaultConfig {
         minSdkVersion andr.minSdkVersion
         targetSdkVersion andr.targetSdkVersion

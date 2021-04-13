@@ -39,6 +39,8 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static com.guider.healthring.BuildConfig.APIHDURL;
+
 
 /**
  * 手动测量心电页面
@@ -66,7 +68,6 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
 
     private List<int[]> ecgList = new ArrayList<int[]>();
 
-
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -77,21 +78,22 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
                 if (ecgDetectState == null)
                     return;
                 if(ecgDetectState.getWear() == 1){
-                    showEcgDetectStatusTv.setText("导联脱落,请正常佩戴!");
+                    showEcgDetectStatusTv.setText(getString(R.string.ecg_error1)); //"导联脱落,请正常佩戴!");
                     return;
                 }
 
                 int progress = ecgDetectState.getProgress();
                 ecgDetectScheduleView.setCurrScheduleValue(progress);
-                showEcgDetectStatusTv.setText("测量中: " + progress+"%");
+                showEcgDetectStatusTv.setText(getString(R.string.ecg_measuring) + progress+"%");
 
-                detectEcgHeartTv.setText(ecgDetectState.getHr1() == 0 ? "--次/分":ecgDetectState.getHr1()+"次/分");
-                detectEcgQtTv.setText(ecgDetectState.getQtc() == 0 ? "--毫秒":ecgDetectState.getQtc()+"毫秒");
-                detectEcgHrvTv.setText((ecgDetectState.getHrv() == 0 || ecgDetectState.getHrv() == 255) ?"--毫秒":ecgDetectState.getHrv()+"毫秒");
+                // 次/分
+                detectEcgHeartTv.setText(ecgDetectState.getHr1() == 0 ? getString(R.string.ecg_cnt_m_):ecgDetectState.getHr1()+getString(R.string.ecg_cnt_m));
+                detectEcgQtTv.setText(ecgDetectState.getQtc() == 0 ? getString(R.string.ecg_ms_):ecgDetectState.getQtc()+getString(R.string.ecg_ms));
+                detectEcgHrvTv.setText((ecgDetectState.getHrv() == 0 || ecgDetectState.getHrv() == 255) ? getString(R.string.ecg_ms_) :ecgDetectState.getHrv()+getString(R.string.ecg_ms));
 
 
                 if(progress == 100){    //测量完了
-                    showEcgDetectStatusTv.setText("测量完毕");
+                    showEcgDetectStatusTv.setText(getString(R.string.ecg_tested));
                     detectEcgImgView.setImageResource(R.drawable.detect_sp_start);
                     isMeasure = false;
                     stopDetectEcg();
@@ -99,40 +101,34 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
                     uploadEcgData(ecgDetectState);
                 }
             }
-
             if(msg.what == 0x02){   //测量返回，绘制图表
                 int[] ecgArray = (int[]) msg.obj;
                 heartView.changeData(ecgArray,25);
-                //ecgList.add(ecgArray);
                 for (int i = 0; i < ecgArray.length; i++) {
+                    if (ecgArray[i] == 0 && ecgList.isEmpty()) {
+                        continue;
+                    }
                     int [] tmp = {ecgArray[i]};
                     ecgList.add(tmp);
                 }
             }
-
             if(msg.what == 0x03){   //结果
 
             }
-
         }
     };
-
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ecg_detect_layout);
-
         initViews();
-
     }
 
     private void initViews() {
         findViews();
 
-        commentB30TitleTv.setText("心电测试");
+        commentB30TitleTv.setText(getString(R.string.ecg_test));
         commentB30BackImg.setVisibility(View.VISIBLE);
 
         ecgDetectScheduleView.setAllScheduleValue(100f);
@@ -158,9 +154,9 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
 
 
     private void showEmptyData(){
-        detectEcgHeartTv.setText("--次/分");
-        detectEcgQtTv.setText("--毫秒");
-        detectEcgHrvTv.setText("--毫秒");
+        detectEcgHeartTv.setText(getString(R.string.ecg_cnt_m_));
+        detectEcgQtTv.setText(getString(R.string.ecg_ms_));
+        detectEcgHrvTv.setText(getString(R.string.ecg_ms_));
     }
 
     //读取所有心电数据
@@ -205,13 +201,10 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
 
             @Override
             public void onEcgADCChange(int[] ints) {
-
                 Log.e(TAG, "--stop--onEcgADCChange=" + Arrays.toString(ints));
             }
         });
     }
-
-
 
     //开始测量心电数据
     private void detectEcgData() {
@@ -319,58 +312,55 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
      */
 
     private void uploadEcgData(EcgDetectState detectState) {
-        if(ecgList.isEmpty())
+        if (ecgList.isEmpty())
             return;
-        Log.e(TAG,"-------ecg大小="+ecgList.size());
-       // ecgList.clear();
-        List<Map<String,Object>> listMap = new ArrayList<>();
-        long guiderId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(),"accountIdGD",0L);
-        Map<String,Object> paramsMap = new HashMap<>();
-        paramsMap.put("accountId",guiderId);
-        paramsMap.put("analysisList",""); //结论 不能为空 主要结论，不清楚和result1~result8如何对应
-        paramsMap.put("analysisResults",""); //分析结果 不能为空 详细结论，不清楚和result1~result8如何对应
-        paramsMap.put("avm",100); //幅值单位 不能为空 需要确认
-        paramsMap.put("baseLineValue",100); //基准值
-        paramsMap.put("breathRate",detectState.getBr2()); //呼吸率
-        paramsMap.put("curveDescription","I"); //导联名称描述 不能为空，多导联已半角逗号为间隔 单导联默认为 I
+        Log.e(TAG, "-------ecg大小=" + ecgList.size());
+        // ecgList.clear();
+        List<Map<String, Object>> listMap = new ArrayList<>();
+        long guiderId = (long) SharedPreferencesUtils.getParam(MyApp.getContext(), "accountIdGD", 0L);
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("accountId", guiderId);
+        paramsMap.put("analysisList", ""); //结论 不能为空 主要结论，不清楚和result1~result8如何对应
+        paramsMap.put("analysisResults", ""); //分析结果 不能为空 详细结论，不清楚和result1~result8如何对应
+        paramsMap.put("avm", 0); //幅值单位 不能为空 需要确认
+        paramsMap.put("baseLineValue", 0); //基准值
+        paramsMap.put("breathRate", detectState.getBr2()); //呼吸率
+        paramsMap.put("curveDescription", "I"); //导联名称描述 不能为空，多导联已半角逗号为间隔 单导联默认为 I
         paramsMap.put("customAnalysis", "{}");  //自定义结论
-        paramsMap.put("customType",detectState.getDataType());  //自定义类型
-        paramsMap.put("deviceCode",MyApp.getInstance().getMacAddress()); //设备编码
-        paramsMap.put("ecgData",ecgList);  //心电图数据
-        paramsMap.put("gain",1); //增益 不能为空 为1
-        paramsMap.put("heartRate",detectState.getHr2());   //心率 可为0
-        paramsMap.put("leadNumber",1);  //导联数 不可为空
-        paramsMap.put("mask",0x0FFF);  //心电图单点纵坐标掩码（默认值：Ox0FFF） 不可为空 默认为0xFFFFFFFF
-        paramsMap.put("paxis",0); //P轴 可为0
-        paramsMap.put("prInterval",0); //PR间期 可为0
-        paramsMap.put("qrsAxis",0);  //QRS轴 可为0
-        paramsMap.put("qrsDuration",0);  //QRS间期 可为0
-        paramsMap.put("qtc",0);  //QTC间期 可为0
-        paramsMap.put("qtd",0);  //QT间期 可为0 对应aveQT
-        paramsMap.put("rrInterval",0);   //RR间期 可为0
-        paramsMap.put("rv5",0);    //RV5幅值 可为0
-        paramsMap.put("samplingFrequency",1);  //采样频率 不可为空 对应uploadFrequency
-        paramsMap.put("sv1",0);   //SV1幅值 可为0
-        paramsMap.put("taxis",0);   //t轴 可为0
+        paramsMap.put("customType", detectState.getDataType());  //自定义类型
+        paramsMap.put("deviceCode", MyApp.getInstance().getMacAddress()); //设备编码
+        paramsMap.put("ecgData", ecgList);  //心电图数据
+        paramsMap.put("gain", 1); //增益 不能为空 为1
+        paramsMap.put("heartRate", detectState.getHr2());   //心率 可为0
+        paramsMap.put("leadNumber", 1);  //导联数 不可为空
+        paramsMap.put("mask", 0x0FFFF);  //心电图单点纵坐标掩码（默认值：Ox0FFF） 不可为空 默认为0xFFFFFFFF
+        paramsMap.put("paxis", 0); //P轴 可为0
+        paramsMap.put("prInterval", 0); //PR间期 可为0
+        paramsMap.put("qrsAxis", 0);  //QRS轴 可为0
+        paramsMap.put("qrsDuration", 0);  //QRS间期 可为0
+        paramsMap.put("qtc", detectState.getQtc());  //QTC间期 可为0
+        paramsMap.put("qtd", 0);  //QT间期 可为0 对应aveQT
+        paramsMap.put("rrInterval", 0);   //RR间期 可为0
+        paramsMap.put("rv5", 0);    //RV5幅值 可为0
+        paramsMap.put("samplingFrequency", 138);  //采样频率 不可为空 对应uploadFrequency
+        paramsMap.put("sv1", 0);   //SV1幅值 可为0
+        paramsMap.put("taxis", 0);   //t轴 可为0
         paramsMap.put("testTime", WatchUtils.getISO8601Timestamp(new Date()));  //测试时间 不可为空 对应 date+testTime两个字段
 
         listMap.add(paramsMap);
         String params = new Gson().toJson(listMap);
 
-        Log.e(TAG,"-----params="+params);
+        Log.e(TAG, "-----params=" + params);
 
-        String url =  BuildConfig.APIHDURL + "api/v1/ecg";
-
+        String url = APIHDURL + "api/v1/ecg";
+        Log.i(TAG, url);
         OkHttpTool.getInstance().doRequest(url, params, null, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
-                Log.e(TAG,"-------上传心电结果="+result);
+                Log.e(TAG, "-------上传心电结果=" + result);
                 ecgList.clear();
                 listMap.clear();
             }
         });
-
-
     }
-
 }

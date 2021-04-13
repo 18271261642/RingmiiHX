@@ -3,8 +3,8 @@ package ble;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.inuker.bluetooth.library.old.model.BleGattProfile;
-import com.inuker.bluetooth.library.old.search.SearchResult;
+import com.inuker.bluetooth.library1.old.model.BleGattProfile;
+import com.inuker.bluetooth.library1.old.search.SearchResult;
 
 import java.util.HashMap;
 import java.util.UUID;

@@ -99,7 +99,7 @@ public class ManualAdapter extends RecyclerView.Adapter<ManualAdapter.ManualView
         }
 
         if(nameStr.equals("FATIGUE")){
-            holder.nameTv.setText("疲劳度");
+            holder.nameTv.setText(mContext.getResources().getString(R.string.fatigue_name));
             holder.img.setImageResource(R.drawable.fgm_home_function_ftg);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,7 +111,7 @@ public class ManualAdapter extends RecyclerView.Adapter<ManualAdapter.ManualView
         }
 
         if(nameStr.equals("ECG")){
-            holder.nameTv.setText("心电");
+            holder.nameTv.setText(mContext.getResources().getString(R.string.ecg_name));
             holder.img.setImageResource(R.drawable.fgm_home_function_ftg);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

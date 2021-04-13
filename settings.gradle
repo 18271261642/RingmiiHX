@@ -2,8 +2,8 @@ include ':app', ':wheelpicker', ':w30sblelibrary', ':libgooglemap', ':libgaodema
         ':libbuglygoogle', ':libbuglycn', ':wuweikang'
 include ":apilib",":arouter-core",":bluetooth",":common",":ecg",":fragmentation_core",":tckeyboard",
         ":arouter-annotation",":arouter-compiler",":common_m500_1000",
-        ":simpleble",
         ":rtc",':bpm1000'
 //project(':litepals').projectDir = new File('litepal')':litepals',':old',
 include ':libbase'
 include ":glu_phone",":glu"
+include ":simpleble"

@@ -17,7 +17,7 @@
         android:paddingHorizontal="20dp"
         android:paddingTop="5dp"
         android:paddingBottom="10dp"
-        android:text="手动测量"
+        android:text="@string/handle_test"
         android:textColor="#666666"
         android:textSize="16sp" />
 

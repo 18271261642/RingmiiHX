@@ -29,7 +29,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="心率"
+                android:text="@string/settings_custom_shortcuts_heartrate"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="QT间期"
+                android:text="@string/ecg_qtc"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -73,7 +73,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="--次/分"
+                android:text="@string/ecg_cnt_m_"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -85,7 +85,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="--毫秒"
+                android:text="@string/ecg_ms_"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -97,7 +97,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="--毫秒"
+                android:text="@string/ecg_ms_"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

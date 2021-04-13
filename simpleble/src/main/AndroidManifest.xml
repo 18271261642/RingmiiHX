@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.inuker.bluetooth.library">
+    package="com.inuker.bluetooth.library1">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -13,7 +13,7 @@
     <application>
 
         <service
-            android:name=".old.BluetoothService" />
+            android:name="com.inuker.bluetooth.library1.old.BluetoothService" />
     </application>
 
 </manifest>

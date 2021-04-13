@@ -35,6 +35,7 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.inuker.bluetooth.library.BluetoothClient;
 import com.inuker.bluetooth.library.Code;
 import com.inuker.bluetooth.library.Constants;
+import com.inuker.bluetooth.library.IResponse;
 import com.inuker.bluetooth.library.search.SearchRequest;
 import com.inuker.bluetooth.library.search.SearchResult;
 import com.inuker.bluetooth.library.search.response.SearchResponse;
@@ -43,7 +44,7 @@ import com.veepoo.protocol.listener.base.IABleConnectStatusListener;
 import java.io.IOException;
 
 public class NewB30ConnStateService extends Service {
-
+    IResponse s;
     private static final String TAG = "NewB30ConnStateService";
     private static final int SEARCH_REQUEST_CODE = 1001;    //扫描
     private static final int AUTO_CONN_REQUEST_CODE = 1002; //非手动断开

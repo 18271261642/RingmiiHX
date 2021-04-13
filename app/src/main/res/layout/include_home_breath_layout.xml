@@ -23,7 +23,7 @@
             <TextView
                 android:id="@+id/analysis_chartview_title_spo2h"
                 style="@style/style_block_toptitle_tv"
-                android:text="血氧/呼吸暂停体检" />
+                android:text="@string/string_today_Spo_breath" />
 
             <ImageView style="@style/style_block_toptitle_img" />
 

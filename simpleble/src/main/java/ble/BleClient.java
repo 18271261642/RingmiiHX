@@ -7,16 +7,16 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
-import com.inuker.bluetooth.library.old.BluetoothClient;
-import com.inuker.bluetooth.library.old.Code;
-import com.inuker.bluetooth.library.old.Constants;
-import com.inuker.bluetooth.library.old.connect.listener.BleConnectStatusListener;
-import com.inuker.bluetooth.library.old.connect.options.BleConnectOptions;
-import com.inuker.bluetooth.library.old.connect.response.BleConnectResponse;
-import com.inuker.bluetooth.library.old.model.BleGattProfile;
-import com.inuker.bluetooth.library.old.search.SearchRequest;
-import com.inuker.bluetooth.library.old.search.SearchResult;
-import com.inuker.bluetooth.library.old.search.response.SearchResponse;
+import com.inuker.bluetooth.library1.old.BluetoothClient;
+import com.inuker.bluetooth.library1.old.Code;
+import com.inuker.bluetooth.library1.old.Constants;
+import com.inuker.bluetooth.library1.old.connect.listener.BleConnectStatusListener;
+import com.inuker.bluetooth.library1.old.connect.options.BleConnectOptions;
+import com.inuker.bluetooth.library1.old.connect.response.BleConnectResponse;
+import com.inuker.bluetooth.library1.old.model.BleGattProfile;
+import com.inuker.bluetooth.library1.old.search.SearchRequest;
+import com.inuker.bluetooth.library1.old.search.SearchResult;
+import com.inuker.bluetooth.library1.old.search.response.SearchResponse;
 
 import java.util.HashMap;
 

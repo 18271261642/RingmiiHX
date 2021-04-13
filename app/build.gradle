@@ -146,6 +146,26 @@ android {
     // 多渠道打包配置
     productFlavors {
         // HEALTH 0 运动， 1 横板健康， 2 竖版无创
+        // 测试版本
+        app_guider_test {
+            applicationId "com.guider.healthringx"
+            manifestPlaceholders = [
+                    app_name     : "盖德手環",
+                    channel      : "app_guider",
+                    app_icon     : "@drawable/ic_gaide_launch",
+                    running_label: "@string/running"
+            ]
+            buildConfigField("int", "HEALTH", "2")
+            buildConfigField("String", "MAC", '"11:11:11:11:11:12"')
+            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
+        }
         // 盖德默认应用
         app_guider {
             applicationId "com.guider.healthringx"
@@ -263,6 +283,7 @@ android {
 
             buildConfigField("String", "APIURL", '"http://150.117.123.79:8082/"')
             buildConfigField("String", "APIHDURL", '"http://150.117.123.79:8083/"')
+            // buildConfigField("String", "APIHDURL", '"http://192.168.1.168:8083/"')
 
             buildConfigField("String", "WEBDOMAIN", '"http://150.117.123.79:8009/"')
             buildConfigField("String", "CMATEWEBDOMAIN", '"http://150.117.123.79:8009/"')

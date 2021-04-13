@@ -1377,4 +1377,18 @@
     <string name="record_history">历史记录</string>
     <string name="blood_flow_velocity">血流速度</string>
     <string name="measure_hemoglobin">血红蛋白</string>
+
+    <string name="ecg_measuring">测量中: </string>
+    <string name="ecg_cnt_m">次/分</string>
+    <string name="ecg_cnt_m_">--次/分</string>
+    <string name="ecg_ms">毫秒</string>
+    <string name="ecg_ms_">--毫秒</string>
+    <string name="ecg_tested">测量完毕</string>
+    <string name="ecg_test">心电测试</string>
+    <string name="ecg_name">心电</string>
+    <string name="ecg_error1">导联脱落,请正常佩戴!</string>
+    <string name="ecg_qtc">QT间期</string>
+
+    <string name="handle_test">手动测量</string>
+    <string name="fatigue_name">疲劳度</string>
 </resources>

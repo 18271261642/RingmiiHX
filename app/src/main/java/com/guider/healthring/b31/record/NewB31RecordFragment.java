@@ -736,7 +736,7 @@ public class NewB31RecordFragment extends LazyFragment
         if (MyCommandManager.DEVICENAME != null && MyCommandManager.ADDRESS != null) {    //已连接
             if (b30connectStateTv != null)
                 b30connectStateTv.setText(getResources().getString(R.string.connted));
-            homeFastStatusTv.setText("更多操作");
+            homeFastStatusTv.setText(getString(R.string.more_opera));
             int param = (int) SharedPreferencesUtils.getParam(getmContext(), Commont.BATTERNUMBER, 0);
             if (param > 0) {
                 showBatterStute(param);
@@ -1406,7 +1406,7 @@ public class NewB31RecordFragment extends LazyFragment
                 if (getActivity() != null && !getActivity().isFinishing()) {
                     String textConn = getResources().getString(R.string.connted);
                     if (b30connectStateTv != null) b30connectStateTv.setText(textConn);
-                    homeFastStatusTv.setText("更多操作");
+                    homeFastStatusTv.setText(getString(R.string.more_opera));
                     if (connBleHelpService != null && MyCommandManager.DEVICENAME != null) {
                         showDeviceIcon();
                         if (b31HomeSwipeRefreshLayout != null) {
