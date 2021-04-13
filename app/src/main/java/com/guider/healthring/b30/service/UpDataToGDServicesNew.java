@@ -46,6 +46,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.guider.healthring.BuildConfig.APIHDURL;
+import static com.guider.healthring.BuildConfig.APIURL;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BREATH;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HEART;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_LOWSPO2H;
@@ -54,7 +56,7 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
 
 public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpDataToGDServicesNew";
-    private final String Base_Url = BuildConfig.APIURL + "api/v1/"; // http://47.92.218.150:8082/
+    private final String Base_Url = APIURL + "api/v1/"; // http://47.92.218.150:8082/
     /**
      * 上传是否完成的状态: 运动数据
      */
@@ -852,7 +854,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
 //                        params.put("CALORIE", 0);
 //                        params.put("CDATE", date + " " + stepDate + "-00");
                        // String upStepPatch = Base_Url + "walkstep";
-                        String upStepPatch = BuildConfig.APIHDURL + "api/v1/walkrecord"; // http://apihd.guiderhealth.com/
+                        String upStepPatch = APIHDURL + "api/v1/walkrecord"; // http://apihd.guiderhealth.com/
                         JSONObject json = new JSONObject(params);
                         List<JSONObject> list = new ArrayList<>();
                         list.add(json);
@@ -936,7 +938,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
         List<JSONObject> list = new ArrayList<>();
         list.add(json);
 
-        String usSleepPath = BuildConfig.APIHDURL + "api/v1/sleepquality"; // http://api.guiderhealth.com/
+        String usSleepPath = APIHDURL + "api/v1/sleepquality"; // http://api.guiderhealth.com/
         OkHttpTool.getInstance().doRequest(usSleepPath, list.toString(), this, new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {
@@ -1001,7 +1003,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
                         list.add(json);
 
                         //String path = Base_Url + "heartbeat";
-                        String path = BuildConfig.APIHDURL + "api/v1/heartbeat"; // http://apihd.guiderhealth.com/
+                        String path = APIHDURL + "api/v1/heartbeat"; // http://apihd.guiderhealth.com/
 
 //                        MyLogUtil.e(TAG, "heart- 心率上传参数" + params.toString());
 
@@ -1093,7 +1095,7 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
 
                         //String path = Base_Url + "bloodPressures ";
 
-                        String path = BuildConfig.APIHDURL + "api/v1/bloodpressure"; // http://apihd.guiderhealth.com/
+                        String path = APIHDURL + "api/v1/bloodpressure"; // http://apihd.guiderhealth.com/
 
                         MyLogUtil.e(TAG, "bp- 血压上传参数" + params.toString());
 

@@ -83,12 +83,8 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
 
     private Subscription subscribe;
 
-
     private List<Integer> phoneHeadList;
     private PhoneAdapter phoneAdapter;
-
-//    //倒计时
-//    MyCountDownTimerUtils countTimeUtils;
 
     private PhoneAreaCodeView phoneAreaCodeView;
 
@@ -105,7 +101,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
 
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
-
     }
 
     private void initViewIds() {
@@ -126,7 +121,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
         tv_phone_head.setOnClickListener(this);
     }
 
-
     private void initViews() {
         tvTitle.setText(R.string.user_regsiter);
         usernameInput.setHint(getResources().getString(R.string.input_name));
@@ -136,8 +130,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
             RelativeLayout codeLayout = findViewById(R.id.codeLayout);
             codeLayout.setVisibility(View.GONE);
         }
-        //倒计时
-        //countTimeUtils = new MyCountDownTimerUtils(60 * 1000, 1000);
 
         //初始化底部声明
         String INSURANCE_STATEMENT = getResources().getString(R.string.register_agreement);
@@ -165,8 +157,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
         registerAgreement.setMovementMethod(LinkMovementMethod.getInstance());
         toolbar.setNavigationIcon(R.mipmap.backs);
         toolbar.setNavigationOnClickListener(v -> finish());
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -182,7 +172,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
             @Override
             public void onError(Throwable e) {
             }
-
 
             @Override
             public void onNext(Integer integer) {
@@ -263,7 +252,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -295,7 +283,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                     Commont.FRIEND_BASE_URL + URLs.myHTTPs,
                     RegisterActivity2.this, mapjson, 2);
         }
-
     }
 
     //获取手机号验证码 盖德
@@ -347,7 +334,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
         String phonePwd = password.getText().toString();
         String pass = Md5Util.Md532(phonePwd);
         if (!StringUtil.isEmpty(phoneStr)) {
-            String loginUrl = com.guider.health.apilib.BuildConfig.APIURL +
+            String loginUrl = BuildConfig.APIURL +
                     "api/v1/register/phonewithpasswd?telAreaCode=" + code
                     + "&phone=" + phoneStr + "&passwd=" + pass;
             OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {
@@ -367,12 +354,17 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                                             "tokenGD", token);
                                     Log.e("登录的userId", accountId + "");
                                     backupPassword(Integer.parseInt(String.valueOf(accountId)));
-                                } else hideLoadingDialog();
+                                    ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_ok));
+                                } else {
+                                    hideLoadingDialog();
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 hideLoadingDialog();
                             }
-                        } else ToastUtil.showToast(mContext, jsonObject.getString("msg"));
+                        } else {
+                            ToastUtil.showToast(mContext, jsonObject.getString("msg"));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         hideLoadingDialog();
@@ -436,38 +428,6 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
             e.printStackTrace();
             hideLoadingDialog();
         }
-
-
-//        switch (what){
-//            case 0x01:
-//                analysisRegiInfo(object.toString());
-//                break;
-//            case 1001:  //登录盖德后台返回
-//                if(WatchUtils.isNetRequestSuccess(object.toString(),0)){
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(object.toString());
-//                        if(jsonObject.has("data")){
-//                            JSONObject dataJsonObject = jsonObject.getJSONObject("data");
-//                            long accountId = dataJsonObject.getLong("accountId");
-//                            SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
-//                        }
-//
-//                    }catch (Exception e){
-//                        e.printStackTrace();
-//                    }
-//                }
-//                break;
-//            case 1002:  //获取手机验证码
-//                try {
-//                    JSONObject jsonObject = new JSONObject(object.toString());
-//                    ToastUtil.showToast(RegisterActivity2.this, jsonObject.getString("data")+jsonObject.getString("msg"));
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//
-//                break;
-//        }
-
     }
 
     @Override
@@ -502,10 +462,12 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                 String msg = jsonObject.getString("msg");
                 if (msg.equals("用户已被注册") && jsonObject.getInt("code") == 5000) {
                     msg = "用户已注册,请您直接登录即可";
-                    tvTitle.postDelayed(this::finish, 1000);
+                    registerGuiderAccount();
+                    // tvTitle.postDelayed(this::finish, 1000);
+                } else {
+                    ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_fail));
+                    hideLoadingDialog();
                 }
-                ToastUtil.showToast(RegisterActivity2.this, msg);
-                hideLoadingDialog();
             }
         } catch (Exception e) {
             e.printStackTrace();

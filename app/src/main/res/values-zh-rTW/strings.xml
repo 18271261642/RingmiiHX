@@ -1083,6 +1083,7 @@
     <string name="tianxie">用戶名填寫錯誤</string>
     <string name="miamacuo">密碼錯誤</string>
     <string name="regsiter_fail">註冊失敗</string>
+    <string name="regsiter_ok">註冊成功</string>
 
     <string name="yanzhengma">驗證碼已經發送</string>
     <string name="guojia">獲取國家列表成功</string>

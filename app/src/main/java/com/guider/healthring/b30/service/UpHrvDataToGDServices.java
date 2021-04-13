@@ -35,9 +35,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.guider.healthring.BuildConfig.APIURL;
+
 public class UpHrvDataToGDServices extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpHrvDataToGDServices";
-    private final String Base_Url = BuildConfig.APIURL + "api/v1/"; // http://47.92.218.150:8082/
+    private final String Base_Url = APIURL + "api/v1/"; // http://47.92.218.150:8082/
 
     private final int STATE_HRV = 1;
     private final int STATE_SPO2 = 2;

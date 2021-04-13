@@ -52,6 +52,8 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 import java.util.List;
 
+import static com.guider.healthring.BuildConfig.APIURL;
+
 
 /**
  * Created by Administrator on 2018/8/4.
@@ -324,7 +326,7 @@ public class B30DeviceActivity extends WatchBaseActivity
     /**
      * 解绑设备 http://47.92.218.150:8082/
      */
-    private final String Base_Url = BuildConfig.APIURL + "api/v1/";
+    private final String Base_Url = APIURL + "api/v1/";
     void unbindDevices() {
         try {
             long accountIdGD = (long) SharedPreferencesUtils.getParam(MyApp.getInstance(), "accountIdGD", 0L);

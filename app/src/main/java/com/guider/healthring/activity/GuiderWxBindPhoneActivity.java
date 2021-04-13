@@ -13,8 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
-import com.guider.health.apilib.BuildConfig;
 import com.guider.health.common.utils.StringUtil;
+import com.guider.healthring.BuildConfig;
 import com.guider.healthring.R;
 import com.guider.healthring.bean.AreCodeBean;
 import com.guider.healthring.siswatch.NewSearchActivity;
@@ -28,6 +28,8 @@ import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
 
 import org.json.JSONObject;
+
+import static com.guider.healthring.BuildConfig.APIURL;
 
 /**
  * 盖德微信绑定手机号，获取手机号验证码
@@ -135,7 +137,7 @@ public class GuiderWxBindPhoneActivity extends WatchBaseActivity
 //                StringUtils.substringAfter(
 //                        wxBindPhoneCodeTv.getText().toString(), "+").trim(),
 //                phoeCodes, phoeVerCode);
-        String bindUrl = BuildConfig.APIURL +
+        String bindUrl = APIURL +
                 "api/v2/wechat/bind/phone/token?phone=" + phoeCodes + "&code=";
         // http://api.guiderhealth.com/
         if (!StringUtil.isEmpty(wxStr)) {

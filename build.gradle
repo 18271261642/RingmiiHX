@@ -55,7 +55,7 @@ allprojects {
         codeVersion = 237
         appVersion = "2.8.2"
         googlePlay = true
-        isMcu = false
+        isMcu = true
     }
 
     subprojects {

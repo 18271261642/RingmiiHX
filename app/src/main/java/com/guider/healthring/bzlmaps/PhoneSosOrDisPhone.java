@@ -151,7 +151,7 @@ public class PhoneSosOrDisPhone implements IDeviceControlPhoneModelState, IOnLoc
             }
             params.put("signalType",PhoneSosSingalType.GPS);
             params.put("warnType",PhoneSosWarnType.SOS);
-            String url = com.guider.health.apilib.BuildConfig.APIURL + "api/v1/sos/position"; // http://api.guiderhealth.com/
+            String url = BuildConfig.APIURL + "api/v1/sos/position"; // http://api.guiderhealth.com/
             String parStr = new Gson().toJson(params);
             Log.e("位置","----------参数="+parStr);
             OkHttpTool.getInstance().doRequest(url, parStr, null, result -> {

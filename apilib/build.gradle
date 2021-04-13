@@ -21,6 +21,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            /*
             if (rootProject.isMcu) {
                 buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
                 buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
@@ -33,10 +34,12 @@ android {
                 buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
                 println "apilib -- Package CN Bundle Release . . ."
             }
+            */
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            /*
             if (rootProject.isMcu) {
                 buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
                 buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
@@ -52,6 +55,7 @@ android {
                 // buildConfigField("String", "APIURL", '"http://192.168.1.180:8082/"')
                 // buildConfigField("String", "APIHDURL", '"http://192.168.1.180:8083/"')
             }
+            */
         }
     }
 

@@ -51,6 +51,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.guider.healthring.BuildConfig.APIURL;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BREATH;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_HEART;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_LOWSPO2H;
@@ -60,7 +62,7 @@ import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_SPO2H;
 
 public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     private final String TAG = "UpNewDataToGDServices";
-    private final String Base_Url = BuildConfig.APIURL + "api/v1/";//http://api.guiderhealth.com/
+    private final String Base_Url = APIURL + "api/v1/";//http://api.guiderhealth.com/
 
 
     /**

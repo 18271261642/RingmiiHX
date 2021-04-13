@@ -31,7 +31,6 @@ public class MyApplication extends Application {
         UMConfigure.setLogEnabled(true);
         PlatformConfig.setWeixin("wxfc96fa4b92b43c9a", "a49af0d9adb38421150fd0edef3a3a1e");
         */
-        ApiUtil.init(this , MyUtils.getMacAddress());
     }
 
 }

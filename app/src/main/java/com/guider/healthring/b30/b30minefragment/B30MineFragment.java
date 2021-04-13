@@ -465,7 +465,7 @@ public class B30MineFragment extends LazyFragment implements View.OnClickListene
     /**
      * 解绑设备 http://47.92.218.150:8082/
      */
-    private final String Base_Url = com.guider.health.apilib.BuildConfig.APIURL + "api/v1/";
+    private final String Base_Url = BuildConfig.APIURL + "api/v1/";
 
     void unbindDevices() {
         long accountIdGD = (long) SharedPreferencesUtils.getParam(

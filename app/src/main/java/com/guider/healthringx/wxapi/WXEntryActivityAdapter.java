@@ -38,6 +38,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.guider.healthring.BuildConfig.APIURL;
+
 
 /**
  * MicroMsg
@@ -49,7 +51,7 @@ public class WXEntryActivityAdapter {
     private static final String TAG = "WXEntryActivity";
 
     //盖德微信登录
-    private String GUIDER_WX_LOGIN_URL = BuildConfig.APIURL +  "api/v2/third/login/wachat/tokeninfo"; // http://api.guiderhealth.com/
+    private String GUIDER_WX_LOGIN_URL = APIURL +  "api/v2/third/login/wachat/tokeninfo"; // http://api.guiderhealth.com/
     /**
      * 国内用这个
      */

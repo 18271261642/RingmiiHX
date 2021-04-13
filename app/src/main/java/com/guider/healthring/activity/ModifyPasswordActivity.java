@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import static com.guider.healthring.BuildConfig.APIURL;
+
 /**
  * Created by thinkpad on 2017/3/9.
  * 修改密码
@@ -62,7 +64,7 @@ public class ModifyPasswordActivity extends WatchBaseActivity implements View.On
         map.put("oldPwd", Md5Util.Md532(oldePwd));
         map.put("confirmPwd", Md5Util.Md532(newPwd));
         map.put("newPwd", Md5Util.Md532(newPwd));
-        String editPassUrl = BuildConfig.APIURL + "api/v1/account/pwd";
+        String editPassUrl = APIURL + "api/v1/account/pwd";
         showLoadingDialog("");
         OkHttpTool.getInstance().doRequest(editPassUrl, map, "1", result -> {
             Log.e("ModifyPasswordActivity", "-------修改密码=" + result);

@@ -1091,6 +1091,7 @@
     <string name="tianxie">User name error</string>
     <string name="miamacuo">Password error</string>
     <string name="regsiter_fail">Login has failed</string>
+    <string name="regsiter_ok">Login successful</string>
 
     <string name="yanzhengma">Verify code has been sent</string>
     <string name="guojia">Get a list of countries successfully</string>

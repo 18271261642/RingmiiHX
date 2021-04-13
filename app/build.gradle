@@ -54,6 +54,7 @@ android {
             shrinkResources false
             // 区分是否是国际版本
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
+            /*
             if (rootProject.isMcu) {
                 buildConfigField("String", "WEBDOMAIN", '"https://apphealth.mcu.edu.tw/"')
                 buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
@@ -67,6 +68,7 @@ android {
                 buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
             }
+            */
         }
         release {
             debuggable false
@@ -78,6 +80,7 @@ android {
             signingConfig signingConfigs.release
             // 区分是否是国际版本
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")
+            /*
             if (rootProject.isMcu) {
                 buildConfigField("String", "WEBDOMAIN", '"https://apphealth.mcu.edu.tw/"')
                 buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
@@ -93,6 +96,7 @@ android {
                 buildConfigField("boolean", "SOSISOPENTAG", "false")
                 println "app -- Package CN Bundle Release . . ."
             }
+            */
         }
     }
     greendao {
@@ -154,6 +158,33 @@ android {
             buildConfigField("int", "HEALTH", "0")
             buildConfigField("String", "MAC", '"11:11:11:11:11:12"')
             buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
+        }
+
+        app_guider_cn {
+            applicationId "com.guider.healthringx"
+            manifestPlaceholders = [
+                    app_name     : "@string/the_app_name",
+                    channel      : "app_guider",
+                    app_icon     : "@drawable/ic_gaide_launch",
+                    running_label: "@string/running"
+            ]
+            buildConfigField("int", "HEALTH", "0")
+            buildConfigField("String", "MAC", '"11:11:11:11:11:12"')
+            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
         }
 
         // 盖德添加健康应用
@@ -168,6 +199,13 @@ android {
             buildConfigField("int", "HEALTH", "1")
             buildConfigField("String", "MAC", '"11:11:11:11:11:14"')
             buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
         }
 
         // Vigori Mate 第三方兼容，健康改为竖版无创
@@ -182,6 +220,13 @@ android {
             buildConfigField("int", "HEALTH", "2")
             buildConfigField("String", "MAC", '"11:11:11:11:11:13"')
             buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
         }
         // mcu手環
         app_guider_mcu {
@@ -195,6 +240,34 @@ android {
             buildConfigField("int", "HEALTH", "1")
             buildConfigField("String", "MAC", '"11:11:11:11:11:15"')
             buildConfigField("String", "LINE_APP_ID", '"1655271017"')
+
+            buildConfigField("String", "APIURL", '"http://apihealth.mcu.edu.tw/"')
+            buildConfigField("String", "APIHDURL", '"http://apihdhealth.mcu.edu.tw/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"https://apphealth.mcu.edu.tw/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"https://camtehealth.mcu.edu.tw/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
+        }
+        // 是方电讯
+        app_guider_chief {
+            applicationId "com.chief.healthringx"
+            manifestPlaceholders = [
+                    app_name     : "盖德手環",
+                    channel      : "app_guider_chief",
+                    app_icon     : "@drawable/ic_gaide_launch",
+                    running_label: "@string/running"
+            ]
+            buildConfigField("int", "HEALTH", "1")
+            buildConfigField("String", "MAC", '"11:11:11:11:11:16"')
+            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+
+            buildConfigField("String", "APIURL", '"http://150.117.123.79:8082/"')
+            buildConfigField("String", "APIHDURL", '"http://150.117.123.79:8083/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"http://150.117.123.79:8009/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"http://150.117.123.79:8009/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
+            println "app -- Package CN Bundle Release . . ."
         }
     }
 }

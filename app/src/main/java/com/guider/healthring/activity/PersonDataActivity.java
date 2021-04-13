@@ -76,6 +76,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.guider.healthring.BuildConfig.APIURL;
 import static com.guider.healthring.util.Common.userInfo;
 
 /**
@@ -380,7 +381,7 @@ public class PersonDataActivity extends WatchBaseActivity
             guiderUserInfo.setBirthday(birthdarStr + "T00:00:00Z");
             guiderUserInfo.setName(uName);
             guiderUserInfo.setPhone(phone);
-            String userUrl = BuildConfig.APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
+            String userUrl = APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
             if (requestPressent != null) {
                 showLoadingDialog("");
                 //Log.e(TAG,"-------盖德参数="+new Gson().toJson(guiderUserInfo));
@@ -457,7 +458,7 @@ public class PersonDataActivity extends WatchBaseActivity
 
     //上传盖德图片
     private void uploadGuiderPic(String path) {
-        String guiderImgUrl = BuildConfig.APIURL + "upload/file";
+        String guiderImgUrl = APIURL + "upload/file";
         OkHttpTool.getInstance().doRequestUploadFile(guiderImgUrl, new File(path).getName(), path, "11", new OkHttpTool.HttpResult() {
             @Override
             public void onResult(String result) {

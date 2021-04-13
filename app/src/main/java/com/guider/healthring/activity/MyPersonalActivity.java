@@ -96,6 +96,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
+import static com.guider.healthring.BuildConfig.APIURL;
+
 /**
  * Created by thinkpad on 2017/3/8.
  * 个人信息
@@ -241,7 +243,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
             long accountId = (long) SharedPreferencesUtils.getParam(MyPersonalActivity.this, "accountIdGD", 0L);
             if (accountId == 0)
                 return;
-            String guiderUrl = BuildConfig.APIURL + "api/v1/userinfo?accountId=" + accountId; // http://api.guiderhealth.com/
+            String guiderUrl = APIURL + "api/v1/userinfo?accountId=" + accountId; // http://api.guiderhealth.com/
             if (requestPressent != null) {
                 requestPressent.getRequestJSONObjectGet(11, guiderUrl, this, 11);
             }
@@ -905,7 +907,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
         Log.e(TAG, "------图片地址=" + path);
 
-        String guiderImgUrl = BuildConfig.APIURL + "upload/file";
+        String guiderImgUrl = APIURL + "upload/file";
         OkHttpTool.getInstance().doRequestUploadFile(guiderImgUrl,
                 new File(path).getName(), path, "11", result -> {
                     Log.e(TAG, "---盖德上传图片返回=" + result);
@@ -931,7 +933,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         guser.setAddr("");
         guser.setCardId("");
         guser.setBirthday(birthdayTv.getText().toString() + "T00:00:00Z");
-        String userUrl = BuildConfig.APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
+        String userUrl = APIURL + "api/v1/usersimpleinfo"; // http://api.guiderhealth.com/
         if (requestPressent != null) {
             Log.e(TAG, "-------盖德参数=" + gson.toJson(guser));
             requestPressent.getRequestPutJsonObject(12, userUrl,

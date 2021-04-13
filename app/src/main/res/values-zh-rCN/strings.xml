@@ -1124,6 +1124,7 @@
     <string name="tianxie">用户名填写错误</string>
     <string name="miamacuo">密码错误</string>
     <string name="regsiter_fail">注册失败</string>
+    <string name="regsiter_ok">注册成功</string>
 
     <string name="yanzhengma">验证码已经发送</string>
     <string name="guojia">获取国家列表成功</string>

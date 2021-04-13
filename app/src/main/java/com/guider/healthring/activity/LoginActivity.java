@@ -510,7 +510,7 @@ public class LoginActivity extends WatchBaseActivity
         //登录到盖德后台
         String code = tv_phone_head.getText().toString().replace("+", "");
         String pass = Md5Util.Md532(passwordValue);
-        String loginUrl = com.guider.health.apilib.BuildConfig.APIURL +
+        String loginUrl = BuildConfig.APIURL +
                 "api/v1/login/phonewithpasswd?telAreaCode=" + code
                 + "&phone=" + uName + "&passwd=" + pass; // http://api.guiderhealth.com/
         Log.e(TAG, "-------手机号登录的url=" + loginUrl);

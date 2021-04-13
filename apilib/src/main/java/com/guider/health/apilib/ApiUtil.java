@@ -41,8 +41,8 @@ public class ApiUtil {
 
     static {
         // 访问域名处理
-        ApiConsts.API_HOST = BuildConfig.APIURL;
-        ApiConsts.API_HOST_HD = BuildConfig.APIHDURL;
+        // ApiConsts.API_HOST = BuildConfig.APIURL;
+        // ApiConsts.API_HOST_HD = BuildConfig.APIHDURL;
     }
 
     public static OkHttpClient getOkHttpClient() {
@@ -53,9 +53,9 @@ public class ApiUtil {
         return mHeaders;
     }
 
-    public static void init(Context context, String mac) {
-        ApiConsts.API_HOST = BuildConfig.APIURL;
-        ApiConsts.API_HOST_HD = BuildConfig.APIHDURL;
+    public static void init(Context context, String mac, String apiUtl, String apiHdUrl) {
+        ApiConsts.API_HOST = apiUtl;
+        ApiConsts.API_HOST_HD = apiHdUrl;
 
         ApiUtil.context = context.getApplicationContext();
         ApiUtil.mac = mac;
