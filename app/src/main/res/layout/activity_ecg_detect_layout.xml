@@ -105,21 +105,14 @@
         </LinearLayout>
 
 
-        <com.guider.healthring.b31.ecg.ECGView
+
+        <com.guider.healthring.b31.ecg.EcgHeartRealthView
             android:id="@+id/detectEcgView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@color/white"
-            app:heart_color="@color/green"
-            app:heart_grid_row_height="5dp"
-            app:heart_grid_border="1.5dp"
-            app:heart_grid_line_border="0.5dp"
-            app:heart_hz="250"
-            app:heart_line_border="2dp"
-            app:heart_max="1000"
-            app:heart_min="-1000"
-            app:heart_speed="1" />
+            android:layout_height="0dp"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -147,7 +140,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"

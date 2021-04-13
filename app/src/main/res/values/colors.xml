@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="ecg_line">#FC5F64</color>
+    <color name="ecg_line_bg_bold">#66333333</color>
+    <color name="ecg_line_bg_normal">#10666666</color>
+
+
     <!--血氧相关-->
     <!--图表中的背景块的颜色，从上到下依次是血氧，心脏负荷，睡眠活动，呼吸率，低氧-->
     <color name="block_backgroud_spo2h">#17aae2</color>
