@@ -67,19 +67,6 @@ public class LaunchActivity extends WatchBaseActivity {
         }
         initData();
 
-//        String currPack = getPackageName();
-//
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH){
-//            defaultPackName = Telephony.Sms.getDefaultSmsPackage(this);//获取手机当前设置的默认短信应用的包名
-//        }
-//
-//        if (!defaultPackName.equals(currPack)) {
-//            Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-//            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, currPack);
-//            startActivity(intent);
-//        }
-
-
         final boolean isGuide = (boolean) SharedPreferencesUtils.getParam(LaunchActivity.this, "isGuide", false);
         handler.postDelayed(() -> {
             Message message = handler.obtainMessage();
@@ -87,12 +74,9 @@ public class LaunchActivity extends WatchBaseActivity {
             message.obj = isGuide;
             handler.sendMessage(message);
         }, 3 * 1000);
-
     }
 
-
     private void initData() {
-
         //B30目标步数 默认8000
         int goalStep = (int) SharedPreferencesUtils.getParam(MyApp.getContext(), "b30Goal", 0);
         if (goalStep == 0) {
@@ -126,8 +110,6 @@ public class LaunchActivity extends WatchBaseActivity {
             //初始化H8消息提醒功能
             SharedPreferencesUtils.setParam(this, "msgfirst", "isfirst");
         }
-
-
     }
 
     //判断进入的页面

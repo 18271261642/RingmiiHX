@@ -35,10 +35,7 @@ public class NewGuidActivity extends WatchBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         viewPager = findViewById(R.id.viewPager);
-
         initData();
-
-
     }
 
     private void initData() {
@@ -48,7 +45,6 @@ public class NewGuidActivity extends WatchBaseActivity {
         HomeAdapter adapter = new HomeAdapter();
         adapter.setData(pageList);
         viewPager.setAdapter(adapter);
-
     }
 
 //    private final int[] imageIds = {R.drawable.ic_guid_1, R.drawable.ic_guid_2
