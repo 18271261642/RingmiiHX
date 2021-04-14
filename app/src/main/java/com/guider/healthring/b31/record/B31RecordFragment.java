@@ -315,7 +315,6 @@ public class B31RecordFragment extends LazyFragment
 
                         List<Spo2hOriginData> tmpLt = (List<Spo2hOriginData>) msg.obj;
                         updateSpo2View(tmpLt);
-
                     }
                     break;
                 case 1113: //HRV
@@ -1506,7 +1505,7 @@ public class B31RecordFragment extends LazyFragment
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-//            Log.e(TAG, "-----------action-=" + action);
+            Log.e(TAG, "-----------action-=" + action);
             if (WatchUtils.isEmpty(action))
                 return;
             switch (action) {
@@ -1560,7 +1559,7 @@ public class B31RecordFragment extends LazyFragment
                     String mac = WatchUtils.getSherpBleMac(getmContext());
                     String date = WatchUtils.obtainFormatDate(currDay);
                     handler.sendEmptyMessage(555);
-//                Log.e("-------AAA--", "血氧的数据更新完了 ");
+                    Log.e("-------AAA--", "血氧的数据更新完了 ");
                     updateSpo2Data(mac, date);
                     break;
                 }

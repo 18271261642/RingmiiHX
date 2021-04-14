@@ -118,7 +118,7 @@ public class NewB31RecordFragment extends LazyFragment
         implements ConnBleHelpService.ConnBleMsgDataListener, View.OnClickListener {
 
 
-    private static final String TAG = "B31RecordFragment";
+    private static final String TAG = "NewB31RecordFragment";
 
     //用于同步完成血氧数据后更新界面数据
     private static final int UPDATE_SPO2_CODE = 0x00;
@@ -347,16 +347,19 @@ public class NewB31RecordFragment extends LazyFragment
                     }
                     break;
                 case 555:
+                    Log.i(TAG, "data upload begin . . .");
                     if (getActivity() != null && !getActivity().isFinishing()) {
                         syncStatusTv.setVisibility(View.GONE);
-//                        B31HomeActivity activity = (B31HomeActivity) getActivity();
-//                        if (activity != null) activity.startUploadDate();// 上传数据
+                        B31HomeActivity activity = (B31HomeActivity) getActivity();
+                        if (activity != null) activity.startUploadDate();// 上传数据
                     }
                     break;
                 case UPDATE_SPO2_CODE:  //更新血氧
                     String macStr = (String) msg.obj;
-                    if (WatchUtils.isEmpty(macStr))
+                    if (WatchUtils.isEmpty(macStr)) {
+                        Log.i(TAG, "UPDATE_SPO2_CODE macStr is empty.");
                         return;
+                    }
                     updateSpo2Data(macStr, WatchUtils.getCurrentDate());
                     handler.sendEmptyMessage(555);
                     break;
@@ -366,7 +369,6 @@ public class NewB31RecordFragment extends LazyFragment
                         return;
                     updateHRVData(addressStr, WatchUtils.getCurrentDate());
                     break;
-
             }
         }
     };
@@ -407,11 +409,8 @@ public class NewB31RecordFragment extends LazyFragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         b31View = inflater.inflate(R.layout.new_fragment_b31_record_layout, container, false);
 
-
         findViewIds();
-
         initViews();
-
         verticalDevice();
         initData();
 
@@ -504,7 +503,6 @@ public class NewB31RecordFragment extends LazyFragment
         spo2CardView.setOnClickListener(this);
         heartCardView.setOnClickListener(this);
         bloodCardView.setOnClickListener(this);
-
     }
 
 
@@ -575,7 +573,6 @@ public class NewB31RecordFragment extends LazyFragment
                 startActivity(new Intent(getmContext(), EcgDetectActivity.class));
             }
         });
-
     }
 
     private void initData() {
@@ -591,9 +588,7 @@ public class NewB31RecordFragment extends LazyFragment
         b30BloadList = new ArrayList<>();
         bloadListMap = new ArrayList<>();
 
-
         initSpo2hUtil();
-
         //updatePageData();
     }
 
@@ -624,12 +619,10 @@ public class NewB31RecordFragment extends LazyFragment
         if (b31HomeSwipeRefreshLayout != null)
             b31HomeSwipeRefreshLayout.setOnRefreshListener(refreshLayout -> getBleMsgData());
 
-
         b30TopDateTv.setOnLongClickListener(v -> {
             startActivity(new Intent(getmContext(), InternalTestActivity.class));
             return true;
         });
-
     }
 
 
@@ -650,7 +643,6 @@ public class NewB31RecordFragment extends LazyFragment
         } else {
             ivTop.setImageResource(R.mipmap.icon_comm_top_img);
         }
-
     }
 
 
@@ -676,7 +668,6 @@ public class NewB31RecordFragment extends LazyFragment
         tipLowsp.setText("[0-20]" + stateNormal + "\t\t[21-300]" + stateError);
     }
 
-
     /**
      * 设置相关属性
      */
@@ -688,11 +679,9 @@ public class NewB31RecordFragment extends LazyFragment
         vpSpo2hUtil.setModelIs24(false);
     }
 
-
     public Context getmContext() {
         return mContext == null ? MyApp.getContext() : mContext;
     }
-
 
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
@@ -1455,7 +1444,6 @@ public class NewB31RecordFragment extends LazyFragment
                 }
 
             }
-
         }
 
     };
