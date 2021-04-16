@@ -155,7 +155,7 @@ android {
                     app_icon     : "@drawable/ic_gaide_launch",
                     running_label: "@string/running"
             ]
-            buildConfigField("int", "HEALTH", "2")
+            buildConfigField("int", "HEALTH", "1")
             buildConfigField("String", "MAC", '"11:11:11:11:11:12"')
             buildConfigField("String", "LINE_APP_ID", '"1653887386"')
 
@@ -196,6 +196,26 @@ android {
                     running_label: "@string/running"
             ]
             buildConfigField("int", "HEALTH", "0")
+            buildConfigField("String", "MAC", '"11:11:11:11:11:12"')
+            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+
+            buildConfigField("String", "APIURL", '"https://api.guidertech.com/"')
+            buildConfigField("String", "APIHDURL", '"https://apihd.guidertech.com/"')
+
+            buildConfigField("String", "WEBDOMAIN", '"https://app.guidertech.com/"')
+            buildConfigField("String", "CMATEWEBDOMAIN", '"https://cmate.guidertech.com/"')
+            buildConfigField("boolean", "SOSISOPENTAG", "false")
+        }
+
+        app_guider_google {
+            applicationId "com.guider.healthringx"
+            manifestPlaceholders = [
+                    app_name     : "@string/the_app_name",
+                    channel      : "app_guider",
+                    app_icon     : "@drawable/ic_gaide_launch",
+                    running_label: "@string/running"
+            ]
+            buildConfigField("int", "HEALTH", "1")
             buildConfigField("String", "MAC", '"11:11:11:11:11:12"')
             buildConfigField("String", "LINE_APP_ID", '"1653887386"')
 
@@ -279,7 +299,7 @@ android {
             ]
             buildConfigField("int", "HEALTH", "1")
             buildConfigField("String", "MAC", '"11:11:11:11:11:16"')
-            buildConfigField("String", "LINE_APP_ID", '"1653887386"')
+            buildConfigField("String", "LINE_APP_ID", '"1655863745"')
 
             buildConfigField("String", "APIURL", '"http://150.117.123.79:8082/"')
             buildConfigField("String", "APIHDURL", '"http://150.117.123.79:8083/"')
@@ -377,6 +397,9 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     api 'com.github.LuckSiege.PictureSelector:picture_library:2.5.9'
+
+    // https://mvnrepository.com/artifact/com.github.bumptech.glide/glide
+    implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.12.0'
 }
 
 android.applicationVariants.all { variant ->
