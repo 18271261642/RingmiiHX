@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.aigestudio.wheelpicker.widgets.ProfessionPick;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.guider.health.apilib.ApiCallBack;
@@ -38,6 +40,7 @@ import com.guider.healthring.b30.bean.BaseResultVoNew;
 import com.guider.healthring.b31.BemoSwitchActivity;
 import com.guider.healthring.b31.bpoxy.ReadHRVSoDataForDevices;
 import com.guider.healthring.bleutil.MyCommandManager;
+import com.guider.healthring.fragment.MineFragment;
 import com.guider.healthring.siswatch.LazyFragment;
 import com.guider.healthring.siswatch.NewSearchActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
@@ -54,6 +57,7 @@ import com.veepoo.protocol.model.enums.EFunctionStatus;
 import com.veepoo.protocol.model.settings.CustomSetting;
 import com.veepoo.protocol.model.settings.CustomSettingData;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -67,7 +71,7 @@ import retrofit2.Response;
 /**
  * B30 我的界面
  */
-public class B30MineFragment extends LazyFragment implements View.OnClickListener {
+public class B30MineFragment extends MineFragment implements View.OnClickListener {
     private static final String TAG = "B30MineFragment";
     View b30MineView;
 
@@ -154,6 +158,17 @@ public class B30MineFragment extends LazyFragment implements View.OnClickListene
             if (!WatchUtils.isEmpty(b30SleepGoal)) {
                 b30MineSleepGoalTv.setText(b30SleepGoal + "");
             }
+        }
+    }
+
+
+    @Override
+    protected void setUserInfo(String name, String headUrl) {
+        b30UserNameTv.setText(name);
+        if (!StringUtil.isEmpty(headUrl)) {
+            Glide.with(this.getActivity()).load(headUrl)
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                    .into(b30UserImageHead);
         }
     }
 

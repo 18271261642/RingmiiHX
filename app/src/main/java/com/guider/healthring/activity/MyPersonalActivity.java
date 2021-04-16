@@ -192,7 +192,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
         initViews();
 
-
         initData();
     }
 
@@ -233,7 +232,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         //获取用户数据
         getUserInfoData();
 
-
         getGadiDeUserInfoData();
     }
 
@@ -250,7 +248,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -315,7 +312,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         //肤色显示
         showSkinColorData();
 
-
         subscriberOnNextListener = (SubscriberOnNextListener<String>) result -> {
             if (WatchUtils.isEmpty(result)) return;
             try {
@@ -336,7 +332,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                 e.printStackTrace();
             }
         };
-
 
         AndPermission.with(mContext)
                 .runtime()
@@ -906,7 +901,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
     private void uploadGuiderPic(String path) {
 
         Log.e(TAG, "------图片地址=" + path);
-
+        Log.e(TAG, "------图片上传地址=" + APIURL);
         String guiderImgUrl = APIURL + "upload/file";
         OkHttpTool.getInstance().doRequestUploadFile(guiderImgUrl,
                 new File(path).getName(), path, "11", result -> {
@@ -944,6 +939,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
 
         saveUser(nicknameTv.getText().toString().trim(),
+                guser.getHeadUrl(),
                 guser.getGender(),
                 guser.getHeight(),
                 guser.getWeight(), birthday);
@@ -1032,12 +1028,13 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         //设置固件的个人信息
         //setUserData((b15pSex.equals("M") ? 0 : 1), resultHeight, resultWeight, resultAge);
         saveUser(nicknameTv.getText().toString().trim(),
+                urlImagePath,
                 (b15pSex.equals("M") ? "MAN" : "WOMAN"),
                 resultHeight,
                 resultWeight, birthday);
     }
 
-    private void saveUser(String nickName, String sex,
+    private void saveUser(String nickName, String headUrl, String sex,
                           int resultHeight, int resultWeight, String birthday) {
         /**
          * birthday : 1995-06-15
@@ -1053,7 +1050,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
          */
         User user = new User();
         user.setBirthday(birthday);
-        user.setImage(urlImagePath);
+        user.setImage(headUrl); // urlImagePath);
         user.setNickName(nickName);
         user.setSex(sex);
         user.setWeight(resultWeight + "");
@@ -1244,30 +1241,6 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
                     }
                     break;
                 case 111:
-//                    try {
-//                        //获取裁剪后的图片，并显示出来
-//                        Bitmap bitmap = BitmapFactory.decodeStream(
-//                                this.getContentResolver().openInputStream(mCutUri));
-//                        //showImg.setImageBitmap(bitmap);
-//                        mineLogoIv.setImageBitmap(bitmap);
-//                        uploadPic(Base64BitmapUtil.bitmapToBase64(bitmap), 0);
-//
-//                        String finalPhotoName =
-//                                FileDirUtil.INSTANCE.getExternalFileDir(this) +
-//                                        "/" + "NewBluetoothStrap/headImg" + "_" +
-//                                        new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
-//                                                .format(new Date(System.currentTimeMillis()))
-//                                        + ".jpg";
-//                        //上传盖德后台图片
-//                        //Log.e(TAG,"-------")
-//                        File flieP = FileOperUtils.saveFiles(bitmap, finalPhotoName);
-//                        uploadGuiderPic(flieP.getPath());
-//
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
                     if (data == null) return;
                     dealHeaderShowAndUpload(data);
                     break;
