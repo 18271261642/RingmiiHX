@@ -134,6 +134,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         ecgDetectScheduleView.setAllScheduleValue(100f);
 
         heartView = findViewById(R.id.detectEcgView);
+        heartView.setCoumlnQutoCount(16 * 5);
 
         showEmptyData();
     }
@@ -150,6 +151,15 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
 
         commentB30BackImg.setOnClickListener(this);
         detectEcgImgView.setOnClickListener(this);
+
+        detectEcgImgView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                startActivity(ShowEcgDataActivity.class);
+                return true;
+            }
+        });
     }
 
 
@@ -247,6 +257,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
             }
         });
     }
+
 
 
     private IBleWriteResponse iBleWriteResponse = i -> {

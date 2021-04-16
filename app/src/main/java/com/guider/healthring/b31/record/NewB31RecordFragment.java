@@ -536,7 +536,6 @@ public class NewB31RecordFragment extends LazyFragment
         boolean isSupportEcg = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_SUPPORT_ECG_KEY, false);
         if (isSupportEcg)
             manualList.add("ECG");
-
         GridLayoutManager manualGridLm = new GridLayoutManager(mContext, manualList.size());
         manualGridLm.setOrientation(LinearLayoutManager.VERTICAL);
         manualRecyclerView.setLayoutManager(manualGridLm);

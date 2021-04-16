@@ -1026,7 +1026,9 @@
         <activity android:name=".b31.B31sPrecisionSleepActivity"/>
         <!--手动测量心电-->
         <activity android:name=".b31.ecg.EcgDetectActivity"/>
-
+        <!--展示测量的心电-->
+        <activity android:name=".b31.ecg.ShowEcgDataActivity"
+            android:screenOrientation="landscape"/>
 
 
 
