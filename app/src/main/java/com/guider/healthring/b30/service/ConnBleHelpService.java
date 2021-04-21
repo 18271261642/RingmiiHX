@@ -427,6 +427,18 @@ public class ConnBleHelpService {
                 db.setOriginData("" + sportData.getStep());
                 B30HalfHourDao.getInstance().saveOriginData(db);
 
+                B30HalfHourDao b30HalfHourDao = B30HalfHourDao.getInstance();
+                B30HalfHourDB b30HalfHourDB = new B30HalfHourDB();
+                b30HalfHourDB.setDate(WatchUtils.getCurrentDate());
+                b30HalfHourDB.setAddress(MyApp.getInstance().getMacAddress());
+                b30HalfHourDB.setType(B30HalfHourDao.TYPE_STEP_DETAIL);
+                b30HalfHourDB.setOriginData(gson.toJson(sportData));
+                b30HalfHourDB.setUpload(0);
+                b30HalfHourDB.setUploadGD(0);
+
+                b30HalfHourDao.saveOriginData(b30HalfHourDB);
+
+
                 if (connBleMsgDataListener != null) {
                     connBleMsgDataListener.getBleSportData(sportData.getStep());
                 }

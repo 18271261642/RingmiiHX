@@ -1030,7 +1030,9 @@
         <!--展示测量的心电-->
         <activity android:name=".b31.ecg.ShowEcgDataActivity"
             android:screenOrientation="landscape"/>
-
+        <!--心电记录-->
+        <activity android:name=".b31.ecg.EcgDetechRecordActivity"
+            android:screenOrientation="portrait"/>
 
 
         <!--Bemo开关-->

@@ -903,7 +903,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         if (sportGDList == null || sportGDList.isEmpty()) return;
         String orginStr = sportGDList.get(sportGDList.size() - 1).getOriginData();
 
-        // Log.e(TAG,"--------运动="+orginStr);
+         Log.e(TAG,"--------运动="+orginStr);
         List<HalfHourSportData> halfHourSportData = new Gson().fromJson(orginStr,
                 new TypeToken<List<HalfHourSportData>>() {
                 }.getType());
@@ -951,7 +951,7 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         allResultMap.put("sport", sportDataMap);
 
 
-        //Log.e(TAG,"---------allMap="+allResultMap.get("sport").toString());
+        Log.e(TAG,"---------allMap="+allResultMap.get("sport").toString());
 
         //hrv
         if (!hrvOriginDataList.isEmpty() && !hrvMapList.isEmpty()) {
