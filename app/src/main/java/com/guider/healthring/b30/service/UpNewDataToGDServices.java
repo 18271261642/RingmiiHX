@@ -10,7 +10,10 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.guider.health.apilib.ApiCallBack;
+import com.guider.health.apilib.ApiUtil;
 import com.guider.health.apilib.BuildConfig;
+import com.guider.health.apilib.IGuiderApi;
 import com.guider.health.common.utils.StringUtil;
 import com.guider.healthring.B18I.b18iutils.B18iUtils;
 import com.guider.healthring.Commont;
@@ -51,6 +54,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.guider.healthring.BuildConfig.APIURL;
 import static com.veepoo.protocol.model.enums.ESpo2hDataType.TYPE_BREATH;
@@ -116,6 +123,9 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
     List<Map<String, Object>> hrvMapList = new ArrayList<>();
 
 
+    // ====================================整理代码
+    IGuiderApi mIGuiderApi = ApiUtil.createApi(IGuiderApi.class, true);
+    // ====================================整理代码结束
     // 方法1：onPreExecute（）
     // 作用：执行 线程任务前的操作
     // 注：根据需求复写
@@ -547,35 +557,14 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
      * @param accountId
      */
     void bindDevices(long accountId) {
-
-        Map<String, Object> params = new HashMap<>();
-//        params.put("accountId", accountId);//accountId
-//        params.put("deviceCode", deviceCode);//deviceCode
-//        JSONObject json = new JSONObject(params);
-        String upStepPatch = Base_Url + "user/" + accountId +
-                "/deviceandcompany/bind?deviceCode=" + deviceCode;
-        //{accountId}/deviceandcompany/bind?deviceCode=
-        OkHttpTool.getInstance().doRequest(upStepPatch, null, this, result -> {
-            try {
-                if (!WatchUtils.isEmpty(result)) {
-                    Log.e(TAG, "------bindDevices--=" + result);
-                    if (result.contains("Unable"))
-                        return;
-                    BaseResultVoNew baseResultVoNew = new Gson().fromJson(result,
-                            BaseResultVoNew.class);
-                    if (Commont.isDebug) Log.d(TAG, "=======绑定该设备A= " + result);
-                    if (baseResultVoNew.getCode() == 0 ||
-                            baseResultVoNew.getMsg().equals("您已经绑定该设备")) {
-                        if (Commont.isDebug) Log.d(TAG, "=======绑定该设备= " + result);
-                        //并发一起上传
-                        findUnUpdataToservices();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        mIGuiderApi.bindDeviceCode(accountId, deviceCode).enqueue(new ApiCallBack<Boolean>() {
+            @Override
+            public void onApiResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (Commont.isDebug) Log.d(TAG, "=======绑定该设备= ");
+                //并发一起上传
+                findUnUpdataToservices();
             }
-
-        }, false);
+        });
     }
 
 
@@ -838,7 +827,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                     sleepMap.put("deviceCode", deviceCode);
                     sleepListMap.add(sleepMap);
                 }
-
             }
             String sleepUrl = Commont.SLEEP_QUALITY_URL;
             if (sleepListMap.isEmpty())
@@ -895,28 +883,24 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
         allResultMap.put("accountId", accountId);
         allResultMap.put("deviceCode", deviceCode);
         allResultMap.put("testTime", WatchUtils.getCurrentDate());
-        //运动
-        Map<String, Object> sportDataMap = new HashMap<>();
 
+        // 运动
+        Map<String, Object> sportDataMap = new HashMap<>();
         List<B30HalfHourDB> sportGDList = B30HalfHourDao.getInstance()
                 .findGDTodayData(deviceCode, B30HalfHourDao.TYPE_SPORT);
         if (sportGDList == null || sportGDList.isEmpty()) return;
         String orginStr = sportGDList.get(sportGDList.size() - 1).getOriginData();
 
-        // Log.e(TAG,"--------运动="+orginStr);
+        Log.e(TAG,"--------运动详情="+orginStr);
         List<HalfHourSportData> halfHourSportData = new Gson().fromJson(orginStr,
-                new TypeToken<List<HalfHourSportData>>() {
-                }.getType());
+                new TypeToken<List<HalfHourSportData>>() {}.getType());
 
         List<Map<String, Object>> sportList = new ArrayList<>();
         for (HalfHourSportData hSport : halfHourSportData) {
-            if (hSport.getDate().equals(WatchUtils.getCurrentDate())) {
+            if (hSport.getDate().equals(WatchUtils.getCurrentDate()) && hSport.getStepValue() > 0) {
                 Map<String, Object> sMap = new HashMap<>();
-
                 TimeData timeData = hSport.getTime();
-
                 String spo2Dates = timeData.getDateAndClockForSleepSecond();
-
                 Date dateStart = W30BasicUtils.stringToDate(
                         spo2Dates.replace(":", "-"),
                         "yyyy-MM-dd HH-mm-ss");
@@ -928,30 +912,26 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 sMap.put("testTime", iso8601Timestamp);
                 sportList.add(sMap);
             }
-
-
         }
-
         sportDataMap.put("data", sportList);
+
         String step_detail = B30HalfHourDao.getInstance().findOriginData(deviceCode,
                 WatchUtils.getCurrentDate(), B30HalfHourDao.TYPE_STEP_DETAIL);
+        Log.e(TAG,"--------运动总计=" + step_detail);
         if (WatchUtils.isEmpty(step_detail)) {
             sportDataMap.put("totalStep", 0);
             sportDataMap.put("totalDis", 0.0);
             sportDataMap.put("totalCal", 0.0);
         } else {
             SportData sportData = gson.fromJson(step_detail, SportData.class);
-            sportDataMap.put("totalStep", sportData.getStep());
-            sportDataMap.put("totalDis", sportData.getDis());
-            sportDataMap.put("totalCal", sportData.getKcal());
-
+            if (sportData.getStep() > 0) {
+                sportDataMap.put("totalStep", sportData.getStep());
+                sportDataMap.put("totalDis", sportData.getDis());
+                sportDataMap.put("totalCal", sportData.getKcal());
+            }
         }
-
-
         allResultMap.put("sport", sportDataMap);
-
-
-        //Log.e(TAG,"---------allMap="+allResultMap.get("sport").toString());
+        Log.e(TAG,"---------allMap sport =" + allResultMap.get("sport").toString());
 
         //hrv
         if (!hrvOriginDataList.isEmpty() && !hrvMapList.isEmpty()) {
@@ -1053,8 +1033,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 Log.e(TAG, "--------所有上传返回=" + result);
             }
         });
-
-
     }
 
 
@@ -1547,7 +1525,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
             LitePal.updateAll(B31Spo2hBean.class, contentValues,
                     "bleMac = ? and dateStr = ?", b31Spo2hBean.getBleMac(),
                     b31Spo2hBean.getDateStr());
-
         }
     }
 
@@ -2263,78 +2240,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 upBool = true;
             }
         }
-
-//        if (dataList != null && !dataList.isEmpty()) {
-//            int BpCount = 0;//总的有效数据长度
-//            int BpCountAdd = 0;
-//            for (int i = 0; i < dataList.size(); i++) {
-//                if (dataList.get(i).getLowValue() > 0 && dataList.get(i).getHighValue() > 0) {
-//                    BpCount++;
-//                }
-//            }
-////            if (Commont.isDebug)Log.e(TAG, date + "  血压数据总共长度为：" + dataList.size() + "  有效长度为：" + BpCount);
-//            for (int i = 0; i < dataList.size(); i++) {
-//                String bpDates = obtainDate(dataList.get(i).getTime());
-//                int highValue = dataList.get(i).getHighValue();
-//                int lowValue = dataList.get(i).getLowValue();
-//                if (highValue > 0 && lowValue > 0) {
-//                    BpCountAdd++;
-//                    if (BpCountAdd < BpCount) {
-//                        Map<String, Object> params = new HashMap<>();
-//                        params.put("accountId", accountId);
-//                        params.put("dbp", lowValue);
-//                        params.put("sbp", highValue);
-//                        params.put("state", "");
-//                        params.put("id", 0);
-//                        params.put("deviceCode", deviceCode);
-//                        params.put("createTime", WatchUtils.getISO8601Timestamp(new Date()));
-//                        //testTime  =   2019-06-20 00-00-00
-//                        //2019-06-20T08:40:41Z
-//                        //if (Commont.isDebug)Log.e(TAG,"---xy- "+bpDates.replace(":", "-"));
-//                        Date dateStart = W30BasicUtils.stringToDate(bpDates.replace(":", "-"), "yyyy-MM-dd HH-mm-ss");
-//                        String iso8601Timestamp = WatchUtils.getISO8601Timestamp(dateStart);
-//                        params.put("testTime", iso8601Timestamp);
-//                        JSONObject json = new JSONObject(params);
-//                        List<JSONObject> list = new ArrayList<>();
-//                        list.add(json);
-//
-//                        String path = Base_Url + "bloodPressures ";
-////                        MyLogUtil.e(TAG, "bp- 血压上传参数" + params.toString());
-//
-//                        if (postion == 0) {//这里天数是按照倒序排的，0 = 今天
-//                            OkHttpTool.getInstance().doRequest(path, list.toString(), this, new OkHttpTool.HttpResult() {
-//                                @Override
-//                                public void onResult(String result) {
-//                                    if (!WatchUtils.isEmpty(result)) {
-//                                        upBool = true;
-////                                        if (Commont.isDebug)Log.e(TAG, " 最后血压上传返回啊: " + result);
-//                                    }
-//                                }
-//                            });
-//                        } else {
-//                            OkHttpTool.getInstance().doRequest(path, list.toString(), this, new OkHttpTool.HttpResult() {
-//                                @Override
-//                                public void onResult(String result) {
-//                                    if (!WatchUtils.isEmpty(result)) {
-////                                        if (Commont.isDebug)Log.e(TAG, "血压上传返回: " + result);
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    } else {
-//                        if (i == (dataList.size() - 1) && postion == 0) {
-//                            upBool = true;
-////                            if (Commont.isDebug)Log.e(TAG, "血压异常越界了: " + result);
-//                        }
-//                    }
-//                } else {
-//                    if (i == (dataList.size() - 1) && postion == 0) {
-//                        upBool = true;
-////                        if (Commont.isDebug)Log.e(TAG, "血压异常为0啦: " + result);
-//                    }
-//                }
-//            }
-//        }
     }
 
 
@@ -2403,7 +2308,6 @@ public class UpNewDataToGDServices extends AsyncTask<Void, Void, Void> {
                 }
             });
         }
-
     }
 
 

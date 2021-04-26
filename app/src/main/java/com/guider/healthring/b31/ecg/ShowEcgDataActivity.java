@@ -59,8 +59,9 @@ public class ShowEcgDataActivity extends WatchBaseActivity {
                 return;
             //所有的原始数据
             List<Integer> lit = new Gson().fromJson(jsonStr,new TypeToken<List<Integer>>(){}.getType());
+            if (lit == null || lit.isEmpty())
+                return;
             analysisEcg(lit);
-
         }
     };
 
@@ -76,12 +77,10 @@ public class ShowEcgDataActivity extends WatchBaseActivity {
         initViews();
 
         showEcgData();
-
     }
 
 
     private void showEcgData() {
-
         String jsonStr = new GetJsonDataUtil().getJson(this,"ecg.json");
 
         if(jsonStr == null)
@@ -104,13 +103,10 @@ public class ShowEcgDataActivity extends WatchBaseActivity {
         ecgRecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new EcgShowAdapter(resultList,ShowEcgDataActivity.this);
         ecgRecyclerView.setAdapter(adapter);
-
     }
 
 
-
     private void analysisEcg(List<Integer> lt){
-
         resultList.clear();
         //这里只让显示一个图表
         List<Integer> tmpLt = lt.subList(0,2100);

@@ -1523,7 +1523,6 @@ public class NewB31RecordFragment extends LazyFragment
             moringData.clear();
             return moringData;
         }
-
     }
 
     /**

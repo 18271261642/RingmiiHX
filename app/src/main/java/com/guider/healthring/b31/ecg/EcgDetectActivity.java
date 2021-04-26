@@ -155,7 +155,6 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         detectEcgImgView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-
                 startActivity(ShowEcgDataActivity.class);
                 return true;
             }

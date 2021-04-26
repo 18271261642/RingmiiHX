@@ -64,7 +64,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2018/7/26.
  */
-
+@Deprecated
 public class NewConnBleHelpService {
 
     private static final String TAG = "ConnBleHelpService";

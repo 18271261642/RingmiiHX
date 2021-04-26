@@ -607,21 +607,22 @@ public class UpDataToGDServicesNew extends AsyncTask<Void, Void, Void> {
                 sportList.add(sMap);
             }
         }
-
         sportDataMap.put("data",sportList);
-        String step_detail = B30HalfHourDao.getInstance().findOriginData(deviceCode,WatchUtils.getCurrentDate(),B30HalfHourDao.TYPE_STEP_DETAIL);
-        if(WatchUtils.isEmpty(step_detail)){
+
+        // 总步数
+        String step_detail = B30HalfHourDao.getInstance()
+                .findOriginData(deviceCode,WatchUtils.getCurrentDate(), B30HalfHourDao.TYPE_STEP_DETAIL);
+        if (WatchUtils.isEmpty(step_detail)) {
             sportDataMap.put("totalStep",0);
             sportDataMap.put("totalDis",0.0);
             sportDataMap.put("totalCal",0.0);
-        }else{
+        } else {
             SportData sportData = new Gson().fromJson(step_detail,SportData.class);
             sportDataMap.put("totalStep",sportData.getStep());
             sportDataMap.put("totalDis",sportData.getDis());
             sportDataMap.put("totalCal",sportData.getKcal());
         }
-
-        allResultMap.put("sport",sportDataMap);
+        allResultMap.put("sport", sportDataMap);
 
         //hrv
         Map<String,Object> hrvTempMap = new HashMap<>();

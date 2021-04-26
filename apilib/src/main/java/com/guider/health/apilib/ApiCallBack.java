@@ -34,7 +34,7 @@ public class ApiCallBack<T> implements Callback<T> {
         onRequestFinish();
         String msg = t.getMessage();
         if (msg == null || "".equals(msg))
-            msg = "未知错误";
+            msg = "Unknown error!";
         if (context != null) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
@@ -49,8 +49,5 @@ public class ApiCallBack<T> implements Callback<T> {
 
     public void onRequestFinish() {
         // todo 不管成功与否 , 这个回调都会调用 , 表示请求结束了
-
     }
-
-
 }

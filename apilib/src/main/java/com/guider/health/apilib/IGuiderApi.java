@@ -213,6 +213,16 @@ public interface IGuiderApi {
     Call<String> getPhoneCode6(@Query("phone") String phone);
 
 
+    /**
+     * 用户绑定手环
+     * @param accountId
+     * @param deviceCode
+     * @return
+     */
+    @POST("api/v1/user/{accountId}/deviceandcompany/bind")
+    Call<Boolean> bindDeviceCode(@Path("accountId") long accountId,
+                                   @Query("deviceCode") String deviceCode);
+
     /*------------------------------------医生端------------------------------------*/
 
     /**

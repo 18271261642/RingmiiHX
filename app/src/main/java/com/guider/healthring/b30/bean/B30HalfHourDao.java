@@ -158,7 +158,6 @@ public class B30HalfHourDao {
     public List<B30HalfHourDB> findNotUploadData(String address, String type) {
         try {
             String where = "upload = 0 and address = ? and type = ?";
-//        String where = "address = ? and type = ?";
             return LitePal.where(where, address, type).find(B30HalfHourDB.class);
         }catch (Exception e){
             e.printStackTrace();
@@ -177,7 +176,6 @@ public class B30HalfHourDao {
     public List<B30HalfHourDB> findNotUploadDataGD(String address, String type) {
         try {
             String where = "uploadGD = 0 and address = ? and type = ?";
-//        String where = "address = ? and type = ?";
             return LitePal.where(where, address, type).find(B30HalfHourDB.class);
         }catch (Exception e){
             e.printStackTrace();

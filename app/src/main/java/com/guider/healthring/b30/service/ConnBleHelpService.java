@@ -427,6 +427,17 @@ public class ConnBleHelpService {
                 db.setOriginData("" + sportData.getStep());
                 B30HalfHourDao.getInstance().saveOriginData(db);
 
+                B30HalfHourDao b30HalfHourDao = B30HalfHourDao.getInstance();
+                B30HalfHourDB b30HalfHourDB = new B30HalfHourDB();
+                b30HalfHourDB.setDate(WatchUtils.getCurrentDate());
+                b30HalfHourDB.setAddress(MyApp.getInstance().getMacAddress());
+                b30HalfHourDB.setType(B30HalfHourDao.TYPE_STEP_DETAIL);
+                b30HalfHourDB.setOriginData(gson.toJson(sportData));
+                b30HalfHourDB.setUpload(0);
+                b30HalfHourDB.setUploadGD(0);
+                B30HalfHourDao.getInstance().saveOriginData(b30HalfHourDB);
+
+
                 if (connBleMsgDataListener != null) {
                     connBleMsgDataListener.getBleSportData(sportData.getStep());
                 }
@@ -501,7 +512,6 @@ public class ConnBleHelpService {
                     // 睡眠数据返回,会有多条数据
                     saveSleepData(sleepData);
                 }
-
             }
 
             @Override
@@ -654,9 +664,7 @@ public class ConnBleHelpService {
                     String sleepLinStr2 = cSleep.getSleepLine();
                     resultSleepData.setSleepLine(tmpSleepDownTime > cSleepDownTime ? (sleepLinStr2 + sleepLinStr1) : (sleepLinStr1 + sleepLinStr2));
                     precisionSleepMap.put(dateStr, resultSleepData);
-
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -984,7 +992,6 @@ public class ConnBleHelpService {
 //                    halfSportData.getSportValue(),halfSportData.getDisValue(),halfSportData.getCalValue());
 //            cusVPHalfSportDataList.add(cusVPHalfSportData);
 //        }
-
 
         String date = sportData.get(0).getDate();
         B30HalfHourDB db = new B30HalfHourDB();

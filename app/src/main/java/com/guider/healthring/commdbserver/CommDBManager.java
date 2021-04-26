@@ -319,7 +319,6 @@ public class CommDBManager {
             boolean isSleepSave = commSleepDb.saveOrUpdate("userid = ? and devicecode = ? and dateStr = ?", userId, bleMac, dateStr);
             Log.e(TAG, "------22---睡眠保存=" + isSleepSave);
         }
-
     }
 
     /**
@@ -369,8 +368,6 @@ public class CommDBManager {
             e.printStackTrace();
             return null;
         }
-
-
     }
 
 
