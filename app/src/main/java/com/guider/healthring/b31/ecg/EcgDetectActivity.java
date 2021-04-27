@@ -13,8 +13,13 @@ import com.guider.health.apilib.BuildConfig;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
+import com.guider.healthring.b30.bean.B30HalfHourDB;
+import com.guider.healthring.b30.bean.B30HalfHourDao;
+import com.guider.healthring.b31.ecg.bean.EcgDetectStateBean;
+import com.guider.healthring.b31.ecg.bean.EcgSourceBean;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.WatchBaseActivity;
+import com.guider.healthring.siswatch.utils.DateTimeUtils;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.OkHttpTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -68,6 +73,8 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
 
     private List<int[]> ecgList = new ArrayList<int[]>();
 
+    private List<int[]> ecgSourceList = new ArrayList<>();
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -97,13 +104,19 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
                     detectEcgImgView.setImageResource(R.drawable.detect_sp_start);
                     isMeasure = false;
                     stopDetectEcg();
+
+                    saveEcgToDb(ecgDetectState);
+
                     //进度100%后上传
                     uploadEcgData(ecgDetectState);
+
+
                 }
             }
             if(msg.what == 0x02){   //测量返回，绘制图表
                 int[] ecgArray = (int[]) msg.obj;
                 heartView.changeData(ecgArray,25);
+                ecgSourceList.add(ecgArray);
                 for (int i = 0; i < ecgArray.length; i++) {
                     if (ecgArray[i] == 0 && ecgList.isEmpty()) {
                         continue;
@@ -152,6 +165,14 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         commentB30BackImg.setOnClickListener(this);
         detectEcgImgView.setOnClickListener(this);
 
+        commentB30TitleTv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                readAllEcgData();
+                return true;
+            }
+        });
+
         detectEcgImgView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -172,7 +193,10 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
     private void readAllEcgData() {
         if (MyCommandManager.DEVICENAME == null)
             return;
-        TimeData timeData = new TimeData(2021, 1, 22);
+        int currYear = DateTimeUtils.getCurrYear();
+        int currMonth = DateTimeUtils.getCurrMonth();
+        int currDay = DateTimeUtils.getCurrDay();
+        TimeData timeData = new TimeData(currYear, currMonth, currDay);
         MyApp.getInstance().getVpOperateManager().readECGId(iBleWriteResponse, timeData, EEcgDataType.MANUALLY, new IECGReadIdListener() {
             @Override
             public void readIdFinish(int[] ints) {
@@ -220,6 +244,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         if (MyCommandManager.DEVICENAME == null)
             return;
         ecgList.clear();
+        ecgSourceList.clear();
         MyApp.getInstance().getVpOperateManager().startDetectECG(iBleWriteResponse, true, new IECGDetectListener() {
             @Override
             public void onEcgDetectInfoChange(EcgDetectInfo ecgDetectInfo) {
@@ -360,7 +385,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         listMap.add(paramsMap);
         String params = new Gson().toJson(listMap);
 
-        Log.e(TAG, "-----params=" + params);
+//        Log.e(TAG, "-----params=" + params);
 
         String url = APIHDURL + "api/v1/ecg";
         Log.i(TAG, url);
@@ -372,5 +397,31 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
                 listMap.clear();
             }
         });
+    }
+
+
+    //保存测量的数据至数据库中
+    private void saveEcgToDb(EcgDetectState ecgDetectState){
+
+        if(ecgSourceList.isEmpty())
+            return;
+        //mac地址
+        String bleMac = MyApp.getInstance().getMacAddress();
+        if(bleMac == null)
+            return;
+
+        EcgDetectStateBean ecgDetectStateBean = new EcgDetectStateBean(ecgDetectState.getEcgType(),ecgDetectState.getCon(),ecgDetectState.getDataType(),
+                ecgDetectState.getDeviceState(),ecgDetectState.getHr1(),ecgDetectState.getHr2(),ecgDetectState.getHrv(),ecgDetectState.getRr1(),ecgDetectState.getRr2(),
+                ecgDetectState.getBr1(),ecgDetectState.getBr2(),ecgDetectState.getWear(),ecgDetectState.getMid(),ecgDetectState.getQtc(),ecgDetectState.getProgress());
+        EcgSourceBean ecgSourceBean = new EcgSourceBean();
+        ecgSourceBean.setBleMac(bleMac);
+        ecgSourceBean.setDetectDate(WatchUtils.getCurrentDate());
+        ecgSourceBean.setDetectTime(WatchUtils.getCurrentDateFormat("HH:mm"));
+        ecgSourceBean.setEcgDetectStateBeanStr(new Gson().toJson(ecgDetectStateBean));
+        ecgSourceBean.setEcgListStr(new Gson().toJson(ecgSourceList));
+
+        Log.e(TAG,"-----ecgSourceBean="+new Gson().toJson(ecgSourceBean));
+        ecgSourceBean.save();
+
     }
 }

@@ -7,6 +7,7 @@
 
     <include layout="@layout/b30_home_title_layout" />
 
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -182,6 +183,27 @@
                     <include layout="@layout/include_b30_barchart" />
 
                 </androidx.cardview.widget.CardView>
+
+
+                <!--ECG图表-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/ecgCardView"
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="2dp"
+                    android:padding="5dp"
+                    android:visibility="gone"
+                    android:layout_margin="10dp"
+                    app:cardMaxElevation="10dp"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:layout_height="wrap_content">
+
+                    <include layout="@layout/include_ecg_home_layout" />
+
+
+                </androidx.cardview.widget.CardView>
+
+
 
                 <!--心率图表-->
                 <androidx.cardview.widget.CardView

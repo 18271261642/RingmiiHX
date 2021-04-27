@@ -64,7 +64,10 @@ import com.guider.healthring.b31.bpoxy.B31BpOxyAnysisActivity;
 import com.guider.healthring.b31.bpoxy.ShowSpo2DetailActivity;
 import com.guider.healthring.b31.bpoxy.util.ChartViewUtil;
 import com.guider.healthring.b31.bpoxy.util.VpSpo2hUtil;
+import com.guider.healthring.b31.ecg.EcgDetechRecordActivity;
 import com.guider.healthring.b31.ecg.EcgDetectActivity;
+import com.guider.healthring.b31.ecg.bean.EcgDetectStateBean;
+import com.guider.healthring.b31.ecg.bean.EcgSourceBean;
 import com.guider.healthring.b31.hrv.B31HrvDetailActivity;
 import com.guider.healthring.b31.model.B31HRVBean;
 import com.guider.healthring.b31.model.B31Spo2hBean;
@@ -206,6 +209,18 @@ public class NewB31RecordFragment extends LazyFragment
     CardView spo2CardView;
     //血氧
     LinearLayout block_spo2h, block_heart, block_sleep, block_breath, block_lowspo2h;
+
+
+    //ecg
+    private CardView ecgCardView;
+    private TextView homeEcgHeartTv,homeEcgQtTv,homeEcgHrvTv;
+    //最近时间
+    private TextView homeEcgLastTimeTv;
+    //无数据时显示的布局
+    private TextView homeEcgEmptyTv;
+    //有数据时显示的布局
+    private LinearLayout homeEcgResultLayout;
+
 
 
     /**
@@ -497,12 +512,25 @@ public class NewB31RecordFragment extends LazyFragment
         //血压
         bloodCardView = b31View.findViewById(R.id.bloodCardView);
 
+
+        //ecg
+        ecgCardView = b31View.findViewById(R.id.ecgCardView);
+        homeEcgHeartTv = b31View.findViewById(R.id.homeEcgHeartTv);
+        homeEcgQtTv = b31View.findViewById(R.id.homeEcgQtTv);
+        homeEcgHrvTv = b31View.findViewById(R.id.homeEcgHrvTv);
+        homeEcgLastTimeTv = b31View.findViewById(R.id.homeEcgLastTimeTv);
+        homeEcgEmptyTv = b31View.findViewById(R.id.homeEcgEmptyTv);
+        homeEcgResultLayout = b31View.findViewById(R.id.homeEcgResultLayout);
+
+
+
         stepCardView.setOnClickListener(this);
         hrvCardView.setOnClickListener(this);
         sleepCardView.setOnClickListener(this);
         spo2CardView.setOnClickListener(this);
         heartCardView.setOnClickListener(this);
         bloodCardView.setOnClickListener(this);
+        ecgCardView.setOnClickListener(this);
     }
 
 
@@ -534,8 +562,11 @@ public class NewB31RecordFragment extends LazyFragment
             manualList.add("FATIGUE");
         //是否支持心电
         boolean isSupportEcg = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_SUPPORT_ECG_KEY, false);
-        if (isSupportEcg)
+        if (isSupportEcg){
             manualList.add("ECG");
+            ecgCardView.setVisibility(View.VISIBLE);
+        }
+
         GridLayoutManager manualGridLm = new GridLayoutManager(mContext, manualList.size());
         manualGridLm.setOrientation(LinearLayoutManager.VERTICAL);
         manualRecyclerView.setLayoutManager(manualGridLm);
@@ -808,6 +839,45 @@ public class NewB31RecordFragment extends LazyFragment
         //血氧
         updateSpo2Data(mac, date);
 
+        //ecg
+        findEcgData(mac,date);
+    }
+
+
+    //查询ecg数据
+    private void findEcgData(String mac, String date) {
+        try {
+            List<EcgSourceBean> sourceBeanList = LitePal.where("bleMac = ? and detectDate = ?",mac,date).find(EcgSourceBean.class);
+
+            if(sourceBeanList == null || sourceBeanList.isEmpty()){
+                ecgEmptyData();
+                return;
+            }
+
+            homeEcgEmptyTv.setVisibility(View.GONE);
+            homeEcgResultLayout.setVisibility(View.VISIBLE);
+            EcgSourceBean ecgSourceBean = sourceBeanList.get(sourceBeanList.size()-1);
+            homeEcgLastTimeTv.setText("最近测量"+"\n"+ecgSourceBean.getDetectTime());
+            String ecgStateStr = ecgSourceBean.getEcgDetectStateBeanStr();
+            if(ecgStateStr == null){
+                ecgEmptyData();
+                return;
+            }
+            EcgDetectStateBean ecgDetectStateBean = gson.fromJson(ecgStateStr,EcgDetectStateBean.class);
+            homeEcgHeartTv.setText(ecgDetectStateBean.getHr1() == 0 ? "-- 次/分":ecgDetectStateBean.getHr1()+" 次/分");
+            homeEcgQtTv.setText(ecgDetectStateBean.getQtc()+" 毫秒");
+            homeEcgHrvTv.setText(ecgDetectStateBean.getHrv()+" 毫秒");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    //ecg无数据时展示
+    private void ecgEmptyData(){
+        homeEcgLastTimeTv.setText("--");
+        homeEcgEmptyTv.setVisibility(View.VISIBLE);
+        homeEcgResultLayout.setVisibility(View.GONE);
     }
 
 
@@ -815,6 +885,9 @@ public class NewB31RecordFragment extends LazyFragment
         if (b30BarChart != null) {
             b30BarChart.invalidate();
         }
+
+
+
         //血氧和HRV
         updateSpo2View(new ArrayList<>());
         showHrvData(new ArrayList<>());
@@ -1647,6 +1720,9 @@ public class NewB31RecordFragment extends LazyFragment
                     if (getActivity() != null)
                         getActivity().finish();
                 }
+                break;
+            case R.id.ecgCardView:      //ECG
+                startActivity(new Intent(getmContext(), EcgDetechRecordActivity.class));
                 break;
         }
     }

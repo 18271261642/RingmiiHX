@@ -29,6 +29,7 @@
 -keep public class com.android.vending.licensing.ILicensingService    # 保持哪些类不被混淆
 -keep public class com.google.vending.licensing.ILicensingService   # 保持哪些类不被混淆
 
+-keep public class com.guider.healthring.b31.ecg.bean.EcgSourceBean
 
 -keepclassmembers class **.R$* {
     public static <fields>;
@@ -168,6 +169,8 @@
 -keep class * extends org.litepal.crud.LitePalSupport {
     *;
 }
+
+-keep class com.guider.healthring.b31.ecg.bean.** { *;}
 #Image Cropper
 -keep class androidx.appcompat.widget.** { *; }
 #高德地图

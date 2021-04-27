@@ -45,9 +45,9 @@ public class EcgShowAdapter extends RecyclerView.Adapter<EcgShowAdapter.EcgViewH
         EcgHeartRealthView ecgView = holder.ecgHeartRealthView;
         int[] dt = ecgData.get(position);
 
-        Log.e(TAG,"-----dt="+dt.length+"\n"+new Gson().toJson(dt));
+        Log.e(TAG,"-----dt="+dt.length+"\n");
 
-        ecgView.setCoumlnQutoCount(5 * 5);
+        ecgView.setCoumlnQutoCount(16 * 5);
         ecgView.changeData(dt,dt.length);
     }
 

@@ -147,6 +147,18 @@ public class WatchUtils {
         return dateFormat.format(now);
     }
 
+
+    /**
+     * 获取指定格式的日期
+     * @param format
+     * @return
+     */
+    public static String getCurrentDateFormat(String format) {
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.CHINA);
+        return dateFormat.format(now);
+    }
+
     /**
      * 根据类型获取指定日期
      *

@@ -233,9 +233,9 @@ public class EcgHeartRealthView extends View {
 
     public synchronized void changeData(int[] data, int item_content) {
 
-        if(mPoints == null){
-            return;
-        }
+//        if(mPoints == null){
+//            return;
+//        }
 
         if(item_content>mPoints.length){
             item_content = mPoints.length;
@@ -273,7 +273,7 @@ public class EcgHeartRealthView extends View {
     //一个格子多少个点
     int count = HZ / SPEED;
     //纵向一共放多少个格子
-    int coumlnQutoCount =  5 * 5;
+    int coumlnQutoCount =  16 * 5;
     //一个格子的高度
     float coumlnQutoWidth = 1;
     //横向一共放多少格子

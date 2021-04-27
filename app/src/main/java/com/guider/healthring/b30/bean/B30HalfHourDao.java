@@ -10,6 +10,8 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 import org.litepal.LitePal;
 import java.util.List;
 
+import hat.bemo.DataBase.TABLE_0x20;
+
 /**
  * 数据库操作: B30半小时数据源
  *
@@ -63,6 +65,9 @@ public class B30HalfHourDao {
 
     //精准睡眠
     public static final String TYPE_PRECISION_SLEEP = "precision_sleep";
+
+    //心电数据key
+    public static final String TYPE_ECG_DATA = "ecg_data";
 
 
     // List<TempB31HRVBean> resultList = new ArrayList<>();
@@ -139,12 +144,19 @@ public class B30HalfHourDao {
      * @param db 数据源实体类
      */
     public synchronized void saveOriginData(B30HalfHourDB db) {
-        boolean result;
-        String bMac = db.getAddress();
-        String strDate = db.getDate();
-        String type = db.getType();
-        result = db.saveOrUpdate("address=? and date =? and type=?", bMac, strDate, type);
-        if (Commont.isDebug)Log.e("DB", "--------数据存储=" + result);
+        try {
+            boolean result;
+            String bMac = db.getAddress();
+            String strDate = db.getDate();
+            String type = db.getType();
+            Log.e("DB","------bleMac="+bMac);
+
+            result = db.saveOrUpdate("address=? and date =? and type=?", bMac, strDate, type);
+            if (Commont.isDebug)Log.e("DB", "--------数据存储=" + result);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 

@@ -49,7 +49,7 @@ android {
         debug {
             minifyEnabled false
             zipAlignEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
             shrinkResources false
             // 区分是否是国际版本
@@ -76,7 +76,7 @@ android {
             zipAlignEnabled true
             shrinkResources false
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             // 区分是否是国际版本
             buildConfigField("boolean", "GOOGLEPLAY", "${rootProject.googlePlay}")

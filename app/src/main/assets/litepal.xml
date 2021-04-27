@@ -16,7 +16,8 @@
     <!--2018-09-19 XuBo 增加B30HalfHourDB类,版本号:2-->
     <!--2018-12-21 新增HRV和血氧的bean,版本号3-->
     <!--2019年3月28日  数据库名字更改 GPS Bean 增加经纬度字段  版本 5-->
-    <version value="9" />
+    <!--2020-4-20 新增ecg数据保存 版本10-->
+    <version value="10" />
 
     <list>
         <mapping class="com.guider.healthring.w30s.bean.W30SAlarmClockBean" />
@@ -35,5 +36,9 @@
         <mapping class="com.guider.healthring.commdbserver.CommHeartDb"/>
         <mapping class="com.guider.healthring.commdbserver.CommBloodOxyDb"/>
         <mapping class="com.guider.healthring.commdbserver.CommDownloadDb"/>
+
+
+        <!--ECG数据-->
+        <mapping class="com.guider.healthring.b31.ecg.bean.EcgSourceBean"/>
     </list>
 </litepal>  
