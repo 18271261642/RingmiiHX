@@ -771,6 +771,15 @@ public class NewB31RecordFragment extends LazyFragment
                 if (activity != null) activity.reconnectDevice();// 重新连接
             }
         }
+
+        // 处理心电
+        String mac = WatchUtils.getSherpBleMac(getmContext());
+        String date = WatchUtils.obtainFormatDate(currDay);
+        if (WatchUtils.isEmpty(mac)) {
+            showEmptyData();
+            return;
+        }
+        findEcgData(mac,date);
     }
 
     @Override
@@ -793,7 +802,6 @@ public class NewB31RecordFragment extends LazyFragment
         intent.putExtra("title", titleTxt);
         intent.putExtra(Constant.DETAIL_DATE, WatchUtils.obtainFormatDate(currDay));
         getmContext().startActivity(intent);
-
     }
 
 
