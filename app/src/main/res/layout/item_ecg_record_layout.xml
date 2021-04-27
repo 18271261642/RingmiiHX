@@ -7,7 +7,7 @@
     android:background="@drawable/ecg_back_box"
     android:layout_margin="5dp"
     android:padding="5dp"
-    android:layout_height="@dimen/dp_180">
+    android:layout_height="@dimen/dp_200">
 
 
    <TextView
@@ -17,7 +17,7 @@
        android:textSize="17sp"
        android:layout_marginLeft="@dimen/dimen_10"
        android:padding="5dp"
-       android:text="测量时间 12:14"/>
+       android:text="--"/>
 
 
     <LinearLayout
@@ -31,14 +31,12 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0"
-            android:layout_weight="1"/>
-
+            android:layout_height="@dimen/dp_10"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
 
@@ -50,7 +48,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:layout_height="wrap_content"
-                android:text="心率"/>
+                android:text="@string/settings_custom_shortcuts_heartrate"/>
 
 
             <TextView
@@ -61,7 +59,7 @@
                 android:textSize="18sp"
                 android:padding="3dp"
                 android:layout_height="wrap_content"
-                android:text="QT间期"/>
+                android:text="@string/ecg_qtc"/>
 
 
             <TextView
@@ -80,14 +78,13 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0"
-            android:layout_weight="1"/>
+            android:layout_height="@dimen/dp_10"/>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
             <TextView
@@ -109,7 +106,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_height="wrap_content"
-                android:text="--毫秒"/>
+                android:text="--"/>
 
 
             <TextView
@@ -120,15 +117,14 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:layout_height="wrap_content"
-                android:text="--毫秒"/>
+                android:text="--"/>
 
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0"
-            android:layout_weight="1"/>
+            android:layout_height="@dimen/dp_10"/>
 
     </LinearLayout>
 

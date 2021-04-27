@@ -1388,6 +1388,8 @@
     <string name="ecg_name">心电</string>
     <string name="ecg_error1">导联脱落,请正常佩戴!</string>
     <string name="ecg_qtc">QT间期</string>
+    <string name="ecg_latest_test">最近测量</string>
+    <string name="ecg_record">ECG记录</string>
 
     <string name="handle_test">手动测量</string>
     <string name="fatigue_name">疲劳度</string>

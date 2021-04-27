@@ -1356,4 +1356,6 @@
     <string name="ecg_test">心電測試</string>
     <string name="ecg_error1">導聯脫落,請正常佩戴!</string>
     <string name="ecg_qtc">QT間期</string>
+    <string name="ecg_latest_test">最近測量</string>
+    <string name="ecg_record">ECG記錄</string>
 </resources>

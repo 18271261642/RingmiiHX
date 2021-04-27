@@ -1345,15 +1345,17 @@
     <string name="blood_flow_velocity">Blood flow velocity</string>
     <string name="measure_hemoglobin">hemoglobin</string>
 
-    <string name="ecg_measuring"> in measurement: </string>
-    <string name="ecg_cnt_m"> times/minutes</string>
+    <string name="ecg_measuring">in measurement: </string>
+    <string name="ecg_cnt_m">times/minutes</string>
     <string name="ecg_cnt_m_">--times/minutes</string>
-    <string name="ecg_ms"> milliseconds</string>
+    <string name="ecg_ms">milliseconds</string>
     <string name="ecg_ms_">---milliseconds</string>
-    <string name="ecg_tested"> measurement is completed</string>
-    <string name="ecg_test"> ECG test </string>
-    <string name="ecg_error1"> The lead falls off, please wear it normally!</string>
-    <string name="ecg_qtc"> QT interval</string>
+    <string name="ecg_tested">measurement is completed</string>
+    <string name="ecg_test">ECG test </string>
+    <string name="ecg_error1">The lead falls off, please wear it normally!</string>
+    <string name="ecg_qtc">QT interval</string>
+    <string name="ecg_latest_test">Recent measurement</string>
+    <string name="ecg_record">ECG record</string>
 
     <string name="handle_test"> manual measurement </string>
     <string name="ecg_name">ECG</string>

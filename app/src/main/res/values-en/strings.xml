@@ -1362,6 +1362,8 @@
     <string name="ecg_test">ECG test </string>
     <string name="ecg_error1">The lead falls off, please wear it normally!</string>
     <string name="ecg_qtc">QT interval</string>
+    <string name="ecg_latest_test">Recent measurement</string>
+    <string name="ecg_record">ECG record</string>
 
     <string name="handle_test">manual measurement </string>
     <string name="ecg_name">ECG</string>

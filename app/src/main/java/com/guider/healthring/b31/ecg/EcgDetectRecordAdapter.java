@@ -27,9 +27,8 @@ class EcgDetectRecordAdapter extends CommonRecyclerAdapter<EcgSourceBean> {
         String ecgDetectState = item.getEcgDetectStateBeanStr();
         EcgDetectStateBean ecgDetectStateBean = new Gson().fromJson(ecgDetectState,EcgDetectStateBean.class);
         holder.setText(R.id.itemEcgRecordTimeTv,item.getDetectTime());
-        holder.setText(R.id.itemEcgRecordHeartTv,(ecgDetectStateBean.getHr2() == 0 ?"--":ecgDetectStateBean.getHr2())+" 次/分");
-        holder.setText(R.id.itemEcgRecordQtTv,(ecgDetectStateBean.getQtc() == 0 ? "--" : ecgDetectStateBean.getQtc()) +" 毫秒");
-        holder.setText(R.id.itemEcgRecordHrvTv,(ecgDetectStateBean.getHrv() == 0 || ecgDetectStateBean.getHrv() == 255 ? "--" : ecgDetectStateBean.getHr2())+" 毫秒");
-
+        holder.setText(R.id.itemEcgRecordHeartTv,(ecgDetectStateBean.getHr2() == 0 ?"--":ecgDetectStateBean.getHr2())+" " + mContext.getString(R.string.ecg_cnt_m));
+        holder.setText(R.id.itemEcgRecordQtTv,(ecgDetectStateBean.getQtc() == 0 ? "--" : ecgDetectStateBean.getQtc()) +" " + mContext.getString(R.string.ecg_ms));
+        holder.setText(R.id.itemEcgRecordHrvTv,(ecgDetectStateBean.getHrv() == 0 || ecgDetectStateBean.getHrv() == 255 ? "--" : ecgDetectStateBean.getHr2()) + " " + mContext.getString(R.string.ecg_ms));
     }
 }

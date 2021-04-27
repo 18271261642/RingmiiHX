@@ -82,7 +82,7 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
 
         recyclerView = findViewById(R.id.ecgDetectRecordRecyclerView);
 
-        titleTv.setText("ECG记录");
+        titleTv.setText(getString(R.string.ecg_record));
         commBackImg.setVisibility(View.VISIBLE);
 
         leftImg.setOnClickListener(this);
@@ -96,8 +96,6 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
         list = new ArrayList<>();
         ecgDetectRecordAdapter = new EcgDetectRecordAdapter(this,list,R.layout.item_ecg_record_layout);
         recyclerView.setAdapter(ecgDetectRecordAdapter);
-
-
     }
 
     @SuppressLint("NonConstantResourceId")

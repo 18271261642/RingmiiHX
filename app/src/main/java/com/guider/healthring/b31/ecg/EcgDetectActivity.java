@@ -149,6 +149,13 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         heartView = findViewById(R.id.detectEcgView);
         heartView.setCoumlnQutoCount(16 * 5);
 
+        // 返回键处理
+        findViewById(R.id.commentB30BackImg).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         showEmptyData();
     }
 
