@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.b30view.B30CusSleepView;
 import com.guider.healthring.b30.bean.B30HalfHourDao;
+import com.guider.healthring.b30.bean.CusVPSleepData;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.Constant;
@@ -282,7 +283,7 @@ public class B30SleepDetailActivity extends WatchBaseActivity implements View.On
 
         String sleep = B30HalfHourDao.getInstance().findOriginData(mac, currDay, B30HalfHourDao
                 .TYPE_SLEEP);
-        SleepData sleepData = gson.fromJson(sleep, SleepData.class);
+        CusVPSleepData sleepData = gson.fromJson(sleep, CusVPSleepData.class);
         showSleepChartView(sleepData);
         int sleepQulity = sleepData == null ? 0 : sleepData.getSleepQulity();
         detailSleepQuitRatingBar.setMax(5);
@@ -307,7 +308,7 @@ public class B30SleepDetailActivity extends WatchBaseActivity implements View.On
         detailHightSleepTv.setText(low);// 浅度睡眠
     }
 
-    private void showSleepChartView(final SleepData sleepData) {
+    private void showSleepChartView(final CusVPSleepData sleepData) {
         listValue.clear();
         if (sleepData != null) {
             String slleepLin = sleepData.getSleepLine();

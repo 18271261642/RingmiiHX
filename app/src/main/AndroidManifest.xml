@@ -1046,6 +1046,7 @@
         <service android:name=".b30.service.DateUploadServiceGD" />
         <service android:name=".b30.service.CommVpDateUploadService" />
         <service android:name=".b31.bpoxy.ReadHRVAnSpo2DatatService" />
+        <service android:name=".b31.bpoxy.NewReadHRVAnSpo2DatatService" />
         <service android:name=".commdbserver.UploadCommDbServices" />
 
 

@@ -159,8 +159,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         initViewIds();
         initViews();
         initData();
-
-
         return commView;
     }
 
@@ -235,8 +233,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
         //查询数据
         String userId = (String) SharedPreferencesUtils.readObject(getContext(), Commont.USER_ID_DATA);
-
-
     }
 
 
@@ -262,10 +258,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
 //        Log.e(TAG, "------startDay=" + startDay + "--endDay=" + endDay);
 
-
         String bleMac = WatchUtils.getSherpBleMac(getContext());
         if (!WatchUtils.isEmpty(bleMac)) {
-
             Log.e(TAG, "----startDay=" + startDay + "--=endDay=" + endDay);
 
             //步数的集合
@@ -293,7 +287,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                 analysisSleepData(sleepDb, code);
             }
 
-
             //查询血压
             List<CommDownloadDb> bloodDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
                     CommDBManager.COMM_TYPE_BLOOD, startDay, endDay);
@@ -301,8 +294,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                 analysisBloodData(bloodDb, code);
             }
         }
-
-
     }
 
     //解析血压数据

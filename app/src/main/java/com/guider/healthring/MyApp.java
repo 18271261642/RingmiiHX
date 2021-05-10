@@ -223,7 +223,6 @@ public class MyApp extends LitePalApplication {
     };
 
     public VPOperateManager getVpOperateManager() {
-
         if (vpOperateManager == null) {
             vpOperateManager = VPOperateManager.getMangerInstance(application);
 

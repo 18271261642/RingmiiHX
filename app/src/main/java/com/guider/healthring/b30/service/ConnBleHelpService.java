@@ -15,6 +15,7 @@ import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.b30.bean.B30HalfHourDB;
 import com.guider.healthring.b30.bean.B30HalfHourDao;
+import com.guider.healthring.b30.bean.CusVPSleepData;
 import com.guider.healthring.b30.bean.CusVPSleepPrecisionData;
 import com.guider.healthring.b30.bean.CusVPTimeData;
 import com.guider.healthring.b31.bpoxy.NewReadHRVAnSpo2DatatService;
@@ -141,14 +142,14 @@ public class ConnBleHelpService {
                 //普通睡眠
                 if (sleepMap != null && !sleepMap.isEmpty()) {
                     for (Map.Entry<String, SleepData> mp : sleepMap.entrySet()) {
-                        //Log.e(TAG,"-----普通睡眠="+mp.toString());
+                        Log.e(TAG,"-----普通睡眠入库="+mp.toString());
                         //保存详细数据
                         B30HalfHourDB db = new B30HalfHourDB();
                         db.setAddress(MyApp.getInstance().getMacAddress());
                         // db.setDate(WatchUtils.obtainAroundDate(mp.getValue().getDate(), false));
                         db.setDate(mp.getValue().getDate());
                         db.setType(B30HalfHourDao.TYPE_SLEEP);
-                        db.setOriginData(gson.toJson(mp.getValue()));
+                        db.setOriginData(gson.toJson(new CusVPSleepData(mp.getValue())));
                         db.setUpload(0);
                         B30HalfHourDao.getInstance().saveOriginData(db);
 
@@ -182,7 +183,6 @@ public class ConnBleHelpService {
                         B30HalfHourDao.getInstance().saveOriginData(db);
                     }
                 }
-
             }
 
             if (msg.what == 1001) {
@@ -253,8 +253,6 @@ public class ConnBleHelpService {
         }, b30Pwd.trim(), is24Hour);
 
         setCommDevice();
-
-
     }
 
     //验证设备密码
@@ -283,17 +281,10 @@ public class ConnBleHelpService {
                     if (verB30PwdListener != null)
                         verB30PwdListener.verPwdSucc();
                 }
-
                 //是否支持佩戴检测
                 SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.IS_SUPPORT_CHECK_WEAR, pwdData.getWearDetectFunction() == EFunctionStatus.SUPPORT);
-
             }
-        }, new IDeviceFuctionDataListener() {
-            @Override
-            public void onFunctionSupportDataChange(FunctionDeviceSupportData functionDeviceSupportData) {
-                getCommSupportFunction(functionDeviceSupportData);
-            }
-        }, new ISocialMsgDataListener() {
+        }, functionDeviceSupportData -> getCommSupportFunction(functionDeviceSupportData), new ISocialMsgDataListener() {
             @Override
             public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
                 //Log.e(TAG, "-----functionSocailMsgData-=" + functionSocailMsgData);
@@ -301,17 +292,12 @@ public class ConnBleHelpService {
 
             @Override
             public void onSocialMsgSupportDataChange2(FunctionSocailMsgData functionSocailMsgData) {
-
             }
-        }, new ICustomSettingDataListener() {
-            @Override
-            public void OnSettingDataChange(CustomSettingData customSettingData) {
+        }, customSettingData -> {
 
-            }
         }, blePwd, is24Hour);
 
         setCommDevice();
-
     }
 
 
@@ -341,6 +327,7 @@ public class ConnBleHelpService {
         //是否支持精准睡眠
         isSleepPrecisionData = functionDeviceSupportData.getPrecisionSleep() == EFunctionStatus.SUPPORT;
         SharedPreferencesUtils.setParam(context, Commont.IS_SUPPORT_precisionSleep, isSleepPrecisionData);
+        Log.i(TAG, "是否支持精准睡眠 : " + isSleepPrecisionData);
 
         //是否疲劳度检测功能
         SharedPreferencesUtils.setParam(context, Commont.IS_B31S_FATIGUE_KEY, functionDeviceSupportData.getFatigue() == EFunctionStatus.SUPPORT);
@@ -354,7 +341,6 @@ public class ConnBleHelpService {
 
     //设置共同的属性
     private void setCommDevice() {
-
         SharedPreferencesUtils.setParam(MyApp.getContext(), Commont.BATTERNUMBER, 0);//每次连接清空电量
         //同步用户信息，设置目标步数
         setDeviceUserData();
@@ -416,6 +402,7 @@ public class ConnBleHelpService {
      */
     public void getDeviceMsgData() {
         // 获取步数
+        Log.i(TAG, "获取步数");
         MyApp.getInstance().getVpOperateManager().readSportStep(bleWriteResponse, new ISportDataListener() {
             @Override
             public void onSportDataChange(SportData sportData) {
@@ -438,7 +425,6 @@ public class ConnBleHelpService {
 
                 b30HalfHourDao.saveOriginData(b30HalfHourDB);
 
-
                 if (connBleMsgDataListener != null) {
                     connBleMsgDataListener.getBleSportData(sportData.getStep());
                 }
@@ -446,12 +432,13 @@ public class ConnBleHelpService {
                 String bleName = "B31";
                 if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME))
                     bleName = MyCommandManager.DEVICENAME;
-                //保存总步数
+                // 保存总步数
                 CommDBManager.getCommDBManager().saveCommCountStepDate(bleName, MyApp.getInstance().getMacAddress(),
                         WatchUtils.getCurrentDate(), sportData.getStep());
             }
         });
         //电量
+        Log.i(TAG, "获取电量");
         MyApp.getInstance().getVpOperateManager().readBattery(bleWriteResponse, new IBatteryDataListener() {
             @Override
             public void onDataChange(BatteryData batteryData) {
@@ -468,7 +455,6 @@ public class ConnBleHelpService {
 
             }
         });
-
     }
 
 
@@ -486,8 +472,6 @@ public class ConnBleHelpService {
     private void readAllDeviceData(boolean today) {
         if (sleepMap != null)
             sleepMap.clear();
-//        if(precisionSleepMap != null)
-//            precisionSleepMap.clear();
         readOnlySleep(today);
     }
 
@@ -496,24 +480,22 @@ public class ConnBleHelpService {
     private void readOnlySleep(boolean day) {
         if (sleepMap != null)
             sleepMap.clear();
-//        if(precisionSleepMap != null)
-//            precisionSleepMap.clear();
         //单单读取睡眠的
         MyApp.getInstance().getVpOperateManager().readSleepData(bleWriteResponse, new ISleepDataListener() {
             @Override
             public void onSleepDataChange(SleepData sleepData) {
                 if (sleepData == null)
                     return;
-                saveSleepData(sleepData);
                 //Log.e(TAG, "-----22----睡眠原始返回数据=" + sleepData.toString());
                 if (sleepData instanceof SleepPrecisionData && isSleepPrecisionData) {
+                    Log.i(TAG, "保存精准睡眠信息");
                     SleepPrecisionData sleepPrecisionData = (SleepPrecisionData) sleepData;
                     savePrecisionData(sleepPrecisionData);
                 } else {
+                    Log.i(TAG, "保存普通睡眠信息");
                     // 睡眠数据返回,会有多条数据
                     saveSleepData(sleepData);
                 }
-
             }
 
             @Override
@@ -666,9 +648,7 @@ public class ConnBleHelpService {
                     String sleepLinStr2 = cSleep.getSleepLine();
                     resultSleepData.setSleepLine(tmpSleepDownTime > cSleepDownTime ? (sleepLinStr2 + sleepLinStr1) : (sleepLinStr1 + sleepLinStr2));
                     precisionSleepMap.put(dateStr, resultSleepData);
-
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -678,7 +658,6 @@ public class ConnBleHelpService {
 
     //版本协议为新版
     class ReadAllDataAsync extends AsyncTask<Boolean, Void, Void> {
-
         @Override
         protected Void doInBackground(Boolean... booleans) {
             if (!isSupportSpo2) {
@@ -759,9 +738,9 @@ public class ConnBleHelpService {
     }
 
 
-    //读取版本协议为0的数据
+    // 读取版本协议为0的数据
     private void readOldVersionData(boolean isToday) {
-        Log.e(TAG, "------读取健康数据=" + isToday);
+        Log.e(TAG, "------老版本读取健康数据=" + isToday);
         VPOperateManager.getMangerInstance(MyApp.getContext()).readOriginData(bleWriteResponse, new IOriginDataListener() {
             @Override
             public void onOringinFiveMinuteDataChange(OriginData originData) {
@@ -781,21 +760,24 @@ public class ConnBleHelpService {
 
             @Override
             public void onReadOriginProgress(float v) {
-
+                Log.i(TAG, "老版本健康数据读取进度 " + v);
             }
 
             @Override
             public void onReadOriginComplete() {
+                Log.i(TAG, "老版本读取取运动,心率,血压数据结束");
                 // 读取取运动,心率,血压数据结束
                 new LocalizeTool(MyApp.getContext()).putUpdateDate(WatchUtils
                         .obtainFormatDate(0));// 更新最后更新数据的时间
                 if (connBleMsgDataListener != null) {
+                    Log.i(TAG, "老版本读取取运动,心率,血压数据结束.结束回调执行");
                     connBleMsgDataListener.onOriginData();
                 }
 
                 //开始读取血氧和HRV数据
                 if (isSupportSpo2) {
                     try {
+                        Log.i(TAG, "开始读取血氧和HRV数据");
                         Intent intent = new Intent(MyApp.getContext(), NewReadHRVAnSpo2DatatService.class);
                         MyApp.getInstance().getApplicationContext().startService(intent);
                     } catch (Exception e) {
@@ -822,7 +804,7 @@ public class ConnBleHelpService {
             Log.e(TAG, "---------sleepMap=" + sleepMap.toString());
             if (sleepMap.get(sleepData.getDate()).getDate().equals(sleepData.getDate())) {  //同一天的
                 if (!sleepMap.get(sleepData.getDate()).getSleepLine().equals(sleepData.getSleepLine())) {
-                    //map 中已经保存的
+                    // map 中已经保存的
                     SleepData tempSleepData = sleepMap.get(sleepData.getDate());
                     SleepData resultSlee = new SleepData();
                     resultSlee.setDate(sleepData.getDate());    //日期
@@ -859,104 +841,8 @@ public class ConnBleHelpService {
                     sleepMap.put(sleepData.getDate(), resultSlee);
                 }
             }
-
         }
     }
-
-
-
-
-
-    /* *//**
-     * 保存手环返回的睡眠数据到本地数据库
-     *
-     * @param sleepData 睡眠数据
-     *//*
-    private void saveSleepData(SleepData sleepData) {
-        if (sleepData == null) return;
-
-        *//***
-     * 睡眠数据
-     *
-     * @param cali_flag     睡眠定标值，目前这个值没有什么用
-     * @param sleepQulity   睡眠质量
-     * @param wakeCount     睡眠中起床的次数
-     * @param deepSleepTime 深睡时长
-     * @param lowSleepTime  浅睡时长
-     * @param allSleepTime  睡眠总时长
-     * @param sleepLine      获取睡眠曲线，主要用于更具象化的UI来显示睡眠状态（可参考我司APP,360应用市场搜索Hband），如果您睡眠界面对UI没有特殊要求，可不理会,睡眠曲线分为普通睡眠和精准睡眠，普通睡眠是一组由0,1,2组成的字符串，每一个字符代表时长为5分钟，其中0表示浅睡，1表示深睡，2表示苏醒,比如“201112”，长度为6，表示睡眠阶段共30分钟，头尾各苏醒5分钟，中间浅睡5分钟，深睡15分钟;若是精准睡眠，睡眠曲线是一组由0,1,2，3,4组成的字符串，每一个字符代表时长为1分钟，其中0表示深睡，1表示浅睡，2表示快速眼动,3表示失眠,4表示苏醒。
-     * @param sleepDown     入睡时间
-     * @param sleepUp       起床时间
-     *//*
-        TimeData downTimeData = sleepData.getSleepDown();
-        CusVPTimeData donwTime = new CusVPTimeData(downTimeData.getYear(),downTimeData.getMonth(),
-                downTimeData.getDay(),downTimeData.getHour(),downTimeData.getMinute(),
-                downTimeData.getSecond(),downTimeData.getWeekDay());
-
-        TimeData upTimeData = sleepData.getSleepUp();
-        CusVPTimeData upTime = new CusVPTimeData(upTimeData.getYear(),upTimeData.getMonth(),
-                upTimeData.getDay(),upTimeData.getHour(),upTimeData.getMinute(),
-                upTimeData.getSecond(),upTimeData.getWeekDay());
-
-        CusVPSleepData deviceSstr = new CusVPSleepData(sleepData.getDate(),sleepData.getCali_flag(),sleepData.getSleepQulity(),
-                sleepData.getWakeCount(),sleepData.getDeepSleepTime(),sleepData.getLowSleepTime(),sleepData.getAllSleepTime(),
-                sleepData.getSleepLine(),donwTime,upTime);
-
-        Log.e("-------设备睡眠数据---", gson.toJson(deviceSstr) + "");
-        if (sleepMap.get(deviceSstr.getDate()) == null) {
-            sleepMap.put(deviceSstr.getDate(), deviceSstr);
-        } else {
-            CusVPSleepData tempSleepData = sleepMap.get(deviceSstr.getDate());    //已经存在的数据
-            Log.e(TAG, "------tempSleepData=" + tempSleepData.toString());
-            if (tempSleepData.getDate().equals(deviceSstr.getDate())) {  //同一天的
-                if (!tempSleepData.getSleepLine().equals(deviceSstr.getSleepLine())) {
-                    //map 中已经保存的
-                    //Log.e(TAG,"--------tempSleepData="+tempSleepData.toString());
-                    // SleepData resultSlee = new SleepData();
-                    CusVPSleepData resultSlee = new CusVPSleepData();
-
-
-                    resultSlee.setDate(deviceSstr.getDate());    //日期
-                    resultSlee.setCali_flag(0);
-                    //睡眠质量，取最大值
-                    resultSlee.setSleepQulity(tempSleepData.getSleepQulity() >= deviceSstr.getSleepQulity() ? tempSleepData.getSleepQulity() : deviceSstr.getSleepQulity());
-                    //睡醒次数
-                    resultSlee.setWakeCount(tempSleepData.getWakeCount() + deviceSstr.getWakeCount() + 1);
-                    //深睡时间
-                    resultSlee.setDeepSleepTime(tempSleepData.getDeepSleepTime() + deviceSstr.getDeepSleepTime());
-                    //浅睡时间
-                    resultSlee.setLowSleepTime(tempSleepData.getLowSleepTime() + deviceSstr.getLowSleepTime());
-                    //入睡时间 比较时间大小
-                    String time1 = tempSleepData.getSleepDown().getDateAndClockForSleepSecond();
-                    String time2 = sleepData.getSleepDown().getDateAndClockForSleepSecond();
-                    CusVPTimeData sleepDownTime = WatchUtils.comPariDateDetail(time2, time1) ? deviceSstr.getSleepDown() : tempSleepData.getSleepDown();
-                    resultSlee.setSleepDown(sleepDownTime);
-                    //清醒时间
-                    String sleepUpStr1 = tempSleepData.getSleepUp().getDateAndClockForSleepSecond();
-                    String sleepUpStr2 = sleepData.getSleepUp().getDateAndClockForSleepSecond();
-
-                    CusVPTimeData sleepUpTime = WatchUtils.comPariDateDetail(sleepUpStr2, sleepUpStr1) ? tempSleepData.getSleepUp() : deviceSstr.getSleepUp();
-
-                    resultSlee.setSleepUp(sleepUpTime);
-                    //计算两段时间间隔，第二段的入睡时间-第一段的清醒时间
-                    int sleepLen = WatchUtils.intervalTimeStr(sleepUpStr1, time2);
-                    int sleepStatus = sleepLen / 5;
-                    StringBuilder stringBuffer = new StringBuilder();
-                    for (int i = 1; i <= sleepStatus; i++) {
-                        stringBuffer.append("2");
-                    }
-                    //所有睡眠时间 = 几段的总的睡眠时间+清醒的时间
-                    resultSlee.setAllSleepTime(Integer.valueOf(tempSleepData.getAllSleepTime()) + Integer.valueOf(deviceSstr.getAllSleepTime()) + (sleepStatus * 5));
-                    resultSlee.setSleepLine(WatchUtils.comPariDateDetail(time1, time2) ?
-                            (tempSleepData.getSleepLine() + stringBuffer + "" + deviceSstr.getSleepLine()) :
-                            (deviceSstr.getSleepLine() + stringBuffer + "" + tempSleepData.getSleepLine()));
-                    Log.e(TAG, "----------结果睡眠---=" + resultSlee.toString());
-                    sleepMap.put(deviceSstr.getDate(), resultSlee);
-                }
-            }
-
-        }
-    }*/
 
     /**
      * 保存手环返回的健康数据(步数,运动,心率,血压)到本地数据库
@@ -985,18 +871,6 @@ public class ConnBleHelpService {
     private String saveSportData(String mac, List<HalfHourSportData> sportData) {
         if (sportData == null || sportData.isEmpty()) return null;
         Log.e(TAG, "-------运动数据=" + gson.toJson(sportData));
-//
-//        List<CusVPHalfSportData> cusVPHalfSportDataList = new ArrayList<>();
-//        for(HalfHourSportData halfSportData : sportData){
-//            CusVPTimeData cusVPTimeData = new CusVPTimeData(halfSportData.getTime().getYear(),
-//                    halfSportData.getTime().getMonth(),halfSportData.getTime().getDay(),
-//                    halfSportData.getTime().getHour(),halfSportData.getTime().getMinute(),
-//                    halfSportData.getTime().getSecond(),halfSportData.getTime().getWeekDay());
-//            CusVPHalfSportData cusVPHalfSportData = new CusVPHalfSportData(cusVPTimeData,halfSportData.getStepValue(),
-//                    halfSportData.getSportValue(),halfSportData.getDisValue(),halfSportData.getCalValue());
-//            cusVPHalfSportDataList.add(cusVPHalfSportData);
-//        }
-
 
         String date = sportData.get(0).getDate();
         B30HalfHourDB db = new B30HalfHourDB();
@@ -1017,13 +891,6 @@ public class ConnBleHelpService {
      */
     private void saveRateData(String mac, List<HalfHourRateData> rateData) {
         if (rateData == null || rateData.isEmpty()) return;
-//        List<CusVPHalfRateData> cusVPHalfRateDataList = new ArrayList<>();
-//        for(HalfHourRateData lfRate : rateData){
-//            CusVPTimeData cusVPTimeData = new CusVPTimeData(lfRate.getTime().getYear(),lfRate.getTime().getMonth(),lfRate.getTime().getDay(),
-//                    lfRate.getTime().getHour(),lfRate.getTime().getMinute(),lfRate.getTime().getSecond(),lfRate.getTime().getWeekDay());
-//            CusVPHalfRateData cusVPHalfRateData1 = new CusVPHalfRateData(lfRate.getDate(),cusVPTimeData,lfRate.getRateValue(),lfRate.getEcgCount(),lfRate.getPpgCount());
-//            cusVPHalfRateDataList.add(cusVPHalfRateData1);
-//        }
 
         B30HalfHourDB db = new B30HalfHourDB();
         db.setAddress(mac);
@@ -1033,15 +900,12 @@ public class ConnBleHelpService {
         db.setUpload(0);
         B30HalfHourDao.getInstance().saveOriginData(db);
 
-
         String bleName = "B31";
         if (!WatchUtils.isEmpty(MyCommandManager.DEVICENAME)) bleName = MyCommandManager.DEVICENAME;
         //保存心率数据
         Integer[] heartStr = CommCalUtils.calHeartData(rateData);
         CommDBManager.getCommDBManager().saveCommHeartData(bleName, WatchUtils.getSherpBleMac(MyApp.getContext()),
                 rateData.get(0).getDate(), heartStr[0], heartStr[1], heartStr[2]);
-
-
     }
 
     /**
@@ -1053,23 +917,10 @@ public class ConnBleHelpService {
     private void saveBpData(String mac, List<HalfHourBpData> bpData) {
         if (bpData == null || bpData.isEmpty()) return;
 
-//        List<CusVPHalfHourBpData> cusBpList = new ArrayList<>();
-//        for(HalfHourBpData hb : bpData){
-//            TimeData timeData = hb.getTime();
-//            CusVPTimeData cusVPTimeData = new CusVPTimeData(timeData.getYear(),timeData.getMonth(),timeData.getDay(),timeData
-//                    .getHour(),timeData.getMinute(),timeData.getSecond(),timeData.getWeekDay());
-//
-//            CusVPHalfHourBpData cbBp = new CusVPHalfHourBpData(hb.getDate(),cusVPTimeData,hb.getHighValue(),hb.getLowValue());
-//            cusBpList.add(cbBp);
-//
-//        }
-
-
         B30HalfHourDB db = new B30HalfHourDB();
         db.setAddress(mac);
         db.setDate(bpData.get(0).getDate());
         db.setType(B30HalfHourDao.TYPE_BP);
-//        db.setOriginData(gson.toJson(cusBpList));
         db.setOriginData(gson.toJson(bpData));
         db.setUpload(0);
         //Log.e("-------血压数据", gson.toJson(bpData));

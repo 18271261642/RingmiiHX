@@ -96,8 +96,6 @@ public class CommDBManager {
             boolean isSave = commStepCountDb.save();
             Log.e(TAG, "-----22-----isSave=" + isSave);
         }
-
-
     }
 
     /**
@@ -205,16 +203,10 @@ public class CommDBManager {
             boolean isHeartSave = commHeartDb.save();
             Log.e(TAG, "-----11---心率保存=" + isHeartSave);
         } else {
-//            for (CommHeartDb cb : saveHeartListData) {
-//                Log.e(TAG, "---------cd=" + commHeartDb.toString());
-//            }
             commHeartDb.setUpload(saveHeartListData.get(0).isUpload());
             boolean isSave = commHeartDb.saveOrUpdate(stepWhereStr, userId, bleMac, dataStr);
-
-            Log.e(TAG, "----22----心率保存=" + isSave);
-
+            Log.e(TAG, "----22----心率保存/保存=" + isSave);
         }
-
     }
 
 
@@ -404,8 +396,6 @@ public class CommDBManager {
             boolean isBloodSave = commBloodDb.saveOrUpdate("userid = ? and devicecode = ? and rtc = ?", userId, bleMac, dateStr);
             Log.e(TAG, "--------22血压保存=" + isBloodSave);
         }
-
-
     }
 
 
@@ -425,7 +415,6 @@ public class CommDBManager {
             e.printStackTrace();
             return null;
         }
-
     }
 
     /**
@@ -512,12 +501,8 @@ public class CommDBManager {
         //先查询一下
         List<CommDownloadDb> saveData = findCommDownloadDb(bleMac, type);
         if (saveData == null) {
-
             LitePal.saveAll(listStr);
-
         }
-
-
     }
 
     //查询保存的数据，一天只有一条
@@ -530,7 +515,6 @@ public class CommDBManager {
             e.printStackTrace();
             return null;
         }
-
     }
 
 
@@ -552,7 +536,6 @@ public class CommDBManager {
             e.printStackTrace();
             return null;
         }
-
     }
 
 
@@ -574,10 +557,7 @@ public class CommDBManager {
 
     public interface OnDownloadCountStepListener {
         void allCountStep(String str);
-
         void allHeartData(String heartStr);
-
         void allSleepData(String sleepStr);
     }
-
 }

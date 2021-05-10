@@ -2,6 +2,8 @@ package com.guider.healthring.b30.bean;
 
 import android.text.format.Time;
 
+import com.veepoo.protocol.model.datas.TimeData;
+
 import java.util.Calendar;
 
 /**
@@ -58,6 +60,11 @@ public class CusVPTimeData {
         this(year, month, day, hour, minute);
         this.second = second;
         this.weekDay = week;
+    }
+
+    public CusVPTimeData(TimeData timeData) {
+        this(timeData.getYear(), timeData.getMonth(), timeData.getDay(), timeData.getHour(), timeData.getMinute(),
+                timeData.getSecond(), timeData.getWeekDay());
     }
 
     public int getSecond() {

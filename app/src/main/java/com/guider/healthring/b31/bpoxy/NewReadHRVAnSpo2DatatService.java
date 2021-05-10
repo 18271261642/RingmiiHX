@@ -16,6 +16,7 @@ import com.guider.healthring.b31.model.B31Spo2hBean;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.LocalizeTool;
 import com.guider.healthring.util.SharedPreferencesUtils;
+import com.guider.libbase.util.Log;
 import com.veepoo.protocol.listener.base.IBleWriteResponse;
 import com.veepoo.protocol.listener.data.IHRVOriginDataListener;
 import com.veepoo.protocol.listener.data.ISpo2hOriginDataListener;
@@ -36,7 +37,7 @@ import androidx.annotation.Nullable;
  */
 public class NewReadHRVAnSpo2DatatService extends IntentService {
 
-    private static final String TAG = "ReadHRVAnSpo2DatatServi";
+    private static final String TAG = NewReadHRVAnSpo2DatatService.class.getSimpleName();
 
     private Gson gson = new Gson();
 
@@ -216,27 +217,32 @@ public class NewReadHRVAnSpo2DatatService extends IntentService {
         intentFilter.addAction(WatchUtils.B31_SPO2_COMPLETE);
         registerReceiver(broadcastReceiver, intentFilter);
         mLocalTool = new LocalizeTool(MyApp.getContext());
-
+        Log.d(TAG, "onCreate");
     }
 
 
     @Override
     public void onStart(@Nullable Intent intent, int startId) {
         super.onStart(intent, startId);
-
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         String bleMac = WatchUtils.getSherpBleMac(MyApp.getContext());
-        if(bleMac == null)return;
-        boolean isSupportSpo2 = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.IS_SUPPORT_SPO2,false);
-        if(!isSupportSpo2)
+        if(bleMac == null) {
+            Log.w(TAG, "BLE mac is empty.");
             return;
+        }
+        boolean isSupportSpo2 = (boolean) SharedPreferencesUtils.getParam(MyApp.getContext(), Commont.IS_SUPPORT_SPO2,false);
+        if(!isSupportSpo2) {
+            Log.w(TAG, "该设备不支持SPO2.");
+            return;
+        }
+
         //读取血氧
+        Log.d(TAG, "读取血氧线程开始");
         Thread thread1 = new ReadSpo2Thread();
         thread1.start();
-
     }
 
 
@@ -259,6 +265,7 @@ public class NewReadHRVAnSpo2DatatService extends IntentService {
 
     //读取血氧的数据
     private void readSpo2Data() {
+        Log.d(TAG, "开始读取血氧数据");
         //判断当天是否已经获取过血氧了，
         if (b31Spo2hBeanList == null)
             b31Spo2hBeanList = new ArrayList<>();
@@ -341,14 +348,13 @@ public class NewReadHRVAnSpo2DatatService extends IntentService {
 
     //读取HRV数据
     private void readDeviceHrvData() {
+        Log.d(TAG, "开始读取HRV数据");
         if (b31HRVBeanList == null)
             b31HRVBeanList = new ArrayList<>();
         b31HRVBeanList.clear();
         List<B31HRVBean> yesHrvList = new ArrayList<>();
         List<B31HRVBean> threeDayHrvList = new ArrayList<>();
         Map<String, List<B31HRVBean>> hrvMap = new HashMap<>();
-
-
 
         //当天是否已经保存过了
         List<B31HRVBean> currHrvLt = LitePal.where(where, bleMac, currDayStr).find(B31HRVBean.class);
@@ -357,11 +363,9 @@ public class NewReadHRVAnSpo2DatatService extends IntentService {
             return;
         }
 
-
         //判断昨天的数据是否已经读取过，读取过就不读取了
         List<B31HRVBean> yestDayHrvLt = LitePal.where(where, bleMac, yesDayStr).find(B31HRVBean.class);
         boolean isSaved = yestDayHrvLt != null && yestDayHrvLt.size()== 420;
-
 
         MyApp.getInstance().getVpOperateManager().readHRVOrigin(bleWriteResponse, new IHRVOriginDataListener() {
             @Override
@@ -386,7 +390,7 @@ public class NewReadHRVAnSpo2DatatService extends IntentService {
 
             @Override
             public void onHRVOriginListener(HRVOriginData hrvOriginData) {
-//                Log.e(TAG, "---HRV   Y  " + hrvOriginData.toString());
+                Log.d(TAG, "---HRV   Y  " + hrvOriginData.toString());
                 if (hrvOriginData.getDate().equals(currDayStr)) {    //当天
                     B31HRVBean hrvBean = new B31HRVBean();
                     hrvBean.setBleMac(MyApp.getInstance().getMacAddress());

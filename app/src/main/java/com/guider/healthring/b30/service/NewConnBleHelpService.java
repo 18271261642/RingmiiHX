@@ -721,10 +721,7 @@ public class NewConnBleHelpService {
 //                        Log.e(TAG, "----------结果睡眠---=" + resultSlee.toString());
                         sleepMap.put(sleepData.getDate(), resultSlee);
                     }
-
                 }
-
-
             }
         }
 

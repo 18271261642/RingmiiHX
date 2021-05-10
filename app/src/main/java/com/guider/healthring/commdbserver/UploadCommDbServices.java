@@ -396,7 +396,6 @@ public class UploadCommDbServices extends IntentService {
                 if (WatchUtils.isEmpty(result))
                     return;
                 analysisHearatData(result, startDay, endDay);
-
             }
         });
 
@@ -412,7 +411,6 @@ public class UploadCommDbServices extends IntentService {
             }
         });
 
-
         //血压
         String bloodUrl = SyncDbUrls.downloadBloodUrl();
         OkHttpTool.getInstance().doRequest(bloodUrl, commParams, "4", new OkHttpTool.HttpResult() {
@@ -424,8 +422,6 @@ public class UploadCommDbServices extends IntentService {
                 analysisBlood(result, startDay, endDay);
             }
         });
-
-
     }
 
     //血压
@@ -450,7 +446,6 @@ public class UploadCommDbServices extends IntentService {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(j);
                 dateMap.put(jsonObject1.getString("rtc"), jsonObject1.getInt("avgdiastolic") + "-"
                         + jsonObject1.getInt("avgsystolic"));
-
             }
 
             List<CommDownloadDb> commDownloadDbList = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.guider.healthring.b30.bean;
 
 
+import com.veepoo.protocol.model.datas.SleepData;
 import com.veepoo.protocol.util.c;
 
 /**
@@ -52,6 +53,19 @@ public class CusVPSleepData implements Comparable<Object>{
         this.sleepLine = sleepLine;
         this.sleepDown = sleepDown;
         this.sleepUp = sleepUp;
+    }
+
+    public CusVPSleepData(SleepData sleepData) {
+        setDate(sleepData.getDate());
+        setAllSleepTime(sleepData.getAllSleepTime());
+        setCali_flag(sleepData.getCali_flag());
+        setDeepSleepTime(sleepData.getDeepSleepTime());
+        setLowSleepTime(sleepData.getLowSleepTime());
+        setSleepDown(new CusVPTimeData(sleepData.getSleepDown()));
+        setSleepUp(new CusVPTimeData(sleepData.getSleepUp()));
+        setSleepLine(sleepData.getSleepLine());
+        setSleepQulity(sleepData.getSleepQulity());
+        setWakeCount(sleepData.getWakeCount());
     }
 
     public static String getCusVPSleepDate(CusVPTimeData time) {
@@ -144,6 +158,8 @@ public class CusVPSleepData implements Comparable<Object>{
     public void setSleepUp(CusVPTimeData sleepUp) {
         this.sleepUp = sleepUp;
     }
+
+
 
     @Override
     public int compareTo(Object another) {
