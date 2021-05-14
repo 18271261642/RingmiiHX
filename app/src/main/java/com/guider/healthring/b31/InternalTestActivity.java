@@ -15,6 +15,7 @@ import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.commdbserver.CommDBManager;
+import com.guider.healthring.commdbserver.CommDownloadDb;
 import com.guider.healthring.commdbserver.CommStepCountDb;
 import com.guider.healthring.commdbserver.SyncDbUrls;
 import com.guider.healthring.siswatch.utils.WatchUtils;
@@ -199,8 +200,11 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
     }
 
     private void findHeartData() {
-        CommDBManager.getCommDBManager().startUploadDbService(InternalTestActivity.this);
-
+       // CommDBManager.getCommDBManager().startUploadDbService(InternalTestActivity.this);
+        //查询血压
+        List<CommDownloadDb> bloodDb = CommDBManager.getCommDBManager().findCommDownloadDb(MyApp.getInstance().getMacAddress(),
+                CommDBManager.COMM_TYPE_BLOOD, "2021-05-13", WatchUtils.getCurrentDate());
+        Log.e(TAG,"----blooddb="+(bloodDb == null));
     }
 
     @Override

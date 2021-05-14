@@ -389,6 +389,8 @@ public class CommDBManager {
     public void saveCommBloodDb(String bleMac, String dateStr, int maxDiastolic, int minSystolic, int avgDiastolic, int avgSystolic) {
         if (WatchUtils.isEmpty(bleMac) || WatchUtils.isEmpty(dateStr) || userId == null)
             return;
+
+
         CommBloodDb commBloodDb = new CommBloodDb();
         commBloodDb.setUserid(userId);
         commBloodDb.setRtc(dateStr);
@@ -547,6 +549,9 @@ public class CommDBManager {
      * @return
      */
     public List<CommDownloadDb> findCommDownloadDb(String bleMac, String type, String startDay, String endDay) {
+
+        Log.e(TAG,"-----查询="+bleMac+"\n"+type+"\n"+startDay+"\n"+endDay+"\n"+userId);
+
         try {
             String whereStr = "userId = ? and deviceCode = ? and commType = ? and dateStr between ? and ?";
             List<CommDownloadDb> commDownloadDbList = LitePal.where(whereStr, userId, bleMac, type, startDay, endDay).find(CommDownloadDb.class);

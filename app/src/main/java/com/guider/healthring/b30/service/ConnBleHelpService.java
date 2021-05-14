@@ -449,6 +449,8 @@ public class ConnBleHelpService {
                 //保存总步数
                 CommDBManager.getCommDBManager().saveCommCountStepDate(bleName, MyApp.getInstance().getMacAddress(),
                         WatchUtils.getCurrentDate(), sportData.getStep());
+
+
             }
         });
         //电量

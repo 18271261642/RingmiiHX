@@ -4,11 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.gson.Gson;
 import com.guider.healthring.R;
-import com.guider.libbase.util.Log;
-
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,11 +19,11 @@ public class EcgShowAdapter extends RecyclerView.Adapter<EcgShowAdapter.EcgViewH
     private static final String TAG = "EcgShowAdapter";
 
 
-    private List<int[]> ecgData;
+    private List<List<Integer>> ecgData;
 
     private Context mContext;
 
-    public EcgShowAdapter(List<int[]> ecgData, Context mContext) {
+    public EcgShowAdapter(List<List<Integer>> ecgData, Context mContext) {
         this.ecgData = ecgData;
         this.mContext = mContext;
     }
@@ -42,13 +38,9 @@ public class EcgShowAdapter extends RecyclerView.Adapter<EcgShowAdapter.EcgViewH
 
     @Override
     public void onBindViewHolder(@NonNull EcgViewHolder holder, int position) {
-        EcgHeartRealthView ecgView = holder.ecgHeartRealthView;
-        int[] dt = ecgData.get(position);
 
-        Log.e(TAG,"-----dt="+dt.length+"\n");
-
-        ecgView.setCoumlnQutoCount(16 * 5);
-        ecgView.changeData(dt,dt.length);
+        List<Integer> lt = ecgData.get(position);
+        holder.itemEcgView.setSourceList(lt);
     }
 
     @Override
@@ -59,11 +51,11 @@ public class EcgShowAdapter extends RecyclerView.Adapter<EcgShowAdapter.EcgViewH
 
     class EcgViewHolder extends RecyclerView.ViewHolder{
 
-        private EcgHeartRealthView ecgHeartRealthView;
+        private CardiogramView itemEcgView;
 
         public EcgViewHolder(@NonNull View itemView) {
             super(itemView);
-            ecgHeartRealthView = itemView.findViewById(R.id.itemShowEcgView);
+            itemEcgView = itemView.findViewById(R.id.itemEcgView);
         }
     }
 
