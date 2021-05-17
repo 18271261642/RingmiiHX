@@ -115,6 +115,7 @@ public class Commont {
     public static final String ISMeeting = "isMeeting";//是否开启会议提醒
 
     public static final String ISWrists = "isWrists";//是否开启翻腕亮屏
+    public static final String isPPG = "isPPG";     //是否开启精准睡眠
 
 
     //B31的HRV功能

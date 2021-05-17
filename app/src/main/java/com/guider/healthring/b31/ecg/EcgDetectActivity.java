@@ -86,6 +86,9 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
                     return;
                 if(ecgDetectState.getWear() == 1){
                     showEcgDetectStatusTv.setText(getString(R.string.ecg_error1)); //"导联脱落,请正常佩戴!");
+                    detectEcgImgView.setImageResource(R.drawable.detect_sp_start);
+                    isMeasure = false;
+                    stopDetectEcg();
                     return;
                 }
 
