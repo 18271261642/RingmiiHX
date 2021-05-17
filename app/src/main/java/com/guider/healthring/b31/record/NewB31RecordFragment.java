@@ -1650,6 +1650,7 @@ public class NewB31RecordFragment extends LazyFragment
 
     //开始上传本地缓存的数据，汇总数据和详细数据
     private void startUploadDbService() {
+        /*
         try {
             String userId = (String) SharedPreferencesUtils.readObject(getmContext(),Commont.USER_ID_DATA);
             if(userId != null && userId.equals("9278cc399ab147d0ad3ef164ca156bf0"))
@@ -1663,6 +1664,7 @@ public class NewB31RecordFragment extends LazyFragment
         }catch (Exception e){
             e.printStackTrace();
         }
+        */
     }
 
     @SuppressLint("NonConstantResourceId")
