@@ -25,7 +25,7 @@ import com.guider.healthring.activity.GuideActivity;
 import com.guider.healthring.b31.ecg.bean.EcgDetectStateBean;
 import com.guider.healthring.bean.BlueUser;
 import com.guider.healthring.bean.UserInfoBean;
-import com.guider.healthring.commdbserver.ValueFormatter;
+// import com.guider.healthring.commdbserver.ValueFormatter;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.GetJsonDataUtil;
