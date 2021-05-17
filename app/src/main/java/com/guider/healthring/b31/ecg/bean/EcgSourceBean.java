@@ -2,13 +2,14 @@ package com.guider.healthring.b31.ecg.bean;
 
 import org.litepal.crud.LitePalSupport;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Admin
  * Date 2021/4/20
  */
-public class EcgSourceBean extends LitePalSupport {
+public class EcgSourceBean extends LitePalSupport implements Serializable {
 
     //mac地址
     private String bleMac;

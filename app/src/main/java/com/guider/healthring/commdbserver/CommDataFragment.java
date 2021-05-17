@@ -116,7 +116,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     private int SectectCode = 7;
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -159,6 +159,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         initViewIds();
         initViews();
         initData();
+
+
         return commView;
     }
 
@@ -187,24 +189,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.data));
         String bleName = WatchUtils.getSherpBleName(getActivity());
-        if (WatchUtils.isEmpty(bleName))
-            return;
         Log.e(TAG, "-------bleName=" + bleName);
-//        if (bleName.equals("B30")
-//                || bleName.equals("Ringmii")
-//                || bleName.equals("B31S")
-//                || bleName.equals("500S")) { //目前B30和盖德的B30有血压功能
-//            b30BloadChartLin.setVisibility(View.VISIBLE);
-//        } else {
-//            if(bleName.equals("B31")){
-//                boolean isB31HasBp = (boolean) SharedPreferencesUtils.getParam(getActivity(),Commont.IS_B31_HAS_BP_KEY,false);
-//                b30BloadChartLin.setVisibility(isB31HasBp?View.VISIBLE:View.GONE);
-//                return;
-//            }
-//
-//            b30BloadChartLin.setVisibility(View.GONE);
-//        }
-
         b30BloadChartLin.setVisibility(View.VISIBLE);
 
     }
@@ -231,8 +216,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         sleepXList = new ArrayList<>();
         sleepBarEntryList = new ArrayList<>();
 
-        //查询数据
-        String userId = (String) SharedPreferencesUtils.readObject(getContext(), Commont.USER_ID_DATA);
     }
 
 
@@ -241,7 +224,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         mValues.clear();
         xStepList.clear();
         //String endDay = WatchUtils.obtainFormatDate(1); //默认昨天
-        String endDay = WatchUtils.obtainAroundDate(WatchUtils.getCurrentDate(), false);
+        String endDay = WatchUtils.getCurrentDate();  //WatchUtils.obtainAroundDate(WatchUtils.getCurrentDate(), false);
         String startDay;
 
         switch (code) {
@@ -258,18 +241,30 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
 //        Log.e(TAG, "------startDay=" + startDay + "--endDay=" + endDay);
 
+
         String bleMac = WatchUtils.getSherpBleMac(getContext());
-        if (!WatchUtils.isEmpty(bleMac)) {
-            Log.e(TAG, "----startDay=" + startDay + "--=endDay=" + endDay);
+        if(WatchUtils.isEmpty(bleMac)){
+            //showHeartChartView(new ArrayList<>(),new ArrayList<>());
+            showSleepChart(new ArrayList<>(),new ArrayList<>());
+            charBloadView.updateView(new ArrayList<>(), new ArrayList<>());
+            charBloadView.setScal(false);
+            return;
+        }
+
+            Log.e(TAG, "----startDay=" + startDay + "--=endDay=" + endDay+"-=bleMac="+bleMac);
 
             //步数的集合
             List<CommDownloadDb> stepCountDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
                     CommDBManager.COMM_TYPE_STEP, startDay, endDay);
+
+           Log.e(TAG,"----步数集合="+(stepCountDb == null));
+
             new GetJsonDataUtil().writeTxtToFile("step" + code + "=" + gson.toJson(stepCountDb), filtPath, "step.json");
             if (stepCountDb != null && !stepCountDb.isEmpty()) {
                 analysisStepData(stepCountDb, code);
+            }else{
+                showStepsChat(new ArrayList<>(),new ArrayList<>());
             }
-
 
             //心率
             List<CommDownloadDb> heartDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
@@ -277,6 +272,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
             new GetJsonDataUtil().writeTxtToFile("heart" + code + "=" + gson.toJson(heartDb), filtPath, "heart.json");
             if (heartDb != null && !heartDb.isEmpty()) {
                 analysisHeartData(heartDb, code);
+            }else{
+                showHeartChart(new ArrayList<>(),new ArrayList<>());
             }
 
 
@@ -285,15 +282,23 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                     CommDBManager.COMM_TYPE_SLEEP, startDay, endDay);
             if (sleepDb != null && !sleepDb.isEmpty()) {
                 analysisSleepData(sleepDb, code);
+            }else{
+                showSleepChart(new ArrayList<>(),new ArrayList<>());
             }
+
 
             //查询血压
             List<CommDownloadDb> bloodDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
                     CommDBManager.COMM_TYPE_BLOOD, startDay, endDay);
+
+            Log.e(TAG,"----步数集合="+(bloodDb == null));
             if (bloodDb != null && !bloodDb.isEmpty()) {
                 analysisBloodData(bloodDb, code);
+            }else{
+                charBloadView.updateView(new ArrayList<>(), new ArrayList<>());
+                charBloadView.setScal(false);
             }
-        }
+
     }
 
     //解析血压数据
@@ -541,7 +546,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
                 }
 
-
                 if (code == 0x02) {   //年
                     //遍历map，得到日期
                     for (Map.Entry<String, Integer> mp : heartMap.entrySet()) {
@@ -751,6 +755,10 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         if (getActivity() == null || getActivity().isFinishing())
             return;
         pointbar.clear();
+        if(xList.isEmpty()){
+            stepDataChartView.invalidate();
+            return;
+        }
         for (int i = 0; i < mValues.size(); i++) {
             pointbar.add(new BarEntry(i, mValues.get(i)));
         }
@@ -822,6 +830,10 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     private void showHeartChart(List<Integer> heartList, List<String> xlt) {
         if (getActivity() == null || getActivity().isFinishing())
             return;
+        if(heartXList.isEmpty()){
+            heartDataChartView.invalidate();
+            return;
+        }
         heartBarEntryList.clear();
         for (int i = 0; i < heartList.size(); i++) {
             heartBarEntryList.add(new BarEntry(i, (int) heartList.get(i)));
@@ -901,6 +913,10 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     private void showSleepChart(List<Float> sleepVlaues, List<String> sleepXList) {
         if (getActivity() == null || getActivity().isFinishing())
             return;
+        if(sleepXList.size() == 0){
+            sleepDataChartView.invalidate();
+            return;
+        }
         sleepBarEntryList.clear();
         for (int i = 0; i < sleepVlaues.size(); i++) {
             sleepBarEntryList.add(new BarEntry(i, sleepVlaues.get(i)));

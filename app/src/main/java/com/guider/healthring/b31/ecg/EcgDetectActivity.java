@@ -428,6 +428,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         ecgSourceBean.setEcgListStr(new Gson().toJson(ecgSourceList));
 
         Log.e(TAG,"-----ecgSourceBean="+new Gson().toJson(ecgSourceBean));
+
         ecgSourceBean.save();
 
     }

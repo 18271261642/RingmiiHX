@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:layout_height="wrap_content">
 
 
-    <com.guider.healthring.b31.ecg.EcgHeartRealthView
-        android:id="@+id/itemShowEcgView"
+    <com.guider.healthring.b31.ecg.CardiogramView
+        android:id="@+id/itemEcgView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_300"/>
+        android:layout_height="@dimen/dp_150"/>
 
 </LinearLayout>

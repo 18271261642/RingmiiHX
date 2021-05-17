@@ -11,6 +11,7 @@ import com.guider.healthring.R;
 import com.guider.healthring.b31.ecg.bean.EcgSourceBean;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
+import com.guider.healthring.w30s.adapters.CommonRecyclerAdapter;
 
 import org.litepal.LitePal;
 
@@ -26,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * * Created by Admin
  * Date 2021/4/21
  */
-public class EcgDetechRecordActivity extends WatchBaseActivity implements View.OnClickListener {
+public class EcgDetechRecordActivity extends WatchBaseActivity implements View.OnClickListener, CommonRecyclerAdapter.OnItemListener {
 
     private ImageView commBackImg;
     private TextView titleTv;
@@ -82,7 +83,7 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
 
         recyclerView = findViewById(R.id.ecgDetectRecordRecyclerView);
 
-        titleTv.setText(getString(R.string.ecg_record));
+        titleTv.setText("ECG记录");
         commBackImg.setVisibility(View.VISIBLE);
 
         leftImg.setOnClickListener(this);
@@ -96,6 +97,8 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
         list = new ArrayList<>();
         ecgDetectRecordAdapter = new EcgDetectRecordAdapter(this,list,R.layout.item_ecg_record_layout);
         recyclerView.setAdapter(ecgDetectRecordAdapter);
+        ecgDetectRecordAdapter.setmOnItemListener(this);
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -122,5 +125,18 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
         }
         currDay = date;
         queryDbEcgData(currDay);
+    }
+
+    @Override
+    public void onItemClickListener(View view, int position) {
+        if(list.isEmpty())
+            return;
+        EcgSourceBean ecgSourceBean = list.get(position);
+        startActivity(ShowEcgDataActivity.class,new String[]{"ecg_time","ecg_desc","ecg_source"},new String[]{ecgSourceBean.getDetectDate()+" "+ecgSourceBean.getDetectTime(),ecgSourceBean.getEcgDetectStateBeanStr(),ecgSourceBean.getEcgListStr()});
+    }
+
+    @Override
+    public void onLongClickListener(View view, int position) {
+
     }
 }
