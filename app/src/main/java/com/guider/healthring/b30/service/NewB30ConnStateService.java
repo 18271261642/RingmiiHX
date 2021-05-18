@@ -21,16 +21,14 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
-
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
+import androidx.core.app.NotificationManagerCompat;
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.siswatch.utils.WatchUtils;
-import com.guider.healthring.util.AppUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.inuker.bluetooth.library.BluetoothClient;
 import com.inuker.bluetooth.library.Code;
@@ -394,85 +392,82 @@ public class NewB30ConnStateService extends Service {
         }
 
     };
+//
+//    //启动前台服务
+//    private void regeditBackService() {
+//        try {
+//            String appName = AppUtils.getAppName(getApplicationContext());
+//            Bitmap appIcon = AppUtils.getBitmap(getApplicationContext());
+//            NotificationCompat.Builder builder;
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                String channelId = "1001";
+//                NotificationChannel channel = new NotificationChannel(channelId,
+//                        "guider_hx", NotificationManager.IMPORTANCE_LOW);
+//                NotificationManager manager = (NotificationManager) getSystemService(
+//                        Context.NOTIFICATION_SERVICE);
+//                if (manager == null)
+//                    return;
+//                manager.createNotificationChannel(channel);
+//                builder = new NotificationCompat.Builder(this,
+//                        channelId);
+//            } else {
+//                builder = new NotificationCompat.Builder(this);
+//            }
+//            Notification notification = builder
+//                    //禁止滑动删除
+//                    .setOngoing(true)
+//                    .setContentTitle(appName)
+//                    .setContentText(appName)
+//                    .setLargeIcon(appIcon)
+//                    .setAutoCancel(false)
+//                    .build();
+//            startForeground(101, notification);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.e(TAG, "前台服务 ------" + e.getMessage());
+//        }
+//    }
+
 
     //启动前台服务
     private void regeditBackService() {
         try {
-            String appName = AppUtils.getAppName(getApplicationContext());
-            Bitmap appIcon = AppUtils.getBitmap(getApplicationContext());
-            NotificationCompat.Builder builder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                String channelId = "1001";
-                NotificationChannel channel = new NotificationChannel(channelId,
-                        "guider_hx", NotificationManager.IMPORTANCE_LOW);
-                NotificationManager manager = (NotificationManager) getSystemService(
-                        Context.NOTIFICATION_SERVICE);
-                if (manager == null)
-                    return;
+                String channelID = "110";
+                String channelName = "channel_name";
+                NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 manager.createNotificationChannel(channel);
-                builder = new NotificationCompat.Builder(this,
-                        channelId);
+                Notification.Builder builder = new Notification.Builder(this);
+
+                //Notification builder = new Notification();
+
+//            builder.setSmallIcon(R.drawable.ic_noti_s);
+                builder.setSmallIcon(R.drawable.ic_gaide_launch_small);
+                builder.setContentText(getResources().getString(R.string.the_app_name));
+                builder.setContentTitle(getResources().getString(R.string.the_app_name));
+                //创建通知时指定channelID
+                builder.setChannelId(channelID);
+                Notification notification = builder.build();
+
+                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+                notificationManagerCompat.notify(110, notification);
+                startForeground(110, notification);
             } else {
-                builder = new NotificationCompat.Builder(this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                    //Notification.Builder builder = new Notification.Builder(this,11);
+                    builder.setSmallIcon(R.drawable.ic_gaide_launch_small);
+                    builder.setContentText(getResources().getString(R.string.the_app_name));
+                    builder.setContentTitle(getResources().getString(R.string.the_app_name));
+                    // 设置通知的点击行为：自动取消/跳转等
+                    builder.setAutoCancel(false);
+                    startForeground(110, builder.build());
+                }
+
             }
-            Notification notification = builder
-                    //禁止滑动删除
-                    .setOngoing(true)
-                    .setContentTitle(appName)
-                    .setContentText(appName)
-                    .setLargeIcon(appIcon)
-                    .setAutoCancel(false)
-                    .build();
-            startForeground(101, notification);
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            Log.e(TAG, "前台服务 ------" + e.getMessage());
         }
-
-//        try {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                String channelID = "12";
-//                String channelName = "channel_name";
-//                NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
-//                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                manager.createNotificationChannel(channel);
-//                Notification.Builder builder = new Notification.Builder(this);
-//
-//                //Notification builder = new Notification();
-//
-////            builder.setSmallIcon(R.drawable.ic_noti_s);
-//                builder.setSmallIcon(R.drawable.ic_gaide_launch);
-//                builder.setContentText("Guider HX");
-//                builder.setContentTitle("Guider HX");
-//                //创建通知时指定channelID
-//                builder.setChannelId(channelID);
-//                Notification notification = builder.build();
-//
-////            // 通知行为（点击后能进入应用界面）
-////            Intent intent = new Intent(this, B30HomeActivity.class);
-////            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-////            builder.setContentIntent(pendingIntent);
-//
-//
-//                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-//                notificationManagerCompat.notify(12, notification);
-//                startForeground(12, notification);
-//            } else {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-//                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-//                    //Notification.Builder builder = new Notification.Builder(this,11);
-//                    builder.setSmallIcon(R.drawable.ic_gaide_launch);
-//                    builder.setContentText("Guider HX");
-//                    builder.setContentTitle("Guider HX");
-//                    // 设置通知的点击行为：自动取消/跳转等
-//                    builder.setAutoCancel(false);
-//                    startForeground(12, builder.build());
-//                }
-//
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-
     }
 }

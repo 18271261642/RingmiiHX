@@ -212,7 +212,7 @@ public class NewB31RecordFragment extends LazyFragment
     CardView spo2CardView;
     //血氧
     LinearLayout block_spo2h, block_heart, block_sleep, block_breath, block_lowspo2h;
-
+    ConstraintLayout     homeSpo2TmpView;
 
     //ecg
     private CardView ecgCardView;
@@ -358,7 +358,7 @@ public class NewB31RecordFragment extends LazyFragment
                         List<Spo2hOriginData> tmpLt = (List<Spo2hOriginData>) msg.obj;
                         updateSpo2View(tmpLt);
                     }
-                    handler.sendEmptyMessage(555);
+//                    handler.sendEmptyMessage(555);
                     break;
                 case 1113: //HRV
                     Log.i(TAG, "HRV数据显示!");
@@ -387,7 +387,7 @@ public class NewB31RecordFragment extends LazyFragment
                     break;
                 case UPDATE_HRV_CODE:   //更新HRV
                     Log.i(TAG, "HRV更新消息!");
-                    handler.sendEmptyMessage(555);
+                    //handler.sendEmptyMessage(555);
                     String addressStr = (String) msg.obj;
                     if (WatchUtils.isEmpty(addressStr))
                         return;
@@ -444,6 +444,7 @@ public class NewB31RecordFragment extends LazyFragment
 
     private void findViewIds() {
         //体检图表
+        homeSpo2TmpView = b31View.findViewById(R.id.homeSpo2TmpView);
         spo2ChartListLayout = b31View.findViewById(R.id.spo2ChartListLayout);
         refreshHeader = b31View.findViewById(R.id.refreshHeader);
         manualRecyclerView = b31View.findViewById(R.id.manualRecyclerView);
@@ -555,12 +556,15 @@ public class NewB31RecordFragment extends LazyFragment
         boolean isSupportBp = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_B31_HAS_BP_KEY, false);
         if (isSupportBp)
             manualList.add("BLOOD");
+        //是否支持血氧
         boolean isSupportSpo2 = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_SUPPORT_SPO2, false);
+        spo2ChartListLayout.setVisibility(isSupportSpo2 ? View.VISIBLE : View.GONE);
+        spo2CardView.setVisibility(isSupportSpo2 ? View.VISIBLE : View.GONE);
+        hrvCardView.setVisibility(isSupportSpo2 ? View.VISIBLE : View.GONE);
+        homeSpo2TmpView.setVisibility(isSupportSpo2 ? View.VISIBLE : View.GONE);
         if (isSupportSpo2) {
             manualList.add("SPO2");
-            spo2ChartListLayout.setVisibility(isSupportSpo2 ? View.VISIBLE : View.GONE);
         }
-
         //是否支持呼吸率
         boolean isSupportHeartV = (boolean) SharedPreferencesUtils.getParam(getmContext(), Commont.IS_B31_HEART, false);
         if (isSupportHeartV)
@@ -674,6 +678,9 @@ public class NewB31RecordFragment extends LazyFragment
                     break;
                 case WatchUtils.Z600_NAME:
                     ivTop.setImageResource(R.mipmap.ic_600z);
+                    break;
+                case WatchUtils.RINGMII_NAME:
+                    ivTop.setImageResource(R.mipmap.hx_home);
                     break;
                 default:
                     ivTop.setImageResource(R.mipmap.ic_home_top_b31);//b31s
@@ -1511,6 +1518,7 @@ public class NewB31RecordFragment extends LazyFragment
                 String mac = WatchUtils.getSherpBleMac(getmContext());
                 boolean isUpdate = intent.getBooleanExtra("isUpdate", false);
                 Log.e(TAG, "-----更新HRV完成=" + isUpdate);
+
                 if (isUpdate) {
                     Message message = handler.obtainMessage();
                     message.obj = mac;
@@ -1522,6 +1530,8 @@ public class NewB31RecordFragment extends LazyFragment
             if (action.equals(WatchUtils.B31_SPO2_COMPLETE)) {
                 String mac = WatchUtils.getSherpBleMac(getmContext());
                 boolean isUpdate = intent.getBooleanExtra("isUpdate", false);
+                //上传数据
+                handler.sendEmptyMessageDelayed(555,2 * 1000);
                 Log.e(TAG, "-----更新血氧完成=" + isUpdate);
                 if (isUpdate) {
                     Message message = handler.obtainMessage();
@@ -1650,21 +1660,15 @@ public class NewB31RecordFragment extends LazyFragment
 
     //开始上传本地缓存的数据，汇总数据和详细数据
     private void startUploadDbService() {
-        /*
         try {
             String userId = (String) SharedPreferencesUtils.readObject(getmContext(),Commont.USER_ID_DATA);
             if(userId != null && userId.equals("9278cc399ab147d0ad3ef164ca156bf0"))
                 return;
             // 开始上传本地缓存的数据
             CommDBManager.getCommDBManager().startUploadDbService(getmContext());
-
-            // 上传缓存的详细数据
-            Intent intent1 = new Intent(getmContext(), FriendsUploadServices.class);
-            getmContext().startService(intent1);
         }catch (Exception e){
             e.printStackTrace();
         }
-        */
     }
 
     @SuppressLint("NonConstantResourceId")

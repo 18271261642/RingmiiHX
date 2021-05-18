@@ -756,6 +756,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
             return;
         pointbar.clear();
         if(xList.isEmpty()){
+            stepDataChartView.setNoDataText(getResources().getString(R.string.nodata));
+            stepDataChartView.setNoDataTextColor(Color.WHITE);
             stepDataChartView.invalidate();
             return;
         }
@@ -831,6 +833,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         if (getActivity() == null || getActivity().isFinishing())
             return;
         if(heartXList.isEmpty()){
+            heartDataChartView.setNoDataTextColor(Color.WHITE);
+            heartDataChartView.setNoDataText(getResources().getString(R.string.nodata));
             heartDataChartView.invalidate();
             return;
         }
@@ -914,6 +918,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         if (getActivity() == null || getActivity().isFinishing())
             return;
         if(sleepXList.size() == 0){
+            sleepDataChartView.setNoDataText(getResources().getString(R.string.nodata));
+            sleepDataChartView.setNoDataTextColor(Color.WHITE);
             sleepDataChartView.invalidate();
             return;
         }

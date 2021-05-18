@@ -785,6 +785,10 @@ public class ConnBleHelpService {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }else{
+                    Intent intent = new Intent();
+                    intent.setAction(WatchUtils.B31_SPO2_COMPLETE);
+                    MyApp.getContext().sendBroadcast(intent);
                 }
             }
         }, isToday ? 1 : 2);

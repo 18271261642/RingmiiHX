@@ -33,7 +33,7 @@ public class LaunchActivity extends WatchBaseActivity {
     private static final String TAG = "LaunchActivity";
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -124,8 +124,8 @@ public class LaunchActivity extends WatchBaseActivity {
                 switch (btooth) {
                     case "B30":
                     case "Ringmii":
-                        startActivity(new Intent(this, B30HomeActivity.class));
-                        break;
+//                        startActivity(new Intent(this, B30HomeActivity.class));
+//                        break;
                     case "500S":
                     case "B31":
                     case "600Z":

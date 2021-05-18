@@ -210,56 +210,13 @@ public class LoginActivity extends WatchBaseActivity
         requestPressent = new RequestPressent();
         requestPressent.attach(this);
         mWXEntryActivityAdapter = new WXEntryActivityAdapter(this, requestPressent);
-
-        subscriberOnNextListener = result -> {
-            //Loaddialog.getInstance().dissLoading();
-            Log.e("LoainActivity", "-----loginresult---" + result);
-            Gson gson = new Gson();
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                String loginResult = jsonObject.getString("resultCode");
-                if ("001".equals(loginResult)) {
-                    BlueUser userInfo = gson.fromJson(jsonObject.getString("userInfo"),
-                            BlueUser.class);
-//                        MyLogUtil.i("msg", "-userInfo-" + userInfo.toString());
-                    Common.userInfo = userInfo;
-                    Common.customer_id = userInfo.getUserId();
-
-                    //保存userid
-                    SharedPreferencesUtils.saveObject(LoginActivity.this,
-                            "userId", userInfo.getUserId());
-                    SharedPreferencesUtils.saveObject(LoginActivity.this,
-                            "userInfo", jsonObject.getString("userInfo"));
-                    Log.e("LoainActivity", "-----loginresult---" + userInfo.toString());
-//                        WatchUtils.setIsWxLogin("",phone);
-                    WatchUtils.setIsWxLogin("LOGION_PHONE",
-                            jsonObject.getString("userInfo"));
-
-                    SharedPreferencesUtils.setParam(LoginActivity.this,
-                            SharedPreferencesUtils.CUSTOMER_ID, Common.customer_id);
-
-                    //SharedPreferencesUtils.saveObject(LoginActivity.this, Commont.USER_INFO_DATA, userStr);
-
-                    startActivity(new Intent(LoginActivity.this,
-                            NewSearchActivity.class));
-                    finish();
-                } else if (loginResult.equals("003")) {
-                    ToastUtil.showShort(LoginActivity.this,
-                            getString(R.string.yonghuzhej));
-                } else if (loginResult.equals("004")) {
-                    ToastUtil.showShort(LoginActivity.this,
-                            getString(R.string.string_user_pass_error));
-                } else if (loginResult.equals("006")) {
-                    ToastUtil.showShort(LoginActivity.this,
-                            getString(R.string.miamacuo));
-                } else {
-                    ToastUtil.showShort(LoginActivity.this,
-                            getString(R.string.miamacuo));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        };
+        //无用代码
+//        subscriberOnNextListener = result -> {
+//            //Loaddialog.getInstance().dissLoading();
+//            Log.e("LoainActivity", "-----loginresult---" + result);
+//            Gson gson = new Gson();
+//           loginForUserPhone(result,100);
+//        };
 
 
         guolei.setVisibility(View.VISIBLE);

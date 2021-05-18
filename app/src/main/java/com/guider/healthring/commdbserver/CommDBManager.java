@@ -4,14 +4,11 @@ package com.guider.healthring.commdbserver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
 import com.guider.healthring.Commont;
 import com.guider.healthring.MyApp;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.SharedPreferencesUtils;
-
 import org.litepal.LitePal;
-
 import java.util.List;
 
 /**
@@ -36,7 +33,7 @@ public class CommDBManager {
 
 
     private volatile static CommDBManager commDBManager = null;
-    private String userId = (String) SharedPreferencesUtils.readObject(MyApp.getContext(), Commont.USER_ID_DATA);
+    private String userId =(String) SharedPreferencesUtils.readObject(MyApp.getContext(), Commont.USER_ID_DATA);
 
 
     private CommDBManager() {
@@ -64,7 +61,7 @@ public class CommDBManager {
     public void saveCommCountStepDate(String bleName, String bleMac, String dataStr, int countStep) {
         if (WatchUtils.isEmpty(bleName) || WatchUtils.isEmpty(bleMac) || WatchUtils.isEmpty(dataStr))
             return;
-        Log.e(TAG, "-----------参数=" + bleName + "-=" + bleMac + "-=" + dataStr + "-=" + countStep);
+        //Log.e(TAG, "-----------参数=" + bleName + "-=" + bleMac + "-=" + dataStr + "-=" + countStep);
         //保存时先查询是否存在，若存在判断保存的步数是否大于现在的步数，防止重复
         CommStepCountDb lt = findCountStepForUpload(bleMac, dataStr);
         if (lt != null) { //有数据
@@ -78,7 +75,7 @@ public class CommDBManager {
                 commStepCountDb.setDevicecode(bleMac);
                 commStepCountDb.setBleName(bleName);
                 commStepCountDb.setUpload(lt.isUpload());
-                //有就修改，没有就保存
+                //有就修改没有就保存
                 boolean isSave = commStepCountDb.saveOrUpdate(stepWhereStr, userId, bleMac, dataStr);
             }
         } else {
@@ -94,7 +91,6 @@ public class CommDBManager {
             //int currStep = LitePal.where(whereStr).limit(0).find(CommStepCountDb.class).get(0).getStepnumber();
             //有就修改，没有就保存
             boolean isSave = commStepCountDb.save();
-            Log.e(TAG, "-----22-----isSave=" + isSave);
         }
     }
 
@@ -201,11 +197,9 @@ public class CommDBManager {
         if (saveHeartListData == null) {
             commHeartDb.setUpload(false);
             boolean isHeartSave = commHeartDb.save();
-            Log.e(TAG, "-----11---心率保存=" + isHeartSave);
         } else {
             commHeartDb.setUpload(saveHeartListData.get(0).isUpload());
             boolean isSave = commHeartDb.saveOrUpdate(stepWhereStr, userId, bleMac, dataStr);
-            Log.e(TAG, "----22----心率保存/保存=" + isSave);
         }
     }
 
@@ -281,9 +275,6 @@ public class CommDBManager {
                                     int low, int sober, int allSleep, String sleeptime, String waketime, int wakeCount) {
         if (WatchUtils.isEmpty(bleName) || WatchUtils.isEmpty(bleMac) || WatchUtils.isEmpty(dateStr) || userId == null)
             return;
-
-        Log.e(TAG, "-----------保存睡眠=" + bleName + "-=" + bleMac + "-=" + dateStr + "-=" + deep);
-
         CommSleepDb commSleepDb = new CommSleepDb();
         //先查询一下睡眠
         List<CommSleepDb> saveSleepList = findCommSleepForUpload(bleMac, dateStr);
@@ -302,12 +293,10 @@ public class CommDBManager {
 
         if (saveSleepList == null) {
             commSleepDb.setUpload(false);
-            Log.e(TAG, "-----11----睡眠数据----=====" + commSleepDb.toString());
             boolean isSleepSave = commSleepDb.save();
             Log.e(TAG, "-----11----睡眠保存=" + isSleepSave);
         } else {
             commSleepDb.setUpload(saveSleepList.get(0).isUpload());
-            Log.e(TAG, "------22---睡眠数据----=====" + commSleepDb.toString());
             boolean isSleepSave = commSleepDb.saveOrUpdate("userid = ? and devicecode = ? and dateStr = ?", userId, bleMac, dateStr);
             Log.e(TAG, "------22---睡眠保存=" + isSleepSave);
         }
@@ -530,9 +519,6 @@ public class CommDBManager {
      * @return
      */
     public List<CommDownloadDb> findCommDownloadDb(String bleMac, String type, String startDay, String endDay) {
-
-        Log.e(TAG,"-----查询="+bleMac+"\n"+type+"\n"+startDay+"\n"+endDay+"\n"+userId);
-
         try {
             String whereStr = "userId = ? and deviceCode = ? and commType = ? and dateStr between ? and ?";
             List<CommDownloadDb> commDownloadDbList = LitePal.where(whereStr, userId, bleMac, type, startDay, endDay).find(CommDownloadDb.class);

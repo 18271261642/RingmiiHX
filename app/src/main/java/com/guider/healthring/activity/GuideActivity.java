@@ -71,7 +71,7 @@ public class GuideActivity extends BaseActivity {
                 MyApp.getmW30SBLEManage().openW30SBLEServices();
             }
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
         }
 
         //B30目标步数 默认8000
