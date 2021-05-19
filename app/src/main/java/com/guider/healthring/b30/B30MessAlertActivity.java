@@ -138,25 +138,6 @@ public class B30MessAlertActivity extends WatchBaseActivity implements View.OnCl
     }
 
 
-    //获取Do not disturb权限,才可进行音量操作
-    private void getDoNotDisturb() {
-        NotificationManager notificationManager =
-                (NotificationManager) MyApp.getInstance().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
-
-            Intent intent = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-
-            MyApp.getInstance().getApplicationContext().startActivity(intent);
-        }
-
-    }
-
-
     //申请电话权限
     @SuppressLint("WrongConstant")
     private void requestPermiss() {
@@ -234,7 +215,68 @@ public class B30MessAlertActivity extends WatchBaseActivity implements View.OnCl
             MyApp.getInstance().getVpOperateManager().readSocialMsg(iBleWriteResponse, new ISocialMsgDataListener() {
                 @Override
                 public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
+                    Log.e(TAG,"-----functionSocailMsgData="+functionSocailMsgData.toString());
+                    boolean isSkype = functionSocailMsgData.getSkype() == EFunctionStatus.SUPPORT_OPEN;
+                    b30SkypeTogg.setChecked(isSkype);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSkype, isSkype);
 
+                    boolean isWhats = functionSocailMsgData.getWhats() == EFunctionStatus.SUPPORT_OPEN;
+                    b30WhatsAppTogg.setChecked(isWhats);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWhatsApp, isWhats);
+
+                    boolean isFacebook = functionSocailMsgData.getFacebook() == EFunctionStatus.SUPPORT_OPEN;
+                    b30FacebookTogg.setChecked(isFacebook);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISFacebook, isFacebook);
+
+                    boolean isLinkin = functionSocailMsgData.getLinkin() == EFunctionStatus.SUPPORT_OPEN;
+                    b30LinkedTogg.setChecked(isLinkin);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLinkendln, isLinkin);
+
+                    boolean isTwitter = functionSocailMsgData.getTwitter() == EFunctionStatus.SUPPORT_OPEN;
+                    b30TwitterTogg.setChecked(isTwitter);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISTwitter, isTwitter);
+
+                    boolean isLine = functionSocailMsgData.getLine() == EFunctionStatus.SUPPORT_OPEN;
+                    b30LineTogg.setChecked(isLine);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISLINE, isLine);
+
+
+                    boolean isWechat = functionSocailMsgData.getWechat() == EFunctionStatus.SUPPORT_OPEN;
+                    b30WechatTogg.setChecked(isWechat);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISWechart, isWechat);
+
+                    boolean isQQ = functionSocailMsgData.getQq() == EFunctionStatus.SUPPORT_OPEN;
+                    b30QQTogg.setChecked(isQQ);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISQQ, isQQ);
+
+                    boolean isMsg = functionSocailMsgData.getMsg() == EFunctionStatus.SUPPORT_OPEN;
+                    b30MessageTogg.setChecked(isMsg);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISMsm, isMsg);
+
+                    boolean isPhone = functionSocailMsgData.getPhone() == EFunctionStatus.SUPPORT_OPEN;
+                    b30PhoneTogg.setChecked(isPhone);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISPhone, isPhone);
+
+                    boolean isInstagram = functionSocailMsgData.getInstagram() == EFunctionStatus.SUPPORT_OPEN;
+                    b30InstagramTogg.setChecked(isInstagram);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISInstagram, isInstagram);
+
+                    boolean isSupportGmail = functionSocailMsgData.getGmail() == EFunctionStatus.UNSUPPORT;
+                    google_gmail.setVisibility(isSupportGmail ? View.VISIBLE : View.GONE);
+                    google_gmail_line.setVisibility(isSupportGmail ? View.VISIBLE : View.GONE);
+
+                    boolean isGmail = functionSocailMsgData.getGmail() == EFunctionStatus.SUPPORT_OPEN;
+                    b30GmailTogg.setChecked(isGmail);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISGmail, isGmail);
+
+                    boolean isSnapchat = functionSocailMsgData.getSnapchat() == EFunctionStatus.SUPPORT_OPEN;
+                    b30SnapchartTogg.setChecked(isSnapchat);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISSnapchart, isSnapchat);
+
+
+                    boolean isOther = functionSocailMsgData.getOther() == EFunctionStatus.SUPPORT_OPEN;
+                    b30OhterTogg.setChecked(isOther);
+                    SharedPreferencesUtils.setParam(B30MessAlertActivity.this, Commont.ISOhter, isOther);
                 }
 
                 @Override
@@ -670,9 +712,19 @@ public class B30MessAlertActivity extends WatchBaseActivity implements View.OnCl
                     false);
         } else SharedPreferencesUtils.setParam(mContext, isOpenNotificationPermission,
                 true);
-//        MyApp.getInstance().getVpOperateManager().settingSocialMsg(iBleWriteResponse,
-//                functionSocailMsgData -> Log.d(TAG,
-//                        "-----设置-=" + functionSocailMsgData.toString()), socailMsgData);
+        MyApp.getInstance().getVpOperateManager().settingSocialMsg(iBleWriteResponse, new ISocialMsgDataListener() {
+            @Override
+            public void onSocialMsgSupportDataChange(FunctionSocailMsgData functionSocailMsgData) {
+
+            }
+
+            @Override
+            public void onSocialMsgSupportDataChange2(FunctionSocailMsgData functionSocailMsgData) {
+
+            }
+        }, socailMsgData);
+//        MyApp.getInstance().getVpOperateManager().settingSocialMsg(iBleWriteResponse,functionSocailMsgData -> Log.d(TAG,
+//                        "-----设置-=" + functionSocailMsgData, socailMsgData);
     }
 
 

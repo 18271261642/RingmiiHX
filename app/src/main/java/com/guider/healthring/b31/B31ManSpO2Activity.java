@@ -50,7 +50,7 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
 
 
     @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @SuppressLint("CheckResult")
         @Override
         public void handleMessage(Message msg) {
@@ -59,9 +59,10 @@ public class B31ManSpO2Activity extends WatchBaseActivity implements View.OnClic
                 Spo2hData spo2hData = (Spo2hData) msg.obj;
                 if (spo2hData == null)
                     return;
+                Log.e(TAG,"----spo2="+spo2hData.toString());
                 if (spo2hData.getCheckingProgress() == 0x00 && !spo2hData.isChecking()) {
                     b31MeaureSpo2ProgressView.setTmpTxt(spo2hData.getValue() + "%");
-                    showSpo2ResultTv.setText(verSpo2Status(spo2hData.getValue()));
+                    showSpo2ResultTv.setText(spo2hData.getValue() == 0 ? "校准中":verSpo2Status(spo2hData.getValue()));
                     b31MeaureSpo2ProgressView.setOxyDexcStr(
                             getResources().getString(R.string.string_spo2_long));//血氧浓度
                     Log.e(TAG, "----------进度=" + spo2hData.getCheckingProgress() + "%");

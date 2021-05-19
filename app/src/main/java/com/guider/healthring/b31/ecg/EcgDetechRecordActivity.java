@@ -12,6 +12,7 @@ import com.guider.healthring.b31.ecg.bean.EcgSourceBean;
 import com.guider.healthring.siswatch.WatchBaseActivity;
 import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.w30s.adapters.CommonRecyclerAdapter;
+import com.guider.libbase.util.Log;
 
 import org.litepal.LitePal;
 
@@ -21,6 +22,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import hat.bemo.DataBase.TABLE_0x20;
 
 /**
  * 展示ecg测量的记录
@@ -132,6 +134,7 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
         if(list.isEmpty())
             return;
         EcgSourceBean ecgSourceBean = list.get(position);
+        Log.e("TAG","----ecgDesc="+ecgSourceBean.getEcgDetectStateBeanStr());
         startActivity(ShowEcgDataActivity.class,new String[]{"ecg_time","ecg_desc","ecg_source"},new String[]{ecgSourceBean.getDetectDate()+" "+ecgSourceBean.getDetectTime(),ecgSourceBean.getEcgDetectStateBeanStr(),ecgSourceBean.getEcgListStr()});
     }
 

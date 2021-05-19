@@ -181,6 +181,14 @@ public class ConnBleHelpService {
                         db.setOriginData(gson.toJson(mmp.getValue()));
                         db.setUpload(0);
                         B30HalfHourDao.getInstance().saveOriginData(db);
+
+                        CusVPSleepPrecisionData cusVPSleepPrecisionData = mmp.getValue();
+                        CommDBManager.getCommDBManager().saveCommSleepDbData("B31", WatchUtils.getSherpBleMac(MyApp.getContext()), cusVPSleepPrecisionData.getDate(),
+                                cusVPSleepPrecisionData.getDeepSleepTime(), cusVPSleepPrecisionData.getLowSleepTime(), cusVPSleepPrecisionData.getLowSleepTime(), cusVPSleepPrecisionData.getAllSleepTime(),
+                                cusVPSleepPrecisionData.getSleepDown().getDateAndClockForSleep(), cusVPSleepPrecisionData.getSleepUp().getDateAndClockForSleep(),
+                                cusVPSleepPrecisionData.getWakeCount());
+
+
                     }
                 }
             }

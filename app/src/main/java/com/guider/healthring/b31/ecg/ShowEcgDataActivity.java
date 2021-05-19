@@ -101,53 +101,45 @@ public class ShowEcgDataActivity extends WatchBaseActivity implements View.OnCli
 
 
     private void showEcgData() {
-        String userInfo = SharedPreferencesUtils.readObject(this, "userInfo").toString();
-        if(userInfo != null){
-            Gson gson = new Gson();
-            UserInfoBean userInfos = gson.fromJson(userInfo, UserInfoBean.class);
-            if(userInfo != null)
-                userNickTv.setText("昵称: "+userInfos.getNickname()+"");
-        }
-
-        String ecg_desc = getIntent().getStringExtra("ecg_desc");
-        String ecg_source = getIntent().getStringExtra("ecg_source");
-        String ecg_tine = getIntent().getStringExtra("ecg_time");
-        if(!WatchUtils.isEmpty(ecg_tine)){
-            ecgDetectTimeTv.setText(ecg_tine+"");
-        }
-        if(!WatchUtils.isEmpty(ecg_desc)){
-            EcgDetectStateBean ecgDetectStateBean = new Gson().fromJson(ecg_desc,EcgDetectStateBean.class);
-            if(ecgDetectStateBean == null)
-                return;
-            ecgHeartDescTv.setText("心率: "+(ecgDetectStateBean.getHr2() == 0 ?"--":ecgDetectStateBean.getHr2())+" bpm"
-                    + "QT间期: "+(ecgDetectStateBean.getQtc() == 0 ? "--" : ecgDetectStateBean.getQtc()) +" ms " + "hrv: "+(ecgDetectStateBean.getHrv() == 0 || ecgDetectStateBean.getHrv() == 255 ? "--" : ecgDetectStateBean.getHr2())+"ms");
-            ecgDescTv.setText("导联: I 走速: 25mm/s 增益: 10mm/mv  频率: 250HZ");
-        }
-
-
-        if(ecg_source != null){
-            List<int[]> lt = new Gson().fromJson(ecg_source,new TypeToken<List<int[]>>(){}.getType());
-            List<Integer> countList = new ArrayList<>();
-            for(int i = 0;i<lt.size();i++){
-                int[] itemArray = lt.get(i);
-               for(int k = 0;k<itemArray.length;k++)
-                   countList.add(itemArray[k]);
+        try {
+            String userInfo = SharedPreferencesUtils.readObject(this, "userInfo").toString();
+            if(userInfo != null){
+                Gson gson = new Gson();
+                UserInfoBean userInfos = gson.fromJson(userInfo, UserInfoBean.class);
+                if(userInfo != null)
+                    userNickTv.setText("昵称: "+(userInfos.getNickname() == null ? "Visitor":userInfos.getNickname())+"");
             }
 
-            analysisEcgData(countList);
+            String ecg_desc = getIntent().getStringExtra("ecg_desc");
+            String ecg_source = getIntent().getStringExtra("ecg_source");
+            String ecg_tine = getIntent().getStringExtra("ecg_time");
+            if(!WatchUtils.isEmpty(ecg_tine)){
+                ecgDetectTimeTv.setText(ecg_tine+"");
+            }
+            if(!WatchUtils.isEmpty(ecg_desc)){
+                EcgDetectStateBean ecgDetectStateBean = new Gson().fromJson(ecg_desc,EcgDetectStateBean.class);
+                if(ecgDetectStateBean == null)
+                    return;
+                ecgHeartDescTv.setText("心率: "+(ecgDetectStateBean.getHr2() == 0 ?"--":ecgDetectStateBean.getHr2())+" bpm   "
+                        + "QT间期: "+(ecgDetectStateBean.getQtc() == 0 ? "--" : ecgDetectStateBean.getQtc()) +" ms   " + "hrv: "+(ecgDetectStateBean.getHrv() == 0 || ecgDetectStateBean.getHrv() == 255 ? "--" : ecgDetectStateBean.getHr2())+"ms");
+                ecgDescTv.setText("导联: I 走速: 25mm/s 增益: 10mm/mv  频率: 250HZ");
+            }
+
+
+            if(ecg_source != null){
+                List<int[]> lt = new Gson().fromJson(ecg_source,new TypeToken<List<int[]>>(){}.getType());
+                List<Integer> countList = new ArrayList<>();
+                for(int i = 0;i<lt.size();i++){
+                    int[] itemArray = lt.get(i);
+                    for(int k = 0;k<itemArray.length;k++)
+                        countList.add(itemArray[k]);
+                }
+
+                analysisEcgData(countList);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-
-
-//
-//        String jsonStr = new GetJsonDataUtil().getJson(this,"ecg.json");
-//
-//        if(jsonStr == null)
-//            return;
-//        Message message = handler.obtainMessage();
-//        message.what = 0x00;
-//        message.obj= jsonStr;
-//        handler.sendMessage(message);
     }
 
 
@@ -158,7 +150,7 @@ public class ShowEcgDataActivity extends WatchBaseActivity implements View.OnCli
         commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
         ecgRecyclerView = findViewById(R.id.ecgRecyclerView);
         ecgHeartDescTv = findViewById(R.id.ecgHeartDescTv);
-        ecgDescTv = findViewById(R.id.ecgHeartDescTv);
+        ecgDescTv = findViewById(R.id.ecgDescTv);
         commentB30BackImg.setOnClickListener(this);
 
         commentB30TitleTv.setText("ECG");
@@ -177,22 +169,27 @@ public class ShowEcgDataActivity extends WatchBaseActivity implements View.OnCli
 
     List<List<Integer>> rt = new ArrayList<>();
     private void analysisEcgData(List<Integer> lit) {
-        int count = lit.size() / 2000;
-        int overCount = lit.size() % 2000;
+        try {
+            int count = lit.size() / 2000;
+            int overCount = lit.size() % 2000;
 
-        for(int i = 0;i<count;i++){
-            List<Integer> lt = new ArrayList<>();
-            List<Integer> tmpList = lit.subList(i * 2000,(i +1) * 2000);
-            lt.addAll(tmpList);
-            rt.add(lt);
+            for(int i = 0;i<count;i++){
+                List<Integer> lt = new ArrayList<>();
+                List<Integer> tmpList = lit.subList(i * 2000,(i +1) * 2000);
+                lt.addAll(tmpList);
+                rt.add(lt);
+            }
+            resultList.addAll(rt);
+            if(overCount != 0){
+                List<Integer> tmpList2 = lit.subList(count * 2000,lit.size()-1);
+                resultList.add(tmpList2);
+            }
+            adapter.notifyDataSetChanged();
+            Log.e(TAG,"----大小="+resultList.size());
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        resultList.addAll(rt);
-        if(overCount != 0){
-            List<Integer> tmpList2 = lit.subList(count * 2000,lit.size()-1);
-            resultList.add(tmpList2);
-        }
-        adapter.notifyDataSetChanged();
-        Log.e(TAG,"----大小="+resultList.size());
+
     }
 
 

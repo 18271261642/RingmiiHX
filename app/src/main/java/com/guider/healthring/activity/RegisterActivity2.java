@@ -3,6 +3,8 @@ package com.guider.healthring.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
@@ -54,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import hat.bemo.setting.EnumSettings;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
@@ -92,6 +96,21 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
 
     private RequestPressent requestPressent;
 
+
+    @SuppressLint("HandlerLeak")
+   private Handler handler = new Handler(){
+       @Override
+       public void handleMessage(@NonNull Message msg) {
+           super.handleMessage(msg);
+           if(msg.what == 0x00){
+                String str = (String) msg.obj;
+               ToastUtil.showToast(RegisterActivity2.this, str);
+           }
+           if(msg.what == 0x01){
+               ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_ok));
+           }
+       }
+   };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -332,168 +351,169 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
 
     //注册盖德的账号
     private void registerGuiderAccount() {
+
         String phoneStr = username.getText().toString();
         String code = tv_phone_head.getText().toString().replace("+", "");
         String phonePwd = password.getText().toString();
         String pass = Md5Util.Md532(phonePwd);
-        if (!StringUtil.isEmpty(phoneStr)) {
-            String loginUrl = BuildConfig.APIURL +
-                    "api/v1/register/phonewithpasswd?telAreaCode=" + code
-                    + "&phone=" + phoneStr + "&passwd=" + pass;
-            OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {
-                Log.e(TAG, "-------盖德注册" + result);
-                if (WatchUtils.isNetRequestSuccess(result, 0)) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        if (WatchUtils.isNetRequestSuccess(jsonObject.toString(), 0)) {
-                            try {
-                                if (jsonObject.has("data")) {
-                                    JSONObject dataJsonObject = jsonObject.getJSONObject("data");
-                                    long accountId = dataJsonObject.getLong("accountId");
-                                    SharedPreferencesUtils.setParam(MyApp.getInstance(),
-                                            "accountIdGD", accountId);
-                                    String token = dataJsonObject.getString("token");
-                                    SharedPreferencesUtils.setParam(MyApp.getInstance(),
-                                            "tokenGD", token);
-                                    Log.e("登录的userId", accountId + "");
+        if (StringUtil.isEmpty(phoneStr)) {
+            ToastUtil.showToast(this, "请输入手机号!");
+            return;
+        }
+        String loginUrl = BuildConfig.APIURL +
+                "api/v1/register/phonewithpasswd?telAreaCode=" + code
+                + "&phone=" + phoneStr + "&passwd=" + pass;
+        OkHttpTool.getInstance().doRequest(loginUrl, null, "1", new OkHttpTool.HttpResult() {
+            @Override
+            public void onResult(String result) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (!WatchUtils.isNetRequestSuccess(result, 0)) {
+                        closeLoadingDialog();
+                        Message message= handler.obtainMessage();
+                        message.what = 0x00;
+                        message.obj = jsonObject.getString("msg");
+                        handler.sendMessage(message);
+                        return;
+                    }
+                    if (jsonObject.has("data")) {
+                        JSONObject dataJsonObject = jsonObject.getJSONObject("data");
+                        long accountId = dataJsonObject.getLong("accountId");
+                        SharedPreferencesUtils.setParam(MyApp.getInstance(),
+                                "accountIdGD", accountId);
+                        String token = dataJsonObject.getString("token");
+                        SharedPreferencesUtils.setParam(MyApp.getInstance(),
+                                "tokenGD", token);
+                        Log.e("登录的userId", accountId + "");
 //                                    backupPassword(Integer.parseInt(String.valueOf(accountId)));
 
-                                    logintoBeraceAccount(phoneStr);
+                        logintoBeraceAccount(phoneStr);
 
-                                    ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_ok));
-                                } else {
-                                    hideLoadingDialog();
+                        handler.sendEmptyMessage(0x01);
+                    } else {
+                        hideLoadingDialog();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, false);
+    }
+
+
+            //直接登录到手环后台
+            private void logintoBeraceAccount(String phoneStr) {
+                try {
+                    Map<String, Object> maps = new HashMap<>();
+                    maps.put("phone", phoneStr);
+                    maps.put("code", "110");
+                    maps.put("loginType", "1");
+                    String jsonMap = new Gson().toJson(maps);
+                    if (requestPressent != null) {
+                        requestPressent.getRequestJSONObject(0x02,
+                                Commont.FRIEND_BASE_URL + "/user/submitLogin",
+                                RegisterActivity2.this, jsonMap, 1);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            private void backupPassword(int accountValue) {
+                String pass = Md5Util.Md532(password.getText().toString());
+                ApiUtil.createApi(IGuiderApi.class, false)
+                        .backupOldPwd(accountValue, pass)
+                        .enqueue(new ApiCallBack<String>() {
+                            @Override
+                            public void onApiResponse(Call<String> call, Response<String> response) {
+                                if (response.body() != null && response.body().equals("true")) {
+                                    String phone = username.getText().toString();
+                                    Intent intent = new Intent(
+                                            RegisterActivity2.this,
+                                            PersonDataActivity.class);
+                                    intent.putExtra("phone", phone);
+                                    startActivity(intent);
+                                    finish();
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onRequestFinish() {
+                                super.onRequestFinish();
                                 hideLoadingDialog();
                             }
-                        } else {
-                            closeLoadingDialog();
-                            ToastUtil.showToast(mContext, jsonObject.getString("msg"));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        hideLoadingDialog();
-                    }
-                }
-            }, false);
-        }
-
-    }
-
-    //直接登录到手环后台
-    private void logintoBeraceAccount(String phoneStr) {
-        try {
-            Map<String,Object> maps = new HashMap<>();
-            maps.put("phone",phoneStr);
-            maps.put("code","110");
-            maps.put("loginType","1");
-            String jsonMap = new Gson().toJson(maps);
-            if (requestPressent != null) {
-                requestPressent.getRequestJSONObject(0x02,
-                        Commont.FRIEND_BASE_URL + "/user/submitLogin",
-                        RegisterActivity2.this, jsonMap, 1);
+                        });
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
-    }
 
-    private void backupPassword(int accountValue) {
-        String pass = Md5Util.Md532(password.getText().toString());
-        ApiUtil.createApi(IGuiderApi.class, false)
-                .backupOldPwd(accountValue, pass)
-                .enqueue(new ApiCallBack<String>() {
-                    @Override
-                    public void onApiResponse(Call<String> call, Response<String> response) {
-                        if (response.body() != null && response.body().equals("true")) {
-                            String phone = username.getText().toString();
-                            Intent intent = new Intent(
+            @Override
+            public void showLoadDialog(int what) {
+
+            }
+
+            @Override
+            public void successData(int what, Object object, int daystag) {
+                Log.e(TAG, "----------what=" + what + "--=obj=" + object.toString());
+                if (object.toString().contains("<html>"))
+                    return;
+                try {
+                    JSONObject jsonObject = new JSONObject(object.toString());
+                    switch (what) {
+                        case 0x01:  //获取验证码返回
+                            ToastUtil.showToast(RegisterActivity2.this,
+                                    jsonObject.getString("data")
+                                            + jsonObject.getString("msg"));
+                            break;
+                        case 0x02:  //注册返回
+                            analysisRegiData(jsonObject);
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    hideLoadingDialog();
+                }
+            }
+
+            @Override
+            public void failedData(int what, Throwable e) {
+                ToastUtil.showToast(RegisterActivity2.this, e.getMessage() + "");
+            }
+
+            @Override
+            public void closeLoadDialog(int what) {
+
+            }
+
+
+            //提交注册返回
+            private void analysisRegiData(JSONObject jsonObject) {
+                closeLoadingDialog();
+                try {
+                    if (!jsonObject.has("code")) {
+                        hideLoadingDialog();
+                        return;
+                    }
+                    if (jsonObject.getInt("code") == 200) {
+                        String data = jsonObject.getString("data");
+                        UserInfoBean userInfoBean = new Gson().fromJson(data, UserInfoBean.class);
+                        if (userInfoBean != null) {
+                            Common.customer_id = userInfoBean.getUserid();
+                            SharedPreferencesUtils.saveObject(
                                     RegisterActivity2.this,
-                                    PersonDataActivity.class);
-                            intent.putExtra("phone",phone);
-                            startActivity(intent);
+                                    Commont.USER_ID_DATA, userInfoBean.getUserid());
+
+                            startActivity(new Intent(RegisterActivity2.this,
+                                    PersonDataActivity.class));
                             finish();
+
                         }
-                    }
-
-                    @Override
-                    public void onRequestFinish() {
-                        super.onRequestFinish();
-                        hideLoadingDialog();
-                    }
-                });
-    }
-
-
-    @Override
-    public void showLoadDialog(int what) {
-
-    }
-
-    @Override
-    public void successData(int what, Object object, int daystag) {
-        Log.e(TAG, "----------what=" + what + "--=obj=" + object.toString());
-        if (object.toString().contains("<html>"))
-            return;
-        try {
-            JSONObject jsonObject = new JSONObject(object.toString());
-            switch (what) {
-                case 0x01:  //获取验证码返回
-                    ToastUtil.showToast(RegisterActivity2.this,
-                            jsonObject.getString("data")
-                                    + jsonObject.getString("msg"));
-                    break;
-                case 0x02:  //注册返回
-                    analysisRegiData(jsonObject);
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            hideLoadingDialog();
-        }
-    }
-
-    @Override
-    public void failedData(int what, Throwable e) {
-        ToastUtil.showToast(RegisterActivity2.this, e.getMessage() + "");
-    }
-
-    @Override
-    public void closeLoadDialog(int what) {
-
-    }
-
-
-    //提交注册返回
-    private void analysisRegiData(JSONObject jsonObject) {
-        closeLoadingDialog();
-        try {
-            if (!jsonObject.has("code")) {
-                hideLoadingDialog();
-                return;
-            }
-            if (jsonObject.getInt("code") == 200) {
-                String data = jsonObject.getString("data");
-                UserInfoBean userInfoBean = new Gson().fromJson(data, UserInfoBean.class);
-                if (userInfoBean != null) {
-                    Common.customer_id = userInfoBean.getUserid();
-                    SharedPreferencesUtils.saveObject(
-                            RegisterActivity2.this,
-                            Commont.USER_ID_DATA, userInfoBean.getUserid());
-
-                    startActivity(new Intent(RegisterActivity2.this,
-                            PersonDataActivity.class));
-                    finish();
-
-                }
-               // registerGuiderAccount();
-            } else {
-                String msg = jsonObject.getString("msg");
-                ToastUtil.showToast(this,"breace:"+msg);
-                return;
+                        // registerGuiderAccount();
+                    } else {
+                        String msg = jsonObject.getString("msg");
+                        ToastUtil.showToast(this, "breace:" + msg);
+                        return;
 //                if (msg.equals("用户已被注册") && jsonObject.getInt("code") == 5000) {
 //                    msg = "用户已注册,请您直接登录即可";
 //                    registerGuiderAccount();
@@ -502,51 +522,52 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
 //                    ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_fail));
 //                    hideLoadingDialog();
 //                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            hideLoadingDialog();
-        }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (requestPressent != null)
-            requestPressent.detach();
-        if (subscribe != null && subscribe.isUnsubscribed()) {
-            subscribe.unsubscribe();
-        }
-    }
-
-
-    private void analysisRegiInfo(String str) {
-        try {
-            JSONObject jsonObject = new JSONObject(str.toString());
-            if (!jsonObject.has("resultCode"))
-                ToastUtil.showToast(RegisterActivity2.this, str);
-            if (jsonObject.getString("resultCode").equals("001")) {
-                BlueUser userInfo = new Gson().fromJson(
-                        jsonObject.getString("userInfo"), BlueUser.class);
-                Common.userInfo = userInfo;
-                Common.customer_id = userInfo.getUserId();
-
-                SharedPreferencesUtils.setParam(RegisterActivity2.this,
-                        SharedPreferencesUtils.CUSTOMER_ID, Common.customer_id);
-                startActivity(new Intent(RegisterActivity2.this,
-                        PersonDataActivity.class));
-                finish();
-            } else {
-                WatchUtils.verServerCode(RegisterActivity2.this,
-                        jsonObject.getString("resultCode"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    hideLoadingDialog();
+                }
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-    }
+            @Override
+            protected void onDestroy() {
+                super.onDestroy();
+                if (requestPressent != null)
+                    requestPressent.detach();
+                if (subscribe != null && subscribe.isUnsubscribed()) {
+                    subscribe.unsubscribe();
+                }
+            }
+
+
+            private void analysisRegiInfo(String str) {
+                try {
+                    JSONObject jsonObject = new JSONObject(str.toString());
+                    if (!jsonObject.has("resultCode"))
+                        ToastUtil.showToast(RegisterActivity2.this, str);
+                    if (jsonObject.getString("resultCode").equals("001")) {
+                        BlueUser userInfo = new Gson().fromJson(
+                                jsonObject.getString("userInfo"), BlueUser.class);
+                        Common.userInfo = userInfo;
+                        Common.customer_id = userInfo.getUserId();
+
+                        SharedPreferencesUtils.setParam(RegisterActivity2.this,
+                                SharedPreferencesUtils.CUSTOMER_ID, Common.customer_id);
+                        startActivity(new Intent(RegisterActivity2.this,
+                                PersonDataActivity.class));
+                        finish();
+                    } else {
+                        WatchUtils.verServerCode(RegisterActivity2.this,
+                                jsonObject.getString("resultCode"));
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
 
 
 }
