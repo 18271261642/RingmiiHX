@@ -51,6 +51,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -216,13 +217,15 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                     if (WatchUtils.isEmpty(phoneStr)
                             || WatchUtils.isEmpty(phonePwd))
                         return;
-                    registerForNoCode(phoneStr);
+                    registerGuiderAccount();
+                    //registerForNoCode(phoneStr);
                 } else {
                     if (WatchUtils.isEmpty(phoneStr)
                             || WatchUtils.isEmpty(phoneCode)
                             || WatchUtils.isEmpty(phonePwd))
                         return;
-                    registerRemote(phoneStr, phoneCode);
+                    registerGuiderAccount();
+//                    registerRemote(phoneStr, phoneCode);
                 }
                 break;
         }
@@ -353,7 +356,10 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                                     SharedPreferencesUtils.setParam(MyApp.getInstance(),
                                             "tokenGD", token);
                                     Log.e("登录的userId", accountId + "");
-                                    backupPassword(Integer.parseInt(String.valueOf(accountId)));
+//                                    backupPassword(Integer.parseInt(String.valueOf(accountId)));
+
+                                    logintoBeraceAccount(phoneStr);
+
                                     ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_ok));
                                 } else {
                                     hideLoadingDialog();
@@ -363,6 +369,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                                 hideLoadingDialog();
                             }
                         } else {
+                            closeLoadingDialog();
                             ToastUtil.showToast(mContext, jsonObject.getString("msg"));
                         }
                     } catch (Exception e) {
@@ -371,6 +378,25 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                     }
                 }
             }, false);
+        }
+
+    }
+
+    //直接登录到手环后台
+    private void logintoBeraceAccount(String phoneStr) {
+        try {
+            Map<String,Object> maps = new HashMap<>();
+            maps.put("phone",phoneStr);
+            maps.put("code","110");
+            maps.put("loginType","1");
+            String jsonMap = new Gson().toJson(maps);
+            if (requestPressent != null) {
+                requestPressent.getRequestJSONObject(0x02,
+                        Commont.FRIEND_BASE_URL + "/user/submitLogin",
+                        RegisterActivity2.this, jsonMap, 1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
@@ -443,6 +469,7 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
 
     //提交注册返回
     private void analysisRegiData(JSONObject jsonObject) {
+        closeLoadingDialog();
         try {
             if (!jsonObject.has("code")) {
                 hideLoadingDialog();
@@ -456,18 +483,25 @@ public class RegisterActivity2 extends WatchBaseActivity implements RequestView,
                     SharedPreferencesUtils.saveObject(
                             RegisterActivity2.this,
                             Commont.USER_ID_DATA, userInfoBean.getUserid());
+
+                    startActivity(new Intent(RegisterActivity2.this,
+                            PersonDataActivity.class));
+                    finish();
+
                 }
-                registerGuiderAccount();
+               // registerGuiderAccount();
             } else {
                 String msg = jsonObject.getString("msg");
-                if (msg.equals("用户已被注册") && jsonObject.getInt("code") == 5000) {
-                    msg = "用户已注册,请您直接登录即可";
-                    registerGuiderAccount();
-                    // tvTitle.postDelayed(this::finish, 1000);
-                } else {
-                    ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_fail));
-                    hideLoadingDialog();
-                }
+                ToastUtil.showToast(this,"breace:"+msg);
+                return;
+//                if (msg.equals("用户已被注册") && jsonObject.getInt("code") == 5000) {
+//                    msg = "用户已注册,请您直接登录即可";
+//                    registerGuiderAccount();
+//                    // tvTitle.postDelayed(this::finish, 1000);
+//                } else {
+//                    ToastUtil.showToast(RegisterActivity2.this, getString(R.string.regsiter_fail));
+//                    hideLoadingDialog();
+//                }
             }
         } catch (Exception e) {
             e.printStackTrace();

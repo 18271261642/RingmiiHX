@@ -446,6 +446,21 @@ public class LoginActivity extends WatchBaseActivity
     protected void onResume() {
         super.onResume();
     }
+    
+    
+    //宝睿思登录改为一检登录，只需要一个手机号码即可登录
+    private void onceLogin(String uName){
+        Map<String,Object> maps = new HashMap<>();
+        maps.put("phone",uName);
+        maps.put("code","110");
+        maps.put("loginType","1");
+        String jsonMap = new Gson().toJson(maps);
+        if (requestPressent != null) {
+            requestPressent.getRequestJSONObject(0x01,
+                    Commont.FRIEND_BASE_URL + "/user/submitLogin",
+                    LoginActivity.this, jsonMap, 1);
+        }
+    }
 
 
     //用户手机登录
@@ -473,36 +488,42 @@ public class LoginActivity extends WatchBaseActivity
         Log.e(TAG, "-------手机号登录的url=" + loginUrl);
         OkHttpTool.getInstance().doRequest(loginUrl, null, "1", result -> {
             Log.e(TAG, "-------手机号登录到盖德=" + result);
+
             try {
+                JSONObject jsonObject = new JSONObject(result);
                 if (WatchUtils.isNetRequestSuccess(result, 0)) {
-                    JSONObject jsonObject = new JSONObject(result);
                     if (jsonObject.has("data")) {
                         JSONObject dataJsonObject = jsonObject.getJSONObject("data");
                         long accountId = dataJsonObject.getLong("accountId");
                         SharedPreferencesUtils.setParam(MyApp.getInstance(), "accountIdGD", accountId);
                         String token = dataJsonObject.getString("token");
                         SharedPreferencesUtils.setParam(MyApp.getInstance(), "tokenGD", token);
+
+                        onceLogin(uName);
+
                         //处理备份密码的过程
-                        if (dataJsonObject.has("bandPwd")) {
-                            String otherBindPwd = dataJsonObject.getString("bandPwd");
-                            if (!StringUtil.isEmpty(otherBindPwd)) {
-                                bandPwd = otherBindPwd;
-                                loginRemote(uName, bandPwd);
-                            } else {
-                                String passEditValue = password.getText().toString();
-                                bandPwd = "";
-                                loginRemote(uName, Md5Util.Md532(passEditValue));
-                            }
-                        } else {
-                            String passEditValue = password.getText().toString();
-                            bandPwd = "";
-                            loginRemote(uName, Md5Util.Md532(passEditValue));
-                        }
+//                        if (dataJsonObject.has("bandPwd")) {
+//                            String otherBindPwd = dataJsonObject.getString("bandPwd");
+//                            if (!StringUtil.isEmpty(otherBindPwd)) {
+//                                bandPwd = otherBindPwd;
+//                               // loginRemote(uName, bandPwd);
+//                            } else {
+//                                String passEditValue = password.getText().toString();
+//                                bandPwd = "";
+//                                //loginRemote(uName, Md5Util.Md532(passEditValue));
+//                            }
+//                        } else {
+//                            String passEditValue = password.getText().toString();
+//                            bandPwd = "";
+//                            //loginRemote(uName, Md5Util.Md532(passEditValue));
+//                        }
                     } else hideLoadingDialog();
                 } else {
+                    closeLoadingDialog();
+                    ToastUtil.showToast(this,jsonObject.getString("msg"));
                     String passEditValue = password.getText().toString();
                     bandPwd = "changPassword";
-                    loginRemote(uName, Md5Util.Md532(passEditValue));
+//                    loginRemote(uName, Md5Util.Md532(passEditValue));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -532,90 +553,10 @@ public class LoginActivity extends WatchBaseActivity
     }
 
 
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-
-        public void handleMessage(Message msg) {
-            if (msg.what == 1) {
-                //上传到服务器
-                try {
-                    //判断网络是否连接
-//                    Boolean is=   ConnectManages.isNetworkAvailable(LoginActivity.this);
-//                    if(is==true) {
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    try {
-                        jsonObject = new JSONObject();
-                        jsonObject.put("thirdId", userInfo.getUid());
-                        jsonObject.put("thirdType", 4);//微博
-                        jsonObject.put("image", userInfo.getAvatarHd());//头像地址
-                        if (userInfo.getSEX().equals("m")) {
-                            jsonObject.put("sex", "M");
-                        } else {
-                            jsonObject.put("sex", "F");
-                        }//性别
-                        jsonObject.put("nickName", userInfo.getName()); //姓名
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(Request.Method.POST, URLs.HTTPs + URLs.disanfang, jsonObject,
-                            response -> {
-//                                    Log.e(TAG, "--------微博登录返回-=" + response.toString());
-//                                    Log.d("eeeee", response.toString());
-                                String shuzhu = response.optString("userInfo");
-                                if (response.optString("resultCode").equals("001")) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(shuzhu);
-                                        String userId = jsonObject.getString("userId");
-                                        Gson gson = new Gson();
-                                        BlueUser userInfo = gson.fromJson(shuzhu, BlueUser.class);
-                                        Common.userInfo = userInfo;
-                                        Common.customer_id = userId;
-                                        //保存userid
-                                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userId", userInfo.getUserId());
-                                        SharedPreferencesUtils.saveObject(LoginActivity.this, "userInfo", userInfo);
-                                        //startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                        startActivity(new Intent(LoginActivity.this, NewSearchActivity.class));
-                                        SharedPreferences userSettings = getSharedPreferences("Login_id", 0);
-                                        SharedPreferences.Editor editor = userSettings.edit();
-                                        editor.putInt("id", 1);
-                                        editor.apply();
-
-                                        finish();
-                                    } catch (Exception E) {
-                                        E.printStackTrace();
-                                    }
-                                }
-                            }, error -> {
-                        //                            Log.e("LoginActivity", "---sina--error--" + error.getMessage());
-                        Toast.makeText(LoginActivity.this, R.string.wangluo, Toast.LENGTH_SHORT).show();
-                    }) {
-                        @Override
-                        public Map<String, String> getHeaders() {
-                            HashMap<String, String> headers = new HashMap<>();
-                            headers.put("Accept", "application/json");
-                            headers.put("Content-Type", "application/json; charset=UTF-8");
-                            return headers;
-                        }
-                    };
-                    requestQueue.add(jsonRequest);
-                    //}
-//                    else{
-//                        Toast.makeText(LoginActivity.this,R.string.wangluo,Toast.LENGTH_SHORT).show();}
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
-            handler.removeCallbacksAndMessages(null);
-        } catch (Exception E) {
-            E.printStackTrace();
-        }
         loginWaveView.stopMove();
     }
 
@@ -658,7 +599,8 @@ public class LoginActivity extends WatchBaseActivity
             return;
         }
         if (what == 0x01) {  //手机号登录
-            loginForUserPhone(object.toString(), daystag);
+            loginToBerace(object.toString(),daystag);
+//            loginForUserPhone(object.toString(), daystag);
         } else if (mWXEntryActivityAdapter != null) { // 兼容老的微信登陆绑定手机号代码，暂时
             hideLoadingDialog();
             mWXEntryActivityAdapter.successData(what, object, daystag);
@@ -675,6 +617,41 @@ public class LoginActivity extends WatchBaseActivity
     public void closeLoadDialog(int what) {
 
     }
+
+    //登录到手环方，只需要手机号
+    private void loginToBerace(String result,int tag){
+        closeLoadingDialog();
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (!jsonObject.has("code"))
+                return;
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                String userStr = jsonObject.getString("data");
+                if (!StringUtil.isEmpty(userStr)) {
+                    UserInfoBean userInfoBean = new Gson().fromJson(userStr, UserInfoBean.class);
+                    Common.customer_id = userInfoBean.getUserid();
+                    // 保存userid
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            Commont.USER_ID_DATA, userInfoBean.getUserid());
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            "userInfo", userStr);
+                    SharedPreferencesUtils.saveObject(LoginActivity.this,
+                            Commont.USER_INFO_DATA, userStr);
+                    startActivity(NewSearchActivity.class);
+                    finish();
+                }
+            }else{
+                ToastUtil.showToast(this,"berace:"+jsonObject.getString("msg"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 
     // 手环方用户输入账号登录
     private void loginForUserPhone(String result, int tag) {

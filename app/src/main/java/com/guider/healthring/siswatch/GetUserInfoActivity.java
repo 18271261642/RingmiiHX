@@ -10,7 +10,6 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.util.URLs;
 import com.guider.healthring.w30s.utils.httputils.RequestPressent;
 import com.guider.healthring.w30s.utils.httputils.RequestView;
-
 import org.json.JSONObject;
 
 /**

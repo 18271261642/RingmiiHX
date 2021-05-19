@@ -196,7 +196,7 @@ public class WatchBaseActivity extends AppCompatActivity {
 
     //关闭进度条
     public void closeLoadingDialog() {
-        if (dialog != null) {
+        if (dialog != null ) {
             dialog.dismiss();
         }
     }

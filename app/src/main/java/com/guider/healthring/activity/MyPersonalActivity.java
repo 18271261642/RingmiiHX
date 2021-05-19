@@ -230,7 +230,7 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
         requestPressent.attach(this);
 
         //获取用户数据
-        getUserInfoData();
+//        getUserInfoData();
 
         getGadiDeUserInfoData();
     }
@@ -987,17 +987,22 @@ public class MyPersonalActivity extends WatchBaseActivity implements RequestView
 
     //完善用户资料
     private void modifyPersonData(String val) {
-        isSubmit = true;
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("userId", SharedPreferencesUtils.readObject(
-                MyPersonalActivity.this, Commont.USER_ID_DATA));
-        map.put(flag, val);
-        String mapjson = gson.toJson(map);
+        try {
+            isSubmit = true;
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("userId", SharedPreferencesUtils.readObject(
+                    MyPersonalActivity.this, Commont.USER_ID_DATA));
+            map.put(flag, val);
+            String mapjson = gson.toJson(map);
 //        Log.e(TAG, "-----mapJson=" + mapjson);
-        dialogSubscriber = new DialogSubscriber(subscriberOnNextListener,
-                MyPersonalActivity.this);
-        OkHttpObservable.getInstance().getData(dialogSubscriber,
-                URLs.HTTPs + URLs.yonghuziliao, mapjson);
+            dialogSubscriber = new DialogSubscriber(subscriberOnNextListener,
+                    MyPersonalActivity.this);
+            OkHttpObservable.getInstance().getData(dialogSubscriber,
+                    URLs.HTTPs + URLs.yonghuziliao, mapjson);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
         /***
