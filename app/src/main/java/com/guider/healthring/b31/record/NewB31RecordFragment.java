@@ -1087,6 +1087,12 @@ public class NewB31RecordFragment extends LazyFragment
             String tmpDate = deviceVersion == 0 ? WatchUtils.obtainAroundDate(date, true) : date;
             String type =  deviceVersion == 0 ? B30HalfHourDao.TYPE_SLEEP : B30HalfHourDao.TYPE_PRECISION_SLEEP;
             String sleep = B30HalfHourDao.getInstance().findOriginData(mac, tmpDate, type);
+            if(sleep ==null){
+                b30CusSleepView.setSeekBarShow(false);
+                b30CusSleepView.setPrecisionSleep(deviceVersion != 0);
+                b30CusSleepView.setSleepList(new ArrayList<>());
+                return;
+            }
             CusVPSleepData cusVPSleepData = JsonUtil.fromStr(sleep, CusVPSleepData.class);
             Log.d("-------睡眠数据: ", tmpDate + "," + type + "," + JsonUtil.toStr(cusVPSleepData));
             Message message = handler.obtainMessage();
@@ -1660,15 +1666,16 @@ public class NewB31RecordFragment extends LazyFragment
 
     //开始上传本地缓存的数据，汇总数据和详细数据
     private void startUploadDbService() {
-        try {
-            String userId = (String) SharedPreferencesUtils.readObject(getmContext(),Commont.USER_ID_DATA);
-            if(userId != null && userId.equals("9278cc399ab147d0ad3ef164ca156bf0"))
-                return;
-            // 开始上传本地缓存的数据
-            CommDBManager.getCommDBManager().startUploadDbService(getmContext());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+//            String userId = (String) SharedPreferencesUtils.readObject(getmContext(),Commont.USER_ID_DATA);
+//            Log.e(TAG,"----useId="+userId);
+//            if(userId != null && userId.equals("9278cc399ab147d0ad3ef164ca156bf0"))
+//                return;
+//            // 开始上传本地缓存的数据
+//            CommDBManager.getCommDBManager().startUploadDbService(getmContext());
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -1696,7 +1703,7 @@ public class NewB31RecordFragment extends LazyFragment
                 if (deviceVersion == 0) {
                     B30SleepDetailActivity.startAndParams(getmContext(), WatchUtils.obtainAroundDate(dayStr, true));
                 } else {
-                    B31sPrecisionSleepActivity.startAndParams(getmContext(), WatchUtils.getCurrentDate());
+                    B31sPrecisionSleepActivity.startAndParams(getmContext(), dayStr);
                 }
                 break;
             case R.id.heartCardView:   //心率图表的点击

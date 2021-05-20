@@ -74,7 +74,7 @@ public class CommDBManager {
                 commStepCountDb.setDateStr(dataStr);
                 commStepCountDb.setDevicecode(bleMac);
                 commStepCountDb.setBleName(bleName);
-                commStepCountDb.setUpload(lt.isUpload());
+                commStepCountDb.setUpload(false);
                 //有就修改没有就保存
                 boolean isSave = commStepCountDb.saveOrUpdate(stepWhereStr, userId, bleMac, dataStr);
             }
@@ -149,12 +149,13 @@ public class CommDBManager {
     public List<CommStepCountDb> findCountStepForUpload(String bMac, String startDay, String endDay) {
         try {
             Log.e(TAG, "------start=" + startDay + "--end=" + endDay);
-            String where = "userid = ? and devicecode = ? and dateStr  between ? and ?";
+            String where = "userid = ? and devicecode = ?  and dateStr  between ? and ?";
+            boolean isUpload = false;
             if (WatchUtils.isEmpty(userId)
                     || WatchUtils.isEmpty(bMac)
                     || WatchUtils.isEmpty(startDay)
                     || WatchUtils.isEmpty(endDay))return null;
-            List<CommStepCountDb> commStepCountDbList = LitePal.where(where, userId, bMac, startDay, endDay).find(CommStepCountDb.class);
+            List<CommStepCountDb> commStepCountDbList = LitePal.where(where, userId, bMac,startDay, endDay).find(CommStepCountDb.class);
             return (commStepCountDbList == null || commStepCountDbList.isEmpty()) ? null : commStepCountDbList;
         }catch (Exception e){
             e.printStackTrace();
