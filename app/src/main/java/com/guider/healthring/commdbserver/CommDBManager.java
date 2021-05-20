@@ -341,9 +341,9 @@ public class CommDBManager {
      */
     public List<CommSleepDb> findCommSleepForUpload(String bMac, String startDay, String endDay) {
         try {
-            Log.e(TAG, "-------satrtDay=" + startDay + "--endDay=" + endDay);
-            String where = "devicecode = ? and dateStr  between ? and ?";
-            List<CommSleepDb> commSleepDbList = LitePal.where("userid = ? and devicecode = ? and dateStr between ? and ?", userId, bMac, startDay, endDay).find(CommSleepDb.class);
+            Log.e(TAG, "-------satrtDay=" + startDay + "--endDay=" + endDay+bMac);
+            String where = "devicecode = ?  and dateStr  between ? and ?";
+            List<CommSleepDb> commSleepDbList = LitePal.where(where,  bMac, startDay, endDay).find(CommSleepDb.class);
 
             return commSleepDbList == null || commSleepDbList.isEmpty() ? null : commSleepDbList;
         }catch (Exception e){

@@ -13,7 +13,9 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.guider.healthring.R;
+import com.guider.libbase.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ public class B30BloadDataView extends View {
     //高度
     private int height;
     //宽度
-    private int width;
+    private float width;
 
     //当前点的宽度
     private float mCurrentWidth;
@@ -174,31 +176,6 @@ public class B30BloadDataView extends View {
 
     }
 
-//
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        int height = measureSize(300, heightMeasureSpec);
-//        int width = measureSize(600, widthMeasureSpec);
-//        setMeasuredDimension(width, height);
-//
-//        this.height = height;
-//        this.width = width;
-//    }
-//
-//    private int measureSize(int defaultSize, int measureSpec) {
-//        int result = defaultSize;
-//        int specMode = View.MeasureSpec.getMode(measureSpec);
-//        int specSize = View.MeasureSpec.getSize(measureSpec);
-//
-//        if (specMode == View.MeasureSpec.EXACTLY) {
-//            result = specSize;
-//        } else if (specMode == View.MeasureSpec.AT_MOST) {
-//            result = Math.min(result, specSize);
-//        }
-//        return result;
-//    }
-
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -224,12 +201,7 @@ public class B30BloadDataView extends View {
         super.onDraw(canvas);
         canvas.translate(0, getHeight());
         canvas.save();
-        //Log.e(TAG, "-----onDraw----");
-        //绘制横线
-        //drawHorizonLin(canvas);
-        //绘制坐标
-        // drawScale(canvas);
-        //绘制日期
+
         drawTimeLin(canvas);
         //绘制点
         drawListPoints(canvas);
@@ -314,8 +286,10 @@ public class B30BloadDataView extends View {
         Path path = new Path();
         if (mapList != null && mapList.size() > 0) {
             for (int i = 0; i < mapList.size(); i++) {
-//            for (int i = 0; i < mapList.size(); i++) {
+                Log.e(TAG,"------mapList="+new Gson().toJson(mapList.get(i)));
                 SparseIntArray intArray = mapList.get(i);
+                if(intArray ==null )
+                    return;
 //                float xPoint = i * getWidth() / mapList.size() + start;
                 float xPoint = start + start * i - mCirRadio;
 //                float xPoint = start * i - mCirRadio / 2;
@@ -370,7 +344,13 @@ public class B30BloadDataView extends View {
             for (int i = 0; i < timeList.size(); i++) {
                 canvas.drawText(timeList.get(i), i * getWidth() / timeList.size() + 20, -15, timePaint);//Y -15 解决底部日期靠底部
             }
-        } else if (timeList.size() <= 30 && timeList.size() > 8) {
+        } else if(timeList.size() == 12){
+            float mCurrWidth = width / 12;
+            for(int i = 0;i<timeList.size();i+=2){
+                canvas.drawText(timeList.get(i),i * mCurrWidth,-20,timePaint);
+            }
+        }
+        else if (timeList.size() <= 30 && timeList.size() > 8) {
             for (int i = 0; i < timeList.size(); i++) {
                 if (i / 5 == 0) {
                     canvas.drawText(timeList.get(i), i * getWidth() * 5 / timeList.size(), -20, timePaint);

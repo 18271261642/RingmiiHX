@@ -754,7 +754,7 @@ public class NewB31RecordFragment extends LazyFragment
                 //   getBleMsgData();
                 if (b31HomeSwipeRefreshLayout != null) b31HomeSwipeRefreshLayout.autoRefresh();
             } else {  //不是搜索进来的
-                if (diffTime > 10) {// 大于十分钟没更新再取数据
+                if (diffTime > 30) {// 大于十分钟没更新再取数据
                     //getBleMsgData();
                     if (b31HomeSwipeRefreshLayout != null)
                         b31HomeSwipeRefreshLayout.autoRefresh();

@@ -16,6 +16,7 @@ import com.guider.healthring.R;
 import com.guider.healthring.bleutil.MyCommandManager;
 import com.guider.healthring.commdbserver.CommDBManager;
 import com.guider.healthring.commdbserver.CommDownloadDb;
+import com.guider.healthring.commdbserver.CommSleepDb;
 import com.guider.healthring.commdbserver.CommStepCountDb;
 import com.guider.healthring.commdbserver.SyncDbUrls;
 import com.guider.healthring.siswatch.utils.WatchUtils;
@@ -138,73 +139,24 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
 
     //查询所有需要上传的数据
     private void findAllUploadData() {
-        //先查询下步数数据
-        final List<CommStepCountDb> uploadStepList = CommDBManager.getCommDBManager().findCountStepForUpload(MyApp.getApplication().getMacAddress(), "2019-11-17", WatchUtils.getCurrentDate());
-        if (uploadStepList == null || uploadStepList.isEmpty()) {
-            // downloadDb();
-            return;
-        }
 
-
-        //用户的身高
-        String userHeight = (String) SharedPreferencesUtils.getParam(this, Commont.USER_HEIGHT, "170");
-        if (WatchUtils.isEmpty(userHeight))
-            userHeight = "170";
-        int uHeight = Integer.valueOf(userHeight.trim());
-        //目标步数
-        int goalStep = (int) SharedPreferencesUtils.getParam(this, "b30Goal", 8000);
-        List<Map<String, String>> parmListMap = new ArrayList<>();
-        for (CommStepCountDb countDb : uploadStepList) {
-            //计算里程
-            String dis = WatchUtils.getDistants(countDb.getStepnumber(), uHeight) + "";
-            //卡路里
-            String kcal = WatchUtils.getKcal(countDb.getStepnumber(), uHeight) + "";
-            //Log.e(TAG, "--------查询需要上传的步数=" + countDb.toString());
-
-            if (countDb.getDateStr().equals(WatchUtils.getCurrentDate()) || countDb.getDateStr().equals(WatchUtils.obtainFormatDate(1))) {
-                Map<String, String> mp = new HashMap<>();
-                mp.put("userid", countDb.getUserid());
-                mp.put("stepnumber", countDb.getStepnumber() + "");
-                mp.put("date", countDb.getDateStr());
-                mp.put("devicecode", countDb.getDevicecode());
-                mp.put("count", countDb.getCount() + "");
-                mp.put("distance", dis);
-                mp.put("calorie", kcal);
-                mp.put("reach", (goalStep <= countDb.getStepnumber() ? 1 : 0) + "");
-                parmListMap.add(mp);
-
-            }
-
-        }
-        if (parmListMap.isEmpty()) {
-            return;
-        }
-
-        String stepUloadUrl = SyncDbUrls.uploadCountStepUrl();
-        String stepParmas = new Gson().toJson(parmListMap);
-        //Log.e(TAG, "--------步数---参数=" + stepParmas);
-
-        OkHttpTool.getInstance().doRequest(stepUloadUrl, stepParmas, "step", new OkHttpTool.HttpResult() {
-            @Override
-            public void onResult(String result) {
-                Log.e(TAG, "----------步数上传result=" + result);
-                if (WatchUtils.isEmpty(result))
-                    return;
-//                if (WatchUtils.isNetRequestSuccess(result))
-//                    updateUploadCountSteps(uploadStepList);
-
-            }
-        });
-
+        CommDBManager.getCommDBManager().saveCommSleepDbData("B31", WatchUtils.getSherpBleMac(MyApp.getContext()), WatchUtils.getCurrentDate(),
+                100, 200, 300, 400,
+                "2021-05-19 23:50", "2021-05-20 07:50",
+                1);
 
     }
 
     private void findHeartData() {
        // CommDBManager.getCommDBManager().startUploadDbService(InternalTestActivity.this);
         //查询血压
-        List<CommDownloadDb> bloodDb = CommDBManager.getCommDBManager().findCommDownloadDb(MyApp.getInstance().getMacAddress(),
-                CommDBManager.COMM_TYPE_BLOOD, "2021-05-13", WatchUtils.getCurrentDate());
-        Log.e(TAG,"----blooddb="+(bloodDb == null));
+        List<CommSleepDb> bloodDb = CommDBManager.getCommDBManager().findCommSleepForUpload(MyApp.getInstance().getMacAddress(),
+               "2021-05-10",WatchUtils.getCurrentDate());
+        Log.e(TAG,"----blooddb="+(bloodDb == null)+new Gson().toJson(bloodDb));
+
+        List<CommSleepDb> cb = CommDBManager.getCommDBManager().findCommSleepForUpload(MyApp.getInstance().getMacAddress(),WatchUtils.getCurrentDate());
+
+        Log.e(TAG,"-----cb="+new Gson().toJson(cb));
     }
 
     @Override

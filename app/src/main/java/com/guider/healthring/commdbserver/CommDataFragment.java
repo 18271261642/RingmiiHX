@@ -118,9 +118,9 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
     String filtPath = Environment.getExternalStorageDirectory() + "/DCIM/";
 
-    private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
-    private SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd",Locale.CHINA);
-    private SimpleDateFormat sdf3 = new SimpleDateFormat("yy/MM",Locale.CHINA); //yy/MM格式
+    private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+    private SimpleDateFormat sdf2 = new SimpleDateFormat("MM/dd", Locale.CHINA);
+    private SimpleDateFormat sdf3 = new SimpleDateFormat("yy/MM", Locale.CHINA); //yy/MM格式
     private int SectectCode = 7;
 
     @SuppressLint("HandlerLeak")
@@ -143,8 +143,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                     break;
                 case 0x04:  //血压
                     if (getActivity() != null && !getActivity().isFinishing()) {
-//                        Log.e(TAG, "bloodList " + bloodList.toString());
-//                        Log.e(TAG, "bloodDateList " + bloodDateList.toString());
                         charBloadView.updateView(bloodList, bloodDateList);
                         charBloadView.setScal(false);
                     }
@@ -197,7 +195,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         commentB30BackImg.setVisibility(View.VISIBLE);
         commentB30TitleTv.setText(getResources().getString(R.string.data));
         String bleName = WatchUtils.getSherpBleName(getActivity());
-        Log.e(TAG, "-------bleName=" + bleName);
         b30BloadChartLin.setVisibility(View.VISIBLE);
 
     }
@@ -246,78 +243,47 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                 startDay = WatchUtils.obtainFormatDate(6);
                 break;
         }
-
-//        Log.e(TAG, "------startDay=" + startDay + "--endDay=" + endDay);
-
-
         String bleMac = WatchUtils.getSherpBleMac(getContext());
-        if(WatchUtils.isEmpty(bleMac)){
-            //showHeartChartView(new ArrayList<>(),new ArrayList<>());
-            showSleepChart(new ArrayList<>(),new ArrayList<>());
+        if (WatchUtils.isEmpty(bleMac)) {
+            showSleepChart(new ArrayList<>(), new ArrayList<>());
             charBloadView.updateView(new ArrayList<>(), new ArrayList<>());
             charBloadView.setScal(false);
             return;
         }
 
-            Log.e(TAG, "----startDay=" + startDay + "--=endDay=" + endDay+"-=bleMac="+bleMac);
-
-            //步数的集合
-//            List<CommDownloadDb> stepCountDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
-//                    CommDBManager.COMM_TYPE_STEP, startDay, endDay);
-
+        Log.e(TAG, "----startDay=" + startDay + "--=endDay=" + endDay + "-=bleMac=" + bleMac);
         List<CommStepCountDb> uploadStepList = CommDBManager.getCommDBManager().findCountStepForUpload(bleMac, startDay, endDay);
-//            Log.e(TAG,"------计步查询="+gson.toJson(uploadStepList));
-//
-//           Log.e(TAG,"----步数集合="+(stepCountDb == null));
-
-//            new GetJsonDataUtil().writeTxtToFile("step" + code + "=" + gson.toJson(stepCountDb), filtPath, "step.json");
-            if (uploadStepList != null && !uploadStepList.isEmpty()) {
-                analysisStepData(uploadStepList, code);
-            }else{
-                showStepsChat(new ArrayList<>(),new ArrayList<>());
-            }
-
-//            //心率
-//            List<CommDownloadDb> heartDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
-//                    CommDBManager.COMM_TYPE_HEART, startDay, endDay);
-
+        if (uploadStepList != null && !uploadStepList.isEmpty()) {
+            analysisStepData(uploadStepList, code);
+        } else {
+            showStepsChat(new ArrayList<>(), new ArrayList<>());
+        }
 
         List<CommHeartDb> commHeartDbList = CommDBManager.getCommDBManager().findCommHeartForUpload(bleMac, startDay,
                 endDay);
-//            new GetJsonDataUtil().writeTxtToFile("heart" + code + "=" + gson.toJson(heartDb), filtPath, "heart.json");
-            if (commHeartDbList != null && !commHeartDbList.isEmpty()) {
-                analysisHeartData(commHeartDbList, code);
-            }else{
-                showHeartChart(new ArrayList<>(),new ArrayList<>());
-            }
 
+        if (commHeartDbList != null && !commHeartDbList.isEmpty()) {
+            analysisHeartData(commHeartDbList, code);
+        } else {
+            showHeartChart(new ArrayList<>(), new ArrayList<>());
+        }
 
-            //睡眠
-//            List<CommDownloadDb> sleepDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
-//                    CommDBManager.COMM_TYPE_SLEEP, startDay, endDay);
         List<CommSleepDb> commSleepDbList = CommDBManager.getCommDBManager().findCommSleepForUpload(bleMac, startDay, endDay);
 
 
-            if (commSleepDbList != null && !commSleepDbList.isEmpty()) {
-                analysisSleepData(commSleepDbList, code);
-            }else{
-                showSleepChart(new ArrayList<>(),new ArrayList<>());
-            }
-
-
-            //查询血压
-//            List<CommDownloadDb> bloodDb = CommDBManager.getCommDBManager().findCommDownloadDb(bleMac,
-//                    CommDBManager.COMM_TYPE_BLOOD, startDay, endDay);
+        if (commSleepDbList != null && !commSleepDbList.isEmpty()) {
+            analysisSleepData(commSleepDbList, code);
+        } else {
+            showSleepChart(new ArrayList<>(), new ArrayList<>());
+        }
 
         List<CommBloodDb> bloodDbList = CommDBManager.getCommDBManager().findCommBloodForUpload(bleMac, startDay, endDay);
-
-            Log.e(TAG,"----血压数据="+gson.toJson(bloodDbList));
-            if (bloodDbList != null && !bloodDbList.isEmpty()) {
-                analysisBloodData(bloodDbList, code);
-            }else{
-                charBloadView.updateView(new ArrayList<>(), new ArrayList<>());
-                charBloadView.setScal(false);
-            }
+        if (bloodDbList != null && !bloodDbList.isEmpty()) {
+            analysisBloodData(bloodDbList, code);
+        } else {
+            charBloadView.updateView(new ArrayList<>(), new ArrayList<>());
+            charBloadView.setScal(false);
+        }
 
     }
 
@@ -337,7 +303,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                         String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
                         for (int i = 0; i < 12; i++) {
                             SparseIntArray sparseIntArray = new SparseIntArray();
-                            sparseIntArray.append(0,0);
+                            sparseIntArray.append(0, 0);
                             tmpYearMap.put(currMonthStr, sparseIntArray);
                             currMonthStr = getLastMonth(currMonthStr);
                         }
@@ -367,8 +333,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                             }
                         });
 
-                        for (int i = 0; i < heartXList.size(); i++) {
-                            bloodList.add(tmpYearMap.get(heartXList.get(i)));
+                        for (int i = 0; i < bloodDateList.size(); i++) {
+                            bloodList.add(tmpYearMap.get(bloodDateList.get(i)));
                         }
                         handler.sendEmptyMessage(0x04);
                         return;
@@ -385,7 +351,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
                     for (CommBloodDb cb : bloodDb) {
                         SparseIntArray sparseIntArray = new SparseIntArray();
-                        sparseIntArray.append(cb.getAvgdiastolic(), cb.getAvgdiastolic());
+                        sparseIntArray.append(cb.getAvgdiastolic(), cb.getAvgsystolic());
 
                         bloodMap.put(cb.getRtc(), sparseIntArray);
                     }
@@ -394,7 +360,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                         String dayStr = mp.getKey();
                         SparseIntArray bpArray = mp.getValue();
                         String tmpDbStr = dayFormat(dayStr);
-                        Log.e(TAG, "------dayStr=" + tmpDbStr);
                         bloodList.add(bpArray);
                         bloodDateList.add(tmpDbStr);
                     }
@@ -407,51 +372,75 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                     handler.sendEmptyMessage(0x04);
                 }
             }).start();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //计算睡眠
     private void analysisSleepData(final List<CommSleepDb> sleepDb, final int code) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sleepVlaues.clear();
-                sleepXList.clear();
-                //排序，
-                Collections.sort(sleepDb, new Comparator<CommSleepDb>() {
-                    @Override
-                    public int compare(CommSleepDb o1, CommSleepDb o2) {
-                        return o1.getDateStr().compareTo(o2.getDateStr());
-                    }
-                });
-
-                Map<String, Integer> sleepMap = new HashMap<>();
-                String currDay = WatchUtils.getCurrentDate();
-                if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
-                    Map<String, Integer> tmpYearMap = new HashMap<>();
-                    String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
-                    for (int i = 0; i < 12; i++) {
-                        tmpYearMap.put(currMonthStr, 0);
-                        currMonthStr = getLastMonth(currMonthStr);
-                    }
-                    for (CommSleepDb cb : sleepDb) {
-                        String dbStr = cb.getDateStr();
-                        int stepNumber = cb.getSleeplen();
-                        String tmpDbStr = dayFormat2(dbStr);
-
-                        if (tmpYearMap.get(tmpDbStr) != null) {
-                            tmpYearMap.put(tmpDbStr, stepNumber + tmpYearMap.get(tmpDbStr));
-                        } else {
-                            tmpYearMap.put(tmpDbStr, stepNumber);
+        try {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    sleepVlaues.clear();
+                    sleepXList.clear();
+                    //排序，
+                    Map<String, Integer> sleepMap = new HashMap<>();
+                    String currDay = WatchUtils.getCurrentDate();
+                    if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
+                        Map<String, Integer> tmpYearMap = new HashMap<>();
+                        String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
+                        for (int i = 0; i < 12; i++) {
+                            tmpYearMap.put(currMonthStr, 0);
+                            currMonthStr = getLastMonth(currMonthStr);
                         }
+                        for (CommSleepDb cb : sleepDb) {
+                            String dbStr = cb.getDateStr();
+                            int stepNumber = cb.getSleeplen();
+                            String tmpDbStr = dayFormat2Sleep(dbStr);
+
+                            if (tmpYearMap.get(tmpDbStr) != null) {
+                                tmpYearMap.put(tmpDbStr, stepNumber + tmpYearMap.get(tmpDbStr));
+                            } else {
+                                tmpYearMap.put(tmpDbStr, stepNumber);
+                            }
+                        }
+
+                        for (Map.Entry<String, Integer> yMM : tmpYearMap.entrySet()) {
+                            sleepXList.add(yMM.getKey());
+                        }
+
+                        Collections.sort(sleepXList, new Comparator<String>() {
+                            @Override
+                            public int compare(String s, String t1) {
+                                return s.compareTo(t1);
+                            }
+                        });
+
+                        for (int i = 0; i < sleepXList.size(); i++) {
+                            int sleepL = tmpYearMap.get(sleepXList.get(i));
+                            sleepVlaues.add(Float.valueOf(sleepL));
+                        }
+                        handler.sendEmptyMessage(0x03);
+                        return;
                     }
 
-                    for (Map.Entry<String, Integer> yMM : tmpYearMap.entrySet()) {
-                        sleepXList.add(yMM.getKey());
+                    //组合日期
+                    for (int i = 0; i < SectectCode; i++) {
+                        sleepMap.put(currDay, 0);
+                        currDay = WatchUtils.obtainAroundDate(currDay, true);
                     }
 
+                    for (CommSleepDb cb : sleepDb) {
+                        sleepMap.put(cb.getDateStr(), cb.getSleeplen());
+                    }
+
+                    for (Map.Entry<String, Integer> mp : sleepMap.entrySet()) {
+                        String dayStr = mp.getKey();
+                        sleepXList.add(dayFormatSleep(dayStr)); //日期
+                        sleepVlaues.add(Float.valueOf(mp.getValue()));
+                    }
                     Collections.sort(sleepXList, new Comparator<String>() {
                         @Override
                         public int compare(String s, String t1) {
@@ -459,43 +448,12 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                         }
                     });
 
-                    for (int i = 0; i < sleepXList.size(); i++) {
-                        int sleepL = tmpYearMap.get(sleepXList.get(i));
-                        sleepVlaues.add(Float.valueOf(sleepL));
-                    }
                     handler.sendEmptyMessage(0x03);
-                    return;
                 }
-
-                //组合日期
-                for (int i = 0; i < SectectCode; i++) {
-                    Log.e(TAG, "-----currDay=" + currDay);
-                    sleepMap.put(currDay, 0);
-                    currDay = WatchUtils.obtainAroundDate(currDay, true);
-                }
-
-                for (CommSleepDb cb : sleepDb) {
-                    sleepMap.put(cb.getDateStr(), cb.getSleeplen());
-                }
-
-                for (Map.Entry<String, Integer> mp : sleepMap.entrySet()) {
-                    String dayStr = mp.getKey();
-                    Log.e(TAG, "------dayStr=" + dayStr);
-                    heartXList.add(dayFormat(dayStr)); //日期
-                    heartValues.add(mp.getValue());
-                }
-                Collections.sort(heartXList, new Comparator<String>() {
-                    @Override
-                    public int compare(String s, String t1) {
-                        return s.compareTo(t1);
-                    }
-                });
-
-                handler.sendEmptyMessage(0x03);
-            }
-        }).start();
-
-
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //计算心率
@@ -507,8 +465,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                     heartValues.clear();
                     heartXList.clear();
                     //排序，
-                    Collections.sort(heartDb, (o1, o2) -> o1.getDateStr().compareTo(o2.getDateStr()));
-
                     Map<String, Integer> heartMap = new HashMap<>();
                     String currDay = WatchUtils.getCurrentDate();
                     if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
@@ -516,12 +472,12 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                         String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
                         for (int i = 0; i < 12; i++) {
                             tmpYearMap.put(currMonthStr, 0);
-                            currMonthStr = getLastMonth(currMonthStr);
+                            currMonthStr = getLastMonthHeart(currMonthStr);
                         }
                         for (CommHeartDb cb : heartDb) {
                             String dbStr = cb.getDateStr();
                             int stepNumber = cb.getAvgheartrate();
-                            String tmpDbStr = dayFormat2(dbStr);
+                            String tmpDbStr = dayFormat2Heart(dbStr);
 
                             if (tmpYearMap.get(tmpDbStr) != null) {
                                 tmpYearMap.put(tmpDbStr, stepNumber + tmpYearMap.get(tmpDbStr));
@@ -550,7 +506,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
                     //组合日期
                     for (int i = 0; i < SectectCode; i++) {
-                        Log.e(TAG, "-----currDay=" + currDay);
                         heartMap.put(currDay, 0);
                         currDay = WatchUtils.obtainAroundDate(currDay, true);
                     }
@@ -561,7 +516,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
                     for (Map.Entry<String, Integer> mp : heartMap.entrySet()) {
                         String dayStr = mp.getKey();
-                        Log.e(TAG, "------dayStr=" + dayStr);
                         heartXList.add(dayFormat(dayStr)); //日期
                         heartValues.add(mp.getValue());
                     }
@@ -574,30 +528,66 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                     handler.sendEmptyMessage(0x02);
                 }
             }).start();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
 
-    private String dayFormat2(String day){
+    private String dayFormat2(String day) {
         try {
             Date tmpDay = yearFormat.parse(day);
             assert tmpDay != null;
             return sdf3.format(tmpDay);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private String dayFormat(String day){
+    private String dayFormat2Heart(String day) {
+        try {
+            Date tmpDay = yearFormat.parse(day);
+            assert tmpDay != null;
+            return sdf3.format(tmpDay);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String dayFormat2Sleep(String day) {
+        try {
+            Date tmpDay = yearFormat.parse(day);
+            assert tmpDay != null;
+            return sdf3.format(tmpDay);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private SimpleDateFormat sleepYearFm = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
+    private SimpleDateFormat mmDDf = new SimpleDateFormat("MM/dd",Locale.CHINA);
+    private String dayFormat(String day) {
+        try {
+            Date tmpDay = sleepYearFm.parse(day);
+            assert tmpDay != null;
+            return mmDDf.format(tmpDay);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private String dayFormatSleep(String day) {
         try {
             Date tmpDay = yearFormat.parse(day);
             assert tmpDay != null;
             return sdf2.format(tmpDay);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -606,98 +596,75 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
     //步数的计算
     private void analysisStepData(final List<CommStepCountDb> stepDb, final int code) {
-//        Log.e(TAG,"-----------stepCountDb--------下载步数大小="+stepDb.size());
-        new Thread(() -> {
-            Map<String,Integer> stepMap = new HashMap<>();
-            String currDay = WatchUtils.getCurrentDate();
-            if(SectectCode == 364){ //年 ，年需将天合并为月并求取平均值
-                Map<String,Integer> tmpYearMap = new HashMap<>();
-                String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
-                for(int i = 0;i<12;i++){
-                    tmpYearMap.put(currMonthStr,0);
-                    currMonthStr = getLastMonth(currMonthStr);
-                }
-                for(CommStepCountDb cb : stepDb){
-                    String dbStr = cb.getDateStr();
-                    int stepNumber = cb.getStepnumber();
-                    String tmpDbStr = dayFormat2(dbStr);
-
-                    if(tmpYearMap.get(tmpDbStr) != null){
-                        tmpYearMap.put(tmpDbStr,stepNumber+tmpYearMap.get(tmpDbStr));
-                    }else{
-                        tmpYearMap.put(tmpDbStr,stepNumber);
+        try {
+            new Thread(() -> {
+                Map<String, Integer> stepMap = new HashMap<>();
+                String currDay = WatchUtils.getCurrentDate();
+                if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
+                    Map<String, Integer> tmpYearMap = new HashMap<>();
+                    String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
+                    for (int i = 0; i < 12; i++) {
+                        tmpYearMap.put(currMonthStr, 0);
+                        currMonthStr = getLastMonth(currMonthStr);
                     }
+                    for (CommStepCountDb cb : stepDb) {
+                        String dbStr = cb.getDateStr();
+                        int stepNumber = cb.getStepnumber();
+                        String tmpDbStr = dayFormat2(dbStr);
+
+                        if (tmpYearMap.get(tmpDbStr) != null) {
+                            tmpYearMap.put(tmpDbStr, stepNumber + tmpYearMap.get(tmpDbStr));
+                        } else {
+                            tmpYearMap.put(tmpDbStr, stepNumber);
+                        }
+                    }
+
+                    for (Map.Entry<String, Integer> yMM : tmpYearMap.entrySet()) {
+                        xStepList.add(yMM.getKey());
+                    }
+
+                    Collections.sort(xStepList, new Comparator<String>() {
+                        @Override
+                        public int compare(String s, String t1) {
+                            return s.compareTo(t1);
+                        }
+                    });
+
+                    for (int i = 0; i < xStepList.size(); i++) {
+                        mValues.add(tmpYearMap.get(xStepList.get(i)));
+                    }
+                    handler.sendEmptyMessage(0x01);
+                    return;
                 }
 
-                for(Map.Entry<String,Integer> yMM : tmpYearMap.entrySet()){
-                    xStepList.add(yMM.getKey());
+                //组合日期
+                for (int i = 0; i < SectectCode; i++) {
+                    Log.e(TAG, "-----currDay=" + currDay);
+                    stepMap.put(currDay, 0);
+                    currDay = WatchUtils.obtainAroundDate(currDay, true);
                 }
 
+                for (CommStepCountDb cb : stepDb) {
+                    stepMap.put(cb.getDateStr(), cb.getStepnumber());
+                }
+
+                for (Map.Entry<String, Integer> mp : stepMap.entrySet()) {
+                    String dayStr = mp.getKey();
+                    Log.e(TAG, "------dayStr=" + dayStr);
+                    xStepList.add(dayFormat(dayStr)); //日期
+                    mValues.add(mp.getValue());
+                }
                 Collections.sort(xStepList, new Comparator<String>() {
                     @Override
                     public int compare(String s, String t1) {
                         return s.compareTo(t1);
                     }
                 });
-
-                for(int i = 0;i<xStepList.size();i++){
-                    mValues.add(tmpYearMap.get(xStepList.get(i)));
-                }
                 handler.sendEmptyMessage(0x01);
-                return;
-            }
-
-            //组合日期
-            for(int i = 0;i<SectectCode;i++){
-                Log.e(TAG,"-----currDay="+currDay);
-                stepMap.put(currDay,0);
-                currDay = WatchUtils.obtainAroundDate(currDay,true);
-            }
-
-            for(CommStepCountDb cb : stepDb){
-                stepMap.put(cb.getDateStr(),cb.getStepnumber());
-            }
-
-            for(Map.Entry<String,Integer> mp : stepMap.entrySet()){
-                String dayStr = mp.getKey();
-                Log.e(TAG,"------dayStr="+dayStr);
-                xStepList.add(dayFormat(dayStr)); //日期
-                mValues.add(mp.getValue());
-            }
-            Collections.sort(xStepList, new Comparator<String>() {
-                @Override
-                public int compare(String s, String t1) {
-                    return s.compareTo(t1);
-                }
-            });
-            handler.sendEmptyMessage(0x01);
-        }).start();
-    }
-
-
-    /**
-     * 补齐天数到七天
-     */
-    private List<String> mendTime(List<String> timeList) {
-        int dateSize = timeList.size();
-        //Log.e(TAG,"------dateSize="+dateSize);
-        List<String> menList = new ArrayList<>();
-        int interval = timeList.size() / (dateSize == 13 ? 6 : 7);
-        if (interval > 0) {
-            for (int i = 0; i < timeList.size(); i++) {
-                int position = i * interval;// 防越界
-                if (position < timeList.size())
-                    menList.add(timeList.get(position));
-            }
-        } else {
-            menList.addAll(timeList);
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        int mend = 7 - menList.size();// 补位
-        if (mend < 1) return menList;
-        for (int i = 0; i < mend; i++) {
-            menList.add("");
-        }
-        return menList;
     }
 
 
@@ -762,7 +729,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         if (getActivity() == null || getActivity().isFinishing())
             return;
         pointbar.clear();
-        if(xList.isEmpty()){
+        if (xList.isEmpty()) {
             stepDataChartView.setNoDataText(getResources().getString(R.string.nodata));
             stepDataChartView.setNoDataTextColor(Color.WHITE);
             stepDataChartView.invalidate();
@@ -771,7 +738,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         for (int i = 0; i < mValues.size(); i++) {
             pointbar.add(new BarEntry(i, mValues.get(i)));
         }
-//        Log.e(TAG, "----步数大小=" + mValues.size());
         BarDataSet barDataSet = new BarDataSet(pointbar, "");
         barDataSet.setDrawValues(false);//是否显示柱子上面的数值
         barDataSet.setValueTextColor(Color.WHITE);
@@ -839,7 +805,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     private void showHeartChart(List<Integer> heartList, List<String> xlt) {
         if (getActivity() == null || getActivity().isFinishing())
             return;
-        if(heartXList.isEmpty()){
+        if (heartXList.isEmpty()) {
             heartDataChartView.setNoDataTextColor(Color.WHITE);
             heartDataChartView.setNoDataText(getResources().getString(R.string.nodata));
             heartDataChartView.invalidate();
@@ -924,7 +890,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     private void showSleepChart(List<Float> sleepVlaues, List<String> sleepXList) {
         if (getActivity() == null || getActivity().isFinishing())
             return;
-        if(sleepXList.size() == 0){
+        if (sleepXList.size() == 0) {
             sleepDataChartView.setNoDataText(getResources().getString(R.string.nodata));
             sleepDataChartView.setNoDataTextColor(Color.WHITE);
             sleepDataChartView.invalidate();
@@ -1007,12 +973,26 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
 
     //获取当前月份的上一个月
-    private String getLastMonth(String cuuMonth){
+    private String getLastMonth(String cuuMonth) {
         try {
-            Date  currDate = sdf3.parse(cuuMonth);
-            Calendar calendar= Calendar.getInstance();
+            Date currDate = sdf3.parse(cuuMonth);
+            Calendar calendar = Calendar.getInstance();
             calendar.setTime(currDate);
-            calendar.set(Calendar.MONTH,calendar.get(Calendar.MONTH)-1);
+            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+            return sdf3.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //获取当前月份的上一个月
+    private String getLastMonthHeart(String cuuMonth) {
+        try {
+            Date currDate = sdf3.parse(cuuMonth);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currDate);
+            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
             return sdf3.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
