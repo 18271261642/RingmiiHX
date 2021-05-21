@@ -45,7 +45,7 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
     TextView commentB30TitleTv;
     Button internalStartBtn;
     Button stopLocalBtn;
-
+    Button saveDataBtn;
     private Button readDeviceDataBtn;
 
 
@@ -65,10 +65,12 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
         commentB30TitleTv = findViewById(R.id.commentB30TitleTv);
         internalStartBtn = findViewById(R.id.internalStartBtn);
         stopLocalBtn = findViewById(R.id.stopLocalBtn);
+        saveDataBtn = findViewById(R.id.saveDataBtn);
         commentB30BackImg.setOnClickListener(this);
         internalStartBtn.setOnClickListener(this);
         stopLocalBtn.setOnClickListener(this);
         readDeviceDataBtn.setOnClickListener(this);
+        saveDataBtn.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -91,7 +93,20 @@ public class InternalTestActivity extends Activity implements View.OnClickListen
             case R.id.readDeviceDataBtn:
                 readAllDeviceData();
                 break;
+            case R.id.saveDataBtn:
+                saveStepData();
+                break;
         }
+    }
+
+
+    private void saveStepData(){
+        CommDBManager.getCommDBManager().saveCommCountStepDate("B31",MyApp.getInstance().getMacAddress(),WatchUtils.getCurrentDate(),8000);
+
+
+        CommDBManager.getCommDBManager().saveCommCountStepDate("B31",MyApp.getInstance().getMacAddress(),WatchUtils.obtainFormatDate(1),6000);
+
+        CommDBManager.getCommDBManager().saveCommCountStepDate("B31",MyApp.getInstance().getMacAddress(),WatchUtils.obtainFormatDate(4),5000);
     }
 
 

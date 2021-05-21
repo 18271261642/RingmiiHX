@@ -83,6 +83,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -149,6 +150,19 @@ public class LoginActivity extends WatchBaseActivity
     //guider备份的 手环方的密码
     private String bandPwd = "1";
     private LoginButton lineButton;
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == 0x00){
+                String str = (String) msg.obj;
+                ToastUtil.showToast(LoginActivity.this,str);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -520,7 +534,11 @@ public class LoginActivity extends WatchBaseActivity
                     } else hideLoadingDialog();
                 } else {
                     closeLoadingDialog();
-                    ToastUtil.showToast(this,jsonObject.getString("msg"));
+                    String msgStr = jsonObject.getString("msg");
+                    Message message = handler.obtainMessage();
+                    message.what = 0x00;
+                    message.obj = msgStr;
+                    handler.sendMessage(message);
                     String passEditValue = password.getText().toString();
                     bandPwd = "changPassword";
 //                    loginRemote(uName, Md5Util.Md532(passEditValue));

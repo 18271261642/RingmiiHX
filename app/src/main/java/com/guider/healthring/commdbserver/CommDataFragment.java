@@ -42,6 +42,7 @@ import com.google.gson.Gson;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -152,9 +153,13 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     };
 
 
+    private AnalysisDateUtils analysisDateUtils;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        analysisDateUtils = new AnalysisDateUtils();
     }
 
 
@@ -176,13 +181,13 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         b30DataWeekTv = commView.findViewById(R.id.b30DataWeekTv);
         b30DataMonthTv = commView.findViewById(R.id.b30DataMonthTv);
         b30DataYearTv = commView.findViewById(R.id.b30DataYearTv);
-        stepDataValueTv = commView.findViewById(R.id.stepDataValueTv);
+//        stepDataValueTv = commView.findViewById(R.id.stepDataValueTv);
         stepDataChartView = commView.findViewById(R.id.stepDataChartView);
-        sleepDataValueTv = commView.findViewById(R.id.sleepDataValueTv);
+//        sleepDataValueTv = commView.findViewById(R.id.sleepDataValueTv);
         sleepDataChartView = commView.findViewById(R.id.sleepDataChartView);
-        heartDataValueTv = commView.findViewById(R.id.heartDataValueTv);
+//        heartDataValueTv = commView.findViewById(R.id.heartDataValueTv);
         heartDataChartView = commView.findViewById(R.id.heartDataChartView);
-        bloodDataValueTv = commView.findViewById(R.id.bloodDataValueTv);
+//        bloodDataValueTv = commView.findViewById(R.id.bloodDataValueTv);
         charBloadView = commView.findViewById(R.id.charBloadView);
         b30BloadChartLin = commView.findViewById(R.id.rel_blood);
         commentB30BackImg.setOnClickListener(this);
@@ -251,10 +256,15 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
             return;
         }
 
+        //X轴的数据
+        List<String> xAxisList =  analysisDateUtils.getXAxisList(SectectCode == 364 ? 12 : SectectCode);
+        //数据的map
+        Map<String,Integer> commMap = analysisDateUtils.getDateMap(SectectCode == 364 ? 12 : SectectCode);
+
         Log.e(TAG, "----startDay=" + startDay + "--=endDay=" + endDay + "-=bleMac=" + bleMac);
         List<CommStepCountDb> uploadStepList = CommDBManager.getCommDBManager().findCountStepForUpload(bleMac, startDay, endDay);
         if (uploadStepList != null && !uploadStepList.isEmpty()) {
-            analysisStepData(uploadStepList, code);
+            analysisStepData(uploadStepList, commMap,xAxisList);
         } else {
             showStepsChat(new ArrayList<>(), new ArrayList<>());
         }
@@ -263,16 +273,14 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                 endDay);
 
         if (commHeartDbList != null && !commHeartDbList.isEmpty()) {
-            analysisHeartData(commHeartDbList, code);
+            analysisHeartData(commHeartDbList, commMap,xAxisList);
         } else {
             showHeartChart(new ArrayList<>(), new ArrayList<>());
         }
 
         List<CommSleepDb> commSleepDbList = CommDBManager.getCommDBManager().findCommSleepForUpload(bleMac, startDay, endDay);
-
-
         if (commSleepDbList != null && !commSleepDbList.isEmpty()) {
-            analysisSleepData(commSleepDbList, code);
+            analysisSleepData(commSleepDbList, commMap,xAxisList);
         } else {
             showSleepChart(new ArrayList<>(), new ArrayList<>());
         }
@@ -288,6 +296,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     }
 
     //解析血压数据
+    Map<String, SparseIntArray> bloodMap = new HashMap<>();
+    Map<String, SparseIntArray> tmpYearMap = new HashMap<>();
     private void analysisBloodData(final List<CommBloodDb> bloodDb, final int code) {
         try {
             new Thread(new Runnable() {
@@ -295,16 +305,16 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                 public void run() {
                     bloodDateList.clear();
                     bloodList.clear();
+                    bloodMap.clear();
 
-                    Map<String, SparseIntArray> bloodMap = new HashMap<>();
                     String currDay = WatchUtils.getCurrentDate();
                     if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
-                        Map<String, SparseIntArray> tmpYearMap = new HashMap<>();
+
                         String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
                         for (int i = 0; i < 12; i++) {
                             SparseIntArray sparseIntArray = new SparseIntArray();
                             sparseIntArray.append(0, 0);
-                            tmpYearMap.put(currMonthStr, sparseIntArray);
+                            tmpYearMap.put(dayFormat2(currMonthStr), sparseIntArray);
                             currMonthStr = getLastMonth(currMonthStr);
                         }
                         for (CommBloodDb cb : bloodDb) {
@@ -313,7 +323,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                             int lowBp = cb.getAvgsystolic();
                             SparseIntArray sparseIntArray = new SparseIntArray();
                             sparseIntArray.append(heightBp, lowBp);
-                            String tmpDbStr = dayFormat2(dbStr);
+                            String tmpDbStr = dayFormat2Sleep(dbStr);
 
                             if (tmpYearMap.get(tmpDbStr) != null) {
                                 tmpYearMap.put(tmpDbStr, sparseIntArray);
@@ -345,7 +355,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                         Log.e(TAG, "-----currDay=" + currDay);
                         SparseIntArray sparseIntArray = new SparseIntArray();
                         sparseIntArray.append(0, 0);
-                        bloodMap.put(currDay, sparseIntArray);
+                        bloodMap.put(dayFormat(currDay), sparseIntArray);
                         currDay = WatchUtils.obtainAroundDate(currDay, true);
                     }
 
@@ -353,15 +363,12 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                         SparseIntArray sparseIntArray = new SparseIntArray();
                         sparseIntArray.append(cb.getAvgdiastolic(), cb.getAvgsystolic());
 
-                        bloodMap.put(cb.getRtc(), sparseIntArray);
+                        bloodMap.put(dayFormat(cb.getRtc()), sparseIntArray);
                     }
 
                     for (Map.Entry<String, SparseIntArray> mp : bloodMap.entrySet()) {
                         String dayStr = mp.getKey();
-                        SparseIntArray bpArray = mp.getValue();
-                        String tmpDbStr = dayFormat(dayStr);
-                        bloodList.add(bpArray);
-                        bloodDateList.add(tmpDbStr);
+                        bloodDateList.add(dayStr);
                     }
                     Collections.sort(bloodDateList, new Comparator<String>() {
                         @Override
@@ -369,6 +376,10 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
                             return s.compareTo(t1);
                         }
                     });
+                    for(String bpV : bloodDateList){
+                        SparseIntArray bpArray = bloodMap.get(bpV);
+                        bloodList.add(bpArray);
+                    }
                     handler.sendEmptyMessage(0x04);
                 }
             }).start();
@@ -378,77 +389,32 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     }
 
     //计算睡眠
-    private void analysisSleepData(final List<CommSleepDb> sleepDb, final int code) {
+    private void analysisSleepData(final List<CommSleepDb> sleepDb, Map<String,Integer> cmMap,List<String> xLt) {
         try {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     sleepVlaues.clear();
                     sleepXList.clear();
-                    //排序，
-                    Map<String, Integer> sleepMap = new HashMap<>();
-                    String currDay = WatchUtils.getCurrentDate();
-                    if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
-                        Map<String, Integer> tmpYearMap = new HashMap<>();
-                        String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
-                        for (int i = 0; i < 12; i++) {
-                            tmpYearMap.put(currMonthStr, 0);
-                            currMonthStr = getLastMonth(currMonthStr);
-                        }
-                        for (CommSleepDb cb : sleepDb) {
-                            String dbStr = cb.getDateStr();
-                            int stepNumber = cb.getSleeplen();
-                            String tmpDbStr = dayFormat2Sleep(dbStr);
 
-                            if (tmpYearMap.get(tmpDbStr) != null) {
-                                tmpYearMap.put(tmpDbStr, stepNumber + tmpYearMap.get(tmpDbStr));
-                            } else {
-                                tmpYearMap.put(tmpDbStr, stepNumber);
-                            }
-                        }
-
-                        for (Map.Entry<String, Integer> yMM : tmpYearMap.entrySet()) {
-                            sleepXList.add(yMM.getKey());
-                        }
-
-                        Collections.sort(sleepXList, new Comparator<String>() {
-                            @Override
-                            public int compare(String s, String t1) {
-                                return s.compareTo(t1);
-                            }
-                        });
-
-                        for (int i = 0; i < sleepXList.size(); i++) {
-                            int sleepL = tmpYearMap.get(sleepXList.get(i));
-                            sleepVlaues.add(Float.valueOf(sleepL));
-                        }
-                        handler.sendEmptyMessage(0x03);
-                        return;
-                    }
-
-                    //组合日期
-                    for (int i = 0; i < SectectCode; i++) {
-                        sleepMap.put(currDay, 0);
-                        currDay = WatchUtils.obtainAroundDate(currDay, true);
-                    }
-
+                    Map<String,Integer> sleepValueMap = new HashMap<>(cmMap);//analysisDateUtils.getDateMap(SectectCode == 364 ? 12 : SectectCode);
                     for (CommSleepDb cb : sleepDb) {
-                        sleepMap.put(cb.getDateStr(), cb.getSleeplen());
-                    }
-
-                    for (Map.Entry<String, Integer> mp : sleepMap.entrySet()) {
-                        String dayStr = mp.getKey();
-                        sleepXList.add(dayFormatSleep(dayStr)); //日期
-                        sleepVlaues.add(Float.valueOf(mp.getValue()));
-                    }
-                    Collections.sort(sleepXList, new Comparator<String>() {
-                        @Override
-                        public int compare(String s, String t1) {
-                            return s.compareTo(t1);
+                        String dbStr = cb.getDateStr();
+                        int sleepLen = cb.getSleeplen();
+                        String tmpDbStr = analysisDateUtils.getCusFormatDay(yearFormat,SectectCode == 364 ? sdf3 : sdf2,dbStr);
+                        if (sleepValueMap.get(tmpDbStr) != null) {
+                            sleepValueMap.put(tmpDbStr, sleepLen + sleepValueMap.get(tmpDbStr));
+                        } else {
+                            sleepValueMap.put(tmpDbStr, sleepLen);
                         }
-                    });
+                    }
 
+                    sleepXList.addAll(xLt);
+                    for (int i = 0; i < sleepXList.size(); i++) {
+                        sleepVlaues.add(Float.valueOf(sleepValueMap.get(sleepXList.get(i))));
+                    }
                     handler.sendEmptyMessage(0x03);
+
                 }
             }).start();
         } catch (Exception e) {
@@ -457,74 +423,30 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     }
 
     //计算心率
-    private void analysisHeartData(final List<CommHeartDb> heartDb, final int code) {
+    private void analysisHeartData(final List<CommHeartDb> heartDb, Map<String,Integer> cmMap,List<String> xAxisLists) {
         try {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     heartValues.clear();
                     heartXList.clear();
-                    //排序，
-                    Map<String, Integer> heartMap = new HashMap<>();
-                    String currDay = WatchUtils.getCurrentDate();
-                    if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
-                        Map<String, Integer> tmpYearMap = new HashMap<>();
-                        String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
-                        for (int i = 0; i < 12; i++) {
-                            tmpYearMap.put(currMonthStr, 0);
-                            currMonthStr = getLastMonthHeart(currMonthStr);
-                        }
-                        for (CommHeartDb cb : heartDb) {
-                            String dbStr = cb.getDateStr();
-                            int stepNumber = cb.getAvgheartrate();
-                            String tmpDbStr = dayFormat2Heart(dbStr);
 
-                            if (tmpYearMap.get(tmpDbStr) != null) {
-                                tmpYearMap.put(tmpDbStr, stepNumber + tmpYearMap.get(tmpDbStr));
-                            } else {
-                                tmpYearMap.put(tmpDbStr, stepNumber);
-                            }
-                        }
-
-                        for (Map.Entry<String, Integer> yMM : tmpYearMap.entrySet()) {
-                            heartXList.add(yMM.getKey());
-                        }
-
-                        Collections.sort(heartXList, new Comparator<String>() {
-                            @Override
-                            public int compare(String s, String t1) {
-                                return s.compareTo(t1);
-                            }
-                        });
-
-                        for (int i = 0; i < heartXList.size(); i++) {
-                            heartValues.add(tmpYearMap.get(heartXList.get(i)));
-                        }
-                        handler.sendEmptyMessage(0x02);
-                        return;
-                    }
-
-                    //组合日期
-                    for (int i = 0; i < SectectCode; i++) {
-                        heartMap.put(currDay, 0);
-                        currDay = WatchUtils.obtainAroundDate(currDay, true);
-                    }
-
+                    Map<String,Integer> heartMapV = new HashMap<>(cmMap);//analysisDateUtils.getDateMap(SectectCode == 364 ? 12 : SectectCode);
                     for (CommHeartDb cb : heartDb) {
-                        heartMap.put(cb.getDateStr(), cb.getAvgheartrate());
+                        String dbStr = cb.getDateStr();
+                        int heartValue = cb.getAvgheartrate();
+                        String tmpDbStr = analysisDateUtils.getCusFormatDay(yearFormat,SectectCode == 364 ? sdf3 : sdf2,dbStr);
+                        if (heartMapV.get(tmpDbStr) != null) {
+                            heartMapV.put(tmpDbStr,  heartValue+heartMapV.get(tmpDbStr));
+                        } else {
+                            heartMapV.put(tmpDbStr, heartValue);
+                        }
                     }
 
-                    for (Map.Entry<String, Integer> mp : heartMap.entrySet()) {
-                        String dayStr = mp.getKey();
-                        heartXList.add(dayFormat(dayStr)); //日期
-                        heartValues.add(mp.getValue());
+                    heartXList.addAll(xAxisLists);
+                    for (int i = 0; i < heartXList.size(); i++) {
+                        heartValues.add(heartMapV.get(heartXList.get(i)));
                     }
-                    Collections.sort(heartXList, new Comparator<String>() {
-                        @Override
-                        public int compare(String s, String t1) {
-                            return s.compareTo(t1);
-                        }
-                    });
                     handler.sendEmptyMessage(0x02);
                 }
             }).start();
@@ -537,7 +459,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
     private String dayFormat2(String day) {
         try {
-            Date tmpDay = yearFormat.parse(day);
+            Date tmpDay = sdf3.parse(day);
             assert tmpDay != null;
             return sdf3.format(tmpDay);
         } catch (Exception e) {
@@ -546,16 +468,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         }
     }
 
-    private String dayFormat2Heart(String day) {
-        try {
-            Date tmpDay = yearFormat.parse(day);
-            assert tmpDay != null;
-            return sdf3.format(tmpDay);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     private String dayFormat2Sleep(String day) {
         try {
@@ -568,8 +480,8 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         }
     }
 
-    private SimpleDateFormat sleepYearFm = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
-    private SimpleDateFormat mmDDf = new SimpleDateFormat("MM/dd",Locale.CHINA);
+    private final SimpleDateFormat sleepYearFm = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
+    private final SimpleDateFormat mmDDf = new SimpleDateFormat("MM/dd",Locale.CHINA);
     private String dayFormat(String day) {
         try {
             Date tmpDay = sleepYearFm.parse(day);
@@ -582,84 +494,28 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     }
 
 
-    private String dayFormatSleep(String day) {
-        try {
-            Date tmpDay = yearFormat.parse(day);
-            assert tmpDay != null;
-            return sdf2.format(tmpDay);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
     //步数的计算
-    private void analysisStepData(final List<CommStepCountDb> stepDb, final int code) {
+    private void analysisStepData(final List<CommStepCountDb> stepDb, Map<String,Integer> commMap,List<String> xAxisLists) {
         try {
             new Thread(() -> {
-                Map<String, Integer> stepMap = new HashMap<>();
-                String currDay = WatchUtils.getCurrentDate();
-                if (SectectCode == 364) { //年 ，年需将天合并为月并求取平均值
-                    Map<String, Integer> tmpYearMap = new HashMap<>();
-                    String currMonthStr = WatchUtils.getCurrentDateFormat("yy/MM");
-                    for (int i = 0; i < 12; i++) {
-                        tmpYearMap.put(currMonthStr, 0);
-                        currMonthStr = getLastMonth(currMonthStr);
-                    }
-                    for (CommStepCountDb cb : stepDb) {
-                        String dbStr = cb.getDateStr();
-                        int stepNumber = cb.getStepnumber();
-                        String tmpDbStr = dayFormat2(dbStr);
-
-                        if (tmpYearMap.get(tmpDbStr) != null) {
-                            tmpYearMap.put(tmpDbStr, stepNumber + tmpYearMap.get(tmpDbStr));
-                        } else {
-                            tmpYearMap.put(tmpDbStr, stepNumber);
-                        }
-                    }
-
-                    for (Map.Entry<String, Integer> yMM : tmpYearMap.entrySet()) {
-                        xStepList.add(yMM.getKey());
-                    }
-
-                    Collections.sort(xStepList, new Comparator<String>() {
-                        @Override
-                        public int compare(String s, String t1) {
-                            return s.compareTo(t1);
-                        }
-                    });
-
-                    for (int i = 0; i < xStepList.size(); i++) {
-                        mValues.add(tmpYearMap.get(xStepList.get(i)));
-                    }
-                    handler.sendEmptyMessage(0x01);
-                    return;
-                }
-
-                //组合日期
-                for (int i = 0; i < SectectCode; i++) {
-                    Log.e(TAG, "-----currDay=" + currDay);
-                    stepMap.put(currDay, 0);
-                    currDay = WatchUtils.obtainAroundDate(currDay, true);
-                }
-
+                mValues.clear();
+                xStepList.clear();
+                Map<String, Integer> stepValueMap = new HashMap<>(commMap);
                 for (CommStepCountDb cb : stepDb) {
-                    stepMap.put(cb.getDateStr(), cb.getStepnumber());
+                    String dbStr = cb.getDateStr();
+                    int stepNumber = cb.getStepnumber();
+                    String tmpDbStr = analysisDateUtils.getCusFormatDay(yearFormat,SectectCode == 364 ? sdf3 : sdf2,dbStr);
+                    if (stepValueMap.get(tmpDbStr) != null) {
+                        stepValueMap.put(tmpDbStr, stepNumber + stepValueMap.get(tmpDbStr));
+                    } else {
+                        stepValueMap.put(tmpDbStr, stepNumber);
+                    }
                 }
 
-                for (Map.Entry<String, Integer> mp : stepMap.entrySet()) {
-                    String dayStr = mp.getKey();
-                    Log.e(TAG, "------dayStr=" + dayStr);
-                    xStepList.add(dayFormat(dayStr)); //日期
-                    mValues.add(mp.getValue());
+                xStepList.addAll(xAxisLists);
+                for (int i = 0; i < xStepList.size(); i++) {
+                    mValues.add(stepValueMap.get(xStepList.get(i)));
                 }
-                Collections.sort(xStepList, new Comparator<String>() {
-                    @Override
-                    public int compare(String s, String t1) {
-                        return s.compareTo(t1);
-                    }
-                });
                 handler.sendEmptyMessage(0x01);
             }).start();
         } catch (Exception e) {
@@ -729,7 +585,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
         if (getActivity() == null || getActivity().isFinishing())
             return;
         pointbar.clear();
-        if (xList.isEmpty()) {
+        if (xList.isEmpty() || mValues.isEmpty()) {
             stepDataChartView.setNoDataText(getResources().getString(R.string.nodata));
             stepDataChartView.setNoDataTextColor(Color.WHITE);
             stepDataChartView.invalidate();
@@ -805,7 +661,7 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
     private void showHeartChart(List<Integer> heartList, List<String> xlt) {
         if (getActivity() == null || getActivity().isFinishing())
             return;
-        if (heartXList.isEmpty()) {
+        if (heartList.isEmpty() || xlt.isEmpty()) {
             heartDataChartView.setNoDataTextColor(Color.WHITE);
             heartDataChartView.setNoDataText(getResources().getString(R.string.nodata));
             heartDataChartView.invalidate();
@@ -974,20 +830,6 @@ public class CommDataFragment extends LazyFragment implements View.OnClickListen
 
     //获取当前月份的上一个月
     private String getLastMonth(String cuuMonth) {
-        try {
-            Date currDate = sdf3.parse(cuuMonth);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(currDate);
-            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
-            return sdf3.format(calendar.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    //获取当前月份的上一个月
-    private String getLastMonthHeart(String cuuMonth) {
         try {
             Date currDate = sdf3.parse(cuuMonth);
             Calendar calendar = Calendar.getInstance();

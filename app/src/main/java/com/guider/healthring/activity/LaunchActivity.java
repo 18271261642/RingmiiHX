@@ -132,7 +132,7 @@ public class LaunchActivity extends WatchBaseActivity {
                         startActivity(new Intent(this, B31HomeActivity.class));
                         break;
                     default:
-                        startActivity(new Intent(this, NewSearchActivity.class));
+                        startActivity(new Intent(this, B31HomeActivity.class));
                         break;
                 }
             } else {

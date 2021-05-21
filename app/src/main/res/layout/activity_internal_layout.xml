@@ -38,6 +38,12 @@
                 android:layout_height="wrap_content"
                 android:text="读取健康数据"/>
 
+            <Button
+                android:id="@+id/saveDataBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="保存数据"/>
+
 
         </LinearLayout>
 

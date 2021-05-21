@@ -732,37 +732,37 @@ public class NewB31RecordFragment extends LazyFragment
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
-        if (isVisible) {  //判断是否读取数据
-            int currCode = (int) SharedPreferencesUtils.getParam(getmContext(),
-                    "code_status", 0);
-            if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext()))) {
-                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
-                return;
-            }
-
-            if (connBleHelpService == null || MyCommandManager.DEVICENAME == null) {
-                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
-                return;
-            }
-            long currentTime = System.currentTimeMillis() / 1000;
-            //保存的时间
-            String tmpSaveTime = (String) SharedPreferencesUtils.getParam(
-                    getmContext(), "saveDate", currentTime + "");
-            long diffTime = (currentTime - Long.parseLong(tmpSaveTime)) / 60;
-            if (WatchConstants.isScanConn) {  //是搜索进来的
-                WatchConstants.isScanConn = false;
-                //   getBleMsgData();
-                if (b31HomeSwipeRefreshLayout != null) b31HomeSwipeRefreshLayout.autoRefresh();
-            } else {  //不是搜索进来的
-                if (diffTime > 30) {// 大于十分钟没更新再取数据
-                    //getBleMsgData();
-                    if (b31HomeSwipeRefreshLayout != null)
-                        b31HomeSwipeRefreshLayout.autoRefresh();
-                } else {
-                    clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
-                }
-            }
-        }
+//        if (isVisible) {  //判断是否读取数据
+//            int currCode = (int) SharedPreferencesUtils.getParam(getmContext(),
+//                    "code_status", 0);
+//            if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext()))) {
+//                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
+//                return;
+//            }
+//
+//            if (connBleHelpService == null || MyCommandManager.DEVICENAME == null) {
+//                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
+//                return;
+//            }
+//            long currentTime = System.currentTimeMillis() / 1000;
+//            //保存的时间
+//            String tmpSaveTime = (String) SharedPreferencesUtils.getParam(
+//                    getmContext(), "saveDate", currentTime + "");
+//            long diffTime = (currentTime - Long.parseLong(tmpSaveTime)) / 60;
+//            if (WatchConstants.isScanConn) {  //是搜索进来的
+//                WatchConstants.isScanConn = false;
+//                //   getBleMsgData();
+//                if (b31HomeSwipeRefreshLayout != null) b31HomeSwipeRefreshLayout.autoRefresh();
+//            } else {  //不是搜索进来的
+//                if (diffTime > 30) {// 大于十分钟没更新再取数据
+//                    //getBleMsgData();
+//                    if (b31HomeSwipeRefreshLayout != null)
+//                        b31HomeSwipeRefreshLayout.autoRefresh();
+//                } else {
+//                    clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
+//                }
+//            }
+//        }
     }
 
     @Override
