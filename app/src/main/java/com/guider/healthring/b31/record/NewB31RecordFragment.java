@@ -732,37 +732,37 @@ public class NewB31RecordFragment extends LazyFragment
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
-//        if (isVisible) {  //判断是否读取数据
-//            int currCode = (int) SharedPreferencesUtils.getParam(getmContext(),
-//                    "code_status", 0);
-//            if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext()))) {
-//                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
-//                return;
-//            }
-//
-//            if (connBleHelpService == null || MyCommandManager.DEVICENAME == null) {
-//                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
-//                return;
-//            }
-//            long currentTime = System.currentTimeMillis() / 1000;
-//            //保存的时间
-//            String tmpSaveTime = (String) SharedPreferencesUtils.getParam(
-//                    getmContext(), "saveDate", currentTime + "");
-//            long diffTime = (currentTime - Long.parseLong(tmpSaveTime)) / 60;
-//            if (WatchConstants.isScanConn) {  //是搜索进来的
-//                WatchConstants.isScanConn = false;
-//                //   getBleMsgData();
-//                if (b31HomeSwipeRefreshLayout != null) b31HomeSwipeRefreshLayout.autoRefresh();
-//            } else {  //不是搜索进来的
-//                if (diffTime > 30) {// 大于十分钟没更新再取数据
-//                    //getBleMsgData();
-//                    if (b31HomeSwipeRefreshLayout != null)
-//                        b31HomeSwipeRefreshLayout.autoRefresh();
-//                } else {
-//                    clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
-//                }
-//            }
-//        }
+        if (isVisible) {  //判断是否读取数据
+            int currCode = (int) SharedPreferencesUtils.getParam(getmContext(),
+                    "code_status", 0);
+            if (WatchUtils.isEmpty(WatchUtils.getSherpBleMac(getmContext()))) {
+                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
+                return;
+            }
+
+            if (connBleHelpService == null || MyCommandManager.DEVICENAME == null) {
+                clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
+                return;
+            }
+            long currentTime = System.currentTimeMillis() / 1000;
+            //保存的时间
+            String tmpSaveTime = (String) SharedPreferencesUtils.getParam(
+                    getmContext(), "saveDate", currentTime + "");
+            long diffTime = (currentTime - Long.parseLong(tmpSaveTime)) / 60;
+            if (WatchConstants.isScanConn) {  //是搜索进来的
+                WatchConstants.isScanConn = false;
+                //   getBleMsgData();
+                if (b31HomeSwipeRefreshLayout != null) b31HomeSwipeRefreshLayout.autoRefresh();
+            } else {  //不是搜索进来的
+                if (diffTime > 30) {// 大于十分钟没更新再取数据
+                    //getBleMsgData();
+                    if (b31HomeSwipeRefreshLayout != null)
+                        b31HomeSwipeRefreshLayout.autoRefresh();
+                } else {
+                    clearDataStyle(currCode);//设置每次回主界面，返回数据不清空的
+                }
+            }
+        }
     }
 
     @Override
@@ -1084,10 +1084,11 @@ public class NewB31RecordFragment extends LazyFragment
         Log.d("-------睡眠数据时间----", date);
         try {
             int deviceVersion = (int) SharedPreferencesUtils.getParam(getmContext(), Commont.VP_DEVICE_VERSION, 0);
-            String tmpDate = deviceVersion == 0 ? WatchUtils.obtainAroundDate(date, true) : date;
+            String tmpDate = date ; //deviceVersion == 0 ? WatchUtils.obtainAroundDate(date, true) : date;
             String type =  deviceVersion == 0 ? B30HalfHourDao.TYPE_SLEEP : B30HalfHourDao.TYPE_PRECISION_SLEEP;
             String sleep = B30HalfHourDao.getInstance().findOriginData(mac, tmpDate, type);
             if(sleep ==null){
+                b30StartEndTimeTv.setText("--");
                 b30CusSleepView.setSeekBarShow(false);
                 b30CusSleepView.setPrecisionSleep(deviceVersion != 0);
                 b30CusSleepView.setSleepList(new ArrayList<>());
@@ -1554,9 +1555,9 @@ public class NewB31RecordFragment extends LazyFragment
     //显示HRV的数据
     private void showHrvData(List<HRVOriginData> dataList) {
         Log.e(TAG, "----显示HRV=" + dataList.size());
-        if (dataList.isEmpty()) {
-            return;
-        }
+//        if (dataList.isEmpty()) {
+//            return;
+//        }
         try {
             List<HRVOriginData> data0to8 = getMoringData(dataList);
             HRVOriginUtil mHrvOriginUtil = new HRVOriginUtil(data0to8);
@@ -1700,11 +1701,17 @@ public class NewB31RecordFragment extends LazyFragment
             case R.id.sleepCardView:  //睡眠图表的点击
                 int deviceVersion = (int) SharedPreferencesUtils.getParam(getmContext(), Commont.VP_DEVICE_VERSION, 0);
                 String dayStr = WatchUtils.obtainFormatDate(currDay);
+//                if (deviceVersion == 0) {
+//                    B30SleepDetailActivity.startAndParams(getmContext(), WatchUtils.obtainAroundDate(dayStr, true));
+//                } else {
+//                    B31sPrecisionSleepActivity.startAndParams(getmContext(), dayStr);
+//                }
                 if (deviceVersion == 0) {
-                    B30SleepDetailActivity.startAndParams(getmContext(), WatchUtils.obtainAroundDate(dayStr, true));
+                    B30SleepDetailActivity.startAndParams(getmContext(), dayStr);
                 } else {
                     B31sPrecisionSleepActivity.startAndParams(getmContext(), dayStr);
                 }
+
                 break;
             case R.id.heartCardView:   //心率图表的点击
                 B30HeartDetailActivity.startAndParams(getActivity(), WatchUtils.obtainFormatDate(currDay));

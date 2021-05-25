@@ -146,8 +146,8 @@ public class ConnBleHelpService {
                         //保存详细数据
                         B30HalfHourDB db = new B30HalfHourDB();
                         db.setAddress(MyApp.getInstance().getMacAddress());
-                        // db.setDate(WatchUtils.obtainAroundDate(mp.getValue().getDate(), false));
-                        db.setDate(mp.getValue().getDate());
+                         db.setDate(WatchUtils.obtainAroundDate(mp.getValue().getDate(), false));
+//                        db.setDate(mp.getValue().getDate());
                         db.setType(B30HalfHourDao.TYPE_SLEEP);
                         db.setOriginData(gson.toJson(new CusVPSleepData(mp.getValue())));
                         db.setUpload(0);
