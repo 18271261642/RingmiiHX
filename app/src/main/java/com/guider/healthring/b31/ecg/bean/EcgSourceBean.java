@@ -23,7 +23,8 @@ public class EcgSourceBean extends LitePalSupport implements Serializable {
     //ECG 通过App测量的第二部分内容(测量数据以及测量进度) 已转化为字符串，再反序列化成对象
     //private EcgDetectStateBean ecgDetectStateBean;
     private String ecgDetectStateBeanStr;
-
+    //ecg测量结果，对应SDK中com.veepoo.protocol.model.datas.EcgDetectResult
+    private String ecgDetectResult;
     //所有的数据源，ecg数据
    // private List<int[]> ecgList;
     private String ecgListStr;
@@ -32,11 +33,12 @@ public class EcgSourceBean extends LitePalSupport implements Serializable {
     public EcgSourceBean() {
     }
 
-    public EcgSourceBean(String bleMac, String detectDate, String detectTime, String ecgDetectStateBeanStr, String ecgListStr) {
+    public EcgSourceBean(String bleMac, String detectDate, String detectTime, String ecgDetectStateBeanStr, String ecgDetectResult, String ecgListStr) {
         this.bleMac = bleMac;
         this.detectDate = detectDate;
         this.detectTime = detectTime;
         this.ecgDetectStateBeanStr = ecgDetectStateBeanStr;
+        this.ecgDetectResult = ecgDetectResult;
         this.ecgListStr = ecgListStr;
     }
 
@@ -80,6 +82,14 @@ public class EcgSourceBean extends LitePalSupport implements Serializable {
         this.ecgListStr = ecgListStr;
     }
 
+    public String getEcgDetectResult() {
+        return ecgDetectResult;
+    }
+
+    public void setEcgDetectResult(String ecgDetectResult) {
+        this.ecgDetectResult = ecgDetectResult;
+    }
+
     @Override
     public String toString() {
         return "EcgSourceBean{" +
@@ -87,6 +97,7 @@ public class EcgSourceBean extends LitePalSupport implements Serializable {
                 ", detectDate='" + detectDate + '\'' +
                 ", detectTime='" + detectTime + '\'' +
                 ", ecgDetectStateBeanStr='" + ecgDetectStateBeanStr + '\'' +
+                ", ecgDetectResult='" + ecgDetectResult + '\'' +
                 ", ecgListStr='" + ecgListStr + '\'' +
                 '}';
     }

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/comment_b30_title_layout"/>
+
+
+    <TextView
+        android:id="@+id/ecgResultDescRangeTv"
+        app:layout_constraintTop_toBottomOf="@+id/commB31TitleLayout"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:text="参考范围：0%-1%"
+        android:textColor="@color/black_trans70"
+        android:layout_height="wrap_content" />
+
+
+
+
+    <LinearLayout
+        android:id="@+id/ecgResultDescVLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/ecgResultDescRangeTv"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/ecgResultDescValueTv"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black_trans70"
+            android:textSize="25sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            android:text="0%"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/ecgResultDescUnitTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="5dp"
+            android:textSize="15sp"
+            android:text="次/分"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/backLin"
+        app:layout_constraintTop_toBottomOf="@id/ecgResultDescVLayout"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:background="@drawable/selectordown"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/ecgResultDescStatusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:padding="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/white" />
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/descTmpTv"
+        app:layout_constraintTop_toBottomOf="@id/backLin"
+        android:layout_marginTop="15dp"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layerType="software"
+        android:background="@drawable/line_shap"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        android:id="@+id/descTitleTv"
+        app:layout_constraintTop_toBottomOf="@id/descTmpTv"
+        android:layout_width="match_parent"
+        android:text="医学解释"
+        android:textSize="20sp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:textColor="#e917e1eb"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/ecgResultDescTv"
+        app:layout_constraintTop_toBottomOf="@+id/descTitleTv"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:lineSpacingMultiplier="1.3"
+        android:textSize="15sp"
+        android:layout_marginRight="15dp"
+        android:text="浅睡是相对深睡的非快速演的期睡眠，介于深睡和苏醒之间，占比过高会引起睡眠质量下降"
+        android:layout_height="wrap_content" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

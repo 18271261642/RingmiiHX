@@ -86,6 +86,7 @@ import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.healthring.widget.WaveProgress;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.veepoo.protocol.model.datas.EcgDetectResult;
 import com.veepoo.protocol.model.datas.HRVOriginData;
 import com.veepoo.protocol.model.datas.HalfHourBpData;
 import com.veepoo.protocol.model.datas.HalfHourRateData;
@@ -888,15 +889,21 @@ public class NewB31RecordFragment extends LazyFragment
             homeEcgResultLayout.setVisibility(View.VISIBLE);
             EcgSourceBean ecgSourceBean = sourceBeanList.get(sourceBeanList.size()-1);
             homeEcgLastTimeTv.setText(getString(R.string.ecg_latest_test) + "\n" + ecgSourceBean.getDetectTime());
-            String ecgStateStr = ecgSourceBean.getEcgDetectStateBeanStr();
-            if(ecgStateStr == null){
+//            String ecgStateStr = ecgSourceBean.getEcgDetectStateBeanStr();
+            String ecgResult = ecgSourceBean.getEcgDetectResult();
+            if(ecgResult == null){
                 ecgEmptyData();
                 return;
             }
-            EcgDetectStateBean ecgDetectStateBean = gson.fromJson(ecgStateStr,EcgDetectStateBean.class);
-            homeEcgHeartTv.setText(ecgDetectStateBean.getHr1() == 0 ? getString(R.string.ecg_cnt_m_) :ecgDetectStateBean.getHr1()+" " + getString(R.string.ecg_cnt_m));
-            homeEcgQtTv.setText(ecgDetectStateBean.getQtc()+" " + getString(R.string.ecg_qtc));
-            homeEcgHrvTv.setText(ecgDetectStateBean.getHrv()+" " + getString(R.string.ecg_ms));
+            EcgDetectResult ecgDetectResult = gson.fromJson(ecgResult,EcgDetectResult.class);
+//            EcgDetectStateBean ecgDetectStateBean = gson.fromJson(ecgStateStr,EcgDetectStateBean.class);
+            if(ecgDetectResult == null){
+                ecgEmptyData();
+                return;
+            }
+            homeEcgHeartTv.setText(ecgDetectResult.getAveHrv() == 0 ? getString(R.string.ecg_cnt_m_) :ecgDetectResult.getAveHrv()+" " + getString(R.string.ecg_cnt_m));
+            homeEcgQtTv.setText(ecgDetectResult.getAveQT()+" " + getString(R.string.ecg_qtc));
+            homeEcgHrvTv.setText(ecgDetectResult.getAveHrv()+" " + getString(R.string.ecg_ms));
 
         }catch (Exception e){
             e.printStackTrace();

@@ -15,6 +15,7 @@ import com.guider.healthring.MyApp;
 import com.guider.healthring.R;
 import com.guider.healthring.b30.bean.B30HalfHourDB;
 import com.guider.healthring.b30.bean.B30HalfHourDao;
+import com.guider.healthring.b31.ecg.bean.EcgDetectResultBean;
 import com.guider.healthring.b31.ecg.bean.EcgDetectStateBean;
 import com.guider.healthring.b31.ecg.bean.EcgSourceBean;
 import com.guider.healthring.bleutil.MyCommandManager;
@@ -106,13 +107,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
                     showEcgDetectStatusTv.setText(getString(R.string.ecg_tested));
                     detectEcgImgView.setImageResource(R.drawable.detect_sp_start);
                     isMeasure = false;
-                    stopDetectEcg();
-
-                    saveEcgToDb(ecgDetectState);
-
-                    //进度100%后上传
-                    uploadEcgData(ecgDetectState);
-
+                    //stopDetectEcg();
 
                 }
             }
@@ -129,7 +124,21 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
                 }
             }
             if(msg.what == 0x03){   //结果
+                EcgDetectResult ecgDetectResult = (EcgDetectResult) msg.obj;
+                if(ecgDetectResult == null)
+                    return;
+                detectEcgHeartTv.setText(ecgDetectResult.getAveHeart() == 0 ? "--次/分":ecgDetectResult.getAveHeart()+"次/分");
+                detectEcgQtTv.setText(ecgDetectResult.getAveQT() == 0 ? "--毫秒":ecgDetectResult.getAveQT()+"毫秒");
+                detectEcgHrvTv.setText((ecgDetectResult.getAveHrv() == 0 || ecgDetectResult.getAveHrv() == 255) ?"--毫秒":ecgDetectResult.getAveHrv()+"毫秒");
 
+                EcgDetectResultBean ecgDetectResultBean = new EcgDetectResultBean(ecgDetectResult.isSuccess(),ecgDetectResult.getType(),ecgDetectResult.getTimeBean(),ecgDetectResult.getFrequency(),
+                        ecgDetectResult.getDrawfrequency(),ecgDetectResult.getDuration(),ecgDetectResult.getLeadSign(),ecgDetectResult.getOriginSign(),ecgDetectResult.getFilterSignals(),
+                        ecgDetectResult.getResult8(),ecgDetectResult.getDiseaseResult(),ecgDetectResult.getAveHeart(),ecgDetectResult.getAveResRate(),ecgDetectResult.getAveHrv(),
+                        ecgDetectResult.getAveQT(),ecgDetectResult.getProgress());
+                stopDetectEcg();
+                saveEcgToDb(ecgDetectResultBean);
+                //进度100%后上传
+                uploadEcgData(ecgDetectResult);
             }
         }
     };
@@ -356,7 +365,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
      *
      */
 
-    private void uploadEcgData(EcgDetectState detectState) {
+    private void uploadEcgData(EcgDetectResult ecgDetectResult) {
         if (ecgList.isEmpty())
             return;
         Log.e(TAG, "-------ecg大小=" + ecgList.size());
@@ -369,21 +378,21 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         paramsMap.put("analysisResults", ""); //分析结果 不能为空 详细结论，不清楚和result1~result8如何对应
         paramsMap.put("avm", 0); //幅值单位 不能为空 需要确认
         paramsMap.put("baseLineValue", 0); //基准值
-        paramsMap.put("breathRate", detectState.getBr2()); //呼吸率
+        paramsMap.put("breathRate", ecgDetectResult.getAveResRate()); //呼吸率
         paramsMap.put("curveDescription", "I"); //导联名称描述 不能为空，多导联已半角逗号为间隔 单导联默认为 I
         paramsMap.put("customAnalysis", "{}");  //自定义结论
-        paramsMap.put("customType", detectState.getDataType());  //自定义类型
+        paramsMap.put("customType", ecgDetectResult.getType());  //自定义类型
         paramsMap.put("deviceCode", MyApp.getInstance().getMacAddress()); //设备编码
         paramsMap.put("ecgData", ecgList);  //心电图数据
         paramsMap.put("gain", 1); //增益 不能为空 为1
-        paramsMap.put("heartRate", detectState.getHr2());   //心率 可为0
+        paramsMap.put("heartRate", ecgDetectResult.getAveHeart());   //心率 可为0
         paramsMap.put("leadNumber", 1);  //导联数 不可为空
         paramsMap.put("mask", 0x0FFFF);  //心电图单点纵坐标掩码（默认值：Ox0FFF） 不可为空 默认为0xFFFFFFFF
         paramsMap.put("paxis", 0); //P轴 可为0
         paramsMap.put("prInterval", 0); //PR间期 可为0
         paramsMap.put("qrsAxis", 0);  //QRS轴 可为0
         paramsMap.put("qrsDuration", 0);  //QRS间期 可为0
-        paramsMap.put("qtc", detectState.getQtc());  //QTC间期 可为0
+        paramsMap.put("qtc", ecgDetectResult.getAveQT());  //QTC间期 可为0
         paramsMap.put("qtd", 0);  //QT间期 可为0 对应aveQT
         paramsMap.put("rrInterval", 0);   //RR间期 可为0
         paramsMap.put("rv5", 0);    //RV5幅值 可为0
@@ -411,7 +420,7 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
 
 
     //保存测量的数据至数据库中
-    private void saveEcgToDb(EcgDetectState ecgDetectState){
+    private void saveEcgToDb(EcgDetectResultBean ecgDetectResultBean){
 
         if(ecgSourceList.isEmpty())
             return;
@@ -420,18 +429,19 @@ public class EcgDetectActivity extends WatchBaseActivity implements View.OnClick
         if(bleMac == null)
             return;
 
-        EcgDetectStateBean ecgDetectStateBean = new EcgDetectStateBean(ecgDetectState.getEcgType(),ecgDetectState.getCon(),ecgDetectState.getDataType(),
-                ecgDetectState.getDeviceState(),ecgDetectState.getHr1(),ecgDetectState.getHr2(),ecgDetectState.getHrv(),ecgDetectState.getRr1(),ecgDetectState.getRr2(),
-                ecgDetectState.getBr1(),ecgDetectState.getBr2(),ecgDetectState.getWear(),ecgDetectState.getMid(),ecgDetectState.getQtc(),ecgDetectState.getProgress());
+//        EcgDetectStateBean ecgDetectStateBean = new EcgDetectStateBean(ecgDetectState.getEcgType(),ecgDetectState.getCon(),ecgDetectState.getDataType(),
+//                ecgDetectState.getDeviceState(),ecgDetectState.getHr1(),ecgDetectState.getHr2(),ecgDetectState.getHrv(),ecgDetectState.getRr1(),ecgDetectState.getRr2(),
+//                ecgDetectState.getBr1(),ecgDetectState.getBr2(),ecgDetectState.getWear(),ecgDetectState.getMid(),ecgDetectState.getQtc(),ecgDetectState.getProgress());
         EcgSourceBean ecgSourceBean = new EcgSourceBean();
         ecgSourceBean.setBleMac(bleMac);
         ecgSourceBean.setDetectDate(WatchUtils.getCurrentDate());
         ecgSourceBean.setDetectTime(WatchUtils.getCurrentDateFormat("HH:mm"));
-        ecgSourceBean.setEcgDetectStateBeanStr(new Gson().toJson(ecgDetectStateBean));
+        ecgSourceBean.setEcgDetectStateBeanStr(null);
+        ecgSourceBean.setEcgDetectResult(new Gson().toJson(ecgDetectResultBean));
         ecgSourceBean.setEcgListStr(new Gson().toJson(ecgSourceList));
 
         Log.e(TAG,"-----ecgSourceBean="+new Gson().toJson(ecgSourceBean));
-
+        MyApp.getInstance().setEcgSourceBean(ecgSourceBean);
         ecgSourceBean.save();
 
     }

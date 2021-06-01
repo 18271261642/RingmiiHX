@@ -31,6 +31,7 @@ import com.guider.healthring.siswatch.utils.WatchUtils;
 import com.guider.healthring.util.GetJsonDataUtil;
 import com.guider.healthring.util.SharedPreferencesUtils;
 import com.guider.libbase.util.Log;
+import com.veepoo.protocol.model.datas.EcgDetectResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,11 +118,16 @@ public class ShowEcgDataActivity extends WatchBaseActivity implements View.OnCli
                 ecgDetectTimeTv.setText(ecg_tine+"");
             }
             if(!WatchUtils.isEmpty(ecg_desc)){
-                EcgDetectStateBean ecgDetectStateBean = new Gson().fromJson(ecg_desc,EcgDetectStateBean.class);
-                if(ecgDetectStateBean == null)
+//                EcgDetectStateBean ecgDetectStateBean = new Gson().fromJson(ecg_desc,EcgDetectStateBean.class);
+//                if(ecgDetectStateBean == null)
+//                    return;
+                EcgDetectResult ecgDetectResult = new Gson().fromJson(ecg_desc,EcgDetectResult.class);
+                if(ecgDetectResult == null)
                     return;
-                ecgHeartDescTv.setText("心率: "+(ecgDetectStateBean.getHr2() == 0 ?"--":ecgDetectStateBean.getHr2())+" bpm   "
-                        + "QT间期: "+(ecgDetectStateBean.getQtc() == 0 ? "--" : ecgDetectStateBean.getQtc()) +" ms   " + "hrv: "+(ecgDetectStateBean.getHrv() == 0 || ecgDetectStateBean.getHrv() == 255 ? "--" : ecgDetectStateBean.getHr2())+"ms");
+
+
+                ecgHeartDescTv.setText("心率: "+(ecgDetectResult.getAveHrv() == 0 ?"--":ecgDetectResult.getAveHrv())+" bpm   "
+                        + "QT间期: "+(ecgDetectResult.getAveQT() == 0 ? "--" : ecgDetectResult.getAveQT()) +" ms   " + "hrv: "+(ecgDetectResult.getAveHrv() == 0 || ecgDetectResult.getAveHrv() == 255 ? "--" : ecgDetectResult.getAveHrv())+"ms");
                 ecgDescTv.setText("导联: I 走速: 25mm/s 增益: 10mm/mv  频率: 250HZ");
             }
 

@@ -30,6 +30,7 @@ import com.guider.healthring.activity.wylactivity.wyl_util.service.AlertService;
 import com.guider.healthring.activity.wylactivity.wyl_util.service.NewSmsBroadCastReceiver;
 import com.guider.healthring.b30.service.B30DataServer;
 import com.guider.healthring.b30.service.NewB30ConnStateService;
+import com.guider.healthring.b31.ecg.bean.EcgSourceBean;
 import com.guider.healthring.bzlmaps.PhoneSosOrDisPhone;
 import com.guider.healthring.siswatch.utils.CustomPhoneStateListener;
 import com.guider.healthring.util.SharedPreferencesUtils;
@@ -76,6 +77,8 @@ public class MyApp extends LitePalApplication {
     private boolean uploadDateGDNew = false;
     private boolean uploadDateGDHrv = false;
 
+    //临时的心电数据对象
+    private EcgSourceBean ecgSourceBean;
 
     public static PhoneSosOrDisPhone phoneSosOrDisPhone;
 
@@ -422,5 +425,14 @@ public class MyApp extends LitePalApplication {
 
     public void setUploadDateGDNew(boolean uploadDateGDNew) {
         this.uploadDateGDNew = uploadDateGDNew;
+    }
+
+
+    public EcgSourceBean getEcgSourceBean() {
+        return ecgSourceBean;
+    }
+
+    public void setEcgSourceBean(EcgSourceBean ecgSourceBean) {
+        this.ecgSourceBean = ecgSourceBean;
     }
 }

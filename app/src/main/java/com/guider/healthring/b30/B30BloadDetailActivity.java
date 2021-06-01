@@ -188,11 +188,11 @@ public class B30BloadDetailActivity extends WatchBaseActivity implements View.On
                 b30DetailHeightBloadDateTv.setText(hightTime);
 
                 //最低血压
-                int lowValue = Collections.min(lowList);
-                int lowValue_hight = hightList.get(lowList.indexOf(lowValue));
-                String lowTime = dataList.get(lowList.indexOf(lowValue)).getTime().getColck();
+                int lowValue = Collections.min(hightList);
+                int lowValue_hight = lowList.get(hightList.indexOf(lowValue));
+                String lowTime = dataList.get(hightList.indexOf(lowValue)).getTime().getColck();
 
-                b30DetailLowestBloadTv.setText(lowValue_hight + "/" + lowValue);
+                b30DetailLowestBloadTv.setText(lowValue + "/" + lowValue_hight);
                 b30DetailLowestBloadDateTv.setText(lowTime);
             } else {
                 b30DetailHeightBloadTv.setText("--");

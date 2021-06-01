@@ -1033,7 +1033,10 @@
         <!--心电记录-->
         <activity android:name=".b31.ecg.EcgDetechRecordActivity"
             android:screenOrientation="portrait"/>
-
+        <!--测量结果心率描述-->
+        <activity android:name=".b31.ecg.ECGResultDescActivity"/>
+        <!--ecg测量结果-->
+        <activity android:name=".b31.ecg.EcgResultActivity"/>
 
         <!--Bemo开关-->
         <activity android:name=".b31.BemoSwitchActivity"

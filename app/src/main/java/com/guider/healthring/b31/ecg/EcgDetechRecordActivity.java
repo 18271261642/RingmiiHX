@@ -36,6 +36,8 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
     private ImageView leftImg,rightImg;
     private TextView dateTv;
 
+    private ImageView commentB30ShareImg;
+
     private String currDay = WatchUtils.getCurrentDate();
 
     private EcgDetectRecordAdapter ecgDetectRecordAdapter;
@@ -82,16 +84,21 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
         titleTv = findViewById(R.id.commentB30TitleTv);
         dateTv = findViewById(R.id.commArrowDate);
         commBackImg = findViewById(R.id.commentB30BackImg);
+        commentB30ShareImg = findViewById(R.id.commentB30ShareImg);
+
 
         recyclerView = findViewById(R.id.ecgDetectRecordRecyclerView);
 
         titleTv.setText("ECG记录");
         commBackImg.setVisibility(View.VISIBLE);
+        commentB30ShareImg.setVisibility(View.VISIBLE);
+        commentB30ShareImg.setImageResource(R.drawable.ecg_app_handle);
+
 
         leftImg.setOnClickListener(this);
         rightImg.setOnClickListener(this);
         commBackImg.setOnClickListener(this);
-
+        commentB30ShareImg.setOnClickListener(this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -109,6 +116,9 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
         switch (view.getId()){
             case R.id.commentB30BackImg:
                 finish();
+                break;
+            case R.id.commentB30ShareImg:
+                startActivity(EcgDetectActivity.class);
                 break;
             case R.id.commArrowLeft:
                 changeDayData(true);
@@ -134,8 +144,12 @@ public class EcgDetechRecordActivity extends WatchBaseActivity implements View.O
         if(list.isEmpty())
             return;
         EcgSourceBean ecgSourceBean = list.get(position);
-        Log.e("TAG","----ecgDesc="+ecgSourceBean.getEcgDetectStateBeanStr());
-        startActivity(ShowEcgDataActivity.class,new String[]{"ecg_time","ecg_desc","ecg_source"},new String[]{ecgSourceBean.getDetectDate()+" "+ecgSourceBean.getDetectTime(),ecgSourceBean.getEcgDetectStateBeanStr(),ecgSourceBean.getEcgListStr()});
+//        Log.e("TAG","----ecgDesc="+ecgSourceBean.getEcgDetectStateBeanStr());
+//        startActivity(ShowEcgDataActivity.class,new String[]{"ecg_time","ecg_desc","ecg_source"},new String[]{ecgSourceBean.getDetectDate()+" "+ecgSourceBean.getDetectTime(),ecgSourceBean.getEcgDetectStateBeanStr(),ecgSourceBean.getEcgListStr()});
+
+
+        MyApp.getInstance().setEcgSourceBean(ecgSourceBean);
+        startActivity(EcgResultActivity.class);
     }
 
     @Override

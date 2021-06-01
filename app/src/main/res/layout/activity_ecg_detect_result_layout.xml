@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/comment_b30_title_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@color/new_colorAccent"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/ecgResultFrequencyTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="频率:--"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/ecgResultSpeedTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="走速:--"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/ecgResultGainTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="增益:--"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+
+
+            <com.guider.healthring.b31.ecg.EcgHeartRealthView
+                android:id="@+id/ecgHeartResultView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+
+
+
+            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ecgResultPlayImg"
+                    android:layout_width="30dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ecg_test_playback_start"/>
+
+
+                <com.guider.healthring.view.CusScheduleView
+                    android:id="@+id/ecgResultScheduleView"
+                    android:layout_width="150dp"
+                    app:cus_curr_schedule_color="@color/white"
+                    app:cus_all_schedule_color="@color/chang_white"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="20dp"/>
+
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"/>
+
+               <TextView
+                   android:id="@+id/ecgResultReportTv"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textColor="@color/white"
+                   android:layout_gravity="center"
+                   android:padding="5dp"
+                   android:layout_marginRight="10dp"
+                   android:background="@drawable/layout_radius"
+                   android:text="查看波形报告"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_trans70"
+            android:layout_marginLeft="15dp"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:text="常规检测"/>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ecgResultHeartLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+                <ImageView
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/ecgResultHtImg"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ecg_detail_item_heart"/>
+
+
+                <TextView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="15dp"
+                    android:padding="5dp"
+                    app:layout_constraintLeft_toRightOf="@id/ecgResultHtImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heart_rate"/>
+
+
+                <TextView
+                    android:id="@+id/ecgResultReportHeartTv"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/ecgClickMenuImg"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- 次/分"/>
+
+
+                <TextView
+                    android:id="@+id/ecgClickMenuImg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_click_menu"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.2dp"
+                android:layout_margin="5dp"
+                android:background="@color/chang_white"/>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ecgResultQTLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+                <ImageView
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/ecgResultQtImg"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ecg_detail_item_qt"/>
+
+
+                <TextView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="15dp"
+                    android:padding="5dp"
+                    app:layout_constraintLeft_toRightOf="@id/ecgResultQtImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QT间期"/>
+
+
+                <TextView
+                    android:id="@+id/ecgResultReportQTTv"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/ecgClickMenuImg2"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- 毫秒"/>
+
+
+                <TextView
+                    android:id="@+id/ecgClickMenuImg2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_click_menu"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.2dp"
+                android:layout_margin="5dp"
+                android:background="@color/chang_white"/>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ecgResultHRVLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+                <ImageView
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/ecgResultHrvImg"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ecg_detail_item_hrv"/>
+
+
+                <TextView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="15dp"
+                    android:padding="5dp"
+                    app:layout_constraintLeft_toRightOf="@id/ecgResultHrvImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HRV"/>
+
+
+                <TextView
+                    android:id="@+id/ecgResultReportHRVTv"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/ecgClickMenuImg3"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-- 毫秒"/>
+
+
+                <TextView
+                    android:id="@+id/ecgClickMenuImg3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_click_menu"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.2dp"
+                android:layout_margin="5dp"
+                android:background="@color/chang_white"/>
+
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_trans70"
+                android:layout_marginLeft="15dp"
+                android:padding="5dp"
+                android:textSize="18sp"
+                android:text="分析结果"/>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/chang_white"
+                android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_gravity="center"
+                android:layout_height="35dp"
+                android:padding="5dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/ecg_detail_result_normal"/>
+
+
+                <TextView
+                    android:id="@+id/ecgResultDescTv"
+                    android:text="--"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:textSize="18sp"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
